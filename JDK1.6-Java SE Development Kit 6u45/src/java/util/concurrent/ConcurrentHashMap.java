@@ -596,9 +596,9 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
             ++sshift;
             ssize <<= 1;
         }
-        segmentShift = 32 - sshift;
-        segmentMask = ssize - 1;
-        this.segments = Segment.newArray(ssize);
+        segmentShift = 32 - sshift;// 参与散列的位数，默认 28位
+        segmentMask = ssize - 1;// 散列运算的掩码 ;默认 0x0000000f
+        this.segments = Segment.newArray(ssize);// 段和 HashMap 的结合：本质就是 Lock
 
         if (initialCapacity > MAXIMUM_CAPACITY)
             initialCapacity = MAXIMUM_CAPACITY;
@@ -609,7 +609,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
         while (cap < c)
             cap <<= 1;
 
-        for (int i = 0; i < this.segments.length; ++i)
+        for (int i = 0; i < this.segments.length; ++i)  // 初始化 Segment
             this.segments[i] = new Segment<K,V>(cap, loadFactor);
     }
 

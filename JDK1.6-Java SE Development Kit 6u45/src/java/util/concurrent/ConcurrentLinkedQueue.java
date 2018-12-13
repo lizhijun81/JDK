@@ -282,7 +282,7 @@ public class ConcurrentLinkedQueue<E> extends AbstractQueue<E>
                     if (hops > HOPS && t != tail)
                         continue retry;
                     p = next;
-                } else if (p.casNext(null, n)) {
+                } else if (p.casNext(null, n)) {// 将当前尾节点的next节点设置为当前添加的节点，成功则当前节点入队成功；否则：并发导致当前线程中的p不是尾节点，需要下次
                     if (hops >= HOPS)
                         casTail(t, n); // Failure is OK.
                     return true;   
