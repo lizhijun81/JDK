@@ -129,7 +129,7 @@ public class DelayQueue<E extends Delayed> extends AbstractQueue<E>
         lock.lock();
         try {
             E first = q.peek();
-            if (first == null || first.getDelay(TimeUnit.NANOSECONDS) > 0)
+            if (first == null || first.getDelay(TimeUnit.NANOSECONDS) > 0) // 优先级队列为空或者不满足延迟时间
                 return null;
             else {
                 E x = q.poll();
@@ -157,11 +157,11 @@ public class DelayQueue<E extends Delayed> extends AbstractQueue<E>
             for (;;) {
                 E first = q.peek();
                 if (first == null) {
-                    available.await();
+                    available.await();// 优先级队列为空，线程阻塞
                 } else {
                     long delay =  first.getDelay(TimeUnit.NANOSECONDS);
                     if (delay > 0) {
-                        long tl = available.awaitNanos(delay);
+                        long tl = available.awaitNanos(delay);// 不满足延迟时间，线程阻塞
                     } else {
                         E x = q.poll();
                         assert x != null;

@@ -223,8 +223,8 @@ public class PriorityQueue<E> extends AbstractQueue<E>
      *
      * @param minCapacity the desired minimum capacity
      */
-    private void grow(int minCapacity) {
-        if (minCapacity < 0) // overflow
+    private void grow(int minCapacity) {// 扩容很简单，将原有的数组，原有数组小于64，则直接扩容为原来的两倍；大于等于64，则扩容为原来的50%；
+        if (minCapacity < 0) // overflow // 扩容后，将原来的数组深拷贝到扩容后的数组中
             throw new OutOfMemoryError();
 	int oldCapacity = queue.length;
         // Double size if small; else grow by 50%
@@ -271,7 +271,7 @@ public class PriorityQueue<E> extends AbstractQueue<E>
         if (i == 0)
             queue[0] = e;
         else
-            siftUp(i, e);
+            siftUp(i, e);// 将e添加到队列的末尾，然后通过最小堆算法，调整e在队列中的位置
         return true;
     }
 
@@ -282,7 +282,7 @@ public class PriorityQueue<E> extends AbstractQueue<E>
     }
 
     private int indexOf(Object o) {
-	if (o != null) {
+        if (o != null) {
             for (int i = 0; i < size; i++)
                 if (o.equals(queue[i]))
                     return i;
@@ -302,13 +302,13 @@ public class PriorityQueue<E> extends AbstractQueue<E>
      * @return {@code true} if this queue changed as a result of the call
      */
     public boolean remove(Object o) {
-	int i = indexOf(o);
-	if (i == -1)
-	    return false;
-	else {
-	    removeAt(i);
-	    return true;
-	}
+        int i = indexOf(o);
+        if (i == -1)
+            return false;
+        else {
+            removeAt(i);
+            return true;
+        }
     }
 
     /**
@@ -319,8 +319,8 @@ public class PriorityQueue<E> extends AbstractQueue<E>
      * @return {@code true} if removed
      */
     boolean removeEq(Object o) {
-	for (int i = 0; i < size; i++) {
-	    if (o == queue[i]) {
+        for (int i = 0; i < size; i++) {
+            if (o == queue[i]) {
                 removeAt(i);
                 return true;
             }
@@ -337,7 +337,7 @@ public class PriorityQueue<E> extends AbstractQueue<E>
      * @return {@code true} if this queue contains the specified element
      */
     public boolean contains(Object o) {
-	return indexOf(o) != -1;
+        return indexOf(o) != -1;
     }
 
     /**
@@ -520,7 +520,7 @@ public class PriorityQueue<E> extends AbstractQueue<E>
         E x = (E) queue[s];
         queue[s] = null;
         if (s != 0)
-            siftDown(0, x);
+            siftDown(0, x);// 出队列时，默认出第一个元素；
         return result;
     }
 
@@ -543,9 +543,9 @@ public class PriorityQueue<E> extends AbstractQueue<E>
         if (s == i) // removed last element
             queue[i] = null;
         else {
-            E moved = (E) queue[s];
-            queue[s] = null;
-            siftDown(i, moved);
+            E moved = (E) queue[s];// move 指向了数组的最后一个元素
+            queue[s] = null;// 将数组的最后一个元素删除
+            siftDown(i, moved);// siftDown 移除i位置的元素，并且将移除的最后一个元素插入到数组中的合适位置
             if (queue[i] == moved) {
                 siftUp(i, moved);
                 if (queue[i] != moved)
@@ -634,7 +634,7 @@ public class PriorityQueue<E> extends AbstractQueue<E>
 
     private void siftDownUsingComparator(int k, E x) {
         int half = size >>> 1;
-        while (k < half) {
+        while (k < half) {// 将末尾的x元素插入到合适的位置
             int child = (k << 1) + 1;
             Object c = queue[child];
             int right = child + 1;

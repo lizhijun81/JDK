@@ -197,7 +197,7 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
      *         priority queue's ordering
      * @throws NullPointerException if the specified element is null
      */
-    public boolean offer(E e, long timeout, TimeUnit unit) {
+    public boolean offer(E e, long timeout, TimeUnit unit) {// 无界队列不需要阻塞入队列
         return offer(e); // never need to block
     }
 
@@ -217,7 +217,7 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
         try {
             try {
                 while (q.size() == 0)
-                    notEmpty.await();
+                    notEmpty.await();// 出队列时，队列为空，出队列的线程被阻塞
             } catch (InterruptedException ie) {
                 notEmpty.signal(); // propagate to non-interrupted thread
                 throw ie;
@@ -280,7 +280,7 @@ public class PriorityBlockingQueue<E> extends AbstractQueue<E>
         final ReentrantLock lock = this.lock;
         lock.lock();
         try {
-            return q.size();
+            return q.size();// 优先级队列的大小
         } finally {
             lock.unlock();
         }
