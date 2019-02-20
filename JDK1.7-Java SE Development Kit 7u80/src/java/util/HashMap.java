@@ -373,7 +373,7 @@ public class HashMap<K,V>
      */
     static int indexFor(int h, int length) {
         // assert Integer.bitCount(length) == 1 : "length must be a non-zero power of 2";
-        return h & (length-1);
+        return h & (length-1);// length-1 相当于 ConcurrentHashMap中的 segmentMask 掩码
     }
 
     /**
@@ -873,6 +873,10 @@ public class HashMap<K,V>
      * method to resize the table if appropriate.
      *
      * Subclass overrides this to alter the behavior of put method.
+     *
+     * map中 key-value 的数量 大于 threshold 阀值时，map进行rehash过程；
+     * threshold = capacity * loadFactor 计算出来的；
+     * 在 rehash 过程中 直接将 capacity 扩充为原来的两倍
      */
     void addEntry(int hash, K key, V value, int bucketIndex) {
         if ((size >= threshold) && (null != table[bucketIndex])) {
@@ -1183,6 +1187,6 @@ public class HashMap<K,V>
     }
 
     // These methods are used when serializing HashSets
-    int   capacity()     { return table.length; }
+    int   capacity()     { return table.length; } // 返回Entry数组的长度
     float loadFactor()   { return loadFactor;   }
 }

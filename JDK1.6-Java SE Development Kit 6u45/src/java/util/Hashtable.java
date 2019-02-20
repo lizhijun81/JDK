@@ -99,9 +99,7 @@ import java.io.*;
  * @see	    TreeMap
  * @since JDK1.0
  */
-public class Hashtable<K,V>
-    extends Dictionary<K,V>
-    implements Map<K,V>, Cloneable, java.io.Serializable {
+public class Hashtable<K,V> extends Dictionary<K,V> implements Map<K,V>, Cloneable, java.io.Serializable {
 
     /**
      * The hash table data.

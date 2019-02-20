@@ -1943,76 +1943,82 @@ public class Collections {
     /**
      * @serial include
      */
-    private static class SynchronizedMap<K,V>
-	implements Map<K,V>, Serializable {
-	// use serialVersionUID from JDK 1.2.2 for interoperability
-	private static final long serialVersionUID = 1978198479659022715L;
+    private static class SynchronizedMap<K,V> implements Map<K,V>, Serializable {
+        // use serialVersionUID from JDK 1.2.2 for interoperability
+        private static final long serialVersionUID = 1978198479659022715L;
 
-	private final Map<K,V> m;     // Backing Map
+        private final Map<K,V> m;     // Backing Map
         final Object      mutex;	// Object on which to synchronize
 
-	SynchronizedMap(Map<K,V> m) {
+        SynchronizedMap(Map<K,V> m) {
             if (m==null)
                 throw new NullPointerException();
             this.m = m;
             mutex = this;
         }
 
-	SynchronizedMap(Map<K,V> m, Object mutex) {
+        SynchronizedMap(Map<K,V> m, Object mutex) {
             this.m = m;
             this.mutex = mutex;
         }
 
-	public int size() {
-	    synchronized(mutex) {return m.size();}
-        }
-	public boolean isEmpty(){
-	    synchronized(mutex) {return m.isEmpty();}
-        }
-	public boolean containsKey(Object key) {
-	    synchronized(mutex) {return m.containsKey(key);}
-        }
-	public boolean containsValue(Object value){
-	    synchronized(mutex) {return m.containsValue(value);}
-        }
-	public V get(Object key) {
-	    synchronized(mutex) {return m.get(key);}
+        public int size() {
+            synchronized(mutex) {return m.size();}
         }
 
-	public V put(K key, V value) {
-	    synchronized(mutex) {return m.put(key, value);}
+        public boolean isEmpty(){
+            synchronized(mutex) {return m.isEmpty();}
         }
-	public V remove(Object key) {
-	    synchronized(mutex) {return m.remove(key);}
-        }
-	public void putAll(Map<? extends K, ? extends V> map) {
-	    synchronized(mutex) {m.putAll(map);}
-        }
-	public void clear() {
-	    synchronized(mutex) {m.clear();}
-	}
 
-	private transient Set<K> keySet = null;
-	private transient Set<Map.Entry<K,V>> entrySet = null;
-	private transient Collection<V> values = null;
+        public boolean containsKey(Object key) {
+            synchronized(mutex) {return m.containsKey(key);}
+        }
 
-	public Set<K> keySet() {
+        public boolean containsValue(Object value){
+            synchronized(mutex) {return m.containsValue(value);}
+        }
+
+        public V get(Object key) {
+            synchronized(mutex) {return m.get(key);}
+        }
+
+        public V put(K key, V value) {
+            synchronized(mutex) {return m.put(key, value);}
+        }
+
+        public V remove(Object key) {
+            synchronized(mutex) {return m.remove(key);}
+        }
+
+        public void putAll(Map<? extends K, ? extends V> map) {
+            synchronized(mutex) {m.putAll(map);}
+        }
+
+        public void clear() {
+            synchronized(mutex) {m.clear();}
+        }
+
+        private transient Set<K> keySet = null;
+        private transient Set<Map.Entry<K,V>> entrySet = null;
+        private transient Collection<V> values = null;
+
+        public Set<K> keySet() {
             synchronized(mutex) {
                 if (keySet==null)
                     keySet = new SynchronizedSet<K>(m.keySet(), mutex);
                 return keySet;
             }
-	}
+        }
 
-	public Set<Map.Entry<K,V>> entrySet() {
+        public Set<Map.Entry<K,V>> entrySet() {
             synchronized(mutex) {
                 if (entrySet==null)
                     entrySet = new SynchronizedSet<Map.Entry<K,V>>(m.entrySet(), mutex);
                 return entrySet;
             }
-	}
+        }
 
-	public Collection<V> values() {
+        public Collection<V> values() {
             synchronized(mutex) {
                 if (values==null)
                     values = new SynchronizedCollection<V>(m.values(), mutex);
@@ -2020,19 +2026,22 @@ public class Collections {
             }
         }
 
-	public boolean equals(Object o) {
+        public boolean equals(Object o) {
             if (this == o)
                 return true;
             synchronized(mutex) {return m.equals(o);}
         }
-	public int hashCode() {
+
+        public int hashCode() {
             synchronized(mutex) {return m.hashCode();}
         }
-	public String toString() {
-	    synchronized(mutex) {return m.toString();}
+
+        public String toString() {
+            synchronized(mutex) {return m.toString();}
         }
+
         private void writeObject(ObjectOutputStream s) throws IOException {
-	    synchronized(mutex) {s.defaultWriteObject();}
+            synchronized(mutex) {s.defaultWriteObject();}
         }
     }
 

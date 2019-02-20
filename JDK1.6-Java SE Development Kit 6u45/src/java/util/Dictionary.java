@@ -29,8 +29,7 @@ package java.util;
  * @see     java.util.Hashtable
  * @since   JDK1.0
  */
-public abstract
-class Dictionary<K,V> {
+public abstract class Dictionary<K,V> {
     /**
      * Sole constructor.  (For invocation by subclass constructors, typically
      * implicit.)
