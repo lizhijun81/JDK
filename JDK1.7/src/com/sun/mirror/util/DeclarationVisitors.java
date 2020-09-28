@@ -28,19 +28,19 @@ package com.sun.mirror.util;
 /**
  * Utilities to create specialized <tt>DeclarationVisitor</tt> instances.
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  There is no direct
  * replacement for the functionality of this class in the standardized
  * API due to that API's different visitor structure.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")
 public class DeclarationVisitors {
-    private DeclarationVisitors(){} // do not instantiate.
+    private DeclarationVisitors() {
+    } // do not instantiate.
 
     /**
      * A visitor that has no side effects and keeps no state.
@@ -63,11 +63,10 @@ public class DeclarationVisitors {
      * DeclarationVisitors#NO_OP DeclarationVisitors.NO_OP} for the
      * other parameter.
      *
-     * @param pre visitor representing processing to do before
-     * visiting contained declarations.
-     *
+     * @param pre  visitor representing processing to do before
+     *             visiting contained declarations.
      * @param post visitor representing processing to do after
-     * visiting contained declarations.
+     *             visiting contained declarations.
      */
     public static DeclarationVisitor getDeclarationScanner(DeclarationVisitor pre,
                                                            DeclarationVisitor post) {
@@ -91,11 +90,10 @@ public class DeclarationVisitors {
      * and post processing is needed, use {@link
      * DeclarationVisitors#NO_OP DeclarationVisitors.NO_OP} for the other parameter.
      *
-     * @param pre visitor representing processing to do before
-     * visiting contained declarations.
-     *
+     * @param pre  visitor representing processing to do before
+     *             visiting contained declarations.
      * @param post visitor representing processing to do after
-     * visiting contained declarations.
+     *             visiting contained declarations.
      */
     public static DeclarationVisitor getSourceOrderDeclarationScanner(DeclarationVisitor pre,
                                                                       DeclarationVisitor post) {

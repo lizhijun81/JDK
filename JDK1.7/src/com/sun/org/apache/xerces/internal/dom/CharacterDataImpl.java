@@ -37,17 +37,18 @@ import org.w3c.dom.NodeList;
  * the document when mutations are performed so that the document class do so.
  *
  * @xerces.internal
- *
- * @since  PR-DOM-Level-1-19980818.
+ * @since PR-DOM-Level-1-19980818.
  */
 public abstract class CharacterDataImpl
-    extends ChildNode {
+        extends ChildNode {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = 7931170150428474230L;
 
     //
@@ -56,19 +57,29 @@ public abstract class CharacterDataImpl
 
     protected String data;
 
-    /** Empty child nodes. */
+    /**
+     * Empty child nodes.
+     */
     private static transient NodeList singletonNodeList = new NodeList() {
-        public Node item(int index) { return null; }
-        public int getLength() { return 0; }
+        public Node item(int index) {
+            return null;
+        }
+
+        public int getLength() {
+            return 0;
+        }
     };
 
     //
     // Constructors
     //
 
-    public CharacterDataImpl(){}
+    public CharacterDataImpl() {
+    }
 
-    /** Factory constructor. */
+    /**
+     * Factory constructor.
+     */
     protected CharacterDataImpl(CoreDocumentImpl ownerDocument, String data) {
         super(ownerDocument);
         this.data = data;
@@ -78,7 +89,9 @@ public abstract class CharacterDataImpl
     // Node methods
     //
 
-    /** Returns an empty node list. */
+    /**
+     * Returns an empty node list.
+     */
     public NodeList getChildNodes() {
         return singletonNodeList;
     }
@@ -93,19 +106,21 @@ public abstract class CharacterDataImpl
         return data;
     }
 
-   /** Convenience wrapper for calling setNodeValueInternal when
+    /**
+     * Convenience wrapper for calling setNodeValueInternal when
      * we are not performing a replacement operation
      */
-    protected void setNodeValueInternal (String value) {
+    protected void setNodeValueInternal(String value) {
         setNodeValueInternal(value, false);
     }
 
-    /** This function added so that we can distinguish whether
-     *  setNodeValue has been called from some other DOM functions.
-     *  or by the client.<p>
-     *  This is important, because we do one type of Range fix-up,
-     *  from the high-level functions in CharacterData, and another
-     *  type if the client simply calls setNodeValue(value).
+    /**
+     * This function added so that we can distinguish whether
+     * setNodeValue has been called from some other DOM functions.
+     * or by the client.<p>
+     * This is important, because we do one type of Range fix-up,
+     * from the high-level functions in CharacterData, and another
+     * type if the client simply calls setNodeValue(value).
      */
     protected void setNodeValueInternal(String value, boolean replace) {
 
@@ -154,9 +169,9 @@ public abstract class CharacterDataImpl
      * Retrieve character data currently stored in this node.
      *
      * @throws DOMExcpetion(DOMSTRING_SIZE_ERR) In some implementations,
-     * the stored data may exceed the permitted length of strings. If so,
-     * getData() will throw this DOMException advising the user to
-     * instead retrieve the data in chunks via the substring() operation.
+     *                                          the stored data may exceed the permitted length of strings. If so,
+     *                                          getData() will throw this DOMException advising the user to
+     *                                          instead retrieve the data in chunks via the substring() operation.
      */
     public String getData() {
         if (needsSyncData()) {
@@ -207,26 +222,26 @@ public abstract class CharacterDataImpl
      * string. However, a deletion _count_ that exceeds the available
      * data is accepted as a delete-to-end request.
      *
-     * @throws DOMException(INDEX_SIZE_ERR) if offset is negative or
-     * greater than length, or if count is negative.
-     *
+     * @throws DOMException(INDEX_SIZE_ERR)              if offset is negative or
+     *                                                   greater than length, or if count is negative.
      * @throws DOMException(NO_MODIFICATION_ALLOWED_ERR) if node is
-     * readonly.
+     *                                                   readonly.
      */
     public void deleteData(int offset, int count)
-        throws DOMException {
+            throws DOMException {
 
         internalDeleteData(offset, count, false);
     } // deleteData(int,int)
 
 
-    /** NON-DOM INTERNAL: Within DOM actions, we sometimes need to be able
+    /**
+     * NON-DOM INTERNAL: Within DOM actions, we sometimes need to be able
      * to control which mutation events are spawned. This version of the
      * deleteData operation allows us to do so. It is not intended
      * for use by application programs.
      */
-    void internalDeleteData (int offset, int count, boolean replace)
-    throws DOMException {
+    void internalDeleteData(int offset, int count, boolean replace)
+            throws DOMException {
 
         CoreDocumentImpl ownerDocument = ownerDocument();
         if (ownerDocument.errorChecking) {
@@ -247,14 +262,13 @@ public abstract class CharacterDataImpl
         int tailLength = Math.max(data.length() - count - offset, 0);
         try {
             String value = data.substring(0, offset) +
-            (tailLength > 0 ? data.substring(offset + count, offset + count + tailLength) : "");
+                    (tailLength > 0 ? data.substring(offset + count, offset + count + tailLength) : "");
 
             setNodeValueInternal(value, replace);
 
             // notify document
             ownerDocument.deletedText(this, offset, count);
-        }
-        catch (StringIndexOutOfBoundsException e) {
+        } catch (StringIndexOutOfBoundsException e) {
             String msg = DOMMessageFormatter.formatMessage(DOMMessageFormatter.DOM_DOMAIN, "INDEX_SIZE_ERR", null);
             throw new DOMException(DOMException.INDEX_SIZE_ERR, msg);
         }
@@ -265,27 +279,26 @@ public abstract class CharacterDataImpl
      * Insert additional characters into the data stored in this node,
      * at the offset specified.
      *
-     * @throws DOMException(INDEX_SIZE_ERR) if offset is negative or
-     * greater than length.
-     *
+     * @throws DOMException(INDEX_SIZE_ERR)              if offset is negative or
+     *                                                   greater than length.
      * @throws DOMException(NO_MODIFICATION_ALLOWED_ERR) if node is readonly.
      */
     public void insertData(int offset, String data)
-        throws DOMException {
+            throws DOMException {
 
         internalInsertData(offset, data, false);
 
     } // insertData(int,int)
 
 
-
-    /** NON-DOM INTERNAL: Within DOM actions, we sometimes need to be able
+    /**
+     * NON-DOM INTERNAL: Within DOM actions, we sometimes need to be able
      * to control which mutation events are spawned. This version of the
      * insertData operation allows us to do so. It is not intended
      * for use by application programs.
      */
-    void internalInsertData (int offset, String data, boolean replace)
-    throws DOMException {
+    void internalInsertData(int offset, String data, boolean replace)
+            throws DOMException {
 
         CoreDocumentImpl ownerDocument = ownerDocument();
 
@@ -299,21 +312,19 @@ public abstract class CharacterDataImpl
         }
         try {
             String value =
-                new StringBuffer(this.data).insert(offset, data).toString();
+                    new StringBuffer(this.data).insert(offset, data).toString();
 
 
             setNodeValueInternal(value, replace);
 
             // notify document
             ownerDocument.insertedText(this, offset, data.length());
-        }
-        catch (StringIndexOutOfBoundsException e) {
+        } catch (StringIndexOutOfBoundsException e) {
             String msg = DOMMessageFormatter.formatMessage(DOMMessageFormatter.DOM_DOMAIN, "INDEX_SIZE_ERR", null);
             throw new DOMException(DOMException.INDEX_SIZE_ERR, msg);
         }
 
     } // internalInsertData(int,String,boolean)
-
 
 
     /**
@@ -323,25 +334,21 @@ public abstract class CharacterDataImpl
      * insert. Throws a DOMException if the specified offset is beyond
      * the end of the existing data.
      *
-     * @param offset       The offset at which to begin replacing.
-     *
-     * @param count        The number of characters to remove,
-     * interpreted as in the delete() method.
-     *
-     * @param data         The new string to be inserted at offset in place of
-     * the removed data. Note that the entire string will
-     * be inserted -- the count parameter does not affect
-     * insertion, and the new data may be longer or shorter
-     * than the substring it replaces.
-     *
-     * @throws DOMException(INDEX_SIZE_ERR) if offset is negative or
-     * greater than length, or if count is negative.
-     *
+     * @param offset The offset at which to begin replacing.
+     * @param count  The number of characters to remove,
+     *               interpreted as in the delete() method.
+     * @param data   The new string to be inserted at offset in place of
+     *               the removed data. Note that the entire string will
+     *               be inserted -- the count parameter does not affect
+     *               insertion, and the new data may be longer or shorter
+     *               than the substring it replaces.
+     * @throws DOMException(INDEX_SIZE_ERR)              if offset is negative or
+     *                                                   greater than length, or if count is negative.
      * @throws DOMException(NO_MODIFICATION_ALLOWED_ERR) if node is
-     * readonly.
+     *                                                   readonly.
      */
     public void replaceData(int offset, int count, String data)
-    throws DOMException {
+            throws DOMException {
 
         CoreDocumentImpl ownerDocument = ownerDocument();
 
@@ -379,7 +386,7 @@ public abstract class CharacterDataImpl
      * @throws DOMException(NO_MODIFICATION_ALLOWED_ERR) if node is readonly.
      */
     public void setData(String value)
-        throws DOMException {
+            throws DOMException {
         setNodeValue(value);
     }
 
@@ -389,22 +396,20 @@ public abstract class CharacterDataImpl
      * length that can be returned in a single string, the only way to
      * read it all is to extract it in chunks via this method.
      *
-     * @param offset        Zero-based offset of first character to retrieve.
-     * @param count Number of characters to retrieve.
-     *
-     * If the sum of offset and count exceeds the length, all characters
-     * to end of data are returned.
-     *
-     * @throws DOMException(INDEX_SIZE_ERR) if offset is negative or
-     * greater than length, or if count is negative.
-     *
+     * @param offset Zero-based offset of first character to retrieve.
+     * @param count  Number of characters to retrieve.
+     *               <p>
+     *               If the sum of offset and count exceeds the length, all characters
+     *               to end of data are returned.
+     * @throws DOMException(INDEX_SIZE_ERR)   if offset is negative or
+     *                                        greater than length, or if count is negative.
      * @throws DOMException(WSTRING_SIZE_ERR) In some implementations,
-     * count may exceed the permitted length of strings. If so,
-     * substring() will throw this DOMException advising the user to
-     * instead retrieve the data in smaller chunks.
+     *                                        count may exceed the permitted length of strings. If so,
+     *                                        substring() will throw this DOMException advising the user to
+     *                                        instead retrieve the data in smaller chunks.
      */
     public String substringData(int offset, int count)
-        throws DOMException {
+            throws DOMException {
 
         if (needsSyncData()) {
             synchronizeData();

@@ -21,9 +21,8 @@
 package com.sun.org.apache.xerces.internal.impl.xs.util;
 
 /**
- * @xerces.internal
- *
  * @author Henry Zongaro, IBM
+ * @xerces.internal
  */
 public final class XIntPool {
     private static final short POOL_SIZE = 10;

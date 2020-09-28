@@ -44,10 +44,9 @@ import com.sun.corba.se.impl.orbutil.ORBUtility;
  * @author Harold Carr
  */
 public abstract class CorbaConnectionCacheBase
-    implements
+        implements
         ConnectionCache,
-        CorbaConnectionCache
-{
+        CorbaConnectionCache {
     protected ORB orb;
     protected long timestamp = 0;
     protected String cacheType;
@@ -55,12 +54,11 @@ public abstract class CorbaConnectionCacheBase
     protected ORBUtilSystemException wrapper;
 
     protected CorbaConnectionCacheBase(ORB orb, String cacheType,
-                                       String monitoringName)
-    {
+                                       String monitoringName) {
         this.orb = orb;
         this.cacheType = cacheType;
         this.monitoringName = monitoringName;
-        wrapper =ORBUtilSystemException.get(orb,CORBALogDomains.RPC_TRANSPORT);
+        wrapper = ORBUtilSystemException.get(orb, CORBALogDomains.RPC_TRANSPORT);
         registerWithMonitoring();
         dprintCreation();
     }
@@ -70,19 +68,16 @@ public abstract class CorbaConnectionCacheBase
     // pept.transport.ConnectionCache
     //
 
-    public String getCacheType()
-    {
+    public String getCacheType() {
         return cacheType;
     }
 
-    public synchronized void stampTime(Connection c)
-    {
+    public synchronized void stampTime(Connection c) {
         // _REVISIT_ Need to worry about wrap around some day
         c.setTimeStamp(timestamp++);
     }
 
-    public long numberOfConnections()
-    {
+    public long numberOfConnections() {
         synchronized (backingStore()) {
             return values().size();
         }
@@ -91,18 +86,17 @@ public abstract class CorbaConnectionCacheBase
     public void close() {
         synchronized (backingStore()) {
             for (Object obj : values()) {
-                ((CorbaConnection)obj).closeConnectionResources() ;
+                ((CorbaConnection) obj).closeConnectionResources();
             }
         }
     }
 
-    public long numberOfIdleConnections()
-    {
+    public long numberOfIdleConnections() {
         long count = 0;
         synchronized (backingStore()) {
             Iterator connections = values().iterator();
             while (connections.hasNext()) {
-                if (! ((Connection)connections.next()).isBusy()) {
+                if (!((Connection) connections.next()).isBusy()) {
                     count++;
                 }
             }
@@ -110,13 +104,12 @@ public abstract class CorbaConnectionCacheBase
         return count;
     }
 
-    public long numberOfBusyConnections()
-    {
+    public long numberOfBusyConnections() {
         long count = 0;
         synchronized (backingStore()) {
             Iterator connections = values().iterator();
             while (connections.hasNext()) {
-                if (((Connection)connections.next()).isBusy()) {
+                if (((Connection) connections.next()).isBusy()) {
                     count++;
                 }
             }
@@ -126,13 +119,13 @@ public abstract class CorbaConnectionCacheBase
 
     /**
      * Discarding least recently used Connections that are not busy
-     *
+     * <p>
      * This method must be synchronized since one WorkerThread could
      * be reclaming connections inside the synchronized backingStore
      * block and a second WorkerThread (or a SelectorThread) could have
      * already executed the if (numberOfConnections <= .... ). As a
      * result the second thread would also attempt to reclaim connections.
-     *
+     * <p>
      * If connection reclamation becomes a performance issue, the connection
      * reclamation could make its own task and consequently executed in
      * a separate thread.
@@ -141,8 +134,7 @@ public abstract class CorbaConnectionCacheBase
      * it for SocketChannels and WorkerThreads for Sockets by updating the
      * ParserTable.
      */
-    synchronized public boolean reclaim()
-    {
+    synchronized public boolean reclaim() {
         try {
             long numberOfConnections = numberOfConnections();
 
@@ -158,31 +150,31 @@ public abstract class CorbaConnectionCacheBase
             }
 
             if (numberOfConnections <= orb.getORBData().getHighWaterMark() ||
-                numberOfConnections < orb.getORBData().getLowWaterMark()) {
+                    numberOfConnections < orb.getORBData().getLowWaterMark()) {
                 return false;
             }
 
             Object backingStore = backingStore();
             synchronized (backingStore) {
 
-                 // REVISIT - A less expensive alternative connection reclaiming
-                 //           algorithm could be investigated.
+                // REVISIT - A less expensive alternative connection reclaiming
+                //           algorithm could be investigated.
 
-                for (int i=0; i < orb.getORBData().getNumberToReclaim(); i++) {
+                for (int i = 0; i < orb.getORBData().getNumberToReclaim(); i++) {
                     Connection toClose = null;
                     long lru = java.lang.Long.MAX_VALUE;
                     Iterator iterator = values().iterator();
 
                     // Find least recently used and not busy connection in cache
-                    while ( iterator.hasNext() ) {
+                    while (iterator.hasNext()) {
                         Connection c = (Connection) iterator.next();
-                        if ( !c.isBusy() && c.getTimeStamp() < lru ) {
+                        if (!c.isBusy() && c.getTimeStamp() < lru) {
                             toClose = c;
                             lru = c.getTimeStamp();
                         }
                     }
 
-                    if ( toClose == null ) {
+                    if (toClose == null) {
                         return false;
                     }
 
@@ -219,8 +211,7 @@ public abstract class CorbaConnectionCacheBase
     // spi.transport.ConnectionCache
     //
 
-    public String getMonitoringName()
-    {
+    public String getMonitoringName() {
         return monitoringName;
     }
 
@@ -236,31 +227,28 @@ public abstract class CorbaConnectionCacheBase
 
     protected abstract void registerWithMonitoring();
 
-    protected void dprintCreation()
-    {
+    protected void dprintCreation() {
         if (orb.transportDebugFlag) {
             dprint(".constructor: cacheType: " + getCacheType()
-                   + " monitoringName: " + getMonitoringName());
+                    + " monitoringName: " + getMonitoringName());
         }
     }
 
-    protected void dprintStatistics()
-    {
+    protected void dprintStatistics() {
         if (orb.transportDebugFlag) {
             dprint(".stats: "
-                   + numberOfConnections() + "/total "
-                   + numberOfBusyConnections() + "/busy "
-                   + numberOfIdleConnections() + "/idle"
-                   + " ("
-                   + orb.getORBData().getHighWaterMark() + "/"
-                   + orb.getORBData().getLowWaterMark() + "/"
-                   + orb.getORBData().getNumberToReclaim()
-                   + ")");
+                    + numberOfConnections() + "/total "
+                    + numberOfBusyConnections() + "/busy "
+                    + numberOfIdleConnections() + "/idle"
+                    + " ("
+                    + orb.getORBData().getHighWaterMark() + "/"
+                    + orb.getORBData().getLowWaterMark() + "/"
+                    + orb.getORBData().getNumberToReclaim()
+                    + ")");
         }
     }
 
-    protected void dprint(String msg)
-    {
+    protected void dprint(String msg) {
         ORBUtility.dprint("CorbaConnectionCacheBase", msg);
     }
 }

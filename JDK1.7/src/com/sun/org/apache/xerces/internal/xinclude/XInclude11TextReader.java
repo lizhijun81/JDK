@@ -31,22 +31,20 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLInputSource;
  * byte order mark, if applicable.
  *
  * @author Michael Glavassevich, IBM
- *
- *
  * @see XIncludeHandler
  */
 public class XInclude11TextReader
-    extends XIncludeTextReader {
+        extends XIncludeTextReader {
 
     /**
      * Construct the XIncludeReader using the XMLInputSource and XIncludeHandler.
      *
-     * @param source The XMLInputSource to use.
-     * @param handler The XIncludeHandler to use.
+     * @param source     The XMLInputSource to use.
+     * @param handler    The XIncludeHandler to use.
      * @param bufferSize The size of this text reader's buffer.
      */
     public XInclude11TextReader(XMLInputSource source, XIncludeHandler handler, int bufferSize)
-        throws IOException {
+            throws IOException {
         super(source, handler, bufferSize);
     }
 

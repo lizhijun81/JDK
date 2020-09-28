@@ -45,8 +45,7 @@ import java.beans.PropertyChangeListener;
  *
  * @author Hans Muller
  */
-public class MotifScrollPaneUI extends BasicScrollPaneUI
-{
+public class MotifScrollPaneUI extends BasicScrollPaneUI {
     private final static Border vsbMarginBorderR = new EmptyBorder(0, 4, 0, 0);
     private final static Border vsbMarginBorderL = new EmptyBorder(0, 0, 0, 4);
     private final static Border hsbMarginBorder = new EmptyBorder(4, 0, 0, 0);
@@ -70,26 +69,27 @@ public class MotifScrollPaneUI extends BasicScrollPaneUI
     private PropertyChangeListener createPropertyChangeHandler() {
         return new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent e) {
-                  String propertyName = e.getPropertyName();
+                String propertyName = e.getPropertyName();
 
-                  if (propertyName.equals("componentOrientation")) {
-                        JScrollPane pane = (JScrollPane)e.getSource();
-                        JScrollBar vsb = pane.getVerticalScrollBar();
-                        if (vsb != null && vsbBorder != null &&
+                if (propertyName.equals("componentOrientation")) {
+                    JScrollPane pane = (JScrollPane) e.getSource();
+                    JScrollBar vsb = pane.getVerticalScrollBar();
+                    if (vsb != null && vsbBorder != null &&
                             vsb.getBorder() == vsbBorder) {
-                            // The Border on the verticall scrollbar matches
-                            // what we installed, reset it.
-                            if (MotifGraphicsUtils.isLeftToRight(pane)) {
-                                vsbBorder = new CompoundBorder(vsbMarginBorderR,
-                                                vsbBorder.getInsideBorder());
-                            } else {
-                                vsbBorder = new CompoundBorder(vsbMarginBorderL,
-                                                vsbBorder.getInsideBorder());
-                            }
-                            vsb.setBorder(vsbBorder);
+                        // The Border on the verticall scrollbar matches
+                        // what we installed, reset it.
+                        if (MotifGraphicsUtils.isLeftToRight(pane)) {
+                            vsbBorder = new CompoundBorder(vsbMarginBorderR,
+                                    vsbBorder.getInsideBorder());
+                        } else {
+                            vsbBorder = new CompoundBorder(vsbMarginBorderL,
+                                    vsbBorder.getInsideBorder());
                         }
-                  }
-        }};
+                        vsb.setBorder(vsbBorder);
+                    }
+                }
+            }
+        };
     }
 
     protected void installDefaults(JScrollPane scrollpane) {
@@ -99,11 +99,10 @@ public class MotifScrollPaneUI extends BasicScrollPaneUI
         if (vsb != null) {
             if (MotifGraphicsUtils.isLeftToRight(scrollpane)) {
                 vsbBorder = new CompoundBorder(vsbMarginBorderR,
-                                               vsb.getBorder());
-            }
-            else {
+                        vsb.getBorder());
+            } else {
                 vsbBorder = new CompoundBorder(vsbMarginBorderL,
-                                               vsb.getBorder());
+                        vsb.getBorder());
             }
             vsb.setBorder(vsbBorder);
         }

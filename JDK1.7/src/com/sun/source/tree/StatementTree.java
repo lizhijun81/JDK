@@ -29,10 +29,10 @@ package com.sun.source.tree;
  * A tree node used as the base class for the different kinds of
  * statements.
  *
- * @jls chapter 14
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls chapter 14
  * @since 1.6
  */
-public interface StatementTree extends Tree {}
+public interface StatementTree extends Tree {
+}

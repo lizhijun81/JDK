@@ -34,12 +34,11 @@ import org.omg.DynamicAny.DynAnyPackage.InvalidValue;
 import org.omg.DynamicAny.DynAnyFactoryPackage.InconsistentTypeCode;
 import com.sun.corba.se.impl.corba.TypeCodeImpl;        // needed for recursive type codes
 
-import com.sun.corba.se.spi.orb.ORB ;
-import com.sun.corba.se.spi.logging.CORBALogDomains ;
-import com.sun.corba.se.impl.logging.ORBUtilSystemException ;
+import com.sun.corba.se.spi.orb.ORB;
+import com.sun.corba.se.spi.logging.CORBALogDomains;
+import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 
-abstract class DynAnyConstructedImpl extends DynAnyImpl
-{
+abstract class DynAnyConstructedImpl extends DynAnyImpl {
     protected static final byte REPRESENTATION_NONE = 0;
     protected static final byte REPRESENTATION_TYPECODE = 1;
     protected static final byte REPRESENTATION_ANY = 2;
@@ -64,7 +63,7 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     //
 
     private DynAnyConstructedImpl() {
-        this(null, (Any)null, false);
+        this(null, (Any) null, false);
     }
 
     protected DynAnyConstructedImpl(ORB orb, Any any, boolean copyValue) {
@@ -97,7 +96,7 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
         if (isRecursive == RECURSIVE_UNDEF) {
             TypeCode typeCode = any.type();
             if (typeCode instanceof TypeCodeImpl) {
-                if (((TypeCodeImpl)typeCode).is_recursive())
+                if (((TypeCodeImpl) typeCode).is_recursive())
                     isRecursive = RECURSIVE_YES;
                 else
                     isRecursive = RECURSIVE_NO;
@@ -114,10 +113,9 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     //
 
     public org.omg.DynamicAny.DynAny current_component()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX) {
             return null;
@@ -127,14 +125,14 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
 
     public int component_count() {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         return (checkInitComponents() ? components.length : 0);
     }
 
     public boolean next() {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (checkInitComponents() == false) {
             return false;
@@ -150,7 +148,7 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
 
     public boolean seek(int newIndex) {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (newIndex < 0) {
             this.index = NO_INDEX;
@@ -168,7 +166,7 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
 
     public void rewind() {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         this.seek(0);
     }
@@ -240,15 +238,16 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     protected abstract boolean initializeComponentsFromAny();
+
     protected abstract boolean initializeComponentsFromTypeCode();
 
     // Collapses the whole DynAny hierarchys values into one single streamed Any
     protected boolean initializeAnyFromComponents() {
         //System.out.println(this + " initializeAnyFromComponents");
         OutputStream out = any.create_output_stream();
-        for (int i=0; i<components.length; i++) {
+        for (int i = 0; i < components.length; i++) {
             if (components[i] instanceof DynAnyImpl) {
-                ((DynAnyImpl)components[i]).writeAny(out);
+                ((DynAnyImpl) components[i]).writeAny(out);
             } else {
                 // Not our implementation. Nothing we can do to prevent copying.
                 components[i].to_any().write_value(out);
@@ -262,11 +261,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     // DynAny interface methods
     //
 
-    public void assign (org.omg.DynamicAny.DynAny dyn_any)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch
-    {
+    public void assign(org.omg.DynamicAny.DynAny dyn_any)
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         clearData();
         super.assign(dyn_any);
@@ -274,12 +272,11 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
         index = 0;
     }
 
-    public void from_any (org.omg.CORBA.Any value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+    public void from_any(org.omg.CORBA.Any value)
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         clearData();
         super.from_any(value);
@@ -291,21 +288,21 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     public org.omg.CORBA.Any to_any() {
         //System.out.println(this + " to_any ");
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         checkInitAny();
         // Anys value may still be uninitialized if DynAny was initialized by TypeCode only
         return DynAnyUtil.copy(any, orb);
     }
 
-    public boolean equal (org.omg.DynamicAny.DynAny dyn_any) {
+    public boolean equal(org.omg.DynamicAny.DynAny dyn_any) {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (dyn_any == this) {
             return true;
         }
-        if ( ! any.type().equal(dyn_any.type())) {
+        if (!any.type().equal(dyn_any.type())) {
             return false;
         }
         // This changes the current position of dyn_any.
@@ -317,12 +314,12 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
         try {
             // Remember the current position to restore it later
             currentComponent = dyn_any.current_component();
-            for (int i=0; i<components.length; i++) {
+            for (int i = 0; i < components.length; i++) {
                 if (dyn_any.seek(i) == false)
                     return false;
                 //System.out.println(this + " comparing component " + i + "=" + components[i] +
                 //                   " of type " + components[i].type().kind().value());
-                if ( ! components[i].equal(dyn_any.current_component())) {
+                if (!components[i].equal(dyn_any.current_component())) {
                     //System.out.println("Not equal component " + i);
                     return false;
                 }
@@ -338,13 +335,13 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
 
     public void destroy() {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (status == STATUS_DESTROYABLE) {
             status = STATUS_DESTROYED;
-            for (int i=0; i<components.length; i++) {
+            for (int i = 0; i < components.length; i++) {
                 if (components[i] instanceof DynAnyImpl) {
-                    ((DynAnyImpl)components[i]).setStatus(STATUS_DESTROYABLE);
+                    ((DynAnyImpl) components[i]).setStatus(STATUS_DESTROYABLE);
                 }
                 components[i].destroy();
             }
@@ -353,7 +350,7 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
 
     public org.omg.DynamicAny.DynAny copy() {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         checkInitAny();
         try {
@@ -366,11 +363,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     // getter / setter methods
 
     public void insert_boolean(boolean value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -381,11 +377,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_octet(byte value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -396,11 +391,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_char(char value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -411,11 +405,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_short(short value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -426,11 +419,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_ushort(short value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -441,11 +433,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_long(int value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -456,11 +447,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_ulong(int value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -471,11 +461,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_float(float value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -486,11 +475,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_double(double value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -501,11 +489,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_string(String value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -516,11 +503,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_reference(org.omg.CORBA.Object value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -531,11 +517,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_typecode(org.omg.CORBA.TypeCode value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -546,11 +531,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_longlong(long value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -561,11 +545,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_ulonglong(long value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -576,11 +559,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_wchar(char value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -591,11 +573,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_wstring(String value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -606,11 +587,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_any(org.omg.CORBA.Any value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -620,12 +600,11 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
         currentComponent.insert_any(value);
     }
 
-    public void insert_dyn_any (org.omg.DynamicAny.DynAny value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+    public void insert_dyn_any(org.omg.DynamicAny.DynAny value)
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -636,11 +615,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public void insert_val(java.io.Serializable value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -651,11 +629,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public java.io.Serializable get_val()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -666,11 +643,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public boolean get_boolean()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -681,11 +657,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public byte get_octet()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -696,11 +671,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public char get_char()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -711,11 +685,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public short get_short()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -726,11 +699,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public short get_ushort()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -741,11 +713,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public int get_long()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -756,11 +727,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public int get_ulong()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -771,11 +741,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public float get_float()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -786,11 +755,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public double get_double()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -801,11 +769,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public String get_string()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -816,11 +783,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public org.omg.CORBA.Object get_reference()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -831,11 +797,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public org.omg.CORBA.TypeCode get_typecode()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -846,11 +811,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public long get_longlong()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -861,11 +825,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public long get_ulonglong()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -876,11 +839,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public char get_wchar()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -891,11 +853,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public String get_wstring()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -906,11 +867,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public org.omg.CORBA.Any get_any()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();
@@ -921,11 +881,10 @@ abstract class DynAnyConstructedImpl extends DynAnyImpl
     }
 
     public org.omg.DynamicAny.DynAny get_dyn_any()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (index == NO_INDEX)
             throw new org.omg.DynamicAny.DynAnyPackage.InvalidValue();

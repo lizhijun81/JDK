@@ -29,13 +29,11 @@ import org.w3c.dom.DOMException;
 
 
 /**
- * @xerces.internal
- *
  * @author Rahul Srivastava, Sun Microsystems Inc.
- *
+ * @xerces.internal
  */
 public class DefaultElement extends NodeImpl
-                            implements Element {
+        implements Element {
 
     // default constructor
     public DefaultElement() {
@@ -96,8 +94,8 @@ public class DefaultElement extends NodeImpl
         return false;
     }
 
-    public TypeInfo getSchemaTypeInfo(){
-      return null;
+    public TypeInfo getSchemaTypeInfo() {
+        return null;
     }
 
 
@@ -136,15 +134,16 @@ public class DefaultElement extends NodeImpl
         throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
     }
 
-    public void setIdAttributeNode(Attr at, boolean makeId) throws DOMException{
+    public void setIdAttributeNode(Attr at, boolean makeId) throws DOMException {
         throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
     }
-    public void setIdAttribute(String name, boolean makeId) throws DOMException{
+
+    public void setIdAttribute(String name, boolean makeId) throws DOMException {
         throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
     }
 
     public void setIdAttributeNS(String namespaceURI, String localName,
-                                    boolean makeId) throws DOMException{
+                                 boolean makeId) throws DOMException {
         throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
     }
 

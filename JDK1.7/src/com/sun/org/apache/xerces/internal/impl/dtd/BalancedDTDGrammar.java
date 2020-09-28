@@ -29,10 +29,9 @@ import com.sun.org.apache.xerces.internal.xni.XNIException;
 /**
  * <p>A DTD grammar that produces balanced syntax trees.</p>
  *
- * @xerces.internal
- *
  * @author Michael Glavassevich, IBM
  * @version $Id: BalancedDTDGrammar.java,v 1.1 2010/08/11 07:18:38 joehw Exp $
+ * @xerces.internal
  */
 final class BalancedDTDGrammar extends DTDGrammar {
 
@@ -40,26 +39,38 @@ final class BalancedDTDGrammar extends DTDGrammar {
     // Data
     //
 
-    /** Mixed. */
+    /**
+     * Mixed.
+     */
     private boolean fMixed;
 
-    /** Stack depth */
+    /**
+     * Stack depth
+     */
     private int fDepth = 0;
 
-    /** Children content model operation stack. */
-    private short [] fOpStack = null;
+    /**
+     * Children content model operation stack.
+     */
+    private short[] fOpStack = null;
 
-    /** Holder for choice/sequence/leaf groups at each depth. */
-    private int [][] fGroupIndexStack;
+    /**
+     * Holder for choice/sequence/leaf groups at each depth.
+     */
+    private int[][] fGroupIndexStack;
 
-    /** Sizes of the allocated portions of each int[] in fGroupIndexStack. */
-    private int [] fGroupIndexStackSizes;
+    /**
+     * Sizes of the allocated portions of each int[] in fGroupIndexStack.
+     */
+    private int[] fGroupIndexStackSizes;
 
     //
     // Constructors
     //
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public BalancedDTDGrammar(SymbolTable symbolTable, XMLDTDDescription desc) {
         super(symbolTable, desc);
     } // BalancedDTDGrammar(SymbolTable,XMLDTDDescription)
@@ -74,12 +85,12 @@ final class BalancedDTDGrammar extends DTDGrammar {
      * startContentModel method and the call to the endContentModel method.
      *
      * @param elementName The name of the element.
-     * @param augs Additional information that may include infoset
-     *                      augmentations.
+     * @param augs        Additional information that may include infoset
+     *                    augmentations.
      * @throws XNIException Thrown by handler to signal an error.
      */
     public final void startContentModel(String elementName, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
         fDepth = 0;
         initializeContentModelStacks();
         super.startContentModel(elementName, augs);
@@ -92,9 +103,8 @@ final class BalancedDTDGrammar extends DTDGrammar {
      * contain additional groups and/or elements.
      *
      * @param augs Additional information that may include infoset
-     *                      augmentations.
+     *             augmentations.
      * @throws XNIException Thrown by handler to signal an error.
-     *
      * @see #any
      * @see #empty
      */
@@ -109,11 +119,9 @@ final class BalancedDTDGrammar extends DTDGrammar {
      * mixed content model. This method will be the first called
      * following the content model's <code>startGroup()</code>.
      *
-     *@param augs Additional information that may include infoset
-     *                      augmentations.
-     *
+     * @param augs Additional information that may include infoset
+     *             augmentations.
      * @throws XNIException Thrown by handler to signal an error.
-     *
      * @see #startGroup
      */
     public final void pcdata(Augmentations augs) throws XNIException {
@@ -124,9 +132,8 @@ final class BalancedDTDGrammar extends DTDGrammar {
      * A referenced element in a mixed or children content model.
      *
      * @param elementName The name of the referenced element.
-     * @param augs Additional information that may include infoset
-     *                      augmentations.
-     *
+     * @param augs        Additional information that may include infoset
+     *                    augmentations.
      * @throws XNIException Thrown by handler to signal an error.
      */
     public final void element(String elementName, Augmentations augs) throws XNIException {
@@ -138,18 +145,16 @@ final class BalancedDTDGrammar extends DTDGrammar {
      * content model.
      *
      * @param separator The type of children separator.
-     * @param augs Additional information that may include infoset
-     *                      augmentations.
+     * @param augs      Additional information that may include infoset
+     *                  augmentations.
      * @throws XNIException Thrown by handler to signal an error.
-     *
      * @see org.apache.xerces.xni.XMLDTDContentModelHandler#SEPARATOR_CHOICE
      * @see org.apache.xerces.xni.XMLDTDContentModelHandler#SEPARATOR_SEQUENCE
      */
     public final void separator(short separator, Augmentations augs) throws XNIException {
         if (separator == XMLDTDContentModelHandler.SEPARATOR_CHOICE) {
             fOpStack[fDepth] = XMLContentSpec.CONTENTSPECNODE_CHOICE;
-        }
-        else if (separator == XMLDTDContentModelHandler.SEPARATOR_SEQUENCE) {
+        } else if (separator == XMLDTDContentModelHandler.SEPARATOR_SEQUENCE) {
             fOpStack[fDepth] = XMLContentSpec.CONTENTSPECNODE_SEQ;
         }
     } // separator(short)
@@ -160,10 +165,9 @@ final class BalancedDTDGrammar extends DTDGrammar {
      *
      * @param occurrence The occurrence count for the last element
      *                   or group.
-     * @param augs Additional information that may include infoset
-     *                      augmentations.
+     * @param augs       Additional information that may include infoset
+     *                   augmentations.
      * @throws XNIException Thrown by handler to signal an error.
-     *
      * @see org.apache.xerces.xni.XMLDTDContentModelHandler#OCCURS_ZERO_OR_ONE
      * @see org.apache.xerces.xni.XMLDTDContentModelHandler#OCCURS_ZERO_OR_MORE
      * @see org.apache.xerces.xni.XMLDTDContentModelHandler#OCCURS_ONE_OR_MORE
@@ -173,11 +177,9 @@ final class BalancedDTDGrammar extends DTDGrammar {
             int currentIndex = fGroupIndexStackSizes[fDepth] - 1;
             if (occurrence == XMLDTDContentModelHandler.OCCURS_ZERO_OR_ONE) {
                 fGroupIndexStack[fDepth][currentIndex] = addContentSpecNode(XMLContentSpec.CONTENTSPECNODE_ZERO_OR_ONE, fGroupIndexStack[fDepth][currentIndex], -1);
-            }
-            else if ( occurrence == XMLDTDContentModelHandler.OCCURS_ZERO_OR_MORE) {
+            } else if (occurrence == XMLDTDContentModelHandler.OCCURS_ZERO_OR_MORE) {
                 fGroupIndexStack[fDepth][currentIndex] = addContentSpecNode(XMLContentSpec.CONTENTSPECNODE_ZERO_OR_MORE, fGroupIndexStack[fDepth][currentIndex], -1);
-            }
-            else if ( occurrence == XMLDTDContentModelHandler.OCCURS_ONE_OR_MORE) {
+            } else if (occurrence == XMLDTDContentModelHandler.OCCURS_ONE_OR_MORE) {
                 fGroupIndexStack[fDepth][currentIndex] = addContentSpecNode(XMLContentSpec.CONTENTSPECNODE_ONE_OR_MORE, fGroupIndexStack[fDepth][currentIndex], -1);
             }
         }
@@ -187,7 +189,7 @@ final class BalancedDTDGrammar extends DTDGrammar {
      * The end of a group for mixed or children content models.
      *
      * @param augs Additional information that may include infoset
-     *                      augmentations.
+     *             augmentations.
      * @throws XNIException Thrown by handler to signal an error.
      */
     public final void endGroup(Augmentations augs) throws XNIException {
@@ -201,7 +203,7 @@ final class BalancedDTDGrammar extends DTDGrammar {
      * The end of the DTD.
      *
      * @param augs Additional information that may include infoset
-     *                      augmentations.
+     *             augmentations.
      * @throws XNIException Thrown by handler to signal an error.
      */
     public final void endDTD(Augmentations augs) throws XNIException {
@@ -246,17 +248,16 @@ final class BalancedDTDGrammar extends DTDGrammar {
     private void initializeContentModelStacks() {
         if (fOpStack == null) {
             fOpStack = new short[8];
-            fGroupIndexStack = new int [8][];
-            fGroupIndexStackSizes = new int [8];
-        }
-        else if (fDepth == fOpStack.length) {
-            short [] newOpStack = new short[fDepth * 2];
+            fGroupIndexStack = new int[8][];
+            fGroupIndexStackSizes = new int[8];
+        } else if (fDepth == fOpStack.length) {
+            short[] newOpStack = new short[fDepth * 2];
             System.arraycopy(fOpStack, 0, newOpStack, 0, fDepth);
             fOpStack = newOpStack;
-            int [][] newGroupIndexStack = new int[fDepth * 2][];
+            int[][] newGroupIndexStack = new int[fDepth * 2][];
             System.arraycopy(fGroupIndexStack, 0, newGroupIndexStack, 0, fDepth);
             fGroupIndexStack = newGroupIndexStack;
-            int [] newGroupIndexStackLengths = new int[fDepth * 2];
+            int[] newGroupIndexStackLengths = new int[fDepth * 2];
             System.arraycopy(fGroupIndexStackSizes, 0, newGroupIndexStackLengths, 0, fDepth);
             fGroupIndexStackSizes = newGroupIndexStackLengths;
         }
@@ -270,14 +271,13 @@ final class BalancedDTDGrammar extends DTDGrammar {
      * @param contentSpec handle to the XMLContentSpec to add to the current group
      */
     private void addToCurrentGroup(int contentSpec) {
-        int [] currentGroup = fGroupIndexStack[fDepth];
+        int[] currentGroup = fGroupIndexStack[fDepth];
         int length = fGroupIndexStackSizes[fDepth]++;
         if (currentGroup == null) {
             currentGroup = new int[8];
             fGroupIndexStack[fDepth] = currentGroup;
-        }
-        else if (length == currentGroup.length) {
-            int [] newGroup = new int[currentGroup.length * 2];
+        } else if (length == currentGroup.length) {
+            int[] newGroup = new int[currentGroup.length * 2];
             System.arraycopy(currentGroup, 0, newGroup, 0, currentGroup.length);
             currentGroup = newGroup;
             fGroupIndexStack[fDepth] = currentGroup;

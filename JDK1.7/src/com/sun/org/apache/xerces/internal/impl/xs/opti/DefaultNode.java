@@ -30,10 +30,8 @@ import org.w3c.dom.DOMException;
 
 
 /**
- * @xerces.internal
- *
  * @author Rahul Srivastava, Sun Microsystems Inc.
- *
+ * @xerces.internal
  */
 public class DefaultNode implements Node {
 
@@ -133,11 +131,13 @@ public class DefaultNode implements Node {
     public String getLocalName() {
         return null;
     }
-    /** DOM Level 3*/
-    public String getBaseURI(){
+
+    /**
+     * DOM Level 3
+     */
+    public String getBaseURI() {
         return null;
     }
-
 
 
     public boolean hasAttributes() {
@@ -174,43 +174,49 @@ public class DefaultNode implements Node {
         throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
     }
 
-    public short compareDocumentPosition(Node other){
+    public short compareDocumentPosition(Node other) {
         throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
     }
 
-    public String getTextContent() throws DOMException{
-        throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
-    }
-    public void setTextContent(String textContent)throws DOMException{
-        throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
-    }
-    public boolean isSameNode(Node other){
-        throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
-
-    }
-    public String lookupPrefix(String namespaceURI){
-        throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
-                                        }
-    public boolean isDefaultNamespace(String namespaceURI){
+    public String getTextContent() throws DOMException {
         throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
     }
 
-    public String lookupNamespaceURI(String prefix){
+    public void setTextContent(String textContent) throws DOMException {
         throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
     }
 
-    public boolean isEqualNode(Node arg){
-       throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
+    public boolean isSameNode(Node other) {
+        throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
 
     }
 
-    public Object getFeature(String feature, String version){
+    public String lookupPrefix(String namespaceURI) {
+        throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
+    }
+
+    public boolean isDefaultNamespace(String namespaceURI) {
+        throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
+    }
+
+    public String lookupNamespaceURI(String prefix) {
+        throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
+    }
+
+    public boolean isEqualNode(Node arg) {
+        throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
+
+    }
+
+    public Object getFeature(String feature, String version) {
         return null;
     }
-    public Object setUserData(String key,  Object data, UserDataHandler handler){
-       throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
+
+    public Object setUserData(String key, Object data, UserDataHandler handler) {
+        throw new DOMException(DOMException.NOT_SUPPORTED_ERR, "Method not supported");
     }
-    public Object getUserData(String key){
+
+    public Object getUserData(String key) {
         return null;
     }
 

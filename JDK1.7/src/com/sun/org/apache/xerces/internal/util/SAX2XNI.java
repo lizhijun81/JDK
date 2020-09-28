@@ -77,11 +77,10 @@ import org.xml.sax.SAXException;
  * Receves SAX {@link ContentHandler} events
  * and produces the equivalent {@link XMLDocumentHandler} events.
  *
- * @author
- *     Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
+ * @author Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
  */
 public class SAX2XNI implements ContentHandler, XMLDocumentSource {
-    public SAX2XNI( XMLDocumentHandler core ) {
+    public SAX2XNI(XMLDocumentHandler core) {
         this.fCore = core;
     }
 
@@ -110,21 +109,21 @@ public class SAX2XNI implements ContentHandler, XMLDocumentSource {
             nsContext.reset();
 
             XMLLocator xmlLocator;
-            if(locator==null)
+            if (locator == null)
                 // some SAX source doesn't provide a locator,
                 // in which case we assume no line information is available
                 // and use a dummy locator. With this, downstream components
                 // can always assume that they will get a non-null Locator.
-                xmlLocator=new SimpleLocator(null,null,-1,-1);
+                xmlLocator = new SimpleLocator(null, null, -1, -1);
             else
-                xmlLocator=new LocatorWrapper(locator);
+                xmlLocator = new LocatorWrapper(locator);
 
             fCore.startDocument(
                     xmlLocator,
                     null,
                     nsContext,
                     null);
-        } catch( WrappedSAXException e ) {
+        } catch (WrappedSAXException e) {
             throw e.exception;
         }
     }
@@ -132,82 +131,85 @@ public class SAX2XNI implements ContentHandler, XMLDocumentSource {
     public void endDocument() throws SAXException {
         try {
             fCore.endDocument(null);
-        } catch( WrappedSAXException e ) {
+        } catch (WrappedSAXException e) {
             throw e.exception;
         }
     }
 
-    public void startElement( String uri, String local, String qname, Attributes att ) throws SAXException {
+    public void startElement(String uri, String local, String qname, Attributes att) throws SAXException {
         try {
-            fCore.startElement(createQName(uri,local,qname),createAttributes(att),null);
-        } catch( WrappedSAXException e ) {
+            fCore.startElement(createQName(uri, local, qname), createAttributes(att), null);
+        } catch (WrappedSAXException e) {
             throw e.exception;
         }
     }
 
-    public void endElement( String uri, String local, String qname ) throws SAXException {
+    public void endElement(String uri, String local, String qname) throws SAXException {
         try {
-            fCore.endElement(createQName(uri,local,qname),null);
-        } catch( WrappedSAXException e ) {
+            fCore.endElement(createQName(uri, local, qname), null);
+        } catch (WrappedSAXException e) {
             throw e.exception;
         }
     }
 
-    public void characters( char[] buf, int offset, int len ) throws SAXException {
+    public void characters(char[] buf, int offset, int len) throws SAXException {
         try {
-            fCore.characters(new XMLString(buf,offset,len),null);
-        } catch( WrappedSAXException e ) {
+            fCore.characters(new XMLString(buf, offset, len), null);
+        } catch (WrappedSAXException e) {
             throw e.exception;
         }
     }
 
-    public void ignorableWhitespace( char[] buf, int offset, int len ) throws SAXException {
+    public void ignorableWhitespace(char[] buf, int offset, int len) throws SAXException {
         try {
-            fCore.ignorableWhitespace(new XMLString(buf,offset,len),null);
-        } catch( WrappedSAXException e ) {
+            fCore.ignorableWhitespace(new XMLString(buf, offset, len), null);
+        } catch (WrappedSAXException e) {
             throw e.exception;
         }
     }
 
-    public void startPrefixMapping( String prefix, String uri ) {
+    public void startPrefixMapping(String prefix, String uri) {
         nsContext.pushContext();
-        nsContext.declarePrefix(prefix,uri);
+        nsContext.declarePrefix(prefix, uri);
     }
 
-    public void endPrefixMapping( String prefix ) {
+    public void endPrefixMapping(String prefix) {
         nsContext.popContext();
     }
 
-    public void processingInstruction( String target, String data ) throws SAXException {
+    public void processingInstruction(String target, String data) throws SAXException {
         try {
             fCore.processingInstruction(
-                    symbolize(target),createXMLString(data),null);
-        } catch( WrappedSAXException e ) {
+                    symbolize(target), createXMLString(data), null);
+        } catch (WrappedSAXException e) {
             throw e.exception;
         }
     }
 
-    public void skippedEntity( String name ) {
+    public void skippedEntity(String name) {
     }
 
     private Locator locator;
-    public void setDocumentLocator( Locator _loc ) {
+
+    public void setDocumentLocator(Locator _loc) {
         this.locator = _loc;
     }
 
-    /** Creates a QName object. */
+    /**
+     * Creates a QName object.
+     */
     private QName createQName(String uri, String local, String raw) {
 
         int idx = raw.indexOf(':');
 
-        if( local.length()==0 ) {
+        if (local.length() == 0) {
             // if naemspace processing is turned off, local could be "".
             // in that case, treat everything to be in the no namespace.
             uri = "";
-            if(idx<0)
+            if (idx < 0)
                 local = raw;
             else
-                local = raw.substring(idx+1);
+                local = raw.substring(idx + 1);
         }
 
         String prefix;
@@ -222,7 +224,9 @@ public class SAX2XNI implements ContentHandler, XMLDocumentSource {
         return new QName(symbolize(prefix), symbolize(local), symbolize(raw), symbolize(uri));
     }
 
-    /** Symbolizes the specified string. */
+    /**
+     * Symbolizes the specified string.
+     */
     private String symbolize(String s) {
         if (s == null)
             return null;
@@ -239,10 +243,14 @@ public class SAX2XNI implements ContentHandler, XMLDocumentSource {
     }
 
 
-    /** only one instance of XMLAttributes is used. */
+    /**
+     * only one instance of XMLAttributes is used.
+     */
     private final XMLAttributes xa = new XMLAttributesImpl();
 
-    /** Creates an XMLAttributes object. */
+    /**
+     * Creates an XMLAttributes object.
+     */
     private XMLAttributes createAttributes(Attributes att) {
         xa.removeAllAttributes();
         int len = att.getLength();

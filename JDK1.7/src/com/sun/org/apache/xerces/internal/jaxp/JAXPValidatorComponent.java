@@ -66,7 +66,7 @@ import org.xml.sax.helpers.DefaultHandler;
  *
  * <p>
  * This component sets up the pipeline as follows:
- *
+ * <p>
  * <!-- this picture may look teribble on your IDE but it is correct. -->
  * <pre>
  *             __                                           __
@@ -84,19 +84,25 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
  */
 final class JAXPValidatorComponent
-    extends TeeXMLDocumentFilterImpl implements XMLComponent {
+        extends TeeXMLDocumentFilterImpl implements XMLComponent {
 
-    /** Property identifier: entity manager. */
+    /**
+     * Property identifier: entity manager.
+     */
     private static final String ENTITY_MANAGER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ENTITY_MANAGER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ENTITY_MANAGER_PROPERTY;
 
-    /** Property identifier: error reporter. */
+    /**
+     * Property identifier: error reporter.
+     */
     private static final String ERROR_REPORTER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_REPORTER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_REPORTER_PROPERTY;
 
-    /** Property identifier: symbol table. */
+    /**
+     * Property identifier: symbol table.
+     */
     private static final String SYMBOL_TABLE =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY;
 
     // pipeline parts
     private final ValidatorHandler validator;
@@ -110,7 +116,7 @@ final class JAXPValidatorComponent
      * Used to store the {@link Augmentations} associated with the
      * current event, so that we can pick it up again
      * when the event is forwarded by the {@link ValidatorHandler}.
-     *
+     * <p>
      * UGLY HACK.
      */
     private Augmentations fCurrentAug;
@@ -129,10 +135,10 @@ final class JAXPValidatorComponent
     /**
      * @param validatorHandler may not be null.
      */
-    public JAXPValidatorComponent( ValidatorHandler validatorHandler ) {
+    public JAXPValidatorComponent(ValidatorHandler validatorHandler) {
         this.validator = validatorHandler;
         TypeInfoProvider tip = validatorHandler.getTypeInfoProvider();
-        if(tip==null)   tip = noInfoProvider;
+        if (tip == null) tip = noInfoProvider;
         this.typeInfoProvider = tip;
 
         // configure wiring between internal components.
@@ -144,17 +150,17 @@ final class JAXPValidatorComponent
         validator.setErrorHandler(new ErrorHandlerProxy() {
             protected XMLErrorHandler getErrorHandler() {
                 XMLErrorHandler handler = fErrorReporter.getErrorHandler();
-                if(handler!=null)   return handler;
+                if (handler != null) return handler;
                 return new ErrorHandlerWrapper(DraconianErrorHandler.getInstance());
             }
         });
         validator.setResourceResolver(new LSResourceResolver() {
-            public LSInput resolveResource(String type,String ns, String publicId, String systemId, String baseUri) {
-                if(fEntityResolver==null)   return null;
+            public LSInput resolveResource(String type, String ns, String publicId, String systemId, String baseUri) {
+                if (fEntityResolver == null) return null;
                 try {
                     XMLInputSource is = fEntityResolver.resolveEntity(
-                        new XMLResourceIdentifierImpl(publicId,systemId,baseUri,null));
-                    if(is==null)    return null;
+                            new XMLResourceIdentifierImpl(publicId, systemId, baseUri, null));
+                    if (is == null) return null;
 
                     LSInput di = new DOMInputImpl();
                     di.setBaseURI(is.getBaseSystemId());
@@ -165,7 +171,7 @@ final class JAXPValidatorComponent
                     di.setSystemId(is.getSystemId());
 
                     return di;
-                } catch( IOException e ) {
+                } catch (IOException e) {
                     // erors thrown by the callback is not supposed to be
                     // reported to users.
                     throw new XNIException(e);
@@ -178,18 +184,18 @@ final class JAXPValidatorComponent
     public void startElement(QName element, XMLAttributes attributes, Augmentations augs) throws XNIException {
         fCurrentAttributes = attributes;
         fCurrentAug = augs;
-        xni2sax.startElement(element,attributes,null);
+        xni2sax.startElement(element, attributes, null);
         fCurrentAttributes = null; // mostly to make it easy to find any bug.
     }
 
     public void endElement(QName element, Augmentations augs) throws XNIException {
         fCurrentAug = augs;
-        xni2sax.endElement(element,null);
+        xni2sax.endElement(element, null);
     }
 
     public void emptyElement(QName element, XMLAttributes attributes, Augmentations augs) throws XNIException {
-        startElement(element,attributes,augs);
-        endElement(element,augs);
+        startElement(element, attributes, augs);
+        endElement(element, augs);
     }
 
 
@@ -197,30 +203,28 @@ final class JAXPValidatorComponent
         // since a validator may change the contents,
         // let this one go through a validator
         fCurrentAug = augs;
-        xni2sax.characters(text,null);
+        xni2sax.characters(text, null);
     }
 
     public void ignorableWhitespace(XMLString text, Augmentations augs) throws XNIException {
         // since a validator may change the contents,
         // let this one go through a validator
         fCurrentAug = augs;
-        xni2sax.ignorableWhitespace(text,null);
+        xni2sax.ignorableWhitespace(text, null);
     }
 
     public void reset(XMLComponentManager componentManager) throws XMLConfigurationException {
         // obtain references from the manager
-        fSymbolTable = (SymbolTable)componentManager.getProperty(SYMBOL_TABLE);
-        fErrorReporter = (XMLErrorReporter)componentManager.getProperty(ERROR_REPORTER);
+        fSymbolTable = (SymbolTable) componentManager.getProperty(SYMBOL_TABLE);
+        fErrorReporter = (XMLErrorReporter) componentManager.getProperty(ERROR_REPORTER);
         try {
             fEntityResolver = (XMLEntityResolver) componentManager.getProperty(ENTITY_MANAGER);
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             fEntityResolver = null;
         }
     }
 
     /**
-     *
      * Uses {@link DefaultHandler} as a default implementation of
      * {@link ContentHandler}.
      *
@@ -244,16 +248,16 @@ final class JAXPValidatorComponent
 
         public void characters(char[] ch, int start, int len) throws SAXException {
             try {
-                handler().characters(new XMLString(ch,start,len),aug());
-            } catch( XNIException e ) {
+                handler().characters(new XMLString(ch, start, len), aug());
+            } catch (XNIException e) {
                 throw toSAXException(e);
             }
         }
 
         public void ignorableWhitespace(char[] ch, int start, int len) throws SAXException {
             try {
-                handler().ignorableWhitespace(new XMLString(ch,start,len),aug());
-            } catch( XNIException e ) {
+                handler().ignorableWhitespace(new XMLString(ch, start, len), aug());
+            } catch (XNIException e) {
                 throw toSAXException(e);
             }
         }
@@ -261,16 +265,16 @@ final class JAXPValidatorComponent
         public void startElement(String uri, String localName, String qname, Attributes atts) throws SAXException {
             try {
                 updateAttributes(atts);
-                handler().startElement(toQName(uri,localName,qname), fCurrentAttributes, elementAug());
-            } catch( XNIException e ) {
+                handler().startElement(toQName(uri, localName, qname), fCurrentAttributes, elementAug());
+            } catch (XNIException e) {
                 throw toSAXException(e);
             }
         }
 
         public void endElement(String uri, String localName, String qname) throws SAXException {
             try {
-                handler().endElement(toQName(uri,localName,qname),aug());
-            } catch( XNIException e ) {
+                handler().endElement(toQName(uri, localName, qname), aug());
+            } catch (XNIException e) {
                 throw toSAXException(e);
             }
         }
@@ -287,7 +291,7 @@ final class JAXPValidatorComponent
          * the current event.
          */
         private Augmentations aug() {
-            if( fCurrentAug!=null ) {
+            if (fCurrentAug != null) {
                 Augmentations r = fCurrentAug;
                 fCurrentAug = null; // we "consumed" this augmentation.
                 return r;
@@ -307,10 +311,10 @@ final class JAXPValidatorComponent
          * Converts the {@link XNIException} received from a downstream
          * component to a {@link SAXException}.
          */
-        private SAXException toSAXException( XNIException xe ) {
+        private SAXException toSAXException(XNIException xe) {
             Exception e = xe.getException();
-            if( e==null )   e = xe;
-            if( e instanceof SAXException )  return (SAXException)e;
+            if (e == null) e = xe;
+            if (e instanceof SAXException) return (SAXException) e;
             return new SAXException(e);
         }
 
@@ -319,11 +323,11 @@ final class JAXPValidatorComponent
          * <p>
          * This method does the symbolization.
          */
-        private QName toQName( String uri, String localName, String qname ) {
+        private QName toQName(String uri, String localName, String qname) {
             String prefix = null;
             int idx = qname.indexOf(':');
-            if( idx>0 )
-                prefix = symbolize(qname.substring(0,idx));
+            if (idx > 0)
+                prefix = symbolize(qname.substring(0, idx));
 
             localName = symbolize(localName);
             qname = symbolize(qname);
@@ -351,7 +355,9 @@ final class JAXPValidatorComponent
 
         private String fVersion;
 
-        /** Namespace context */
+        /**
+         * Namespace context
+         */
         protected NamespaceContext fNamespaceContext;
 
         /**
@@ -359,7 +365,7 @@ final class JAXPValidatorComponent
          */
         private final AttributesProxy fAttributesProxy = new AttributesProxy(null);
 
-        public void setContentHandler( ContentHandler handler ) {
+        public void setContentHandler(ContentHandler handler) {
             this.fContentHandler = handler;
         }
 
@@ -392,7 +398,7 @@ final class JAXPValidatorComponent
 
         public void processingInstruction(String target, XMLString data, Augmentations augs) throws XNIException {
             try {
-                fContentHandler.processingInstruction(target,data.toString());
+                fContentHandler.processingInstruction(target, data.toString());
             } catch (SAXException e) {
                 throw new XNIException(e);
             }
@@ -408,7 +414,7 @@ final class JAXPValidatorComponent
                     for (int i = 0; i < count; i++) {
                         prefix = fNamespaceContext.getDeclaredPrefixAt(i);
                         uri = fNamespaceContext.getURI(prefix);
-                        fContentHandler.startPrefixMapping(prefix, (uri == null)?"":uri);
+                        fContentHandler.startPrefixMapping(prefix, (uri == null) ? "" : uri);
                     }
                 }
 
@@ -416,7 +422,7 @@ final class JAXPValidatorComponent
                 String localpart = element.localpart;
                 fAttributesProxy.setAttributes(attributes);
                 fContentHandler.startElement(uri, localpart, element.rawname, fAttributesProxy);
-            } catch( SAXException e ) {
+            } catch (SAXException e) {
                 throw new XNIException(e);
             }
         }
@@ -434,19 +440,19 @@ final class JAXPValidatorComponent
                         fContentHandler.endPrefixMapping(fNamespaceContext.getDeclaredPrefixAt(i));
                     }
                 }
-            } catch( SAXException e ) {
+            } catch (SAXException e) {
                 throw new XNIException(e);
             }
         }
 
         public void emptyElement(QName element, XMLAttributes attributes, Augmentations augs) throws XNIException {
-            startElement(element,attributes,augs);
-            endElement(element,augs);
+            startElement(element, attributes, augs);
+            endElement(element, augs);
         }
 
         public void characters(XMLString text, Augmentations augs) throws XNIException {
             try {
-                fContentHandler.characters(text.ch,text.offset,text.length);
+                fContentHandler.characters(text.ch, text.offset, text.length);
             } catch (SAXException e) {
                 throw new XNIException(e);
             }
@@ -454,7 +460,7 @@ final class JAXPValidatorComponent
 
         public void ignorableWhitespace(XMLString text, Augmentations augs) throws XNIException {
             try {
-                fContentHandler.ignorableWhitespace(text.ch,text.offset,text.length);
+                fContentHandler.ignorableWhitespace(text.ch, text.offset, text.length);
             } catch (SAXException e) {
                 throw new XNIException(e);
             }
@@ -467,26 +473,35 @@ final class JAXPValidatorComponent
          * Singleton instance.
          */
         private static final DraconianErrorHandler ERROR_HANDLER_INSTANCE
-            = new DraconianErrorHandler();
+                = new DraconianErrorHandler();
 
-        private DraconianErrorHandler() {}
+        private DraconianErrorHandler() {
+        }
 
-        /** Returns the one and only instance of this error handler. */
+        /**
+         * Returns the one and only instance of this error handler.
+         */
         public static DraconianErrorHandler getInstance() {
             return ERROR_HANDLER_INSTANCE;
         }
 
-        /** Warning: Ignore. */
+        /**
+         * Warning: Ignore.
+         */
         public void warning(SAXParseException e) throws SAXException {
             // noop
         }
 
-        /** Error: Throws back SAXParseException. */
+        /**
+         * Error: Throws back SAXParseException.
+         */
         public void error(SAXParseException e) throws SAXException {
             throw e;
         }
 
-        /** Fatal Error: Throws back SAXParseException. */
+        /**
+         * Fatal Error: Throws back SAXParseException.
+         */
         public void fatalError(SAXParseException e) throws SAXException {
             throw e;
         }
@@ -498,47 +513,47 @@ final class JAXPValidatorComponent
      * Compares the given {@link Attributes} with {@link #fCurrentAttributes}
      * and update the latter accordingly.
      */
-    private void updateAttributes( Attributes atts ) {
+    private void updateAttributes(Attributes atts) {
         int len = atts.getLength();
-        for( int i=0; i<len; i++ ) {
+        for (int i = 0; i < len; i++) {
             String aqn = atts.getQName(i);
             int j = fCurrentAttributes.getIndex(aqn);
             String av = atts.getValue(i);
-            if(j==-1) {
+            if (j == -1) {
                 // newly added attribute. add to the current attribute list.
 
                 String prefix;
                 int idx = aqn.indexOf(':');
-                if( idx<0 ) {
+                if (idx < 0) {
                     prefix = null;
                 } else {
-                    prefix = symbolize(aqn.substring(0,idx));
+                    prefix = symbolize(aqn.substring(0, idx));
                 }
 
                 j = fCurrentAttributes.addAttribute(
-                    new QName(
-                        prefix,
-                        symbolize(atts.getLocalName(i)),
-                        symbolize(aqn),
-                        symbolize(atts.getURI(i))),
-                    atts.getType(i),av);
+                        new QName(
+                                prefix,
+                                symbolize(atts.getLocalName(i)),
+                                symbolize(aqn),
+                                symbolize(atts.getURI(i))),
+                        atts.getType(i), av);
             } else {
                 // the attribute is present.
-                if( !av.equals(fCurrentAttributes.getValue(j)) ) {
+                if (!av.equals(fCurrentAttributes.getValue(j))) {
                     // but the value was changed.
-                    fCurrentAttributes.setValue(j,av);
+                    fCurrentAttributes.setValue(j, av);
                 }
             }
 
             /** Augmentations augs = fCurrentAttributes.getAugmentations(j);
-            augs.putItem( Constants.TYPEINFO,
-                typeInfoProvider.getAttributeTypeInfo(i) );
-            augs.putItem( Constants.ID_ATTRIBUTE,
-                typeInfoProvider.isIdAttribute(i)?Boolean.TRUE:Boolean.FALSE ); **/
+             augs.putItem( Constants.TYPEINFO,
+             typeInfoProvider.getAttributeTypeInfo(i) );
+             augs.putItem( Constants.ID_ATTRIBUTE,
+             typeInfoProvider.isIdAttribute(i)?Boolean.TRUE:Boolean.FALSE ); **/
         }
     }
 
-    private String symbolize( String s ) {
+    private String symbolize(String s) {
         return fSymbolTable.addSymbol(s);
     }
 
@@ -550,18 +565,23 @@ final class JAXPValidatorComponent
         public TypeInfo getElementTypeInfo() {
             return null;
         }
+
         public TypeInfo getAttributeTypeInfo(int index) {
             return null;
         }
+
         public TypeInfo getAttributeTypeInfo(String attributeQName) {
             return null;
         }
+
         public TypeInfo getAttributeTypeInfo(String attributeUri, String attributeLocalName) {
             return null;
         }
+
         public boolean isIdAttribute(int index) {
             return false;
         }
+
         public boolean isSpecified(int index) {
             return false;
         }

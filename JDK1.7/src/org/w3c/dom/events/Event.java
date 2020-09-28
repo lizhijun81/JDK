@@ -51,6 +51,7 @@ package org.w3c.dom.events;
  * type of event they accompany. These derived interfaces are also
  * implemented by the object passed to the event listener.
  * <p>See also the <a href='http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113'>Document Object Model (DOM) Level 2 Events Specification</a>.
+ *
  * @since DOM Level 2
  */
 public interface Event {
@@ -58,16 +59,16 @@ public interface Event {
     /**
      * The current event phase is the capturing phase.
      */
-    public static final short CAPTURING_PHASE           = 1;
+    public static final short CAPTURING_PHASE = 1;
     /**
      * The event is currently being evaluated at the target
      * <code>EventTarget</code>.
      */
-    public static final short AT_TARGET                 = 2;
+    public static final short AT_TARGET = 2;
     /**
      * The current event phase is the bubbling phase.
      */
-    public static final short BUBBLING_PHASE            = 3;
+    public static final short BUBBLING_PHASE = 3;
 
     /**
      * The name of the event (case-insensitive). The name must be an XML name.
@@ -107,7 +108,7 @@ public interface Event {
     public boolean getCancelable();
 
     /**
-     *  Used to specify the time (in milliseconds relative to the epoch) at
+     * Used to specify the time (in milliseconds relative to the epoch) at
      * which the event was created. Due to the fact that some systems may
      * not provide this information the value of <code>timeStamp</code> may
      * be not available for all events. When not available, a value of 0
@@ -151,17 +152,18 @@ public interface Event {
      * <code>Event</code> interface only the values specified in the
      * <code>initEvent</code> method are modified, all other attributes are
      * left unchanged.
-     * @param eventTypeArg Specifies the event type. This type may be any
-     *   event type currently defined in this specification or a new event
-     *   type.. The string must be an XML name. Any new event type must not
-     *   begin with any upper, lower, or mixed case version of the string
-     *   "DOM". This prefix is reserved for future DOM event sets. It is
-     *   also strongly recommended that third parties adding their own
-     *   events use their own prefix to avoid confusion and lessen the
-     *   probability of conflicts with other new events.
-     * @param canBubbleArg Specifies whether or not the event can bubble.
+     *
+     * @param eventTypeArg  Specifies the event type. This type may be any
+     *                      event type currently defined in this specification or a new event
+     *                      type.. The string must be an XML name. Any new event type must not
+     *                      begin with any upper, lower, or mixed case version of the string
+     *                      "DOM". This prefix is reserved for future DOM event sets. It is
+     *                      also strongly recommended that third parties adding their own
+     *                      events use their own prefix to avoid confusion and lessen the
+     *                      probability of conflicts with other new events.
+     * @param canBubbleArg  Specifies whether or not the event can bubble.
      * @param cancelableArg Specifies whether or not the event's default
-     *   action can be prevented.
+     *                      action can be prevented.
      */
     public void initEvent(String eventTypeArg,
                           boolean canBubbleArg,

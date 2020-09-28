@@ -72,7 +72,8 @@ class CRC {
         }
     }
 
-    public CRC() {}
+    public CRC() {
+    }
 
     public void reset() {
         crc = 0xffffffff;
@@ -133,7 +134,7 @@ final class ChunkStream extends ImageOutputStreamImpl {
         // Write length
         long pos = stream.getStreamPosition();
         stream.seek(startPos);
-        stream.writeInt((int)(pos - startPos) - 12);
+        stream.writeInt((int) (pos - startPos) - 12);
 
         // Return to end of chunk and flush to minimize buffering
         stream.seek(pos);
@@ -151,7 +152,7 @@ final class ChunkStream extends ImageOutputStreamImpl {
 final class IDATOutputStream extends ImageOutputStreamImpl {
 
     private static byte[] chunkType = {
-        (byte)'I', (byte)'D', (byte)'A', (byte)'T'
+            (byte) 'I', (byte) 'D', (byte) 'A', (byte) 'T'
     };
 
     private ImageOutputStream stream;
@@ -165,7 +166,7 @@ final class IDATOutputStream extends ImageOutputStreamImpl {
     private int bytesRemaining;
 
     public IDATOutputStream(ImageOutputStream stream, int chunkLength)
-        throws IOException {
+            throws IOException {
         this.stream = stream;
         this.chunkLength = chunkLength;
         startChunk();
@@ -189,7 +190,7 @@ final class IDATOutputStream extends ImageOutputStreamImpl {
         // Write length
         long pos = stream.getStreamPosition();
         stream.seek(startPos);
-        stream.writeInt((int)(pos - startPos) - 12);
+        stream.writeInt((int) (pos - startPos) - 12);
 
         // Return to end of chunk and flush to minimize buffering
         stream.seek(pos);
@@ -239,7 +240,7 @@ final class IDATOutputStream extends ImageOutputStreamImpl {
 
     public void write(int b) throws IOException {
         byte[] wbuf = new byte[1];
-        wbuf[0] = (byte)b;
+        wbuf[0] = (byte) b;
         write(wbuf, 0, 1);
     }
 
@@ -274,6 +275,7 @@ class PNGImageWriteParam extends ImageWriteParam {
 }
 
 /**
+ *
  */
 public class PNGImageWriter extends ImageWriter {
 
@@ -330,13 +332,13 @@ public class PNGImageWriter extends ImageWriter {
             if (!(output instanceof ImageOutputStream)) {
                 throw new IllegalArgumentException("output not an ImageOutputStream!");
             }
-            this.stream = (ImageOutputStream)output;
+            this.stream = (ImageOutputStream) output;
         } else {
             this.stream = null;
         }
     }
 
-    private static int[] allowedProgressivePasses = { 1, 7 };
+    private static int[] allowedProgressivePasses = {1, 7};
 
     public ImageWriteParam getDefaultWriteParam() {
         return new PNGImageWriteParam(getLocale());
@@ -363,7 +365,7 @@ public class PNGImageWriter extends ImageWriter {
                                             ImageWriteParam param) {
         // TODO - deal with imageType
         if (inData instanceof PNGMetadata) {
-            return (PNGMetadata)((PNGMetadata)inData).clone();
+            return (PNGMetadata) ((PNGMetadata) inData).clone();
         } else {
             return new PNGMetadata(inData);
         }
@@ -371,7 +373,7 @@ public class PNGImageWriter extends ImageWriter {
 
     private void write_magic() throws IOException {
         // Write signature
-        byte[] magic = { (byte)137, 80, 78, 71, 13, 10, 26, 10 };
+        byte[] magic = {(byte) 137, 80, 78, 71, 13, 10, 26, 10};
         stream.write(magic);
     }
 
@@ -384,18 +386,18 @@ public class PNGImageWriter extends ImageWriter {
         cs.writeByte(metadata.IHDR_colorType);
         if (metadata.IHDR_compressionMethod != 0) {
             throw new IIOException(
-"Only compression method 0 is defined in PNG 1.1");
+                    "Only compression method 0 is defined in PNG 1.1");
         }
         cs.writeByte(metadata.IHDR_compressionMethod);
         if (metadata.IHDR_filterMethod != 0) {
             throw new IIOException(
-"Only filter method 0 is defined in PNG 1.1");
+                    "Only filter method 0 is defined in PNG 1.1");
         }
         cs.writeByte(metadata.IHDR_filterMethod);
         if (metadata.IHDR_interlaceMethod < 0 ||
-            metadata.IHDR_interlaceMethod > 1) {
+                metadata.IHDR_interlaceMethod > 1) {
             throw new IIOException(
-"Only interlace methods 0 (node) and 1 (adam7) are defined in PNG 1.1");
+                    "Only interlace methods 0 (node) and 1 (adam7) are defined in PNG 1.1");
         }
         cs.writeByte(metadata.IHDR_interlaceMethod);
         cs.finish();
@@ -442,24 +444,24 @@ public class PNGImageWriter extends ImageWriter {
             int colorType = metadata.IHDR_colorType;
             if (metadata.sBIT_colorType != colorType) {
                 processWarningOccurred(0,
-"sBIT metadata has wrong color type.\n" +
-"The chunk will not be written.");
+                        "sBIT metadata has wrong color type.\n" +
+                                "The chunk will not be written.");
                 return;
             }
 
             if (colorType == PNGImageReader.PNG_COLOR_GRAY ||
-                colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA) {
+                    colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA) {
                 cs.writeByte(metadata.sBIT_grayBits);
             } else if (colorType == PNGImageReader.PNG_COLOR_RGB ||
-                       colorType == PNGImageReader.PNG_COLOR_PALETTE ||
-                       colorType == PNGImageReader.PNG_COLOR_RGB_ALPHA) {
+                    colorType == PNGImageReader.PNG_COLOR_PALETTE ||
+                    colorType == PNGImageReader.PNG_COLOR_RGB_ALPHA) {
                 cs.writeByte(metadata.sBIT_redBits);
                 cs.writeByte(metadata.sBIT_greenBits);
                 cs.writeByte(metadata.sBIT_blueBits);
             }
 
             if (colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA ||
-                colorType == PNGImageReader.PNG_COLOR_RGB_ALPHA) {
+                    colorType == PNGImageReader.PNG_COLOR_RGB_ALPHA) {
                 cs.writeByte(metadata.sBIT_alphaBits);
             }
             cs.finish();
@@ -477,19 +479,19 @@ public class PNGImageWriter extends ImageWriter {
     private void write_PLTE() throws IOException {
         if (metadata.PLTE_present) {
             if (metadata.IHDR_colorType == PNGImageReader.PNG_COLOR_GRAY ||
-              metadata.IHDR_colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA) {
+                    metadata.IHDR_colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA) {
                 // PLTE cannot occur in a gray image
 
                 processWarningOccurred(0,
-"A PLTE chunk may not appear in a gray or gray alpha image.\n" +
-"The chunk will not be written");
+                        "A PLTE chunk may not appear in a gray or gray alpha image.\n" +
+                                "The chunk will not be written");
                 return;
             }
 
             ChunkStream cs = new ChunkStream(PNGImageReader.PLTE_TYPE, stream);
 
             int numEntries = metadata.PLTE_red.length;
-            byte[] palette = new byte[numEntries*3];
+            byte[] palette = new byte[numEntries * 3];
             int index = 0;
             for (int i = 0; i < numEntries; i++) {
                 palette[index++] = metadata.PLTE_red[i];
@@ -511,7 +513,7 @@ public class PNGImageWriter extends ImageWriter {
             }
 
             cs.writeChars(metadata.hIST_histogram,
-                          0, metadata.hIST_histogram.length);
+                    0, metadata.hIST_histogram.length);
             cs.finish();
         }
     }
@@ -528,16 +530,16 @@ public class PNGImageWriter extends ImageWriter {
             int chunkGreen = metadata.tRNS_green;
             int chunkBlue = metadata.tRNS_blue;
             if (colorType == PNGImageReader.PNG_COLOR_RGB &&
-                chunkType == PNGImageReader.PNG_COLOR_GRAY) {
+                    chunkType == PNGImageReader.PNG_COLOR_GRAY) {
                 chunkType = colorType;
                 chunkRed = chunkGreen = chunkBlue =
-                    metadata.tRNS_gray;
+                        metadata.tRNS_gray;
             }
 
             if (chunkType != colorType) {
                 processWarningOccurred(0,
-"tRNS metadata has incompatible color type.\n" +
-"The chunk will not be written.");
+                        "tRNS metadata has incompatible color type.\n" +
+                                "The chunk will not be written.");
                 return;
             }
 
@@ -571,28 +573,28 @@ public class PNGImageWriter extends ImageWriter {
             int chunkGreen = metadata.bKGD_red;
             int chunkBlue = metadata.bKGD_red;
             if (colorType == PNGImageReader.PNG_COLOR_RGB &&
-                chunkType == PNGImageReader.PNG_COLOR_GRAY) {
+                    chunkType == PNGImageReader.PNG_COLOR_GRAY) {
                 // Make a gray bKGD chunk look like RGB
                 chunkType = colorType;
                 chunkRed = chunkGreen = chunkBlue =
-                    metadata.bKGD_gray;
+                        metadata.bKGD_gray;
             }
 
             // Ignore status of alpha in colorType
             if (chunkType != colorType) {
                 processWarningOccurred(0,
-"bKGD metadata has incompatible color type.\n" +
-"The chunk will not be written.");
+                        "bKGD metadata has incompatible color type.\n" +
+                                "The chunk will not be written.");
                 return;
             }
 
             if (colorType == PNGImageReader.PNG_COLOR_PALETTE) {
                 cs.writeByte(metadata.bKGD_index);
             } else if (colorType == PNGImageReader.PNG_COLOR_GRAY ||
-                       colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA) {
+                    colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA) {
                 cs.writeShort(metadata.bKGD_gray);
             } else { // colorType == PNGImageReader.PNG_COLOR_RGB ||
-                     // colorType == PNGImageReader.PNG_COLOR_RGB_ALPHA
+                // colorType == PNGImageReader.PNG_COLOR_RGB_ALPHA
                 cs.writeShort(chunkRed);
                 cs.writeShort(chunkGreen);
                 cs.writeShort(chunkBlue);
@@ -661,11 +663,11 @@ public class PNGImageWriter extends ImageWriter {
 
         while (keywordIter.hasNext()) {
             ChunkStream cs = new ChunkStream(PNGImageReader.tEXt_TYPE, stream);
-            String keyword = (String)keywordIter.next();
+            String keyword = (String) keywordIter.next();
             cs.writeBytes(keyword);
             cs.writeByte(0);
 
-            String text = (String)textIter.next();
+            String text = (String) textIter.next();
             cs.writeBytes(text);
             cs.finish();
         }
@@ -685,7 +687,7 @@ public class PNGImageWriter extends ImageWriter {
         Iterator<Integer> methodIter = metadata.iTXt_compressionMethod.iterator();
         Iterator<String> languageIter = metadata.iTXt_languageTag.iterator();
         Iterator<String> translatedKeywordIter =
-            metadata.iTXt_translatedKeyword.iterator();
+                metadata.iTXt_translatedKeyword.iterator();
         Iterator<String> textIter = metadata.iTXt_text.iterator();
 
         while (keywordIter.hasNext()) {
@@ -723,14 +725,14 @@ public class PNGImageWriter extends ImageWriter {
 
         while (keywordIter.hasNext()) {
             ChunkStream cs = new ChunkStream(PNGImageReader.zTXt_TYPE, stream);
-            String keyword = (String)keywordIter.next();
+            String keyword = (String) keywordIter.next();
             cs.writeBytes(keyword);
             cs.writeByte(0);
 
-            int compressionMethod = ((Integer)methodIter.next()).intValue();
+            int compressionMethod = ((Integer) methodIter.next()).intValue();
             cs.writeByte(compressionMethod);
 
-            String text = (String)textIter.next();
+            String text = (String) textIter.next();
             cs.write(deflate(text.getBytes("ISO-8859-1")));
             cs.finish();
         }
@@ -741,9 +743,9 @@ public class PNGImageWriter extends ImageWriter {
         Iterator dataIter = metadata.unknownChunkData.iterator();
 
         while (typeIter.hasNext() && dataIter.hasNext()) {
-            String type = (String)typeIter.next();
+            String type = (String) typeIter.next();
             ChunkStream cs = new ChunkStream(chunkType(type), stream);
-            byte[] data = (byte[])dataIter.next();
+            byte[] data = (byte[]) dataIter.next();
             cs.write(data);
             cs.finish();
         }
@@ -775,8 +777,8 @@ public class PNGImageWriter extends ImageWriter {
         ySkip *= periodY;
 
         // Early exit if no data for this pass
-        int hpixels = (width - xOffset + xSkip - 1)/xSkip;
-        int vpixels = (height - yOffset + ySkip - 1)/ySkip;
+        int hpixels = (width - xOffset + xSkip - 1) / xSkip;
+        int vpixels = (height - yOffset + ySkip - 1) / ySkip;
         if (hpixels == 0 || vpixels == 0) {
             return;
         }
@@ -786,26 +788,25 @@ public class PNGImageWriter extends ImageWriter {
         xSkip *= numBands;
 
         // Create row buffers
-        int samplesPerByte = 8/metadata.IHDR_bitDepth;
-        int numSamples = width*numBands;
+        int samplesPerByte = 8 / metadata.IHDR_bitDepth;
+        int numSamples = width * numBands;
         int[] samples = new int[numSamples];
 
-        int bytesPerRow = hpixels*numBands;
+        int bytesPerRow = hpixels * numBands;
         if (metadata.IHDR_bitDepth < 8) {
-            bytesPerRow = (bytesPerRow + samplesPerByte - 1)/samplesPerByte;
+            bytesPerRow = (bytesPerRow + samplesPerByte - 1) / samplesPerByte;
         } else if (metadata.IHDR_bitDepth == 16) {
             bytesPerRow *= 2;
         }
 
         IndexColorModel icm_gray_alpha = null;
         if (metadata.IHDR_colorType == PNGImageReader.PNG_COLOR_GRAY_ALPHA &&
-            image.getColorModel() instanceof IndexColorModel)
-        {
+                image.getColorModel() instanceof IndexColorModel) {
             // reserve space for alpha samples
             bytesPerRow *= 2;
 
             // will be used to calculate alpha value for the pixel
-            icm_gray_alpha = (IndexColorModel)image.getColorModel();
+            icm_gray_alpha = (IndexColorModel) image.getColorModel();
         }
 
         currRow = new byte[bytesPerRow + bpp];
@@ -818,7 +819,7 @@ public class PNGImageWriter extends ImageWriter {
             Raster ras = image.getData(rect);
             if (sourceBands != null) {
                 ras = ras.createChild(minX, row, width, 1, minX, row,
-                                      sourceBands);
+                        sourceBands);
             }
 
             ras.getPixels(minX, row, width, 1, samples);
@@ -826,13 +827,13 @@ public class PNGImageWriter extends ImageWriter {
             if (image.getColorModel().isAlphaPremultiplied()) {
                 WritableRaster wr = ras.createCompatibleWritableRaster();
                 wr.setPixels(wr.getMinX(), wr.getMinY(),
-                             wr.getWidth(), wr.getHeight(),
-                             samples);
+                        wr.getWidth(), wr.getHeight(),
+                        samples);
 
                 image.getColorModel().coerceData(wr, false);
                 wr.getPixels(wr.getMinX(), wr.getMinY(),
-                             wr.getWidth(), wr.getHeight(),
-                             samples);
+                        wr.getWidth(), wr.getHeight(),
+                        samples);
             }
 
             // Reorder palette data if necessary
@@ -848,61 +849,63 @@ public class PNGImageWriter extends ImageWriter {
             int tmp = 0;
 
             switch (bitDepth) {
-            case 1: case 2: case 4:
-                // Image can only have a single band
+                case 1:
+                case 2:
+                case 4:
+                    // Image can only have a single band
 
-                int mask = samplesPerByte - 1;
-                for (int s = xOffset; s < numSamples; s += xSkip) {
-                    byte val = scale0[samples[s]];
-                    tmp = (tmp << bitDepth) | val;
-
-                    if ((pos++ & mask) == mask) {
-                        currRow[count++] = (byte)tmp;
-                        tmp = 0;
-                        pos = 0;
-                    }
-                }
-
-                // Left shift the last byte
-                if ((pos & mask) != 0) {
-                    tmp <<= ((8/bitDepth) - pos)*bitDepth;
-                    currRow[count++] = (byte)tmp;
-                }
-                break;
-
-            case 8:
-                if (numBands == 1) {
+                    int mask = samplesPerByte - 1;
                     for (int s = xOffset; s < numSamples; s += xSkip) {
-                        currRow[count++] = scale0[samples[s]];
-                        if (icm_gray_alpha != null) {
-                            currRow[count++] =
-                                scale0[icm_gray_alpha.getAlpha(0xff & samples[s])];
+                        byte val = scale0[samples[s]];
+                        tmp = (tmp << bitDepth) | val;
+
+                        if ((pos++ & mask) == mask) {
+                            currRow[count++] = (byte) tmp;
+                            tmp = 0;
+                            pos = 0;
                         }
                     }
-                } else {
+
+                    // Left shift the last byte
+                    if ((pos & mask) != 0) {
+                        tmp <<= ((8 / bitDepth) - pos) * bitDepth;
+                        currRow[count++] = (byte) tmp;
+                    }
+                    break;
+
+                case 8:
+                    if (numBands == 1) {
+                        for (int s = xOffset; s < numSamples; s += xSkip) {
+                            currRow[count++] = scale0[samples[s]];
+                            if (icm_gray_alpha != null) {
+                                currRow[count++] =
+                                        scale0[icm_gray_alpha.getAlpha(0xff & samples[s])];
+                            }
+                        }
+                    } else {
+                        for (int s = xOffset; s < numSamples; s += xSkip) {
+                            for (int b = 0; b < numBands; b++) {
+                                currRow[count++] = scale[b][samples[s + b]];
+                            }
+                        }
+                    }
+                    break;
+
+                case 16:
                     for (int s = xOffset; s < numSamples; s += xSkip) {
                         for (int b = 0; b < numBands; b++) {
-                            currRow[count++] = scale[b][samples[s + b]];
+                            currRow[count++] = scaleh[b][samples[s + b]];
+                            currRow[count++] = scalel[b][samples[s + b]];
                         }
                     }
-                }
-                break;
-
-            case 16:
-                for (int s = xOffset; s < numSamples; s += xSkip) {
-                    for (int b = 0; b < numBands; b++) {
-                        currRow[count++] = scaleh[b][samples[s + b]];
-                        currRow[count++] = scalel[b][samples[s + b]];
-                    }
-                }
-                break;
+                    break;
             }
 
             // Perform filtering
             int filterType = rowFilter.filterRow(metadata.IHDR_colorType,
-                                                 currRow, prevRow,
-                                                 filteredRows,
-                                                 bytesPerRow, bpp);
+                    currRow, prevRow,
+                    filteredRows,
+                    bytesPerRow, bpp);
 
             os.write(filterType);
             os.write(filteredRows[filterType], bpp, bytesPerRow);
@@ -913,7 +916,7 @@ public class PNGImageWriter extends ImageWriter {
             prevRow = swap;
 
             pixelsDone += hpixels;
-            processImageProgress(100.0F*pixelsDone/totalPixels);
+            processImageProgress(100.0F * pixelsDone / totalPixels);
 
             // If write has been aborted, just return;
             // processWriteAborted will be called later
@@ -930,10 +933,10 @@ public class PNGImageWriter extends ImageWriter {
             if (metadata.IHDR_interlaceMethod == 1) {
                 for (int i = 0; i < 7; i++) {
                     encodePass(ios, image,
-                               PNGImageReader.adam7XOffset[i],
-                               PNGImageReader.adam7YOffset[i],
-                               PNGImageReader.adam7XSubsampling[i],
-                               PNGImageReader.adam7YSubsampling[i]);
+                            PNGImageReader.adam7XOffset[i],
+                            PNGImageReader.adam7YOffset[i],
+                            PNGImageReader.adam7XSubsampling[i],
+                            PNGImageReader.adam7YSubsampling[i]);
                     if (abortRequested()) {
                         break;
                     }
@@ -976,7 +979,7 @@ public class PNGImageWriter extends ImageWriter {
 
         // If the existing tables are still valid, just return
         if (bitDepth == scalingBitDepth &&
-            equals(sampleSize, this.sampleSize)) {
+                equals(sampleSize, this.sampleSize)) {
             return;
         }
 
@@ -988,11 +991,11 @@ public class PNGImageWriter extends ImageWriter {
             scale = new byte[numBands][];
             for (int b = 0; b < numBands; b++) {
                 int maxInSample = (1 << sampleSize[b]) - 1;
-                int halfMaxInSample = maxInSample/2;
+                int halfMaxInSample = maxInSample / 2;
                 scale[b] = new byte[maxInSample + 1];
                 for (int s = 0; s <= maxInSample; s++) {
                     scale[b][s] =
-                        (byte)((s*maxOutSample + halfMaxInSample)/maxInSample);
+                            (byte) ((s * maxOutSample + halfMaxInSample) / maxInSample);
                 }
             }
             scale0 = scale[0];
@@ -1004,13 +1007,13 @@ public class PNGImageWriter extends ImageWriter {
 
             for (int b = 0; b < numBands; b++) {
                 int maxInSample = (1 << sampleSize[b]) - 1;
-                int halfMaxInSample = maxInSample/2;
+                int halfMaxInSample = maxInSample / 2;
                 scaleh[b] = new byte[maxInSample + 1];
                 scalel[b] = new byte[maxInSample + 1];
                 for (int s = 0; s <= maxInSample; s++) {
-                    int val = (s*maxOutSample + halfMaxInSample)/maxInSample;
-                    scaleh[b][s] = (byte)(val >> 8);
-                    scalel[b][s] = (byte)(val & 0xff);
+                    int val = (s * maxOutSample + halfMaxInSample) / maxInSample;
+                    scaleh[b][s] = (byte) (val >> 8);
+                    scalel[b][s] = (byte) (val & 0xff);
                 }
             }
             scale = null;
@@ -1049,9 +1052,9 @@ public class PNGImageWriter extends ImageWriter {
             Rectangle sourceRegion = param.getSourceRegion();
             if (sourceRegion != null) {
                 Rectangle imageBounds = new Rectangle(im.getMinX(),
-                                                      im.getMinY(),
-                                                      im.getWidth(),
-                                                      im.getHeight());
+                        im.getMinY(),
+                        im.getWidth(),
+                        im.getHeight());
                 // Clip to actual image bounds
                 sourceRegion = sourceRegion.intersection(imageBounds);
                 sourceXOffset = sourceRegion.x;
@@ -1080,22 +1083,22 @@ public class PNGImageWriter extends ImageWriter {
         }
 
         // Compute output dimensions
-        int destWidth = (sourceWidth + periodX - 1)/periodX;
-        int destHeight = (sourceHeight + periodY - 1)/periodY;
+        int destWidth = (sourceWidth + periodX - 1) / periodX;
+        int destHeight = (sourceHeight + periodY - 1) / periodY;
         if (destWidth <= 0 || destHeight <= 0) {
             throw new IllegalArgumentException("Empty source region!");
         }
 
         // Compute total number of pixels for progress notification
-        this.totalPixels = destWidth*destHeight;
+        this.totalPixels = destWidth * destHeight;
         this.pixelsDone = 0;
 
         // Create metadata
         IIOMetadata imd = image.getMetadata();
         if (imd != null) {
-            metadata = (PNGMetadata)convertImageMetadata(imd,
-                               ImageTypeSpecifier.createFromRenderedImage(im),
-                                                         null);
+            metadata = (PNGMetadata) convertImageMetadata(imd,
+                    ImageTypeSpecifier.createFromRenderedImage(im),
+                    null);
         } else {
             metadata = new PNGMetadata();
         }
@@ -1103,12 +1106,12 @@ public class PNGImageWriter extends ImageWriter {
         if (param != null) {
             // Use Adam7 interlacing if set in write param
             switch (param.getProgressiveMode()) {
-            case ImageWriteParam.MODE_DEFAULT:
-                metadata.IHDR_interlaceMethod = 1;
-                break;
-            case ImageWriteParam.MODE_DISABLED:
-                metadata.IHDR_interlaceMethod = 0;
-                break;
+                case ImageWriteParam.MODE_DEFAULT:
+                    metadata.IHDR_interlaceMethod = 1;
+                    break;
+                case ImageWriteParam.MODE_DISABLED:
+                    metadata.IHDR_interlaceMethod = 0;
+                    break;
                 // MODE_COPY_FROM_METADATA should alreay be taken care of
                 // MODE_EXPLICIT is not allowed
             }
@@ -1121,7 +1124,7 @@ public class PNGImageWriter extends ImageWriter {
         metadata.IHDR_width = destWidth;
         metadata.IHDR_height = destHeight;
 
-        this.bpp = numBands*((metadata.IHDR_bitDepth == 16) ? 2 : 1);
+        this.bpp = numBands * ((metadata.IHDR_bitDepth == 16) ? 2 : 1);
 
         // Initialize scaling tables for this image
         initializeScaleTables(sampleModel.getSampleSize());

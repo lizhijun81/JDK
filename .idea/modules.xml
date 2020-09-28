@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/JDK1.6-Java SE Development Kit 6u45/JDK1.6-Java SE Development Kit 6u45.iml" filepath="$PROJECT_DIR$/JDK1.6-Java SE Development Kit 6u45/JDK1.6-Java SE Development Kit 6u45.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK1.7/JDK1.7.iml" filepath="$PROJECT_DIR$/JDK1.7/JDK1.7.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK1.7-Java SE Development Kit 7u80/JDK1.7-Java SE Development Kit 7u80.iml" filepath="$PROJECT_DIR$/JDK1.7-Java SE Development Kit 7u80/JDK1.7-Java SE Development Kit 7u80.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK1.8/JDK1.8.iml" filepath="$PROJECT_DIR$/JDK1.8/JDK1.8.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK_demos_8u66/JDK_demos_8u66.iml" filepath="$PROJECT_DIR$/JDK_demos_8u66/JDK_demos_8u66.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.activation/java.activation.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.activation/java.activation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.base/java.base.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.base/java.base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.compiler/java.compiler.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.compiler/java.compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.corba/java.corba.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.corba/java.corba.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.datatransfer/java.datatransfer.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.datatransfer/java.datatransfer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.desktop/java.desktop.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.desktop/java.desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.instrument/java.instrument.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.instrument/java.instrument.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.logging/java.logging.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.logging/java.logging.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.management/java.management.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.management/java.management.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.management.rmi/java.management.rmi.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.management.rmi/java.management.rmi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.naming/java.naming.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.naming/java.naming.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.prefs/java.prefs.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.prefs/java.prefs.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.rmi/java.rmi.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.rmi/java.rmi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.scripting/java.scripting.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.scripting/java.scripting.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.se/java.se.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.se/java.se.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.se.ee/java.se.ee.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.se.ee/java.se.ee.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.security.jgss/java.security.jgss.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.security.jgss/java.security.jgss.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.security.sasl/java.security.sasl.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.security.sasl/java.security.sasl.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.smartcardio/java.smartcardio.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.smartcardio/java.smartcardio.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.sql/java.sql.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.sql/java.sql.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.sql.rowset/java.sql.rowset.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.sql.rowset/java.sql.rowset.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.transaction/java.transaction.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.transaction/java.transaction.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.xml/java.xml.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.xml/java.xml.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.xml.bind/java.xml.bind.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.xml.bind/java.xml.bind.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.xml.crypto/java.xml.crypto.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.xml.crypto/java.xml.crypto.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.xml.ws/java.xml.ws.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.xml.ws/java.xml.ws.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.xml.ws.annotation/java.xml.ws.annotation.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/java.xml.ws.annotation/java.xml.ws.annotation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/javafx.base/javafx.base.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/javafx.base/javafx.base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/javafx.controls/javafx.controls.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/javafx.controls/javafx.controls.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/javafx.fxml/javafx.fxml.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/javafx.fxml/javafx.fxml.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/javafx.graphics/javafx.graphics.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/javafx.graphics/javafx.graphics.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/javafx.media/javafx.media.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/javafx.media/javafx.media.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/javafx.swing/javafx.swing.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/javafx.swing/javafx.swing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/javafx.web/javafx.web.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/javafx.web/javafx.web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.accessibility/jdk.accessibility.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.accessibility/jdk.accessibility.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.aot/jdk.aot.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.aot/jdk.aot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.attach/jdk.attach.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.attach/jdk.attach.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.charsets/jdk.charsets.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.charsets/jdk.charsets.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.compiler/jdk.compiler.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.compiler/jdk.compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.crypto.cryptoki/jdk.crypto.cryptoki.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.crypto.cryptoki/jdk.crypto.cryptoki.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.crypto.ec/jdk.crypto.ec.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.crypto.ec/jdk.crypto.ec.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.crypto.mscapi/jdk.crypto.mscapi.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.crypto.mscapi/jdk.crypto.mscapi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.dynalink/jdk.dynalink.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.dynalink/jdk.dynalink.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.editpad/jdk.editpad.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.editpad/jdk.editpad.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.hotspot.agent/jdk.hotspot.agent.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.hotspot.agent/jdk.hotspot.agent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.httpserver/jdk.httpserver.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.httpserver/jdk.httpserver.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.incubator.httpclient/jdk.incubator.httpclient.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.incubator.httpclient/jdk.incubator.httpclient.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.internal.ed/jdk.internal.ed.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.internal.ed/jdk.internal.ed.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.internal.jvmstat/jdk.internal.jvmstat.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.internal.jvmstat/jdk.internal.jvmstat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.internal.le/jdk.internal.le.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.internal.le/jdk.internal.le.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.internal.opt/jdk.internal.opt.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.internal.opt/jdk.internal.opt.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.internal.vm.ci/jdk.internal.vm.ci.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.internal.vm.ci/jdk.internal.vm.ci.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.internal.vm.compiler/jdk.internal.vm.compiler.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.internal.vm.compiler/jdk.internal.vm.compiler.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.internal.vm.compiler.management/jdk.internal.vm.compiler.management.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.internal.vm.compiler.management/jdk.internal.vm.compiler.management.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jartool/jdk.jartool.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jartool/jdk.jartool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.javadoc/jdk.javadoc.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.javadoc/jdk.javadoc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jcmd/jdk.jcmd.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jcmd/jdk.jcmd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jconsole/jdk.jconsole.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jconsole/jdk.jconsole.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jdeps/jdk.jdeps.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jdeps/jdk.jdeps.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jdi/jdk.jdi.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jdi/jdk.jdi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jdwp.agent/jdk.jdwp.agent.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jdwp.agent/jdk.jdwp.agent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jlink/jdk.jlink.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jlink/jdk.jlink.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jshell/jdk.jshell.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jshell/jdk.jshell.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jsobject/jdk.jsobject.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jsobject/jdk.jsobject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jstatd/jdk.jstatd.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.jstatd/jdk.jstatd.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.localedata/jdk.localedata.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.localedata/jdk.localedata.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.management/jdk.management.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.management/jdk.management.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.management.agent/jdk.management.agent.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.management.agent/jdk.management.agent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.naming.dns/jdk.naming.dns.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.naming.dns/jdk.naming.dns.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.naming.rmi/jdk.naming.rmi.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.naming.rmi/jdk.naming.rmi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.net/jdk.net.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.net/jdk.net.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.pack/jdk.pack.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.pack/jdk.pack.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.packager/jdk.packager.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.packager/jdk.packager.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.packager.services/jdk.packager.services.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.packager.services/jdk.packager.services.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK1.9/src/jdk.policytool/jdk.policytool.iml" filepath="$PROJECT_DIR$/JDK1.9/src/jdk.policytool/jdk.policytool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.rmic/jdk.rmic.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.rmic/jdk.rmic.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.scripting.nashorn/jdk.scripting.nashorn.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.scripting.nashorn/jdk.scripting.nashorn.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.scripting.nashorn.shell/jdk.scripting.nashorn.shell.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.scripting.nashorn.shell/jdk.scripting.nashorn.shell.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.sctp/jdk.sctp.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.sctp/jdk.sctp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.security.auth/jdk.security.auth.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.security.auth/jdk.security.auth.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.security.jgss/jdk.security.jgss.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.security.jgss/jdk.security.jgss.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.unsupported/jdk.unsupported.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.unsupported/jdk.unsupported.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.xml.bind/jdk.xml.bind.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.xml.bind/jdk.xml.bind.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.xml.dom/jdk.xml.dom.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.xml.dom/jdk.xml.dom.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.xml.ws/jdk.xml.ws.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.xml.ws/jdk.xml.ws.iml" />
+      <module fileurl="file://$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.zipfs/jdk.zipfs.iml" filepath="$PROJECT_DIR$/JDK10-Java SE Development Kit 10/src/jdk.zipfs/jdk.zipfs.iml" />
+    </modules>
+  </component>
+</project>

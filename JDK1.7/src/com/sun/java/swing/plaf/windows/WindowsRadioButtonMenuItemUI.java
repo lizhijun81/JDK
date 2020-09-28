@@ -46,27 +46,28 @@ import com.sun.java.swing.plaf.windows.TMSchema.State;
 public class WindowsRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI {
 
     final WindowsMenuItemUIAccessor accessor =
-        new WindowsMenuItemUIAccessor() {
+            new WindowsMenuItemUIAccessor() {
 
-           public JMenuItem getMenuItem() {
-               return menuItem;
-           }
+                public JMenuItem getMenuItem() {
+                    return menuItem;
+                }
 
-           public State getState(JMenuItem menuItem) {
-               return WindowsMenuItemUI.getState(this, menuItem);
-           }
+                public State getState(JMenuItem menuItem) {
+                    return WindowsMenuItemUI.getState(this, menuItem);
+                }
 
-           public Part getPart(JMenuItem menuItem) {
-               return WindowsMenuItemUI.getPart(this, menuItem);
-           }
-    };
+                public Part getPart(JMenuItem menuItem) {
+                    return WindowsMenuItemUI.getPart(this, menuItem);
+                }
+            };
+
     public static ComponentUI createUI(JComponent b) {
         return new WindowsRadioButtonMenuItemUI();
     }
 
     @Override
-    protected  void paintBackground(Graphics g, JMenuItem menuItem,
-            Color bgColor) {
+    protected void paintBackground(Graphics g, JMenuItem menuItem,
+                                   Color bgColor) {
         if (WindowsMenuItemUI.isVistaPainting()) {
             WindowsMenuItemUI.paintBackground(accessor, g, menuItem, bgColor);
             return;
@@ -77,14 +78,15 @@ public class WindowsRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI {
     /**
      * Method which renders the text of the current menu item.
      * <p>
-     * @param g Graphics context
+     *
+     * @param g        Graphics context
      * @param menuItem Current menu item to render
      * @param textRect Bounding rectangle to render the text.
-     * @param text String to render
+     * @param text     String to render
      * @since 1.4
      */
     protected void paintText(Graphics g, JMenuItem menuItem,
-            Rectangle textRect, String text) {
+                             Rectangle textRect, String text) {
         if (WindowsMenuItemUI.isVistaPainting()) {
             WindowsMenuItemUI.paintText(accessor, g, menuItem, textRect, text);
             return;
@@ -92,7 +94,7 @@ public class WindowsRadioButtonMenuItemUI extends BasicRadioButtonMenuItemUI {
         ButtonModel model = menuItem.getModel();
         Color oldColor = g.getColor();
 
-        if(model.isEnabled() && model.isArmed()) {
+        if (model.isEnabled() && model.isArmed()) {
             g.setColor(selectionForeground); // Uses protected field.
         }
 

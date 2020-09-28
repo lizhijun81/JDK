@@ -44,17 +44,15 @@ import com.sun.mirror.util.*;
  * method.  There is no guarantee that any particular declaration will
  * always be represented by the same object.
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @see Declarations
+ * @see TypeMirror
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this interface is {@link
  * javax.lang.model.element.Element}.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- *
- * @see Declarations
- * @see TypeMirror
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")
@@ -63,9 +61,9 @@ public interface Declaration {
     /**
      * Tests whether an object represents the same declaration as this.
      *
-     * @param obj  the object to be compared with this declaration
+     * @param obj the object to be compared with this declaration
      * @return <tt>true</tt> if the specified object represents the same
-     *          declaration as this
+     * declaration as this
      */
     boolean equals(Object obj);
 
@@ -74,7 +72,7 @@ public interface Declaration {
      * this declaration.
      *
      * @return the documentation comment of this declaration, or <tt>null</tt>
-     *          if there is none
+     * if there is none
      */
     String getDocComment();
 
@@ -82,7 +80,7 @@ public interface Declaration {
      * Returns the annotations that are directly present on this declaration.
      *
      * @return the annotations directly present on this declaration;
-     *          an empty collection if there are none
+     * an empty collection if there are none
      */
     Collection<AnnotationMirror> getAnnotationMirrors();
 
@@ -113,11 +111,10 @@ public interface Declaration {
      * operate on a known, fixed set of annotation types.
      * </blockquote>
      *
-     * @param <A>  the annotation type
-     * @param annotationType  the <tt>Class</tt> object corresponding to
-     *          the annotation type
+     * @param <A>            the annotation type
+     * @param annotationType the <tt>Class</tt> object corresponding to
+     *                       the annotation type
      * @return the annotation of this declaration having the specified type
-     *
      * @see #getAnnotationMirrors()
      */
     <A extends Annotation> A getAnnotation(Class<A> annotationType);
@@ -128,7 +125,7 @@ public interface Declaration {
      * modifiers of interface members, are included.
      *
      * @return the modifiers of this declaration in undefined order;
-     *          an empty collection if there are none
+     * an empty collection if there are none
      */
     Collection<Modifier> getModifiers();
 
@@ -156,7 +153,7 @@ public interface Declaration {
      * begins.
      *
      * @return the source position of the beginning of this declaration,
-     *          or null if the position is unknown or not applicable
+     * or null if the position is unknown or not applicable
      */
     SourcePosition getPosition();
 

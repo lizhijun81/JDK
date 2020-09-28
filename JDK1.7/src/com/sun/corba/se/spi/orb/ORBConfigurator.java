@@ -22,9 +22,10 @@
  *
  *
  */
-package com.sun.corba.se.spi.orb ;
+package com.sun.corba.se.spi.orb;
 
-/** Interface used to configure an ORB instance.  The DataCollector dc has all
+/**
+ * Interface used to configure an ORB instance.  The DataCollector dc has all
  * available config info available.  The configure method may constructor a
  * parser, call dc.setParser( parser ), get the consolidated properties from dc,
  * and parse this information.  The configure method may also register ORB
@@ -32,5 +33,5 @@ package com.sun.corba.se.spi.orb ;
  * Implementations of this interface must have a public no-args constructor.
  */
 public interface ORBConfigurator {
-    void configure( DataCollector dc, ORB orb ) ;
+    void configure(DataCollector dc, ORB orb);
 }

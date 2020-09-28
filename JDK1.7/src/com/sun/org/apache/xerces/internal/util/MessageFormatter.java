@@ -28,10 +28,8 @@ import java.util.MissingResourceException;
  * is useful for producing messages that must be localed and/or formatted
  * with replacement text.
  *
- * @see com.sun.org.apache.xerces.internal.impl.XMLErrorReporter
- *
  * @author Andy Clark
- *
+ * @see com.sun.org.apache.xerces.internal.impl.XMLErrorReporter
  */
 public interface MessageFormatter {
 
@@ -48,13 +46,11 @@ public interface MessageFormatter {
      * @param arguments The message replacement text arguments. The order
      *                  of the arguments must match that of the placeholders
      *                  in the actual message.
-     *
      * @return Returns the formatted message.
-     *
      * @throws MissingResourceException Thrown if the message with the
      *                                  specified key cannot be found.
      */
     public String formatMessage(Locale locale, String key, Object[] arguments)
-        throws MissingResourceException;
+            throws MissingResourceException;
 
 } // interface MessageFormatter

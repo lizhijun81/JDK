@@ -29,7 +29,7 @@ import org.omg.CORBA.*;
 import org.omg.PortableServer.*;
 
 final class ServantRetentionPolicyImpl
-    extends org.omg.CORBA.LocalObject implements ServantRetentionPolicy {
+        extends org.omg.CORBA.LocalObject implements ServantRetentionPolicy {
 
     public ServantRetentionPolicyImpl(ServantRetentionPolicyValue value) {
         this.value = value;
@@ -39,9 +39,8 @@ final class ServantRetentionPolicyImpl
         return value;
     }
 
-    public int policy_type()
-    {
-        return SERVANT_RETENTION_POLICY_ID.value ;
+    public int policy_type() {
+        return SERVANT_RETENTION_POLICY_ID.value;
     }
 
     public Policy copy() {
@@ -54,10 +53,9 @@ final class ServantRetentionPolicyImpl
 
     private ServantRetentionPolicyValue value;
 
-    public String toString()
-    {
+    public String toString() {
         return "ServantRetentionPolicy[" +
-            ((value.value() == ServantRetentionPolicyValue._RETAIN) ?
-                "RETAIN" : "NON_RETAIN" + "]") ;
+                ((value.value() == ServantRetentionPolicyValue._RETAIN) ?
+                        "RETAIN" : "NON_RETAIN" + "]");
     }
 }

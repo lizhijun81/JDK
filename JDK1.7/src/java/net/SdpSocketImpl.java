@@ -34,7 +34,8 @@ import sun.net.sdp.SdpSupport;
  * SocketImpl that supports the SDP protocol
  */
 class SdpSocketImpl extends PlainSocketImpl {
-    SdpSocketImpl() { }
+    SdpSocketImpl() {
+    }
 
     @Override
     protected void create(boolean stream) throws IOException {

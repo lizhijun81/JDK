@@ -41,14 +41,13 @@ import java.util.Collection;
  * <tt>extends</tt> clause, its lower bound explicitly set by a
  * <tt>super</tt> clause, or neither (but not both).
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this interface is {@link
  * javax.lang.model.type.WildcardType}.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")

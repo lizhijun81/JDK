@@ -32,7 +32,6 @@ import javax.swing.*;
 import javax.swing.border.*;
 
 
-
 /**
  * Windows icon for a minimized window on the desktop.
  * <p>
@@ -55,7 +54,7 @@ public class WindowsDesktopIconUI extends BasicDesktopIconUI {
         width = UIManager.getInt("DesktopIcon.width");
     }
 
-    public void installUI(JComponent c)   {
+    public void installUI(JComponent c) {
         super.installUI(c);
 
         c.setOpaque(XPStyle.getXP() == null);
@@ -64,7 +63,7 @@ public class WindowsDesktopIconUI extends BasicDesktopIconUI {
     // Uninstall the listeners added by the WindowsInternalFrameTitlePane
     public void uninstallUI(JComponent c) {
         WindowsInternalFrameTitlePane thePane =
-                                        (WindowsInternalFrameTitlePane)iconPane;
+                (WindowsInternalFrameTitlePane) iconPane;
         super.uninstallUI(c);
         thePane.uninstallListeners();
     }

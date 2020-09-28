@@ -68,9 +68,10 @@ import com.sun.source.tree.*;
  * @author Jonathan Gibbons
  * @since 1.6
  */
-public class TreeScanner<R,P> implements TreeVisitor<R,P> {
+public class TreeScanner<R, P> implements TreeVisitor<R, P> {
 
-    /** Scan a single node.
+    /**
+     * Scan a single node.
      */
     public R scan(Tree node, P p) {
         return (node == null) ? null : node.accept(this, p);
@@ -80,7 +81,8 @@ public class TreeScanner<R,P> implements TreeVisitor<R,P> {
         return reduce(scan(node, p), r);
     }
 
-    /** Scan a list of nodes.
+    /**
+     * Scan a list of nodes.
      */
     public R scan(Iterable<? extends Tree> nodes, P p) {
         R r = null;
@@ -108,9 +110,9 @@ public class TreeScanner<R,P> implements TreeVisitor<R,P> {
     }
 
 
-/* ***************************************************************************
- * Visitor methods
- ****************************************************************************/
+    /* ***************************************************************************
+     * Visitor methods
+     ****************************************************************************/
 
     public R visitCompilationUnit(CompilationUnitTree node, P p) {
         R r = scan(node.getPackageAnnotations(), p);

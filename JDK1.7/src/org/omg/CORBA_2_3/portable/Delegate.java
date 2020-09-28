@@ -36,14 +36,16 @@ package org.omg.CORBA_2_3.portable;
  * of CORBA object.  It extends org.omg.CORBA.portable.Delegate and
  * provides new methods that were defined by CORBA 2.3.
  *
+ * @author OMG
  * @see org.omg.CORBA.portable.Delegate
- * @author  OMG
- * @since   JDK1.2
+ * @since JDK1.2
  */
 
 public abstract class Delegate extends org.omg.CORBA.portable.Delegate {
 
-    /** Returns the codebase for object reference provided.
+    /**
+     * Returns the codebase for object reference provided.
+     *
      * @param self the object reference whose codebase needs to be returned.
      * @return the codebase as a space delimited list of url strings or
      * null if none.

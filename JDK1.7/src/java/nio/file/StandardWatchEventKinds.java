@@ -32,7 +32,8 @@ package java.nio.file;
  */
 
 public final class StandardWatchEventKinds {
-    private StandardWatchEventKinds() { }
+    private StandardWatchEventKinds() {
+    }
 
     /**
      * A special event to indicate that events may have been lost or
@@ -45,7 +46,7 @@ public final class StandardWatchEventKinds {
      * @see WatchService
      */
     public static final WatchEvent.Kind<Object> OVERFLOW =
-        new StdWatchEventKind<Object>("OVERFLOW", Object.class);
+            new StdWatchEventKind<Object>("OVERFLOW", Object.class);
 
     /**
      * Directory entry created.
@@ -56,7 +57,7 @@ public final class StandardWatchEventKinds {
      * for this event is always {@code 1}.
      */
     public static final WatchEvent.Kind<Path> ENTRY_CREATE =
-        new StdWatchEventKind<Path>("ENTRY_CREATE", Path.class);
+            new StdWatchEventKind<Path>("ENTRY_CREATE", Path.class);
 
     /**
      * Directory entry deleted.
@@ -67,7 +68,7 @@ public final class StandardWatchEventKinds {
      * is always {@code 1}.
      */
     public static final WatchEvent.Kind<Path> ENTRY_DELETE =
-        new StdWatchEventKind<Path>("ENTRY_DELETE", Path.class);
+            new StdWatchEventKind<Path>("ENTRY_DELETE", Path.class);
 
     /**
      * Directory entry modified.
@@ -78,17 +79,30 @@ public final class StandardWatchEventKinds {
      * {@code 1} or greater.
      */
     public static final WatchEvent.Kind<Path> ENTRY_MODIFY =
-        new StdWatchEventKind<Path>("ENTRY_MODIFY", Path.class);
+            new StdWatchEventKind<Path>("ENTRY_MODIFY", Path.class);
 
     private static class StdWatchEventKind<T> implements WatchEvent.Kind<T> {
         private final String name;
         private final Class<T> type;
+
         StdWatchEventKind(String name, Class<T> type) {
             this.name = name;
             this.type = type;
         }
-        @Override public String name() { return name; }
-        @Override public Class<T> type() { return type; }
-        @Override public String toString() { return name; }
+
+        @Override
+        public String name() {
+            return name;
+        }
+
+        @Override
+        public Class<T> type() {
+            return type;
+        }
+
+        @Override
+        public String toString() {
+            return name;
+        }
     }
 }

@@ -30,24 +30,27 @@ import org.w3c.dom.Node;
  * attributes. In Level 2 it should enable the ChildRule support.
  *
  * @xerces.internal
- *
  */
 public class DeferredElementDefinitionImpl
-    extends ElementDefinitionImpl
-    implements DeferredNode {
+        extends ElementDefinitionImpl
+        implements DeferredNode {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = 6703238199538041591L;
 
     //
     // Data
     //
 
-    /** Node index. */
+    /**
+     * Node index.
+     */
     protected transient int fNodeIndex;
 
     //
@@ -72,7 +75,9 @@ public class DeferredElementDefinitionImpl
     // DeferredNode methods
     //
 
-    /** Returns the node index. */
+    /**
+     * Returns the node index.
+     */
     public int getNodeIndex() {
         return fNodeIndex;
     }
@@ -81,7 +86,9 @@ public class DeferredElementDefinitionImpl
     // Protected methods
     //
 
-    /** Synchronizes the data (name and value) for fast nodes. */
+    /**
+     * Synchronizes the data (name and value) for fast nodes.
+     */
     protected void synchronizeData() {
 
         // no need to sync in the future
@@ -89,12 +96,14 @@ public class DeferredElementDefinitionImpl
 
         // fluff data
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl)this.ownerDocument;
+                (DeferredDocumentImpl) this.ownerDocument;
         name = ownerDocument.getNodeName(fNodeIndex);
 
     } // synchronizeData()
 
-    /** Synchronizes the default attribute values. */
+    /**
+     * Synchronizes the default attribute values.
+     */
     protected void synchronizeChildren() {
 
         // we don't want to generate any event for this so turn them off
@@ -106,7 +115,7 @@ public class DeferredElementDefinitionImpl
 
         // create attributes node map
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl)this.ownerDocument;
+                (DeferredDocumentImpl) this.ownerDocument;
         attributes = new NamedNodeMapImpl(ownerDocument);
 
         // Default attributes dangle as children of the element

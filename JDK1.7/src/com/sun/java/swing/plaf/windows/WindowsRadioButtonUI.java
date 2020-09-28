@@ -44,8 +44,7 @@ import java.awt.*;
  * version of Swing.  A future release of Swing will provide support for
  * long term persistence.
  */
-public class WindowsRadioButtonUI extends BasicRadioButtonUI
-{
+public class WindowsRadioButtonUI extends BasicRadioButtonUI {
     private static final Object WINDOWS_RADIO_BUTTON_UI_KEY = new Object();
 
     protected int dashedRectGapX;
@@ -76,11 +75,11 @@ public class WindowsRadioButtonUI extends BasicRadioButtonUI
     // ********************************
     public void installDefaults(AbstractButton b) {
         super.installDefaults(b);
-        if(!initialized) {
-            dashedRectGapX = ((Integer)UIManager.get("Button.dashedRectGapX")).intValue();
-            dashedRectGapY = ((Integer)UIManager.get("Button.dashedRectGapY")).intValue();
-            dashedRectGapWidth = ((Integer)UIManager.get("Button.dashedRectGapWidth")).intValue();
-            dashedRectGapHeight = ((Integer)UIManager.get("Button.dashedRectGapHeight")).intValue();
+        if (!initialized) {
+            dashedRectGapX = ((Integer) UIManager.get("Button.dashedRectGapX")).intValue();
+            dashedRectGapY = ((Integer) UIManager.get("Button.dashedRectGapY")).intValue();
+            dashedRectGapWidth = ((Integer) UIManager.get("Button.dashedRectGapWidth")).intValue();
+            dashedRectGapHeight = ((Integer) UIManager.get("Button.dashedRectGapHeight")).intValue();
             focusColor = UIManager.getColor(getPropertyPrefix() + "focus");
             initialized = true;
         }
@@ -105,7 +104,7 @@ public class WindowsRadioButtonUI extends BasicRadioButtonUI
     }
 
 
-    protected void paintFocus(Graphics g, Rectangle textRect, Dimension d){
+    protected void paintFocus(Graphics g, Rectangle textRect, Dimension d) {
         g.setColor(getFocusColor());
         BasicGraphicsUtils.drawDashedRect(g, textRect.x, textRect.y, textRect.width, textRect.height);
     }
@@ -119,10 +118,14 @@ public class WindowsRadioButtonUI extends BasicRadioButtonUI
         /* Ensure that the width and height of the button is odd,
          * to allow for the focus line if focus is painted
          */
-        AbstractButton b = (AbstractButton)c;
+        AbstractButton b = (AbstractButton) c;
         if (d != null && b.isFocusPainted()) {
-            if(d.width % 2 == 0) { d.width += 1; }
-            if(d.height % 2 == 0) { d.height += 1; }
+            if (d.width % 2 == 0) {
+                d.width += 1;
+            }
+            if (d.height % 2 == 0) {
+                d.height += 1;
+            }
         }
         return d;
     }

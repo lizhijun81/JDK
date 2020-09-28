@@ -27,22 +27,23 @@ import org.w3c.dom.ProcessingInstruction;
  * Processing Instructions (PIs) permit documents to carry
  * processor-specific information alongside their actual content. PIs
  * are most common in XML, but they are supported in HTML as well.
- *
+ * <p>
  * This class inherits from CharacterDataImpl to reuse its setNodeValue method.
  *
  * @xerces.internal
- *
- * @since  PR-DOM-Level-1-19980818.
+ * @since PR-DOM-Level-1-19980818.
  */
 public class ProcessingInstructionImpl
-    extends CharacterDataImpl
-    implements ProcessingInstruction {
+        extends CharacterDataImpl
+        implements ProcessingInstruction {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = 7554435174099981510L;
 
     //
@@ -55,7 +56,9 @@ public class ProcessingInstructionImpl
     // Constructors
     //
 
-    /** Factory constructor. */
+    /**
+     * Factory constructor.
+     */
     public ProcessingInstructionImpl(CoreDocumentImpl ownerDoc,
                                      String target, String data) {
         super(ownerDoc, data);
@@ -130,8 +133,9 @@ public class ProcessingInstructionImpl
     /**
      * Change the data content of this PI.
      * Note that setData is aliased to setNodeValue.
-     * @see #getData().
+     *
      * @throws DOMException(NO_MODIFICATION_ALLOWED_ERR) if node is read-only.
+     * @see #getData().
      */
     public void setData(String data) {
         // Hand off to setNodeValue for code-reuse reasons (mutation
@@ -140,8 +144,7 @@ public class ProcessingInstructionImpl
     } // setData(String)
 
 
-
-   /**
+    /**
      * Returns the absolute base URI of this node or null if the implementation
      * wasn't able to obtain an absolute URI. Note: If the URI is malformed, a
      * null is returned.

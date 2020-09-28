@@ -32,8 +32,10 @@ import com.sun.org.apache.xerces.internal.xni.grammars.XMLGrammarPool;
  */
 final class SimpleXMLSchema extends AbstractXMLSchema implements XMLGrammarPool {
 
-    /** Zero length grammar array. */
-    private static final Grammar [] ZERO_LENGTH_GRAMMAR_ARRAY = new Grammar [0];
+    /**
+     * Zero length grammar array.
+     */
+    private static final Grammar[] ZERO_LENGTH_GRAMMAR_ARRAY = new Grammar[0];
 
     private Grammar fGrammar;
     private Grammar[] fGrammars;
@@ -41,7 +43,7 @@ final class SimpleXMLSchema extends AbstractXMLSchema implements XMLGrammarPool 
 
     public SimpleXMLSchema(Grammar grammar) {
         fGrammar = grammar;
-        fGrammars = new Grammar[] {grammar};
+        fGrammars = new Grammar[]{grammar};
         fGrammarDescription = grammar.getGrammarDescription();
     }
 
@@ -54,17 +56,21 @@ final class SimpleXMLSchema extends AbstractXMLSchema implements XMLGrammarPool 
                 (Grammar[]) fGrammars.clone() : ZERO_LENGTH_GRAMMAR_ARRAY;
     }
 
-    public void cacheGrammars(String grammarType, Grammar[] grammars) {}
+    public void cacheGrammars(String grammarType, Grammar[] grammars) {
+    }
 
     public Grammar retrieveGrammar(XMLGrammarDescription desc) {
         return fGrammarDescription.equals(desc) ? fGrammar : null;
     }
 
-    public void lockPool() {}
+    public void lockPool() {
+    }
 
-    public void unlockPool() {}
+    public void unlockPool() {
+    }
 
-    public void clear() {}
+    public void clear() {
+    }
 
     /*
      * XSGrammarPoolContainer methods

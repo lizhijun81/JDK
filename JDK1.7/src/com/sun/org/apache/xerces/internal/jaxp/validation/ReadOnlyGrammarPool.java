@@ -34,7 +34,7 @@ final class ReadOnlyGrammarPool implements XMLGrammarPool {
 
     private final XMLGrammarPool core;
 
-    public ReadOnlyGrammarPool( XMLGrammarPool pool ) {
+    public ReadOnlyGrammarPool(XMLGrammarPool pool) {
         this.core = pool;
     }
 

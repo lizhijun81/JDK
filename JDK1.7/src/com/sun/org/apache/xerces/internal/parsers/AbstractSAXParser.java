@@ -77,13 +77,12 @@ import org.xml.sax.helpers.LocatorImpl;
  *
  * @author Arnaud Le Hors, IBM
  * @author Andy Clark, IBM
- *
  * @version $Id: AbstractSAXParser.java,v 1.6 2010-11-01 04:40:09 joehw Exp $
  */
 public abstract class AbstractSAXParser
-    extends AbstractXMLDocumentParser
-    implements PSVIProvider, // PSVI
-              Parser, XMLReader // SAX1, SAX2
+        extends AbstractXMLDocumentParser
+        implements PSVIProvider, // PSVI
+        Parser, XMLReader // SAX1, SAX2
 {
 
     //
@@ -92,50 +91,68 @@ public abstract class AbstractSAXParser
 
     // features
 
-    /** Feature identifier: namespaces. */
+    /**
+     * Feature identifier: namespaces.
+     */
     protected static final String NAMESPACES =
-        Constants.SAX_FEATURE_PREFIX + Constants.NAMESPACES_FEATURE;
+            Constants.SAX_FEATURE_PREFIX + Constants.NAMESPACES_FEATURE;
 
-    /** Feature identifier: namespace prefixes. */
+    /**
+     * Feature identifier: namespace prefixes.
+     */
     protected static final String NAMESPACE_PREFIXES =
-        Constants.SAX_FEATURE_PREFIX + Constants.NAMESPACE_PREFIXES_FEATURE;
+            Constants.SAX_FEATURE_PREFIX + Constants.NAMESPACE_PREFIXES_FEATURE;
 
-    /** Feature id: string interning. */
+    /**
+     * Feature id: string interning.
+     */
     protected static final String STRING_INTERNING =
-        Constants.SAX_FEATURE_PREFIX + Constants.STRING_INTERNING_FEATURE;
+            Constants.SAX_FEATURE_PREFIX + Constants.STRING_INTERNING_FEATURE;
 
-    /** Feature identifier: allow notation and unparsed entity events to be sent out of order. */
+    /**
+     * Feature identifier: allow notation and unparsed entity events to be sent out of order.
+     */
     // this is not meant to be a recognized feature, but we need it here to use
     // if it is already a recognized feature for the pipeline
     protected static final String ALLOW_UE_AND_NOTATION_EVENTS =
-        Constants.SAX_FEATURE_PREFIX + Constants.ALLOW_DTD_EVENTS_AFTER_ENDDTD_FEATURE;
+            Constants.SAX_FEATURE_PREFIX + Constants.ALLOW_DTD_EVENTS_AFTER_ENDDTD_FEATURE;
 
-    /** Recognized features. */
+    /**
+     * Recognized features.
+     */
     private static final String[] RECOGNIZED_FEATURES = {
-        NAMESPACES,
-        NAMESPACE_PREFIXES,
-        STRING_INTERNING,
+            NAMESPACES,
+            NAMESPACE_PREFIXES,
+            STRING_INTERNING,
     };
 
     // properties
 
-    /** Property id: lexical handler. */
+    /**
+     * Property id: lexical handler.
+     */
     protected static final String LEXICAL_HANDLER =
-        Constants.SAX_PROPERTY_PREFIX + Constants.LEXICAL_HANDLER_PROPERTY;
+            Constants.SAX_PROPERTY_PREFIX + Constants.LEXICAL_HANDLER_PROPERTY;
 
-    /** Property id: declaration handler. */
+    /**
+     * Property id: declaration handler.
+     */
     protected static final String DECLARATION_HANDLER =
-        Constants.SAX_PROPERTY_PREFIX + Constants.DECLARATION_HANDLER_PROPERTY;
+            Constants.SAX_PROPERTY_PREFIX + Constants.DECLARATION_HANDLER_PROPERTY;
 
-    /** Property id: DOM node. */
+    /**
+     * Property id: DOM node.
+     */
     protected static final String DOM_NODE =
-        Constants.SAX_PROPERTY_PREFIX + Constants.DOM_NODE_PROPERTY;
+            Constants.SAX_PROPERTY_PREFIX + Constants.DOM_NODE_PROPERTY;
 
-    /** Recognized properties. */
+    /**
+     * Recognized properties.
+     */
     private static final String[] RECOGNIZED_PROPERTIES = {
-        LEXICAL_HANDLER,
-        DECLARATION_HANDLER,
-        DOM_NODE,
+            LEXICAL_HANDLER,
+            DECLARATION_HANDLER,
+            DOM_NODE,
     };
 
     //
@@ -144,22 +161,34 @@ public abstract class AbstractSAXParser
 
     // features
 
-    /** Namespaces. */
+    /**
+     * Namespaces.
+     */
     protected boolean fNamespaces;
 
-    /** Namespace prefixes. */
+    /**
+     * Namespace prefixes.
+     */
     protected boolean fNamespacePrefixes = false;
 
-    /** Lexical handler parameter entities. */
+    /**
+     * Lexical handler parameter entities.
+     */
     protected boolean fLexicalHandlerParameterEntities = true;
 
-    /** Standalone document declaration. */
+    /**
+     * Standalone document declaration.
+     */
     protected boolean fStandalone;
 
-    /** Resolve DTD URIs. */
+    /**
+     * Resolve DTD URIs.
+     */
     protected boolean fResolveDTDURIs = true;
 
-    /** Use EntityResolver2. */
+    /**
+     * Use EntityResolver2.
+     */
     protected boolean fUseEntityResolver2 = true;
 
     /**
@@ -170,22 +199,34 @@ public abstract class AbstractSAXParser
 
     // parser handlers
 
-    /** Content handler. */
+    /**
+     * Content handler.
+     */
     protected ContentHandler fContentHandler;
 
-    /** Document handler. */
+    /**
+     * Document handler.
+     */
     protected DocumentHandler fDocumentHandler;
 
-    /** Namespace context */
+    /**
+     * Namespace context
+     */
     protected NamespaceContext fNamespaceContext;
 
-    /** DTD handler. */
+    /**
+     * DTD handler.
+     */
     protected org.xml.sax.DTDHandler fDTDHandler;
 
-    /** Decl handler. */
+    /**
+     * Decl handler.
+     */
     protected DeclHandler fDeclHandler;
 
-    /** Lexical handler. */
+    /**
+     * Lexical handler.
+     */
     protected LexicalHandler fLexicalHandler;
 
     protected QName fQName = new QName();
@@ -210,7 +251,7 @@ public abstract class AbstractSAXParser
     // temporary buffer for sending normalized values
     // REVISIT: what should be the size of the buffer?
     private static final int BUFFER_SIZE = 20;
-    private char[] fCharBuffer =  new char[BUFFER_SIZE];
+    private char[] fCharBuffer = new char[BUFFER_SIZE];
 
     // allows us to keep track of whether an attribute has
     // been declared twice, so that we can avoid exposing the
@@ -221,7 +262,9 @@ public abstract class AbstractSAXParser
     // Constructors
     //
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     protected AbstractSAXParser(XMLParserConfiguration config) {
         super(config);
 
@@ -230,8 +273,7 @@ public abstract class AbstractSAXParser
 
         try {
             config.setFeature(ALLOW_UE_AND_NOTATION_EVENTS, false);
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             // it wasn't a recognized feature, so we don't worry about it
         }
     } // <init>(XMLParserConfiguration)
@@ -243,32 +285,30 @@ public abstract class AbstractSAXParser
     /**
      * The start of the document.
      *
-     * @param locator The document locator, or null if the document
-     *                 location cannot be reported during the parsing
-     *                 of this document. However, it is <em>strongly</em>
-     *                 recommended that a locator be supplied that can
-     *                 at least report the system identifier of the
-     *                 document.
-     * @param encoding The auto-detected IANA encoding name of the entity
-     *                 stream. This value will be null in those situations
-     *                 where the entity encoding is not auto-detected (e.g.
-     *                 internal entities or a document entity that is
-     *                 parsed from a java.io.Reader).
-     * @param namespaceContext
-     *                 The namespace context in effect at the
-     *                 start of this document.
-     *                 This object represents the current context.
-     *                 Implementors of this class are responsible
-     *                 for copying the namespace bindings from the
-     *                 the current context (and its parent contexts)
-     *                 if that information is important.
-     * @param augs     Additional information that may include infoset augmentations
-     *
+     * @param locator          The document locator, or null if the document
+     *                         location cannot be reported during the parsing
+     *                         of this document. However, it is <em>strongly</em>
+     *                         recommended that a locator be supplied that can
+     *                         at least report the system identifier of the
+     *                         document.
+     * @param encoding         The auto-detected IANA encoding name of the entity
+     *                         stream. This value will be null in those situations
+     *                         where the entity encoding is not auto-detected (e.g.
+     *                         internal entities or a document entity that is
+     *                         parsed from a java.io.Reader).
+     * @param namespaceContext The namespace context in effect at the
+     *                         start of this document.
+     *                         This object represents the current context.
+     *                         Implementors of this class are responsible
+     *                         for copying the namespace bindings from the
+     *                         the current context (and its parent contexts)
+     *                         if that information is important.
+     * @param augs             Additional information that may include infoset augmentations
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void startDocument(XMLLocator locator, String encoding,
                               NamespaceContext namespaceContext, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
 
         fNamespaceContext = namespaceContext;
 
@@ -288,8 +328,7 @@ public abstract class AbstractSAXParser
                 }
                 fContentHandler.startDocument();
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -304,12 +343,11 @@ public abstract class AbstractSAXParser
      * @param encoding   The IANA encoding name of the document, or null if
      *                   not specified.
      * @param standalone The standalone value, or null if not specified.
-     * @param augs   Additional information that may include infoset augmentations
-     *
+     * @param augs       Additional information that may include infoset augmentations
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void xmlDecl(String version, String encoding, String standalone, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
         // the version need only be set once; if
         // document's XML 1.0|1.1, that's how it'll stay
         fVersion = version;
@@ -324,13 +362,12 @@ public abstract class AbstractSAXParser
      *                    if the external DTD is specified using SYSTEM.
      * @param systemId    The system identifier if an external DTD, null
      *                    otherwise.
-     * @param augs     Additional information that may include infoset augmentations
-     *
+     * @param augs        Additional information that may include infoset augmentations
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void doctypeDecl(String rootElement,
                             String publicId, String systemId, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
         fInDTD = true;
 
         try {
@@ -338,19 +375,18 @@ public abstract class AbstractSAXParser
             if (fLexicalHandler != null) {
                 fLexicalHandler.startDTD(rootElement, publicId, systemId);
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
         // is there a DeclHandler?
-        if(fDeclHandler != null) {
+        if (fDeclHandler != null) {
             fDeclaredAttrs = new SymbolHash();
         }
 
     } // doctypeDecl(String,String,String)
 
-        /**
+    /**
      * This method notifies of the start of an entity. The DTD has the
      * pseudo-name of "[dtd]" parameter entity names start with '%'; and
      * general entity names are just the entity name.
@@ -364,19 +400,18 @@ public abstract class AbstractSAXParser
      * <strong>Note:</strong> This method is not called for entity references
      * appearing as part of attribute values.
      *
-     * @param name     The name of the entity.
+     * @param name       The name of the entity.
      * @param identifier The resource identifier.
-     * @param encoding The auto-detected IANA encoding name of the entity
-     *                 stream. This value will be null in those situations
-     *                 where the entity encoding is not auto-detected (e.g.
-     *                 internal parameter entities).
-     * @param augs     Additional information that may include infoset augmentations
-     *
+     * @param encoding   The auto-detected IANA encoding name of the entity
+     *                   stream. This value will be null in those situations
+     *                   where the entity encoding is not auto-detected (e.g.
+     *                   internal parameter entities).
+     * @param augs       Additional information that may include infoset augmentations
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void startGeneralEntity(String name, XMLResourceIdentifier identifier,
                                    String encoding, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
 
         try {
             // Only report startEntity if this entity was actually read.
@@ -385,15 +420,13 @@ public abstract class AbstractSAXParser
                 if (fContentHandler != null) {
                     fContentHandler.skippedEntity(name);
                 }
-            }
-            else {
+            } else {
                 // SAX2 extension
                 if (fLexicalHandler != null) {
                     fLexicalHandler.startEntity(name);
                 }
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -414,8 +447,7 @@ public abstract class AbstractSAXParser
      * appearing as part of attribute values.
      *
      * @param name The name of the entity.
-     * @param augs     Additional information that may include infoset augmentations
-     *
+     * @param augs Additional information that may include infoset augmentations
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void endGeneralEntity(String name, Augmentations augs) throws XNIException {
@@ -428,26 +460,24 @@ public abstract class AbstractSAXParser
                     fLexicalHandler.endEntity(name);
                 }
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
     } // endEntity(String)
 
-     /**
+    /**
      * The start of an element. If the document specifies the start element
      * by using an empty tag, then the startElement method will immediately
      * be followed by the endElement method, with no intervening methods.
      *
      * @param element    The name of the element.
      * @param attributes The element attributes.
-     * @param augs     Additional information that may include infoset augmentations
-     *
+     * @param augs       Additional information that may include infoset augmentations
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void startElement(QName element, XMLAttributes attributes, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
 
         try {
             // SAX1
@@ -476,17 +506,16 @@ public abstract class AbstractSAXParser
                         for (int i = len - 1; i >= 0; --i) {
                             attributes.getName(i, fQName);
                             if ((fQName.prefix == XMLSymbols.PREFIX_XMLNS) ||
-                               (fQName.rawname == XMLSymbols.PREFIX_XMLNS)) {
+                                    (fQName.rawname == XMLSymbols.PREFIX_XMLNS)) {
                                 // remove namespace declaration attributes
                                 attributes.removeAttributeAt(i);
                             }
                         }
-                    }
-                    else if (!fXMLNSURIs) {
+                    } else if (!fXMLNSURIs) {
                         for (int i = len - 1; i >= 0; --i) {
                             attributes.getName(i, fQName);
                             if ((fQName.prefix == XMLSymbols.PREFIX_XMLNS) ||
-                               (fQName.rawname == XMLSymbols.PREFIX_XMLNS)) {
+                                    (fQName.rawname == XMLSymbols.PREFIX_XMLNS)) {
                                 // localpart should be empty string as per SAX documentation:
                                 // http://www.saxproject.org/?selected=namespaces
                                 fQName.prefix = "";
@@ -504,10 +533,9 @@ public abstract class AbstractSAXParser
                 String localpart = fNamespaces ? element.localpart : "";
                 fAttributesProxy.setAttributes(attributes);
                 fContentHandler.startElement(uri, localpart, element.rawname,
-                                             fAttributesProxy);
+                        fAttributesProxy);
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -517,8 +545,7 @@ public abstract class AbstractSAXParser
      * Character content.
      *
      * @param text The content.
-     * @param augs     Additional information that may include infoset augmentations
-     *
+     * @param augs Additional information that may include infoset augmentations
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void characters(XMLString text, Augmentations augs) throws XNIException {
@@ -542,8 +569,7 @@ public abstract class AbstractSAXParser
             if (fContentHandler != null) {
                 fContentHandler.characters(text.ch, text.offset, text.length);
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -558,8 +584,7 @@ public abstract class AbstractSAXParser
      * content model.
      *
      * @param text The ignorable whitespace.
-     * @param augs     Additional information that may include infoset augmentations
-     *
+     * @param augs Additional information that may include infoset augmentations
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void ignorableWhitespace(XMLString text, Augmentations augs) throws XNIException {
@@ -574,8 +599,7 @@ public abstract class AbstractSAXParser
             if (fContentHandler != null) {
                 fContentHandler.ignorableWhitespace(text.ch, text.offset, text.length);
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -585,8 +609,7 @@ public abstract class AbstractSAXParser
      * The end of an element.
      *
      * @param element The name of the element.
-     * @param augs     Additional information that may include infoset augmentations
-     *
+     * @param augs    Additional information that may include infoset augmentations
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void endElement(QName element, Augmentations augs) throws XNIException {
@@ -604,22 +627,21 @@ public abstract class AbstractSAXParser
                 String uri = element.uri != null ? element.uri : "";
                 String localpart = fNamespaces ? element.localpart : "";
                 fContentHandler.endElement(uri, localpart,
-                                           element.rawname);
+                        element.rawname);
                 if (fNamespaces) {
                     endNamespaceMapping();
                 }
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
     } // endElement(QName)
 
-        /**
+    /**
      * The start of a CDATA section.
-     * @param augs     Additional information that may include infoset augmentations
      *
+     * @param augs Additional information that may include infoset augmentations
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void startCDATA(Augmentations augs) throws XNIException {
@@ -629,8 +651,7 @@ public abstract class AbstractSAXParser
             if (fLexicalHandler != null) {
                 fLexicalHandler.startCDATA();
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -638,8 +659,8 @@ public abstract class AbstractSAXParser
 
     /**
      * The end of a CDATA section.
-     * @param augs     Additional information that may include infoset augmentations
      *
+     * @param augs Additional information that may include infoset augmentations
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void endCDATA(Augmentations augs) throws XNIException {
@@ -649,8 +670,7 @@ public abstract class AbstractSAXParser
             if (fLexicalHandler != null) {
                 fLexicalHandler.endCDATA();
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -660,8 +680,7 @@ public abstract class AbstractSAXParser
      * A comment.
      *
      * @param text The text in the comment.
-     * @param augs     Additional information that may include infoset augmentations
-     *
+     * @param augs Additional information that may include infoset augmentations
      * @throws XNIException Thrown by application to signal an error.
      */
     public void comment(XMLString text, Augmentations augs) throws XNIException {
@@ -671,8 +690,7 @@ public abstract class AbstractSAXParser
             if (fLexicalHandler != null) {
                 fLexicalHandler.comment(text.ch, 0, text.length);
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -691,12 +709,11 @@ public abstract class AbstractSAXParser
      *
      * @param target The target.
      * @param data   The data or null if none specified.
-     * @param augs     Additional information that may include infoset augmentations
-     *
+     * @param augs   Additional information that may include infoset augmentations
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void processingInstruction(String target, XMLString data, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
 
         //
         // REVISIT - I keep running into SAX apps that expect
@@ -708,15 +725,14 @@ public abstract class AbstractSAXParser
             // SAX1
             if (fDocumentHandler != null) {
                 fDocumentHandler.processingInstruction(target,
-                                                       data.toString());
+                        data.toString());
             }
 
             // SAX2
             if (fContentHandler != null) {
                 fContentHandler.processingInstruction(target, data.toString());
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -725,8 +741,8 @@ public abstract class AbstractSAXParser
 
     /**
      * The end of the document.
-     * @param augs     Additional information that may include infoset augmentations
      *
+     * @param augs Additional information that may include infoset augmentations
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void endDocument(Augmentations augs) throws XNIException {
@@ -741,8 +757,7 @@ public abstract class AbstractSAXParser
             if (fContentHandler != null) {
                 fContentHandler.endDocument();
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -756,8 +771,7 @@ public abstract class AbstractSAXParser
      * The start of the DTD external subset.
      *
      * @param augs Additional information that may include infoset
-     *                      augmentations.
-     *
+     *             augmentations.
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void startExternalSubset(XMLResourceIdentifier identifier,
@@ -769,8 +783,7 @@ public abstract class AbstractSAXParser
      * The end of the DTD external subset.
      *
      * @param augs Additional information that may include infoset
-     *                      augmentations.
-     *
+     *             augmentations.
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void endExternalSubset(Augmentations augs) throws XNIException {
@@ -791,21 +804,20 @@ public abstract class AbstractSAXParser
      * <strong>Note:</strong> This method is not called for entity references
      * appearing as part of attribute values.
      *
-     * @param name     The name of the parameter entity.
+     * @param name       The name of the parameter entity.
      * @param identifier The resource identifier.
-     * @param encoding The auto-detected IANA encoding name of the entity
-     *                 stream. This value will be null in those situations
-     *                 where the entity encoding is not auto-detected (e.g.
-     *                 internal parameter entities).
-     * @param augs Additional information that may include infoset
-     *                      augmentations.
-     *
+     * @param encoding   The auto-detected IANA encoding name of the entity
+     *                   stream. This value will be null in those situations
+     *                   where the entity encoding is not auto-detected (e.g.
+     *                   internal parameter entities).
+     * @param augs       Additional information that may include infoset
+     *                   augmentations.
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void startParameterEntity(String name,
                                      XMLResourceIdentifier identifier,
                                      String encoding, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
 
         try {
             // Only report startEntity if this entity was actually read.
@@ -814,15 +826,13 @@ public abstract class AbstractSAXParser
                 if (fContentHandler != null) {
                     fContentHandler.skippedEntity(name);
                 }
-            }
-            else {
+            } else {
                 // SAX2 extension
                 if (fLexicalHandler != null && fLexicalHandlerParameterEntities) {
                     fLexicalHandler.startEntity(name);
                 }
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -844,8 +854,7 @@ public abstract class AbstractSAXParser
      *
      * @param name The name of the parameter entity.
      * @param augs Additional information that may include infoset
-     *                      augmentations.
-     *
+     *             augmentations.
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void endParameterEntity(String name, Augmentations augs) throws XNIException {
@@ -858,8 +867,7 @@ public abstract class AbstractSAXParser
                     fLexicalHandler.endEntity(name);
                 }
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -870,22 +878,19 @@ public abstract class AbstractSAXParser
      *
      * @param name         The name of the element.
      * @param contentModel The element content model.
-     *
-     * @param augs Additional information that may include infoset
-     *                      augmentations.
-     *
+     * @param augs         Additional information that may include infoset
+     *                     augmentations.
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void elementDecl(String name, String contentModel, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
 
         try {
             // SAX2 extension
             if (fDeclHandler != null) {
                 fDeclHandler.elementDecl(name, contentModel);
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -894,27 +899,25 @@ public abstract class AbstractSAXParser
     /**
      * An attribute declaration.
      *
-     * @param elementName   The name of the element that this attribute
-     *                      is associated with.
-     * @param attributeName The name of the attribute.
-     * @param type          The attribute type. This value will be one of
-     *                      the following: "CDATA", "ENTITY", "ENTITIES",
-     *                      "ENUMERATION", "ID", "IDREF", "IDREFS",
-     *                      "NMTOKEN", "NMTOKENS", or "NOTATION".
-     * @param enumeration   If the type has the value "ENUMERATION" or
-     *                      "NOTATION", this array holds the allowed attribute
-     *                      values; otherwise, this array is null.
-     * @param defaultType   The attribute default type. This value will be
-     *                      one of the following: "#FIXED", "#IMPLIED",
-     *                      "#REQUIRED", or null.
-     * @param defaultValue  The attribute default value, or null if no
-     *                      default value is specified.
-     *
-     * @param nonNormalizedDefaultValue  The attribute default value with no normalization
-     *                      performed, or null if no default value is specified.
-     * @param augs Additional information that may include infoset
-     *                      augmentations.
-     *
+     * @param elementName               The name of the element that this attribute
+     *                                  is associated with.
+     * @param attributeName             The name of the attribute.
+     * @param type                      The attribute type. This value will be one of
+     *                                  the following: "CDATA", "ENTITY", "ENTITIES",
+     *                                  "ENUMERATION", "ID", "IDREF", "IDREFS",
+     *                                  "NMTOKEN", "NMTOKENS", or "NOTATION".
+     * @param enumeration               If the type has the value "ENUMERATION" or
+     *                                  "NOTATION", this array holds the allowed attribute
+     *                                  values; otherwise, this array is null.
+     * @param defaultType               The attribute default type. This value will be
+     *                                  one of the following: "#FIXED", "#IMPLIED",
+     *                                  "#REQUIRED", or null.
+     * @param defaultValue              The attribute default value, or null if no
+     *                                  default value is specified.
+     * @param nonNormalizedDefaultValue The attribute default value with no normalization
+     *                                  performed, or null if no default value is specified.
+     * @param augs                      Additional information that may include infoset
+     *                                  augmentations.
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void attributeDecl(String elementName, String attributeName,
@@ -927,21 +930,20 @@ public abstract class AbstractSAXParser
             if (fDeclHandler != null) {
                 // used as a key to detect duplicate attribute definitions.
                 String elemAttr = new StringBuffer(elementName).append("<").append(attributeName).toString();
-                if(fDeclaredAttrs.get(elemAttr) != null) {
+                if (fDeclaredAttrs.get(elemAttr) != null) {
                     // we aren't permitted to return duplicate attribute definitions
                     return;
                 }
                 fDeclaredAttrs.put(elemAttr, Boolean.TRUE);
                 if (type.equals("NOTATION") ||
-                    type.equals("ENUMERATION")) {
+                        type.equals("ENUMERATION")) {
 
                     StringBuffer str = new StringBuffer();
                     if (type.equals("NOTATION")) {
-                      str.append(type);
-                      str.append(" (");
-                    }
-                    else {
-                      str.append("(");
+                        str.append(type);
+                        str.append(" (");
+                    } else {
+                        str.append("(");
                     }
                     for (int i = 0; i < enumeration.length; i++) {
                         str.append(enumeration[i]);
@@ -952,12 +954,11 @@ public abstract class AbstractSAXParser
                     str.append(')');
                     type = str.toString();
                 }
-                String value = (defaultValue==null) ? null : defaultValue.toString();
+                String value = (defaultValue == null) ? null : defaultValue.toString();
                 fDeclHandler.attributeDecl(elementName, attributeName,
-                                           type, defaultType, value);
+                        type, defaultType, value);
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -966,18 +967,16 @@ public abstract class AbstractSAXParser
     /**
      * An internal entity declaration.
      *
-     * @param name The name of the entity. Parameter entity names start with
-     *             '%', whereas the name of a general entity is just the
-     *             entity name.
-     * @param text The value of the entity.
+     * @param name              The name of the entity. Parameter entity names start with
+     *                          '%', whereas the name of a general entity is just the
+     *                          entity name.
+     * @param text              The value of the entity.
      * @param nonNormalizedText The non-normalized value of the entity. This
-     *             value contains the same sequence of characters that was in
-     *             the internal entity declaration, without any entity
-     *             references expanded.
-     *
-     * @param augs Additional information that may include infoset
-     *                      augmentations.
-     *
+     *                          value contains the same sequence of characters that was in
+     *                          the internal entity declaration, without any entity
+     *                          references expanded.
+     * @param augs              Additional information that may include infoset
+     *                          augmentations.
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void internalEntityDecl(String name, XMLString text,
@@ -989,8 +988,7 @@ public abstract class AbstractSAXParser
             if (fDeclHandler != null) {
                 fDeclHandler.internalEntityDecl(name, text.toString());
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -999,14 +997,13 @@ public abstract class AbstractSAXParser
     /**
      * An external entity declaration.
      *
-     * @param name     The name of the entity. Parameter entity names start
-     *                 with '%', whereas the name of a general entity is just
-     *                 the entity name.
-     * @param identifier    An object containing all location information
-     *                      pertinent to this entity.
-     * @param augs Additional information that may include infoset
-     *                      augmentations.
-     *
+     * @param name       The name of the entity. Parameter entity names start
+     *                   with '%', whereas the name of a general entity is just
+     *                   the entity name.
+     * @param identifier An object containing all location information
+     *                   pertinent to this entity.
+     * @param augs       Additional information that may include infoset
+     *                   augmentations.
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void externalEntityDecl(String name, XMLResourceIdentifier identifier,
@@ -1016,11 +1013,10 @@ public abstract class AbstractSAXParser
             if (fDeclHandler != null) {
                 String publicId = identifier.getPublicId();
                 String systemId = fResolveDTDURIs ?
-                    identifier.getExpandedSystemId() : identifier.getLiteralSystemId();
+                        identifier.getExpandedSystemId() : identifier.getLiteralSystemId();
                 fDeclHandler.externalEntityDecl(name, publicId, systemId);
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -1029,14 +1025,12 @@ public abstract class AbstractSAXParser
     /**
      * An unparsed entity declaration.
      *
-     * @param name     The name of the entity.
-     * @param identifier    An object containing all location information
-     *                      pertinent to this entity.
-     * @param notation The name of the notation.
-     *
-     * @param augs Additional information that may include infoset
-     *                      augmentations.
-     *
+     * @param name       The name of the entity.
+     * @param identifier An object containing all location information
+     *                   pertinent to this entity.
+     * @param notation   The name of the notation.
+     * @param augs       Additional information that may include infoset
+     *                   augmentations.
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void unparsedEntityDecl(String name, XMLResourceIdentifier identifier,
@@ -1047,11 +1041,10 @@ public abstract class AbstractSAXParser
             if (fDTDHandler != null) {
                 String publicId = identifier.getPublicId();
                 String systemId = fResolveDTDURIs ?
-                    identifier.getExpandedSystemId() : identifier.getLiteralSystemId();
+                        identifier.getExpandedSystemId() : identifier.getLiteralSystemId();
                 fDTDHandler.unparsedEntityDecl(name, publicId, systemId, notation);
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -1060,12 +1053,11 @@ public abstract class AbstractSAXParser
     /**
      * A notation declaration
      *
-     * @param name     The name of the notation.
-     * @param identifier    An object containing all location information
-     *                      pertinent to this notation.
-     * @param augs Additional information that may include infoset
-     *                      augmentations.
-     *
+     * @param name       The name of the notation.
+     * @param identifier An object containing all location information
+     *                   pertinent to this notation.
+     * @param augs       Additional information that may include infoset
+     *                   augmentations.
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void notationDecl(String name, XMLResourceIdentifier identifier,
@@ -1075,11 +1067,10 @@ public abstract class AbstractSAXParser
             if (fDTDHandler != null) {
                 String publicId = identifier.getPublicId();
                 String systemId = fResolveDTDURIs ?
-                    identifier.getExpandedSystemId() : identifier.getLiteralSystemId();
+                        identifier.getExpandedSystemId() : identifier.getLiteralSystemId();
                 fDTDHandler.notationDecl(name, publicId, systemId);
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
 
@@ -1089,8 +1080,7 @@ public abstract class AbstractSAXParser
      * The end of the DTD.
      *
      * @param augs Additional information that may include infoset
-     *                      augmentations.
-     *
+     *             augmentations.
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void endDTD(Augmentations augs) throws XNIException {
@@ -1101,11 +1091,10 @@ public abstract class AbstractSAXParser
             if (fLexicalHandler != null) {
                 fLexicalHandler.endDTD();
             }
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new XNIException(e);
         }
-        if(fDeclaredAttrs != null) {
+        if (fDeclaredAttrs != null) {
             // help out the GC
             fDeclaredAttrs.clear();
         }
@@ -1125,9 +1114,8 @@ public abstract class AbstractSAXParser
      * </pre>
      *
      * @param systemId The system identifier (URI).
-     *
-     * @exception org.xml.sax.SAXException Throws exception on SAX error.
-     * @exception java.io.IOException Throws exception on i/o error.
+     * @throws org.xml.sax.SAXException Throws exception on SAX error.
+     * @throws java.io.IOException      Throws exception on i/o error.
      */
     public void parse(String systemId) throws SAXException, IOException {
 
@@ -1143,10 +1131,11 @@ public abstract class AbstractSAXParser
             if (ex == null) {
                 // must be a parser exception; mine it for locator info and throw
                 // a SAXParseException
-                LocatorImpl locatorImpl = new LocatorImpl(){
+                LocatorImpl locatorImpl = new LocatorImpl() {
                     public String getXMLVersion() {
                         return fVersion;
                     }
+
                     // since XMLParseExceptions know nothing about encoding,
                     // we cannot return anything meaningful in this context.
                     // We *could* consult the LocatorProxy, but the
@@ -1164,23 +1153,22 @@ public abstract class AbstractSAXParser
             }
             if (ex instanceof SAXException) {
                 // why did we create an XMLParseException?
-                throw (SAXException)ex;
+                throw (SAXException) ex;
             }
             if (ex instanceof IOException) {
-                throw (IOException)ex;
+                throw (IOException) ex;
             }
             throw new SAXException(ex);
-        }
-        catch (XNIException e) {
+        } catch (XNIException e) {
             Exception ex = e.getException();
             if (ex == null) {
                 throw new SAXException(e.getMessage());
             }
             if (ex instanceof SAXException) {
-                throw (SAXException)ex;
+                throw (SAXException) ex;
             }
             if (ex instanceof IOException) {
-                throw (IOException)ex;
+                throw (IOException) ex;
             }
             throw new SAXException(ex);
         }
@@ -1191,19 +1179,18 @@ public abstract class AbstractSAXParser
      * parse
      *
      * @param inputSource
-     *
-     * @exception org.xml.sax.SAXException
-     * @exception java.io.IOException
+     * @throws org.xml.sax.SAXException
+     * @throws java.io.IOException
      */
     public void parse(InputSource inputSource)
-        throws SAXException, IOException {
+            throws SAXException, IOException {
 
         // parse document
         try {
             XMLInputSource xmlInputSource =
-                new XMLInputSource(inputSource.getPublicId(),
-                                   inputSource.getSystemId(),
-                                   null);
+                    new XMLInputSource(inputSource.getPublicId(),
+                            inputSource.getSystemId(),
+                            null);
             xmlInputSource.setByteStream(inputSource.getByteStream());
             xmlInputSource.setCharacterStream(inputSource.getCharacterStream());
             xmlInputSource.setEncoding(inputSource.getEncoding());
@@ -1220,6 +1207,7 @@ public abstract class AbstractSAXParser
                     public String getXMLVersion() {
                         return fVersion;
                     }
+
                     // since XMLParseExceptions know nothing about encoding,
                     // we cannot return anything meaningful in this context.
                     // We *could* consult the LocatorProxy, but the
@@ -1237,23 +1225,22 @@ public abstract class AbstractSAXParser
             }
             if (ex instanceof SAXException) {
                 // why did we create an XMLParseException?
-                throw (SAXException)ex;
+                throw (SAXException) ex;
             }
             if (ex instanceof IOException) {
-                throw (IOException)ex;
+                throw (IOException) ex;
             }
             throw new SAXException(ex);
-        }
-        catch (XNIException e) {
+        } catch (XNIException e) {
             Exception ex = e.getException();
             if (ex == null) {
                 throw new SAXException(e.getMessage());
             }
             if (ex instanceof SAXException) {
-                throw (SAXException)ex;
+                throw (SAXException) ex;
             }
             if (ex instanceof IOException) {
-                throw (IOException)ex;
+                throw (IOException) ex;
             }
             throw new SAXException(ex);
         }
@@ -1275,24 +1262,20 @@ public abstract class AbstractSAXParser
                 if (xer instanceof EntityResolver2Wrapper) {
                     EntityResolver2Wrapper er2w = (EntityResolver2Wrapper) xer;
                     er2w.setEntityResolver((EntityResolver2) resolver);
-                }
-                else {
+                } else {
                     fConfiguration.setProperty(ENTITY_RESOLVER,
                             new EntityResolver2Wrapper((EntityResolver2) resolver));
                 }
-            }
-            else {
+            } else {
                 if (xer instanceof EntityResolverWrapper) {
                     EntityResolverWrapper erw = (EntityResolverWrapper) xer;
                     erw.setEntityResolver(resolver);
-                }
-                else {
+                } else {
                     fConfiguration.setProperty(ENTITY_RESOLVER,
                             new EntityResolverWrapper(resolver));
                 }
             }
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             // do nothing
         }
 
@@ -1302,7 +1285,7 @@ public abstract class AbstractSAXParser
      * Return the current entity resolver.
      *
      * @return The current entity resolver, or null if none
-     *         has been registered.
+     * has been registered.
      * @see #setEntityResolver
      */
     public EntityResolver getEntityResolver() {
@@ -1310,19 +1293,17 @@ public abstract class AbstractSAXParser
         EntityResolver entityResolver = null;
         try {
             XMLEntityResolver xmlEntityResolver =
-                (XMLEntityResolver)fConfiguration.getProperty(ENTITY_RESOLVER);
+                    (XMLEntityResolver) fConfiguration.getProperty(ENTITY_RESOLVER);
             if (xmlEntityResolver != null) {
                 if (xmlEntityResolver instanceof EntityResolverWrapper) {
                     entityResolver =
-                        ((EntityResolverWrapper) xmlEntityResolver).getEntityResolver();
-                }
-                else if (xmlEntityResolver instanceof EntityResolver2Wrapper) {
+                            ((EntityResolverWrapper) xmlEntityResolver).getEntityResolver();
+                } else if (xmlEntityResolver instanceof EntityResolver2Wrapper) {
                     entityResolver =
-                        ((EntityResolver2Wrapper) xmlEntityResolver).getEntityResolver();
+                            ((EntityResolver2Wrapper) xmlEntityResolver).getEntityResolver();
                 }
             }
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             // do nothing
         }
         return entityResolver;
@@ -1352,13 +1333,11 @@ public abstract class AbstractSAXParser
             if (xeh instanceof ErrorHandlerWrapper) {
                 ErrorHandlerWrapper ehw = (ErrorHandlerWrapper) xeh;
                 ehw.setErrorHandler(errorHandler);
-            }
-            else {
+            } else {
                 fConfiguration.setProperty(ERROR_HANDLER,
                         new ErrorHandlerWrapper(errorHandler));
             }
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             // do nothing
         }
 
@@ -1368,7 +1347,7 @@ public abstract class AbstractSAXParser
      * Return the current error handler.
      *
      * @return The current error handler, or null if none
-     *         has been registered.
+     * has been registered.
      * @see #setErrorHandler
      */
     public ErrorHandler getErrorHandler() {
@@ -1376,13 +1355,12 @@ public abstract class AbstractSAXParser
         ErrorHandler errorHandler = null;
         try {
             XMLErrorHandler xmlErrorHandler =
-                (XMLErrorHandler)fConfiguration.getProperty(ERROR_HANDLER);
+                    (XMLErrorHandler) fConfiguration.getProperty(ERROR_HANDLER);
             if (xmlErrorHandler != null &&
-                xmlErrorHandler instanceof ErrorHandlerWrapper) {
-                errorHandler = ((ErrorHandlerWrapper)xmlErrorHandler).getErrorHandler();
+                    xmlErrorHandler instanceof ErrorHandlerWrapper) {
+                errorHandler = ((ErrorHandlerWrapper) xmlErrorHandler).getErrorHandler();
             }
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             // do nothing
         }
         return errorHandler;
@@ -1393,10 +1371,8 @@ public abstract class AbstractSAXParser
      * Set the locale to use for messages.
      *
      * @param locale The locale object to use for localization of messages.
-     *
-     * @exception SAXException An exception thrown if the parser does not
-     *                         support the specified locale.
-     *
+     * @throws SAXException An exception thrown if the parser does not
+     *                      support the specified locale.
      * @see org.xml.sax.Parser
      */
     public void setLocale(Locale locale) throws SAXException {
@@ -1417,8 +1393,6 @@ public abstract class AbstractSAXParser
      * handler immediately.
      *
      * @param dtdHandler The DTD handler.
-     *
-
      * @see #getDTDHandler
      */
     public void setDTDHandler(DTDHandler dtdHandler) {
@@ -1463,7 +1437,6 @@ public abstract class AbstractSAXParser
      * handler immediately.
      *
      * @param contentHandler The content handler.
-     *
      * @see #getContentHandler
      */
     public void setContentHandler(ContentHandler contentHandler) {
@@ -1474,8 +1447,7 @@ public abstract class AbstractSAXParser
      * Return the current content handler.
      *
      * @return The current content handler, or null if none
-     *         has been registered.
-     *
+     * has been registered.
      * @see #setContentHandler
      */
     public ContentHandler getContentHandler() {
@@ -1486,7 +1458,7 @@ public abstract class AbstractSAXParser
      * Return the current DTD handler.
      *
      * @return The current DTD handler, or null if none
-     *         has been registered.
+     * has been registered.
      * @see #setDTDHandler
      */
     public DTDHandler getDTDHandler() {
@@ -1499,16 +1471,15 @@ public abstract class AbstractSAXParser
      * it, it might not be able to fulfill the request.
      *
      * @param featureId The unique identifier (URI) of the feature.
-     * @param state The requested state of the feature (true or false).
-     *
-     * @exception SAXNotRecognizedException If the
-     *            requested feature is not known.
-     * @exception SAXNotSupportedException If the
-     *            requested feature is known, but the requested
-     *            state is not supported.
+     * @param state     The requested state of the feature (true or false).
+     * @throws SAXNotRecognizedException If the
+     *                                   requested feature is not known.
+     * @throws SAXNotSupportedException  If the
+     *                                   requested feature is known, but the requested
+     *                                   state is not supported.
      */
     public void setFeature(String featureId, boolean state)
-        throws SAXNotRecognizedException, SAXNotSupportedException {
+            throws SAXNotRecognizedException, SAXNotSupportedException {
 
         try {
             //
@@ -1520,7 +1491,7 @@ public abstract class AbstractSAXParser
 
                 // http://xml.org/sax/features/namespaces
                 if (suffixLength == Constants.NAMESPACES_FEATURE.length() &&
-                    featureId.endsWith(Constants.NAMESPACES_FEATURE)) {
+                        featureId.endsWith(Constants.NAMESPACES_FEATURE)) {
                     fConfiguration.setFeature(featureId, state);
                     fNamespaces = state;
                     return;
@@ -1533,7 +1504,7 @@ public abstract class AbstractSAXParser
                 //   and xmlns* attributes must not be reported.
                 //
                 if (suffixLength == Constants.NAMESPACE_PREFIXES_FEATURE.length() &&
-                    featureId.endsWith(Constants.NAMESPACE_PREFIXES_FEATURE)) {
+                        featureId.endsWith(Constants.NAMESPACE_PREFIXES_FEATURE)) {
                     fConfiguration.setFeature(featureId, state);
                     fNamespacePrefixes = state;
                     return;
@@ -1544,11 +1515,11 @@ public abstract class AbstractSAXParser
                 //   passed to SAX handlers.
                 //
                 if (suffixLength == Constants.STRING_INTERNING_FEATURE.length() &&
-                    featureId.endsWith(Constants.STRING_INTERNING_FEATURE)) {
+                        featureId.endsWith(Constants.STRING_INTERNING_FEATURE)) {
                     if (!state) {
                         throw new SAXNotSupportedException(
-                            SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                            "false-not-supported", new Object [] {featureId}));
+                                SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                        "false-not-supported", new Object[]{featureId}));
                     }
                     return;
                 }
@@ -1558,7 +1529,7 @@ public abstract class AbstractSAXParser
                 //   will be reported to the LexicalHandler.
                 //
                 if (suffixLength == Constants.LEXICAL_HANDLER_PARAMETER_ENTITIES_FEATURE.length() &&
-                    featureId.endsWith(Constants.LEXICAL_HANDLER_PARAMETER_ENTITIES_FEATURE)) {
+                        featureId.endsWith(Constants.LEXICAL_HANDLER_PARAMETER_ENTITIES_FEATURE)) {
                     fLexicalHandlerParameterEntities = state;
                     return;
                 }
@@ -1568,7 +1539,7 @@ public abstract class AbstractSAXParser
                 //   their base URIs before reporting.
                 //
                 if (suffixLength == Constants.RESOLVE_DTD_URIS_FEATURE.length() &&
-                    featureId.endsWith(Constants.RESOLVE_DTD_URIS_FEATURE)) {
+                        featureId.endsWith(Constants.RESOLVE_DTD_URIS_FEATURE)) {
                     fResolveDTDURIs = state;
                     return;
                 }
@@ -1578,13 +1549,13 @@ public abstract class AbstractSAXParser
                 //   as per Appendix B of the XML 1.1 specification
                 //
                 if (suffixLength == Constants.UNICODE_NORMALIZATION_CHECKING_FEATURE.length() &&
-                    featureId.endsWith(Constants.UNICODE_NORMALIZATION_CHECKING_FEATURE)) {
+                        featureId.endsWith(Constants.UNICODE_NORMALIZATION_CHECKING_FEATURE)) {
                     // REVISIT: Allow this feature to be set once Unicode normalization
                     // checking is supported -- mrglavas.
                     if (state) {
                         throw new SAXNotSupportedException(
-                            SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                            "true-not-supported", new Object [] {featureId}));
+                                SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                        "true-not-supported", new Object[]{featureId}));
                     }
                     return;
                 }
@@ -1594,7 +1565,7 @@ public abstract class AbstractSAXParser
                 //   attributes as being in the namespace: http://www.w3.org/2000/xmlns/
                 //
                 if (suffixLength == Constants.XMLNS_URIS_FEATURE.length() &&
-                    featureId.endsWith(Constants.XMLNS_URIS_FEATURE)) {
+                        featureId.endsWith(Constants.XMLNS_URIS_FEATURE)) {
                     fXMLNSURIs = state;
                     return;
                 }
@@ -1604,7 +1575,7 @@ public abstract class AbstractSAXParser
                 //   org.xml.sax.ext.EntityResolver2 will be used by the parser.
                 //
                 if (suffixLength == Constants.USE_ENTITY_RESOLVER2_FEATURE.length() &&
-                    featureId.endsWith(Constants.USE_ENTITY_RESOLVER2_FEATURE)) {
+                        featureId.endsWith(Constants.USE_ENTITY_RESOLVER2_FEATURE)) {
                     if (state != fUseEntityResolver2) {
                         fUseEntityResolver2 = state;
                         // Refresh EntityResolver wrapper.
@@ -1628,16 +1599,16 @@ public abstract class AbstractSAXParser
                 // http://xml.org/sax/features/xml-1.1
                 //   reports whether the parser supports both XML 1.1 and XML 1.0.
                 if ((suffixLength == Constants.IS_STANDALONE_FEATURE.length() &&
-                    featureId.endsWith(Constants.IS_STANDALONE_FEATURE)) ||
-                    (suffixLength == Constants.USE_ATTRIBUTES2_FEATURE.length() &&
-                    featureId.endsWith(Constants.USE_ATTRIBUTES2_FEATURE)) ||
-                    (suffixLength == Constants.USE_LOCATOR2_FEATURE.length() &&
-                    featureId.endsWith(Constants.USE_LOCATOR2_FEATURE)) ||
-                    (suffixLength == Constants.XML_11_FEATURE.length() &&
-                    featureId.endsWith(Constants.XML_11_FEATURE))) {
+                        featureId.endsWith(Constants.IS_STANDALONE_FEATURE)) ||
+                        (suffixLength == Constants.USE_ATTRIBUTES2_FEATURE.length() &&
+                                featureId.endsWith(Constants.USE_ATTRIBUTES2_FEATURE)) ||
+                        (suffixLength == Constants.USE_LOCATOR2_FEATURE.length() &&
+                                featureId.endsWith(Constants.USE_LOCATOR2_FEATURE)) ||
+                        (suffixLength == Constants.XML_11_FEATURE.length() &&
+                                featureId.endsWith(Constants.XML_11_FEATURE))) {
                     throw new SAXNotSupportedException(
-                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                        "feature-read-only", new Object [] {featureId}));
+                            SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                    "feature-read-only", new Object[]{featureId}));
                 }
 
 
@@ -1664,18 +1635,16 @@ public abstract class AbstractSAXParser
             //
 
             fConfiguration.setFeature(featureId, state);
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             String identifier = e.getIdentifier();
             if (e.getType() == Status.NOT_RECOGNIZED) {
                 throw new SAXNotRecognizedException(
-                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                    "feature-not-recognized", new Object [] {identifier}));
-            }
-            else {
+                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                "feature-not-recognized", new Object[]{identifier}));
+            } else {
                 throw new SAXNotSupportedException(
-                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                    "feature-not-supported", new Object [] {identifier}));
+                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                "feature-not-supported", new Object[]{identifier}));
             }
         }
 
@@ -1683,20 +1652,20 @@ public abstract class AbstractSAXParser
 
     /**
      * Query the state of a feature.
-     *
+     * <p>
      * Query the current state of any feature in a SAX2 parser.  The
      * parser might not recognize the feature.
      *
      * @param featureId The unique identifier (URI) of the feature
      *                  being set.
      * @return The current state of the feature.
-     * @exception org.xml.sax.SAXNotRecognizedException If the
-     *            requested feature is not known.
-     * @exception SAXNotSupportedException If the
-     *            requested feature is known but not supported.
+     * @throws org.xml.sax.SAXNotRecognizedException If the
+     *                                               requested feature is not known.
+     * @throws SAXNotSupportedException              If the
+     *                                               requested feature is known but not supported.
      */
     public boolean getFeature(String featureId)
-        throws SAXNotRecognizedException, SAXNotSupportedException {
+            throws SAXNotRecognizedException, SAXNotSupportedException {
 
         try {
             //
@@ -1713,7 +1682,7 @@ public abstract class AbstractSAXParser
                 //   and xmlns* attributes must not be reported.
                 //
                 if (suffixLength == Constants.NAMESPACE_PREFIXES_FEATURE.length() &&
-                    featureId.endsWith(Constants.NAMESPACE_PREFIXES_FEATURE)) {
+                        featureId.endsWith(Constants.NAMESPACE_PREFIXES_FEATURE)) {
                     boolean state = fConfiguration.getFeature(featureId);
                     return state;
                 }
@@ -1722,7 +1691,7 @@ public abstract class AbstractSAXParser
                 //   passed to SAX handlers.
                 //
                 if (suffixLength == Constants.STRING_INTERNING_FEATURE.length() &&
-                    featureId.endsWith(Constants.STRING_INTERNING_FEATURE)) {
+                        featureId.endsWith(Constants.STRING_INTERNING_FEATURE)) {
                     return true;
                 }
 
@@ -1730,7 +1699,7 @@ public abstract class AbstractSAXParser
                 //   reports whether the document specified a standalone document declaration.
                 //
                 if (suffixLength == Constants.IS_STANDALONE_FEATURE.length() &&
-                    featureId.endsWith(Constants.IS_STANDALONE_FEATURE)) {
+                        featureId.endsWith(Constants.IS_STANDALONE_FEATURE)) {
                     return fStandalone;
                 }
 
@@ -1738,7 +1707,7 @@ public abstract class AbstractSAXParser
                 //   reports whether the parser supports both XML 1.1 and XML 1.0.
                 //
                 if (suffixLength == Constants.XML_11_FEATURE.length() &&
-                    featureId.endsWith(Constants.XML_11_FEATURE)) {
+                        featureId.endsWith(Constants.XML_11_FEATURE)) {
                     return (fConfiguration instanceof XML11Configurable);
                 }
 
@@ -1747,7 +1716,7 @@ public abstract class AbstractSAXParser
                 //   will be reported to the LexicalHandler.
                 //
                 if (suffixLength == Constants.LEXICAL_HANDLER_PARAMETER_ENTITIES_FEATURE.length() &&
-                    featureId.endsWith(Constants.LEXICAL_HANDLER_PARAMETER_ENTITIES_FEATURE)) {
+                        featureId.endsWith(Constants.LEXICAL_HANDLER_PARAMETER_ENTITIES_FEATURE)) {
                     return fLexicalHandlerParameterEntities;
                 }
 
@@ -1755,7 +1724,7 @@ public abstract class AbstractSAXParser
                 //   controls whether system identifiers will be absolutized relative to
                 //   their base URIs before reporting.
                 if (suffixLength == Constants.RESOLVE_DTD_URIS_FEATURE.length() &&
-                    featureId.endsWith(Constants.RESOLVE_DTD_URIS_FEATURE)) {
+                        featureId.endsWith(Constants.RESOLVE_DTD_URIS_FEATURE)) {
                     return fResolveDTDURIs;
                 }
 
@@ -1764,7 +1733,7 @@ public abstract class AbstractSAXParser
                 //   attributes as being in the namespace: http://www.w3.org/2000/xmlns/
                 //
                 if (suffixLength == Constants.XMLNS_URIS_FEATURE.length() &&
-                    featureId.endsWith(Constants.XMLNS_URIS_FEATURE)) {
+                        featureId.endsWith(Constants.XMLNS_URIS_FEATURE)) {
                     return fXMLNSURIs;
                 }
 
@@ -1773,7 +1742,7 @@ public abstract class AbstractSAXParser
                 //   as per Appendix B of the XML 1.1 specification
                 //
                 if (suffixLength == Constants.UNICODE_NORMALIZATION_CHECKING_FEATURE.length() &&
-                    featureId.endsWith(Constants.UNICODE_NORMALIZATION_CHECKING_FEATURE)) {
+                        featureId.endsWith(Constants.UNICODE_NORMALIZATION_CHECKING_FEATURE)) {
                     // REVISIT: Allow this feature to be set once Unicode normalization
                     // checking is supported -- mrglavas.
                     return false;
@@ -1784,7 +1753,7 @@ public abstract class AbstractSAXParser
                 //   org.xml.sax.ext.EntityResolver2 will be used by the parser.
                 //
                 if (suffixLength == Constants.USE_ENTITY_RESOLVER2_FEATURE.length() &&
-                    featureId.endsWith(Constants.USE_ENTITY_RESOLVER2_FEATURE)) {
+                        featureId.endsWith(Constants.USE_ENTITY_RESOLVER2_FEATURE)) {
                     return fUseEntityResolver2;
                 }
 
@@ -1796,9 +1765,9 @@ public abstract class AbstractSAXParser
                 //   the org.xml.sax.ext.Locator2 interface.
                 //
                 if ((suffixLength == Constants.USE_ATTRIBUTES2_FEATURE.length() &&
-                    featureId.endsWith(Constants.USE_ATTRIBUTES2_FEATURE)) ||
-                    (suffixLength == Constants.USE_LOCATOR2_FEATURE.length() &&
-                    featureId.endsWith(Constants.USE_LOCATOR2_FEATURE))) {
+                        featureId.endsWith(Constants.USE_ATTRIBUTES2_FEATURE)) ||
+                        (suffixLength == Constants.USE_LOCATOR2_FEATURE.length() &&
+                                featureId.endsWith(Constants.USE_LOCATOR2_FEATURE))) {
                     return true;
                 }
 
@@ -1821,18 +1790,16 @@ public abstract class AbstractSAXParser
             */
 
             return fConfiguration.getFeature(featureId);
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             String identifier = e.getIdentifier();
             if (e.getType() == Status.NOT_RECOGNIZED) {
                 throw new SAXNotRecognizedException(
-                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                    "feature-not-recognized", new Object [] {identifier}));
-            }
-            else {
+                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                "feature-not-recognized", new Object[]{identifier}));
+            } else {
                 throw new SAXNotSupportedException(
-                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                    "feature-not-supported", new Object [] {identifier}));
+                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                "feature-not-supported", new Object[]{identifier}));
             }
         }
 
@@ -1845,16 +1812,15 @@ public abstract class AbstractSAXParser
      *
      * @param propertyId The unique identifier (URI) of the property
      *                   being set.
-     * @param value The value to which the property is being set.
-     *
-     * @exception SAXNotRecognizedException If the
-     *            requested property is not known.
-     * @exception SAXNotSupportedException If the
-     *            requested property is known, but the requested
-     *            value is not supported.
+     * @param value      The value to which the property is being set.
+     * @throws SAXNotRecognizedException If the
+     *                                   requested property is not known.
+     * @throws SAXNotSupportedException  If the
+     *                                   requested property is known, but the requested
+     *                                   value is not supported.
      */
     public void setProperty(String propertyId, Object value)
-        throws SAXNotRecognizedException, SAXNotSupportedException {
+            throws SAXNotRecognizedException, SAXNotSupportedException {
 
         try {
             //
@@ -1871,14 +1837,13 @@ public abstract class AbstractSAXParser
                 //   Set the lexical event handler.
                 //
                 if (suffixLength == Constants.LEXICAL_HANDLER_PROPERTY.length() &&
-                    propertyId.endsWith(Constants.LEXICAL_HANDLER_PROPERTY)) {
+                        propertyId.endsWith(Constants.LEXICAL_HANDLER_PROPERTY)) {
                     try {
-                        setLexicalHandler((LexicalHandler)value);
-                    }
-                    catch (ClassCastException e) {
+                        setLexicalHandler((LexicalHandler) value);
+                    } catch (ClassCastException e) {
                         throw new SAXNotSupportedException(
-                            SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                            "incompatible-class", new Object [] {propertyId, "org.xml.sax.ext.LexicalHandler"}));
+                                SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                        "incompatible-class", new Object[]{propertyId, "org.xml.sax.ext.LexicalHandler"}));
                     }
                     return;
                 }
@@ -1889,14 +1854,13 @@ public abstract class AbstractSAXParser
                 //   Set the DTD declaration event handler.
                 //
                 if (suffixLength == Constants.DECLARATION_HANDLER_PROPERTY.length() &&
-                    propertyId.endsWith(Constants.DECLARATION_HANDLER_PROPERTY)) {
+                        propertyId.endsWith(Constants.DECLARATION_HANDLER_PROPERTY)) {
                     try {
-                        setDeclHandler((DeclHandler)value);
-                    }
-                    catch (ClassCastException e) {
+                        setDeclHandler((DeclHandler) value);
+                    } catch (ClassCastException e) {
                         throw new SAXNotSupportedException(
-                            SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                            "incompatible-class", new Object [] {propertyId, "org.xml.sax.ext.DeclHandler"}));
+                                SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                        "incompatible-class", new Object[]{propertyId, "org.xml.sax.ext.DeclHandler"}));
                     }
                     return;
                 }
@@ -1915,12 +1879,12 @@ public abstract class AbstractSAXParser
                 //   The literal string describing the actual XML version of the document.
                 //
                 if ((suffixLength == Constants.DOM_NODE_PROPERTY.length() &&
-                    propertyId.endsWith(Constants.DOM_NODE_PROPERTY)) ||
-                    (suffixLength == Constants.DOCUMENT_XML_VERSION_PROPERTY.length() &&
-                    propertyId.endsWith(Constants.DOCUMENT_XML_VERSION_PROPERTY))) {
+                        propertyId.endsWith(Constants.DOM_NODE_PROPERTY)) ||
+                        (suffixLength == Constants.DOCUMENT_XML_VERSION_PROPERTY.length() &&
+                                propertyId.endsWith(Constants.DOCUMENT_XML_VERSION_PROPERTY))) {
                     throw new SAXNotSupportedException(
-                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                        "property-read-only", new Object [] {propertyId}));
+                            SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                    "property-read-only", new Object[]{propertyId}));
                 }
                 //
                 // Drop through and perform default processing
@@ -1944,18 +1908,16 @@ public abstract class AbstractSAXParser
             //
 
             fConfiguration.setProperty(propertyId, value);
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             String identifier = e.getIdentifier();
             if (e.getType() == Status.NOT_RECOGNIZED) {
                 throw new SAXNotRecognizedException(
-                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                    "property-not-recognized", new Object [] {identifier}));
-            }
-            else {
+                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                "property-not-recognized", new Object[]{identifier}));
+            } else {
                 throw new SAXNotSupportedException(
-                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                    "property-not-supported", new Object [] {identifier}));
+                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                "property-not-supported", new Object[]{identifier}));
             }
         }
 
@@ -1963,20 +1925,20 @@ public abstract class AbstractSAXParser
 
     /**
      * Query the value of a property.
-     *
+     * <p>
      * Return the current value of a property in a SAX2 parser.
      * The parser might not recognize the property.
      *
      * @param propertyId The unique identifier (URI) of the property
      *                   being set.
      * @return The current value of the property.
-     * @exception org.xml.sax.SAXNotRecognizedException If the
-     *            requested property is not known.
-     * @exception SAXNotSupportedException If the
-     *            requested property is known but not supported.
+     * @throws org.xml.sax.SAXNotRecognizedException If the
+     *                                               requested property is not known.
+     * @throws SAXNotSupportedException              If the
+     *                                               requested property is known but not supported.
      */
     public Object getProperty(String propertyId)
-        throws SAXNotRecognizedException, SAXNotSupportedException {
+            throws SAXNotRecognizedException, SAXNotSupportedException {
 
         try {
             //
@@ -1993,7 +1955,7 @@ public abstract class AbstractSAXParser
                 //   The literal string describing the actual XML version of the document.
                 //
                 if (suffixLength == Constants.DOCUMENT_XML_VERSION_PROPERTY.length() &&
-                    propertyId.endsWith(Constants.DOCUMENT_XML_VERSION_PROPERTY)) {
+                        propertyId.endsWith(Constants.DOCUMENT_XML_VERSION_PROPERTY)) {
                     return fVersion;
                 }
 
@@ -2004,7 +1966,7 @@ public abstract class AbstractSAXParser
                 //   Set the lexical event handler.
                 //
                 if (suffixLength == Constants.LEXICAL_HANDLER_PROPERTY.length() &&
-                    propertyId.endsWith(Constants.LEXICAL_HANDLER_PROPERTY)) {
+                        propertyId.endsWith(Constants.LEXICAL_HANDLER_PROPERTY)) {
                     return getLexicalHandler();
                 }
                 //
@@ -2014,7 +1976,7 @@ public abstract class AbstractSAXParser
                 //   Set the DTD declaration event handler.
                 //
                 if (suffixLength == Constants.DECLARATION_HANDLER_PROPERTY.length() &&
-                    propertyId.endsWith(Constants.DECLARATION_HANDLER_PROPERTY)) {
+                        propertyId.endsWith(Constants.DECLARATION_HANDLER_PROPERTY)) {
                     return getDeclHandler();
                 }
 
@@ -2029,11 +1991,11 @@ public abstract class AbstractSAXParser
                 //   availability before the parse begins).
                 //
                 if (suffixLength == Constants.DOM_NODE_PROPERTY.length() &&
-                    propertyId.endsWith(Constants.DOM_NODE_PROPERTY)) {
+                        propertyId.endsWith(Constants.DOM_NODE_PROPERTY)) {
                     // we are not iterating a DOM tree
                     throw new SAXNotSupportedException(
-                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                        "dom-node-read-not-supported", null));
+                            SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                    "dom-node-read-not-supported", null));
                 }
 
                 //
@@ -2058,18 +2020,16 @@ public abstract class AbstractSAXParser
             //
 
             return fConfiguration.getProperty(propertyId);
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             String identifier = e.getIdentifier();
             if (e.getType() == Status.NOT_RECOGNIZED) {
                 throw new SAXNotRecognizedException(
-                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                    "property-not-recognized", new Object [] {identifier}));
-            }
-            else {
+                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                "property-not-recognized", new Object[]{identifier}));
+            } else {
                 throw new SAXNotSupportedException(
-                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                    "property-not-supported", new Object [] {identifier}));
+                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                "property-not-supported", new Object[]{identifier}));
             }
         }
 
@@ -2090,18 +2050,17 @@ public abstract class AbstractSAXParser
      * </pre>
      *
      * @param handler The new handler.
-     *
      * @see #getDeclHandler
      * @see #setProperty
      */
     protected void setDeclHandler(DeclHandler handler)
-        throws SAXNotRecognizedException, SAXNotSupportedException {
+            throws SAXNotRecognizedException, SAXNotSupportedException {
 
         if (fParseInProgress) {
             throw new SAXNotSupportedException(
-                SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                "property-not-parsing-supported",
-                new Object [] {"http://xml.org/sax/properties/declaration-handler"}));
+                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                            "property-not-parsing-supported",
+                            new Object[]{"http://xml.org/sax/properties/declaration-handler"}));
         }
         fDeclHandler = handler;
 
@@ -2113,7 +2072,7 @@ public abstract class AbstractSAXParser
      * @see #setDeclHandler
      */
     protected DeclHandler getDeclHandler()
-        throws SAXNotRecognizedException, SAXNotSupportedException {
+            throws SAXNotRecognizedException, SAXNotSupportedException {
         return fDeclHandler;
     } // getDeclHandler():DeclHandler
 
@@ -2126,18 +2085,17 @@ public abstract class AbstractSAXParser
      * </pre>
      *
      * @param handler lexical event handler
-     *
      * @see #getLexicalHandler
      * @see #setProperty
      */
     protected void setLexicalHandler(LexicalHandler handler)
-        throws SAXNotRecognizedException, SAXNotSupportedException {
+            throws SAXNotRecognizedException, SAXNotSupportedException {
 
         if (fParseInProgress) {
             throw new SAXNotSupportedException(
-                SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                "property-not-parsing-supported",
-                new Object [] {"http://xml.org/sax/properties/lexical-handler"}));
+                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                            "property-not-parsing-supported",
+                            new Object[]{"http://xml.org/sax/properties/lexical-handler"}));
         }
         fLexicalHandler = handler;
 
@@ -2149,14 +2107,14 @@ public abstract class AbstractSAXParser
      * @see #setLexicalHandler
      */
     protected LexicalHandler getLexicalHandler()
-        throws SAXNotRecognizedException, SAXNotSupportedException {
+            throws SAXNotRecognizedException, SAXNotSupportedException {
         return fLexicalHandler;
     } // getLexicalHandler():LexicalHandler
 
     /**
      * Send startPrefixMapping events
      */
-    protected final void startNamespaceMapping() throws SAXException{
+    protected final void startNamespaceMapping() throws SAXException {
         int count = fNamespaceContext.getDeclaredPrefixCount();
         if (count > 0) {
             String prefix = null;
@@ -2165,7 +2123,7 @@ public abstract class AbstractSAXParser
                 prefix = fNamespaceContext.getDeclaredPrefixAt(i);
                 uri = fNamespaceContext.getURI(prefix);
                 fContentHandler.startPrefixMapping(prefix,
-                    (uri == null) ? "" : uri);
+                        (uri == null) ? "" : uri);
             }
         }
     }
@@ -2212,20 +2170,24 @@ public abstract class AbstractSAXParser
     //
 
     protected class LocatorProxy
-        implements Locator2 {
+            implements Locator2 {
 
         //
         // Data
         //
 
-        /** XML locator. */
+        /**
+         * XML locator.
+         */
         protected XMLLocator fLocator;
 
         //
         // Constructors
         //
 
-        /** Constructs an XML locator proxy. */
+        /**
+         * Constructs an XML locator proxy.
+         */
         public LocatorProxy(XMLLocator locator) {
             fLocator = locator;
         }
@@ -2234,21 +2196,30 @@ public abstract class AbstractSAXParser
         // Locator methods
         //
 
-        /** Public identifier. */
+        /**
+         * Public identifier.
+         */
         public String getPublicId() {
             return fLocator.getPublicId();
         }
 
-        /** System identifier. */
+        /**
+         * System identifier.
+         */
         public String getSystemId() {
             return fLocator.getExpandedSystemId();
         }
-        /** Line number. */
+
+        /**
+         * Line number.
+         */
         public int getLineNumber() {
             return fLocator.getLineNumber();
         }
 
-        /** Column number. */
+        /**
+         * Column number.
+         */
         public int getColumnNumber() {
             return fLocator.getColumnNumber();
         }
@@ -2265,20 +2236,24 @@ public abstract class AbstractSAXParser
     } // class LocatorProxy
 
     protected static final class AttributesProxy
-        implements AttributeList, Attributes2 {
+            implements AttributeList, Attributes2 {
 
         //
         // Data
         //
 
-        /** XML attributes. */
+        /**
+         * XML attributes.
+         */
         protected XMLAttributes fAttributes;
 
         //
         // Public methods
         //
 
-        /** Sets the XML attributes. */
+        /**
+         * Sets the XML attributes.
+         */
         public void setAttributes(XMLAttributes attributes) {
             fAttributes = attributes;
         } // setAttributes(XMLAttributes)
@@ -2299,7 +2274,7 @@ public abstract class AbstractSAXParser
             // REVISIT: this hides the fact that internally we use
             //          null instead of empty string
             //          SAX requires URI to be a string or an empty string
-            String uri= fAttributes.getURI(index);
+            String uri = fAttributes.getURI(index);
             return uri != null ? uri : "";
         }
 
@@ -2317,7 +2292,7 @@ public abstract class AbstractSAXParser
 
         public String getType(String uri, String localName) {
             return uri.equals("") ? fAttributes.getType(null, localName) :
-                                    fAttributes.getType(uri, localName);
+                    fAttributes.getType(uri, localName);
         }
 
         public String getValue(int i) {
@@ -2330,7 +2305,7 @@ public abstract class AbstractSAXParser
 
         public String getValue(String uri, String localName) {
             return uri.equals("") ? fAttributes.getValue(null, localName) :
-                                    fAttributes.getValue(uri, localName);
+                    fAttributes.getValue(uri, localName);
         }
 
         public int getIndex(String qName) {
@@ -2339,7 +2314,7 @@ public abstract class AbstractSAXParser
 
         public int getIndex(String uri, String localPart) {
             return uri.equals("") ? fAttributes.getIndex(null, localPart) :
-                                    fAttributes.getIndex(uri, localPart);
+                    fAttributes.getIndex(uri, localPart);
         }
 
         // Attributes2 methods
@@ -2349,8 +2324,8 @@ public abstract class AbstractSAXParser
                 throw new ArrayIndexOutOfBoundsException(index);
             }
             return Boolean.TRUE.equals(
-                fAttributes.getAugmentations(index).getItem(
-                Constants.ATTRIBUTE_DECLARED));
+                    fAttributes.getAugmentations(index).getItem(
+                            Constants.ATTRIBUTE_DECLARED));
         }
 
         public boolean isDeclared(String qName) {
@@ -2359,8 +2334,8 @@ public abstract class AbstractSAXParser
                 throw new IllegalArgumentException(qName);
             }
             return Boolean.TRUE.equals(
-                fAttributes.getAugmentations(index).getItem(
-                Constants.ATTRIBUTE_DECLARED));
+                    fAttributes.getAugmentations(index).getItem(
+                            Constants.ATTRIBUTE_DECLARED));
         }
 
         public boolean isDeclared(String uri, String localName) {
@@ -2369,8 +2344,8 @@ public abstract class AbstractSAXParser
                 throw new IllegalArgumentException(localName);
             }
             return Boolean.TRUE.equals(
-                fAttributes.getAugmentations(index).getItem(
-                Constants.ATTRIBUTE_DECLARED));
+                    fAttributes.getAugmentations(index).getItem(
+                            Constants.ATTRIBUTE_DECLARED));
         }
 
         public boolean isSpecified(int index) {
@@ -2401,20 +2376,20 @@ public abstract class AbstractSAXParser
 
     // PSVIProvider methods
 
-    public ElementPSVI getElementPSVI(){
-        return (fAugmentations != null)?(ElementPSVI)fAugmentations.getItem(Constants.ELEMENT_PSVI):null;
+    public ElementPSVI getElementPSVI() {
+        return (fAugmentations != null) ? (ElementPSVI) fAugmentations.getItem(Constants.ELEMENT_PSVI) : null;
     }
 
 
-    public AttributePSVI getAttributePSVI(int index){
+    public AttributePSVI getAttributePSVI(int index) {
 
-        return (AttributePSVI)fAttributesProxy.fAttributes.getAugmentations(index).getItem(Constants.ATTRIBUTE_PSVI);
+        return (AttributePSVI) fAttributesProxy.fAttributes.getAugmentations(index).getItem(Constants.ATTRIBUTE_PSVI);
     }
 
 
     public AttributePSVI getAttributePSVIByName(String uri,
-                                                String localname){
-        return (AttributePSVI)fAttributesProxy.fAttributes.getAugmentations(uri, localname).getItem(Constants.ATTRIBUTE_PSVI);
+                                                String localname) {
+        return (AttributePSVI) fAttributesProxy.fAttributes.getAugmentations(uri, localname).getItem(Constants.ATTRIBUTE_PSVI);
     }
 
 } // class AbstractSAXParser

@@ -25,23 +25,23 @@ package com.sun.org.apache.xerces.internal.dom;
  * entities defined by the DOM. Entities hardcoded into XML, such as
  * character entities, should instead have been translated into text
  * by the code which generated the DOM tree.
- * <P>
+ * <p>
  * An XML processor has the alternative of fully expanding Entities
  * into the normal document tree. If it does so, no EntityReference nodes
  * will appear.
- * <P>
+ * <p>
  * Similarly, non-validating XML processors are not required to read
  * or process entity declarations made in the external subset or
  * declared in external parameter entities. Hence, some applications
  * may not make the replacement value available for Parsed Entities
  * of these types.
- * <P>
+ * <p>
  * EntityReference behaves as a read-only node, and the children of
  * the EntityReference (which reflect those of the Entity, and should
  * also be read-only) give its replacement value, if any. They are
  * supposed to automagically stay in synch if the DocumentType is
  * updated with new values for the Entity.
- * <P>
+ * <p>
  * The defined behavior makes efficient storage difficult for the DOM
  * implementor. We can't just look aside to the Entity's definition
  * in the DocumentType since those nodes have the wrong parent (unless
@@ -50,7 +50,7 @@ package com.sun.org.apache.xerces.internal.dom;
  * issue of keeping the reference synchronized with its parent.
  * This leads me back to the "cached image of centrally defined data"
  * solution, much as I dislike it.
- * <P>
+ * <p>
  * For now I have decided, since REC-DOM-Level-1-19980818 doesn't
  * cover this in much detail, that synchronization doesn't have to be
  * considered while the user is deep in the tree. That is, if you're
@@ -62,32 +62,35 @@ package com.sun.org.apache.xerces.internal.dom;
  * acceptable here. (If it really bothers folks, we could set things
  * up so deleted subtrees are walked and marked invalid, but that's
  * not part of the DOM's defined behavior.)
- * <P>
+ * <p>
  * As a result, only the EntityReference itself has to be aware of
  * changes in the Entity. And it can take advantage of the same
  * structure-change-monitoring code I implemented to support
  * DeepNodeList.
  *
  * @xerces.internal
- *
- * @since  PR-DOM-Level-1-19980818.
+ * @since PR-DOM-Level-1-19980818.
  */
 public class DeferredEntityReferenceImpl
-    extends EntityReferenceImpl
-    implements DeferredNode {
+        extends EntityReferenceImpl
+        implements DeferredNode {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = 390319091370032223L;
 
     //
     // Data
     //
 
-    /** Node index. */
+    /**
+     * Node index.
+     */
     protected transient int fNodeIndex;
 
     //
@@ -111,7 +114,9 @@ public class DeferredEntityReferenceImpl
     // DeferredNode methods
     //
 
-    /** Returns the node index. */
+    /**
+     * Returns the node index.
+     */
     public int getNodeIndex() {
         return fNodeIndex;
     }
@@ -131,13 +136,15 @@ public class DeferredEntityReferenceImpl
 
         // get the node data
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl)this.ownerDocument;
+                (DeferredDocumentImpl) this.ownerDocument;
         name = ownerDocument.getNodeName(fNodeIndex);
         baseURI = ownerDocument.getNodeValue(fNodeIndex);
 
     } // synchronizeData()
 
-    /** Synchronize the children. */
+    /**
+     * Synchronize the children.
+     */
     protected void synchronizeChildren() {
 
         // no need to synchronize again
@@ -146,7 +153,7 @@ public class DeferredEntityReferenceImpl
         // get children
         isReadOnly(false);
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl) ownerDocument();
+                (DeferredDocumentImpl) ownerDocument();
         ownerDocument.synchronizeChildren(this, fNodeIndex);
         setReadOnly(true, true);
 

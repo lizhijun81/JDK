@@ -40,7 +40,9 @@ import org.xml.sax.SAXNotSupportedException;
  * @version $Id: DocumentBuilderFactoryImpl.java,v 1.6 2009/07/28 23:48:32 joehw Exp $
  */
 public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
-    /** These are DocumentBuilderFactory attributes not DOM attributes */
+    /**
+     * These are DocumentBuilderFactory attributes not DOM attributes
+     */
     private Hashtable attributes;
     private Hashtable features;
     private Schema grammar;
@@ -56,19 +58,17 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
      * using the currently configured parameters.
      */
     public DocumentBuilder newDocumentBuilder()
-        throws ParserConfigurationException
-    {
+            throws ParserConfigurationException {
         /** Check that if a Schema has been specified that neither of the schema properties have been set. */
         if (grammar != null && attributes != null) {
             if (attributes.containsKey(JAXPConstants.JAXP_SCHEMA_LANGUAGE)) {
                 throw new ParserConfigurationException(
                         SAXMessageFormatter.formatMessage(null,
-                        "schema-already-specified", new Object[] {JAXPConstants.JAXP_SCHEMA_LANGUAGE}));
-            }
-            else if (attributes.containsKey(JAXPConstants.JAXP_SCHEMA_SOURCE)) {
+                                "schema-already-specified", new Object[]{JAXPConstants.JAXP_SCHEMA_LANGUAGE}));
+            } else if (attributes.containsKey(JAXPConstants.JAXP_SCHEMA_SOURCE)) {
                 throw new ParserConfigurationException(
                         SAXMessageFormatter.formatMessage(null,
-                        "schema-already-specified", new Object[] {JAXPConstants.JAXP_SCHEMA_SOURCE}));
+                                "schema-already-specified", new Object[]{JAXPConstants.JAXP_SCHEMA_SOURCE}));
             }
         }
 
@@ -83,12 +83,12 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
     /**
      * Allows the user to set specific attributes on the underlying
      * implementation.
-     * @param name    name of attribute
-     * @param value   null means to remove attribute
+     *
+     * @param name  name of attribute
+     * @param value null means to remove attribute
      */
     public void setAttribute(String name, Object value)
-        throws IllegalArgumentException
-    {
+            throws IllegalArgumentException {
         // This handles removal of attributes
         if (value == null) {
             if (attributes != null) {
@@ -122,8 +122,7 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
      * implementation.
      */
     public Object getAttribute(String name)
-        throws IllegalArgumentException
-    {
+            throws IllegalArgumentException {
         // See if it's in the attributes Hashtable
         if (attributes != null) {
             Object val = attributes.get(name);
@@ -137,7 +136,7 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
             // We create a dummy DocumentBuilderImpl in case the attribute
             // name is not one that is in the attributes hashtable.
             domParser =
-                new DocumentBuilderImpl(this, attributes, features).getDOMParser();
+                    new DocumentBuilderImpl(this, attributes, features).getDOMParser();
             return domParser.getProperty(name);
         } catch (SAXException se1) {
             // assert(name is not recognized or not supported), try feature
@@ -169,7 +168,7 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
     }
 
     public boolean getFeature(String name)
-        throws ParserConfigurationException {
+            throws ParserConfigurationException {
         if (name.equals(XMLConstants.FEATURE_SECURE_PROCESSING)) {
             return fSecureProcess;
         }
@@ -183,20 +182,19 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
         try {
             DOMParser domParser = new DocumentBuilderImpl(this, attributes, features).getDOMParser();
             return domParser.getFeature(name);
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             throw new ParserConfigurationException(e.getMessage());
         }
     }
 
     public void setFeature(String name, boolean value)
-        throws ParserConfigurationException {
+            throws ParserConfigurationException {
         // If this is the secure processing feature, save it then return.
         if (name.equals(XMLConstants.FEATURE_SECURE_PROCESSING)) {
             if (System.getSecurityManager() != null && (!value)) {
                 throw new ParserConfigurationException(
                         SAXMessageFormatter.formatMessage(null,
-                        "jaxp-secureprocessing-feature", null));
+                                "jaxp-secureprocessing-feature", null));
             }
             fSecureProcess = value;
             return;
@@ -208,12 +206,10 @@ public class DocumentBuilderFactoryImpl extends DocumentBuilderFactory {
         // Test the feature by possibly throwing SAX exceptions
         try {
             new DocumentBuilderImpl(this, attributes, features);
-        }
-        catch (SAXNotSupportedException e) {
+        } catch (SAXNotSupportedException e) {
             features.remove(name);
             throw new ParserConfigurationException(e.getMessage());
-        }
-        catch (SAXNotRecognizedException e) {
+        } catch (SAXNotRecognizedException e) {
             features.remove(name);
             throw new ParserConfigurationException(e.getMessage());
         }

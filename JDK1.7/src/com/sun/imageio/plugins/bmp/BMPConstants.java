@@ -49,5 +49,5 @@ public interface BMPConstants {
     static final int BI_PNG = 5;
 
     static final String[] compressionTypeNames =
-        {"BI_RGB", "BI_RLE8", "BI_RLE4", "BI_BITFIELDS", "BI_JPEG", "BI_PNG"};
+            {"BI_RGB", "BI_RLE8", "BI_RLE4", "BI_BITFIELDS", "BI_JPEG", "BI_PNG"};
 }

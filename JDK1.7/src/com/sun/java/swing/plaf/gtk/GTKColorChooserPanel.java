@@ -39,8 +39,8 @@ import javax.swing.plaf.*;
  * @author Scott Violet
  */
 class GTKColorChooserPanel extends AbstractColorChooserPanel implements
-              ChangeListener {
-    private static final float PI_3 = (float)(Math.PI / 3);
+        ChangeListener {
+    private static final float PI_3 = (float) (Math.PI / 3);
 
     private ColorTriangle triangle;
     private JLabel lastLabel;
@@ -65,33 +65,31 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
     private float brightness;
 
 
-
     /**
      * Convenience method to transfer focus to the next child of component.
      */
     // PENDING: remove this when a variant of this is added to awt.
     static void compositeRequestFocus(Component component, boolean direction) {
         if (component instanceof Container) {
-            Container container = (Container)component;
+            Container container = (Container) component;
             if (container.isFocusCycleRoot()) {
                 FocusTraversalPolicy policy = container.
-                                              getFocusTraversalPolicy();
+                        getFocusTraversalPolicy();
                 Component comp = policy.getDefaultComponent(container);
-                if (comp!=null) {
+                if (comp != null) {
                     comp.requestFocus();
                     return;
                 }
             }
             Container rootAncestor = container.getFocusCycleRootAncestor();
-            if (rootAncestor!=null) {
+            if (rootAncestor != null) {
                 FocusTraversalPolicy policy = rootAncestor.
-                                                  getFocusTraversalPolicy();
+                        getFocusTraversalPolicy();
                 Component comp;
 
                 if (direction) {
                     comp = policy.getComponentAfter(rootAncestor, container);
-                }
-                else {
+                } else {
                     comp = policy.getComponentBefore(rootAncestor, container);
                 }
                 if (comp != null) {
@@ -108,21 +106,22 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
      * Returns a user presentable description of this GTKColorChooserPane.
      */
     public String getDisplayName() {
-        return (String)UIManager.get("GTKColorChooserPanel.nameText");
+        return (String) UIManager.get("GTKColorChooserPanel.nameText");
     }
 
     /**
      * Returns the mnemonic to use with <code>getDisplayName</code>.
      */
     public int getMnemonic() {
-        String m = (String)UIManager.get("GTKColorChooserPanel.mnemonic");
+        String m = (String) UIManager.get("GTKColorChooserPanel.mnemonic");
 
         if (m != null) {
             try {
                 int value = Integer.parseInt(m);
 
                 return value;
-            } catch (NumberFormatException nfe) {}
+            } catch (NumberFormatException nfe) {
+            }
         }
         return -1;
     }
@@ -131,15 +130,16 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
      * Character to underline that represents the mnemonic.
      */
     public int getDisplayedMnemonicIndex() {
-        String m = (String)UIManager.get(
-                           "GTKColorChooserPanel.displayedMnemonicIndex");
+        String m = (String) UIManager.get(
+                "GTKColorChooserPanel.displayedMnemonicIndex");
 
         if (m != null) {
             try {
                 int value = Integer.parseInt(m);
 
                 return value;
-            } catch (NumberFormatException nfe) {}
+            } catch (NumberFormatException nfe) {
+            }
         }
         return -1;
     }
@@ -186,7 +186,7 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
         configureSpinner(hueSpinner, "GTKColorChooserPanel.hueSpinner");
         saturationSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));
         configureSpinner(saturationSpinner,
-                         "GTKColorChooserPanel.saturationSpinner");
+                "GTKColorChooserPanel.saturationSpinner");
         valueSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));
         configureSpinner(valueSpinner, "GTKColorChooserPanel.valueSpinner");
         redSpinner = new JSpinner(new SpinnerNumberModel(0, 0, 255, 1));
@@ -202,33 +202,33 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
 
         add(this, "GTKColorChooserPanel.hue", hueSpinner, -1, -1);
         add(this, "GTKColorChooserPanel.red", redSpinner, -1, -1);
-        add(this, "GTKColorChooserPanel.saturation", saturationSpinner, -1,-1);
+        add(this, "GTKColorChooserPanel.saturation", saturationSpinner, -1, -1);
         add(this, "GTKColorChooserPanel.green", greenSpinner, -1, -1);
         add(this, "GTKColorChooserPanel.value", valueSpinner, -1, -1);
         add(this, "GTKColorChooserPanel.blue", blueSpinner, -1, -1);
 
         add(new JSeparator(SwingConstants.HORIZONTAL), new
-                  GridBagConstraints(1, 3, 4, 1, 1, 0,
-                  GridBagConstraints.LINE_START, GridBagConstraints.HORIZONTAL,
-                  new Insets(14, 0, 0, 0), 0, 0));
+                GridBagConstraints(1, 3, 4, 1, 1, 0,
+                GridBagConstraints.LINE_START, GridBagConstraints.HORIZONTAL,
+                new Insets(14, 0, 0, 0), 0, 0));
 
         add(this, "GTKColorChooserPanel.colorName", colorNameTF, 0, 4);
 
         add(triangle, new GridBagConstraints(0, 0, 1, 5, 0, 0,
-                      GridBagConstraints.LINE_START, GridBagConstraints.NONE,
-                      new Insets(14, 20, 2, 9), 0, 0));
+                GridBagConstraints.LINE_START, GridBagConstraints.NONE,
+                new Insets(14, 20, 2, 9), 0, 0));
 
         Box hBox = Box.createHorizontalBox();
         hBox.add(lastLabel);
         hBox.add(label);
         add(hBox, new GridBagConstraints(0, 5, 1, 1, 0, 0,
-                      GridBagConstraints.CENTER, GridBagConstraints.NONE,
-                      new Insets(0, 0, 0, 0), 0, 0));
+                GridBagConstraints.CENTER, GridBagConstraints.NONE,
+                new Insets(0, 0, 0, 0), 0, 0));
 
         add(new JSeparator(SwingConstants.HORIZONTAL), new
-                  GridBagConstraints(0, 6, 5, 1, 1, 0,
-                  GridBagConstraints.LINE_START, GridBagConstraints.HORIZONTAL,
-                  new Insets(12, 0, 0, 0), 0, 0));
+                GridBagConstraints(0, 6, 5, 1, 1, 0,
+                GridBagConstraints.LINE_START, GridBagConstraints.HORIZONTAL,
+                new Insets(12, 0, 0, 0), 0, 0));
     }
 
     /**
@@ -239,8 +239,8 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
         spinner.setName(name);
         JComponent editor = spinner.getEditor();
         if (editor instanceof JSpinner.DefaultEditor) {
-            JFormattedTextField ftf = ((JSpinner.DefaultEditor)editor).
-                                                 getTextField();
+            JFormattedTextField ftf = ((JSpinner.DefaultEditor) editor).
+                    getTextField();
 
             ftf.setFocusLostBehavior(JFormattedTextField.COMMIT_OR_REVERT);
         }
@@ -252,21 +252,21 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
     private void add(Container parent, String key, JComponent widget,
                      int x, int y) {
         JLabel label = new JLabel(UIManager.getString(key + "Text",
-                                                      getLocale()));
-        String mnemonic = (String)UIManager.get(key + "Mnemonic", getLocale());
+                getLocale()));
+        String mnemonic = (String) UIManager.get(key + "Mnemonic", getLocale());
 
         if (mnemonic != null) {
             try {
                 label.setDisplayedMnemonic(Integer.parseInt(mnemonic));
             } catch (NumberFormatException nfe) {
             }
-            String mnemonicIndex = (String)UIManager.get(key + "MnemonicIndex",
-                                                    getLocale());
+            String mnemonicIndex = (String) UIManager.get(key + "MnemonicIndex",
+                    getLocale());
 
             if (mnemonicIndex != null) {
                 try {
                     label.setDisplayedMnemonicIndex(Integer.parseInt(
-                                                        mnemonicIndex));
+                            mnemonicIndex));
                 } catch (NumberFormatException nfe) {
                 }
             }
@@ -279,8 +279,8 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
             y = parent.getComponentCount() / 4;
         }
         GridBagConstraints con = new GridBagConstraints(x + 1, y, 1, 1, 0, 0,
-                   GridBagConstraints.FIRST_LINE_END, GridBagConstraints.NONE,
-                   new Insets(4, 0, 0, 4), 0, 0);
+                GridBagConstraints.FIRST_LINE_END, GridBagConstraints.NONE,
+                new Insets(4, 0, 0, 4), 0, 0);
         if (y == 0) {
             con.insets.top = 14;
         }
@@ -328,7 +328,7 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
         setHSB(hue, saturation, brightness);
         if (update) {
             settingColor = true;
-            hueSpinner.setValue(Integer.valueOf((int)(hue * 360)));
+            hueSpinner.setValue(Integer.valueOf((int) (hue * 360)));
             settingColor = false;
         }
     }
@@ -376,8 +376,8 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
         setHSB(hue, s, b);
         if (update) {
             settingColor = true;
-            saturationSpinner.setValue(Integer.valueOf((int)(s * 255)));
-            valueSpinner.setValue(Integer.valueOf((int)(b * 255)));
+            saturationSpinner.setValue(Integer.valueOf((int) (s * 255)));
+            valueSpinner.setValue(Integer.valueOf((int) (b * 255)));
             settingColor = false;
         }
     }
@@ -391,9 +391,9 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
         setColor(color, false, true, true);
 
         settingColor = true;
-        hueSpinner.setValue(Integer.valueOf((int)(hue * 360)));
-        saturationSpinner.setValue(Integer.valueOf((int)(saturation * 255)));
-        valueSpinner.setValue(Integer.valueOf((int)(brightness * 255)));
+        hueSpinner.setValue(Integer.valueOf((int) (hue * 360)));
+        saturationSpinner.setValue(Integer.valueOf((int) (saturation * 255)));
+        valueSpinner.setValue(Integer.valueOf((int) (brightness * 255)));
         settingColor = false;
     }
 
@@ -419,11 +419,11 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
     /**
      * Rests the color.
      *
-     * @param color new Color
+     * @param color          new Color
      * @param updateSpinners whether or not to update the spinners.
-     * @param updateHSB if true, the hsb fields are updated based on the
-     *                  new color
-     * @param updateModel if true, the model is set.
+     * @param updateHSB      if true, the hsb fields are updated based on the
+     *                       new color
+     * @param updateModel    if true, the model is set.
      */
     private void setColor(Color color, boolean updateSpinners,
                           boolean updateHSB, boolean updateModel) {
@@ -435,7 +435,7 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
 
         if (updateHSB) {
             float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(),
-                                         color.getBlue(), null);
+                    color.getBlue(), null);
             hue = hsb[0];
             saturation = hsb[1];
             brightness = hsb[2];
@@ -453,7 +453,7 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
         // Force Integer to pad the string with 0's by adding 0x1000000 and
         // then removing the first character.
         String hexString = Integer.toHexString(
-                  (color.getRGB() & 0xFFFFFF) | 0x1000000);
+                (color.getRGB() & 0xFFFFFF) | 0x1000000);
         colorNameTF.setText("#" + hexString.substring(1));
 
         if (updateSpinners) {
@@ -461,9 +461,9 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
             greenSpinner.setValue(Integer.valueOf(color.getGreen()));
             blueSpinner.setValue(Integer.valueOf(color.getBlue()));
 
-            hueSpinner.setValue(Integer.valueOf((int)(hue * 360)));
-            saturationSpinner.setValue(Integer.valueOf((int)(saturation * 255)));
-            valueSpinner.setValue(Integer.valueOf((int)(brightness * 255)));
+            hueSpinner.setValue(Integer.valueOf((int) (hue * 360)));
+            saturationSpinner.setValue(Integer.valueOf((int) (saturation * 255)));
+            valueSpinner.setValue(Integer.valueOf((int) (brightness * 255)));
         }
         settingColor = false;
     }
@@ -482,27 +482,21 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
         Color color = getColor();
 
         if (e.getSource() == hueSpinner) {
-            setHue(((Number)hueSpinner.getValue()).floatValue() / 360, false);
-        }
-        else if (e.getSource() == saturationSpinner) {
-            setSaturation(((Number)saturationSpinner.getValue()).
-                          floatValue() / 255);
-        }
-        else if (e.getSource() == valueSpinner) {
-            setBrightness(((Number)valueSpinner.getValue()).
-                          floatValue() / 255);
-        }
-        else if (e.getSource() == redSpinner) {
-            setRed(((Number)redSpinner.getValue()).intValue());
-        }
-        else if (e.getSource() == greenSpinner) {
-            setGreen(((Number)greenSpinner.getValue()).intValue());
-        }
-        else if (e.getSource() == blueSpinner) {
-            setBlue(((Number)blueSpinner.getValue()).intValue());
+            setHue(((Number) hueSpinner.getValue()).floatValue() / 360, false);
+        } else if (e.getSource() == saturationSpinner) {
+            setSaturation(((Number) saturationSpinner.getValue()).
+                    floatValue() / 255);
+        } else if (e.getSource() == valueSpinner) {
+            setBrightness(((Number) valueSpinner.getValue()).
+                    floatValue() / 255);
+        } else if (e.getSource() == redSpinner) {
+            setRed(((Number) redSpinner.getValue()).intValue());
+        } else if (e.getSource() == greenSpinner) {
+            setGreen(((Number) greenSpinner.getValue()).intValue());
+        } else if (e.getSource() == blueSpinner) {
+            setBlue(((Number) blueSpinner.getValue()).intValue());
         }
     }
-
 
 
     /**
@@ -572,9 +566,9 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
             enableEvents(AWTEvent.MOUSE_MOTION_EVENT_MASK);
 
             setMinimumSize(new Dimension(getWheelRadius() * 2 + 2,
-                                         getWheelRadius() * 2 + 2));
+                    getWheelRadius() * 2 + 2));
             setPreferredSize(new Dimension(getWheelRadius() * 2 + 2,
-                                           getWheelRadius() * 2 + 2));
+                    getWheelRadius() * 2 + 2));
 
             // We want to handle tab ourself.
             setFocusTraversalKeysEnabled(false);
@@ -591,10 +585,10 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
             getInputMap().put(KeyStroke.getKeyStroke("KP_RIGHT"), "right");
 
             getInputMap().put(KeyStroke.getKeyStroke("TAB"), "focusNext");
-            getInputMap().put(KeyStroke.getKeyStroke("shift TAB"),"focusLast");
+            getInputMap().put(KeyStroke.getKeyStroke("shift TAB"), "focusLast");
 
-            ActionMap map = (ActionMap)UIManager.get(
-                                       "GTKColorChooserPanel.actionMap");
+            ActionMap map = (ActionMap) UIManager.get(
+                    "GTKColorChooserPanel.actionMap");
 
             if (map == null) {
                 map = new ActionMapUIResource();
@@ -605,7 +599,7 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
                 map.put("focusNext", new ColorAction("focusNext", 4));
                 map.put("focusLast", new ColorAction("focusLast", 5));
                 UIManager.getLookAndFeelDefaults().put(
-                             "GTKColorChooserPanel.actionMap", map);
+                        "GTKColorChooserPanel.actionMap", map);
             }
             SwingUtilities.replaceUIActionMap(this, map);
         }
@@ -673,45 +667,40 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
 
         protected void processEvent(AWTEvent e) {
             if (e.getID() == MouseEvent.MOUSE_PRESSED ||
-                   ((isSet(FLAGS_DRAGGING) ||isSet(FLAGS_DRAGGING_TRIANGLE)) &&
-                   e.getID() == MouseEvent.MOUSE_DRAGGED)) {
+                    ((isSet(FLAGS_DRAGGING) || isSet(FLAGS_DRAGGING_TRIANGLE)) &&
+                            e.getID() == MouseEvent.MOUSE_DRAGGED)) {
                 // Assign focus to either the wheel or triangle and attempt
                 // to drag either the wheel or triangle.
                 int size = getWheelRadius();
-                int x = ((MouseEvent)e).getX() - size;
-                int y = ((MouseEvent)e).getY() - size;
+                int x = ((MouseEvent) e).getX() - size;
+                int y = ((MouseEvent) e).getY() - size;
 
                 if (!hasFocus()) {
                     requestFocus();
                 }
                 if (!isSet(FLAGS_DRAGGING_TRIANGLE) &&
-                      adjustHue(x, y, e.getID() == MouseEvent.MOUSE_PRESSED)) {
+                        adjustHue(x, y, e.getID() == MouseEvent.MOUSE_PRESSED)) {
                     setFlag(FLAGS_DRAGGING, true);
                     setFocusType(1);
-                }
-                else if (adjustSB(x, y, e.getID() ==
-                                        MouseEvent.MOUSE_PRESSED)) {
+                } else if (adjustSB(x, y, e.getID() ==
+                        MouseEvent.MOUSE_PRESSED)) {
                     setFlag(FLAGS_DRAGGING_TRIANGLE, true);
                     setFocusType(2);
-                }
-                else {
+                } else {
                     setFocusType(2);
                 }
-            }
-            else if (e.getID() == MouseEvent.MOUSE_RELEASED) {
+            } else if (e.getID() == MouseEvent.MOUSE_RELEASED) {
                 // Stopped dragging
                 setFlag(FLAGS_DRAGGING_TRIANGLE, false);
                 setFlag(FLAGS_DRAGGING, false);
-            }
-            else if (e.getID() == FocusEvent.FOCUS_LOST) {
+            } else if (e.getID() == FocusEvent.FOCUS_LOST) {
                 // Reset the flags to indicate no one has focus
                 setFocusType(0);
-            }
-            else if (e.getID() == FocusEvent.FOCUS_GAINED) {
+            } else if (e.getID() == FocusEvent.FOCUS_GAINED) {
                 // Gained focus, reassign focus to the wheel if no one
                 // currently has focus.
                 if (!isSet(FLAGS_FOCUSED_TRIANGLE) &&
-                          !isSet(FLAGS_FOCUSED_WHEEL)) {
+                        !isSet(FLAGS_FOCUSED_WHEEL)) {
                     setFlag(FLAGS_FOCUSED_WHEEL, true);
                     setFocusType(1);
                 }
@@ -728,40 +717,39 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
             int width = getWheelWidth();
             Image image = getImage(size);
             g.drawImage(image, getWheelXOrigin() - size,
-                        getWheelYOrigin() - size, null);
+                    getWheelYOrigin() - size, null);
 
             // Draw the focus indicator for the wheel
             if (hasFocus() && isSet(FLAGS_FOCUSED_WHEEL)) {
                 g.setColor(Color.BLACK);
                 g.drawOval(getWheelXOrigin() - size, getWheelYOrigin() - size,
-                           2 * size, 2 * size);
-                g.drawOval(getWheelXOrigin() - size + width, getWheelYOrigin()-
-                           size + width, 2 * (size - width), 2 *
-                           (size - width));
+                        2 * size, 2 * size);
+                g.drawOval(getWheelXOrigin() - size + width, getWheelYOrigin() -
+                        size + width, 2 * (size - width), 2 *
+                        (size - width));
             }
 
             // Draw a line on the wheel indicating the selected hue.
             if (Math.toDegrees(Math.PI * 2 - angle) <= 20 ||
-                     Math.toDegrees(Math.PI * 2 - angle) >= 201) {
+                    Math.toDegrees(Math.PI * 2 - angle) >= 201) {
                 g.setColor(Color.WHITE);
-            }
-            else {
+            } else {
                 g.setColor(Color.BLACK);
             }
-            int lineX0 = (int)(Math.cos(angle) * size);
-            int lineY0 = (int)(Math.sin(angle) * size);
-            int lineX1 = (int)(Math.cos(angle) * (size - width));
-            int lineY1 = (int)(Math.sin(angle) * (size - width));
+            int lineX0 = (int) (Math.cos(angle) * size);
+            int lineY0 = (int) (Math.sin(angle) * size);
+            int lineX1 = (int) (Math.cos(angle) * (size - width));
+            int lineY1 = (int) (Math.sin(angle) * (size - width));
             g.drawLine(lineX0 + size, lineY0 + size, lineX1 + size,
-                       lineY1 + size);
+                    lineY1 + size);
 
             // Draw the focus indicator on the triangle
             if (hasFocus() && isSet(FLAGS_FOCUSED_TRIANGLE)) {
                 Graphics g2 = g.create();
                 int innerR = getTriangleCircumscribedRadius();
-                int a = (int)(3 * innerR / Math.sqrt(3));
+                int a = (int) (3 * innerR / Math.sqrt(3));
                 g2.translate(getWheelXOrigin(), getWheelYOrigin());
-                ((Graphics2D)g2).rotate(angle + Math.PI / 2);
+                ((Graphics2D) g2).rotate(angle + Math.PI / 2);
                 g2.setColor(Color.BLACK);
                 g2.drawLine(0, -innerR, a / 2, innerR / 2);
                 g2.drawLine(a / 2, innerR / 2, -a / 2, innerR / 2);
@@ -772,10 +760,10 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
             // Draw the selected color indicator.
             g.setColor(Color.BLACK);
             g.drawOval(circleX, circleY, getIndicatorSize() - 1,
-                       getIndicatorSize() - 1);
+                    getIndicatorSize() - 1);
             g.setColor(Color.WHITE);
             g.drawOval(circleX + 1, circleY + 1, getIndicatorSize() - 3,
-                       getIndicatorSize() - 3);
+                    getIndicatorSize() - 3);
         }
 
         /**
@@ -783,18 +771,18 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
          */
         private Image getImage(int size) {
             if (!isSet(FLAGS_CHANGED_ANGLE) && wheelImage != null &&
-                        wheelImage.getWidth(null) == size * 2) {
+                    wheelImage.getWidth(null) == size * 2) {
                 return wheelImage;
             }
             if (wheelImage == null || wheelImage.getWidth(null) != size) {
                 wheelImage = getWheelImage(size);
             }
             int innerR = getTriangleCircumscribedRadius();
-            int triangleSize = (int)(innerR * 3.0 / 2.0);
-            int a = (int)(2 * triangleSize / Math.sqrt(3));
+            int triangleSize = (int) (innerR * 3.0 / 2.0);
+            int a = (int) (2 * triangleSize / Math.sqrt(3));
             if (triangleImage == null || triangleImage.getWidth(null) != a) {
                 triangleImage = new BufferedImage(a, a,
-                                                  BufferedImage.TYPE_INT_ARGB);
+                        BufferedImage.TYPE_INT_ARGB);
             }
             Graphics g = triangleImage.getGraphics();
             g.setColor(new Color(0, 0, 0, 0));
@@ -807,15 +795,15 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
             g = wheelImage.getGraphics();
             g.setColor(new Color(0, 0, 0, 0));
             g.fillOval(getWheelWidth(), getWheelWidth(),
-                       2 * (size - getWheelWidth()),
-                       2 * (size - getWheelWidth()));
+                    2 * (size - getWheelWidth()),
+                    2 * (size - getWheelWidth()));
 
             double rotate = Math.toRadians(-30.0) + angle;
             g.translate(size, size);
-            ((Graphics2D)g).rotate(rotate);
+            ((Graphics2D) g).rotate(rotate);
             g.drawImage(triangleImage, -a / 2,
-                        getWheelWidth() - size, null);
-            ((Graphics2D)g).rotate(-rotate);
+                    getWheelWidth() - size, null);
+            ((Graphics2D) g).rotate(-rotate);
             g.translate(a / 2, size - getWheelWidth());
 
             setFlag(FLAGS_CHANGED_ANGLE, false);
@@ -825,22 +813,21 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
 
         private void paintTriangle(Graphics g, int size, Color color) {
             float[] colors = Color.RGBtoHSB(color.getRed(),
-                                            color.getGreen(),
-                                            color.getBlue(), null);
+                    color.getGreen(),
+                    color.getBlue(), null);
             float hue = colors[0];
-            double dSize = (double)size;
+            double dSize = (double) size;
             for (int y = 0; y < size; y++) {
-                int maxX = (int)(y * Math.tan(Math.toRadians(30.0)));
+                int maxX = (int) (y * Math.tan(Math.toRadians(30.0)));
                 float factor = maxX * 2;
                 if (maxX > 0) {
-                    float value = (float)(y / dSize);
+                    float value = (float) (y / dSize);
                     for (int x = -maxX; x <= maxX; x++) {
-                        float saturation = (float)x / factor + .5f;
+                        float saturation = (float) x / factor + .5f;
                         g.setColor(Color.getHSBColor(hue, saturation, value));
                         g.fillRect(x, y, 1, 1);
                     }
-                }
-                else {
+                } else {
                     g.setColor(color);
                     g.fillRect(0, y, 1, 1);
                 }
@@ -857,7 +844,7 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
             int minSize = size - getWheelWidth();
             int doubleSize = size * 2;
             BufferedImage image = new BufferedImage(doubleSize, doubleSize,
-                                              BufferedImage.TYPE_INT_ARGB);
+                    BufferedImage.TYPE_INT_ARGB);
 
             for (int y = -size; y < size; y++) {
                 int ySquared = y * y;
@@ -866,7 +853,7 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
 
                     if (rad < size && rad > minSize) {
                         int rgb = colorWheelLocationToRGB(x, y, rad) |
-                              0xFF000000;
+                                0xFF000000;
                         image.setRGB(x + size, y + size, rgb);
                     }
                 }
@@ -880,11 +867,11 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
          * <code>y</code> give the location to adjust to and are relative
          * to the origin of the wheel/triangle.
          *
-         * @param x X coordinate on the triangle to adjust to
-         * @param y Y coordinate on the triangle to adjust to
+         * @param x        X coordinate on the triangle to adjust to
+         * @param y        Y coordinate on the triangle to adjust to
          * @param checkLoc if true the location is checked to make sure
-         *        it is contained in the triangle, if false the location is
-         *        constrained to fit in the triangle.
+         *                 it is contained in the triangle, if false the location is
+         *                 constrained to fit in the triangle.
          * @return true if the location is valid
          */
         boolean adjustSB(int x, int y, boolean checkLoc) {
@@ -893,7 +880,7 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
             // Invert the axis.
             y = -y;
             if (checkLoc && (x < -innerR || x > innerR || y < -innerR ||
-                             y > innerR)) {
+                    y > innerR)) {
                 return false;
             }
             // Rotate to origin and and verify x is valid.
@@ -906,8 +893,7 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
                 }
                 x1 = -innerR / 2;
                 resetXY = true;
-            }
-            else if ((int)x1 > innerR) {
+            } else if ((int) x1 > innerR) {
                 if (checkLoc) {
                     return false;
                 }
@@ -915,16 +901,15 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
                 resetXY = true;
             }
             // Verify y location is valid.
-            int maxY = (int)((triangleSize - x1 - innerR / 2.0) *
-                             Math.tan(Math.toRadians(30.0)));
+            int maxY = (int) ((triangleSize - x1 - innerR / 2.0) *
+                    Math.tan(Math.toRadians(30.0)));
             if (y1 <= -maxY) {
                 if (checkLoc) {
                     return false;
                 }
                 y1 = -maxY;
                 resetXY = true;
-            }
-            else if (y1 > maxY) {
+            } else if (y1 > maxY) {
                 if (checkLoc) {
                     return false;
                 }
@@ -933,24 +918,23 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
             }
             // Rotate again to determine value and scale
             double x2 = Math.cos(Math.toRadians(-30.0)) * x1 -
-                 Math.sin(Math.toRadians(-30.0)) * y1;
+                    Math.sin(Math.toRadians(-30.0)) * y1;
             double y2 = Math.sin(Math.toRadians(-30.0)) * x1 +
-                 Math.cos(Math.toRadians(-30.0)) * y1;
-            float value = Math.min(1.0f, (float)((innerR - y2) /
-                                                (double)triangleSize));
-            float maxX = (float)(Math.tan(Math.toRadians(30)) * (innerR - y2));
-            float saturation = Math.min(1.0f, (float)(x2 / maxX / 2 + .5));
+                    Math.cos(Math.toRadians(-30.0)) * y1;
+            float value = Math.min(1.0f, (float) ((innerR - y2) /
+                    (double) triangleSize));
+            float maxX = (float) (Math.tan(Math.toRadians(30)) * (innerR - y2));
+            float saturation = Math.min(1.0f, (float) (x2 / maxX / 2 + .5));
 
             setFlag(FLAGS_SETTING_COLOR, true);
             if (resetXY) {
                 setSaturationAndBrightness(saturation, value);
-            }
-            else {
+            } else {
                 setSaturationAndBrightness(saturation, value, x +
-                                      getWheelXOrigin(),getWheelYOrigin() - y);
+                        getWheelXOrigin(), getWheelYOrigin() - y);
             }
             GTKColorChooserPanel.this.setSaturationAndBrightness(saturation,
-                                                                 value, true);
+                    value, true);
             setFlag(FLAGS_SETTING_COLOR, false);
             return true;
         }
@@ -966,11 +950,11 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
             double y = 2 * maxY * s - maxY;
             x = x - innerR;
             double x1 = Math.cos(Math.toRadians(-60.0) - angle) *
-                        x - Math.sin(Math.toRadians(-60.0) - angle) * y;
+                    x - Math.sin(Math.toRadians(-60.0) - angle) * y;
             double y1 = Math.sin(Math.toRadians(-60.0) - angle) * x +
-                        Math.cos(Math.toRadians(-60.0) - angle) * y;
-            int newCircleX = (int)x1 + getWheelXOrigin();
-            int newCircleY = getWheelYOrigin() - (int)y1;
+                    Math.cos(Math.toRadians(-60.0) - angle) * y;
+            int newCircleX = (int) x1 + getWheelXOrigin();
+            int newCircleY = getWheelYOrigin() - (int) y1;
 
             setSaturationAndBrightness(s, b, newCircleX, newCircleY);
         }
@@ -980,7 +964,7 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
          * Sets the saturation and brightness.
          */
         private void setSaturationAndBrightness(float s, float b,
-                                             int newCircleX, int newCircleY) {
+                                                int newCircleX, int newCircleY) {
             newCircleX -= getIndicatorSize() / 2;
             newCircleY -= getIndicatorSize() / 2;
 
@@ -997,13 +981,13 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
         /**
          * Adjusts the hue based on the passed in location.
          *
-         * @param x X location to adjust to, relative to the origin of the
-         *        wheel
-         * @param y Y location to adjust to, relative to the origin of the
-         *        wheel
+         * @param x     X location to adjust to, relative to the origin of the
+         *              wheel
+         * @param y     Y location to adjust to, relative to the origin of the
+         *              wheel
          * @param check if true the location is checked to make sure
-         *        it is contained in the wheel, if false the location is
-         *        constrained to fit in the wheel
+         *              it is contained in the wheel, if false the location is
+         *              constrained to fit in the wheel
          * @return true if the location is valid.
          */
         private boolean adjustHue(int x, int y, boolean check) {
@@ -1016,22 +1000,19 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
                 if (x == 0) {
                     if (y > 0) {
                         angle = Math.PI / 2.0;
-                    }
-                    else {
+                    } else {
                         angle = Math.PI + Math.PI / 2.0;
                     }
-                }
-                else {
-                    angle = Math.atan((double)y / (double)x);
+                } else {
+                    angle = Math.atan((double) y / (double) x);
                     if (x < 0) {
                         angle += Math.PI;
-                    }
-                    else if (angle < 0) {
+                    } else if (angle < 0) {
                         angle += 2 * Math.PI;
                     }
                 }
                 setFlag(FLAGS_SETTING_COLOR, true);
-                setHue((float)(1.0 - angle / Math.PI / 2), true);
+                setHue((float) (1.0 - angle / Math.PI / 2), true);
                 setFlag(FLAGS_SETTING_COLOR, false);
                 setHueAngle(angle);
                 setSaturationAndBrightness(getSaturation(), getBrightness());
@@ -1103,8 +1084,7 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
                 setFlag(FLAGS_FOCUSED_WHEEL, false);
                 setFlag(FLAGS_FOCUSED_TRIANGLE, false);
                 repaint();
-            }
-            else {
+            } else {
                 int toSet = FLAGS_FOCUSED_WHEEL;
                 int toUnset = FLAGS_FOCUSED_TRIANGLE;
 
@@ -1135,8 +1115,7 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
         private void setFlag(int flag, boolean value) {
             if (value) {
                 flags |= flag;
-            }
-            else {
+            } else {
                 flags &= ~flag;
             }
         }
@@ -1153,51 +1132,46 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
          * passed in point must be on the color wheel and be relative to the
          * origin of the color wheel.
          *
-         * @param x X location to get color for
-         * @param y Y location to get color for
+         * @param x   X location to get color for
+         * @param y   Y location to get color for
          * @param rad Radius from center of color wheel
          * @return integer with red, green and blue components
          */
         private int colorWheelLocationToRGB(int x, int y, double rad) {
-            double angle = Math.acos((double)x / rad);
+            double angle = Math.acos((double) x / rad);
             int rgb;
 
             if (angle < PI_3) {
                 if (y < 0) {
                     // FFFF00 - FF0000
                     rgb = 0xFF0000 | Math.min(255,
-                                           (int)(255 * angle / PI_3)) << 8;
-                }
-                else {
+                            (int) (255 * angle / PI_3)) << 8;
+                } else {
                     // FF0000 - FF00FF
                     rgb = 0xFF0000 | Math.min(255,
-                                           (int)(255 * angle / PI_3));
+                            (int) (255 * angle / PI_3));
                 }
-            }
-            else if (angle < 2 * PI_3) {
+            } else if (angle < 2 * PI_3) {
                 angle -= PI_3;
                 if (y < 0) {
                     // 00FF00 - FFFF00
                     rgb = 0x00FF00 | Math.max(0, 255 -
-                                           (int)(255 * angle / PI_3)) << 16;
-                }
-                else {
+                            (int) (255 * angle / PI_3)) << 16;
+                } else {
                     // FF00FF - 0000FF
                     rgb = 0x0000FF | Math.max(0, 255 -
-                                           (int)(255 * angle / PI_3)) << 16;
+                            (int) (255 * angle / PI_3)) << 16;
                 }
-            }
-            else {
+            } else {
                 angle -= 2 * PI_3;
                 if (y < 0) {
                     // 00FFFF - 00FF00
                     rgb = 0x00FF00 | Math.min(255,
-                                           (int)(255 * angle / PI_3));
-                }
-                else {
+                            (int) (255 * angle / PI_3));
+                } else {
                     // 0000FF - 00FFFF
                     rgb = 0x0000FF | Math.min(255,
-                                           (int)(255 * angle / PI_3)) << 8;
+                            (int) (255 * angle / PI_3)) << 8;
                 }
             }
             return rgb;
@@ -1211,14 +1185,12 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
 
             if (positive) {
                 hue += 1.0f / 360.0f;
-            }
-            else {
+            } else {
                 hue -= 1.0f / 360.0f;
             }
             if (hue > 1) {
                 hue -= 1;
-            }
-            else if (hue < 0) {
+            } else if (hue < 0) {
                 hue += 1;
             }
             getGTKColorChooserPanel().setHue(hue, true);
@@ -1238,58 +1210,57 @@ class GTKColorChooserPanel extends AbstractColorChooserPanel implements
         }
 
         public void actionPerformed(ActionEvent e) {
-            ColorTriangle triangle = (ColorTriangle)e.getSource();
+            ColorTriangle triangle = (ColorTriangle) e.getSource();
 
             if (triangle.isWheelFocused()) {
                 float hue = triangle.getGTKColorChooserPanel().getHue();
 
                 switch (type) {
-                case 0:
-                case 2:
-                    triangle.incrementHue(true);
-                    break;
-                case 1:
-                case 3:
-                    triangle.incrementHue(false);
-                    break;
-                case 4:
-                    triangle.focusTriangle();
-                    break;
-                case 5:
-                    compositeRequestFocus(triangle, false);
-                    break;
+                    case 0:
+                    case 2:
+                        triangle.incrementHue(true);
+                        break;
+                    case 1:
+                    case 3:
+                        triangle.incrementHue(false);
+                        break;
+                    case 4:
+                        triangle.focusTriangle();
+                        break;
+                    case 5:
+                        compositeRequestFocus(triangle, false);
+                        break;
                 }
-            }
-            else {
+            } else {
                 int xDelta = 0;
                 int yDelta = 0;
 
                 switch (type) {
-                case 0:
-                    // up
-                    yDelta--;
-                    break;
-                case 1:
-                    // down
-                    yDelta++;
-                    break;
-                case 2:
-                    // left
-                    xDelta--;
-                    break;
-                case 3:
-                    // right
-                    xDelta++;
-                    break;
-                case 4:
-                    compositeRequestFocus(triangle, true);
-                    return;
-                case 5:
-                    triangle.focusWheel();
-                    return;
+                    case 0:
+                        // up
+                        yDelta--;
+                        break;
+                    case 1:
+                        // down
+                        yDelta++;
+                        break;
+                    case 2:
+                        // left
+                        xDelta--;
+                        break;
+                    case 3:
+                        // right
+                        xDelta++;
+                        break;
+                    case 4:
+                        compositeRequestFocus(triangle, true);
+                        return;
+                    case 5:
+                        triangle.focusWheel();
+                        return;
                 }
                 triangle.adjustSB(triangle.getColorX() + xDelta,
-                                  triangle.getColorY() + yDelta, true);
+                        triangle.getColorY() + yDelta, true);
             }
         }
     }

@@ -38,7 +38,7 @@
 
 package com.sun.corba.se.impl.orbutil.concurrent;
 
-import com.sun.corba.se.impl.orbutil.ORBUtility ;
+import com.sun.corba.se.impl.orbutil.ORBUtility;
 
 /**
  * A simple reentrant mutual exclusion lock.
@@ -136,41 +136,43 @@ import com.sun.corba.se.impl.orbutil.ORBUtility ;
  * as it was acquired before another thread can acquire the mutex.
  * @see Semaphore
  * <p>[<a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html"> Introduction to this package. </a>]
-**/
+ **/
 
-import org.omg.CORBA.INTERNAL ;
+import org.omg.CORBA.INTERNAL;
 
-public class ReentrantMutex implements Sync  {
+public class ReentrantMutex implements Sync {
 
-    /** The thread holding the lock **/
+    /**
+     * The thread holding the lock
+     **/
     protected Thread holder_ = null;
 
-    /** number of times thread has acquired the lock **/
-    protected int counter_ = 0 ;
+    /**
+     * number of times thread has acquired the lock
+     **/
+    protected int counter_ = 0;
 
-    protected boolean debug = false ;
+    protected boolean debug = false;
 
-    public ReentrantMutex()
-    {
-        this( false ) ;
+    public ReentrantMutex() {
+        this(false);
     }
 
-    public ReentrantMutex( boolean debug )
-    {
-        this.debug = debug ;
+    public ReentrantMutex(boolean debug) {
+        this.debug = debug;
     }
 
     public void acquire() throws InterruptedException {
         if (Thread.interrupted())
             throw new InterruptedException();
 
-        synchronized(this) {
+        synchronized (this) {
             try {
                 if (debug)
-                    ORBUtility.dprintTrace( this,
-                        "acquire enter: holder_=" +
-                        ORBUtility.getThreadName(holder_) +
-                        " counter_=" + counter_ ) ;
+                    ORBUtility.dprintTrace(this,
+                            "acquire enter: holder_=" +
+                                    ORBUtility.getThreadName(holder_) +
+                                    " counter_=" + counter_);
 
                 Thread thr = Thread.currentThread();
                 if (holder_ != thr) {
@@ -181,7 +183,7 @@ public class ReentrantMutex implements Sync  {
                         // This can't happen, but make sure anyway
                         if (counter_ != 0)
                             throw new INTERNAL(
-                                "counter not 0 when first acquiring mutex" ) ;
+                                    "counter not 0 when first acquiring mutex");
 
                         holder_ = thr;
                     } catch (InterruptedException ex) {
@@ -190,32 +192,31 @@ public class ReentrantMutex implements Sync  {
                     }
                 }
 
-                counter_ ++ ;
+                counter_++;
             } finally {
                 if (debug)
-                    ORBUtility.dprintTrace( this, "acquire exit: holder_=" +
-                    ORBUtility.getThreadName(holder_) + " counter_=" +
-                    counter_ ) ;
+                    ORBUtility.dprintTrace(this, "acquire exit: holder_=" +
+                            ORBUtility.getThreadName(holder_) + " counter_=" +
+                            counter_);
             }
         }
     }
 
-    void acquireAll( int count ) throws InterruptedException
-    {
+    void acquireAll(int count) throws InterruptedException {
         if (Thread.interrupted())
             throw new InterruptedException();
 
-        synchronized(this) {
+        synchronized (this) {
             try {
                 if (debug)
-                    ORBUtility.dprintTrace( this,
-                        "acquireAll enter: count=" + count + " holder_=" +
-                        ORBUtility.getThreadName(holder_) + " counter_=" +
-                        counter_ ) ;
+                    ORBUtility.dprintTrace(this,
+                            "acquireAll enter: count=" + count + " holder_=" +
+                                    ORBUtility.getThreadName(holder_) + " counter_=" +
+                                    counter_);
                 Thread thr = Thread.currentThread();
                 if (holder_ == thr) {
                     throw new INTERNAL(
-                        "Cannot acquireAll while holding the mutex" ) ;
+                            "Cannot acquireAll while holding the mutex");
                 } else {
                     try {
                         while (counter_ > 0)
@@ -224,7 +225,7 @@ public class ReentrantMutex implements Sync  {
                         // This can't happen, but make sure anyway
                         if (counter_ != 0)
                             throw new INTERNAL(
-                                "counter not 0 when first acquiring mutex" ) ;
+                                    "counter not 0 when first acquiring mutex");
 
                         holder_ = thr;
                     } catch (InterruptedException ex) {
@@ -233,30 +234,29 @@ public class ReentrantMutex implements Sync  {
                     }
                 }
 
-                counter_ = count ;
+                counter_ = count;
             } finally {
                 if (debug)
-                    ORBUtility.dprintTrace( this, "acquireAll exit: count=" +
-                    count + " holder_=" + ORBUtility.getThreadName(holder_) +
-                    " counter_=" + counter_ ) ;
+                    ORBUtility.dprintTrace(this, "acquireAll exit: count=" +
+                            count + " holder_=" + ORBUtility.getThreadName(holder_) +
+                            " counter_=" + counter_);
             }
         }
     }
 
-    public synchronized void release()
-    {
+    public synchronized void release() {
         try {
             if (debug)
-                ORBUtility.dprintTrace( this, "release enter: " +
-                    " holder_=" + ORBUtility.getThreadName(holder_) +
-                    " counter_=" + counter_ ) ;
+                ORBUtility.dprintTrace(this, "release enter: " +
+                        " holder_=" + ORBUtility.getThreadName(holder_) +
+                        " counter_=" + counter_);
 
             Thread thr = Thread.currentThread();
             if (thr != holder_)
                 throw new INTERNAL(
-                    "Attempt to release Mutex by thread not holding the Mutex" ) ;
+                        "Attempt to release Mutex by thread not holding the Mutex");
             else
-                counter_ -- ;
+                counter_--;
 
             if (counter_ == 0) {
                 holder_ = null;
@@ -264,35 +264,34 @@ public class ReentrantMutex implements Sync  {
             }
         } finally {
             if (debug)
-                ORBUtility.dprintTrace( this, "release exit: " +
-                    " holder_=" + ORBUtility.getThreadName(holder_) +
-                    " counter_=" + counter_ ) ;
+                ORBUtility.dprintTrace(this, "release exit: " +
+                        " holder_=" + ORBUtility.getThreadName(holder_) +
+                        " counter_=" + counter_);
         }
     }
 
-    synchronized int releaseAll()
-    {
+    synchronized int releaseAll() {
         try {
             if (debug)
-                ORBUtility.dprintTrace( this, "releaseAll enter: " +
-                    " holder_=" + ORBUtility.getThreadName(holder_) +
-                    " counter_=" + counter_ ) ;
+                ORBUtility.dprintTrace(this, "releaseAll enter: " +
+                        " holder_=" + ORBUtility.getThreadName(holder_) +
+                        " counter_=" + counter_);
 
             Thread thr = Thread.currentThread();
             if (thr != holder_)
                 throw new INTERNAL(
-                    "Attempt to releaseAll Mutex by thread not holding the Mutex" ) ;
+                        "Attempt to releaseAll Mutex by thread not holding the Mutex");
 
-            int result = counter_ ;
-            counter_ = 0 ;
-            holder_ = null ;
-            notify() ;
-            return result ;
+            int result = counter_;
+            counter_ = 0;
+            holder_ = null;
+            notify();
+            return result;
         } finally {
             if (debug)
-                ORBUtility.dprintTrace( this, "releaseAll exit: " +
-                    " holder_=" + ORBUtility.getThreadName(holder_) +
-                    " counter_=" + counter_ ) ;
+                ORBUtility.dprintTrace(this, "releaseAll exit: " +
+                        " holder_=" + ORBUtility.getThreadName(holder_) +
+                        " counter_=" + counter_);
         }
     }
 
@@ -300,19 +299,19 @@ public class ReentrantMutex implements Sync  {
         if (Thread.interrupted())
             throw new InterruptedException();
 
-        synchronized(this) {
+        synchronized (this) {
             try {
                 if (debug)
-                    ORBUtility.dprintTrace( this, "attempt enter: msecs=" +
-                        msecs + " holder_=" +
-                        ORBUtility.getThreadName(holder_) +
-                        " counter_=" + counter_ ) ;
+                    ORBUtility.dprintTrace(this, "attempt enter: msecs=" +
+                            msecs + " holder_=" +
+                            ORBUtility.getThreadName(holder_) +
+                            " counter_=" + counter_);
 
-                Thread thr = Thread.currentThread() ;
+                Thread thr = Thread.currentThread();
 
-                if (counter_==0) {
+                if (counter_ == 0) {
                     holder_ = thr;
-                    counter_ = 1 ;
+                    counter_ = 1;
                     return true;
                 } else if (msecs <= 0) {
                     return false;
@@ -320,15 +319,15 @@ public class ReentrantMutex implements Sync  {
                     long waitTime = msecs;
                     long start = System.currentTimeMillis();
                     try {
-                        for (;;) {
+                        for (; ; ) {
                             wait(waitTime);
-                            if (counter_==0) {
+                            if (counter_ == 0) {
                                 holder_ = thr;
-                                counter_ = 1 ;
+                                counter_ = 1;
                                 return true;
                             } else {
                                 waitTime = msecs -
-                                    (System.currentTimeMillis() - start);
+                                        (System.currentTimeMillis() - start);
 
                                 if (waitTime <= 0)
                                     return false;
@@ -341,9 +340,9 @@ public class ReentrantMutex implements Sync  {
                 }
             } finally {
                 if (debug)
-                    ORBUtility.dprintTrace( this, "attempt exit: " +
-                        " holder_=" + ORBUtility.getThreadName(holder_) +
-                        " counter_=" + counter_ ) ;
+                    ORBUtility.dprintTrace(this, "attempt exit: " +
+                            " holder_=" + ORBUtility.getThreadName(holder_) +
+                            " counter_=" + counter_);
             }
         }
     }

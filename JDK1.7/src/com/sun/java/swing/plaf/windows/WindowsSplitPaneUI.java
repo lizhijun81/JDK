@@ -43,23 +43,22 @@ import javax.swing.plaf.*;
  * version of Swing.  A future release of Swing will provide support for
  * long term persistence.
  */
-public class WindowsSplitPaneUI extends BasicSplitPaneUI
-{
+public class WindowsSplitPaneUI extends BasicSplitPaneUI {
 
     public WindowsSplitPaneUI() {
         super();
     }
 
     /**
-      * Creates a new WindowsSplitPaneUI instance
-      */
+     * Creates a new WindowsSplitPaneUI instance
+     */
     public static ComponentUI createUI(JComponent x) {
         return new WindowsSplitPaneUI();
     }
 
     /**
-      * Creates the default divider.
-      */
+     * Creates the default divider.
+     */
     public BasicSplitPaneDivider createDefaultDivider() {
         return new WindowsSplitPaneDivider(this);
     }

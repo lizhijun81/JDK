@@ -60,9 +60,12 @@
  */
 
 package com.sun.org.apache.xerces.internal.util;
+
 import com.sun.org.apache.xerces.internal.impl.Constants;
+
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+
 /**
  * This class is a container for parser settings that relate to
  * security, or more specifically, it is intended to be used to prevent denial-of-service
@@ -77,8 +80,7 @@ import java.security.PrivilegedAction;
  * will provide defaults for all known security issues, but will also provide
  * setters so that those values can be tailored by applications that care.
  *
- * @author  Neil Graham, IBM
- *
+ * @author Neil Graham, IBM
  * @version $Id: SecurityManager.java,v 1.5 2010-11-01 04:40:14 joehw Exp $
  */
 public final class SecurityManager {
@@ -90,35 +92,42 @@ public final class SecurityManager {
     // default value for entity expansion limit
     private final static int DEFAULT_ENTITY_EXPANSION_LIMIT = 64000;
 
-    /** Default value of number of nodes created. **/
+    /**
+     * Default value of number of nodes created.
+     **/
     private final static int DEFAULT_MAX_OCCUR_NODE_LIMIT = 5000;
 
     //
     // Data
     //
 
-        private final static int DEFAULT_ELEMENT_ATTRIBUTE_LIMIT = 10000;
+    private final static int DEFAULT_ELEMENT_ATTRIBUTE_LIMIT = 10000;
 
-    /** Entity expansion limit. **/
+    /**
+     * Entity expansion limit.
+     **/
     private int entityExpansionLimit;
 
-    /** W3C XML Schema maxOccurs limit. **/
+    /**
+     * W3C XML Schema maxOccurs limit.
+     **/
     private int maxOccurLimit;
 
-        private int fElementAttributeLimit;
+    private int fElementAttributeLimit;
     // default constructor.  Establishes default values for
     // all known security holes.
+
     /**
      * Default constructor.  Establishes default values
      * for known security vulnerabilities.
      */
     public SecurityManager() {
         entityExpansionLimit = DEFAULT_ENTITY_EXPANSION_LIMIT;
-        maxOccurLimit = DEFAULT_MAX_OCCUR_NODE_LIMIT ;
-                fElementAttributeLimit = DEFAULT_ELEMENT_ATTRIBUTE_LIMIT;
-                //We are reading system properties only once ,
-                //at the time of creation of this object ,
-                readSystemProperties();
+        maxOccurLimit = DEFAULT_MAX_OCCUR_NODE_LIMIT;
+        fElementAttributeLimit = DEFAULT_ELEMENT_ATTRIBUTE_LIMIT;
+        //We are reading system properties only once ,
+        //at the time of creation of this object ,
+        readSystemProperties();
     }
 
     /**
@@ -126,7 +135,7 @@ public final class SecurityManager {
      * parser should permit in a document.</p>
      *
      * @param limit the number of entity expansions
-     * permitted in a document
+     *              permitted in a document
      */
     public void setEntityExpansionLimit(int limit) {
         entityExpansionLimit = limit;
@@ -150,9 +159,9 @@ public final class SecurityManager {
      * other than "unbounded".</p>
      *
      * @param limit the maximum value for maxOccurs other
-     * than "unbounded"
+     *              than "unbounded"
      */
-    public void setMaxOccurNodeLimit(int limit){
+    public void setMaxOccurNodeLimit(int limit) {
         maxOccurLimit = limit;
     }
 
@@ -165,56 +174,56 @@ public final class SecurityManager {
      * @return the maximum value for maxOccurs other
      * than "unbounded"
      */
-    public int getMaxOccurNodeLimit(){
+    public int getMaxOccurNodeLimit() {
         return maxOccurLimit;
     }
 
-    public int getElementAttrLimit(){
-                return fElementAttributeLimit;
+    public int getElementAttrLimit() {
+        return fElementAttributeLimit;
+    }
+
+    public void setElementAttrLimit(int limit) {
+        fElementAttributeLimit = limit;
+    }
+
+    private void readSystemProperties() {
+
+        //TODO: also read SYSTEM_PROPERTY_ELEMENT_ATTRIBUTE_LIMIT
+        try {
+            String value = getSystemProperty(Constants.ENTITY_EXPANSION_LIMIT);
+            if (value != null && !value.equals("")) {
+                entityExpansionLimit = Integer.parseInt(value);
+                if (entityExpansionLimit < 0)
+                    entityExpansionLimit = DEFAULT_ENTITY_EXPANSION_LIMIT;
+            } else
+                entityExpansionLimit = DEFAULT_ENTITY_EXPANSION_LIMIT;
+        } catch (Exception ex) {
         }
 
-        public void setElementAttrLimit(int limit){
-                fElementAttributeLimit = limit;
+        try {
+            String value = getSystemProperty(Constants.MAX_OCCUR_LIMIT);
+            if (value != null && !value.equals("")) {
+                maxOccurLimit = Integer.parseInt(value);
+                if (maxOccurLimit < 0)
+                    maxOccurLimit = DEFAULT_MAX_OCCUR_NODE_LIMIT;
+            } else
+                maxOccurLimit = DEFAULT_MAX_OCCUR_NODE_LIMIT;
+        } catch (Exception ex) {
         }
 
-        private void readSystemProperties(){
+        try {
+            String value = getSystemProperty(Constants.SYSTEM_PROPERTY_ELEMENT_ATTRIBUTE_LIMIT);
+            if (value != null && !value.equals("")) {
+                fElementAttributeLimit = Integer.parseInt(value);
+                if (fElementAttributeLimit < 0)
+                    fElementAttributeLimit = DEFAULT_ELEMENT_ATTRIBUTE_LIMIT;
+            } else
+                fElementAttributeLimit = DEFAULT_ELEMENT_ATTRIBUTE_LIMIT;
 
-            //TODO: also read SYSTEM_PROPERTY_ELEMENT_ATTRIBUTE_LIMIT
-            try {
-                    String value = getSystemProperty(Constants.ENTITY_EXPANSION_LIMIT);
-                    if(value != null && !value.equals("")){
-                            entityExpansionLimit = Integer.parseInt(value);
-                            if (entityExpansionLimit < 0)
-                                    entityExpansionLimit = DEFAULT_ENTITY_EXPANSION_LIMIT;
-                    }
-                    else
-                            entityExpansionLimit = DEFAULT_ENTITY_EXPANSION_LIMIT;
-            }catch(Exception ex){}
-
-            try {
-                    String value = getSystemProperty(Constants.MAX_OCCUR_LIMIT);
-                    if(value != null && !value.equals("")){
-                            maxOccurLimit = Integer.parseInt(value);
-                            if (maxOccurLimit < 0)
-                                    maxOccurLimit = DEFAULT_MAX_OCCUR_NODE_LIMIT;
-                    }
-                    else
-                            maxOccurLimit = DEFAULT_MAX_OCCUR_NODE_LIMIT;
-            }catch(Exception ex){}
-
-            try {
-                    String value = getSystemProperty(Constants.SYSTEM_PROPERTY_ELEMENT_ATTRIBUTE_LIMIT);
-                    if(value != null && !value.equals("")){
-                            fElementAttributeLimit = Integer.parseInt(value);
-                            if ( fElementAttributeLimit < 0)
-                                    fElementAttributeLimit = DEFAULT_ELEMENT_ATTRIBUTE_LIMIT;
-                    }
-                    else
-                            fElementAttributeLimit = DEFAULT_ELEMENT_ATTRIBUTE_LIMIT;
-
-                }catch(Exception ex){}
-
+        } catch (Exception ex) {
         }
+
+    }
 
     private String getSystemProperty(final String propName) {
         return AccessController.doPrivileged(new PrivilegedAction<String>() {

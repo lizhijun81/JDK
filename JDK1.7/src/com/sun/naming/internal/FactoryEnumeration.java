@@ -29,10 +29,10 @@ import java.util.List;
 import javax.naming.NamingException;
 
 /**
-  * The FactoryEnumeration is used for returning factory instances.
-  *
-  * @author Rosanna Lee
-  * @author Scott Seligman
+ * The FactoryEnumeration is used for returning factory instances.
+ *
+ * @author Rosanna Lee
+ * @author Scott Seligman
  */
 
 // no need to implement Enumeration since this is only for internal use
@@ -55,7 +55,7 @@ public final class FactoryEnumeration {
      * references so as not to prevent GC of the class loader.  Each
      * weak reference is tagged with the factory's class name so the
      * class can be reloaded if the reference is cleared.
-
+     *
      * @param factories A non-null list
      * @param loader    The class loader of the list's contents
      */
@@ -82,16 +82,16 @@ public final class FactoryEnumeration {
                 // Instantiate Class to get factory
                 answer = ((Class) answer).newInstance();
                 ref = new NamedWeakReference(answer, className);
-                factories.set(posn-1, ref);  // replace Class object or null
+                factories.set(posn - 1, ref);  // replace Class object or null
                 return answer;
             } catch (ClassNotFoundException e) {
                 NamingException ne =
-                    new NamingException("No longer able to load " + className);
+                        new NamingException("No longer able to load " + className);
                 ne.setRootCause(e);
                 throw ne;
             } catch (InstantiationException e) {
                 NamingException ne =
-                    new NamingException("Cannot instantiate " + answer);
+                        new NamingException("Cannot instantiate " + answer);
                 ne.setRootCause(e);
                 throw ne;
             } catch (IllegalAccessException e) {

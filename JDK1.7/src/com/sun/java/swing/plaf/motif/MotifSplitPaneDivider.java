@@ -45,20 +45,19 @@ import javax.swing.plaf.basic.BasicSplitPaneDivider;
  *
  * @author Jeff Dinkins
  */
-public class MotifSplitPaneDivider extends BasicSplitPaneDivider
-{
+public class MotifSplitPaneDivider extends BasicSplitPaneDivider {
     /**
      * Default cursor, supers is package private, so we have to have one
      * too.
      */
     private static final Cursor defaultCursor =
-                            Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+            Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 
 
     public static final int minimumThumbSize = 6;
     public static final int defaultDividerSize = 18;
 
-    protected  static final int pad = 6;
+    protected static final int pad = 6;
 
     private int hThumbOffset = 30;
     private int vThumbOffset = 40;
@@ -87,15 +86,14 @@ public class MotifSplitPaneDivider extends BasicSplitPaneDivider
      * PENDING(jeff) - rewrite JSplitPane so that this ins't needed
      */
     public void setDividerSize(int newSize) {
-        Insets          insets = getInsets();
-        int             borderSize = 0;
+        Insets insets = getInsets();
+        int borderSize = 0;
         if (getBasicSplitPaneUI().getOrientation() ==
-            JSplitPane.HORIZONTAL_SPLIT) {
+                JSplitPane.HORIZONTAL_SPLIT) {
             if (insets != null) {
                 borderSize = insets.left + insets.right;
             }
-        }
-        else if (insets != null) {
+        } else if (insets != null) {
             borderSize = insets.top + insets.bottom;
         }
         if (newSize < pad + minimumThumbSize + borderSize) {
@@ -107,80 +105,80 @@ public class MotifSplitPaneDivider extends BasicSplitPaneDivider
     }
 
     /**
-      * Paints the divider.
-      */
+     * Paints the divider.
+     */
     // PENDING(jeff) - the thumb's location and size is currently hard coded.
     // It should be dynamic.
     public void paint(Graphics g) {
-        Color               bgColor = getBackground();
-        Dimension           size = getSize();
+        Color bgColor = getBackground();
+        Dimension size = getSize();
 
         // fill
         g.setColor(getBackground());
         g.fillRect(0, 0, size.width, size.height);
 
-        if(getBasicSplitPaneUI().getOrientation() ==
-           JSplitPane.HORIZONTAL_SPLIT) {
-            int center = size.width/2;
-            int x = center - hThumbWidth/2;
+        if (getBasicSplitPaneUI().getOrientation() ==
+                JSplitPane.HORIZONTAL_SPLIT) {
+            int center = size.width / 2;
+            int x = center - hThumbWidth / 2;
             int y = hThumbOffset;
 
             // split line
             g.setColor(shadowColor);
-            g.drawLine(center-1, 0, center-1, size.height);
+            g.drawLine(center - 1, 0, center - 1, size.height);
 
             g.setColor(highlightColor);
             g.drawLine(center, 0, center, size.height);
 
             // draw thumb
             g.setColor((splitPane.hasFocus()) ? focusedColor :
-                                                getBackground());
-            g.fillRect(x+1, y+1, hThumbWidth-2, hThumbHeight-1);
+                    getBackground());
+            g.fillRect(x + 1, y + 1, hThumbWidth - 2, hThumbHeight - 1);
 
             g.setColor(highlightColor);
-            g.drawLine(x, y, x+hThumbWidth-1, y);       // top
-            g.drawLine(x, y+1, x, y+hThumbHeight-1);    // left
+            g.drawLine(x, y, x + hThumbWidth - 1, y);       // top
+            g.drawLine(x, y + 1, x, y + hThumbHeight - 1);    // left
 
             g.setColor(shadowColor);
-            g.drawLine(x+1, y+hThumbHeight-1,
-                       x+hThumbWidth-1, y+hThumbHeight-1);      // bottom
-            g.drawLine(x+hThumbWidth-1, y+1,
-                       x+hThumbWidth-1, y+hThumbHeight-2);      // right
+            g.drawLine(x + 1, y + hThumbHeight - 1,
+                    x + hThumbWidth - 1, y + hThumbHeight - 1);      // bottom
+            g.drawLine(x + hThumbWidth - 1, y + 1,
+                    x + hThumbWidth - 1, y + hThumbHeight - 2);      // right
 
         } else {
-            int center = size.height/2;
+            int center = size.height / 2;
             int x = size.width - vThumbOffset;
-            int y = size.height/2 - vThumbHeight/2;
+            int y = size.height / 2 - vThumbHeight / 2;
 
             // split line
             g.setColor(shadowColor);
-            g.drawLine(0, center-1, size.width, center-1);
+            g.drawLine(0, center - 1, size.width, center - 1);
 
             g.setColor(highlightColor);
             g.drawLine(0, center, size.width, center);
 
             // draw thumb
             g.setColor((splitPane.hasFocus()) ? focusedColor :
-                                                getBackground());
-            g.fillRect(x+1, y+1, vThumbWidth-1, vThumbHeight-1);
+                    getBackground());
+            g.fillRect(x + 1, y + 1, vThumbWidth - 1, vThumbHeight - 1);
 
             g.setColor(highlightColor);
-            g.drawLine(x, y, x+vThumbWidth, y);    // top
-            g.drawLine(x, y+1, x, y+vThumbHeight); // left
+            g.drawLine(x, y, x + vThumbWidth, y);    // top
+            g.drawLine(x, y + 1, x, y + vThumbHeight); // left
 
             g.setColor(shadowColor);
-            g.drawLine(x+1, y+vThumbHeight,
-                       x+vThumbWidth, y+vThumbHeight);          // bottom
-            g.drawLine(x+vThumbWidth, y+1,
-                       x+vThumbWidth, y+vThumbHeight-1);        // right
+            g.drawLine(x + 1, y + vThumbHeight,
+                    x + vThumbWidth, y + vThumbHeight);          // bottom
+            g.drawLine(x + vThumbWidth, y + 1,
+                    x + vThumbWidth, y + vThumbHeight - 1);        // right
         }
         super.paint(g);
 
     }
 
     /**
-      * The minimums size is the same as the preferredSize
-      */
+     * The minimums size is the same as the preferredSize
+     */
     public Dimension getMinimumSize() {
         return getPreferredSize();
     }
@@ -192,19 +190,19 @@ public class MotifSplitPaneDivider extends BasicSplitPaneDivider
     public void setBasicSplitPaneUI(BasicSplitPaneUI newUI) {
         if (splitPane != null) {
             splitPane.removePropertyChangeListener(this);
-           if (mouseHandler != null) {
-               splitPane.removeMouseListener(mouseHandler);
-               splitPane.removeMouseMotionListener(mouseHandler);
-               removeMouseListener(mouseHandler);
-               removeMouseMotionListener(mouseHandler);
-               mouseHandler = null;
-           }
+            if (mouseHandler != null) {
+                splitPane.removeMouseListener(mouseHandler);
+                splitPane.removeMouseMotionListener(mouseHandler);
+                removeMouseListener(mouseHandler);
+                removeMouseMotionListener(mouseHandler);
+                mouseHandler = null;
+            }
         }
         splitPaneUI = newUI;
         if (newUI != null) {
             splitPane = newUI.getSplitPane();
             if (splitPane != null) {
-                if (mouseHandler == null) mouseHandler=new MotifMouseHandler();
+                if (mouseHandler == null) mouseHandler = new MotifMouseHandler();
                 splitPane.addMouseListener(mouseHandler);
                 splitPane.addMouseMotionListener(mouseHandler);
                 addMouseListener(mouseHandler);
@@ -214,8 +212,7 @@ public class MotifSplitPaneDivider extends BasicSplitPaneDivider
                     oneTouchExpandableChanged();
                 }
             }
-        }
-        else {
+        } else {
             splitPane = null;
         }
     }
@@ -225,24 +222,23 @@ public class MotifSplitPaneDivider extends BasicSplitPaneDivider
      * is inside the thumb.
      */
     private boolean isInThumb(int x, int y) {
-        Dimension           size = getSize();
-        int                 thumbX;
-        int                 thumbY;
-        int                 thumbWidth;
-        int                 thumbHeight;
+        Dimension size = getSize();
+        int thumbX;
+        int thumbY;
+        int thumbWidth;
+        int thumbHeight;
 
         if (getBasicSplitPaneUI().getOrientation() ==
-            JSplitPane.HORIZONTAL_SPLIT) {
-            int center = size.width/2;
-            thumbX = center - hThumbWidth/2;
+                JSplitPane.HORIZONTAL_SPLIT) {
+            int center = size.width / 2;
+            thumbX = center - hThumbWidth / 2;
             thumbY = hThumbOffset;
             thumbWidth = hThumbWidth;
             thumbHeight = hThumbHeight;
-        }
-        else {
-            int center = size.height/2;
+        } else {
+            int center = size.height / 2;
             thumbX = size.width - vThumbOffset;
-            thumbY = size.height/2 - vThumbHeight/2;
+            thumbY = size.height / 2 - vThumbHeight / 2;
             thumbWidth = vThumbWidth;
             thumbHeight = vThumbHeight;
         }
@@ -273,8 +269,8 @@ public class MotifSplitPaneDivider extends BasicSplitPaneDivider
         public void mousePressed(MouseEvent e) {
             // Constrain the mouse pressed to the thumb.
             if (e.getSource() == MotifSplitPaneDivider.this &&
-                getDragger() == null && getSplitPane().isEnabled() &&
-                isInThumb(e.getX(), e.getY())) {
+                    getDragger() == null && getSplitPane().isEnabled() &&
+                    isInThumb(e.getX(), e.getY())) {
                 super.mousePressed(e);
             }
         }

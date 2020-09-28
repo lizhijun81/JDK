@@ -31,14 +31,14 @@ import java.util.List;
 
 import com.sun.corba.se.pept.transport.ContactInfo;
 
-import com.sun.corba.se.spi.ior.IOR ;
-import com.sun.corba.se.spi.ior.iiop.IIOPProfile ;
-import com.sun.corba.se.spi.ior.iiop.IIOPProfileTemplate ;
+import com.sun.corba.se.spi.ior.IOR;
+import com.sun.corba.se.spi.ior.iiop.IIOPProfile;
+import com.sun.corba.se.spi.ior.iiop.IIOPProfileTemplate;
 import com.sun.corba.se.spi.oa.ObjectAdapterFactory;
 import com.sun.corba.se.spi.orb.ORB;
 import com.sun.corba.se.spi.protocol.LocalClientRequestDispatcher;
 import com.sun.corba.se.spi.protocol.LocalClientRequestDispatcherFactory;
-import com.sun.corba.se.spi.transport.CorbaContactInfoList ;
+import com.sun.corba.se.spi.transport.CorbaContactInfoList;
 import com.sun.corba.se.spi.transport.SocketInfo;
 
 import com.sun.corba.se.impl.orbutil.ORBConstants;
@@ -48,9 +48,8 @@ import com.sun.corba.se.impl.protocol.NotLocalLocalCRDImpl;
  * @author Harold Carr
  */
 public class CorbaContactInfoListImpl
-    implements
-        CorbaContactInfoList
-{
+        implements
+        CorbaContactInfoList {
     protected ORB orb;
     protected LocalClientRequestDispatcher LocalClientRequestDispatcher;
     protected IOR targetIOR;
@@ -59,13 +58,11 @@ public class CorbaContactInfoListImpl
     protected ContactInfo primaryContactInfo;
 
     // XREVISIT - is this used?
-    public CorbaContactInfoListImpl(ORB orb)
-    {
+    public CorbaContactInfoListImpl(ORB orb) {
         this.orb = orb;
     }
 
-    public CorbaContactInfoListImpl(ORB orb, IOR targetIOR)
-    {
+    public CorbaContactInfoListImpl(ORB orb, IOR targetIOR) {
         this(orb);
         setTargetIOR(targetIOR);
     }
@@ -75,12 +72,11 @@ public class CorbaContactInfoListImpl
     // pept.transport.ContactInfoList
     //
 
-    public synchronized Iterator iterator()
-    {
+    public synchronized Iterator iterator() {
         createContactInfoList();
         return new CorbaContactInfoListIteratorImpl(
-            orb, this, primaryContactInfo,
-            effectiveTargetIORContactInfoList);
+                orb, this, primaryContactInfo,
+                effectiveTargetIORContactInfoList);
     }
 
     ////////////////////////////////////////////////////
@@ -88,38 +84,32 @@ public class CorbaContactInfoListImpl
     // spi.transport.CorbaContactInfoList
     //
 
-    public synchronized void setTargetIOR(IOR targetIOR)
-    {
+    public synchronized void setTargetIOR(IOR targetIOR) {
         this.targetIOR = targetIOR;
         setEffectiveTargetIOR(targetIOR);
     }
 
-    public synchronized IOR getTargetIOR()
-    {
+    public synchronized IOR getTargetIOR() {
         return targetIOR;
     }
 
-    public synchronized void setEffectiveTargetIOR(IOR effectiveTargetIOR)
-    {
+    public synchronized void setEffectiveTargetIOR(IOR effectiveTargetIOR) {
         this.effectiveTargetIOR = effectiveTargetIOR;
         effectiveTargetIORContactInfoList = null;
         if (primaryContactInfo != null &&
-            orb.getORBData().getIIOPPrimaryToContactInfo() != null)
-        {
+                orb.getORBData().getIIOPPrimaryToContactInfo() != null) {
             orb.getORBData().getIIOPPrimaryToContactInfo()
-                .reset(primaryContactInfo);
+                    .reset(primaryContactInfo);
         }
         primaryContactInfo = null;
         setLocalSubcontract();
     }
 
-    public synchronized IOR getEffectiveTargetIOR()
-    {
+    public synchronized IOR getEffectiveTargetIOR() {
         return effectiveTargetIOR;
     }
 
-    public synchronized LocalClientRequestDispatcher getLocalClientRequestDispatcher()
-    {
+    public synchronized LocalClientRequestDispatcher getLocalClientRequestDispatcher() {
         return LocalClientRequestDispatcher;
     }
 
@@ -135,8 +125,7 @@ public class CorbaContactInfoListImpl
     // java.lang.Object
     //
 
-    public synchronized int hashCode()
-    {
+    public synchronized int hashCode() {
         return targetIOR.hashCode();
     }
 
@@ -145,8 +134,7 @@ public class CorbaContactInfoListImpl
     // Implementation
     //
 
-    protected void createContactInfoList()
-    {
+    protected void createContactInfoList() {
         if (effectiveTargetIORContactInfoList != null) {
             return;
         }
@@ -155,14 +143,14 @@ public class CorbaContactInfoListImpl
 
         IIOPProfile iiopProfile = effectiveTargetIOR.getProfile();
         String hostname =
-            ((IIOPProfileTemplate)iiopProfile.getTaggedProfileTemplate())
-                .getPrimaryAddress().getHost().toLowerCase();
-        int    port     =
-            ((IIOPProfileTemplate)iiopProfile.getTaggedProfileTemplate())
-                .getPrimaryAddress().getPort();
+                ((IIOPProfileTemplate) iiopProfile.getTaggedProfileTemplate())
+                        .getPrimaryAddress().getHost().toLowerCase();
+        int port =
+                ((IIOPProfileTemplate) iiopProfile.getTaggedProfileTemplate())
+                        .getPrimaryAddress().getPort();
         // For use by "sticky manager" if one is registered.
         primaryContactInfo =
-            createContactInfo(SocketInfo.IIOP_CLEAR_TEXT, hostname, port);
+                createContactInfo(SocketInfo.IIOP_CLEAR_TEXT, hostname, port);
 
         if (iiopProfile.isLocal()) {
             // NOTE: IMPORTANT:
@@ -171,54 +159,51 @@ public class CorbaContactInfoListImpl
             // the IOR - so if we added other addresses then
             // transactions and interceptors would not execute.
             ContactInfo contactInfo = new SharedCDRContactInfoImpl(
-                orb, this, effectiveTargetIOR,
-                orb.getORBData().getGIOPAddressDisposition());
+                    orb, this, effectiveTargetIOR,
+                    orb.getORBData().getGIOPAddressDisposition());
             effectiveTargetIORContactInfoList.add(contactInfo);
         } else {
             addRemoteContactInfos(effectiveTargetIOR,
-                                  effectiveTargetIORContactInfoList);
+                    effectiveTargetIORContactInfoList);
         }
     }
 
     protected void addRemoteContactInfos(
-        IOR  effectiveTargetIOR,
-        List effectiveTargetIORContactInfoList)
-    {
+            IOR effectiveTargetIOR,
+            List effectiveTargetIORContactInfoList) {
         ContactInfo contactInfo;
         List socketInfos = orb.getORBData()
-            .getIORToSocketInfo().getSocketInfo(effectiveTargetIOR);
+                .getIORToSocketInfo().getSocketInfo(effectiveTargetIOR);
         Iterator iterator = socketInfos.iterator();
         while (iterator.hasNext()) {
             SocketInfo socketInfo = (SocketInfo) iterator.next();
             String type = socketInfo.getType();
             String host = socketInfo.getHost().toLowerCase();
-            int    port = socketInfo.getPort();
+            int port = socketInfo.getPort();
             contactInfo = createContactInfo(type, host, port);
             effectiveTargetIORContactInfoList.add(contactInfo);
         }
     }
 
     protected ContactInfo createContactInfo(String type,
-                                            String hostname, int port)
-    {
+                                            String hostname, int port) {
         return new SocketOrChannelContactInfoImpl(
-            orb, this,
-            // XREVISIT - See Base Line 62
-            effectiveTargetIOR,
-            orb.getORBData().getGIOPAddressDisposition(),
-            type, hostname, port);
+                orb, this,
+                // XREVISIT - See Base Line 62
+                effectiveTargetIOR,
+                orb.getORBData().getGIOPAddressDisposition(),
+                type, hostname, port);
     }
 
     /**
      * setLocalSubcontract sets cached information that is set whenever
      * the effectiveTargetIOR changes.
-     *
+     * <p>
      * Note: this must be maintained accurately whether or not the ORB
      * allows local optimization, because ServantManagers in the POA
      * ALWAYS use local optimization ONLY (they do not have a remote case).
      */
-    protected void setLocalSubcontract()
-    {
+    protected void setLocalSubcontract() {
         if (!effectiveTargetIOR.getProfile().isLocal()) {
             LocalClientRequestDispatcher = new NotLocalLocalCRDImpl();
             return;
@@ -231,9 +216,9 @@ public class CorbaContactInfoListImpl
         // ContactInfo.  This may in fact mean that we should do this at
         // the ContactInfo level, rather than the IOR/profile level.
         int scid = effectiveTargetIOR.getProfile().getObjectKeyTemplate().
-            getSubcontractId() ;
-        LocalClientRequestDispatcherFactory lcsf = orb.getRequestDispatcherRegistry().getLocalClientRequestDispatcherFactory( scid ) ;
-        LocalClientRequestDispatcher = lcsf.create( scid, effectiveTargetIOR ) ;
+                getSubcontractId();
+        LocalClientRequestDispatcherFactory lcsf = orb.getRequestDispatcherRegistry().getLocalClientRequestDispatcherFactory(scid);
+        LocalClientRequestDispatcher = lcsf.create(scid, effectiveTargetIOR);
     }
 }
 

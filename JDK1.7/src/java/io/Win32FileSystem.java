@@ -27,6 +27,7 @@ package java.io;
 
 import java.security.AccessController;
 import java.util.Locale;
+
 import sun.security.action.GetPropertyAction;
 
 
@@ -38,9 +39,9 @@ class Win32FileSystem extends FileSystem {
 
     public Win32FileSystem() {
         slash = AccessController.doPrivileged(
-            new GetPropertyAction("file.separator")).charAt(0);
+                new GetPropertyAction("file.separator")).charAt(0);
         semicolon = AccessController.doPrivileged(
-            new GetPropertyAction("path.separator")).charAt(0);
+                new GetPropertyAction("path.separator")).charAt(0);
         altSlash = (this.slash == '\\') ? '/' : '\\';
     }
 
@@ -86,8 +87,8 @@ class Win32FileSystem extends FileSystem {
         while ((src < len) && isSlash(path.charAt(src))) src++;
         char c;
         if ((len - src >= 2)
-            && isLetter(c = path.charAt(src))
-            && path.charAt(src + 1) == ':') {
+                && isLetter(c = path.charAt(src))
+                && path.charAt(src + 1) == ':') {
             /* Remove leading slashes if followed by drive specifier.
                This hack is necessary to support file URLs containing drive
                specifiers (e.g., "file://c:/path").  As a side effect,
@@ -98,8 +99,8 @@ class Win32FileSystem extends FileSystem {
         } else {
             src = 0;
             if ((len >= 2)
-                && isSlash(path.charAt(0))
-                && isSlash(path.charAt(1))) {
+                    && isSlash(path.charAt(0))
+                    && isSlash(path.charAt(1))) {
                 /* UNC pathname: Retain first slash; leave src pointed at
                    second slash so that further slashes will be collapsed
                    into the second slash.  The result will be a pathname
@@ -367,27 +368,27 @@ class Win32FileSystem extends FileSystem {
     // same directory, and must not create results differing from the true
     // canonicalization algorithm in canonicalize_md.c. For this reason the
     // prefix cache is conservative and is not used for complex path names.
-    private ExpiringCache cache       = new ExpiringCache();
+    private ExpiringCache cache = new ExpiringCache();
     private ExpiringCache prefixCache = new ExpiringCache();
 
     public String canonicalize(String path) throws IOException {
         // If path is a drive letter only then skip canonicalization
         int len = path.length();
         if ((len == 2) &&
-            (isLetter(path.charAt(0))) &&
-            (path.charAt(1) == ':')) {
+                (isLetter(path.charAt(0))) &&
+                (path.charAt(1) == ':')) {
             char c = path.charAt(0);
             if ((c >= 'A') && (c <= 'Z'))
                 return path;
-            return "" + ((char) (c-32)) + ':';
+            return "" + ((char) (c - 32)) + ':';
         } else if ((len == 3) &&
-                   (isLetter(path.charAt(0))) &&
-                   (path.charAt(1) == ':') &&
-                   (path.charAt(2) == '\\')) {
+                (isLetter(path.charAt(0))) &&
+                (path.charAt(1) == ':') &&
+                (path.charAt(2) == '\\')) {
             char c = path.charAt(0);
             if ((c >= 'A') && (c <= 'Z'))
                 return path;
-            return "" + ((char) (c-32)) + ':' + '\\';
+            return "" + ((char) (c - 32)) + ':' + '\\';
         }
         if (!useCanonCaches) {
             return canonicalize0(path);
@@ -429,19 +430,21 @@ class Win32FileSystem extends FileSystem {
     }
 
     protected native String canonicalize0(String path)
-                                                throws IOException;
+            throws IOException;
+
     protected String canonicalizeWithPrefix(String canonicalPrefix,
-                                            String filename) throws IOException
-    {
+                                            String filename) throws IOException {
         return canonicalizeWithPrefix0(canonicalPrefix,
-                                       canonicalPrefix + File.separatorChar + filename);
+                canonicalPrefix + File.separatorChar + filename);
     }
+
     // Run the canonicalization operation assuming that the prefix
     // (everything up to the last filename) is canonical; just gets
     // the canonical name of the last element of the path
     protected native String canonicalizeWithPrefix0(String canonicalPrefix,
                                                     String pathWithCanonicalPrefix)
-                                                throws IOException;
+            throws IOException;
+
     // Best-effort attempt to get parent of this path; used for
     // optimization of filename canonicalization. This must return null for
     // any cases where the code in canonicalize_md.c would throw an
@@ -474,9 +477,9 @@ class Win32FileSystem extends FileSystem {
                     return null;
                 }
                 if (idx == 0 ||
-                    idx >= last - 1 ||
-                    path.charAt(idx - 1) == sep ||
-                    path.charAt(idx - 1) == altSep) {
+                        idx >= last - 1 ||
+                        path.charAt(idx - 1) == sep ||
+                        path.charAt(idx - 1) == altSep) {
                     // Punt on pathnames containing adjacent slashes
                     // toward the end
                     return null;
@@ -502,15 +505,20 @@ class Win32FileSystem extends FileSystem {
     /* -- Attribute accessors -- */
 
     public native int getBooleanAttributes(File f);
+
     public native boolean checkAccess(File f, int access);
+
     public native long getLastModifiedTime(File f);
+
     public native long getLength(File f);
+
     public native boolean setPermission(File f, int access, boolean enable, boolean owneronly);
 
     /* -- File operations -- */
 
     public native boolean createFileExclusively(String path)
-        throws IOException;
+            throws IOException;
+
     public boolean delete(File f) {
         // Keep canonicalization caches in sync after file deletion
         // and renaming operations. Could be more clever than this
@@ -521,9 +529,13 @@ class Win32FileSystem extends FileSystem {
         prefixCache.clear();
         return delete0(f);
     }
+
     protected native boolean delete0(File f);
+
     public native String[] list(File f);
+
     public native boolean createDirectory(File f);
+
     public boolean rename(File f1, File f2) {
         // Keep canonicalization caches in sync after file deletion
         // and renaming operations. Could be more clever than this
@@ -534,8 +546,11 @@ class Win32FileSystem extends FileSystem {
         prefixCache.clear();
         return rename0(f1, f2);
     }
+
     protected native boolean rename0(File f1, File f2);
+
     public native boolean setLastModifiedTime(File f, long time);
+
     public native boolean setReadOnly(File f);
 
 
@@ -558,7 +573,7 @@ class Win32FileSystem extends FileSystem {
         int n = 0;
         for (int i = 0; i < 26; i++) {
             if (((ds >> i) & 1) != 0) {
-                if (!access((char)('A' + i) + ":" + slash))
+                if (!access((char) ('A' + i) + ":" + slash))
                     ds &= ~(1 << i);
                 else
                     n++;
@@ -569,7 +584,7 @@ class Win32FileSystem extends FileSystem {
         char slash = this.slash;
         for (int i = 0; i < 26; i++) {
             if (((ds >> i) & 1) != 0)
-                fs[j++] = new File((char)('A' + i) + ":" + slash);
+                fs[j++] = new File((char) ('A' + i) + ":" + slash);
         }
         return fs;
     }

@@ -30,8 +30,7 @@ import com.sun.corba.se.internal.POA.POAORB;
  * Deprecated class for backward compatibility.
  */
 public class PIORB
-    extends POAORB
-{
+        extends POAORB {
     public PIORB() {
         super();
     }

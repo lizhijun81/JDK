@@ -28,11 +28,9 @@ import com.sun.org.apache.xerces.internal.xs.XSTypeDefinition;
 /**
  * Containts the map between qnames and XSObject's.
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
- *
  * @version $Id: XSNamedMap4Types.java,v 1.7 2010-11-01 04:40:06 joehw Exp $
+ * @xerces.internal
  */
 public final class XSNamedMap4Types extends XSNamedMapImpl {
 
@@ -57,7 +55,7 @@ public final class XSNamedMap4Types extends XSNamedMapImpl {
      * @param namespaces the namespaces to which the components belong
      * @param maps       the maps from local names to components
      * @param num        the number of namespaces
-     * @param type      the type of components
+     * @param type       the type of components
      */
     public XSNamedMap4Types(String[] namespaces, SymbolHash[] maps, int num, short type) {
         super(namespaces, maps, num);
@@ -88,7 +86,7 @@ public final class XSNamedMap4Types extends XSNamedMapImpl {
             fArray = new XSObject[length];
             XSTypeDefinition type;
             for (int i = 0; i < length; i++) {
-                type = (XSTypeDefinition)array[i];
+                type = (XSTypeDefinition) array[i];
                 if (type.getTypeCategory() == fType) {
                     fArray[fLength++] = type;
                 }
@@ -100,17 +98,18 @@ public final class XSNamedMap4Types extends XSNamedMapImpl {
     /**
      * Retrieves an <code>XSObject</code> specified by local name and namespace
      * URI.
+     *
      * @param namespace The namespace URI of the <code>XSObject</code> to
-     *   retrieve.
+     *                  retrieve.
      * @param localName The local name of the <code>XSObject</code> to retrieve.
      * @return A <code>XSObject</code> (of any type) with the specified local
-     *   name and namespace URI, or <code>null</code> if they do not
-     *   identify any <code>XSObject</code> in this map.
+     * name and namespace URI, or <code>null</code> if they do not
+     * identify any <code>XSObject</code> in this map.
      */
     public XSObject itemByName(String namespace, String localName) {
         for (int i = 0; i < fNSNum; i++) {
             if (isEqual(namespace, fNamespaces[i])) {
-                XSTypeDefinition type = (XSTypeDefinition)fMaps[i].get(localName);
+                XSTypeDefinition type = (XSTypeDefinition) fMaps[i].get(localName);
                 // only return it if it matches the required type
                 if (type != null && type.getTypeCategory() == fType) {
                     return type;
@@ -125,11 +124,12 @@ public final class XSNamedMap4Types extends XSNamedMapImpl {
      * Returns the <code>index</code>th item in the map. The index starts at
      * 0. If <code>index</code> is greater than or equal to the number of
      * nodes in the list, this returns <code>null</code>.
+     *
      * @param index The position in the map from which the item is to be
-     *   retrieved.
+     *              retrieved.
      * @return The <code>XSObject</code> at the <code>index</code>th position
-     *   in the <code>XSNamedMap</code>, or <code>null</code> if that is
-     *   not a valid index.
+     * in the <code>XSNamedMap</code>, or <code>null</code> if that is
+     * not a valid index.
      */
     public synchronized XSObject item(int index) {
         if (fArray == null) {

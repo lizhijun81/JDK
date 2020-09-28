@@ -43,25 +43,23 @@ import java.awt.event.*;
  * version of Swing.  A future release of Swing will provide support for
  * long term persistence.
  */
-public class MotifScrollBarButton extends BasicArrowButton
-{
+public class MotifScrollBarButton extends BasicArrowButton {
     private Color darkShadow = UIManager.getColor("controlShadow");
     private Color lightShadow = UIManager.getColor("controlLtHighlight");
 
 
-    public MotifScrollBarButton(int direction)
-    {
+    public MotifScrollBarButton(int direction) {
         super(direction);
 
         switch (direction) {
-        case NORTH:
-        case SOUTH:
-        case EAST:
-        case WEST:
-            this.direction = direction;
-            break;
-        default:
-            throw new IllegalArgumentException("invalid direction");
+            case NORTH:
+            case SOUTH:
+            case EAST:
+            case WEST:
+                this.direction = direction;
+                break;
+            default:
+                throw new IllegalArgumentException("invalid direction");
         }
 
         setRequestFocusEnabled(false);
@@ -73,13 +71,13 @@ public class MotifScrollBarButton extends BasicArrowButton
 
     public Dimension getPreferredSize() {
         switch (direction) {
-        case NORTH:
-        case SOUTH:
-            return new Dimension(11, 12);
-        case EAST:
-        case WEST:
-        default:
-            return new Dimension(12, 11);
+            case NORTH:
+            case SOUTH:
+                return new Dimension(11, 12);
+            case EAST:
+            case WEST:
+            default:
+                return new Dimension(12, 11);
         }
     }
 
@@ -95,8 +93,7 @@ public class MotifScrollBarButton extends BasicArrowButton
         return false;
     }
 
-    public void paint(Graphics g)
-    {
+    public void paint(Graphics g) {
         int w = getWidth();
         int h = getHeight();
 
@@ -115,97 +112,97 @@ public class MotifScrollBarButton extends BasicArrowButton
         int s = Math.min(w, h);
 
         switch (direction) {
-        case NORTH:
-            g.setColor(lead);
-            g.drawLine(cx, 0, cx, 0);
-            for (int x = cx - 1, y = 1, dx = 1; y <= s - 2; y += 2) {
+            case NORTH:
                 g.setColor(lead);
-                g.drawLine(x, y, x, y);
-                if (y >= (s - 2)) {
-                    g.drawLine(x, y + 1, x, y + 1);
+                g.drawLine(cx, 0, cx, 0);
+                for (int x = cx - 1, y = 1, dx = 1; y <= s - 2; y += 2) {
+                    g.setColor(lead);
+                    g.drawLine(x, y, x, y);
+                    if (y >= (s - 2)) {
+                        g.drawLine(x, y + 1, x, y + 1);
+                    }
+                    g.setColor(fill);
+                    g.drawLine(x + 1, y, x + dx, y);
+                    if (y < (s - 2)) {
+                        g.drawLine(x, y + 1, x + dx + 1, y + 1);
+                    }
+                    g.setColor(trail);
+                    g.drawLine(x + dx + 1, y, x + dx + 1, y);
+                    if (y >= (s - 2)) {
+                        g.drawLine(x + 1, y + 1, x + dx + 1, y + 1);
+                    }
+                    dx += 2;
+                    x -= 1;
                 }
-                g.setColor(fill);
-                g.drawLine(x + 1, y, x + dx, y);
-                if (y < (s - 2)) {
-                    g.drawLine(x, y + 1, x + dx + 1, y + 1);
-                }
-                g.setColor(trail);
-                g.drawLine(x + dx + 1, y, x + dx + 1, y);
-                if (y >= (s - 2)) {
-                    g.drawLine(x + 1, y + 1, x + dx + 1, y + 1);
-                }
-                dx += 2;
-                x -= 1;
-            }
-            break;
+                break;
 
-        case SOUTH:
-            g.setColor(trail);
-            g.drawLine(cx, s, cx, s);
-            for (int x = cx - 1, y = s - 1, dx = 1; y >= 1; y -= 2) {
+            case SOUTH:
+                g.setColor(trail);
+                g.drawLine(cx, s, cx, s);
+                for (int x = cx - 1, y = s - 1, dx = 1; y >= 1; y -= 2) {
+                    g.setColor(lead);
+                    g.drawLine(x, y, x, y);
+                    if (y <= 2) {
+                        g.drawLine(x, y - 1, x + dx + 1, y - 1);
+                    }
+                    g.setColor(fill);
+                    g.drawLine(x + 1, y, x + dx, y);
+                    if (y > 2) {
+                        g.drawLine(x, y - 1, x + dx + 1, y - 1);
+                    }
+                    g.setColor(trail);
+                    g.drawLine(x + dx + 1, y, x + dx + 1, y);
+
+                    dx += 2;
+                    x -= 1;
+                }
+                break;
+
+            case EAST:
                 g.setColor(lead);
-                g.drawLine(x, y, x, y);
-                if (y <= 2) {
-                    g.drawLine(x, y - 1, x + dx + 1, y - 1);
+                g.drawLine(s, cy, s, cy);
+                for (int y = cy - 1, x = s - 1, dy = 1; x >= 1; x -= 2) {
+                    g.setColor(lead);
+                    g.drawLine(x, y, x, y);
+                    if (x <= 2) {
+                        g.drawLine(x - 1, y, x - 1, y + dy + 1);
+                    }
+                    g.setColor(fill);
+                    g.drawLine(x, y + 1, x, y + dy);
+                    if (x > 2) {
+                        g.drawLine(x - 1, y, x - 1, y + dy + 1);
+                    }
+                    g.setColor(trail);
+                    g.drawLine(x, y + dy + 1, x, y + dy + 1);
+
+                    dy += 2;
+                    y -= 1;
                 }
-                g.setColor(fill);
-                g.drawLine(x + 1, y, x + dx, y);
-                if (y > 2) {
-                    g.drawLine(x, y - 1, x + dx + 1, y - 1);
-                }
+                break;
+
+            case WEST:
                 g.setColor(trail);
-                g.drawLine(x + dx + 1, y, x + dx + 1, y);
-
-                dx += 2;
-                x -= 1;
-            }
-            break;
-
-        case EAST:
-            g.setColor(lead);
-            g.drawLine(s, cy, s, cy);
-            for (int y = cy - 1, x = s - 1, dy = 1; x >= 1; x -= 2) {
-                g.setColor(lead);
-                g.drawLine(x, y, x, y);
-                if (x <= 2) {
-                    g.drawLine(x - 1, y, x - 1, y + dy + 1);
+                g.drawLine(0, cy, 0, cy);
+                for (int y = cy - 1, x = 1, dy = 1; x <= s - 2; x += 2) {
+                    g.setColor(lead);
+                    g.drawLine(x, y, x, y);
+                    if (x >= (s - 2)) {
+                        g.drawLine(x + 1, y, x + 1, y);
+                    }
+                    g.setColor(fill);
+                    g.drawLine(x, y + 1, x, y + dy);
+                    if (x < (s - 2)) {
+                        g.drawLine(x + 1, y, x + 1, y + dy + 1);
+                    }
+                    g.setColor(trail);
+                    g.drawLine(x, y + dy + 1, x, y + dy + 1);
+                    if (x >= (s - 2)) {
+                        g.drawLine(x + 1, y + 1, x + 1, y + dy + 1);
+                    }
+                    dy += 2;
+                    y -= 1;
                 }
-                g.setColor(fill);
-                g.drawLine(x, y + 1, x, y + dy);
-                if (x > 2) {
-                    g.drawLine(x - 1, y, x - 1, y + dy + 1);
-                }
-                g.setColor(trail);
-                g.drawLine(x, y + dy + 1, x, y + dy + 1);
-
-                dy += 2;
-                y -= 1;
-            }
-            break;
-
-        case WEST:
-            g.setColor(trail);
-            g.drawLine(0, cy, 0, cy);
-            for (int y = cy - 1, x = 1, dy = 1; x <= s - 2; x += 2) {
-                g.setColor(lead);
-                g.drawLine(x, y, x, y);
-                if (x >= (s - 2)) {
-                    g.drawLine(x + 1, y, x + 1, y);
-                }
-                g.setColor(fill);
-                g.drawLine(x, y + 1, x, y + dy);
-                if (x < (s - 2)) {
-                    g.drawLine(x + 1, y, x + 1, y + dy + 1);
-                }
-                g.setColor(trail);
-                g.drawLine(x, y + dy + 1, x, y + dy + 1);
-                if (x >= (s - 2)) {
-                    g.drawLine(x + 1, y + 1, x + 1, y + dy + 1);
-                }
-                dy += 2;
-                y -= 1;
-            }
-            break;
+                break;
         }
     }
 }

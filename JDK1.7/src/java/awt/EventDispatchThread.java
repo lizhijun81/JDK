@@ -31,6 +31,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.lang.reflect.Method;
 import java.security.AccessController;
+
 import sun.security.action.GetPropertyAction;
 import sun.awt.AWTAutoShutdown;
 import sun.awt.SunToolkit;
@@ -38,6 +39,7 @@ import sun.awt.AppContext;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import sun.util.logging.PlatformLogger;
 
 import sun.awt.dnd.SunDragSourceContextPeer;
@@ -47,7 +49,7 @@ import sun.awt.EventQueueDelegate;
  * EventDispatchThread is a package-private AWT class which takes
  * events off the EventQueue and dispatches them to the appropriate
  * AWT components.
- *
+ * <p>
  * The Thread starts a "permanent" event pump with a call to
  * pumpEvents(Conditional) in its run() method. Event handlers can choose to
  * block this event pump at any time, but should start a new pump (<b>not</b>
@@ -59,7 +61,6 @@ import sun.awt.EventQueueDelegate;
  * @author Amy Fowler
  * @author Fred Ecks
  * @author David Mendenhall
- *
  * @since 1.1
  */
 class EventDispatchThread extends Thread {
@@ -98,8 +99,7 @@ class EventDispatchThread extends Thread {
                 //    on InterruptedException, or ThreadDeath. Either way,
                 //    this indicates that we must force shutting down.
                 if (getEventQueue().detachDispatchThread(this,
-                            !doDispatch || isInterrupted()))
-                {
+                        !doDispatch || isInterrupted())) {
                     break;
                 }
             }
@@ -120,16 +120,21 @@ class EventDispatchThread extends Thread {
         try {
             return new Conditional() {
                 final Method evaluateMethod = Class.forName("sun.lwawt.macosx.EventDispatchAccess").getMethod("evaluate", null);
+
                 public boolean evaluate() {
                     try {
-                        return ((Boolean)evaluateMethod.invoke(cond, null)).booleanValue();
+                        return ((Boolean) evaluateMethod.invoke(cond, null)).booleanValue();
                     } catch (Exception e) {
                         return false;
                     }
                 }
             };
         } catch (Exception e) {
-            return new Conditional() { public boolean evaluate() { return false; } };
+            return new Conditional() {
+                public boolean evaluate() {
+                    return false;
+                }
+            };
         }
     }
 
@@ -168,12 +173,12 @@ class EventDispatchThread extends Thread {
         synchronized (eventFilters) {
             if (!eventFilters.contains(filter)) {
                 if (filter instanceof ModalEventFilter) {
-                    ModalEventFilter newFilter = (ModalEventFilter)filter;
+                    ModalEventFilter newFilter = (ModalEventFilter) filter;
                     int k = 0;
                     for (k = 0; k < eventFilters.size(); k++) {
                         EventFilter f = eventFilters.get(k);
                         if (f instanceof ModalEventFilter) {
-                            ModalEventFilter cf = (ModalEventFilter)f;
+                            ModalEventFilter cf = (ModalEventFilter) f;
                             if (cf.compareTo(newFilter) > 0) {
                                 break;
                             }
@@ -243,16 +248,13 @@ class EventDispatchThread extends Thread {
             if (delegate != null) {
                 delegate.afterDispatch(event, handle);
             }
-        }
-        catch (ThreadDeath death) {
+        } catch (ThreadDeath death) {
             doDispatch = false;
             throw death;
-        }
-        catch (InterruptedException interruptedException) {
+        } catch (InterruptedException interruptedException) {
             doDispatch = false; // AppContext.dispose() interrupts all
-                                // Threads in the AppContext
-        }
-        catch (Throwable e) {
+            // Threads in the AppContext
+        } catch (Throwable e) {
             processException(e);
         }
     }
@@ -267,22 +269,25 @@ class EventDispatchThread extends Thread {
     public synchronized EventQueue getEventQueue() {
         return theQueue;
     }
+
     public synchronized void setEventQueue(EventQueue eq) {
         theQueue = eq;
     }
 
     private static class HierarchyEventFilter implements EventFilter {
         private Component modalComponent;
+
         public HierarchyEventFilter(Component modalComponent) {
             this.modalComponent = modalComponent;
         }
+
         public FilterAction acceptEvent(AWTEvent event) {
             if (modalComponent != null) {
                 int eventID = event.getID();
                 boolean mouseEvent = (eventID >= MouseEvent.MOUSE_FIRST) &&
-                                     (eventID <= MouseEvent.MOUSE_LAST);
+                        (eventID <= MouseEvent.MOUSE_LAST);
                 boolean actionEvent = (eventID >= ActionEvent.ACTION_FIRST) &&
-                                      (eventID <= ActionEvent.ACTION_LAST);
+                        (eventID <= ActionEvent.ACTION_LAST);
                 boolean windowClosingEvent = (eventID == WindowEvent.WINDOW_CLOSING);
                 /*
                  * filter out MouseEvent and ActionEvent that's outside
@@ -312,7 +317,7 @@ class EventDispatchThread extends Thread {
                         if (modalComponent instanceof Container) {
                             while (c != modalComponent && c != null) {
                                 if ((c instanceof Window) &&
-                                    (sun.awt.SunToolkit.isModalExcluded((Window)c))) {
+                                        (sun.awt.SunToolkit.isModalExcluded((Window) c))) {
                                     // Exclude this window and all its children from
                                     //  modality and continue to pump it's events.
                                     modalExcluded = true;

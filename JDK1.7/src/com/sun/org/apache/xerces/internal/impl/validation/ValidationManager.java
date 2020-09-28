@@ -29,9 +29,8 @@ import java.util.Vector;
  * other validators present in the pipeline, but should understand
  * that there are others and that some coordination is required.
  *
- * @xerces.internal
- *
  * @author Elena Litani, IBM
+ * @xerces.internal
  */
 public class ValidationManager {
 
@@ -55,16 +54,16 @@ public class ValidationManager {
      * Set the information required to validate entity values.
      */
     public final void setEntityState(EntityState state) {
-        for (int i = fVSs.size()-1; i >= 0; i--) {
-            ((ValidationState)fVSs.elementAt(i)).setEntityState(state);
+        for (int i = fVSs.size() - 1; i >= 0; i--) {
+            ((ValidationState) fVSs.elementAt(i)).setEntityState(state);
         }
     }
 
-    public final void setGrammarFound(boolean grammar){
+    public final void setGrammarFound(boolean grammar) {
         fGrammarFound = grammar;
     }
 
-    public final boolean isGrammarFound(){
+    public final boolean isGrammarFound() {
         return fGrammarFound;
     }
 
@@ -77,7 +76,7 @@ public class ValidationManager {
     } // isCachedDTD():  boolean
 
 
-    public final void reset (){
+    public final void reset() {
         fVSs.removeAllElements();
         fGrammarFound = false;
         fCachedDTD = false;

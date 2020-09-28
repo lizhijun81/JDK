@@ -35,6 +35,7 @@ import org.w3c.dom.Node;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
 /**
  * This is an implementation of the XSAnnotation schema component.
  *
@@ -59,26 +60,27 @@ public class XSAnnotationImpl implements XSAnnotation {
     }
 
     /**
-     *  Write contents of the annotation to the specified DOM object. If the
+     * Write contents of the annotation to the specified DOM object. If the
      * specified <code>target</code> object is a DOM in-scope namespace
      * declarations for <code>annotation</code> element are added as
      * attributes nodes of the serialized <code>annotation</code>, otherwise
      * the corresponding events for all in-scope namespace declaration are
      * sent via specified document handler.
-     * @param target  A target pointer to the annotation target object, i.e.
-     *   <code>org.w3c.dom.Document</code>,
-     *   <code>org.xml.sax.ContentHandler</code>.
-     * @param targetType  A target type.
+     *
+     * @param target     A target pointer to the annotation target object, i.e.
+     *                   <code>org.w3c.dom.Document</code>,
+     *                   <code>org.xml.sax.ContentHandler</code>.
+     * @param targetType A target type.
      * @return If the <code>target</code> is recognized type and supported by
-     *   this implementation return true, otherwise return false.
+     * this implementation return true, otherwise return false.
      */
     public boolean writeAnnotation(Object target,
                                    short targetType) {
-        if(targetType == XSAnnotation.W3C_DOM_ELEMENT || targetType == XSAnnotation.W3C_DOM_DOCUMENT) {
-            writeToDOM((Node)target, targetType);
+        if (targetType == XSAnnotation.W3C_DOM_ELEMENT || targetType == XSAnnotation.W3C_DOM_DOCUMENT) {
+            writeToDOM((Node) target, targetType);
             return true;
         } else if (targetType == SAX_CONTENTHANDLER) {
-            writeToSAX((ContentHandler)target);
+            writeToSAX((ContentHandler) target);
             return true;
         }
         return false;
@@ -94,7 +96,7 @@ public class XSAnnotationImpl implements XSAnnotation {
     // XSObject methods
 
     /**
-     *  The <code>type</code> of this object, i.e.
+     * The <code>type</code> of this object, i.e.
      * <code>ELEMENT_DECLARATION</code>.
      */
     public short getType() {
@@ -110,7 +112,7 @@ public class XSAnnotationImpl implements XSAnnotation {
     }
 
     /**
-     *  The [target namespace] of this object, or <code>null</code> if it is
+     * The [target namespace] of this object, or <code>null</code> if it is
      * unspecified.
      */
     public String getNamespace() {
@@ -135,13 +137,11 @@ public class XSAnnotationImpl implements XSAnnotation {
         parser.setContentHandler(handler);
         try {
             parser.parse(aSource);
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             // this should never happen!
             // REVISIT:  what to do with this?; should really not
             // eat it...
-        }
-        catch (IOException i) {
+        } catch (IOException i) {
             // ditto with above
         }
         // Release the reference to the user's ContentHandler.
@@ -152,19 +152,17 @@ public class XSAnnotationImpl implements XSAnnotation {
     // of the Node
     private synchronized void writeToDOM(Node target, short type) {
         Document futureOwner = (type == XSAnnotation.W3C_DOM_ELEMENT) ?
-                target.getOwnerDocument() : (Document)target;
+                target.getOwnerDocument() : (Document) target;
         DOMParser parser = fGrammar.getDOMParser();
         StringReader aReader = new StringReader(fData);
         InputSource aSource = new InputSource(aReader);
         try {
             parser.parse(aSource);
-        }
-        catch (SAXException e) {
+        } catch (SAXException e) {
             // this should never happen!
             // REVISIT:  what to do with this?; should really not
             // eat it...
-        }
-        catch (IOException i) {
+        } catch (IOException i) {
             // ditto with above
         }
         Document aDocument = parser.getDocument();
@@ -177,8 +175,7 @@ public class XSAnnotationImpl implements XSAnnotation {
             if (newElem == null) {
                 newElem = futureOwner.importNode(annotation, true);
             }
-        }
-        else {
+        } else {
             newElem = futureOwner.importNode(annotation, true);
         }
         target.insertBefore(newElem, target.getFirstChild());

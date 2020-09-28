@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.NotSerializableException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+
 import org.w3c.dom.DOMConfiguration;
 import org.w3c.dom.UserDataHandler;
 import org.w3c.dom.*;
@@ -32,14 +33,14 @@ import org.w3c.dom.*;
  * Our own document implementation, which knows how to create an element
  * with PSVI information.
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
- *
+ * @xerces.internal
  */
 public class PSVIDocumentImpl extends DocumentImpl {
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = -8822220250676434522L;
 
     /**
@@ -63,8 +64,8 @@ public class PSVIDocumentImpl extends DocumentImpl {
      * protection. I've chosen to implement it by calling importNode
      * which is DOM Level 2.
      *
-     * @return org.w3c.dom.Node
      * @param deep boolean, iff true replicate children
+     * @return org.w3c.dom.Node
      */
     public Node cloneNode(boolean deep) {
 
@@ -95,7 +96,7 @@ public class PSVIDocumentImpl extends DocumentImpl {
      * Create an element with PSVI information
      */
     public Element createElementNS(String namespaceURI, String qualifiedName)
-        throws DOMException {
+            throws DOMException {
         return new PSVIElementNSImpl(this, namespaceURI, qualifiedName);
     }
 
@@ -111,7 +112,7 @@ public class PSVIDocumentImpl extends DocumentImpl {
      * Create an attribute with PSVI information
      */
     public Attr createAttributeNS(String namespaceURI, String qualifiedName)
-        throws DOMException {
+            throws DOMException {
         return new PSVIAttrNSImpl(this, namespaceURI, qualifiedName);
     }
 
@@ -124,12 +125,12 @@ public class PSVIDocumentImpl extends DocumentImpl {
     }
 
     /**
-     *
      * The configuration used when <code>Document.normalizeDocument</code> is
      * invoked.
+     *
      * @since DOM Level 3
      */
-    public DOMConfiguration getDomConfig(){
+    public DOMConfiguration getDomConfig() {
         super.getDomConfig();
         return fConfiguration;
     }
@@ -138,12 +139,12 @@ public class PSVIDocumentImpl extends DocumentImpl {
     // we support object serialization of grammars -- mrglavas
 
     private void writeObject(ObjectOutputStream out)
-        throws IOException {
+            throws IOException {
         throw new NotSerializableException(getClass().getName());
-        }
+    }
 
     private void readObject(ObjectInputStream in)
-        throws IOException, ClassNotFoundException {
+            throws IOException, ClassNotFoundException {
         throw new NotSerializableException(getClass().getName());
     }
 

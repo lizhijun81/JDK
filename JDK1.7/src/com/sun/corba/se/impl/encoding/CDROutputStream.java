@@ -50,13 +50,12 @@ import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
  * This is delegates to the real implementation.
  */
 public abstract class CDROutputStream
-    extends org.omg.CORBA_2_3.portable.OutputStream
-    implements com.sun.corba.se.impl.encoding.MarshalOutputStream,
-               org.omg.CORBA.DataOutputStream, org.omg.CORBA.portable.ValueOutputStream
-{
+        extends org.omg.CORBA_2_3.portable.OutputStream
+        implements com.sun.corba.se.impl.encoding.MarshalOutputStream,
+        org.omg.CORBA.DataOutputStream, org.omg.CORBA.portable.ValueOutputStream {
     private CDROutputStreamBase impl;
-    protected ORB orb ;
-    protected ORBUtilSystemException wrapper ;
+    protected ORB orb;
+    protected ORBUtilSystemException wrapper;
     protected CorbaMessageMediator corbaMessageMediator;
 
 
@@ -66,23 +65,23 @@ public abstract class CDROutputStream
 
         public static CDROutputStreamBase newOutputStream(
                 ORB orb, GIOPVersion version, byte encodingVersion) {
-            switch(version.intValue()) {
+            switch (version.intValue()) {
                 case GIOPVersion.VERSION_1_0:
                     return new CDROutputStream_1_0();
                 case GIOPVersion.VERSION_1_1:
                     return new CDROutputStream_1_1();
-            case GIOPVersion.VERSION_1_2:
-                if (encodingVersion != Message.CDR_ENC_VERSION) {
-                    return
-                        new IDLJavaSerializationOutputStream(encodingVersion);
-                }
-                return new CDROutputStream_1_2();
-            default:
-                    ORBUtilSystemException wrapper = ORBUtilSystemException.get( orb,
-                        CORBALogDomains.RPC_ENCODING ) ;
+                case GIOPVersion.VERSION_1_2:
+                    if (encodingVersion != Message.CDR_ENC_VERSION) {
+                        return
+                                new IDLJavaSerializationOutputStream(encodingVersion);
+                    }
+                    return new CDROutputStream_1_2();
+                default:
+                    ORBUtilSystemException wrapper = ORBUtilSystemException.get(orb,
+                            CORBALogDomains.RPC_ENCODING);
                     // REVISIT - what is appropriate?  INTERNAL exceptions
                     // are really hard to track later.
-                    throw wrapper.unsupportedGiopVersion( version ) ;
+                    throw wrapper.unsupportedGiopVersion(version);
             }
         }
     }
@@ -102,17 +101,16 @@ public abstract class CDROutputStream
                            boolean littleEndian,
                            BufferManagerWrite bufferManager,
                            byte streamFormatVersion,
-                           boolean usePooledByteBuffers)
-    {
+                           boolean usePooledByteBuffers) {
         impl = OutputStreamFactory.newOutputStream(orb, version,
-                                                   encodingVersion);
+                encodingVersion);
         impl.init(orb, littleEndian, bufferManager,
-                  streamFormatVersion, usePooledByteBuffers);
+                streamFormatVersion, usePooledByteBuffers);
 
         impl.setParent(this);
-        this.orb = orb ;
-        this.wrapper = ORBUtilSystemException.get( orb,
-            CORBALogDomains.RPC_ENCODING ) ;
+        this.orb = orb;
+        this.wrapper = ORBUtilSystemException.get(orb,
+                CORBALogDomains.RPC_ENCODING);
     }
 
     public CDROutputStream(ORB orb,
@@ -120,10 +118,9 @@ public abstract class CDROutputStream
                            byte encodingVersion,
                            boolean littleEndian,
                            BufferManagerWrite bufferManager,
-                           byte streamFormatVersion)
-    {
+                           byte streamFormatVersion) {
         this(orb, version, encodingVersion, littleEndian,
-             bufferManager, streamFormatVersion, true);
+                bufferManager, streamFormatVersion, true);
     }
 
     // org.omg.CORBA.portable.OutputStream
@@ -134,42 +131,55 @@ public abstract class CDROutputStream
     public final void write_boolean(boolean value) {
         impl.write_boolean(value);
     }
+
     public final void write_char(char value) {
         impl.write_char(value);
     }
+
     public final void write_wchar(char value) {
         impl.write_wchar(value);
     }
+
     public final void write_octet(byte value) {
         impl.write_octet(value);
     }
+
     public final void write_short(short value) {
         impl.write_short(value);
     }
+
     public final void write_ushort(short value) {
         impl.write_ushort(value);
     }
+
     public final void write_long(int value) {
         impl.write_long(value);
     }
+
     public final void write_ulong(int value) {
         impl.write_ulong(value);
     }
+
     public final void write_longlong(long value) {
         impl.write_longlong(value);
     }
+
     public final void write_ulonglong(long value) {
         impl.write_ulonglong(value);
     }
+
     public final void write_float(float value) {
         impl.write_float(value);
     }
+
     public final void write_double(double value) {
         impl.write_double(value);
     }
+
     public final void write_string(String value) {
         impl.write_string(value);
     }
+
     public final void write_wstring(String value) {
         impl.write_wstring(value);
     }
@@ -177,45 +187,59 @@ public abstract class CDROutputStream
     public final void write_boolean_array(boolean[] value, int offset, int length) {
         impl.write_boolean_array(value, offset, length);
     }
+
     public final void write_char_array(char[] value, int offset, int length) {
         impl.write_char_array(value, offset, length);
     }
+
     public final void write_wchar_array(char[] value, int offset, int length) {
         impl.write_wchar_array(value, offset, length);
     }
+
     public final void write_octet_array(byte[] value, int offset, int length) {
         impl.write_octet_array(value, offset, length);
     }
+
     public final void write_short_array(short[] value, int offset, int length) {
         impl.write_short_array(value, offset, length);
     }
-    public final void write_ushort_array(short[] value, int offset, int length){
+
+    public final void write_ushort_array(short[] value, int offset, int length) {
         impl.write_ushort_array(value, offset, length);
     }
+
     public final void write_long_array(int[] value, int offset, int length) {
         impl.write_long_array(value, offset, length);
     }
+
     public final void write_ulong_array(int[] value, int offset, int length) {
         impl.write_ulong_array(value, offset, length);
     }
+
     public final void write_longlong_array(long[] value, int offset, int length) {
         impl.write_longlong_array(value, offset, length);
     }
-    public final void write_ulonglong_array(long[] value, int offset,int length) {
+
+    public final void write_ulonglong_array(long[] value, int offset, int length) {
         impl.write_ulonglong_array(value, offset, length);
     }
+
     public final void write_float_array(float[] value, int offset, int length) {
         impl.write_float_array(value, offset, length);
     }
+
     public final void write_double_array(double[] value, int offset, int length) {
         impl.write_double_array(value, offset, length);
     }
+
     public final void write_Object(org.omg.CORBA.Object value) {
         impl.write_Object(value);
     }
+
     public final void write_TypeCode(TypeCode value) {
         impl.write_TypeCode(value);
     }
+
     public final void write_any(Any value) {
         impl.write_any(value);
     }
@@ -233,7 +257,7 @@ public abstract class CDROutputStream
     }
 
     public final void write_Context(org.omg.CORBA.Context ctx,
-                              org.omg.CORBA.ContextList contexts) {
+                                    org.omg.CORBA.ContextList contexts) {
         impl.write_Context(ctx, contexts);
     }
 
@@ -255,7 +279,7 @@ public abstract class CDROutputStream
     }
 
     public final void write_value(java.io.Serializable value,
-                            org.omg.CORBA.portable.BoxedValueHelper factory) {
+                                  org.omg.CORBA.portable.BoxedValueHelper factory) {
         impl.write_value(value, factory);
     }
 
@@ -294,8 +318,7 @@ public abstract class CDROutputStream
     }
 
     public void writeTo(java.io.OutputStream s)
-        throws IOException
-    {
+            throws IOException {
         impl.writeTo(s);
     }
 
@@ -304,11 +327,11 @@ public abstract class CDROutputStream
     }
 
     // org.omg.CORBA.DataOutputStream
-    public final void write_Abstract (java.lang.Object value) {
+    public final void write_Abstract(java.lang.Object value) {
         impl.write_Abstract(value);
     }
 
-    public final void write_Value (java.io.Serializable value) {
+    public final void write_Value(java.io.Serializable value) {
         impl.write_Value(value);
     }
 
@@ -316,13 +339,11 @@ public abstract class CDROutputStream
         impl.write_any_array(seq, offset, length);
     }
 
-    public void setMessageMediator(MessageMediator messageMediator)
-    {
+    public void setMessageMediator(MessageMediator messageMediator) {
         this.corbaMessageMediator = (CorbaMessageMediator) messageMediator;
     }
 
-    public MessageMediator getMessageMediator()
-    {
+    public MessageMediator getMessageMediator() {
         return corbaMessageMediator;
     }
 
@@ -361,7 +382,7 @@ public abstract class CDROutputStream
      * return true if our ByteBuffer is sharing/equal to bb
      */
     protected final boolean isSharing(ByteBuffer bb) {
-        return (getByteBuffer() ==  bb);
+        return (getByteBuffer() == bb);
     }
 
     public final boolean isLittleEndian() {

@@ -42,12 +42,12 @@ import org.omg.CORBA.portable.OutputStream;
  * must also fill the "in" value to be sent to the server.
  * Before the method invocation returns, the ORB will fill in the
  * value corresponding to the "out" value returned from the server.
- * <P>
+ * <p>
  * If <code>myDoubleHolder</code> is an instance of <code>DoubleHolder</code>,
  * the value stored in its <code>value</code> field can be accessed with
  * <code>myDoubleHolder.value</code>.
  *
- * @since       JDK1.2
+ * @since JDK1.2
  */
 public final class DoubleHolder implements Streamable {
 
@@ -68,6 +68,7 @@ public final class DoubleHolder implements Streamable {
     /**
      * Constructs a new <code>DoubleHolder</code> object for the given
      * <code>double</code>.
+     *
      * @param initial the <code>double</code> with which to initialize
      *                the <code>value</code> field of the new
      *                <code>DoubleHolder</code> object

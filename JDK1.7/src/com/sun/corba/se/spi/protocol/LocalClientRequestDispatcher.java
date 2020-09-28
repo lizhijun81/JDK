@@ -31,8 +31,7 @@ import org.omg.CORBA.portable.ServantObject;
  * @author Harold Carr
  */
 
-public interface LocalClientRequestDispatcher
-{
+public interface LocalClientRequestDispatcher {
     public boolean useLocalInvocation(org.omg.CORBA.Object self);
 
     public boolean is_local(org.omg.CORBA.Object self);
@@ -46,17 +45,14 @@ public interface LocalClientRequestDispatcher
      * the servant field to the expected type, and then invoke the operation
      * directly.
      *
-     * @param self The object reference which delegated to this delegate.
-     *
-     * @param operation a string containing the operation name.
-     * The operation name corresponds to the operation name as it would be
-     * encoded in a GIOP request.
-     *
+     * @param self         The object reference which delegated to this delegate.
+     * @param operation    a string containing the operation name.
+     *                     The operation name corresponds to the operation name as it would be
+     *                     encoded in a GIOP request.
      * @param expectedType a Class object representing the expected type of the servant.
-     * The expected type is the Class object associated with the operations
-     * class of the stub's interface (e.g. A stub for an interface Foo,
-     * would pass the Class object for the FooOperations interface).
-     *
+     *                     The expected type is the Class object associated with the operations
+     *                     class of the stub's interface (e.g. A stub for an interface Foo,
+     *                     would pass the Class object for the FooOperations interface).
      * @return a ServantObject object.
      * The method may return a null value if it does not wish to support
      * this optimization (e.g. due to security, transactions, etc).

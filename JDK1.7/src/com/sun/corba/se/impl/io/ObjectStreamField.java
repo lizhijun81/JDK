@@ -36,26 +36,25 @@ import java.lang.reflect.Field;
 import java.lang.Comparable;
 import java.util.Hashtable;
 
-import sun.corba.Bridge ;
-import java.security.AccessController ;
-import java.security.PrivilegedAction ;
+import sun.corba.Bridge;
+
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 /**
  * A description of a field in a serializable class.
  * A array of these is used to declare the persistent fields of
  * a class.
- *
  */
-public class ObjectStreamField implements Comparable
-{
+public class ObjectStreamField implements Comparable {
     private static final Bridge bridge =
-        (Bridge)AccessController.doPrivileged(
-            new PrivilegedAction() {
-                public Object run() {
-                    return Bridge.get() ;
-                }
-            }
-        ) ;
+            (Bridge) AccessController.doPrivileged(
+                    new PrivilegedAction() {
+                        public Object run() {
+                            return Bridge.get();
+                        }
+                    }
+            );
 
     /**
      * Create a named field with the specified type.
@@ -100,17 +99,16 @@ public class ObjectStreamField implements Comparable
 
     ObjectStreamField(Field field) {
         this(field.getName(), field.getType());
-        setField( field ) ;
+        setField(field);
     }
 
     /**
      * Create an ObjectStreamField containing a reflected Field.
      */
-    ObjectStreamField(String n, char t, Field f, String ts)
-    {
+    ObjectStreamField(String n, char t, Field f, String ts) {
         name = n;
         type = t;
-        setField( f ) ;
+        setField(f);
         typeString = ts;
 
         if (typeString != null)
@@ -134,26 +132,34 @@ public class ObjectStreamField implements Comparable
         if (clazz != null)
             return clazz;
         switch (type) {
-        case 'B': clazz = Byte.TYPE;
-            break;
-        case 'C': clazz = Character.TYPE;
-            break;
-        case 'S': clazz = Short.TYPE;
-            break;
-        case 'I': clazz = Integer.TYPE;
-            break;
-        case 'J': clazz = Long.TYPE;
-            break;
-        case 'F': clazz = Float.TYPE;
-            break;
-        case 'D': clazz = Double.TYPE;
-            break;
-        case 'Z': clazz = Boolean.TYPE;
-            break;
-        case '[':
-        case 'L':
-            clazz = Object.class;
-            break;
+            case 'B':
+                clazz = Byte.TYPE;
+                break;
+            case 'C':
+                clazz = Character.TYPE;
+                break;
+            case 'S':
+                clazz = Short.TYPE;
+                break;
+            case 'I':
+                clazz = Integer.TYPE;
+                break;
+            case 'J':
+                clazz = Long.TYPE;
+                break;
+            case 'F':
+                clazz = Float.TYPE;
+                break;
+            case 'D':
+                clazz = Double.TYPE;
+                break;
+            case 'Z':
+                clazz = Boolean.TYPE;
+                break;
+            case '[':
+            case 'L':
+                clazz = Object.class;
+                break;
         }
 
         return clazz;
@@ -173,7 +179,7 @@ public class ObjectStreamField implements Comparable
 
     void setField(Field field) {
         this.field = field;
-        this.fieldID = bridge.objectFieldOffset( field ) ;
+        this.fieldID = bridge.objectFieldOffset(field);
     }
 
     /*
@@ -197,7 +203,7 @@ public class ObjectStreamField implements Comparable
      * if equal, the names are compared.
      */
     public int compareTo(Object o) {
-        ObjectStreamField f2 = (ObjectStreamField)o;
+        ObjectStreamField f2 = (ObjectStreamField) o;
         boolean thisprim = (this.typeString == null);
         boolean otherprim = (f2.typeString == null);
 
@@ -221,8 +227,8 @@ public class ObjectStreamField implements Comparable
             return true;
 
         return ObjectStreamClass.compareClassNames(typeString,
-                                                   other.typeString,
-                                                   '/');
+                other.typeString,
+                '/');
     }
 
     /* Returns the signature of the Field.
@@ -252,7 +258,7 @@ public class ObjectStreamField implements Comparable
      *
      */
     public long getFieldID() {
-        return fieldID ;
+        return fieldID;
     }
 
     private String name;                // the name of the field
@@ -267,5 +273,5 @@ public class ObjectStreamField implements Comparable
     // essentially we can use the java.io.ObjectStreamField as such.
 
     private String signature;   // the signature of the field
-    private long fieldID = Bridge.INVALID_FIELD_OFFSET ;
+    private long fieldID = Bridge.INVALID_FIELD_OFFSET;
 }

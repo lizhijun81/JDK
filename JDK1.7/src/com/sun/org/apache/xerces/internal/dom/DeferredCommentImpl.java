@@ -24,25 +24,28 @@ package com.sun.org.apache.xerces.internal.dom;
  * Represents an XML (or HTML) comment.
  *
  * @xerces.internal
- *
- * @since  PR-DOM-Level-1-19980818.
+ * @since PR-DOM-Level-1-19980818.
  */
 public class DeferredCommentImpl
-    extends CommentImpl
-    implements DeferredNode {
+        extends CommentImpl
+        implements DeferredNode {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = 6498796371083589338L;
 
     //
     // Data
     //
 
-    /** Node index. */
+    /**
+     * Node index.
+     */
     protected transient int fNodeIndex;
 
     //
@@ -65,7 +68,9 @@ public class DeferredCommentImpl
     // DeferredNode methods
     //
 
-    /** Returns the node index. */
+    /**
+     * Returns the node index.
+     */
     public int getNodeIndex() {
         return fNodeIndex;
     }
@@ -74,7 +79,9 @@ public class DeferredCommentImpl
     // Protected methods
     //
 
-    /** Synchronizes the data (name and value) for fast nodes. */
+    /**
+     * Synchronizes the data (name and value) for fast nodes.
+     */
     protected void synchronizeData() {
 
         // no need to sync in the future
@@ -82,7 +89,7 @@ public class DeferredCommentImpl
 
         // fluff data
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl) this.ownerDocument();
+                (DeferredDocumentImpl) this.ownerDocument();
         data = ownerDocument.getNodeValueString(fNodeIndex);
 
     } // synchronizeData()

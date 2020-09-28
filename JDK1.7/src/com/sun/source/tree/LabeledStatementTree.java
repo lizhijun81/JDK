@@ -29,19 +29,19 @@ import javax.lang.model.element.Name;
 
 /**
  * A tree node for a labeled statement.
- *
+ * <p>
  * For example:
  * <pre>
  *   <em>label</em> : <em>statement</em>
  * </pre>
  *
- * @jls section 14.7
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls section 14.7
  * @since 1.6
  */
 public interface LabeledStatementTree extends StatementTree {
     Name getLabel();
+
     StatementTree getStatement();
 }

@@ -36,11 +36,11 @@ package java.io;
  * class description for the format in
  * which modified UTF-8 strings are read and written.
  *
- * @author  Frank Yellin
- * @see     java.io.DataInput
- * @see     java.io.DataInputStream#readUTF(java.io.DataInput)
- * @see     java.io.IOException
- * @since   JDK1.0
+ * @author Frank Yellin
+ * @see java.io.DataInput
+ * @see java.io.DataInputStream#readUTF(java.io.DataInput)
+ * @see java.io.IOException
+ * @since JDK1.0
  */
 public
 class UTFDataFormatException extends IOException {
@@ -61,7 +61,7 @@ class UTFDataFormatException extends IOException {
      * <code>{@link java.lang.Throwable#getMessage}</code>
      * method of class <code>java.lang.Throwable</code>.
      *
-     * @param   s   the detail message.
+     * @param s the detail message.
      */
     public UTFDataFormatException(String s) {
         super(s);

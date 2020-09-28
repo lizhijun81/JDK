@@ -26,18 +26,19 @@ package com.sun.org.apache.xerces.internal.impl.xs.identity;
  * the creation of a separate Vector object for any element that
  * has both.  A short int is used to distinguish which this object is.
  *
- * @xerces.internal
- *
  * @author Andy Clark, IBM
+ * @xerces.internal
  */
 public class UniqueOrKey
-    extends IdentityConstraint {
+        extends IdentityConstraint {
 
     //
     // Constructors
     //
 
-    /** Constructs a unique or a key identity constraint. */
+    /**
+     * Constructs a unique or a key identity constraint.
+     */
     public UniqueOrKey(String namespace, String identityConstraintName,
                        String elemName, short type) {
         super(namespace, identityConstraintName, elemName);

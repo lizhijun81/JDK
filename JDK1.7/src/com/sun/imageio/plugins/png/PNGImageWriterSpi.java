@@ -42,27 +42,27 @@ public class PNGImageWriterSpi extends ImageWriterSpi {
 
     private static final String version = "1.0";
 
-    private static final String[] names = { "png", "PNG" };
+    private static final String[] names = {"png", "PNG"};
 
-    private static final String[] suffixes = { "png" };
+    private static final String[] suffixes = {"png"};
 
-    private static final String[] MIMETypes = { "image/png", "image/x-png" };
+    private static final String[] MIMETypes = {"image/png", "image/x-png"};
 
     private static final String writerClassName =
-        "com.sun.imageio.plugins.png.PNGImageWriter";
+            "com.sun.imageio.plugins.png.PNGImageWriter";
 
     private static final String[] readerSpiNames = {
-        "com.sun.imageio.plugins.png.PNGImageReaderSpi"
+            "com.sun.imageio.plugins.png.PNGImageReaderSpi"
     };
 
     public PNGImageWriterSpi() {
-          super(vendorName,
+        super(vendorName,
                 version,
                 names,
                 suffixes,
                 MIMETypes,
                 writerClassName,
-                new Class[] { ImageOutputStream.class },
+                new Class[]{ImageOutputStream.class},
                 readerSpiNames,
                 false,
                 null, null,
@@ -71,7 +71,7 @@ public class PNGImageWriterSpi extends ImageWriterSpi {
                 PNGMetadata.nativeMetadataFormatName,
                 "com.sun.imageio.plugins.png.PNGMetadataFormat",
                 null, null
-                );
+        );
     }
 
     public boolean canEncodeImage(ImageTypeSpecifier type) {

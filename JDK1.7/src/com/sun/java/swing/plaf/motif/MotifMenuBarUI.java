@@ -59,8 +59,7 @@ import javax.swing.plaf.basic.*;
  * @author Rich Schiavi
  */
 
-public class MotifMenuBarUI extends BasicMenuBarUI
-{
+public class MotifMenuBarUI extends BasicMenuBarUI {
 
     public static ComponentUI createUI(JComponent x) {
         return new MotifMenuBarUI();

@@ -53,6 +53,7 @@ import com.sun.source.tree.Tree;
 public abstract class Trees {
     /**
      * Gets a Trees object for a given CompilationTask.
+     *
      * @param task the compilation task for which to get the Trees object
      * @throws IllegalArgumentException if the task does not support the Trees API.
      */
@@ -64,6 +65,7 @@ public abstract class Trees {
 
     /**
      * Gets a Trees object for a given ProcessingEnvironment.
+     *
      * @param env the processing environment for which to get the Trees object
      * @throws IllegalArgumentException if the env does not support the Trees API.
      */
@@ -78,8 +80,8 @@ public abstract class Trees {
             ClassLoader cl = arg.getClass().getClassLoader();
             Class<?> c = Class.forName("com.sun.tools.javac.api.JavacTrees", false, cl);
             argType = Class.forName(argType.getName(), false, cl);
-            Method m = c.getMethod("instance", new Class<?>[] { argType });
-            return (Trees) m.invoke(null, new Object[] { arg });
+            Method m = c.getMethod("instance", new Class<?>[]{argType});
+            return (Trees) m.invoke(null, new Object[]{arg});
         } catch (Throwable e) {
             throw new AssertionError(e);
         }
@@ -146,16 +148,18 @@ public abstract class Trees {
     /**
      * Gets the Element for the Tree node identified by a given TreePath.
      * Returns null if the element is not available.
+     *
      * @throws IllegalArgumentException is the TreePath does not identify
-     * a Tree node that might have an associated Element.
+     *                                  a Tree node that might have an associated Element.
      */
     public abstract Element getElement(TreePath path);
 
     /**
      * Gets the TypeMirror for the Tree node identified by a given TreePath.
      * Returns null if the TypeMirror is not available.
+     *
      * @throws IllegalArgumentException is the TreePath does not identify
-     * a Tree node that might have an associated TypeMirror.
+     *                                  a Tree node that might have an associated TypeMirror.
      */
     public abstract TypeMirror getTypeMirror(TreePath path);
 
@@ -173,8 +177,9 @@ public abstract class Trees {
 
     /**
      * Checks whether a given type is accessible in a given scope.
+     *
      * @param scope the scope to be checked
-     * @param type the type to be checked
+     * @param type  the type to be checked
      * @return true if {@code type} is accessible
      */
     public abstract boolean isAccessible(Scope scope, TypeElement type);
@@ -182,18 +187,20 @@ public abstract class Trees {
     /**
      * Checks whether the given element is accessible as a member of the given
      * type in a given scope.
-     * @param scope the scope to be checked
+     *
+     * @param scope  the scope to be checked
      * @param member the member to be checked
-     * @param type the type for which to check if the member is accessible
+     * @param type   the type for which to check if the member is accessible
      * @return true if {@code member} is accessible in {@code type}
      */
     public abstract boolean isAccessible(Scope scope, Element member, DeclaredType type);
 
     /**
-      * Gets the original type from the ErrorType object.
-      * @param errorType The errorType for which we want to get the original type.
-      * @return javax.lang.model.type.TypeMirror corresponding to the original type, replaced by the ErrorType.
-      */
+     * Gets the original type from the ErrorType object.
+     *
+     * @param errorType The errorType for which we want to get the original type.
+     * @return javax.lang.model.type.TypeMirror corresponding to the original type, replaced by the ErrorType.
+     */
     public abstract TypeMirror getOriginalType(ErrorType errorType);
 
     /**
@@ -206,11 +213,12 @@ public abstract class Trees {
      * @param root the compilation unit that contains tree
      */
     public abstract void printMessage(Diagnostic.Kind kind, CharSequence msg,
-            com.sun.source.tree.Tree t,
-            com.sun.source.tree.CompilationUnitTree root);
+                                      com.sun.source.tree.Tree t,
+                                      com.sun.source.tree.CompilationUnitTree root);
 
     /**
      * Gets the lub of an exception parameter declared in a catch clause.
+     *
      * @param tree the tree for the catch clause
      * @return The lub of the exception parameter
      */

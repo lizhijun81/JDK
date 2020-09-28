@@ -23,45 +23,42 @@
  *
  */
 
-package com.sun.corba.se.spi.logging ;
+package com.sun.corba.se.spi.logging;
 
-import java.util.logging.Level ;
-import java.util.logging.Logger ;
-import java.util.logging.LogRecord ;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.LogRecord;
 
 public abstract class LogWrapperBase {
-    protected Logger logger ;
+    protected Logger logger;
 
-    protected String loggerName ;
+    protected String loggerName;
 
-    protected LogWrapperBase( Logger logger )
-    {
-        this.logger = logger ;
-        this.loggerName = logger.getName( );
+    protected LogWrapperBase(Logger logger) {
+        this.logger = logger;
+        this.loggerName = logger.getName();
     }
 
-    protected void doLog( Level level, String key, Object[] params, Class wrapperClass,
-        Throwable thr )
-    {
-        LogRecord lrec = new LogRecord( level, key ) ;
+    protected void doLog(Level level, String key, Object[] params, Class wrapperClass,
+                         Throwable thr) {
+        LogRecord lrec = new LogRecord(level, key);
         if (params != null)
-            lrec.setParameters( params ) ;
-        inferCaller( wrapperClass, lrec ) ;
-        lrec.setThrown( thr ) ;
-        lrec.setLoggerName( loggerName );
-        lrec.setResourceBundle( logger.getResourceBundle() ) ;
-        logger.log( lrec ) ;
+            lrec.setParameters(params);
+        inferCaller(wrapperClass, lrec);
+        lrec.setThrown(thr);
+        lrec.setLoggerName(loggerName);
+        lrec.setResourceBundle(logger.getResourceBundle());
+        logger.log(lrec);
     }
 
-    private void inferCaller( Class wrapperClass, LogRecord lrec )
-    {
+    private void inferCaller(Class wrapperClass, LogRecord lrec) {
         // Private method to infer the caller's class and method names
 
         // Get the stack trace.
         StackTraceElement stack[] = (new Throwable()).getStackTrace();
-        StackTraceElement frame = null ;
-        String wcname = wrapperClass.getName() ;
-        String baseName = LogWrapperBase.class.getName() ;
+        StackTraceElement frame = null;
+        String wcname = wrapperClass.getName();
+        String baseName = LogWrapperBase.class.getName();
 
         // The top of the stack should always be a method in the wrapper class,
         // or in this base class.
@@ -70,7 +67,7 @@ public abstract class LogWrapperBase {
         while (ix < stack.length) {
             frame = stack[ix];
             String cname = frame.getClassName();
-            if (!cname.equals(wcname) && !cname.equals(baseName))  {
+            if (!cname.equals(wcname) && !cname.equals(baseName)) {
                 break;
             }
 
@@ -85,8 +82,7 @@ public abstract class LogWrapperBase {
         }
     }
 
-    protected void doLog( Level level, String key, Class wrapperClass, Throwable thr )
-    {
-        doLog( level, key, null, wrapperClass, thr ) ;
+    protected void doLog(Level level, String key, Class wrapperClass, Throwable thr) {
+        doLog(level, key, null, wrapperClass, thr);
     }
 }

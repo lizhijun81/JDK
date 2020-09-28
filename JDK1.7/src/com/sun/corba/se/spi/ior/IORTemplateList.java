@@ -23,11 +23,12 @@
  *
  */
 
-package com.sun.corba.se.spi.ior ;
+package com.sun.corba.se.spi.ior;
 
-import java.util.List ;
+import java.util.List;
 
-/** An IORTemplateList is a list of IORTemplate instances.  It can be used to create IORs.
+/**
+ * An IORTemplateList is a list of IORTemplate instances.  It can be used to create IORs.
  * This is useful for representing IORs made of profiles from different object
  * adapters.
  * Note that any IORFactory can be added to an IORTemplateList, but it is flattened

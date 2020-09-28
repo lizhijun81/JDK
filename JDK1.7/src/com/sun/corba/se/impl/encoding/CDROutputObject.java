@@ -36,7 +36,7 @@ import org.omg.CORBA.portable.InputStream;
 import com.sun.corba.se.pept.encoding.OutputObject;
 import com.sun.corba.se.pept.protocol.MessageMediator;
 
-import com.sun.corba.se.spi.encoding.CorbaOutputObject ;
+import com.sun.corba.se.spi.encoding.CorbaOutputObject;
 import com.sun.corba.se.spi.ior.iiop.GIOPVersion;
 import com.sun.corba.se.spi.orb.ORB;
 import com.sun.corba.se.spi.protocol.CorbaMessageMediator;
@@ -61,8 +61,7 @@ import com.sun.corba.se.impl.logging.OMGSystemException;
 /**
  * @author Harold Carr
  */
-public class CDROutputObject extends CorbaOutputObject
-{
+public class CDROutputObject extends CorbaOutputObject {
     private Message header;
     private ORB orb;
     private ORBUtilSystemException wrapper;
@@ -72,20 +71,19 @@ public class CDROutputObject extends CorbaOutputObject
     private CorbaConnection connection;
 
     private CDROutputObject(
-        ORB orb, GIOPVersion giopVersion, Message header,
-        BufferManagerWrite manager, byte streamFormatVersion,
-        CorbaMessageMediator mediator)
-    {
+            ORB orb, GIOPVersion giopVersion, Message header,
+            BufferManagerWrite manager, byte streamFormatVersion,
+            CorbaMessageMediator mediator) {
         super(orb, giopVersion, header.getEncodingVersion(),
-              false, manager, streamFormatVersion,
-              ((mediator != null && mediator.getConnection() != null) ?
-               ((CorbaConnection)mediator.getConnection()).
-                     shouldUseDirectByteBuffers() : false));
+                false, manager, streamFormatVersion,
+                ((mediator != null && mediator.getConnection() != null) ?
+                        ((CorbaConnection) mediator.getConnection()).
+                                shouldUseDirectByteBuffers() : false));
 
         this.header = header;
         this.orb = orb;
-        this.wrapper = ORBUtilSystemException.get( orb, CORBALogDomains.RPC_ENCODING ) ;
-        this.omgWrapper = OMGSystemException.get( orb, CORBALogDomains.RPC_ENCODING ) ;
+        this.wrapper = ORBUtilSystemException.get(orb, CORBALogDomains.RPC_ENCODING);
+        this.omgWrapper = OMGSystemException.get(orb, CORBALogDomains.RPC_ENCODING);
 
         getBufferManager().setOutputObject(this);
         this.corbaMessageMediator = mediator;
@@ -94,18 +92,17 @@ public class CDROutputObject extends CorbaOutputObject
     public CDROutputObject(ORB orb,
                            MessageMediator messageMediator,
                            Message header,
-                           byte streamFormatVersion)
-    {
+                           byte streamFormatVersion) {
         this(
-            orb,
-            ((CorbaMessageMediator)messageMediator).getGIOPVersion(),
-            header,
-            BufferManagerFactory.newBufferManagerWrite(
-                ((CorbaMessageMediator)messageMediator).getGIOPVersion(),
-                header.getEncodingVersion(),
-                orb),
-            streamFormatVersion,
-            (CorbaMessageMediator)messageMediator);
+                orb,
+                ((CorbaMessageMediator) messageMediator).getGIOPVersion(),
+                header,
+                BufferManagerFactory.newBufferManagerWrite(
+                        ((CorbaMessageMediator) messageMediator).getGIOPVersion(),
+                        header.getEncodingVersion(),
+                        orb),
+                streamFormatVersion,
+                (CorbaMessageMediator) messageMediator);
     }
 
     // NOTE:
@@ -115,18 +112,17 @@ public class CDROutputObject extends CorbaOutputObject
                            MessageMediator messageMediator,
                            Message header,
                            byte streamFormatVersion,
-                           int strategy)
-    {
+                           int strategy) {
         this(
-            orb,
-            ((CorbaMessageMediator)messageMediator).getGIOPVersion(),
-            header,
-            BufferManagerFactory.
-                newBufferManagerWrite(strategy,
-                                      header.getEncodingVersion(),
-                                      orb),
-            streamFormatVersion,
-            (CorbaMessageMediator)messageMediator);
+                orb,
+                ((CorbaMessageMediator) messageMediator).getGIOPVersion(),
+                header,
+                BufferManagerFactory.
+                        newBufferManagerWrite(strategy,
+                                header.getEncodingVersion(),
+                                orb),
+                streamFormatVersion,
+                (CorbaMessageMediator) messageMediator);
     }
 
     // REVISIT
@@ -135,19 +131,18 @@ public class CDROutputObject extends CorbaOutputObject
     public CDROutputObject(ORB orb, CorbaMessageMediator mediator,
                            GIOPVersion giopVersion,
                            CorbaConnection connection, Message header,
-                           byte streamFormatVersion)
-    {
+                           byte streamFormatVersion) {
         this(
-            orb,
-            giopVersion,
-            header,
-            BufferManagerFactory.
-            newBufferManagerWrite(giopVersion,
-                                  header.getEncodingVersion(),
-                                  orb),
-            streamFormatVersion,
-            mediator);
-        this.connection = connection ;
+                orb,
+                giopVersion,
+                header,
+                BufferManagerFactory.
+                        newBufferManagerWrite(giopVersion,
+                                header.getEncodingVersion(),
+                                orb),
+                streamFormatVersion,
+                mediator);
+        this.connection = connection;
     }
 
     // XREVISIT
@@ -166,11 +161,11 @@ public class CDROutputObject extends CorbaOutputObject
      * Write the contents of the CDROutputStream to the specified
      * output stream.  Has the side-effect of pushing any current
      * Message onto the Message list.
+     *
      * @param s The output stream to write to.
      */
     public void writeTo(CorbaConnection connection)
-        throws java.io.IOException
-    {
+            throws java.io.IOException {
 
         //
         // Update the GIOP MessageHeader size field.
@@ -181,10 +176,10 @@ public class CDROutputObject extends CorbaOutputObject
         getMessageHeader().setSize(bbwi.byteBuffer, bbwi.getSize());
 
         if (orb() != null) {
-            if (((ORB)orb()).transportDebugFlag) {
+            if (((ORB) orb()).transportDebugFlag) {
                 dprint(".writeTo: " + connection);
             }
-            if (((ORB)orb()).giopDebugFlag) {
+            if (((ORB) orb()).giopDebugFlag) {
                 CDROutputStream_1_0.printBuffer(bbwi);
             }
         }
@@ -192,17 +187,17 @@ public class CDROutputObject extends CorbaOutputObject
         connection.write(bbwi.byteBuffer);
     }
 
-    /** overrides create_input_stream from CDROutputStream */
-    public org.omg.CORBA.portable.InputStream create_input_stream()
-    {
+    /**
+     * overrides create_input_stream from CDROutputStream
+     */
+    public org.omg.CORBA.portable.InputStream create_input_stream() {
         // XREVISIT
         return null;
         //return new XIIOPInputStream(orb(), getByteBuffer(), getIndex(),
-            //isLittleEndian(), getMessageHeader(), conn);
+        //isLittleEndian(), getMessageHeader(), conn);
     }
 
-    public CorbaConnection getConnection()
-    {
+    public CorbaConnection getConnection() {
         // REVISIT - only set when doing sendCancelRequest.
         if (connection != null) {
             return connection;
@@ -226,9 +221,9 @@ public class CDROutputObject extends CorbaOutputObject
     /**
      * Override the default CDR factory behavior to get the
      * negotiated code sets from the connection.
-     *
+     * <p>
      * These are only called once per message, the first time needed.
-     *
+     * <p>
      * In the local case, there is no Connection, so use the
      * local code sets.
      */
@@ -242,14 +237,14 @@ public class CDROutputObject extends CorbaOutputObject
             return super.createCharCTBConverter();
 
         OSFCodeSetRegistry.Entry charSet
-            = OSFCodeSetRegistry.lookupEntry(codesets.getCharCodeSet());
+                = OSFCodeSetRegistry.lookupEntry(codesets.getCharCodeSet());
 
         if (charSet == null)
-            throw wrapper.unknownCodeset( charSet ) ;
+            throw wrapper.unknownCodeset(charSet);
 
         return CodeSetConversion.impl().getCTBConverter(charSet,
-                                                        isLittleEndian(),
-                                                        false);
+                isLittleEndian(),
+                false);
     }
 
     protected CodeSetConversion.CTBConverter createWCharCTBConverter() {
@@ -261,19 +256,19 @@ public class CDROutputObject extends CorbaOutputObject
         // See CORBA formal 00-11-03 13.9.2.6.
         if (codesets == null) {
             if (getConnection().isServer())
-                throw omgWrapper.noClientWcharCodesetCtx() ;
+                throw omgWrapper.noClientWcharCodesetCtx();
             else
-                throw omgWrapper.noServerWcharCodesetCmp() ;
+                throw omgWrapper.noServerWcharCodesetCmp();
         }
 
         OSFCodeSetRegistry.Entry wcharSet
-            = OSFCodeSetRegistry.lookupEntry(codesets.getWCharCodeSet());
+                = OSFCodeSetRegistry.lookupEntry(codesets.getWCharCodeSet());
 
         if (wcharSet == null)
-            throw wrapper.unknownCodeset( wcharSet ) ;
+            throw wrapper.unknownCodeset(wcharSet);
 
         boolean useByteOrderMarkers
-            = ((ORB)orb()).getORBData().useByteOrderMarkers();
+                = ((ORB) orb()).getORBData().useByteOrderMarkers();
 
         // With UTF-16:
         //
@@ -285,21 +280,21 @@ public class CDROutputObject extends CorbaOutputObject
         if (wcharSet == OSFCodeSetRegistry.UTF_16) {
             if (getGIOPVersion().equals(GIOPVersion.V1_2)) {
                 return CodeSetConversion.impl().getCTBConverter(wcharSet,
-                                                                false,
-                                                                useByteOrderMarkers);
+                        false,
+                        useByteOrderMarkers);
             }
 
             if (getGIOPVersion().equals(GIOPVersion.V1_1)) {
                 return CodeSetConversion.impl().getCTBConverter(wcharSet,
-                                                                isLittleEndian(),
-                                                                false);
+                        isLittleEndian(),
+                        false);
             }
         }
 
         // In the normal case, let the converter system handle it
         return CodeSetConversion.impl().getCTBConverter(wcharSet,
-                                                        isLittleEndian(),
-                                                        useByteOrderMarkers);
+                isLittleEndian(),
+                useByteOrderMarkers);
     }
 
     // If we're local and don't have a Connection, use the
@@ -314,8 +309,7 @@ public class CDROutputObject extends CorbaOutputObject
             return getConnection().getCodeSetContext();
     }
 
-    protected void dprint(String msg)
-    {
+    protected void dprint(String msg) {
         ORBUtility.dprint("CDROutputObject", msg);
     }
 }

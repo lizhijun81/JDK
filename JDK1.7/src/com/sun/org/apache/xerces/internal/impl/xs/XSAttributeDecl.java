@@ -37,18 +37,17 @@ import com.sun.org.apache.xerces.internal.xs.XSSimpleTypeDefinition;
  * The XML representation for an attribute declaration
  * schema component is an <attribute> element information item
  *
- * @xerces.internal
- *
  * @author Elena Litani, IBM
  * @author Sandy Gao, IBM
  * @version $Id: XSAttributeDecl.java,v 1.7 2010-11-01 04:39:55 joehw Exp $
+ * @xerces.internal
  */
 public class XSAttributeDecl implements XSAttributeDeclaration {
 
     // scopes
-    public final static short     SCOPE_ABSENT        = 0;
-    public final static short     SCOPE_GLOBAL        = 1;
-    public final static short     SCOPE_LOCAL         = 2;
+    public final static short SCOPE_ABSENT = 0;
+    public final static short SCOPE_GLOBAL = 1;
+    public final static short SCOPE_LOCAL = 2;
 
     // the name of the attribute
     String fName = null;
@@ -72,9 +71,9 @@ public class XSAttributeDecl implements XSAttributeDeclaration {
     private XSNamespaceItem fNamespaceItem = null;
 
     public void setValues(String name, String targetNamespace,
-            XSSimpleType simpleType, short constraintType, short scope,
-            ValidatedInfo valInfo, XSComplexTypeDecl enclosingCT,
-            XSObjectList annotations) {
+                          XSSimpleType simpleType, short constraintType, short scope,
+                          ValidatedInfo valInfo, XSComplexTypeDecl enclosingCT,
+                          XSObjectList annotations) {
         fName = name;
         fTargetNamespace = targetNamespace;
         fType = simpleType;
@@ -85,7 +84,7 @@ public class XSAttributeDecl implements XSAttributeDeclaration {
         fAnnotations = annotations;
     }
 
-    public void reset(){
+    public void reset() {
         fName = null;
         fTargetNamespace = null;
         fType = null;
@@ -161,8 +160,8 @@ public class XSAttributeDecl implements XSAttributeDeclaration {
     public String getConstraintValue() {
         // REVISIT: SCAPI: what's the proper representation
         return getConstraintType() == XSConstants.VC_NONE ?
-               null :
-               fDefault.stringValue();
+                null :
+                fDefault.stringValue();
     }
 
     /**
@@ -196,20 +195,20 @@ public class XSAttributeDecl implements XSAttributeDeclaration {
 
     public Object getActualVC() {
         return getConstraintType() == XSConstants.VC_NONE ?
-               null :
-               fDefault.actualValue;
+                null :
+                fDefault.actualValue;
     }
 
     public short getActualVCType() {
         return getConstraintType() == XSConstants.VC_NONE ?
-               XSConstants.UNAVAILABLE_DT :
-               fDefault.actualValueType;
+                XSConstants.UNAVAILABLE_DT :
+                fDefault.actualValueType;
     }
 
     public ShortList getItemValueTypes() {
         return getConstraintType() == XSConstants.VC_NONE ?
-               null :
-               fDefault.itemValueTypes;
+                null :
+                fDefault.itemValueTypes;
     }
 
 } // class XSAttributeDecl

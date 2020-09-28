@@ -40,17 +40,15 @@ import org.xml.sax.SAXParseException;
  * and update all of them whenever it is changed, IMO.
  *
  * @author Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
- *
  */
 public abstract class ErrorHandlerProxy implements ErrorHandler {
 
     public void error(SAXParseException e) throws SAXException {
         XMLErrorHandler eh = getErrorHandler();
         if (eh instanceof ErrorHandlerWrapper) {
-            ((ErrorHandlerWrapper)eh).fErrorHandler.error(e);
-        }
-        else {
-            eh.error("","",ErrorHandlerWrapper.createXMLParseException(e));
+            ((ErrorHandlerWrapper) eh).fErrorHandler.error(e);
+        } else {
+            eh.error("", "", ErrorHandlerWrapper.createXMLParseException(e));
         }
         // if an XNIException is thrown, just let it go.
         // REVISIT: is this OK? or should we try to wrap it into SAXException?
@@ -59,20 +57,18 @@ public abstract class ErrorHandlerProxy implements ErrorHandler {
     public void fatalError(SAXParseException e) throws SAXException {
         XMLErrorHandler eh = getErrorHandler();
         if (eh instanceof ErrorHandlerWrapper) {
-            ((ErrorHandlerWrapper)eh).fErrorHandler.fatalError(e);
-        }
-        else {
-            eh.fatalError("","",ErrorHandlerWrapper.createXMLParseException(e));
+            ((ErrorHandlerWrapper) eh).fErrorHandler.fatalError(e);
+        } else {
+            eh.fatalError("", "", ErrorHandlerWrapper.createXMLParseException(e));
         }
     }
 
     public void warning(SAXParseException e) throws SAXException {
         XMLErrorHandler eh = getErrorHandler();
         if (eh instanceof ErrorHandlerWrapper) {
-            ((ErrorHandlerWrapper)eh).fErrorHandler.warning(e);
-        }
-        else {
-            eh.warning("","",ErrorHandlerWrapper.createXMLParseException(e));
+            ((ErrorHandlerWrapper) eh).fErrorHandler.warning(e);
+        } else {
+            eh.warning("", "", ErrorHandlerWrapper.createXMLParseException(e));
         }
     }
 

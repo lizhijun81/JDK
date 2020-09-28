@@ -34,13 +34,13 @@ import org.omg.IOP.CodecFactory;
 
 import org.omg.CORBA.portable.RemarshalException;
 
-import org.omg.PortableInterceptor.ObjectReferenceTemplate ;
+import org.omg.PortableInterceptor.ObjectReferenceTemplate;
 import org.omg.PortableInterceptor.ForwardRequest;
 import org.omg.PortableInterceptor.Interceptor;
 import org.omg.PortableInterceptor.PolicyFactory;
 import org.omg.PortableInterceptor.Current;
 
-import org.omg.PortableInterceptor.ORBInitInfoPackage.DuplicateName ;
+import org.omg.PortableInterceptor.ORBInitInfoPackage.DuplicateName;
 
 import com.sun.corba.se.pept.encoding.OutputObject;
 
@@ -64,9 +64,8 @@ import com.sun.corba.se.impl.protocol.giopmsgheaders.ReplyMessage;
  * PIHandler implementation will be replaced by the real PIHandler in
  * ORB.postInit( ) call.
  */
-public class PINoOpHandlerImpl implements PIHandler
-{
-    public PINoOpHandlerImpl( ) {
+public class PINoOpHandlerImpl implements PIHandler {
+    public PINoOpHandlerImpl() {
     }
 
     public void close() {
@@ -78,18 +77,15 @@ public class PINoOpHandlerImpl implements PIHandler
     public void destroyInterceptors() {
     }
 
-    public void objectAdapterCreated( ObjectAdapter oa )
-    {
+    public void objectAdapterCreated(ObjectAdapter oa) {
     }
 
-    public void adapterManagerStateChanged( int managerId,
-        short newState )
-    {
+    public void adapterManagerStateChanged(int managerId,
+                                           short newState) {
     }
 
-    public void adapterStateChanged( ObjectReferenceTemplate[]
-        templates, short newState )
-    {
+    public void adapterStateChanged(ObjectReferenceTemplate[]
+                                            templates, short newState) {
     }
 
 
@@ -100,100 +96,84 @@ public class PINoOpHandlerImpl implements PIHandler
     }
 
     public void invokeClientPIStartingPoint()
-        throws RemarshalException
-    {
+            throws RemarshalException {
     }
 
     public Exception invokeClientPIEndingPoint(
-        int replyStatus, Exception exception )
-    {
+            int replyStatus, Exception exception) {
         return null;
     }
 
     public Exception makeCompletedClientRequest(
-        int replyStatus, Exception exception ) {
+            int replyStatus, Exception exception) {
         return null;
     }
 
-    public void initiateClientPIRequest( boolean diiRequest ) {
+    public void initiateClientPIRequest(boolean diiRequest) {
     }
 
     public void cleanupClientPIRequest() {
     }
 
-    public void setClientPIInfo(CorbaMessageMediator messageMediator)
-    {
+    public void setClientPIInfo(CorbaMessageMediator messageMediator) {
     }
 
-    public void setClientPIInfo( RequestImpl requestImpl )
-    {
+    public void setClientPIInfo(RequestImpl requestImpl) {
     }
 
-    final public void sendCancelRequestIfFinalFragmentNotSent()
-    {
+    final public void sendCancelRequestIfFinalFragmentNotSent() {
     }
 
 
-    public void invokeServerPIStartingPoint()
-    {
+    public void invokeServerPIStartingPoint() {
     }
 
-    public void invokeServerPIIntermediatePoint()
-    {
+    public void invokeServerPIIntermediatePoint() {
     }
 
-    public void invokeServerPIEndingPoint( ReplyMessage replyMessage )
-    {
+    public void invokeServerPIEndingPoint(ReplyMessage replyMessage) {
     }
 
-    public void setServerPIInfo( Exception exception ) {
+    public void setServerPIInfo(Exception exception) {
     }
 
-    public void setServerPIInfo( NVList arguments )
-    {
+    public void setServerPIInfo(NVList arguments) {
     }
 
-    public void setServerPIExceptionInfo( Any exception )
-    {
+    public void setServerPIExceptionInfo(Any exception) {
     }
 
-    public void setServerPIInfo( Any result )
-    {
+    public void setServerPIInfo(Any result) {
     }
 
-    public void initializeServerPIInfo( CorbaMessageMediator request,
-        ObjectAdapter oa, byte[] objectId, ObjectKeyTemplate oktemp )
-    {
+    public void initializeServerPIInfo(CorbaMessageMediator request,
+                                       ObjectAdapter oa, byte[] objectId, ObjectKeyTemplate oktemp) {
     }
 
-    public void setServerPIInfo( java.lang.Object servant,
-                                          String targetMostDerivedInterface )
-    {
+    public void setServerPIInfo(java.lang.Object servant,
+                                String targetMostDerivedInterface) {
     }
 
     public void cleanupServerPIRequest() {
     }
 
-    public void register_interceptor( Interceptor interceptor, int type )
-        throws DuplicateName
-    {
+    public void register_interceptor(Interceptor interceptor, int type)
+            throws DuplicateName {
     }
 
-    public Current getPICurrent( ) {
+    public Current getPICurrent() {
         return null;
     }
 
     public org.omg.CORBA.Policy create_policy(int type, org.omg.CORBA.Any val)
-        throws org.omg.CORBA.PolicyError
-    {
+            throws org.omg.CORBA.PolicyError {
         return null;
     }
 
-    public void registerPolicyFactory( int type, PolicyFactory factory ) {
+    public void registerPolicyFactory(int type, PolicyFactory factory) {
     }
 
-    public int allocateServerRequestId ()
-    {
+    public int allocateServerRequestId() {
         return 0;
     }
 }

@@ -32,7 +32,7 @@ package org.omg.CORBA.TypeCodePackage;
  * raise <code>Bounds</code> when the index parameter is greater than or equal
  * to the number of members constituting the type.
  *
- * @since   JDK1.2
+ * @since JDK1.2
  */
 
 public final class Bounds extends org.omg.CORBA.UserException {
@@ -47,6 +47,7 @@ public final class Bounds extends org.omg.CORBA.UserException {
     /**
      * Constructs a <code>Bounds</code> exception with the specified
      * reason message.
+     *
      * @param reason the String containing a reason message
      */
     public Bounds(String reason) {

@@ -42,7 +42,7 @@ import javax.swing.plaf.*;
  * version of Swing.  A future release of Swing will provide support for
  * long term persistence.
  *
- * @author  Timothy Prinzing
+ * @author Timothy Prinzing
  */
 public class MotifTextUI {
 
@@ -100,7 +100,7 @@ public class MotifTextUI {
          * it to be repainted.  If paint() is reimplemented,
          * this method should also be reimplemented.
          *
-         * @param r  the current location of the caret, does nothing if null
+         * @param r the current location of the caret, does nothing if null
          * @see #paint
          */
         protected void damage(Rectangle r) {
@@ -124,11 +124,11 @@ public class MotifTextUI {
          * @see #damage
          */
         public void paint(Graphics g) {
-            if(isVisible()) {
+            if (isVisible()) {
                 try {
                     JTextComponent c = getComponent();
                     Color fg = c.hasFocus() ? c.getCaretColor() :
-                        c.getDisabledTextColor();
+                            c.getDisabledTextColor();
                     TextUI mapper = c.getUI();
                     int dot = getDot();
                     Rectangle r = mapper.modelToView(c, dot);
@@ -154,21 +154,21 @@ public class MotifTextUI {
      * Default bindings all keymaps implementing the Motif feel.
      */
     static final JTextComponent.KeyBinding[] defaultBindings = {
-        new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_INSERT,
-                                                                    InputEvent.CTRL_MASK),
-                                             DefaultEditorKit.copyAction),
-        new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_INSERT,
-                                                                    InputEvent.SHIFT_MASK),
-                                             DefaultEditorKit.pasteAction),
-        new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,
-                                                                    InputEvent.SHIFT_MASK),
-                                             DefaultEditorKit.cutAction),
-        new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT,
-                                                                    InputEvent.SHIFT_MASK),
-                                             DefaultEditorKit.selectionBackwardAction),
-        new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT,
-                                                                    InputEvent.SHIFT_MASK),
-                                             DefaultEditorKit.selectionForwardAction),
+            new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_INSERT,
+                    InputEvent.CTRL_MASK),
+                    DefaultEditorKit.copyAction),
+            new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_INSERT,
+                    InputEvent.SHIFT_MASK),
+                    DefaultEditorKit.pasteAction),
+            new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,
+                    InputEvent.SHIFT_MASK),
+                    DefaultEditorKit.cutAction),
+            new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT,
+                    InputEvent.SHIFT_MASK),
+                    DefaultEditorKit.selectionBackwardAction),
+            new JTextComponent.KeyBinding(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT,
+                    InputEvent.SHIFT_MASK),
+                    DefaultEditorKit.selectionForwardAction),
     };
 
 

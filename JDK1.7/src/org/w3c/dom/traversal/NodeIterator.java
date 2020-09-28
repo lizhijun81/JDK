@@ -55,6 +55,7 @@ import org.w3c.dom.DOMException;
  * <code>NodeIterators</code> are created by calling
  * <code>DocumentTraversal</code><code>.createNodeIterator()</code>.
  * <p>See also the <a href='http://www.w3.org/TR/2000/REC-DOM-Level-2-Traversal-Range-20001113'>Document Object Model (DOM) Level 2 Traversal and Range Specification</a>.
+ *
  * @since DOM Level 2
  */
 public interface NodeIterator {
@@ -80,7 +81,7 @@ public interface NodeIterator {
     public NodeFilter getFilter();
 
     /**
-     *  The value of this flag determines whether the children of entity
+     * The value of this flag determines whether the children of entity
      * reference nodes are visible to the <code>NodeIterator</code>. If
      * false, these children  and their descendants will be rejected. Note
      * that this rejection takes precedence over <code>whatToShow</code> and
@@ -104,26 +105,26 @@ public interface NodeIterator {
      * <code>NodeIterator</code> in the set. After a
      * <code>NodeIterator</code> is created, the first call to
      * <code>nextNode()</code> returns the first node in the set.
+     *
      * @return The next <code>Node</code> in the set being iterated over, or
-     *   <code>null</code> if there are no more members in that set.
-     * @exception DOMException
-     *   INVALID_STATE_ERR: Raised if this method is called after the
-     *   <code>detach</code> method was invoked.
+     * <code>null</code> if there are no more members in that set.
+     * @throws DOMException INVALID_STATE_ERR: Raised if this method is called after the
+     *                      <code>detach</code> method was invoked.
      */
     public Node nextNode()
-                         throws DOMException;
+            throws DOMException;
 
     /**
      * Returns the previous node in the set and moves the position of the
      * <code>NodeIterator</code> backwards in the set.
+     *
      * @return The previous <code>Node</code> in the set being iterated over,
-     *   or <code>null</code> if there are no more members in that set.
-     * @exception DOMException
-     *   INVALID_STATE_ERR: Raised if this method is called after the
-     *   <code>detach</code> method was invoked.
+     * or <code>null</code> if there are no more members in that set.
+     * @throws DOMException INVALID_STATE_ERR: Raised if this method is called after the
+     *                      <code>detach</code> method was invoked.
      */
     public Node previousNode()
-                             throws DOMException;
+            throws DOMException;
 
     /**
      * Detaches the <code>NodeIterator</code> from the set which it iterated

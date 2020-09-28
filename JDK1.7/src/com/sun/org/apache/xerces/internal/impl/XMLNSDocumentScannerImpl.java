@@ -21,6 +21,7 @@
 package com.sun.org.apache.xerces.internal.impl;
 
 import java.io.IOException;
+
 import com.sun.org.apache.xerces.internal.xni.XMLString;
 import com.sun.org.apache.xerces.internal.impl.dtd.XMLDTDValidatorFilter;
 import com.sun.org.apache.xerces.internal.impl.msg.XMLMessageFormatter;
@@ -44,16 +45,15 @@ import javax.xml.stream.events.XMLEvent;
 
 /**
  * This class adds the functionality of namespace processing.
- *
+ * <p>
  * This class has been modified as per the new design which is more suited to
  * efficiently build pull parser. Lot of improvements have been done and
  * the code has been added to support stax functionality/features.
- *
- *
+ * <p>
+ * <p>
  * This class scans an XML document, checks if document has a DTD, and if
  * DTD is not found the scanner will remove the DTD Validator from the pipeline and perform
  * namespace binding.
- *
  *
  * @author Neeraj Bajaj, Sun Microsystems
  * @author Venugopal Rao K, Sun Microsystems
@@ -68,38 +68,48 @@ public class XMLNSDocumentScannerImpl
      */
     protected boolean fBindNamespaces;
 
-    /** If validating parser, make sure we report an error in the
-     *   scanner if DTD grammar is missing.*/
+    /**
+     * If validating parser, make sure we report an error in the
+     * scanner if DTD grammar is missing.
+     */
     protected boolean fPerformValidation;
 
 
-    /** Default value of this feature is false, when in Stax mode this should be true */
+    /**
+     * Default value of this feature is false, when in Stax mode this should be true
+     */
     protected boolean fNotAddNSDeclAsAttribute = false;
 
-    /** DTD validator */
-     private XMLDTDValidatorFilter fDTDValidator;
+    /**
+     * DTD validator
+     */
+    private XMLDTDValidatorFilter fDTDValidator;
 
-     /** xmlns, default Namespace, declared */
-     private boolean fXmlnsDeclared = false;
+    /**
+     * xmlns, default Namespace, declared
+     */
+    private boolean fXmlnsDeclared = false;
 
-    /** Resets the fields of this scanner.
+    /**
+     * Resets the fields of this scanner.
      */
     public void reset(PropertyManager propertyManager) {
         setPropertyManager(propertyManager);
         super.reset(propertyManager);
         fBindNamespaces = false;
-        fNotAddNSDeclAsAttribute = !((Boolean)propertyManager.getProperty(Constants.ADD_NAMESPACE_DECL_AS_ATTRIBUTE)).booleanValue();
+        fNotAddNSDeclAsAttribute = !((Boolean) propertyManager.getProperty(Constants.ADD_NAMESPACE_DECL_AS_ATTRIBUTE)).booleanValue();
     }
 
     public void reset(XMLComponentManager componentManager)
-    throws XMLConfigurationException {
+            throws XMLConfigurationException {
         super.reset(componentManager);
-        fNotAddNSDeclAsAttribute = false ;
+        fNotAddNSDeclAsAttribute = false;
         fPerformValidation = false;
         fBindNamespaces = false;
     }
 
-    /** return the next state on the input
+    /**
+     * return the next state on the input
      *
      * @return int
      */
@@ -108,7 +118,7 @@ public class XMLNSDocumentScannerImpl
         //since namespace context should still be valid when the parser is at the end element state therefore
         //we pop the context only when next() has been called after the end element state was encountered. - nb.
 
-        if((fScannerLastState == XMLEvent.END_ELEMENT) && fBindNamespaces){
+        if ((fScannerLastState == XMLEvent.END_ELEMENT) && fBindNamespaces) {
             fScannerLastState = -1;
             fNamespaceContext.popContext();
         }
@@ -120,15 +130,13 @@ public class XMLNSDocumentScannerImpl
      * The scanner is responsible for removing DTD validator
      * from the pipeline if it is not needed.
      *
-     * @param previous The filter component before DTDValidator
-     * @param dtdValidator
-     *                 The DTDValidator
-     * @param next     The documentHandler after the DTDValidator
+     * @param previous     The filter component before DTDValidator
+     * @param dtdValidator The DTDValidator
+     * @param next         The documentHandler after the DTDValidator
      */
-    public void setDTDValidator(XMLDTDValidatorFilter dtd){
+    public void setDTDValidator(XMLDTDValidatorFilter dtd) {
         fDTDValidator = dtd;
     }
-
 
 
     /**
@@ -150,37 +158,37 @@ public class XMLNSDocumentScannerImpl
      * these variables before calling this method.
      *
      * @return True if element is empty. (i.e. It matches
-     *          production [44].
+     * production [44].
      */
     protected boolean scanStartElement()
-    throws IOException, XNIException {
+            throws IOException, XNIException {
 
-        if (DEBUG_START_END_ELEMENT) System.out.println(this.getClass().toString() +">>> scanStartElement()");
+        if (DEBUG_START_END_ELEMENT) System.out.println(this.getClass().toString() + ">>> scanStartElement()");
         //when skipping is true and no more elements should be added
-        if(fSkip && !fAdd){
+        if (fSkip && !fAdd) {
             //get the stored element -- if everything goes right this should match the
             //token in the buffer
 
             QName name = fElementStack.getNext();
 
-            if(DEBUG_SKIP_ALGORITHM){
+            if (DEBUG_SKIP_ALGORITHM) {
                 System.out.println("Trying to skip String = " + name.rawname);
             }
 
             //Be conservative -- if skipping fails -- stop.
             fSkip = fEntityScanner.skipString(name.rawname); // skipQElement(name);
 
-            if(fSkip){
-                if(DEBUG_SKIP_ALGORITHM){
+            if (fSkip) {
+                if (DEBUG_SKIP_ALGORITHM) {
                     System.out.println("Element SUCESSFULLY skipped = " + name.rawname);
                 }
                 fElementStack.push();
                 fElementQName = name;
-            }else{
+            } else {
                 //if skipping fails reposition the stack or fallback to normal way of processing
                 fElementStack.reposition();
-                if(DEBUG_SKIP_ALGORITHM){
-                    System.out.println("Element was NOT skipped, REPOSITIONING stack" );
+                if (DEBUG_SKIP_ALGORITHM) {
+                    System.out.println("Element was NOT skipped, REPOSITIONING stack");
                 }
             }
         }
@@ -188,7 +196,7 @@ public class XMLNSDocumentScannerImpl
         //we are still at the stage of adding elements
         //the elements were not matched or
         //fSkip is not set to true
-        if(!fSkip || fAdd){
+        if (!fSkip || fAdd) {
             //get the next element from the stack
             fElementQName = fElementStack.nextElement();
             // There are two variables,fNamespaces and fBindNamespaces
@@ -200,9 +208,9 @@ public class XMLNSDocumentScannerImpl
                 fElementQName.setValues(null, name, name, null);
             }
 
-            if(DEBUG)System.out.println("Element scanned in start element is " + fElementQName.toString());
-            if(DEBUG_SKIP_ALGORITHM){
-                if(fAdd){
+            if (DEBUG) System.out.println("Element scanned in start element is " + fElementQName.toString());
+            if (DEBUG_SKIP_ALGORITHM) {
+                if (fAdd) {
                     System.out.println("Elements are being ADDED -- elemet added is = " + fElementQName.rawname + " at count = " + fElementStack.fCount);
                 }
             }
@@ -210,7 +218,7 @@ public class XMLNSDocumentScannerImpl
         }
 
         //when the elements are being added , we need to check if we are set for skipping the elements
-        if(fAdd){
+        if (fAdd) {
             //this sets the value of fAdd variable
             fElementStack.matchElement(fElementQName);
         }
@@ -225,15 +233,15 @@ public class XMLNSDocumentScannerImpl
                 if (fPerformValidation) {
                     fErrorReporter.reportError(XMLMessageFormatter.XML_DOMAIN,
                             "MSG_GRAMMAR_NOT_FOUND",
-                            new Object[]{ rawname},
+                            new Object[]{rawname},
                             XMLErrorReporter.SEVERITY_ERROR);
 
-                            if (fDoctypeName == null || !fDoctypeName.equals(rawname)) {
-                                fErrorReporter.reportError( XMLMessageFormatter.XML_DOMAIN,
-                                        "RootElementTypeMustMatchDoctypedecl",
-                                        new Object[]{fDoctypeName, rawname},
-                                        XMLErrorReporter.SEVERITY_ERROR);
-                            }
+                    if (fDoctypeName == null || !fDoctypeName.equals(rawname)) {
+                        fErrorReporter.reportError(XMLMessageFormatter.XML_DOMAIN,
+                                "RootElementTypeMustMatchDoctypedecl",
+                                new Object[]{fDoctypeName, rawname},
+                                XMLErrorReporter.SEVERITY_ERROR);
+                    }
                 }
             }
         }
@@ -242,24 +250,24 @@ public class XMLNSDocumentScannerImpl
         fEmptyElement = false;
         fAttributes.removeAllAttributes();
 
-        if(!seekCloseOfStartTag()){
+        if (!seekCloseOfStartTag()) {
             fReadingAttributes = true;
-            fAttributeCacheUsedCount =0;
-            fStringBufferIndex =0;
+            fAttributeCacheUsedCount = 0;
+            fStringBufferIndex = 0;
             fAddDefaultAttr = true;
             fXmlnsDeclared = false;
 
             do {
                 scanAttribute(fAttributes);
-                if (fSecurityManager != null && fAttributes.getLength() > fElementAttributeLimit){
+                if (fSecurityManager != null && fAttributes.getLength() > fElementAttributeLimit) {
                     fErrorReporter.reportError(XMLMessageFormatter.XML_DOMAIN,
-                                                 "ElementAttributeLimit",
-                                                 new Object[]{rawname, new Integer(fAttributes.getLength()) },
-                                                 XMLErrorReporter.SEVERITY_FATAL_ERROR );
+                            "ElementAttributeLimit",
+                            new Object[]{rawname, new Integer(fAttributes.getLength())},
+                            XMLErrorReporter.SEVERITY_FATAL_ERROR);
                 }
 
             } while (!seekCloseOfStartTag());
-            fReadingAttributes=false;
+            fReadingAttributes = false;
         }
 
         if (fBindNamespaces) {
@@ -309,7 +317,7 @@ public class XMLNSDocumentScannerImpl
                     if (uri == null) {
                         fErrorReporter.reportError(XMLMessageFormatter.XMLNS_DOMAIN,
                                 "AttributePrefixUnbound",
-                                new Object[]{fElementQName.rawname,fAttributeQName.rawname,aprefix},
+                                new Object[]{fElementQName.rawname, fAttributeQName.rawname, aprefix},
                                 XMLErrorReporter.SEVERITY_FATAL_ERROR);
                     }
                     fAttributes.setURI(i, uri);
@@ -347,7 +355,7 @@ public class XMLNSDocumentScannerImpl
             }
             // call handler
             if (fDocumentHandler != null) {
-                if(DEBUG)
+                if (DEBUG)
                     System.out.println("emptyElement = " + fElementQName);
 
                 fDocumentHandler.emptyElement(fElementQName, fAttributes, null);
@@ -365,24 +373,24 @@ public class XMLNSDocumentScannerImpl
 
         } else {
 
-            if(dtdGrammarUtil != null)
-                dtdGrammarUtil.startElement(fElementQName,fAttributes);
-            if(fDocumentHandler != null){
+            if (dtdGrammarUtil != null)
+                dtdGrammarUtil.startElement(fElementQName, fAttributes);
+            if (fDocumentHandler != null) {
                 //complete element and attributes are traversed in this function so we can send a callback
                 //here.
                 //<strong>we shouldn't be sending callback in scanDocument()</strong>
-                if(DEBUG)
+                if (DEBUG)
                     System.out.println("startElement = " + fElementQName);
                 fDocumentHandler.startElement(fElementQName, fAttributes, null);
             }
         }
 
 
-        if (DEBUG_START_END_ELEMENT) System.out.println(this.getClass().toString() +"<<< scanStartElement(): "+fEmptyElement);
+        if (DEBUG_START_END_ELEMENT)
+            System.out.println(this.getClass().toString() + "<<< scanStartElement(): " + fEmptyElement);
         return fEmptyElement;
 
     } // scanStartElement():boolean
-
 
 
     /**
@@ -403,8 +411,8 @@ public class XMLNSDocumentScannerImpl
      * @param attributes The attributes list for the scanned attribute.
      */
     protected void scanAttribute(XMLAttributesImpl attributes)
-    throws IOException, XNIException {
-        if (DEBUG_START_END_ELEMENT) System.out.println(this.getClass().toString() +">>> scanAttribute()");
+            throws IOException, XNIException {
+        if (DEBUG_START_END_ELEMENT) System.out.println(this.getClass().toString() + ">>> scanAttribute()");
 
         // name
         fEntityScanner.scanQName(fAttributeQName);
@@ -413,16 +421,16 @@ public class XMLNSDocumentScannerImpl
         fEntityScanner.skipSpaces();
         if (!fEntityScanner.skipChar('=')) {
             reportFatalError("EqRequiredInAttribute",
-                    new Object[]{fCurrentElement.rawname,fAttributeQName.rawname});
+                    new Object[]{fCurrentElement.rawname, fAttributeQName.rawname});
         }
         fEntityScanner.skipSpaces();
 
         // content
-        int attrIndex = 0 ;
+        int attrIndex = 0;
 
 
         //REVISIT: one more case needs to be included: external PE and standalone is no
-        boolean isVC =  fHasExternalDTD && !fStandalone;
+        boolean isVC = fHasExternalDTD && !fStandalone;
 
         // REVISIT: it seems that this function should not take attributes, and length
         //fTempString would store attribute value
@@ -452,7 +460,7 @@ public class XMLNSDocumentScannerImpl
                     prefix == XMLSymbols.EMPTY_STRING && localpart == XMLSymbols.PREFIX_XMLNS) {
 
                 // get the internalized value of this attribute
-                String uri = fSymbolTable.addSymbol(tmpStr.ch,tmpStr.offset,tmpStr.length);
+                String uri = fSymbolTable.addSymbol(tmpStr.ch, tmpStr.offset, tmpStr.length);
                 value = uri;
                 // 1. "xmlns" can't be bound to any namespace
                 if (prefix == XMLSymbols.PREFIX_XMLNS && localpart == XMLSymbols.PREFIX_XMLNS) {
@@ -481,7 +489,7 @@ public class XMLNSDocumentScannerImpl
                 }
                 // 4. the namespace for "xml" can't be bound to any other prefix
                 else {
-                    if (uri ==NamespaceContext.XML_URI) {
+                    if (uri == NamespaceContext.XML_URI) {
                         fErrorReporter.reportError(XMLMessageFormatter.XMLNS_DOMAIN,
                                 "CantBindXML",
                                 new Object[]{fAttributeQName},
@@ -492,7 +500,7 @@ public class XMLNSDocumentScannerImpl
                 //set it equal to XMLSymbols.PREFIX_XMLNS when namespace declaration
                 // is of type xmlns = "..", in this case prefix = "" and localname = XMLSymbols.PREFIX_XMLNS
                 //this special behavior is because of dependency on this behavior in DOM components
-                if(prefix == XMLSymbols.EMPTY_STRING && localpart == XMLSymbols.PREFIX_XMLNS){
+                if (prefix == XMLSymbols.EMPTY_STRING && localpart == XMLSymbols.PREFIX_XMLNS) {
                     fAttributeQName.prefix = XMLSymbols.PREFIX_XMLNS;
                 }
                 // http://www.w3.org/TR/1999/REC-xml-names-19990114/#dt-prefix
@@ -509,7 +517,7 @@ public class XMLNSDocumentScannerImpl
                 if (((com.sun.org.apache.xerces.internal.util.NamespaceSupport) fNamespaceContext).containsPrefixInCurrentContext(prefix)) {
                     reportFatalError("AttributeNotUnique",
                             new Object[]{fCurrentElement.rawname,
-                            fAttributeQName.rawname});
+                                    fAttributeQName.rawname});
                 }
 
                 // declare prefix in context
@@ -521,7 +529,7 @@ public class XMLNSDocumentScannerImpl
                     if (fXmlnsDeclared) {
                         reportFatalError("AttributeNotUnique",
                                 new Object[]{fCurrentElement.rawname,
-                                fAttributeQName.rawname});
+                                        fAttributeQName.rawname});
                     }
 
                     // xmlns declared
@@ -533,8 +541,8 @@ public class XMLNSDocumentScannerImpl
                 //addition of namespace declaration to the attribute list is controlled by fNotAddNSDeclAsAttribute
                 //feature. This is required in Stax where namespace declarations are not considered as attribute
 
-                if(fNotAddNSDeclAsAttribute){
-                    return ;
+                if (fNotAddNSDeclAsAttribute) {
+                    return;
                 }
             }
         }
@@ -555,7 +563,7 @@ public class XMLNSDocumentScannerImpl
             }
         }
 
-        attributes.setValue(attrIndex, value,tmpStr);
+        attributes.setValue(attrIndex, value, tmpStr);
         //attributes.setNonNormalizedValue(attrIndex, fTempString2.toString());
         //removing  as we are not using non-normalized values . -Venu
         attributes.setSpecified(attrIndex, true);
@@ -565,14 +573,13 @@ public class XMLNSDocumentScannerImpl
             attributes.setURI(attrIndex, fNamespaceContext.getURI(fAttributeQName.prefix));
         }
 
-        if (DEBUG_START_END_ELEMENT) System.out.println(this.getClass().toString() +"<<< scanAttribute()");
+        if (DEBUG_START_END_ELEMENT) System.out.println(this.getClass().toString() + "<<< scanAttribute()");
     } // scanAttribute(XMLAttributes)
 
 
-
-
-
-    /** Creates a content driver. */
+    /**
+     * Creates a content driver.
+     */
     protected Driver createContentDriver() {
         return new NSContentDriver();
     } // createContentDriver():Driver
@@ -589,14 +596,13 @@ public class XMLNSDocumentScannerImpl
          * from the pipeline, if there is no DTD grammar. If DTD validator
          * is no longer in the pipeline bind namespaces in the scanner.
          *
-         *
          * @return True if the caller should stop and return true which
-         *          allows the scanner to switch to a new scanning
-         *          driver. A return value of false indicates that
-         *          the content driver should continue as normal.
+         * allows the scanner to switch to a new scanning
+         * driver. A return value of false indicates that
+         * the content driver should continue as normal.
          */
         protected boolean scanRootElementHook()
-        throws IOException, XNIException {
+                throws IOException, XNIException {
 
             reconfigurePipeline();
             if (scanStartElement()) {
@@ -618,8 +624,7 @@ public class XMLNSDocumentScannerImpl
             //fDTDValidator will be null in Stax mode
             if (fNamespaces && fDTDValidator == null) {
                 fBindNamespaces = true;
-            }
-            else if (fNamespaces && !fDTDValidator.hasGrammar() ) {
+            } else if (fNamespaces && !fDTDValidator.hasGrammar()) {
                 fBindNamespaces = true;
                 fPerformValidation = fDTDValidator.validate();
                 // re-configure pipeline by removing DTDValidator

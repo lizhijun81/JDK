@@ -23,48 +23,48 @@
  *
  */
 
-package com.sun.corba.se.impl.oa.poa ;
+package com.sun.corba.se.impl.oa.poa;
 
-import java.util.Set ;
+import java.util.Set;
 
-import org.omg.CORBA.SystemException ;
+import org.omg.CORBA.SystemException;
 
-import org.omg.PortableServer.ServantActivator ;
-import org.omg.PortableServer.Servant ;
-import org.omg.PortableServer.ServantManager ;
-import org.omg.PortableServer.ForwardRequest ;
-import org.omg.PortableServer.POAPackage.WrongPolicy ;
-import org.omg.PortableServer.POAPackage.ObjectNotActive ;
-import org.omg.PortableServer.POAPackage.ServantNotActive ;
-import org.omg.PortableServer.POAPackage.ObjectAlreadyActive ;
-import org.omg.PortableServer.POAPackage.ServantAlreadyActive ;
-import org.omg.PortableServer.POAPackage.NoServant ;
+import org.omg.PortableServer.ServantActivator;
+import org.omg.PortableServer.Servant;
+import org.omg.PortableServer.ServantManager;
+import org.omg.PortableServer.ForwardRequest;
+import org.omg.PortableServer.POAPackage.WrongPolicy;
+import org.omg.PortableServer.POAPackage.ObjectNotActive;
+import org.omg.PortableServer.POAPackage.ServantNotActive;
+import org.omg.PortableServer.POAPackage.ObjectAlreadyActive;
+import org.omg.PortableServer.POAPackage.ServantAlreadyActive;
+import org.omg.PortableServer.POAPackage.NoServant;
 
-import com.sun.corba.se.impl.orbutil.concurrent.SyncUtil ;
-import com.sun.corba.se.impl.orbutil.ORBUtility ;
-import com.sun.corba.se.impl.orbutil.ORBConstants ;
+import com.sun.corba.se.impl.orbutil.concurrent.SyncUtil;
+import com.sun.corba.se.impl.orbutil.ORBUtility;
+import com.sun.corba.se.impl.orbutil.ORBConstants;
 
-import com.sun.corba.se.impl.oa.NullServantImpl ;
+import com.sun.corba.se.impl.oa.NullServantImpl;
 
-import com.sun.corba.se.impl.javax.rmi.CORBA.Util ;
+import com.sun.corba.se.impl.javax.rmi.CORBA.Util;
 
-import com.sun.corba.se.spi.oa.OAInvocationInfo ;
-import com.sun.corba.se.spi.oa.NullServant ;
+import com.sun.corba.se.spi.oa.OAInvocationInfo;
+import com.sun.corba.se.spi.oa.NullServant;
 
-/** Implementation of POARequesHandler that provides policy specific
+/**
+ * Implementation of POARequesHandler that provides policy specific
  * operations on the POA.
  */
 public class POAPolicyMediatorImpl_R_USM extends POAPolicyMediatorBase_R {
-    protected ServantActivator activator ;
+    protected ServantActivator activator;
 
-    POAPolicyMediatorImpl_R_USM( Policies policies, POAImpl poa )
-    {
+    POAPolicyMediatorImpl_R_USM(Policies policies, POAImpl poa) {
         // assert policies.retainServants()
-        super( policies, poa ) ;
-        activator = null ;
+        super(policies, poa);
+        activator = null;
 
         if (!policies.useServantManager())
-            throw poa.invocationWrapper().policyMediatorBadPolicyInFactory() ;
+            throw poa.invocationWrapper().policyMediatorBadPolicyInFactory();
     }
 
     /* This handles a rather subtle bug (4939892).  The problem is that
@@ -76,54 +76,52 @@ public class POAPolicyMediatorImpl_R_USM extends POAPolicyMediatorBase_R {
      * to allow actions to throw exceptions, and adding a new state in the
      * AOMEntry FSM to detect this condition.
      */
-    private AOMEntry enterEntry( ActiveObjectMap.Key key )
-    {
-        AOMEntry result = null ;
-        boolean failed ;
+    private AOMEntry enterEntry(ActiveObjectMap.Key key) {
+        AOMEntry result = null;
+        boolean failed;
         do {
-            failed = false ;
-            result = activeObjectMap.get(key) ;
+            failed = false;
+            result = activeObjectMap.get(key);
 
             try {
-                result.enter() ;
+                result.enter();
             } catch (Exception exc) {
-                failed = true ;
+                failed = true;
             }
-        } while (failed) ;
+        } while (failed);
 
-        return result ;
+        return result;
     }
 
-    protected java.lang.Object internalGetServant( byte[] id,
-        String operation ) throws ForwardRequest
-    {
+    protected java.lang.Object internalGetServant(byte[] id,
+                                                  String operation) throws ForwardRequest {
         if (poa.getDebug()) {
-            ORBUtility.dprint( this,
-                "Calling POAPolicyMediatorImpl_R_USM.internalGetServant " +
-                "for poa " + poa + " operation=" + operation ) ;
+            ORBUtility.dprint(this,
+                    "Calling POAPolicyMediatorImpl_R_USM.internalGetServant " +
+                            "for poa " + poa + " operation=" + operation);
         }
 
         try {
-            ActiveObjectMap.Key key = new ActiveObjectMap.Key( id ) ;
-            AOMEntry entry = enterEntry(key) ;
-            java.lang.Object servant = activeObjectMap.getServant( entry ) ;
+            ActiveObjectMap.Key key = new ActiveObjectMap.Key(id);
+            AOMEntry entry = enterEntry(key);
+            java.lang.Object servant = activeObjectMap.getServant(entry);
             if (servant != null) {
                 if (poa.getDebug()) {
-                    ORBUtility.dprint( this,
-                        "internalGetServant: servant already activated" ) ;
+                    ORBUtility.dprint(this,
+                            "internalGetServant: servant already activated");
                 }
 
-                return servant ;
+                return servant;
             }
 
             if (activator == null) {
                 if (poa.getDebug()) {
-                    ORBUtility.dprint( this,
-                        "internalGetServant: no servant activator in POA" ) ;
+                    ORBUtility.dprint(this,
+                            "internalGetServant: no servant activator in POA");
                 }
 
-                entry.incarnateFailure() ;
-                throw poa.invocationWrapper().poaNoServantManager() ;
+                entry.incarnateFailure();
+                throw poa.invocationWrapper().poaNoServantManager();
             }
 
             // Drop the POA lock during the incarnate call and
@@ -132,41 +130,41 @@ public class POAPolicyMediatorImpl_R_USM extends POAPolicyMediatorBase_R {
             // incarnate method at a time within the same POA.
             try {
                 if (poa.getDebug()) {
-                    ORBUtility.dprint( this,
-                        "internalGetServant: upcall to incarnate" ) ;
+                    ORBUtility.dprint(this,
+                            "internalGetServant: upcall to incarnate");
                 }
 
-                poa.unlock() ;
+                poa.unlock();
 
                 servant = activator.incarnate(id, poa);
 
                 if (servant == null)
                     servant = new NullServantImpl(
-                        poa.omgInvocationWrapper().nullServantReturned() ) ;
+                            poa.omgInvocationWrapper().nullServantReturned());
             } catch (ForwardRequest freq) {
                 if (poa.getDebug()) {
-                    ORBUtility.dprint( this,
-                        "internalGetServant: incarnate threw ForwardRequest" ) ;
+                    ORBUtility.dprint(this,
+                            "internalGetServant: incarnate threw ForwardRequest");
                 }
 
-                throw freq ;
+                throw freq;
             } catch (SystemException exc) {
                 if (poa.getDebug()) {
-                    ORBUtility.dprint( this,
-                        "internalGetServant: incarnate threw SystemException " + exc ) ;
+                    ORBUtility.dprint(this,
+                            "internalGetServant: incarnate threw SystemException " + exc);
                 }
 
-                throw exc ;
+                throw exc;
             } catch (Throwable exc) {
                 if (poa.getDebug()) {
-                    ORBUtility.dprint( this,
-                        "internalGetServant: incarnate threw Throwable " + exc ) ;
+                    ORBUtility.dprint(this,
+                            "internalGetServant: incarnate threw Throwable " + exc);
                 }
 
                 throw poa.invocationWrapper().poaServantActivatorLookupFailed(
-                    exc ) ;
+                        exc);
             } finally {
-                poa.lock() ;
+                poa.lock();
 
                 // servant == null means incarnate threw an exception,
                 // while servant instanceof NullServant means incarnate returned a
@@ -174,8 +172,8 @@ public class POAPolicyMediatorImpl_R_USM extends POAPolicyMediatorBase_R {
                 // entry state machine.
                 if ((servant == null) || (servant instanceof NullServant)) {
                     if (poa.getDebug()) {
-                        ORBUtility.dprint( this,
-                            "internalGetServant: incarnate failed" ) ;
+                        ORBUtility.dprint(this,
+                                "internalGetServant: incarnate failed");
                     }
 
                     // XXX Does the AOM leak in this case? Yes,
@@ -186,7 +184,7 @@ public class POAPolicyMediatorImpl_R_USM extends POAPolicyMediatorBase_R {
                     // The activeObjectMap.get() call above creates an
                     // ActiveObjectMap.Entry if one does not already exist,
                     // and stores it in the keyToEntry map in the AOM.
-                    entry.incarnateFailure() ;
+                    entry.incarnateFailure();
                 } else {
                     // here check for unique_id policy, and if the servant
                     // is already registered for a different ID, then throw
@@ -194,187 +192,178 @@ public class POAPolicyMediatorImpl_R_USM extends POAPolicyMediatorBase_R {
                     // 99-10-07.pdf
                     if (isUnique) {
                         // check if the servant already is associated with some id
-                        if (activeObjectMap.contains((Servant)servant)) {
+                        if (activeObjectMap.contains((Servant) servant)) {
                             if (poa.getDebug()) {
-                                ORBUtility.dprint( this,
-                                    "internalGetServant: servant already assigned to ID" ) ;
+                                ORBUtility.dprint(this,
+                                        "internalGetServant: servant already assigned to ID");
                             }
 
-                            entry.incarnateFailure() ;
-                            throw poa.invocationWrapper().poaServantNotUnique() ;
+                            entry.incarnateFailure();
+                            throw poa.invocationWrapper().poaServantNotUnique();
                         }
                     }
 
                     if (poa.getDebug()) {
-                        ORBUtility.dprint( this,
-                            "internalGetServant: incarnate complete" ) ;
+                        ORBUtility.dprint(this,
+                                "internalGetServant: incarnate complete");
                     }
 
-                    entry.incarnateComplete() ;
-                    activateServant(key, entry, (Servant)servant);
+                    entry.incarnateComplete();
+                    activateServant(key, entry, (Servant) servant);
                 }
             }
 
-            return servant ;
+            return servant;
         } finally {
             if (poa.getDebug()) {
-                ORBUtility.dprint( this,
-                    "Exiting POAPolicyMediatorImpl_R_USM.internalGetServant " +
-                    "for poa " + poa ) ;
+                ORBUtility.dprint(this,
+                        "Exiting POAPolicyMediatorImpl_R_USM.internalGetServant " +
+                                "for poa " + poa);
             }
         }
     }
 
-    public void returnServant()
-    {
+    public void returnServant() {
         OAInvocationInfo info = orb.peekInvocationInfo();
-        byte[] id = info.id() ;
-        ActiveObjectMap.Key key = new ActiveObjectMap.Key( id ) ;
-        AOMEntry entry = activeObjectMap.get( key ) ;
-        entry.exit() ;
+        byte[] id = info.id();
+        ActiveObjectMap.Key key = new ActiveObjectMap.Key(id);
+        AOMEntry entry = activeObjectMap.get(key);
+        entry.exit();
     }
 
-    public void etherealizeAll()
-    {
-        if (activator != null)  {
-            Set keySet = activeObjectMap.keySet() ;
+    public void etherealizeAll() {
+        if (activator != null) {
+            Set keySet = activeObjectMap.keySet();
 
             // Copy the elements in the set to an array to avoid
             // changes in the set due to concurrent modification
             ActiveObjectMap.Key[] keys =
-                (ActiveObjectMap.Key[])keySet.toArray(
-                    new ActiveObjectMap.Key[ keySet.size() ] ) ;
+                    (ActiveObjectMap.Key[]) keySet.toArray(
+                            new ActiveObjectMap.Key[keySet.size()]);
 
-            for (int ctr=0; ctr<keySet.size(); ctr++) {
-                ActiveObjectMap.Key key = keys[ctr] ;
-                AOMEntry entry = activeObjectMap.get( key ) ;
-                Servant servant = activeObjectMap.getServant( entry ) ;
+            for (int ctr = 0; ctr < keySet.size(); ctr++) {
+                ActiveObjectMap.Key key = keys[ctr];
+                AOMEntry entry = activeObjectMap.get(key);
+                Servant servant = activeObjectMap.getServant(entry);
                 if (servant != null) {
                     boolean remainingActivations =
-                        activeObjectMap.hasMultipleIDs(entry) ;
+                            activeObjectMap.hasMultipleIDs(entry);
 
                     // Here we etherealize in the thread that called this
                     // method, rather than etherealizing in a new thread
                     // as in the deactivate case.  We still inform the
                     // entry state machine so that only one thread at a
                     // time can call the etherealize method.
-                    entry.startEtherealize( null ) ;
+                    entry.startEtherealize(null);
                     try {
-                        poa.unlock() ;
+                        poa.unlock();
                         try {
                             activator.etherealize(key.id, poa, servant, true,
-                                remainingActivations);
+                                    remainingActivations);
                         } catch (Exception exc) {
                             // ignore all exceptions
                         }
                     } finally {
-                        poa.lock() ;
-                        entry.etherealizeComplete() ;
+                        poa.lock();
+                        entry.etherealizeComplete();
                     }
                 }
             }
         }
     }
 
-    public ServantManager getServantManager() throws WrongPolicy
-    {
+    public ServantManager getServantManager() throws WrongPolicy {
         return activator;
     }
 
     public void setServantManager(
-        ServantManager servantManager ) throws WrongPolicy
-    {
+            ServantManager servantManager) throws WrongPolicy {
         if (activator != null)
-            throw poa.invocationWrapper().servantManagerAlreadySet() ;
+            throw poa.invocationWrapper().servantManagerAlreadySet();
 
         if (servantManager instanceof ServantActivator)
-            activator = (ServantActivator)servantManager;
+            activator = (ServantActivator) servantManager;
         else
-            throw poa.invocationWrapper().servantManagerBadType() ;
+            throw poa.invocationWrapper().servantManagerBadType();
     }
 
-    public Servant getDefaultServant() throws NoServant, WrongPolicy
-    {
+    public Servant getDefaultServant() throws NoServant, WrongPolicy {
         throw new WrongPolicy();
     }
 
-    public void setDefaultServant( Servant servant ) throws WrongPolicy
-    {
+    public void setDefaultServant(Servant servant) throws WrongPolicy {
         throw new WrongPolicy();
     }
 
     class Etherealizer extends Thread {
-        private POAPolicyMediatorImpl_R_USM mediator ;
-        private ActiveObjectMap.Key key ;
-        private AOMEntry entry ;
-        private Servant servant ;
-        private boolean debug ;
+        private POAPolicyMediatorImpl_R_USM mediator;
+        private ActiveObjectMap.Key key;
+        private AOMEntry entry;
+        private Servant servant;
+        private boolean debug;
 
-        public Etherealizer( POAPolicyMediatorImpl_R_USM mediator,
-            ActiveObjectMap.Key key, AOMEntry entry, Servant servant,
-            boolean debug )
-        {
-            this.mediator = mediator ;
-            this.key = key ;
+        public Etherealizer(POAPolicyMediatorImpl_R_USM mediator,
+                            ActiveObjectMap.Key key, AOMEntry entry, Servant servant,
+                            boolean debug) {
+            this.mediator = mediator;
+            this.key = key;
             this.entry = entry;
             this.servant = servant;
-            this.debug = debug ;
+            this.debug = debug;
         }
 
         public void run() {
             if (debug) {
-                ORBUtility.dprint( this, "Calling Etherealizer.run on key " +
-                    key ) ;
+                ORBUtility.dprint(this, "Calling Etherealizer.run on key " +
+                        key);
             }
 
             try {
                 try {
-                    mediator.activator.etherealize( key.id, mediator.poa, servant,
-                        false, mediator.activeObjectMap.hasMultipleIDs( entry ) );
+                    mediator.activator.etherealize(key.id, mediator.poa, servant,
+                            false, mediator.activeObjectMap.hasMultipleIDs(entry));
                 } catch (Exception exc) {
                     // ignore all exceptions
                 }
 
                 try {
-                    mediator.poa.lock() ;
+                    mediator.poa.lock();
 
-                    entry.etherealizeComplete() ;
-                    mediator.activeObjectMap.remove( key ) ;
+                    entry.etherealizeComplete();
+                    mediator.activeObjectMap.remove(key);
 
-                    POAManagerImpl pm = (POAManagerImpl)mediator.poa.the_POAManager() ;
-                    POAFactory factory = pm.getFactory() ;
-                    factory.unregisterPOAForServant( mediator.poa, servant);
+                    POAManagerImpl pm = (POAManagerImpl) mediator.poa.the_POAManager();
+                    POAFactory factory = pm.getFactory();
+                    factory.unregisterPOAForServant(mediator.poa, servant);
                 } finally {
-                    mediator.poa.unlock() ;
+                    mediator.poa.unlock();
                 }
             } finally {
                 if (debug) {
-                    ORBUtility.dprint( this, "Exiting Etherealizer.run" ) ;
+                    ORBUtility.dprint(this, "Exiting Etherealizer.run");
                 }
             }
         }
     }
 
-    public void deactivateHelper( ActiveObjectMap.Key key, AOMEntry entry,
-        Servant servant ) throws ObjectNotActive, WrongPolicy
-    {
+    public void deactivateHelper(ActiveObjectMap.Key key, AOMEntry entry,
+                                 Servant servant) throws ObjectNotActive, WrongPolicy {
         if (activator == null)
-            throw poa.invocationWrapper().poaNoServantManager() ;
+            throw poa.invocationWrapper().poaNoServantManager();
 
-        Etherealizer eth = new Etherealizer( this, key, entry, servant, poa.getDebug() ) ;
-        entry.startEtherealize( eth ) ;
+        Etherealizer eth = new Etherealizer(this, key, entry, servant, poa.getDebug());
+        entry.startEtherealize(eth);
     }
 
-    public Servant idToServant( byte[] id )
-        throws WrongPolicy, ObjectNotActive
-    {
-        ActiveObjectMap.Key key = new ActiveObjectMap.Key( id ) ;
+    public Servant idToServant(byte[] id)
+            throws WrongPolicy, ObjectNotActive {
+        ActiveObjectMap.Key key = new ActiveObjectMap.Key(id);
         AOMEntry entry = activeObjectMap.get(key);
 
-        Servant servant = activeObjectMap.getServant( entry ) ;
+        Servant servant = activeObjectMap.getServant(entry);
         if (servant != null)
-            return servant ;
+            return servant;
         else
-            throw new ObjectNotActive() ;
+            throw new ObjectNotActive();
     }
 }

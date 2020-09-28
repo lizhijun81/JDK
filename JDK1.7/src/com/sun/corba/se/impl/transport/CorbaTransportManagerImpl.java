@@ -61,17 +61,15 @@ import com.sun.corba.se.impl.orbutil.ORBUtility;
  * @author Harold Carr
  */
 public class CorbaTransportManagerImpl
-    implements
-        CorbaTransportManager
-{
+        implements
+        CorbaTransportManager {
     protected ORB orb;
     protected List acceptors;
     protected Map outboundConnectionCaches;
     protected Map inboundConnectionCaches;
     protected Selector selector;
 
-    public CorbaTransportManagerImpl(ORB orb)
-    {
+    public CorbaTransportManagerImpl(ORB orb) {
         this.orb = orb;
         acceptors = new ArrayList();
         outboundConnectionCaches = new HashMap();
@@ -84,30 +82,28 @@ public class CorbaTransportManagerImpl
     // pept TransportManager
     //
 
-    public ByteBufferPool getByteBufferPool(int id)
-    {
+    public ByteBufferPool getByteBufferPool(int id) {
         throw new RuntimeException();
     }
 
     public OutboundConnectionCache getOutboundConnectionCache(
-        ContactInfo contactInfo)
-    {
+            ContactInfo contactInfo) {
         synchronized (contactInfo) {
             if (contactInfo.getConnectionCache() == null) {
                 OutboundConnectionCache connectionCache = null;
                 synchronized (outboundConnectionCaches) {
                     connectionCache = (OutboundConnectionCache)
-                        outboundConnectionCaches.get(
-                            contactInfo.getConnectionCacheType());
+                            outboundConnectionCaches.get(
+                                    contactInfo.getConnectionCacheType());
                     if (connectionCache == null) {
                         // REVISIT: Would like to be able to configure
                         // the connection cache type used.
                         connectionCache =
-                            new CorbaOutboundConnectionCacheImpl(orb,
-                                                                 contactInfo);
+                                new CorbaOutboundConnectionCacheImpl(orb,
+                                        contactInfo);
                         outboundConnectionCaches.put(
-                            contactInfo.getConnectionCacheType(),
-                            connectionCache);
+                                contactInfo.getConnectionCacheType(),
+                                connectionCache);
                     }
                 }
                 contactInfo.setConnectionCache(connectionCache);
@@ -116,30 +112,28 @@ public class CorbaTransportManagerImpl
         }
     }
 
-    public Collection getOutboundConnectionCaches()
-    {
+    public Collection getOutboundConnectionCaches() {
         return outboundConnectionCaches.values();
     }
 
     public InboundConnectionCache getInboundConnectionCache(
-        Acceptor acceptor)
-    {
+            Acceptor acceptor) {
         synchronized (acceptor) {
             if (acceptor.getConnectionCache() == null) {
                 InboundConnectionCache connectionCache = null;
                 synchronized (inboundConnectionCaches) {
                     connectionCache = (InboundConnectionCache)
-                        inboundConnectionCaches.get(
-                            acceptor.getConnectionCacheType());
+                            inboundConnectionCaches.get(
+                                    acceptor.getConnectionCacheType());
                     if (connectionCache == null) {
                         // REVISIT: Would like to be able to configure
                         // the connection cache type used.
                         connectionCache =
-                            new CorbaInboundConnectionCacheImpl(orb,
-                                                                acceptor);
+                                new CorbaInboundConnectionCacheImpl(orb,
+                                        acceptor);
                         inboundConnectionCaches.put(
-                            acceptor.getConnectionCacheType(),
-                            connectionCache);
+                                acceptor.getConnectionCacheType(),
+                                connectionCache);
                     }
                 }
                 acceptor.setConnectionCache(connectionCache);
@@ -148,18 +142,15 @@ public class CorbaTransportManagerImpl
         }
     }
 
-    public Collection getInboundConnectionCaches()
-    {
+    public Collection getInboundConnectionCaches() {
         return inboundConnectionCaches.values();
     }
 
-    public Selector getSelector(int id)
-    {
+    public Selector getSelector(int id) {
         return selector;
     }
 
-    public synchronized void registerAcceptor(Acceptor acceptor)
-    {
+    public synchronized void registerAcceptor(Acceptor acceptor) {
         if (orb.transportDebugFlag) {
             dprint(".registerAcceptor->: " + acceptor);
         }
@@ -169,27 +160,24 @@ public class CorbaTransportManagerImpl
         }
     }
 
-    public Collection getAcceptors()
-    {
+    public Collection getAcceptors() {
         return getAcceptors(null, null);
     }
 
-    public synchronized void unregisterAcceptor(Acceptor acceptor)
-    {
+    public synchronized void unregisterAcceptor(Acceptor acceptor) {
         acceptors.remove(acceptor);
     }
 
-    public void close()
-    {
+    public void close() {
         try {
             if (orb.transportDebugFlag) {
                 dprint(".close->");
             }
             for (Object cc : outboundConnectionCaches.values()) {
-                ((ConnectionCache)cc).close() ;
+                ((ConnectionCache) cc).close();
             }
             for (Object cc : inboundConnectionCaches.values()) {
-                ((ConnectionCache)cc).close() ;
+                ((ConnectionCache) cc).close();
             }
             getSelector(0).close();
         } finally {
@@ -205,8 +193,7 @@ public class CorbaTransportManagerImpl
     //
 
     public Collection getAcceptors(String objectAdapterManagerId,
-                                   ObjectAdapterId objectAdapterId)
-    {
+                                   ObjectAdapterId objectAdapterId) {
         // REVISIT - need to filter based on arguments.
 
         // REVISIT - initialization will be moved to OA.
@@ -217,7 +204,7 @@ public class CorbaTransportManagerImpl
             if (acceptor.initialize()) {
                 if (acceptor.shouldRegisterAcceptEvent()) {
                     orb.getTransportManager().getSelector(0)
-                        .registerForEvent(acceptor.getEventHandler());
+                            .registerForEvent(acceptor.getEventHandler());
                 }
             }
         }
@@ -229,10 +216,9 @@ public class CorbaTransportManagerImpl
                                  Policies policies,
                                  String codebase,
                                  String objectAdapterManagerId,
-                                 ObjectAdapterId objectAdapterId)
-    {
+                                 ObjectAdapterId objectAdapterId) {
         Iterator iterator =
-            getAcceptors(objectAdapterManagerId, objectAdapterId).iterator();
+                getAcceptors(objectAdapterManagerId, objectAdapterId).iterator();
         while (iterator.hasNext()) {
             CorbaAcceptor acceptor = (CorbaAcceptor) iterator.next();
             acceptor.addToIORTemplate(iorTemplate, policies, codebase);
@@ -245,8 +231,7 @@ public class CorbaTransportManagerImpl
     // implemenation
     //
 
-    protected void dprint(String msg)
-    {
+    protected void dprint(String msg) {
         ORBUtility.dprint("CorbaTransportManagerImpl", msg);
     }
 }

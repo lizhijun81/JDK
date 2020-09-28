@@ -23,56 +23,54 @@
  *
  */
 
-package com.sun.corba.se.impl.orbutil ;
+package com.sun.corba.se.impl.orbutil;
 
-import java.util.ArrayList ;
+import java.util.ArrayList;
 
-/** Utility for managing mappings from densely allocated integer
+/**
+ * Utility for managing mappings from densely allocated integer
  * keys to arbitrary objects.  This should only be used for
  * keys in the range 0..max such that "most" of the key space is actually
  * used.
  */
-public class DenseIntMapImpl
-{
-    private ArrayList list = new ArrayList() ;
+public class DenseIntMapImpl {
+    private ArrayList list = new ArrayList();
 
-    private void checkKey( int key )
-    {
+    private void checkKey(int key) {
         if (key < 0)
-            throw new IllegalArgumentException( "Key must be >= 0." ) ;
+            throw new IllegalArgumentException("Key must be >= 0.");
     }
 
-    /** If key >= 0, return the value bound to key, or null if none.
+    /**
+     * If key >= 0, return the value bound to key, or null if none.
      * Throws IllegalArgumentException if key <0.
      */
-    public Object get( int key )
-    {
-        checkKey( key ) ;
+    public Object get(int key) {
+        checkKey(key);
 
-        Object result = null ;
+        Object result = null;
         if (key < list.size())
-            result = list.get( key ) ;
+            result = list.get(key);
 
-        return result ;
+        return result;
     }
 
-    /** If key >= 0, bind value to the key.
+    /**
+     * If key >= 0, bind value to the key.
      * Throws IllegalArgumentException if key <0.
      */
-    public void set( int key, Object value )
-    {
-        checkKey( key ) ;
-        extend( key ) ;
-        list.set( key, value ) ;
+    public void set(int key, Object value) {
+        checkKey(key);
+        extend(key);
+        list.set(key, value);
     }
 
-    private void extend( int index )
-    {
+    private void extend(int index) {
         if (index >= list.size()) {
-            list.ensureCapacity( index + 1 ) ;
-            int max = list.size() ;
+            list.ensureCapacity(index + 1);
+            int max = list.size();
             while (max++ <= index)
-                list.add( null ) ;
+                list.add(null);
         }
     }
 }

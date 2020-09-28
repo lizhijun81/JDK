@@ -52,34 +52,49 @@ import org.w3c.dom.Document;
  * <p>StAXSchemaParser reads StAX events, converts them into XNI events
  * and passes them directly to the SchemaDOMParser.</p>
  *
- * @xerces.internal
- *
  * @version $Id: StAXSchemaParser.java,v 1.2 2010-10-26 23:01:12 joehw Exp $
+ * @xerces.internal
  */
 final class StAXSchemaParser {
 
-    /** Chunk size (1024). */
+    /**
+     * Chunk size (1024).
+     */
     private static final int CHUNK_SIZE = (1 << 10);
 
-    /** Chunk mask (CHUNK_SIZE - 1). */
+    /**
+     * Chunk mask (CHUNK_SIZE - 1).
+     */
     private static final int CHUNK_MASK = CHUNK_SIZE - 1;
 
-    /** Array for holding character data. **/
-    private final char [] fCharBuffer = new char[CHUNK_SIZE];
+    /**
+     * Array for holding character data.
+     **/
+    private final char[] fCharBuffer = new char[CHUNK_SIZE];
 
-    /** Symbol table **/
+    /**
+     * Symbol table
+     **/
     private SymbolTable fSymbolTable;
 
-    /** SchemaDOMParser, events will be delegated to SchemaDOMParser to pass */
+    /**
+     * SchemaDOMParser, events will be delegated to SchemaDOMParser to pass
+     */
     private SchemaDOMParser fSchemaDOMParser;
 
-    /** XML Locator wrapper for SAX. **/
+    /**
+     * XML Locator wrapper for SAX.
+     **/
     private final StAXLocationWrapper fLocationWrapper = new StAXLocationWrapper();
 
-    /** The namespace context of this document: stores namespaces in scope */
+    /**
+     * The namespace context of this document: stores namespaces in scope
+     */
     private final JAXPNamespaceContextWrapper fNamespaceContext = new JAXPNamespaceContextWrapper(fSymbolTable);
 
-    /** Fields for start element, end element and characters. */
+    /**
+     * Fields for start element, end element and characters.
+     */
     private final QName fElementQName = new QName();
     private final QName fAttributeQName = new QName();
     private final XMLAttributesImpl fAttributes = new XMLAttributesImpl();
@@ -108,71 +123,72 @@ final class StAXSchemaParser {
         if (currentEvent != null) {
             int eventType = currentEvent.getEventType();
             if (eventType != XMLStreamConstants.START_DOCUMENT &&
-                eventType != XMLStreamConstants.START_ELEMENT) {
+                    eventType != XMLStreamConstants.START_ELEMENT) {
                 throw new XMLStreamException();
             }
             fLocationWrapper.setLocation(currentEvent.getLocation());
             fSchemaDOMParser.startDocument(fLocationWrapper, null, fNamespaceContext, null);
-            loop: while (input.hasNext()) {
+            loop:
+            while (input.hasNext()) {
                 currentEvent = input.nextEvent();
                 eventType = currentEvent.getEventType();
                 switch (eventType) {
-                case XMLStreamConstants.START_ELEMENT:
-                    ++fDepth;
-                    StartElement start = currentEvent.asStartElement();
-                    fillQName(fElementQName, start.getName());
-                    fLocationWrapper.setLocation(start.getLocation());
-                    fNamespaceContext.setNamespaceContext(start.getNamespaceContext());
-                    fillXMLAttributes(start);
-                    fillDeclaredPrefixes(start);
-                    addNamespaceDeclarations();
-                    fNamespaceContext.pushContext();
-                    fSchemaDOMParser.startElement(fElementQName, fAttributes, null);
-                    break;
-                case XMLStreamConstants.END_ELEMENT:
-                    EndElement end = currentEvent.asEndElement();
-                    fillQName(fElementQName, end.getName());
-                    fillDeclaredPrefixes(end);
-                    fLocationWrapper.setLocation(end.getLocation());
-                    fSchemaDOMParser.endElement(fElementQName, null);
-                    fNamespaceContext.popContext();
-                    --fDepth;
-                    if (fDepth <= 0) {
-                        break loop;
-                    }
-                    break;
-                case XMLStreamConstants.CHARACTERS:
-                    sendCharactersToSchemaParser(currentEvent.asCharacters().getData(), false);
-                    break;
-                case XMLStreamConstants.SPACE:
-                    sendCharactersToSchemaParser(currentEvent.asCharacters().getData(), true);
-                    break;
-                case XMLStreamConstants.CDATA:
-                    fSchemaDOMParser.startCDATA(null);
-                    sendCharactersToSchemaParser(currentEvent.asCharacters().getData(), false);
-                    fSchemaDOMParser.endCDATA(null);
-                    break;
-                case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    ProcessingInstruction pi = (ProcessingInstruction)currentEvent;
-                    fillProcessingInstruction(pi.getData());
-                    fSchemaDOMParser.processingInstruction(pi.getTarget(), fTempString, null);
-                    break;
-                case XMLStreamConstants.DTD:
-                    /* There shouldn't be a DTD in the schema */
-                    break;
-                case XMLStreamConstants.ENTITY_REFERENCE:
-                    /* Not needed for schemas */
-                    break;
-                case XMLStreamConstants.COMMENT:
-                    /* No point in sending comments */
-                    break;
-                case XMLStreamConstants.START_DOCUMENT:
-                    fDepth++;
-                    /* We automatically call startDocument before the loop */
-                    break;
-                case XMLStreamConstants.END_DOCUMENT:
-                    /* We automatically call endDocument after the loop */
-                    break;
+                    case XMLStreamConstants.START_ELEMENT:
+                        ++fDepth;
+                        StartElement start = currentEvent.asStartElement();
+                        fillQName(fElementQName, start.getName());
+                        fLocationWrapper.setLocation(start.getLocation());
+                        fNamespaceContext.setNamespaceContext(start.getNamespaceContext());
+                        fillXMLAttributes(start);
+                        fillDeclaredPrefixes(start);
+                        addNamespaceDeclarations();
+                        fNamespaceContext.pushContext();
+                        fSchemaDOMParser.startElement(fElementQName, fAttributes, null);
+                        break;
+                    case XMLStreamConstants.END_ELEMENT:
+                        EndElement end = currentEvent.asEndElement();
+                        fillQName(fElementQName, end.getName());
+                        fillDeclaredPrefixes(end);
+                        fLocationWrapper.setLocation(end.getLocation());
+                        fSchemaDOMParser.endElement(fElementQName, null);
+                        fNamespaceContext.popContext();
+                        --fDepth;
+                        if (fDepth <= 0) {
+                            break loop;
+                        }
+                        break;
+                    case XMLStreamConstants.CHARACTERS:
+                        sendCharactersToSchemaParser(currentEvent.asCharacters().getData(), false);
+                        break;
+                    case XMLStreamConstants.SPACE:
+                        sendCharactersToSchemaParser(currentEvent.asCharacters().getData(), true);
+                        break;
+                    case XMLStreamConstants.CDATA:
+                        fSchemaDOMParser.startCDATA(null);
+                        sendCharactersToSchemaParser(currentEvent.asCharacters().getData(), false);
+                        fSchemaDOMParser.endCDATA(null);
+                        break;
+                    case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                        ProcessingInstruction pi = (ProcessingInstruction) currentEvent;
+                        fillProcessingInstruction(pi.getData());
+                        fSchemaDOMParser.processingInstruction(pi.getTarget(), fTempString, null);
+                        break;
+                    case XMLStreamConstants.DTD:
+                        /* There shouldn't be a DTD in the schema */
+                        break;
+                    case XMLStreamConstants.ENTITY_REFERENCE:
+                        /* Not needed for schemas */
+                        break;
+                    case XMLStreamConstants.COMMENT:
+                        /* No point in sending comments */
+                        break;
+                    case XMLStreamConstants.START_DOCUMENT:
+                        fDepth++;
+                        /* We automatically call startDocument before the loop */
+                        break;
+                    case XMLStreamConstants.END_DOCUMENT:
+                        /* We automatically call endDocument after the loop */
+                        break;
                 }
             }
             fLocationWrapper.setLocation(null);
@@ -185,82 +201,82 @@ final class StAXSchemaParser {
         if (input.hasNext()) {
             int eventType = input.getEventType();
             if (eventType != XMLStreamConstants.START_DOCUMENT &&
-                eventType != XMLStreamConstants.START_ELEMENT) {
+                    eventType != XMLStreamConstants.START_ELEMENT) {
                 throw new XMLStreamException();
             }
             fLocationWrapper.setLocation(input.getLocation());
             fSchemaDOMParser.startDocument(fLocationWrapper, null, fNamespaceContext, null);
             boolean first = true;
-            loop: while (input.hasNext()) {
+            loop:
+            while (input.hasNext()) {
                 if (!first) {
                     eventType = input.next();
-                }
-                else {
+                } else {
                     first = false;
                 }
                 switch (eventType) {
-                case XMLStreamConstants.START_ELEMENT:
-                    ++fDepth;
-                    fLocationWrapper.setLocation(input.getLocation());
-                    fNamespaceContext.setNamespaceContext(input.getNamespaceContext());
-                    fillQName(fElementQName, input.getNamespaceURI(),
-                        input.getLocalName(), input.getPrefix());
-                    fillXMLAttributes(input);
-                    fillDeclaredPrefixes(input);
-                    addNamespaceDeclarations();
-                    fNamespaceContext.pushContext();
-                    fSchemaDOMParser.startElement(fElementQName, fAttributes, null);
-                    break;
-                case XMLStreamConstants.END_ELEMENT:
-                    fLocationWrapper.setLocation(input.getLocation());
-                    fNamespaceContext.setNamespaceContext(input.getNamespaceContext());
-                    fillQName(fElementQName, input.getNamespaceURI(),
-                        input.getLocalName(), input.getPrefix());
-                    fillDeclaredPrefixes(input);
-                    fSchemaDOMParser.endElement(fElementQName, null);
-                    fNamespaceContext.popContext();
-                    --fDepth;
-                    if (fDepth <= 0) {
-                        break loop;
-                    }
-                    break;
-                case XMLStreamConstants.CHARACTERS:
-                    fTempString.setValues(input.getTextCharacters(),
-                        input.getTextStart(), input.getTextLength());
-                    fSchemaDOMParser.characters(fTempString, null);
-                    break;
-                case XMLStreamConstants.SPACE:
-                    fTempString.setValues(input.getTextCharacters(),
-                        input.getTextStart(), input.getTextLength());
-                    fSchemaDOMParser.ignorableWhitespace(fTempString, null);
-                    break;
-                case XMLStreamConstants.CDATA:
-                    fSchemaDOMParser.startCDATA(null);
-                    fTempString.setValues(input.getTextCharacters(),
-                        input.getTextStart(), input.getTextLength());
-                    fSchemaDOMParser.characters(fTempString, null);
-                    fSchemaDOMParser.endCDATA(null);
-                    break;
-                case XMLStreamConstants.PROCESSING_INSTRUCTION:
-                    fillProcessingInstruction(input.getPIData());
-                    fSchemaDOMParser.processingInstruction(input.getPITarget(), fTempString, null);
-                    break;
-                case XMLStreamConstants.DTD:
-                    /* There shouldn't be a DTD in the schema */
-                    break;
-                case XMLStreamConstants.ENTITY_REFERENCE:
-                    /* Not needed for schemas */
-                    break;
-                case XMLStreamConstants.COMMENT:
-                    /* No point in sending comments */
-                    break;
-                case XMLStreamConstants.START_DOCUMENT:
-                    ++fDepth;
-                    /* We automatically call startDocument before the loop */
-                    break;
-                case XMLStreamConstants.END_DOCUMENT:
-                    /* We automatically call endDocument after the loop */
-                    break;
+                    case XMLStreamConstants.START_ELEMENT:
+                        ++fDepth;
+                        fLocationWrapper.setLocation(input.getLocation());
+                        fNamespaceContext.setNamespaceContext(input.getNamespaceContext());
+                        fillQName(fElementQName, input.getNamespaceURI(),
+                                input.getLocalName(), input.getPrefix());
+                        fillXMLAttributes(input);
+                        fillDeclaredPrefixes(input);
+                        addNamespaceDeclarations();
+                        fNamespaceContext.pushContext();
+                        fSchemaDOMParser.startElement(fElementQName, fAttributes, null);
+                        break;
+                    case XMLStreamConstants.END_ELEMENT:
+                        fLocationWrapper.setLocation(input.getLocation());
+                        fNamespaceContext.setNamespaceContext(input.getNamespaceContext());
+                        fillQName(fElementQName, input.getNamespaceURI(),
+                                input.getLocalName(), input.getPrefix());
+                        fillDeclaredPrefixes(input);
+                        fSchemaDOMParser.endElement(fElementQName, null);
+                        fNamespaceContext.popContext();
+                        --fDepth;
+                        if (fDepth <= 0) {
+                            break loop;
+                        }
+                        break;
+                    case XMLStreamConstants.CHARACTERS:
+                        fTempString.setValues(input.getTextCharacters(),
+                                input.getTextStart(), input.getTextLength());
+                        fSchemaDOMParser.characters(fTempString, null);
+                        break;
+                    case XMLStreamConstants.SPACE:
+                        fTempString.setValues(input.getTextCharacters(),
+                                input.getTextStart(), input.getTextLength());
+                        fSchemaDOMParser.ignorableWhitespace(fTempString, null);
+                        break;
+                    case XMLStreamConstants.CDATA:
+                        fSchemaDOMParser.startCDATA(null);
+                        fTempString.setValues(input.getTextCharacters(),
+                                input.getTextStart(), input.getTextLength());
+                        fSchemaDOMParser.characters(fTempString, null);
+                        fSchemaDOMParser.endCDATA(null);
+                        break;
+                    case XMLStreamConstants.PROCESSING_INSTRUCTION:
+                        fillProcessingInstruction(input.getPIData());
+                        fSchemaDOMParser.processingInstruction(input.getPITarget(), fTempString, null);
+                        break;
+                    case XMLStreamConstants.DTD:
+                        /* There shouldn't be a DTD in the schema */
+                        break;
+                    case XMLStreamConstants.ENTITY_REFERENCE:
+                        /* Not needed for schemas */
+                        break;
+                    case XMLStreamConstants.COMMENT:
+                        /* No point in sending comments */
+                        break;
+                    case XMLStreamConstants.START_DOCUMENT:
+                        ++fDepth;
+                        /* We automatically call startDocument before the loop */
+                        break;
+                    case XMLStreamConstants.END_DOCUMENT:
+                        /* We automatically call endDocument after the loop */
+                        break;
                 }
             }
             fLocationWrapper.setLocation(null);
@@ -269,7 +285,9 @@ final class StAXSchemaParser {
         }
     }
 
-    /** Send characters to the validator in CHUNK_SIZE character chunks. */
+    /**
+     * Send characters to the validator in CHUNK_SIZE character chunks.
+     */
     private void sendCharactersToSchemaParser(String str, boolean whitespace) {
         if (str != null) {
             final int length = str.length();
@@ -279,8 +297,7 @@ final class StAXSchemaParser {
                 fTempString.setValues(fCharBuffer, 0, remainder);
                 if (whitespace) {
                     fSchemaDOMParser.ignorableWhitespace(fTempString, null);
-                }
-                else {
+                } else {
                     fSchemaDOMParser.characters(fTempString, null);
                 }
             }
@@ -290,8 +307,7 @@ final class StAXSchemaParser {
                 fTempString.setValues(fCharBuffer, 0, CHUNK_SIZE);
                 if (whitespace) {
                     fSchemaDOMParser.ignorableWhitespace(fTempString, null);
-                }
-                else {
+                } else {
                     fSchemaDOMParser.characters(fTempString, null);
                 }
             }
@@ -301,13 +317,12 @@ final class StAXSchemaParser {
     // processing instructions must be sent all in one chunk
     private void fillProcessingInstruction(String data) {
         final int dataLength = data.length();
-        char [] charBuffer = fCharBuffer;
+        char[] charBuffer = fCharBuffer;
         if (charBuffer.length < dataLength) {
             // toCharArray() creates a newly allocated array, so it's okay
             // to keep a reference to it.
             charBuffer = data.toCharArray();
-        }
-        else {
+        } else {
             data.getChars(0, dataLength, charBuffer, 0);
         }
         fTempString.setValues(charBuffer, 0, dataLength);
@@ -332,7 +347,7 @@ final class StAXSchemaParser {
         final int len = input.getAttributeCount();
         for (int i = 0; i < len; ++i) {
             fillQName(fAttributeQName, input.getAttributeNamespace(i),
-                input.getAttributeLocalName(i), input.getAttributePrefix(i));
+                    input.getAttributeLocalName(i), input.getAttributePrefix(i));
             String type = input.getAttributeType(i);
             fAttributes.addAttributeNS(fAttributeQName,
                     (type != null) ? type : XMLSymbols.fCDATASymbol, input.getAttributeValue(i));
@@ -359,8 +374,7 @@ final class StAXSchemaParser {
                 fStringBuffer.append(':');
                 fStringBuffer.append(localpart);
                 rawname = fSymbolTable.addSymbol(fStringBuffer.ch, fStringBuffer.offset, fStringBuffer.length);
-            }
-            else {
+            } else {
                 prefix = XMLSymbols.EMPTY_STRING;
                 localpart = XMLSymbols.PREFIX_XMLNS;
                 rawname = XMLSymbols.PREFIX_XMLNS;
@@ -371,17 +385,23 @@ final class StAXSchemaParser {
         }
     }
 
-    /** Fills in the list of declared prefixes. */
+    /**
+     * Fills in the list of declared prefixes.
+     */
     private void fillDeclaredPrefixes(StartElement event) {
         fillDeclaredPrefixes(event.getNamespaces());
     }
 
-    /** Fills in the list of declared prefixes. */
+    /**
+     * Fills in the list of declared prefixes.
+     */
     private void fillDeclaredPrefixes(EndElement event) {
         fillDeclaredPrefixes(event.getNamespaces());
     }
 
-    /** Fills in the list of declared prefixes. */
+    /**
+     * Fills in the list of declared prefixes.
+     */
     private void fillDeclaredPrefixes(Iterator namespaces) {
         fDeclaredPrefixes.clear();
         while (namespaces.hasNext()) {
@@ -391,7 +411,9 @@ final class StAXSchemaParser {
         }
     }
 
-    /** Fills in the list of declared prefixes. */
+    /**
+     * Fills in the list of declared prefixes.
+     */
     private void fillDeclaredPrefixes(XMLStreamReader reader) {
         fDeclaredPrefixes.clear();
         final int len = reader.getNamespaceCount();
@@ -401,12 +423,16 @@ final class StAXSchemaParser {
         }
     }
 
-    /** Fills in a QName object. */
+    /**
+     * Fills in a QName object.
+     */
     private void fillQName(QName toFill, javax.xml.namespace.QName toCopy) {
         fillQName(toFill, toCopy.getNamespaceURI(), toCopy.getLocalPart(), toCopy.getPrefix());
     }
 
-    /** Fills in a QName object. */
+    /**
+     * Fills in a QName object.
+     */
     final void fillQName(QName toFill, String uri, String localpart, String prefix) {
         uri = (uri != null && uri.length() > 0) ? fSymbolTable.addSymbol(uri) : null;
         localpart = (localpart != null) ? fSymbolTable.addSymbol(localpart) : XMLSymbols.EMPTY_STRING;

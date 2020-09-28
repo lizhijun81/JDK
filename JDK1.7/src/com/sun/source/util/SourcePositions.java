@@ -54,7 +54,7 @@ public interface SourcePositions {
      * @param tree tree for which a position is sought.
      * @return the start position of tree.
      */
-     long getStartPosition(CompilationUnitTree file, Tree tree);
+    long getStartPosition(CompilationUnitTree file, Tree tree);
 
     /**
      * Gets the ending position of tree within file.  If tree is not found within
@@ -68,7 +68,7 @@ public interface SourcePositions {
      * {@code tree.getEndPosition() == NOPOS} or <br>
      * {@code subtree.getEndPosition() == NOPOS}
      * </p>
-     *
+     * <p>
      * In addition, the following must hold:
      *
      * <p>
@@ -81,6 +81,6 @@ public interface SourcePositions {
      * @param tree tree for which a position is sought.
      * @return the end position of tree.
      */
-     long getEndPosition(CompilationUnitTree file, Tree tree);
+    long getEndPosition(CompilationUnitTree file, Tree tree);
 
 }

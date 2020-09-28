@@ -92,38 +92,48 @@ final class DOMResultAugmentor implements DOMDocumentHandler {
         fStorePSVI = false;
     }
 
-    public void doctypeDecl(DocumentType node) throws XNIException {}
+    public void doctypeDecl(DocumentType node) throws XNIException {
+    }
 
-    public void characters(Text node) throws XNIException {}
+    public void characters(Text node) throws XNIException {
+    }
 
-    public void cdata(CDATASection node) throws XNIException {}
+    public void cdata(CDATASection node) throws XNIException {
+    }
 
-    public void comment(Comment node) throws XNIException {}
+    public void comment(Comment node) throws XNIException {
+    }
 
     public void processingInstruction(ProcessingInstruction node)
-            throws XNIException {}
+            throws XNIException {
+    }
 
     public void setIgnoringCharacters(boolean ignore) {
         fIgnoreChars = ignore;
     }
 
     public void startDocument(XMLLocator locator, String encoding,
-            NamespaceContext namespaceContext, Augmentations augs)
-            throws XNIException {}
+                              NamespaceContext namespaceContext, Augmentations augs)
+            throws XNIException {
+    }
 
     public void xmlDecl(String version, String encoding, String standalone,
-            Augmentations augs) throws XNIException {}
+                        Augmentations augs) throws XNIException {
+    }
 
     public void doctypeDecl(String rootElement, String publicId,
-            String systemId, Augmentations augs) throws XNIException {}
+                            String systemId, Augmentations augs) throws XNIException {
+    }
 
-    public void comment(XMLString text, Augmentations augs) throws XNIException {}
+    public void comment(XMLString text, Augmentations augs) throws XNIException {
+    }
 
     public void processingInstruction(String target, XMLString data,
-            Augmentations augs) throws XNIException {}
+                                      Augmentations augs) throws XNIException {
+    }
 
     public void startElement(QName element, XMLAttributes attributes,
-            Augmentations augs) throws XNIException {
+                             Augmentations augs) throws XNIException {
         final Element currentElement = (Element) fDOMValidatorHelper.getCurrentElement();
         final NamedNodeMap attrMap = currentElement.getAttributes();
 
@@ -135,10 +145,10 @@ final class DOMResultAugmentor implements DOMDocumentHandler {
                 attr = (AttrImpl) attrMap.item(i);
 
                 // write type information to this attribute
-                AttributePSVI attrPSVI = (AttributePSVI) attributes.getAugmentations(i).getItem (Constants.ATTRIBUTE_PSVI);
+                AttributePSVI attrPSVI = (AttributePSVI) attributes.getAugmentations(i).getItem(Constants.ATTRIBUTE_PSVI);
                 if (attrPSVI != null) {
                     if (processAttributePSVI(attr, attrPSVI)) {
-                        ((ElementImpl) currentElement).setIdAttributeNode (attr, true);
+                        ((ElementImpl) currentElement).setIdAttributeNode(attr, true);
                     }
                 }
             }
@@ -162,10 +172,10 @@ final class DOMResultAugmentor implements DOMDocumentHandler {
                     attr.setValue(attributes.getValue(i));
 
                     // write type information to this attribute
-                    AttributePSVI attrPSVI = (AttributePSVI) attributes.getAugmentations(i).getItem (Constants.ATTRIBUTE_PSVI);
+                    AttributePSVI attrPSVI = (AttributePSVI) attributes.getAugmentations(i).getItem(Constants.ATTRIBUTE_PSVI);
                     if (attrPSVI != null) {
                         if (processAttributePSVI(attr, attrPSVI)) {
-                            ((ElementImpl) currentElement).setIdAttributeNode (attr, true);
+                            ((ElementImpl) currentElement).setIdAttributeNode(attr, true);
                         }
                     }
                     attr.setSpecified(false);
@@ -176,20 +186,23 @@ final class DOMResultAugmentor implements DOMDocumentHandler {
     }
 
     public void emptyElement(QName element, XMLAttributes attributes,
-            Augmentations augs) throws XNIException {
+                             Augmentations augs) throws XNIException {
         startElement(element, attributes, augs);
         endElement(element, augs);
     }
 
     public void startGeneralEntity(String name,
-            XMLResourceIdentifier identifier, String encoding,
-            Augmentations augs) throws XNIException {}
+                                   XMLResourceIdentifier identifier, String encoding,
+                                   Augmentations augs) throws XNIException {
+    }
 
     public void textDecl(String version, String encoding, Augmentations augs)
-            throws XNIException {}
+            throws XNIException {
+    }
 
     public void endGeneralEntity(String name, Augmentations augs)
-            throws XNIException {}
+            throws XNIException {
+    }
 
     public void characters(XMLString text, Augmentations augs)
             throws XNIException {
@@ -209,7 +222,7 @@ final class DOMResultAugmentor implements DOMDocumentHandler {
         final Node currentElement = fDOMValidatorHelper.getCurrentElement();
         // Write type information to this element
         if (augs != null && fDocumentImpl != null) {
-            ElementPSVI elementPSVI = (ElementPSVI)augs.getItem(Constants.ELEMENT_PSVI);
+            ElementPSVI elementPSVI = (ElementPSVI) augs.getItem(Constants.ELEMENT_PSVI);
             if (elementPSVI != null) {
                 if (fStorePSVI) {
                     ((PSVIElementNSImpl) currentElement).setPSVI(elementPSVI);
@@ -223,32 +236,37 @@ final class DOMResultAugmentor implements DOMDocumentHandler {
         }
     }
 
-    public void startCDATA(Augmentations augs) throws XNIException {}
+    public void startCDATA(Augmentations augs) throws XNIException {
+    }
 
-    public void endCDATA(Augmentations augs) throws XNIException {}
+    public void endCDATA(Augmentations augs) throws XNIException {
+    }
 
-    public void endDocument(Augmentations augs) throws XNIException {}
+    public void endDocument(Augmentations augs) throws XNIException {
+    }
 
-    public void setDocumentSource(XMLDocumentSource source) {}
+    public void setDocumentSource(XMLDocumentSource source) {
+    }
 
     public XMLDocumentSource getDocumentSource() {
         return null;
     }
 
-    /** Returns whether the given attribute is an ID type. **/
+    /**
+     * Returns whether the given attribute is an ID type.
+     **/
     private boolean processAttributePSVI(AttrImpl attr, AttributePSVI attrPSVI) {
         if (fStorePSVI) {
-            ((PSVIAttrNSImpl) attr).setPSVI (attrPSVI);
+            ((PSVIAttrNSImpl) attr).setPSVI(attrPSVI);
         }
-        Object type = attrPSVI.getMemberTypeDefinition ();
+        Object type = attrPSVI.getMemberTypeDefinition();
         if (type == null) {
-            type = attrPSVI.getTypeDefinition ();
+            type = attrPSVI.getTypeDefinition();
             if (type != null) {
                 attr.setType(type);
                 return ((XSSimpleType) type).isIDType();
             }
-        }
-        else {
+        } else {
             attr.setType(type);
             return ((XSSimpleType) type).isIDType();
         }

@@ -74,12 +74,12 @@ import java.io.InputStream;
  * so applications should not attempt to re-use such streams after they
  * have been handed to a parser.  </p>
  *
- * @since SAX 1.0
  * @author David Megginson
  * @see org.xml.sax.XMLReader#parse(org.xml.sax.InputSource)
  * @see org.xml.sax.EntityResolver#resolveEntity
  * @see java.io.InputStream
  * @see java.io.Reader
+ * @since SAX 1.0
  */
 public class InputSource {
 
@@ -92,8 +92,7 @@ public class InputSource {
      * @see #setCharacterStream
      * @see #setEncoding
      */
-    public InputSource ()
-    {
+    public InputSource() {
     }
 
 
@@ -114,8 +113,7 @@ public class InputSource {
      * @see #setEncoding
      * @see #setCharacterStream
      */
-    public InputSource (String systemId)
-    {
+    public InputSource(String systemId) {
         setSystemId(systemId);
     }
 
@@ -135,8 +133,7 @@ public class InputSource {
      * @see #setByteStream
      * @see #setCharacterStream
      */
-    public InputSource (InputStream byteStream)
-    {
+    public InputSource(InputStream byteStream) {
         setByteStream(byteStream);
     }
 
@@ -155,8 +152,7 @@ public class InputSource {
      * @see #setByteStream
      * @see #setCharacterStream
      */
-    public InputSource (Reader characterStream)
-    {
+    public InputSource(Reader characterStream) {
         setCharacterStream(characterStream);
     }
 
@@ -173,8 +169,7 @@ public class InputSource {
      * @see org.xml.sax.Locator#getPublicId
      * @see org.xml.sax.SAXParseException#getPublicId
      */
-    public void setPublicId (String publicId)
-    {
+    public void setPublicId(String publicId) {
         this.publicId = publicId;
     }
 
@@ -185,8 +180,7 @@ public class InputSource {
      * @return The public identifier, or null if none was supplied.
      * @see #setPublicId
      */
-    public String getPublicId ()
-    {
+    public String getPublicId() {
         return publicId;
     }
 
@@ -214,8 +208,7 @@ public class InputSource {
      * @see org.xml.sax.Locator#getSystemId
      * @see org.xml.sax.SAXParseException#getSystemId
      */
-    public void setSystemId (String systemId)
-    {
+    public void setSystemId(String systemId) {
         this.systemId = systemId;
     }
 
@@ -232,8 +225,7 @@ public class InputSource {
      * @see #setSystemId
      * @see #getEncoding
      */
-    public String getSystemId ()
-    {
+    public String getSystemId() {
         return systemId;
     }
 
@@ -249,14 +241,13 @@ public class InputSource {
      * byte stream, it should set it with the setEncoding method.</p>
      *
      * @param byteStream A byte stream containing an XML document or
-     *        other entity.
+     *                   other entity.
      * @see #setEncoding
      * @see #getByteStream
      * @see #getEncoding
      * @see java.io.InputStream
      */
-    public void setByteStream (InputStream byteStream)
-    {
+    public void setByteStream(InputStream byteStream) {
         this.byteStream = byteStream;
     }
 
@@ -271,8 +262,7 @@ public class InputSource {
      * @see #getEncoding
      * @see #setByteStream
      */
-    public InputStream getByteStream ()
-    {
+    public InputStream getByteStream() {
         return byteStream;
     }
 
@@ -292,8 +282,7 @@ public class InputSource {
      * @see #setByteStream
      * @see #getEncoding
      */
-    public void setEncoding (String encoding)
-    {
+    public void setEncoding(String encoding) {
         this.encoding = encoding;
     }
 
@@ -308,8 +297,7 @@ public class InputSource {
      * @see #getSystemId
      * @see #getByteStream
      */
-    public String getEncoding ()
-    {
+    public String getEncoding() {
         return encoding;
     }
 
@@ -322,12 +310,11 @@ public class InputSource {
      * a URI connection to the system identifier.</p>
      *
      * @param characterStream The character stream containing the
-     *        XML document or other entity.
+     *                        XML document or other entity.
      * @see #getCharacterStream
      * @see java.io.Reader
      */
-    public void setCharacterStream (Reader characterStream)
-    {
+    public void setCharacterStream(Reader characterStream) {
         this.characterStream = characterStream;
     }
 
@@ -338,11 +325,9 @@ public class InputSource {
      * @return The character stream, or null if none was supplied.
      * @see #setCharacterStream
      */
-    public Reader getCharacterStream ()
-    {
+    public Reader getCharacterStream() {
         return characterStream;
     }
-
 
 
     ////////////////////////////////////////////////////////////////////

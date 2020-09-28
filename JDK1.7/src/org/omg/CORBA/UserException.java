@@ -49,7 +49,7 @@ public abstract class UserException extends java.lang.Exception implements org.o
      * detail message. This method is called only by subclasses.
      *
      * @param reason a <code>String</code> object giving the reason for this
-     *         exception
+     *               exception
      */
     protected UserException(String reason) {
         super(reason);

@@ -26,6 +26,7 @@
 package com.sun.source.util;
 
 import com.sun.source.tree.CompilationUnitTree;
+
 import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 
@@ -35,10 +36,10 @@ import javax.tools.JavaFileObject;
  * @author Jonathan Gibbons
  * @since 1.6
  */
-public final class TaskEvent
-{
+public final class TaskEvent {
     /**
      * Kind of task event.
+     *
      * @since 1.6
      */
     public enum Kind {
@@ -66,7 +67,9 @@ public final class TaskEvent
          * For events relating to an individual annotation processing round.
          **/
         ANNOTATION_PROCESSING_ROUND
-    };
+    }
+
+    ;
 
     public TaskEvent(Kind kind) {
         this(kind, null, null, null);
@@ -109,10 +112,10 @@ public final class TaskEvent
 
     public String toString() {
         return "TaskEvent["
-            + kind + ","
-            + file + ","
-            // the compilation unit is identified by the file
-            + clazz + "]";
+                + kind + ","
+                + file + ","
+                // the compilation unit is identified by the file
+                + clazz + "]";
     }
 
     private Kind kind;

@@ -23,76 +23,72 @@
  *
  */
 
-package com.sun.corba.se.impl.ior ;
+package com.sun.corba.se.impl.ior;
 
-import java.util.Iterator ;
+import java.util.Iterator;
 
-import org.omg.CORBA_2_3.portable.OutputStream ;
+import org.omg.CORBA_2_3.portable.OutputStream;
 
-import com.sun.corba.se.spi.ior.ObjectAdapterId ;
+import com.sun.corba.se.spi.ior.ObjectAdapterId;
 
 abstract class ObjectAdapterIdBase implements ObjectAdapterId {
-    public boolean equals( Object other )
-    {
+    public boolean equals(Object other) {
         if (!(other instanceof ObjectAdapterId))
-            return false ;
+            return false;
 
-        ObjectAdapterId theOther = (ObjectAdapterId)other ;
+        ObjectAdapterId theOther = (ObjectAdapterId) other;
 
-        Iterator iter1 = iterator() ;
-        Iterator iter2 = theOther.iterator() ;
+        Iterator iter1 = iterator();
+        Iterator iter2 = theOther.iterator();
 
         while (iter1.hasNext() && iter2.hasNext()) {
-            String str1 = (String)(iter1.next()) ;
-            String str2 = (String)(iter2.next()) ;
+            String str1 = (String) (iter1.next());
+            String str2 = (String) (iter2.next());
 
-            if (!str1.equals( str2 ))
-                return false ;
+            if (!str1.equals(str2))
+                return false;
         }
 
-        return iter1.hasNext() == iter2.hasNext() ;
+        return iter1.hasNext() == iter2.hasNext();
     }
 
-    public int hashCode()
-    {
-        int result = 17 ;
-        Iterator iter = iterator() ;
+    public int hashCode() {
+        int result = 17;
+        Iterator iter = iterator();
         while (iter.hasNext()) {
-            String str = (String)(iter.next()) ;
-            result = 37*result + str.hashCode() ;
+            String str = (String) (iter.next());
+            result = 37 * result + str.hashCode();
         }
-        return result ;
+        return result;
     }
 
-    public String toString()
-    {
-        StringBuffer buff = new StringBuffer() ;
-        buff.append( "ObjectAdapterID[" ) ;
-        Iterator iter = iterator() ;
-        boolean first = true ;
+    public String toString() {
+        StringBuffer buff = new StringBuffer();
+        buff.append("ObjectAdapterID[");
+        Iterator iter = iterator();
+        boolean first = true;
         while (iter.hasNext()) {
-            String str = (String)(iter.next()) ;
+            String str = (String) (iter.next());
 
             if (first)
-                first = false ;
+                first = false;
             else
-                buff.append( "/" ) ;
+                buff.append("/");
 
-            buff.append( str ) ;
+            buff.append(str);
         }
 
-        buff.append( "]" ) ;
+        buff.append("]");
 
-        return buff.toString() ;
+        return buff.toString();
     }
 
-    public void write( OutputStream os )
-    {
-        os.write_long( getNumLevels() ) ;
-        Iterator iter = iterator() ;
+    public void write(OutputStream os) {
+        os.write_long(getNumLevels());
+        Iterator iter = iterator();
         while (iter.hasNext()) {
-            String str = (String)(iter.next()) ;
-            os.write_string( str ) ;
+            String str = (String) (iter.next());
+            os.write_string(str);
         }
     }
 }

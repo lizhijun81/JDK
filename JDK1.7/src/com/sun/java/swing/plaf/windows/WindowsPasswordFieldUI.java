@@ -31,7 +31,6 @@ import javax.swing.*;
 import javax.swing.text.Caret;
 
 
-
 /**
  * Windows rendition of the component.
  * <p>

@@ -34,8 +34,8 @@ package org.omg.CORBA;
  * a value of NO_RECONNECT and a connection must be reopened.
  *
  * @see <A href="../../../../technotes/guides/idl/jidlExceptions.html">documentation on
- *      Java&nbsp;IDL exceptions</A>
- * @since   J2SE 1.5
+ * Java&nbsp;IDL exceptions</A>
+ * @since J2SE 1.5
  */
 
 public final class REBIND extends SystemException {
@@ -62,7 +62,7 @@ public final class REBIND extends SystemException {
      * Constructs an <code>REBIND</code> exception with the
      * specified minor code and completion status.
      *
-     * @param minorCode minor code.
+     * @param minorCode        minor code.
      * @param completionStatus completion status.
      */
     public REBIND(int minorCode,
@@ -74,8 +74,8 @@ public final class REBIND extends SystemException {
      * Constructs an <code>REBIND</code> exception with the
      * specified message, minor code, and completion status.
      *
-     * @param detailMessage string containing a detailed message.
-     * @param minorCode minor code.
+     * @param detailMessage    string containing a detailed message.
+     * @param minorCode        minor code.
      * @param completionStatus completion status.
      */
     public REBIND(String detailMessage,

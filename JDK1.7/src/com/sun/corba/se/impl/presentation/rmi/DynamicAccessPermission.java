@@ -32,7 +32,6 @@ import java.security.*;
  * A DynamicAccessPermission contains a name (also referred to as a "target name") but
  * no actions list; you either have the named permission
  * or you don't.
- *
  */
 
 public final class DynamicAccessPermission extends BasicPermission {
@@ -40,10 +39,10 @@ public final class DynamicAccessPermission extends BasicPermission {
 
     /**
      * Creates a new DynamicAccessPermission with the specified name.
+     *
      * @param name the name of the DynamicAccessPermission.
      */
-    public DynamicAccessPermission(String name)
-    {
+    public DynamicAccessPermission(String name) {
         super(name);
     }
 
@@ -52,11 +51,10 @@ public final class DynamicAccessPermission extends BasicPermission {
      * The name is the symbolic name of the DynamicAccessPermission, and the
      * actions String is currently unused and should be null.
      *
-     * @param name the name of the DynamicAccessPermission.
+     * @param name    the name of the DynamicAccessPermission.
      * @param actions should be null.
      */
-    public DynamicAccessPermission(String name, String actions)
-    {
+    public DynamicAccessPermission(String name, String actions) {
         super(name, actions);
     }
 }

@@ -44,6 +44,7 @@ package org.w3c.dom;
 /**
  * <code>DOMError</code> is an interface that describes an error.
  * <p>See also the <a href='http://www.w3.org/TR/2004/REC-DOM-Level-3-Core-20040407'>Document Object Model (DOM) Level 3 Core Specification</a>.
+ *
  * @since DOM Level 3
  */
 public interface DOMError {
@@ -54,14 +55,14 @@ public interface DOMError {
      * processing to stop, unless <code>DOMErrorHandler.handleError()</code>
      * returns <code>false</code>.
      */
-    public static final short SEVERITY_WARNING          = 1;
+    public static final short SEVERITY_WARNING = 1;
     /**
      * The severity of the error described by the <code>DOMError</code> is
      * error. A <code>SEVERITY_ERROR</code> may not cause the processing to
      * stop if the error can be recovered, unless
      * <code>DOMErrorHandler.handleError()</code> returns <code>false</code>.
      */
-    public static final short SEVERITY_ERROR            = 2;
+    public static final short SEVERITY_ERROR = 2;
     /**
      * The severity of the error described by the <code>DOMError</code> is
      * fatal error. A <code>SEVERITY_FATAL_ERROR</code> will cause the
@@ -70,7 +71,7 @@ public interface DOMError {
      * implementation chooses to continue, in which case the behavior
      * becomes undefined.
      */
-    public static final short SEVERITY_FATAL_ERROR      = 3;
+    public static final short SEVERITY_FATAL_ERROR = 3;
 
     /**
      * The severity of the error, either <code>SEVERITY_WARNING</code>,
@@ -84,7 +85,7 @@ public interface DOMError {
     public String getMessage();
 
     /**
-     *  A <code>DOMString</code> indicating which related data is expected in
+     * A <code>DOMString</code> indicating which related data is expected in
      * <code>relatedData</code>. Users should refer to the specification of
      * the error in order to find its <code>DOMString</code> type and
      * <code>relatedData</code> definitions if any.
@@ -104,7 +105,7 @@ public interface DOMError {
     public Object getRelatedException();
 
     /**
-     *  The related <code>DOMError.type</code> dependent data if any.
+     * The related <code>DOMError.type</code> dependent data if any.
      */
     public Object getRelatedData();
 

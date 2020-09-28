@@ -24,14 +24,14 @@ package com.sun.org.apache.xerces.internal.impl.dv;
  * Datatype exception for invalid facet. This exception is only used by
  * schema datatypes.
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
- *
+ * @xerces.internal
  */
 public class InvalidDatatypeFacetException extends DatatypeException {
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = -4104066085909970654L;
 
     /**

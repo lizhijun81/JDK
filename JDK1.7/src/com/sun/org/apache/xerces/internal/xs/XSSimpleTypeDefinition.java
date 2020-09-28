@@ -33,87 +33,88 @@ public interface XSSimpleTypeDefinition extends XSTypeDefinition {
     /**
      * The variety is absent for the anySimpleType definition.
      */
-    public static final short VARIETY_ABSENT            = 0;
+    public static final short VARIETY_ABSENT = 0;
     /**
      * <code>Atomic</code> type.
      */
-    public static final short VARIETY_ATOMIC            = 1;
+    public static final short VARIETY_ATOMIC = 1;
     /**
      * <code>List</code> type.
      */
-    public static final short VARIETY_LIST              = 2;
+    public static final short VARIETY_LIST = 2;
     /**
      * <code>Union</code> type.
      */
-    public static final short VARIETY_UNION             = 3;
+    public static final short VARIETY_UNION = 3;
 
     // Facets
     /**
      * No facets defined.
      */
-    public static final short FACET_NONE                = 0;
+    public static final short FACET_NONE = 0;
     /**
      * 4.3.1 Length
      */
-    public static final short FACET_LENGTH              = 1;
+    public static final short FACET_LENGTH = 1;
     /**
      * 4.3.2 minLength.
      */
-    public static final short FACET_MINLENGTH           = 2;
+    public static final short FACET_MINLENGTH = 2;
     /**
      * 4.3.3 maxLength.
      */
-    public static final short FACET_MAXLENGTH           = 4;
+    public static final short FACET_MAXLENGTH = 4;
     /**
      * 4.3.4 pattern.
      */
-    public static final short FACET_PATTERN             = 8;
+    public static final short FACET_PATTERN = 8;
     /**
      * 4.3.5 whitespace.
      */
-    public static final short FACET_WHITESPACE          = 16;
+    public static final short FACET_WHITESPACE = 16;
     /**
      * 4.3.7 maxInclusive.
      */
-    public static final short FACET_MAXINCLUSIVE        = 32;
+    public static final short FACET_MAXINCLUSIVE = 32;
     /**
      * 4.3.9 maxExclusive.
      */
-    public static final short FACET_MAXEXCLUSIVE        = 64;
+    public static final short FACET_MAXEXCLUSIVE = 64;
     /**
      * 4.3.9 minExclusive.
      */
-    public static final short FACET_MINEXCLUSIVE        = 128;
+    public static final short FACET_MINEXCLUSIVE = 128;
     /**
      * 4.3.10 minInclusive.
      */
-    public static final short FACET_MININCLUSIVE        = 256;
+    public static final short FACET_MININCLUSIVE = 256;
     /**
      * 4.3.11 totalDigits .
      */
-    public static final short FACET_TOTALDIGITS         = 512;
+    public static final short FACET_TOTALDIGITS = 512;
     /**
      * 4.3.12 fractionDigits.
      */
-    public static final short FACET_FRACTIONDIGITS      = 1024;
+    public static final short FACET_FRACTIONDIGITS = 1024;
     /**
      * 4.3.5 enumeration.
      */
-    public static final short FACET_ENUMERATION         = 2048;
+    public static final short FACET_ENUMERATION = 2048;
 
     /**
      * A constant defined for the 'ordered' fundamental facet: not ordered.
      */
-    public static final short ORDERED_FALSE             = 0;
+    public static final short ORDERED_FALSE = 0;
     /**
      * A constant defined for the 'ordered' fundamental facet: partially
      * ordered.
      */
-    public static final short ORDERED_PARTIAL           = 1;
+    public static final short ORDERED_PARTIAL = 1;
     /**
      * A constant defined for the 'ordered' fundamental facet: total ordered.
      */
-    public static final short ORDERED_TOTAL             = 2;
+    public static final short ORDERED_TOTAL = 2;
+
     /**
      * [variety]: one of {atomic, list, union} or absent.
      */
@@ -156,8 +157,9 @@ public interface XSSimpleTypeDefinition extends XSTypeDefinition {
     /**
      * Convenience method. [Facets]: check whether a facet is defined on this
      * type.
-     * @param facetName  The name of the facet.
-     * @return  True if the facet is defined, false otherwise.
+     *
+     * @param facetName The name of the facet.
+     * @return True if the facet is defined, false otherwise.
      */
     public boolean isDefinedFacet(short facetName);
 
@@ -169,8 +171,9 @@ public interface XSSimpleTypeDefinition extends XSTypeDefinition {
     /**
      * Convenience method. [Facets]: check whether a facet is defined and
      * fixed on this type.
-     * @param facetName  The name of the facet.
-     * @return  True if the facet is fixed, false otherwise.
+     *
+     * @param facetName The name of the facet.
+     * @return True if the facet is fixed, false otherwise.
      */
     public boolean isFixedFacet(short facetName);
 
@@ -178,13 +181,14 @@ public interface XSSimpleTypeDefinition extends XSTypeDefinition {
      * Convenience method. Returns a value of a single constraining facet for
      * this simple type definition. This method must not be used to retrieve
      * values for <code>enumeration</code> and <code>pattern</code> facets.
+     *
      * @param facetName The name of the facet, i.e.
-     *   <code>FACET_LENGTH, FACET_TOTALDIGITS</code>.
-     *   To retrieve the value for a pattern or
-     *   an enumeration, see <code>enumeration</code> and
-     *   <code>pattern</code>.
+     *                  <code>FACET_LENGTH, FACET_TOTALDIGITS</code>.
+     *                  To retrieve the value for a pattern or
+     *                  an enumeration, see <code>enumeration</code> and
+     *                  <code>pattern</code>.
      * @return A value of the facet specified in <code>facetName</code> for
-     *   this simple type definition or <code>null</code>.
+     * this simple type definition or <code>null</code>.
      */
     public String getLexicalFacetValue(short facetName);
 
@@ -201,7 +205,7 @@ public interface XSSimpleTypeDefinition extends XSTypeDefinition {
     public StringList getLexicalPattern();
 
     /**
-     *  Fundamental Facet: ordered.
+     * Fundamental Facet: ordered.
      */
     public short getOrdered();
 
@@ -221,7 +225,7 @@ public interface XSSimpleTypeDefinition extends XSTypeDefinition {
     public boolean getNumeric();
 
     /**
-     *  A list of constraining facets if it exists, otherwise an empty
+     * A list of constraining facets if it exists, otherwise an empty
      * <code>XSObjectList</code>. Note: This method must not be used to
      * retrieve values for <code>enumeration</code> and <code>pattern</code>
      * facets.
@@ -229,7 +233,7 @@ public interface XSSimpleTypeDefinition extends XSTypeDefinition {
     public XSObjectList getFacets();
 
     /**
-     *  A list of enumeration and pattern constraining facets if it exists,
+     * A list of enumeration and pattern constraining facets if it exists,
      * otherwise an empty <code>XSObjectList</code>.
      */
     public XSObjectList getMultiValueFacets();

@@ -29,9 +29,8 @@ import com.sun.org.apache.xerces.internal.xs.datatypes.ObjectList;
 /**
  * Contains a list of Objects.
  *
- * @xerces.internal
- *
  * @version $Id: ObjectListImpl.java,v 1.2 2010-10-26 23:01:04 joehw Exp $
+ * @xerces.internal
  */
 public final class ObjectListImpl extends AbstractList implements ObjectList {
 
@@ -61,8 +60,7 @@ public final class ObjectListImpl extends AbstractList implements ObjectList {
                 if (fArray[i] == null)
                     return true;
             }
-        }
-        else {
+        } else {
             for (int i = 0; i < fLength; i++) {
                 if (item.equals(fArray[i]))
                     return true;

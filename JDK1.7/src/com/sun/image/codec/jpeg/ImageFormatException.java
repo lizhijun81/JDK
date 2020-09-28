@@ -27,10 +27,10 @@ package com.sun.image.codec.jpeg;
  * be available in a core API or standard extension.
  * <p>
  *
- * @author  Tom Sausner
- * @see     JPEGImageEncoder
- * @see     JPEGImageDecoder
- * @since   1.2
+ * @author Tom Sausner
+ * @see JPEGImageEncoder
+ * @see JPEGImageDecoder
+ * @since 1.2
  */
 public
 class ImageFormatException extends RuntimeException {
@@ -45,7 +45,7 @@ class ImageFormatException extends RuntimeException {
      * Constructs an <code>ImageFormatException</code> with the specified
      * detailed message.
      *
-     * @param   s   the message.
+     * @param s the message.
      */
     public ImageFormatException(String s) {
         super(s);

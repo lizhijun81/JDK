@@ -50,9 +50,8 @@ public class NTSidPrimaryGroupPrincipal extends NTSid {
      * <p>
      *
      * @param name the primary Windows NT group SID for this user. <p>
-     *
-     * @exception NullPointerException if the <code>name</code>
-     *            is <code>null</code>.
+     * @throws NullPointerException if the <code>name</code>
+     *                              is <code>null</code>.
      */
     public NTSidPrimaryGroupPrincipal(String name) {
         super(name);
@@ -65,13 +64,13 @@ public class NTSidPrimaryGroupPrincipal extends NTSid {
      * <p>
      *
      * @return a string representation of this
-     *          <code>NTSidPrimaryGroupPrincipal</code>.
+     * <code>NTSidPrimaryGroupPrincipal</code>.
      */
     public String toString() {
         java.text.MessageFormat form = new java.text.MessageFormat
                 (sun.security.util.ResourcesMgr.getString
                         ("NTSidPrimaryGroupPrincipal.name",
-                        "sun.security.util.AuthResources"));
+                                "sun.security.util.AuthResources"));
         Object[] source = {getName()};
         return form.format(source);
     }
@@ -87,13 +86,12 @@ public class NTSidPrimaryGroupPrincipal extends NTSid {
      *
      * @param o Object to be compared for equality with this
      *          <code>NTSidPrimaryGroupPrincipal</code>.
-     *
      * @return true if the specified Object is equal equal to this
-     *          <code>NTSidPrimaryGroupPrincipal</code>.
+     * <code>NTSidPrimaryGroupPrincipal</code>.
      */
     public boolean equals(Object o) {
-            if (o == null)
-                return false;
+        if (o == null)
+            return false;
 
         if (this == o)
             return true;

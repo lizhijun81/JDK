@@ -46,18 +46,16 @@ package org.xml.sax;
  * operation (setting a state or value).  Other SAX2 applications and
  * extensions may use this class for similar purposes.</p>
  *
- * @since SAX 2.0
  * @author David Megginson
  * @see org.xml.sax.SAXNotRecognizedException
+ * @since SAX 2.0
  */
-public class SAXNotSupportedException extends SAXException
-{
+public class SAXNotSupportedException extends SAXException {
 
     /**
      * Construct a new exception with no message.
      */
-    public SAXNotSupportedException ()
-    {
+    public SAXNotSupportedException() {
         super();
     }
 
@@ -67,8 +65,7 @@ public class SAXNotSupportedException extends SAXException
      *
      * @param message The text message of the exception.
      */
-    public SAXNotSupportedException (String message)
-    {
+    public SAXNotSupportedException(String message) {
         super(message);
     }
 

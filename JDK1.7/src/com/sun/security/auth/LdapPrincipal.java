@@ -68,8 +68,8 @@ public final class LdapPrincipal implements Principal, java.io.Serializable {
      *
      * @param name The principal's string distinguished name.
      * @throws InvalidNameException If a syntax violation is detected.
-     * @exception NullPointerException If the <code>name</code> is
-     * <code>null</code>.
+     * @throws NullPointerException If the <code>name</code> is
+     *                              <code>null</code>.
      */
     public LdapPrincipal(String name) throws InvalidNameException {
         if (name == null) {
@@ -93,7 +93,7 @@ public final class LdapPrincipal implements Principal, java.io.Serializable {
             try {
 
                 return
-                    name.equals(getLdapName(((LdapPrincipal)object).getName()));
+                        name.equals(getLdapName(((LdapPrincipal) object).getName()));
 
             } catch (InvalidNameException e) {
                 return false;

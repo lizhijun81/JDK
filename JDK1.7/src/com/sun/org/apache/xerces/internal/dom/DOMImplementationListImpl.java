@@ -21,15 +21,15 @@
 package com.sun.org.apache.xerces.internal.dom;
 
 import java.util.Vector;
+
 import org.w3c.dom.DOMImplementationList;
 import org.w3c.dom.DOMImplementation;
 
 /**
  * <p>This class implements the DOM Level 3 Core interface DOMImplementationList.</p>
  *
- * @xerces.internal
- *
  * @author Neil Delima, IBM
+ * @xerces.internal
  * @since DOM Level 3 Core
  */
 public class DOMImplementationListImpl implements DOMImplementationList {

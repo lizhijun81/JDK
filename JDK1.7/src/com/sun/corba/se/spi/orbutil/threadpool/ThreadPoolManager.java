@@ -27,44 +27,43 @@ package com.sun.corba.se.spi.orbutil.threadpool;
 
 import java.io.Closeable;
 
-public interface ThreadPoolManager extends Closeable
-{
+public interface ThreadPoolManager extends Closeable {
     /**
-    * This method will return an instance of the threadpool given a threadpoolId,
-    * that can be used by any component in the app. server.
-    *
-    * @throws NoSuchThreadPoolException thrown when invalid threadpoolId is passed
-    * as a parameter
-    */
+     * This method will return an instance of the threadpool given a threadpoolId,
+     * that can be used by any component in the app. server.
+     *
+     * @throws NoSuchThreadPoolException thrown when invalid threadpoolId is passed
+     *                                   as a parameter
+     */
     public ThreadPool getThreadPool(String threadpoolId) throws NoSuchThreadPoolException;
 
     /**
-    * This method will return an instance of the threadpool given a numeric threadpoolId.
-    * This method will be used by the ORB to support the functionality of
-    * dedicated threadpool for EJB beans
-    *
-    * @throws NoSuchThreadPoolException thrown when invalidnumericIdForThreadpool is passed
-    * as a parameter
-    */
+     * This method will return an instance of the threadpool given a numeric threadpoolId.
+     * This method will be used by the ORB to support the functionality of
+     * dedicated threadpool for EJB beans
+     *
+     * @throws NoSuchThreadPoolException thrown when invalidnumericIdForThreadpool is passed
+     *                                   as a parameter
+     */
     public ThreadPool getThreadPool(int numericIdForThreadpool) throws NoSuchThreadPoolException;
 
     /**
-    * This method is used to return the numeric id of the threadpool, given a String
-    * threadpoolId. This is used by the POA interceptors to add the numeric threadpool
-    * Id, as a tagged component in the IOR. This is used to provide the functionality of
-    * dedicated threadpool for EJB beans
-    */
-    public int  getThreadPoolNumericId(String threadpoolId);
+     * This method is used to return the numeric id of the threadpool, given a String
+     * threadpoolId. This is used by the POA interceptors to add the numeric threadpool
+     * Id, as a tagged component in the IOR. This is used to provide the functionality of
+     * dedicated threadpool for EJB beans
+     */
+    public int getThreadPoolNumericId(String threadpoolId);
 
     /**
-    * Return a String Id for a numericId of a threadpool managed by the threadpool
-    * manager
-    */
+     * Return a String Id for a numericId of a threadpool managed by the threadpool
+     * manager
+     */
     public String getThreadPoolStringId(int numericIdForThreadpool);
 
     /**
-    * Returns the first instance of ThreadPool in the ThreadPoolManager
-    */
+     * Returns the first instance of ThreadPool in the ThreadPoolManager
+     */
     public ThreadPool getDefaultThreadPool();
 
     /**

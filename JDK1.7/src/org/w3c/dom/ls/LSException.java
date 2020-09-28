@@ -42,7 +42,7 @@
 package org.w3c.dom.ls;
 
 /**
- *  Parser or write operations may throw an <code>LSException</code> if the
+ * Parser or write operations may throw an <code>LSException</code> if the
  * processing is stopped. The processing can be stopped due to a
  * <code>DOMError</code> with a severity of
  * <code>DOMError.SEVERITY_FATAL_ERROR</code> or a non recovered
@@ -53,24 +53,25 @@ package org.w3c.dom.ls;
  * continue after a fatal error, but the resulting DOM tree is then
  * implementation dependent.
  * <p>See also the <a href='http://www.w3.org/TR/2004/REC-DOM-Level-3-LS-20040407'>Document Object Model (DOM) Level 3 Load
-and Save Specification</a>.
+ * and Save Specification</a>.
  */
 public class LSException extends RuntimeException {
     public LSException(short code, String message) {
-       super(message);
-       this.code = code;
+        super(message);
+        this.code = code;
     }
-    public short   code;
+
+    public short code;
     // LSExceptionCode
     /**
-     *  If an attempt was made to load a document, or an XML Fragment, using
+     * If an attempt was made to load a document, or an XML Fragment, using
      * <code>LSParser</code> and the processing has been stopped.
      */
-    public static final short PARSE_ERR                 = 81;
+    public static final short PARSE_ERR = 81;
     /**
-     *  If an attempt was made to serialize a <code>Node</code> using
+     * If an attempt was made to serialize a <code>Node</code> using
      * <code>LSSerializer</code> and the processing has been stopped.
      */
-    public static final short SERIALIZE_ERR             = 82;
+    public static final short SERIALIZE_ERR = 82;
 
 }

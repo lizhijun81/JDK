@@ -43,10 +43,8 @@ package com.sun.org.apache.xerces.internal.util;
  *  </li>
  * </ul>
  *
- * @see SymbolHash
- *
  * @author Andy Clark
- *
+ * @see SymbolHash
  */
 public class SymbolTable {
 
@@ -54,11 +52,15 @@ public class SymbolTable {
     // Constants
     //
 
-    /** Default table size. */
+    /**
+     * Default table size.
+     */
     protected static final int TABLE_SIZE = 173;
 
 
-    /** Buckets. */
+    /**
+     * Buckets.
+     */
     protected Entry[] fBuckets = null;
 
     // actual table size
@@ -68,12 +70,16 @@ public class SymbolTable {
     // Constructors
     //
 
-    /** Constructs a symbol table with a default number of buckets. */
+    /**
+     * Constructs a symbol table with a default number of buckets.
+     */
     public SymbolTable() {
         this(TABLE_SIZE);
     }
 
-    /** Constructs a symbol table with a specified number of buckets. */
+    /**
+     * Constructs a symbol table with a specified number of buckets.
+     */
     public SymbolTable(int tableSize) {
         fTableSize = tableSize;
         fBuckets = new Entry[fTableSize];
@@ -97,22 +103,22 @@ public class SymbolTable {
         final int hash = hash(symbol);
         final int bucket = hash % fTableSize;
         final int length = symbol.length();
-        OUTER: for (Entry entry = fBuckets[bucket]; entry != null; entry = entry.next) {
+        OUTER:
+        for (Entry entry = fBuckets[bucket]; entry != null; entry = entry.next) {
             if (length == entry.characters.length && hash == entry.hashCode) {
-                if(symbol.regionMatches(0,entry.symbol,0,length)){
+                if (symbol.regionMatches(0, entry.symbol, 0, length)) {
                     return entry.symbol;
-                }
-                else{
+                } else {
                     continue OUTER;
                 }
                 /**
-                for (int i = 0; i < length; i++) {
-                    if (symbol.charAt(i) != entry.characters[i]) {
-                        continue OUTER;
-                    }
-                }
-                symbolAsArray = entry.characters;
-                return entry.symbol;
+                 for (int i = 0; i < length; i++) {
+                 if (symbol.charAt(i) != entry.characters[i]) {
+                 continue OUTER;
+                 }
+                 }
+                 symbolAsArray = entry.characters;
+                 return entry.symbol;
                  */
             }
         }
@@ -139,8 +145,9 @@ public class SymbolTable {
         // search for identical symbol
         int hash = hash(buffer, offset, length);
         int bucket = hash % fTableSize;
-        OUTER: for (Entry entry = fBuckets[bucket]; entry != null; entry = entry.next) {
-            if (length == entry.characters.length && hash ==entry.hashCode) {
+        OUTER:
+        for (Entry entry = fBuckets[bucket]; entry != null; entry = entry.next) {
+            if (length == entry.characters.length && hash == entry.hashCode) {
                 for (int i = 0; i < length; i++) {
                     if (buffer[offset + i] != entry.characters[i]) {
                         continue OUTER;
@@ -210,20 +217,20 @@ public class SymbolTable {
         int hash = hash(symbol);
         int bucket = hash % fTableSize;
         int length = symbol.length();
-        OUTER: for (Entry entry = fBuckets[bucket]; entry != null; entry = entry.next) {
+        OUTER:
+        for (Entry entry = fBuckets[bucket]; entry != null; entry = entry.next) {
             if (length == entry.characters.length && hash == entry.hashCode) {
-                if(symbol.regionMatches(0,entry.symbol,0,length)){
+                if (symbol.regionMatches(0, entry.symbol, 0, length)) {
                     return true;
-                }
-                else {
+                } else {
                     continue OUTER;
                 }
                 /**
-                for (int i = 0; i < length; i++) {
-                    if (symbol.charAt(i) != entry.characters[i]) {
-                        continue OUTER;
-                    }
-                }
+                 for (int i = 0; i < length; i++) {
+                 if (symbol.charAt(i) != entry.characters[i]) {
+                 continue OUTER;
+                 }
+                 }
                  return true;
                  */
             }
@@ -244,9 +251,10 @@ public class SymbolTable {
     public boolean containsSymbol(char[] buffer, int offset, int length) {
 
         // search for identical symbol
-        int hash = hash(buffer, offset, length) ;
+        int hash = hash(buffer, offset, length);
         int bucket = hash % fTableSize;
-        OUTER: for (Entry entry = fBuckets[bucket]; entry != null; entry = entry.next) {
+        OUTER:
+        for (Entry entry = fBuckets[bucket]; entry != null; entry = entry.next) {
             if (length == entry.characters.length && hash == entry.hashCode) {
                 for (int i = 0; i < length; i++) {
                     if (buffer[offset + i] != entry.characters[i]) {
@@ -276,7 +284,9 @@ public class SymbolTable {
         // Data
         //
 
-        /** Symbol. */
+        /**
+         * Symbol.
+         */
         public String symbol;
         int hashCode = 0;
 
@@ -286,7 +296,9 @@ public class SymbolTable {
          */
         public char[] characters;
 
-        /** The next entry. */
+        /**
+         * The next entry.
+         */
         public Entry next;
 
         //

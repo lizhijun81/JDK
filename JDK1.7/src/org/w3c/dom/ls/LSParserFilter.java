@@ -45,7 +45,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 
 /**
- *  <code>LSParserFilter</code>s provide applications the ability to examine
+ * <code>LSParserFilter</code>s provide applications the ability to examine
  * nodes as they are being constructed while parsing. As each node is
  * examined, it may be modified or removed, or the entire parse may be
  * terminated early.
@@ -72,30 +72,30 @@ import org.w3c.dom.Element;
  * <p> DOM applications must not raise exceptions in a filter. The effect of
  * throwing exceptions from a filter is DOM implementation dependent.
  * <p>See also the <a href='http://www.w3.org/TR/2004/REC-DOM-Level-3-LS-20040407'>Document Object Model (DOM) Level 3 Load
-and Save Specification</a>.
+ * and Save Specification</a>.
  */
 public interface LSParserFilter {
     // Constants returned by startElement and acceptNode
     /**
      * Accept the node.
      */
-    public static final short FILTER_ACCEPT             = 1;
+    public static final short FILTER_ACCEPT = 1;
     /**
      * Reject the node and its children.
      */
-    public static final short FILTER_REJECT             = 2;
+    public static final short FILTER_REJECT = 2;
     /**
      * Skip this single node. The children of this node will still be
      * considered.
      */
-    public static final short FILTER_SKIP               = 3;
+    public static final short FILTER_SKIP = 3;
     /**
-     *  Interrupt the normal processing of the document.
+     * Interrupt the normal processing of the document.
      */
-    public static final short FILTER_INTERRUPT          = 4;
+    public static final short FILTER_INTERRUPT = 4;
 
     /**
-     *  The parser will call this method after each <code>Element</code> start
+     * The parser will call this method after each <code>Element</code> start
      * tag has been scanned, but before the remainder of the
      * <code>Element</code> is processed. The intent is to allow the
      * element, including any children, to be efficiently skipped. Note that
@@ -112,11 +112,11 @@ public interface LSParserFilter {
      * the same one as is actually placed in the tree if the node is
      * accepted. And the actual node (node object identity) may be reused
      * during the process of reading in and filtering a document.
+     *
      * @param elementArg The newly encountered element. At the time this
-     *   method is called, the element is incomplete - it will have its
-     *   attributes, but no children.
-     * @return
-     * <ul>
+     *                   method is called, the element is incomplete - it will have its
+     *                   attributes, but no children.
+     * @return <ul>
      * <li> <code>FILTER_ACCEPT</code> if the <code>Element</code> should
      *   be included in the DOM document being built.
      * </li>
@@ -155,12 +155,12 @@ public interface LSParserFilter {
      * are made on any document modifications made by the filter.
      * <br>If this new node is rejected, the parser might reuse the new node
      * and any of its descendants.
+     *
      * @param nodeArg The newly constructed element. At the time this method
-     *   is called, the element is complete - it has all of its children
-     *   (and their children, recursively) and attributes, and is attached
-     *   as a child to its parent.
-     * @return
-     * <ul>
+     *                is called, the element is complete - it has all of its children
+     *                (and their children, recursively) and attributes, and is attached
+     *                as a child to its parent.
+     * @return <ul>
      * <li> <code>FILTER_ACCEPT</code> if this <code>Node</code> should
      *   be included in the DOM document being built.
      * </li>
@@ -184,7 +184,7 @@ public interface LSParserFilter {
     public short acceptNode(Node nodeArg);
 
     /**
-     *  Tells the <code>LSParser</code> what types of nodes to show to the
+     * Tells the <code>LSParser</code> what types of nodes to show to the
      * method <code>LSParserFilter.acceptNode</code>. If a node is not shown
      * to the filter using this attribute, it is automatically included in
      * the DOM document being built. See <code>NodeFilter</code> for

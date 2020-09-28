@@ -23,14 +23,15 @@
  *
  */
 
-package com.sun.corba.se.spi.transport ;
+package com.sun.corba.se.spi.transport;
 
-import com.sun.corba.se.spi.transport.CorbaContactInfoList ;
+import com.sun.corba.se.spi.transport.CorbaContactInfoList;
 
-import com.sun.corba.se.spi.ior.IOR ;
+import com.sun.corba.se.spi.ior.IOR;
 import com.sun.corba.se.spi.orb.ORB;
 
-/** Interface used to create a ContactInfoList from an IOR, as required
+/**
+ * Interface used to create a ContactInfoList from an IOR, as required
  * for supporting CORBA semantics using the DCS framework.  This is a
  * natural correspondence since an IOR contains the information for
  * contacting one or more communication endpoints that can be used to
@@ -46,5 +47,5 @@ public interface CorbaContactInfoListFactory {
      */
     public void setORB(ORB orb);
 
-    public CorbaContactInfoList create( IOR ior ) ;
+    public CorbaContactInfoList create(IOR ior);
 }

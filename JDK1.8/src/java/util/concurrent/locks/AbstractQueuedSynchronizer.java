@@ -579,6 +579,9 @@ public abstract class AbstractQueuedSynchronizer
      * Inserts node into queue, initializing if necessary. See picture above.
      * @param node the node to insert
      * @return node's predecessor
+     *
+     * 当第一个线程获取到锁后，并没有创建阻塞队列，head/tail 节点都指向null；
+     * 只有当第二个线程线程获取不到锁后，才会将第二个线程添加到阻塞队列，并且创建head节点，第二个线程最为tail节点；
      */
     private Node enq(final Node node) {
         for (;;) {

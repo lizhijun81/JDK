@@ -44,27 +44,24 @@ import com.sun.corba.se.spi.orb.ORB;
 // which length is used in this object, this.buflen is actually the
 // ByteBuffer limit().
 
-public class ByteBufferWithInfo
-{
+public class ByteBufferWithInfo {
     private ORB orb;
     private boolean debug;
     // REVISIT - index should eventually be replaced with byteBuffer.position()
-    private int     index;     // Current empty position in buffer.
+    private int index;     // Current empty position in buffer.
     // REVISIT - CHANGE THESE TO PRIVATE
     public ByteBuffer byteBuffer;// Marshal buffer.
-    public int     buflen;     // Total length of buffer. // Unnecessary...
-    public int     needed;     // How many more bytes are needed on overflow.
+    public int buflen;     // Total length of buffer. // Unnecessary...
+    public int needed;     // How many more bytes are needed on overflow.
     public boolean fragmented; // Did the overflow operation fragment?
 
     public ByteBufferWithInfo(org.omg.CORBA.ORB orb,
                               ByteBuffer byteBuffer,
-                              int index)
-    {
-        this.orb = (com.sun.corba.se.spi.orb.ORB)orb;
+                              int index) {
+        this.orb = (com.sun.corba.se.spi.orb.ORB) orb;
         debug = this.orb.transportDebugFlag;
         this.byteBuffer = byteBuffer;
-        if (byteBuffer != null)
-        {
+        if (byteBuffer != null) {
             this.buflen = byteBuffer.limit();
         }
         position(index);
@@ -72,14 +69,12 @@ public class ByteBufferWithInfo
         this.fragmented = false;
     }
 
-    public ByteBufferWithInfo(org.omg.CORBA.ORB orb, ByteBuffer byteBuffer)
-    {
+    public ByteBufferWithInfo(org.omg.CORBA.ORB orb, ByteBuffer byteBuffer) {
         this(orb, byteBuffer, 0);
     }
 
     public ByteBufferWithInfo(org.omg.CORBA.ORB orb,
-                              BufferManagerWrite bufferManager)
-    {
+                              BufferManagerWrite bufferManager) {
         this(orb, bufferManager, true);
     }
 
@@ -90,34 +85,29 @@ public class ByteBufferWithInfo
 
     public ByteBufferWithInfo(org.omg.CORBA.ORB orb,
                               BufferManagerWrite bufferManager,
-                              boolean usePooledByteBuffers)
-    {
-        this.orb = (com.sun.corba.se.spi.orb.ORB)orb;
+                              boolean usePooledByteBuffers) {
+        this.orb = (com.sun.corba.se.spi.orb.ORB) orb;
         debug = this.orb.transportDebugFlag;
 
         int bufferSize = bufferManager.getBufferSize();
 
-        if (usePooledByteBuffers)
-        {
+        if (usePooledByteBuffers) {
             ByteBufferPool byteBufferPool = this.orb.getByteBufferPool();
             this.byteBuffer = byteBufferPool.getByteBuffer(bufferSize);
 
-            if (debug)
-            {
+            if (debug) {
                 // print address of ByteBuffer gotten from pool
                 int bbAddress = System.identityHashCode(byteBuffer);
                 StringBuffer sb = new StringBuffer(80);
                 sb.append("constructor (ORB, BufferManagerWrite) - got ")
-                  .append("ByteBuffer id (").append(bbAddress)
-                  .append(") from ByteBufferPool.");
+                        .append("ByteBuffer id (").append(bbAddress)
+                        .append(") from ByteBufferPool.");
                 String msgStr = sb.toString();
                 dprint(msgStr);
             }
-        }
-        else
-        {
-             // don't allocate from pool, allocate non-direct ByteBuffer
-             this.byteBuffer = ByteBuffer.allocate(bufferSize);
+        } else {
+            // don't allocate from pool, allocate non-direct ByteBuffer
+            this.byteBuffer = ByteBuffer.allocate(bufferSize);
         }
 
         position(0);
@@ -128,8 +118,7 @@ public class ByteBufferWithInfo
     }
 
     // Shallow copy constructor
-    public ByteBufferWithInfo (ByteBufferWithInfo bbwi)
-    {
+    public ByteBufferWithInfo(ByteBufferWithInfo bbwi) {
         this.orb = bbwi.orb;
         this.debug = bbwi.debug;
         this.byteBuffer = bbwi.byteBuffer;
@@ -141,20 +130,17 @@ public class ByteBufferWithInfo
     }
 
     // So IIOPOutputStream seems more intuitive
-    public int getSize()
-    {
+    public int getSize() {
         return position();
     }
 
     // accessor to buflen
-    public int getLength()
-    {
-         return buflen;
+    public int getLength() {
+        return buflen;
     }
 
     // get position in this buffer
-    public int position()
-    {
+    public int position() {
         // REVISIT - This should be changed to return the
         //           value of byteBuffer.position() rather
         //           than this.index. But, byteBuffer.position
@@ -167,8 +153,7 @@ public class ByteBufferWithInfo
     }
 
     // set position in this buffer
-    public void position(int newPosition)
-    {
+    public void position(int newPosition) {
         // REVISIT - This should be changed to set only the
         //           value of byteBuffer.position rather
         //           than this.index. This change should be made
@@ -178,15 +163,13 @@ public class ByteBufferWithInfo
     }
 
     // mutator to buflen
-    public void setLength(int theLength)
-    {
+    public void setLength(int theLength) {
         buflen = theLength;
         byteBuffer.limit(buflen);
     }
 
     // Grow byteBuffer to a size larger than position() + needed
-    public void growBuffer(com.sun.corba.se.spi.orb.ORB orb)
-    {
+    public void growBuffer(com.sun.corba.se.spi.orb.ORB orb) {
         // This code used to live directly in CDROutputStream.grow.
 
         // Recall that the byteBuffer size is 'really' the limit or
@@ -200,8 +183,7 @@ public class ByteBufferWithInfo
         ByteBufferPool byteBufferPool = orb.getByteBufferPool();
         ByteBuffer newBB = byteBufferPool.getByteBuffer(newLength);
 
-        if (debug)
-        {
+        if (debug) {
             // print address of ByteBuffer just gotten
             int newbbAddress = System.identityHashCode(newBB);
             StringBuffer sb = new StringBuffer(80);
@@ -215,8 +197,7 @@ public class ByteBufferWithInfo
         newBB.put(byteBuffer);
 
         // return 'old' byteBuffer reference to the ByteBuffer pool
-        if (debug)
-        {
+        if (debug) {
             // print address of ByteBuffer being released
             int bbAddress = System.identityHashCode(byteBuffer);
             StringBuffer sb = new StringBuffer(80);
@@ -235,8 +216,7 @@ public class ByteBufferWithInfo
         byteBuffer.limit(buflen);
     }
 
-    public String toString()
-    {
+    public String toString() {
         StringBuffer str = new StringBuffer("ByteBufferWithInfo:");
 
         str.append(" buflen = " + buflen);
@@ -250,8 +230,7 @@ public class ByteBufferWithInfo
         return str.toString();
     }
 
-    protected void dprint(String msg)
-    {
+    protected void dprint(String msg) {
         ORBUtility.dprint("ByteBufferWithInfo", msg);
     }
 }

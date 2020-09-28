@@ -46,16 +46,14 @@ import com.sun.mirror.type.ClassType;
  * provides a simple way to select just the items of interest
  * when a method returns a collection of declarations.
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @see ClassType
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this interface is included in {@link
  * javax.lang.model.element.TypeElement}.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- *
- * @see ClassType
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")
@@ -77,7 +75,6 @@ public interface ClassDeclaration extends TypeDeclaration {
      * no constructors explicitly declared.
      *
      * @return the constructors of this class
-     *
      * @see com.sun.mirror.util.DeclarationFilter
      */
     Collection<ConstructorDeclaration> getConstructors();

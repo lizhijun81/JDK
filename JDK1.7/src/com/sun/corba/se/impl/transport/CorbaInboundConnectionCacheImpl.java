@@ -47,17 +47,15 @@ import com.sun.corba.se.impl.orbutil.ORBUtility;
  * @author Harold Carr
  */
 public class CorbaInboundConnectionCacheImpl
-    extends
+        extends
         CorbaConnectionCacheBase
-    implements
-        InboundConnectionCache
-{
+        implements
+        InboundConnectionCache {
     protected Collection connectionCache;
 
-    public CorbaInboundConnectionCacheImpl(ORB orb, Acceptor acceptor)
-    {
+    public CorbaInboundConnectionCacheImpl(ORB orb, Acceptor acceptor) {
         super(orb, acceptor.getConnectionCacheType(),
-              ((CorbaAcceptor)acceptor).getMonitoringName());
+                ((CorbaAcceptor) acceptor).getMonitoringName());
         this.connectionCache = new ArrayList();
     }
 
@@ -66,13 +64,11 @@ public class CorbaInboundConnectionCacheImpl
     // pept.transport.InboundConnectionCache
     //
 
-    public Connection get(Acceptor acceptor)
-    {
+    public Connection get(Acceptor acceptor) {
         throw wrapper.methodShouldNotBeCalled();
     }
 
-    public void put(Acceptor acceptor, Connection connection)
-    {
+    public void put(Acceptor acceptor, Connection connection) {
         if (orb.transportDebugFlag) {
             dprint(".put: " + acceptor + " " + connection);
         }
@@ -83,10 +79,9 @@ public class CorbaInboundConnectionCacheImpl
         }
     }
 
-    public void remove(Connection connection)
-    {
+    public void remove(Connection connection) {
         if (orb.transportDebugFlag) {
-            dprint(".remove: " +  connection);
+            dprint(".remove: " + connection);
         }
         synchronized (backingStore()) {
             connectionCache.remove(connection);
@@ -99,58 +94,55 @@ public class CorbaInboundConnectionCacheImpl
     // Implementation
     //
 
-    public Collection values()
-    {
+    public Collection values() {
         return connectionCache;
     }
 
-    protected Object backingStore()
-    {
+    protected Object backingStore() {
         return connectionCache;
     }
 
-    protected void registerWithMonitoring()
-    {
+    protected void registerWithMonitoring() {
         // ORB
         MonitoredObject orbMO =
-            orb.getMonitoringManager().getRootMonitoredObject();
+                orb.getMonitoringManager().getRootMonitoredObject();
 
         // REVISIT - add ORBUtil mkdir -p like operation for this.
 
         // CONNECTION
         MonitoredObject connectionMO =
-            orbMO.getChild(MonitoringConstants.CONNECTION_MONITORING_ROOT);
+                orbMO.getChild(MonitoringConstants.CONNECTION_MONITORING_ROOT);
         if (connectionMO == null) {
             connectionMO =
-                MonitoringFactories.getMonitoredObjectFactory()
-                    .createMonitoredObject(
-                        MonitoringConstants.CONNECTION_MONITORING_ROOT,
-                        MonitoringConstants.CONNECTION_MONITORING_ROOT_DESCRIPTION);
+                    MonitoringFactories.getMonitoredObjectFactory()
+                            .createMonitoredObject(
+                                    MonitoringConstants.CONNECTION_MONITORING_ROOT,
+                                    MonitoringConstants.CONNECTION_MONITORING_ROOT_DESCRIPTION);
             orbMO.addChild(connectionMO);
         }
 
         // INBOUND CONNECTION
         MonitoredObject inboundConnectionMO =
-            connectionMO.getChild(
-                MonitoringConstants.INBOUND_CONNECTION_MONITORING_ROOT);
+                connectionMO.getChild(
+                        MonitoringConstants.INBOUND_CONNECTION_MONITORING_ROOT);
         if (inboundConnectionMO == null) {
             inboundConnectionMO =
-                MonitoringFactories.getMonitoredObjectFactory()
-                    .createMonitoredObject(
-                        MonitoringConstants.INBOUND_CONNECTION_MONITORING_ROOT,
-                        MonitoringConstants.INBOUND_CONNECTION_MONITORING_ROOT_DESCRIPTION);
+                    MonitoringFactories.getMonitoredObjectFactory()
+                            .createMonitoredObject(
+                                    MonitoringConstants.INBOUND_CONNECTION_MONITORING_ROOT,
+                                    MonitoringConstants.INBOUND_CONNECTION_MONITORING_ROOT_DESCRIPTION);
             connectionMO.addChild(inboundConnectionMO);
         }
 
         // NODE FOR THIS CACHE
         MonitoredObject thisMO =
-            inboundConnectionMO.getChild(getMonitoringName());
+                inboundConnectionMO.getChild(getMonitoringName());
         if (thisMO == null) {
             thisMO =
-                MonitoringFactories.getMonitoredObjectFactory()
-                    .createMonitoredObject(
-                        getMonitoringName(),
-                        MonitoringConstants.CONNECTION_MONITORING_DESCRIPTION);
+                    MonitoringFactories.getMonitoredObjectFactory()
+                            .createMonitoredObject(
+                                    getMonitoringName(),
+                                    MonitoringConstants.CONNECTION_MONITORING_DESCRIPTION);
             inboundConnectionMO.addChild(thisMO);
         }
 
@@ -158,43 +150,39 @@ public class CorbaInboundConnectionCacheImpl
 
         // ATTRIBUTE
         attribute = new
-            LongMonitoredAttributeBase(
-                MonitoringConstants.CONNECTION_TOTAL_NUMBER_OF_CONNECTIONS,
-                MonitoringConstants.CONNECTION_TOTAL_NUMBER_OF_CONNECTIONS_DESCRIPTION)
-            {
-                public Object getValue() {
-                    return new Long(CorbaInboundConnectionCacheImpl.this.numberOfConnections());
-                }
-            };
+                LongMonitoredAttributeBase(
+                        MonitoringConstants.CONNECTION_TOTAL_NUMBER_OF_CONNECTIONS,
+                        MonitoringConstants.CONNECTION_TOTAL_NUMBER_OF_CONNECTIONS_DESCRIPTION) {
+                    public Object getValue() {
+                        return new Long(CorbaInboundConnectionCacheImpl.this.numberOfConnections());
+                    }
+                };
         thisMO.addAttribute(attribute);
 
         // ATTRIBUTE
         attribute = new
-            LongMonitoredAttributeBase(
-                MonitoringConstants.CONNECTION_NUMBER_OF_IDLE_CONNECTIONS,
-                MonitoringConstants.CONNECTION_NUMBER_OF_IDLE_CONNECTIONS_DESCRIPTION)
-            {
-                public Object getValue() {
-                    return new Long(CorbaInboundConnectionCacheImpl.this.numberOfIdleConnections());
-                }
-            };
+                LongMonitoredAttributeBase(
+                        MonitoringConstants.CONNECTION_NUMBER_OF_IDLE_CONNECTIONS,
+                        MonitoringConstants.CONNECTION_NUMBER_OF_IDLE_CONNECTIONS_DESCRIPTION) {
+                    public Object getValue() {
+                        return new Long(CorbaInboundConnectionCacheImpl.this.numberOfIdleConnections());
+                    }
+                };
         thisMO.addAttribute(attribute);
 
         // ATTRIBUTE
         attribute = new
-            LongMonitoredAttributeBase(
-                MonitoringConstants.CONNECTION_NUMBER_OF_BUSY_CONNECTIONS,
-                MonitoringConstants.CONNECTION_NUMBER_OF_BUSY_CONNECTIONS_DESCRIPTION)
-            {
-                public Object getValue() {
-                    return new Long(CorbaInboundConnectionCacheImpl.this.numberOfBusyConnections());
-                }
-            };
+                LongMonitoredAttributeBase(
+                        MonitoringConstants.CONNECTION_NUMBER_OF_BUSY_CONNECTIONS,
+                        MonitoringConstants.CONNECTION_NUMBER_OF_BUSY_CONNECTIONS_DESCRIPTION) {
+                    public Object getValue() {
+                        return new Long(CorbaInboundConnectionCacheImpl.this.numberOfBusyConnections());
+                    }
+                };
         thisMO.addAttribute(attribute);
     }
 
-    protected void dprint(String msg)
-    {
+    protected void dprint(String msg) {
         ORBUtility.dprint("CorbaInboundConnectionCacheImpl", msg);
     }
 }

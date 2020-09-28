@@ -53,12 +53,11 @@ package org.xml.sax;
  * {@link org.xml.sax.ContentHandler ContentHandler} and {@link org.xml.sax.ErrorHandler
  * ErrorHandler} events automatically.</p>
  *
- * @since SAX 2.0
  * @author David Megginson
  * @see org.xml.sax.helpers.XMLFilterImpl
+ * @since SAX 2.0
  */
-public interface XMLFilter extends XMLReader
-{
+public interface XMLFilter extends XMLReader {
 
     /**
      * Set the parent reader.
@@ -69,7 +68,7 @@ public interface XMLFilter extends XMLReader
      *
      * @param parent The parent reader.
      */
-    public abstract void setParent (XMLReader parent);
+    public abstract void setParent(XMLReader parent);
 
 
     /**
@@ -82,7 +81,7 @@ public interface XMLFilter extends XMLReader
      *
      * @return The parent filter, or null if none has been set.
      */
-    public abstract XMLReader getParent ();
+    public abstract XMLReader getParent();
 
 }
 

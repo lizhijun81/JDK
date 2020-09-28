@@ -25,8 +25,7 @@
 
 package com.sun.corba.se.spi.orbutil.threadpool;
 
-public class NoSuchWorkQueueException extends Exception
-{
+public class NoSuchWorkQueueException extends Exception {
 }
 
 // End of file.

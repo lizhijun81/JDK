@@ -55,12 +55,11 @@ import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 import com.sun.corba.se.impl.orbutil.ORBConstants;
 import com.sun.corba.se.spi.logging.CORBALogDomains;
 
-public class ThreadPoolImpl implements ThreadPool
-{
+public class ThreadPoolImpl implements ThreadPool {
     // serial counter useful for debugging
     private static AtomicInteger threadCounter = new AtomicInteger(0);
     private static final ORBUtilSystemException wrapper =
-        ORBUtilSystemException.get(CORBALogDomains.RPC_TRANSPORT);
+            ORBUtilSystemException.get(CORBALogDomains.RPC_TRANSPORT);
 
 
     // Any time currentThreadCount and/or availableWorkerThreads is updated
@@ -127,15 +126,14 @@ public class ThreadPoolImpl implements ThreadPool
      * in the ThreadGroup of the current thread
      */
     public ThreadPoolImpl(String threadpoolName) {
-        this( Thread.currentThread().getThreadGroup(), threadpoolName ) ;
+        this(Thread.currentThread().getThreadGroup(), threadpoolName);
     }
 
     /**
      * This constructor is used to create bounded threadpool
      */
     public ThreadPoolImpl(int minSize, int maxSize, long timeout,
-                                            String threadpoolName)
-    {
+                          String threadpoolName) {
         minWorkerThreads = minSize;
         maxWorkerThreads = maxSize;
         inactivityTimeout = timeout;
@@ -181,66 +179,66 @@ public class ThreadPoolImpl implements ThreadPool
 
         // Create the threadpool monitoring root
         MonitoredObject threadPoolMonitoringObjectRoot = root.getChild(
-                    MonitoringConstants.THREADPOOL_MONITORING_ROOT);
+                MonitoringConstants.THREADPOOL_MONITORING_ROOT);
         if (threadPoolMonitoringObjectRoot == null) {
-            threadPoolMonitoringObjectRoot =  MonitoringFactories.
+            threadPoolMonitoringObjectRoot = MonitoringFactories.
                     getMonitoredObjectFactory().createMonitoredObject(
                     MonitoringConstants.THREADPOOL_MONITORING_ROOT,
                     MonitoringConstants.THREADPOOL_MONITORING_ROOT_DESCRIPTION);
             root.addChild(threadPoolMonitoringObjectRoot);
         }
         threadpoolMonitoredObject = MonitoringFactories.
-                    getMonitoredObjectFactory().
-                    createMonitoredObject(name,
-                    MonitoringConstants.THREADPOOL_MONITORING_DESCRIPTION);
+                getMonitoredObjectFactory().
+                createMonitoredObject(name,
+                        MonitoringConstants.THREADPOOL_MONITORING_DESCRIPTION);
 
         threadPoolMonitoringObjectRoot.addChild(threadpoolMonitoredObject);
 
         LongMonitoredAttributeBase b1 = new
-            LongMonitoredAttributeBase(MonitoringConstants.THREADPOOL_CURRENT_NUMBER_OF_THREADS,
-                    MonitoringConstants.THREADPOOL_CURRENT_NUMBER_OF_THREADS_DESCRIPTION) {
-                public Object getValue() {
-                    return new Long(ThreadPoolImpl.this.currentNumberOfThreads());
-                }
-            };
+                LongMonitoredAttributeBase(MonitoringConstants.THREADPOOL_CURRENT_NUMBER_OF_THREADS,
+                        MonitoringConstants.THREADPOOL_CURRENT_NUMBER_OF_THREADS_DESCRIPTION) {
+                    public Object getValue() {
+                        return new Long(ThreadPoolImpl.this.currentNumberOfThreads());
+                    }
+                };
         threadpoolMonitoredObject.addAttribute(b1);
         LongMonitoredAttributeBase b2 = new
-            LongMonitoredAttributeBase(MonitoringConstants.THREADPOOL_NUMBER_OF_AVAILABLE_THREADS,
-                    MonitoringConstants.THREADPOOL_CURRENT_NUMBER_OF_THREADS_DESCRIPTION) {
-                public Object getValue() {
-                    return new Long(ThreadPoolImpl.this.numberOfAvailableThreads());
-                }
-            };
+                LongMonitoredAttributeBase(MonitoringConstants.THREADPOOL_NUMBER_OF_AVAILABLE_THREADS,
+                        MonitoringConstants.THREADPOOL_CURRENT_NUMBER_OF_THREADS_DESCRIPTION) {
+                    public Object getValue() {
+                        return new Long(ThreadPoolImpl.this.numberOfAvailableThreads());
+                    }
+                };
         threadpoolMonitoredObject.addAttribute(b2);
         LongMonitoredAttributeBase b3 = new
-            LongMonitoredAttributeBase(MonitoringConstants.THREADPOOL_NUMBER_OF_BUSY_THREADS,
-                    MonitoringConstants.THREADPOOL_NUMBER_OF_BUSY_THREADS_DESCRIPTION) {
-                public Object getValue() {
-                    return new Long(ThreadPoolImpl.this.numberOfBusyThreads());
-                }
-            };
+                LongMonitoredAttributeBase(MonitoringConstants.THREADPOOL_NUMBER_OF_BUSY_THREADS,
+                        MonitoringConstants.THREADPOOL_NUMBER_OF_BUSY_THREADS_DESCRIPTION) {
+                    public Object getValue() {
+                        return new Long(ThreadPoolImpl.this.numberOfBusyThreads());
+                    }
+                };
         threadpoolMonitoredObject.addAttribute(b3);
         LongMonitoredAttributeBase b4 = new
-            LongMonitoredAttributeBase(MonitoringConstants.THREADPOOL_AVERAGE_WORK_COMPLETION_TIME,
-                    MonitoringConstants.THREADPOOL_AVERAGE_WORK_COMPLETION_TIME_DESCRIPTION) {
-                public Object getValue() {
-                    return new Long(ThreadPoolImpl.this.averageWorkCompletionTime());
-                }
-            };
+                LongMonitoredAttributeBase(MonitoringConstants.THREADPOOL_AVERAGE_WORK_COMPLETION_TIME,
+                        MonitoringConstants.THREADPOOL_AVERAGE_WORK_COMPLETION_TIME_DESCRIPTION) {
+                    public Object getValue() {
+                        return new Long(ThreadPoolImpl.this.averageWorkCompletionTime());
+                    }
+                };
         threadpoolMonitoredObject.addAttribute(b4);
         LongMonitoredAttributeBase b5 = new
-            LongMonitoredAttributeBase(MonitoringConstants.THREADPOOL_CURRENT_PROCESSED_COUNT,
-                    MonitoringConstants.THREADPOOL_CURRENT_PROCESSED_COUNT_DESCRIPTION) {
-                public Object getValue() {
-                    return new Long(ThreadPoolImpl.this.currentProcessedCount());
-                }
-            };
+                LongMonitoredAttributeBase(MonitoringConstants.THREADPOOL_CURRENT_PROCESSED_COUNT,
+                        MonitoringConstants.THREADPOOL_CURRENT_PROCESSED_COUNT_DESCRIPTION) {
+                    public Object getValue() {
+                        return new Long(ThreadPoolImpl.this.currentProcessedCount());
+                    }
+                };
         threadpoolMonitoredObject.addAttribute(b5);
 
         // Add the monitored object for the WorkQueue
 
         threadpoolMonitoredObject.addChild(
-                ((WorkQueueImpl)workQueue).getMonitoredObject());
+                ((WorkQueueImpl) workQueue).getMonitoredObject());
     }
 
     // Package private method to get the monitored object for this
@@ -249,14 +247,12 @@ public class ThreadPoolImpl implements ThreadPool
         return threadpoolMonitoredObject;
     }
 
-    public WorkQueue getAnyWorkQueue()
-    {
+    public WorkQueue getAnyWorkQueue() {
         return workQueue;
     }
 
     public WorkQueue getWorkQueue(int queueId)
-        throws NoSuchWorkQueueException
-    {
+            throws NoSuchWorkQueueException {
         if (queueId != 0)
             throw new NoSuchWorkQueueException();
         return workQueue;
@@ -278,7 +274,7 @@ public class ThreadPoolImpl implements ThreadPool
     }
 
 
-    private Thread createWorkerThreadHelper( String name ) {
+    private Thread createWorkerThreadHelper(String name) {
         // Thread creation needs to be in a doPrivileged block
         // if there is a non-null security manager for two reasons:
         // 1. The creation of a thread in a specific ThreadGroup
@@ -349,10 +345,10 @@ public class ThreadPoolImpl implements ThreadPool
                     // If we get here, we need to create a thread.
                     AccessController.doPrivileged(
                             new PrivilegedAction() {
-                        public Object run() {
-                            return createWorkerThreadHelper(name);
-                        }
-                    }
+                                public Object run() {
+                                    return createWorkerThreadHelper(name);
+                                }
+                            }
                     );
                 }
             } catch (Throwable t) {
@@ -425,8 +421,8 @@ public class ThreadPoolImpl implements ThreadPool
     }
 
     /**
-    * This method will return the number of WorkQueues serviced by the threadpool.
-    */
+     * This method will return the number of WorkQueues serviced by the threadpool.
+     */
     public int numberOfWorkQueues() {
         return 1;
     }
@@ -459,8 +455,7 @@ public class ThreadPoolImpl implements ThreadPool
     }
 
 
-    private class WorkerThread extends Thread implements Closeable
-    {
+    private class WorkerThread extends Thread implements Closeable {
         private Work currentWork;
         private int threadId = 0; // unique id for the thread
         private volatile boolean closeCalled = false;
@@ -497,20 +492,20 @@ public class ThreadPoolImpl implements ThreadPool
         }
 
         public void run() {
-            try  {
+            try {
                 while (!closeCalled) {
                     try {
-                        currentWork = ((WorkQueueImpl)workQueue).requestWork(
-                            inactivityTimeout);
+                        currentWork = ((WorkQueueImpl) workQueue).requestWork(
+                                inactivityTimeout);
                         if (currentWork == null)
                             continue;
                     } catch (InterruptedException exc) {
-                        wrapper.workQueueThreadInterrupted( exc, getName(),
-                           Boolean.valueOf(closeCalled));
+                        wrapper.workQueueThreadInterrupted(exc, getName(),
+                                Boolean.valueOf(closeCalled));
 
-                        continue ;
+                        continue;
                     } catch (Throwable t) {
-                         wrapper.workerThreadThrowableFromRequestWork(this, t,
+                        wrapper.workerThreadThrowableFromRequestWork(this, t,
                                 workQueue.getName());
 
                         continue;
@@ -526,7 +521,7 @@ public class ThreadPoolImpl implements ThreadPool
                 }
             } catch (Throwable e) {
                 // This should not be possible
-                wrapper.workerThreadCaughtUnexpectedThrowable(this,e);
+                wrapper.workerThreadCaughtUnexpectedThrowable(this, e);
             } finally {
                 synchronized (workersLock) {
                     workers.remove(this);

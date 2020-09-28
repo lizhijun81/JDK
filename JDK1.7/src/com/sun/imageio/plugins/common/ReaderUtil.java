@@ -50,8 +50,7 @@ public class ReaderUtil {
                                              int passExtent,
                                              int passPeriod,
                                              int[] vals,
-                                             int offset)
-    {
+                                             int offset) {
         // We need to satisfy the congruences:
         // dst = destinationOffset + (src - sourceOffset)/sourceSubsampling
         //
@@ -87,7 +86,7 @@ public class ReaderUtil {
         int lastDst = -1;
 
         for (int i = 0; i < passExtent; i++) {
-            int src = passStart + i*passPeriod;
+            int src = passStart + i * passPeriod;
             if (src < sourceOffset) {
                 continue;
             }
@@ -99,7 +98,7 @@ public class ReaderUtil {
             }
 
             int dst = destinationOffset +
-                (src - sourceOffset)/sourceSubsampling;
+                    (src - sourceOffset) / sourceSubsampling;
             if (dst < dstMin) {
                 continue;
             }
@@ -138,36 +137,35 @@ public class ReaderUtil {
      * the offsets and periods of a progressive or interlaced decoding
      * pass.
      *
-     * @param sourceRegion a <code>Rectangle</code> containing the
-     * source region being read, offset by the source subsampling
-     * offsets, and clipped against the source bounds, as returned by
-     * the <code>getSourceRegion</code> method.
-     * @param destinationOffset a <code>Point</code> containing the
-     * coordinates of the upper-left pixel to be written in the
-     * destination.
-     * @param dstMinX the smallest X coordinate (inclusive) of the
-     * destination <code>Raster</code>.
-     * @param dstMinY the smallest Y coordinate (inclusive) of the
-     * destination <code>Raster</code>.
-     * @param dstMaxX the largest X coordinate (inclusive) of the destination
-     * <code>Raster</code>.
-     * @param dstMaxY the largest Y coordinate (inclusive) of the destination
-     * <code>Raster</code>.
+     * @param sourceRegion       a <code>Rectangle</code> containing the
+     *                           source region being read, offset by the source subsampling
+     *                           offsets, and clipped against the source bounds, as returned by
+     *                           the <code>getSourceRegion</code> method.
+     * @param destinationOffset  a <code>Point</code> containing the
+     *                           coordinates of the upper-left pixel to be written in the
+     *                           destination.
+     * @param dstMinX            the smallest X coordinate (inclusive) of the
+     *                           destination <code>Raster</code>.
+     * @param dstMinY            the smallest Y coordinate (inclusive) of the
+     *                           destination <code>Raster</code>.
+     * @param dstMaxX            the largest X coordinate (inclusive) of the destination
+     *                           <code>Raster</code>.
+     * @param dstMaxY            the largest Y coordinate (inclusive) of the destination
+     *                           <code>Raster</code>.
      * @param sourceXSubsampling the X subsampling factor.
      * @param sourceYSubsampling the Y subsampling factor.
-     * @param passXStart the smallest source X coordinate (inclusive)
-     * of the current progressive pass.
-     * @param passYStart the smallest source Y coordinate (inclusive)
-     * of the current progressive pass.
-     * @param passWidth the width in pixels of the current progressive
-     * pass.
-     * @param passHeight the height in pixels of the current progressive
-     * pass.
-     * @param passPeriodX the X period (horizontal spacing between
-     * pixels) of the current progressive pass.
-     * @param passPeriodY the Y period (vertical spacing between
-     * pixels) of the current progressive pass.
-     *
+     * @param passXStart         the smallest source X coordinate (inclusive)
+     *                           of the current progressive pass.
+     * @param passYStart         the smallest source Y coordinate (inclusive)
+     *                           of the current progressive pass.
+     * @param passWidth          the width in pixels of the current progressive
+     *                           pass.
+     * @param passHeight         the height in pixels of the current progressive
+     *                           pass.
+     * @param passPeriodX        the X period (horizontal spacing between
+     *                           pixels) of the current progressive pass.
+     * @param passPeriodY        the Y period (vertical spacing between
+     *                           pixels) of the current progressive pass.
      * @return an array of 6 <code>int</code>s containing the
      * destination min X, min Y, width, height, X period and Y period
      * of the region that will be updated.
@@ -185,28 +183,26 @@ public class ReaderUtil {
                                              int passWidth,
                                              int passHeight,
                                              int passPeriodX,
-                                             int passPeriodY)
-    {
+                                             int passPeriodY) {
         int[] vals = new int[6];
         computeUpdatedPixels(sourceRegion.x, sourceRegion.width,
-                             destinationOffset.x,
-                             dstMinX, dstMaxX, sourceXSubsampling,
-                             passXStart, passWidth, passPeriodX,
-                             vals, 0);
+                destinationOffset.x,
+                dstMinX, dstMaxX, sourceXSubsampling,
+                passXStart, passWidth, passPeriodX,
+                vals, 0);
         computeUpdatedPixels(sourceRegion.y, sourceRegion.height,
-                             destinationOffset.y,
-                             dstMinY, dstMaxY, sourceYSubsampling,
-                             passYStart, passHeight, passPeriodY,
-                             vals, 1);
+                destinationOffset.y,
+                dstMinY, dstMaxY, sourceYSubsampling,
+                passYStart, passHeight, passPeriodY,
+                vals, 1);
         return vals;
     }
 
     public static int readMultiByteInteger(ImageInputStream iis)
-        throws IOException
-    {
+            throws IOException {
         int value = iis.readByte();
         int result = value & 0x7f;
-        while((value & 0x80) == 0x80) {
+        while ((value & 0x80) == 0x80) {
             result <<= 7;
             value = iis.readByte();
             result |= (value & 0x7f);

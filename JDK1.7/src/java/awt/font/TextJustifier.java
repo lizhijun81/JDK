@@ -68,9 +68,9 @@ class TextJustifier {
             for (int i = start; i < limit; i++) {
                 GlyphJustificationInfo gji = info[i];
                 System.out.println("w: " + gji.weight + ", gp: " +
-                                   gji.growPriority + ", gll: " +
-                                   gji.growLeftLimit + ", grl: " +
-                                   gji.growRightLimit);
+                        gji.growPriority + ", gll: " +
+                        gji.growLeftLimit + ", grl: " +
+                        gji.growRightLimit);
             }
         }
     }
@@ -81,7 +81,7 @@ class TextJustifier {
      * Return an array of deltas twice as long as the original info array,
      * indicating the amount by which each side of each glyph should grow
      * or shrink.
-     *
+     * <p>
      * Delta should be positive to expand the line, and negative to compress it.
      */
     public float[] justify(float delta) {
@@ -164,13 +164,13 @@ class TextJustifier {
 
             if (DEBUG) {
                 System.out.println("pass: " + p +
-                    ", d: " + delta +
-                    ", l: " + gslimit +
-                    ", w: " + weight +
-                    ", aw: " + absorbweight +
-                    ", wd: " + weightedDelta +
-                    ", wa: " + weightedAbsorb +
-                    ", hit: " + (hitLimit ? "y" : "n"));
+                        ", d: " + delta +
+                        ", l: " + gslimit +
+                        ", w: " + weight +
+                        ", aw: " + absorbweight +
+                        ", wd: " + weightedDelta +
+                        ", wa: " + weightedAbsorb +
+                        ", hit: " + (hitLimit ? "y" : "n"));
             }
 
             // now allocate this based on ratio of weight to total weight
@@ -185,7 +185,7 @@ class TextJustifier {
                             d = grow ? gi.growLeftLimit : -gi.shrinkLeftLimit;
                             if (absorbing) {
                                 // sign factored in already
-                               d += gi.weight * weightedAbsorb;
+                                d += gi.weight * weightedAbsorb;
                             }
                         } else {
                             // sign factored in already

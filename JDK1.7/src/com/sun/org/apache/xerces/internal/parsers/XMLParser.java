@@ -46,7 +46,6 @@ import org.xml.sax.SAXNotRecognizedException;
  *
  * @author Arnaud  Le Hors, IBM
  * @author Andy Clark, IBM
- *
  * @version $Id: XMLParser.java,v 1.5 2007/07/20 14:11:21 spericas Exp $
  */
 public abstract class XMLParser {
@@ -57,25 +56,33 @@ public abstract class XMLParser {
 
     // properties
 
-    /** Property identifier: entity resolver. */
+    /**
+     * Property identifier: entity resolver.
+     */
     protected static final String ENTITY_RESOLVER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ENTITY_RESOLVER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ENTITY_RESOLVER_PROPERTY;
 
-    /** Property identifier: error handler. */
+    /**
+     * Property identifier: error handler.
+     */
     protected static final String ERROR_HANDLER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_HANDLER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_HANDLER_PROPERTY;
 
-    /** Recognized properties. */
+    /**
+     * Recognized properties.
+     */
     private static final String[] RECOGNIZED_PROPERTIES = {
-        ENTITY_RESOLVER,
-        ERROR_HANDLER,
+            ENTITY_RESOLVER,
+            ERROR_HANDLER,
     };
 
     //
     // Data
     //
 
-    /** The parser configuration. */
+    /**
+     * The parser configuration.
+     */
     protected XMLParserConfiguration fConfiguration;
 
     //
@@ -112,12 +119,11 @@ public abstract class XMLParser {
      * parse
      *
      * @param inputSource
-     *
-     * @exception XNIException
-     * @exception java.io.IOException
+     * @throws XNIException
+     * @throws java.io.IOException
      */
     public void parse(XMLInputSource inputSource)
-        throws XNIException, IOException {
+            throws XNIException, IOException {
 
         reset();
         fConfiguration.parse(inputSource);

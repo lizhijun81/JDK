@@ -26,7 +26,9 @@
 package java.awt;
 
 import java.awt.image.Raster;
+
 import sun.awt.image.IntegerComponentRaster;
+
 import java.awt.image.ColorModel;
 import java.awt.image.DirectColorModel;
 import java.awt.geom.Point2D;
@@ -36,9 +38,9 @@ import java.lang.ref.WeakReference;
 
 class GradientPaintContext implements PaintContext {
     static ColorModel xrgbmodel =
-        new DirectColorModel(24, 0x00ff0000, 0x0000ff00, 0x000000ff);
+            new DirectColorModel(24, 0x00ff0000, 0x0000ff00, 0x000000ff);
     static ColorModel xbgrmodel =
-        new DirectColorModel(24, 0x000000ff, 0x0000ff00, 0x00ff0000);
+            new DirectColorModel(24, 0x000000ff, 0x0000ff00, 0x00ff0000);
 
     static ColorModel cachedModel;
     static WeakReference cached;
@@ -48,9 +50,8 @@ class GradientPaintContext implements PaintContext {
             if (cached != null) {
                 Raster ras = (Raster) cached.get();
                 if (ras != null &&
-                    ras.getWidth() >= w &&
-                    ras.getHeight() >= h)
-                {
+                        ras.getWidth() >= w &&
+                        ras.getHeight() >= h) {
                     cached = null;
                     return ras;
                 }
@@ -144,8 +145,12 @@ class GradientPaintContext implements PaintContext {
                     // across the scan lines for the transition points.
                     // To ensure that constraint, we negate the dx/dy
                     // values and swap the points and colors.
-                    Point2D p = p1; p1 = p2; p2 = p;
-                    Color c = c1; c1 = c2; c2 = c;
+                    Point2D p = p1;
+                    p1 = p2;
+                    p2 = p;
+                    Color c = c1;
+                    c1 = c2;
+                    c2 = c;
                     dx = -dx;
                     dy = -dy;
                 }
@@ -161,25 +166,28 @@ class GradientPaintContext implements PaintContext {
         int rgb2 = c2.getRGB();
         int a1 = (rgb1 >> 24) & 0xff;
         int r1 = (rgb1 >> 16) & 0xff;
-        int g1 = (rgb1 >>  8) & 0xff;
-        int b1 = (rgb1      ) & 0xff;
+        int g1 = (rgb1 >> 8) & 0xff;
+        int b1 = (rgb1) & 0xff;
         int da = ((rgb2 >> 24) & 0xff) - a1;
         int dr = ((rgb2 >> 16) & 0xff) - r1;
-        int dg = ((rgb2 >>  8) & 0xff) - g1;
-        int db = ((rgb2      ) & 0xff) - b1;
+        int dg = ((rgb2 >> 8) & 0xff) - g1;
+        int db = ((rgb2) & 0xff) - b1;
         if (a1 == 0xff && da == 0) {
             model = xrgbmodel;
             if (cm instanceof DirectColorModel) {
                 DirectColorModel dcm = (DirectColorModel) cm;
                 int tmp = dcm.getAlphaMask();
                 if ((tmp == 0 || tmp == 0xff) &&
-                    dcm.getRedMask() == 0xff &&
-                    dcm.getGreenMask() == 0xff00 &&
-                    dcm.getBlueMask() == 0xff0000)
-                {
+                        dcm.getRedMask() == 0xff &&
+                        dcm.getGreenMask() == 0xff00 &&
+                        dcm.getBlueMask() == 0xff0000) {
                     model = xbgrmodel;
-                    tmp = r1; r1 = b1; b1 = tmp;
-                    tmp = dr; dr = db; db = tmp;
+                    tmp = r1;
+                    r1 = b1;
+                    b1 = tmp;
+                    tmp = dr;
+                    dr = db;
+                    db = tmp;
                 }
             }
         } else {
@@ -189,10 +197,10 @@ class GradientPaintContext implements PaintContext {
         for (int i = 0; i <= 256; i++) {
             float rel = i / 256.0f;
             int rgb =
-                (((int) (a1 + da * rel)) << 24) |
-                (((int) (r1 + dr * rel)) << 16) |
-                (((int) (g1 + dg * rel)) <<  8) |
-                (((int) (b1 + db * rel))      );
+                    (((int) (a1 + da * rel)) << 24) |
+                            (((int) (r1 + dr * rel)) << 16) |
+                            (((int) (g1 + dg * rel)) << 8) |
+                            (((int) (b1 + db * rel)));
             interp[i] = rgb;
             if (cyclic) {
                 interp[512 - i] = rgb;
@@ -220,8 +228,9 @@ class GradientPaintContext implements PaintContext {
     /**
      * Return a Raster containing the colors generated for the graphics
      * operation.
+     *
      * @param x,y,w,h The area in device space for which colors are
-     * generated.
+     *                generated.
      */
     public Raster getRaster(int x, int y, int w, int h) {
         double rowrel = (x - x1) * dx + (y - y1) * dy;

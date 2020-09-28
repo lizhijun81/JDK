@@ -23,7 +23,7 @@ package com.sun.org.apache.xerces.internal.util;
 
 /**
  * Shadowed symbol table.
- *
+ * <p>
  * The table has a reference to the main symbol table and is
  * not allowed to add new symbols to the main symbol table.
  * New symbols are added to the shadow symbol table and are local
@@ -33,20 +33,24 @@ package com.sun.org.apache.xerces.internal.util;
  */
 
 public final class ShadowedSymbolTable
-extends SymbolTable {
+        extends SymbolTable {
 
     //
     // Data
     //
 
-    /** Main symbol table. */
+    /**
+     * Main symbol table.
+     */
     protected SymbolTable fSymbolTable;
 
     //
     // Constructors
     //
 
-    /** Constructs a shadow of the specified symbol table. */
+    /**
+     * Constructs a shadow of the specified symbol table.
+     */
     public ShadowedSymbolTable(SymbolTable symbolTable) {
         fSymbolTable = symbolTable;
     } // <init>(SymbolTable)

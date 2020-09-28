@@ -28,8 +28,8 @@ package com.sun.javadoc;
 /**
  * Represents a constructor of a java class.
  *
- * @since 1.2
  * @author Robert Field
+ * @since 1.2
  */
 public interface ConstructorDoc extends ExecutableMemberDoc {
 }

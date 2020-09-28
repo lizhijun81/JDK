@@ -146,7 +146,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
     public String getFileName() {
         JFileChooser fc = getFileChooser();
         String typedInName = fileNameTextField != null ?
-            fileNameTextField.getText() : null;
+                fileNameTextField.getText() : null;
 
         if (!fc.isMultiSelectionEnabled()) {
             return typedInName;
@@ -154,14 +154,14 @@ class GTKFileChooserUI extends SynthFileChooserUI {
 
         int mode = fc.getFileSelectionMode();
         JList list = mode == JFileChooser.DIRECTORIES_ONLY ?
-            directoryList : fileList;
+                directoryList : fileList;
         Object[] files = list.getSelectedValues();
         int len = files.length;
         Vector<String> result = new Vector<String>(len + 1);
 
         // we return all selected file names
         for (int i = 0; i < len; i++) {
-            File file = (File)files[i];
+            File file = (File) files[i];
             result.add(file.getName());
         }
         // plus the file name typed into the text field, if not already there
@@ -173,7 +173,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         len = result.size();
 
         // construct the resulting string
-        for (int i=0; i<len; i++) {
+        for (int i = 0; i < len; i++) {
             if (i > 0) {
                 buf.append(" ");
             }
@@ -274,22 +274,22 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         directoryList.clearSelection();
         ListSelectionModel sm = directoryList.getSelectionModel();
         if (sm instanceof DefaultListSelectionModel) {
-            ((DefaultListSelectionModel)sm).moveLeadSelectionIndex(0);
+            ((DefaultListSelectionModel) sm).moveLeadSelectionIndex(0);
             sm.setAnchorSelectionIndex(0);
         }
         fileList.clearSelection();
         sm = fileList.getSelectionModel();
         if (sm instanceof DefaultListSelectionModel) {
-            ((DefaultListSelectionModel)sm).moveLeadSelectionIndex(0);
+            ((DefaultListSelectionModel) sm).moveLeadSelectionIndex(0);
             sm.setAnchorSelectionIndex(0);
         }
 
         File currentDirectory = getFileChooser().getCurrentDirectory();
         if (currentDirectory != null) {
             try {
-                setDirectoryName(ShellFolder.getNormalizedFile((File)e.getNewValue()).getPath());
+                setDirectoryName(ShellFolder.getNormalizedFile((File) e.getNewValue()).getPath());
             } catch (IOException ioe) {
-                setDirectoryName(((File)e.getNewValue()).getAbsolutePath());
+                setDirectoryName(((File) e.getNewValue()).getAbsolutePath());
             }
             if ((getFileChooser().getFileSelectionMode() == JFileChooser.DIRECTORIES_ONLY) && !getFileChooser().isMultiSelectionEnabled()) {
                 setFileName(pathField.getText());
@@ -303,9 +303,9 @@ class GTKFileChooserUI extends SynthFileChooserUI {
     protected void doAccessoryChanged(PropertyChangeEvent e) {
         if (getAccessoryPanel() != null) {
             if (e.getOldValue() != null) {
-                getAccessoryPanel().remove((JComponent)e.getOldValue());
+                getAccessoryPanel().remove((JComponent) e.getOldValue());
             }
-            JComponent accessory = (JComponent)e.getNewValue();
+            JComponent accessory = (JComponent) e.getNewValue();
             if (accessory != null) {
                 getAccessoryPanel().add(accessory, BorderLayout.CENTER);
                 getAccessoryPanel().setPreferredSize(accessory.getPreferredSize());
@@ -319,7 +319,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
 
     protected void doFileSelectionModeChanged(PropertyChangeEvent e) {
         directoryList.clearSelection();
-        rightPanel.setVisible(((Integer)e.getNewValue()).intValue() != JFileChooser.DIRECTORIES_ONLY);
+        rightPanel.setVisible(((Integer) e.getNewValue()).intValue() != JFileChooser.DIRECTORIES_ONLY);
 
         super.doFileSelectionModeChanged(e);
     }
@@ -359,7 +359,6 @@ class GTKFileChooserUI extends SynthFileChooserUI {
     }
 
 
-
     // ********************************************
     // ************ Create Listeners **************
     // ********************************************
@@ -370,7 +369,8 @@ class GTKFileChooserUI extends SynthFileChooserUI {
 
     class DoubleClickListener extends MouseAdapter {
         JList list;
-        public  DoubleClickListener(JList list) {
+
+        public DoubleClickListener(JList list) {
             this.list = list;
         }
 
@@ -387,7 +387,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
                     }
                     if (getFileChooser().isTraversable(f)) {
                         list.clearSelection();
-                        if (getFileChooser().getCurrentDirectory().equals(f)){
+                        if (getFileChooser().getCurrentDirectory().equals(f)) {
                             rescanCurrentDirectory(getFileChooser());
                         } else {
                             getFileChooser().setCurrentDirectory(f);
@@ -418,7 +418,6 @@ class GTKFileChooserUI extends SynthFileChooserUI {
     }
 
 
-
     protected class SelectionListener implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
             if (!e.getValueIsAdjusting()) {
@@ -430,18 +429,18 @@ class GTKFileChooserUI extends SynthFileChooserUI {
                     Object[] objects = list.getSelectedValues();
                     if (objects != null) {
                         if (objects.length == 1
-                            && ((File)objects[0]).isDirectory()
-                            && chooser.isTraversable(((File)objects[0]))
-                            && (chooser.getFileSelectionMode() != chooser.DIRECTORIES_ONLY
-                                || !chooser.getFileSystemView().isFileSystem(((File)objects[0])))) {
+                                && ((File) objects[0]).isDirectory()
+                                && chooser.isTraversable(((File) objects[0]))
+                                && (chooser.getFileSelectionMode() != chooser.DIRECTORIES_ONLY
+                                || !chooser.getFileSystemView().isFileSystem(((File) objects[0])))) {
                             setDirectorySelected(true);
-                            setDirectory(((File)objects[0]));
+                            setDirectory(((File) objects[0]));
                         } else {
                             ArrayList<File> fList = new ArrayList<File>(objects.length);
                             for (Object object : objects) {
                                 File f = (File) object;
                                 if ((chooser.isFileSelectionEnabled() && f.isFile())
-                                    || (chooser.isDirectorySelectionEnabled() && f.isDirectory())) {
+                                        || (chooser.isDirectorySelectionEnabled() && f.isDirectory())) {
                                     fList.add(f);
                                 }
                             }
@@ -453,11 +452,11 @@ class GTKFileChooserUI extends SynthFileChooserUI {
                     }
                     chooser.setSelectedFiles(files);
                 } else {
-                    File file = (File)list.getSelectedValue();
+                    File file = (File) list.getSelectedValue();
                     if (file != null
-                        && file.isDirectory()
-                        && chooser.isTraversable(file)
-                        && (chooser.getFileSelectionMode() == chooser.FILES_ONLY
+                            && file.isDirectory()
+                            && chooser.isTraversable(file)
+                            && (chooser.getFileSelectionMode() == chooser.FILES_ONLY
                             || !chooser.getFileSystemView().isFileSystem(file))) {
 
                         setDirectorySelected(true);
@@ -478,7 +477,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
     // ComponentUI Interface Implementation methods
     //
     public static ComponentUI createUI(JComponent c) {
-        return new GTKFileChooserUI((JFileChooser)c);
+        return new GTKFileChooserUI((JFileChooser) c);
     }
 
     public void installUI(JComponent c) {
@@ -550,13 +549,13 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         fc.add(interior, BorderLayout.CENTER);
 
         JPanel comboBoxPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,
-                                                         0, 0) {
+                0, 0) {
             public void layoutContainer(Container target) {
                 super.layoutContainer(target);
                 JComboBox comboBox = directoryComboBox;
                 if (comboBox.getWidth() > target.getWidth()) {
                     comboBox.setBounds(0, comboBox.getY(), target.getWidth(),
-                                       comboBox.getHeight());
+                            comboBox.getHeight());
                 }
             }
         });
@@ -566,7 +565,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         directoryComboBoxModel = createDirectoryComboBoxModel(fc);
         directoryComboBox = new JComboBox(directoryComboBoxModel);
         directoryComboBox.setName("GTKFileChooser.directoryComboBox");
-        directoryComboBox.putClientProperty( "JComboBox.lightweightKeyboardNavigation", "Lightweight" );
+        directoryComboBox.putClientProperty("JComboBox.lightweightKeyboardNavigation", "Lightweight");
         directoryComboBox.addActionListener(directoryComboBoxAction);
         directoryComboBox.setMaximumRowCount(8);
         comboBoxPanel.add(directoryComboBox);
@@ -580,7 +579,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         // SPLIT PANEL: left, right
         JSplitPane splitPanel = new JSplitPane();
         splitPanel.setName("GTKFileChooser.splitPanel");
-        splitPanel.setDividerLocation((PREF_SIZE.width-8)/2);
+        splitPanel.setDividerLocation((PREF_SIZE.width - 8) / 2);
 
         // left panel - Filter & directoryList
         JPanel leftPanel = new JPanel(new GridBagLayout());
@@ -590,17 +589,17 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         // Create a label that looks like button (should be a table header)
         TableCellRenderer headerRenderer = new JTableHeader().getDefaultRenderer();
         JLabel directoryListLabel =
-            (JLabel)headerRenderer.getTableCellRendererComponent(null, foldersLabelText,
-                                                                     false, false, 0, 0);
+                (JLabel) headerRenderer.getTableCellRendererComponent(null, foldersLabelText,
+                        false, false, 0, 0);
         directoryListLabel.setName("GTKFileChooser.directoryListLabel");
         leftPanel.add(directoryListLabel, new GridBagConstraints(
-                          0, 0, 1, 1, 1, 0, GridBagConstraints.WEST,
-                          GridBagConstraints.HORIZONTAL,
-                          new Insets(0, 0, 0, 0), 0, 0));
+                0, 0, 1, 1, 1, 0, GridBagConstraints.WEST,
+                GridBagConstraints.HORIZONTAL,
+                new Insets(0, 0, 0, 0), 0, 0));
         leftPanel.add(createDirectoryList(), new GridBagConstraints(
-                          0, 1, 1, 1, 1, 1, GridBagConstraints.EAST,
-                          GridBagConstraints.BOTH,
-                          new Insets(0, 0, 0, 0), 0, 0));
+                0, 1, 1, 1, 1, 1, GridBagConstraints.EAST,
+                GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
         directoryListLabel.setDisplayedMnemonic(foldersLabelMnemonic);
         directoryListLabel.setLabelFor(directoryList);
 
@@ -610,21 +609,21 @@ class GTKFileChooserUI extends SynthFileChooserUI {
 
         headerRenderer = new JTableHeader().getDefaultRenderer();
         JLabel fileListLabel =
-            (JLabel)headerRenderer.getTableCellRendererComponent(null, filesLabelText,
-                                                                     false, false, 0, 0);
+                (JLabel) headerRenderer.getTableCellRendererComponent(null, filesLabelText,
+                        false, false, 0, 0);
         fileListLabel.setName("GTKFileChooser.fileListLabel");
         rightPanel.add(fileListLabel, new GridBagConstraints(
-                          0, 0, 1, 1, 1, 0, GridBagConstraints.WEST,
-                          GridBagConstraints.HORIZONTAL,
-                          new Insets(0, 0, 0, 0), 0, 0));
+                0, 0, 1, 1, 1, 0, GridBagConstraints.WEST,
+                GridBagConstraints.HORIZONTAL,
+                new Insets(0, 0, 0, 0), 0, 0));
         rightPanel.add(createFilesList(), new GridBagConstraints(
-                          0, 1, 1, 1, 1, 1, GridBagConstraints.EAST,
-                          GridBagConstraints.BOTH,
-                          new Insets(0, 0, 0, 0), 0, 0));
+                0, 1, 1, 1, 1, 1, GridBagConstraints.EAST,
+                GridBagConstraints.BOTH,
+                new Insets(0, 0, 0, 0), 0, 0));
         fileListLabel.setDisplayedMnemonic(filesLabelMnemonic);
         fileListLabel.setLabelFor(fileList);
 
-        splitPanel.add(leftPanel,  leftToRight ? JSplitPane.LEFT : JSplitPane.RIGHT);
+        splitPanel.add(leftPanel, leftToRight ? JSplitPane.LEFT : JSplitPane.RIGHT);
         splitPanel.add(rightPanel, leftToRight ? JSplitPane.RIGHT : JSplitPane.LEFT);
         centerPanel.add(splitPanel, BorderLayout.CENTER);
 
@@ -646,7 +645,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         interior.add(Box.createRigidArea(vstrut10));
 
         JPanel pathFieldPanel = new JPanel(new FlowLayout(FlowLayout.LEADING,
-                                                          0, 0));
+                0, 0));
         pathFieldPanel.setBorder(new EmptyBorder(0, 0, 4, 0));
         JLabel pathFieldLabel = new JLabel(pathLabelText);
         pathFieldLabel.setName("GTKFileChooser.pathFieldLabel");
@@ -684,7 +683,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         pathFieldLabel.setLabelFor(fileNameTextField);
 
         Set<AWTKeyStroke> forwardTraversalKeys = fileNameTextField.getFocusTraversalKeys(
-            KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS);
+                KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS);
         forwardTraversalKeys = new HashSet<AWTKeyStroke>(forwardTraversalKeys);
         forwardTraversalKeys.remove(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0));
         fileNameTextField.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, forwardTraversalKeys);
@@ -762,7 +761,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
             if (prop.equals("GTKFileChooser.showDirectoryIcons")) {
                 showDirectoryIcons = Boolean.TRUE.equals(e.getNewValue());
             } else if (prop.equals("GTKFileChooser.showFileIcons")) {
-                showFileIcons      = Boolean.TRUE.equals(e.getNewValue());
+                showFileIcons = Boolean.TRUE.equals(e.getNewValue());
             }
         }
     }
@@ -771,14 +770,14 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         super.installDefaults(fc);
         readOnly = UIManager.getBoolean("FileChooser.readOnly");
         showDirectoryIcons =
-            Boolean.TRUE.equals(fc.getClientProperty("GTKFileChooser.showDirectoryIcons"));
+                Boolean.TRUE.equals(fc.getClientProperty("GTKFileChooser.showDirectoryIcons"));
         showFileIcons =
-            Boolean.TRUE.equals(fc.getClientProperty("GTKFileChooser.showFileIcons"));
+                Boolean.TRUE.equals(fc.getClientProperty("GTKFileChooser.showFileIcons"));
     }
 
     protected void installIcons(JFileChooser fc) {
-        directoryIcon    = UIManager.getIcon("FileView.directoryIcon");
-        fileIcon         = UIManager.getIcon("FileView.fileIcon");
+        directoryIcon = UIManager.getIcon("FileView.directoryIcon");
+        fileIcon = UIManager.getIcon("FileView.fileIcon");
     }
 
     protected void installStrings(JFileChooser fc) {
@@ -787,8 +786,8 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         Locale l = fc.getLocale();
 
         newFolderDialogText = UIManager.getString("FileChooser.newFolderDialogText", l);
-        newFolderErrorText = UIManager.getString("FileChooser.newFolderErrorText",l);
-        newFolderErrorSeparator = UIManager.getString("FileChooser.newFolderErrorSeparator",l);
+        newFolderErrorText = UIManager.getString("FileChooser.newFolderErrorText", l);
+        newFolderErrorSeparator = UIManager.getString("FileChooser.newFolderErrorSeparator", l);
         newFolderButtonText = UIManager.getString("FileChooser.newFolderButtonText", l);
         newFolderNoDirectoryErrorTitleText = UIManager.getString("FileChooser.newFolderNoDirectoryErrorTitleText", l);
         newFolderNoDirectoryErrorText = UIManager.getString("FileChooser.newFolderNoDirectoryErrorText", l);
@@ -807,13 +806,13 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         renameFileErrorTitle = UIManager.getString("FileChooser.renameFileErrorTitle", l);
         renameFileErrorText = UIManager.getString("FileChooser.renameFileErrorText", l);
 
-        foldersLabelText = UIManager.getString("FileChooser.foldersLabelText",l);
+        foldersLabelText = UIManager.getString("FileChooser.foldersLabelText", l);
         foldersLabelMnemonic = getMnemonic("FileChooser.foldersLabelMnemonic", l);
 
-        filesLabelText = UIManager.getString("FileChooser.filesLabelText",l);
+        filesLabelText = UIManager.getString("FileChooser.filesLabelText", l);
         filesLabelMnemonic = getMnemonic("FileChooser.filesLabelMnemonic", l);
 
-        pathLabelText = UIManager.getString("FileChooser.pathLabelText",l);
+        pathLabelText = UIManager.getString("FileChooser.pathLabelText", l);
         pathLabelMnemonic = getMnemonic("FileChooser.pathLabelMnemonic", l);
 
         filterLabelText = UIManager.getString("FileChooser.filterLabelText", l);
@@ -863,7 +862,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         fileList.addMouseListener(createDoubleClickListener(getFileChooser(), fileList));
         align(fileList);
         JScrollPane scrollpane = new JScrollPane(fileList);
-    scrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollpane.setName("GTKFileChooser.fileListScrollPane");
         scrollpane.setPreferredSize(prefListSize);
         scrollpane.setMaximumSize(MAX_SIZE);
@@ -885,7 +884,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         directoryList.addListSelectionListener(createListSelectionListener(getFileChooser()));
 
         JScrollPane scrollpane = new JScrollPane(directoryList);
-    scrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollpane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollpane.setName("GTKFileChooser.directoryListScrollPane");
         scrollpane.setMaximumSize(MAX_SIZE);
         scrollpane.setPreferredSize(prefListSize);
@@ -925,6 +924,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
 
     protected class GTKDirectoryListModel extends AbstractListModel implements ListDataListener {
         File curDir;
+
         public GTKDirectoryListModel() {
             getModel().addListDataListener(this);
             directoryChanged();
@@ -935,7 +935,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         }
 
         public Object getElementAt(int index) {
-            return index > 0 ? getModel().getDirectories().elementAt(index - 1):
+            return index > 0 ? getModel().getDirectories().elementAt(index - 1) :
                     curDir;
         }
 
@@ -951,7 +951,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         // incremental adjustment values instead of saying that the
         // whole list has changed.
         public void fireContentsChanged() {
-            fireContentsChanged(this, 0, getModel().getDirectories().size()-1);
+            fireContentsChanged(this, 0, getModel().getDirectories().size() - 1);
         }
 
         // PENDING - fire the correct interval changed - currently sending
@@ -999,7 +999,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         // incremental adjustment values instead of saying that the
         // whole list has changed.
         public void fireContentsChanged() {
-            fireContentsChanged(this, 0, getModel().getFiles().size()-1);
+            fireContentsChanged(this, 0, getModel().getFiles().size() - 1);
         }
 
         // PENDING - fire the interval changed
@@ -1009,30 +1009,30 @@ class GTKFileChooserUI extends SynthFileChooserUI {
     }
 
 
-    protected class FileCellRenderer extends DefaultListCellRenderer  {
+    protected class FileCellRenderer extends DefaultListCellRenderer {
         public Component getListCellRendererComponent(JList list, Object value, int index,
                                                       boolean isSelected, boolean cellHasFocus) {
 
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             setText(getFileChooser().getName((File) value));
             if (showFileIcons) {
-                setIcon(getFileChooser().getIcon((File)value));
+                setIcon(getFileChooser().getIcon((File) value));
             }
             return this;
         }
     }
 
-    protected class DirectoryCellRenderer extends DefaultListCellRenderer  {
+    protected class DirectoryCellRenderer extends DefaultListCellRenderer {
         public Component getListCellRendererComponent(JList list, Object value, int index,
                                                       boolean isSelected, boolean cellHasFocus) {
 
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
             if (showDirectoryIcons) {
-                setIcon(getFileChooser().getIcon((File)value));
-                setText(getFileChooser().getName((File)value));
+                setIcon(getFileChooser().getIcon((File) value));
+                setText(getFileChooser().getName((File) value));
             } else {
-                setText(getFileChooser().getName((File)value) + "/");
+                setText(getFileChooser().getName((File) value) + "/");
             }
             return this;
         }
@@ -1047,13 +1047,13 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         Dimension d = c.getLayout().preferredLayoutSize(c);
         if (d != null) {
             return new Dimension(d.width < prefSize.width ? prefSize.width : d.width,
-                                 d.height < prefSize.height ? prefSize.height : d.height);
+                    d.height < prefSize.height ? prefSize.height : d.height);
         } else {
             return prefSize;
         }
     }
 
-    public Dimension getMinimumSize(JComponent x)  {
+    public Dimension getMinimumSize(JComponent x) {
         return new Dimension(MIN_SIZE);
     }
 
@@ -1140,7 +1140,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         }
 
         public void setSelectedItem(Object selectedDirectory) {
-            this.selectedDirectory = (File)selectedDirectory;
+            this.selectedDirectory = (File) selectedDirectory;
             fireContentsChanged(this, -1, -1);
         }
 
@@ -1166,7 +1166,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         }
 
         public void actionPerformed(ActionEvent e) {
-            File f = (File)directoryComboBox.getSelectedItem();
+            File f = (File) directoryComboBox.getSelectedItem();
             getFileChooser().setCurrentDirectory(f);
         }
     }
@@ -1178,6 +1178,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         protected NewFolderAction() {
             super(FilePane.ACTION_NEW_FOLDER);
         }
+
         public void actionPerformed(ActionEvent e) {
             if (readOnly) {
                 return;
@@ -1201,7 +1202,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
                 if (newDir == null || !newDir.mkdir()) {
                     JOptionPane.showMessageDialog(fc,
                             newFolderErrorText + newFolderErrorSeparator + " \"" +
-                            dirName + "\"",
+                                    dirName + "\"",
                             newFolderErrorText, JOptionPane.ERROR_MESSAGE);
                 }
                 fc.rescanCurrentDirectory();
@@ -1226,7 +1227,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
                     fileList.clearSelection();
                     ListSelectionModel sm = fileList.getSelectionModel();
                     if (sm instanceof DefaultListSelectionModel) {
-                        ((DefaultListSelectionModel)sm).moveLeadSelectionIndex(0);
+                        ((DefaultListSelectionModel) sm).moveLeadSelectionIndex(0);
                         sm.setAnchorSelectionIndex(0);
                     }
                     rescanCurrentDirectory(getFileChooser());
@@ -1244,6 +1245,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
         protected RenameFileAction() {
             super(FilePane.ACTION_EDIT_FILE_NAME);
         }
+
         public void actionPerformed(ActionEvent e) {
             if (getFileName().equals("")) {
                 return;
@@ -1251,10 +1253,10 @@ class GTKFileChooserUI extends SynthFileChooserUI {
             JFileChooser fc = getFileChooser();
             File currentDirectory = fc.getCurrentDirectory();
             String newFileName = (String) JOptionPane.showInputDialog
-                   (fc, new MessageFormat(renameFileDialogText).format
-                           (new Object[] { getFileName() }),
-                           renameFileButtonText, JOptionPane.PLAIN_MESSAGE, null, null,
-                           getFileName());
+                    (fc, new MessageFormat(renameFileDialogText).format
+                                    (new Object[]{getFileName()}),
+                            renameFileButtonText, JOptionPane.PLAIN_MESSAGE, null, null,
+                            getFileName());
 
             if (newFileName != null) {
                 File oldFile = fc.getFileSystemView().createFileObject
@@ -1265,7 +1267,7 @@ class GTKFileChooserUI extends SynthFileChooserUI {
                         !getModel().renameFile(oldFile, newFile)) {
                     JOptionPane.showMessageDialog(fc,
                             new MessageFormat(renameFileErrorText).
-                            format(new Object[] { getFileName(), newFileName}),
+                                    format(new Object[]{getFileName(), newFileName}),
                             renameFileErrorTitle, JOptionPane.ERROR_MESSAGE);
                 } else {
                     setFileName(getFileChooser().getName(newFile));

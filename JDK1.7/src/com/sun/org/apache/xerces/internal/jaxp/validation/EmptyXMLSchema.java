@@ -33,10 +33,13 @@ import com.sun.org.apache.xerces.internal.xni.grammars.XMLGrammarPool;
  */
 final class EmptyXMLSchema extends AbstractXMLSchema implements XMLGrammarPool {
 
-    /** Zero length grammar array. */
-    private static final Grammar [] ZERO_LENGTH_GRAMMAR_ARRAY = new Grammar [0];
+    /**
+     * Zero length grammar array.
+     */
+    private static final Grammar[] ZERO_LENGTH_GRAMMAR_ARRAY = new Grammar[0];
 
-    public EmptyXMLSchema() {}
+    public EmptyXMLSchema() {
+    }
 
     /*
      * XMLGrammarPool methods
@@ -46,17 +49,21 @@ final class EmptyXMLSchema extends AbstractXMLSchema implements XMLGrammarPool {
         return ZERO_LENGTH_GRAMMAR_ARRAY;
     }
 
-    public void cacheGrammars(String grammarType, Grammar[] grammars) {}
+    public void cacheGrammars(String grammarType, Grammar[] grammars) {
+    }
 
     public Grammar retrieveGrammar(XMLGrammarDescription desc) {
         return null;
     }
 
-    public void lockPool() {}
+    public void lockPool() {
+    }
 
-    public void unlockPool() {}
+    public void unlockPool() {
+    }
 
-    public void clear() {}
+    public void clear() {
+    }
 
     /*
      * XSGrammarPoolContainer methods

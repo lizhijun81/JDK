@@ -30,11 +30,9 @@ import org.w3c.dom.ls.LSInput;
 /**
  * Contains a list of LSInputs.
  *
- * @xerces.internal
- *
  * @author Michael Glavassevich, IBM
- *
  * @version $Id: LSInputListImpl.java,v 1.2 2010-10-26 23:01:04 joehw Exp $
+ * @xerces.internal
  */
 public final class LSInputListImpl extends AbstractList implements LSInputList {
 
@@ -51,8 +49,8 @@ public final class LSInputListImpl extends AbstractList implements LSInputList {
     /**
      * Construct an LSInputList implementation
      *
-     * @param array     the data array
-     * @param length    the number of elements
+     * @param array  the data array
+     * @param length the number of elements
      */
     public LSInputListImpl(LSInput[] array, int length) {
         fArray = array;
@@ -71,10 +69,11 @@ public final class LSInputListImpl extends AbstractList implements LSInputList {
      * Returns the <code>index</code>th item in the collection or
      * <code>null</code> if <code>index</code> is greater than or equal to
      * the number of objects in the list. The index starts at 0.
-     * @param index  index into the collection.
-     * @return  The <code>LSInput</code> at the <code>index</code>th
-     *   position in the <code>LSInputList</code>, or <code>null</code> if
-     *   the index specified is not valid.
+     *
+     * @param index index into the collection.
+     * @return The <code>LSInput</code> at the <code>index</code>th
+     * position in the <code>LSInputList</code>, or <code>null</code> if
+     * the index specified is not valid.
      */
     public LSInput item(int index) {
         if (index < 0 || index >= fLength) {

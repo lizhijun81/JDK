@@ -31,8 +31,8 @@ import com.sun.corba.se.spi.ior.iiop.GIOPVersion;
 import com.sun.corba.se.spi.orb.ORB;
 import com.sun.corba.se.spi.ior.ObjectKey;
 
-import com.sun.corba.se.spi.logging.CORBALogDomains ;
-import com.sun.corba.se.impl.logging.ORBUtilSystemException ;
+import com.sun.corba.se.spi.logging.CORBALogDomains;
+import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 
 /**
  * This implements the GIOP 1.1 Request header.
@@ -46,7 +46,7 @@ public final class RequestMessage_1_1 extends Message_1_1
     // Instance variables
 
     private ORB orb = null;
-    private ORBUtilSystemException wrapper = null ;
+    private ORBUtilSystemException wrapper = null;
     private ServiceContexts service_contexts = null;
     private int request_id = (int) 0;
     private boolean response_expected = false;
@@ -60,19 +60,19 @@ public final class RequestMessage_1_1 extends Message_1_1
 
     RequestMessage_1_1(ORB orb) {
         this.orb = orb;
-        this.wrapper = ORBUtilSystemException.get( orb,
-            CORBALogDomains.RPC_PROTOCOL ) ;
+        this.wrapper = ORBUtilSystemException.get(orb,
+                CORBALogDomains.RPC_PROTOCOL);
     }
 
     RequestMessage_1_1(ORB orb, ServiceContexts _service_contexts,
-            int _request_id, boolean _response_expected, byte[] _reserved,
-            byte[] _object_key, String _operation,
-            Principal _requesting_principal) {
+                       int _request_id, boolean _response_expected, byte[] _reserved,
+                       byte[] _object_key, String _operation,
+                       Principal _requesting_principal) {
         super(Message.GIOPBigMagic, GIOPVersion.V1_1, FLAG_NO_FRAG_BIG_ENDIAN,
-            Message.GIOPRequest, 0);
+                Message.GIOPRequest, 0);
         this.orb = orb;
-        this.wrapper = ORBUtilSystemException.get( orb,
-            CORBALogDomains.RPC_PROTOCOL ) ;
+        this.wrapper = ORBUtilSystemException.get(orb,
+                CORBALogDomains.RPC_PROTOCOL);
         service_contexts = _service_contexts;
         request_id = _request_id;
         response_expected = _response_expected;
@@ -122,11 +122,11 @@ public final class RequestMessage_1_1 extends Message_1_1
     public void read(org.omg.CORBA.portable.InputStream istream) {
         super.read(istream);
         this.service_contexts
-            = new ServiceContexts((org.omg.CORBA_2_3.portable.InputStream) istream);
+                = new ServiceContexts((org.omg.CORBA_2_3.portable.InputStream) istream);
         this.request_id = istream.read_ulong();
         this.response_expected = istream.read_boolean();
         this.reserved = new byte[3];
-        for (int _o0 = 0;_o0 < (3); ++_o0) {
+        for (int _o0 = 0; _o0 < (3); ++_o0) {
             this.reserved[_o0] = istream.read_octet();
         }
         int _len1 = istream.read_long();
@@ -139,21 +139,21 @@ public final class RequestMessage_1_1 extends Message_1_1
     public void write(org.omg.CORBA.portable.OutputStream ostream) {
         super.write(ostream);
         if (this.service_contexts != null) {
-                service_contexts.write(
-                (org.omg.CORBA_2_3.portable.OutputStream) ostream,
-                GIOPVersion.V1_1);
-            } else {
-                ServiceContexts.writeNullServiceContext(
-                (org.omg.CORBA_2_3.portable.OutputStream) ostream);
+            service_contexts.write(
+                    (org.omg.CORBA_2_3.portable.OutputStream) ostream,
+                    GIOPVersion.V1_1);
+        } else {
+            ServiceContexts.writeNullServiceContext(
+                    (org.omg.CORBA_2_3.portable.OutputStream) ostream);
         }
         ostream.write_ulong(this.request_id);
         ostream.write_boolean(this.response_expected);
         nullCheck(this.reserved);
         if (this.reserved.length != (3)) {
             throw wrapper.badReservedLength(
-                org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
+                    org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
         }
-        for (int _i0 = 0;_i0 < (3); ++_i0) {
+        for (int _i0 = 0; _i0 < (3); ++_i0) {
             ostream.write_octet(this.reserved[_i0]);
         }
         nullCheck(this.object_key);
@@ -168,8 +168,7 @@ public final class RequestMessage_1_1 extends Message_1_1
     }
 
     public void callback(MessageHandler handler)
-        throws java.io.IOException
-    {
+            throws java.io.IOException {
         handler.handleInput(this);
     }
 } // class RequestMessage_1_1

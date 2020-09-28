@@ -29,17 +29,16 @@ import javax.lang.model.element.Name;
 
 /**
  * A tree node for a 'continue' statement.
- *
+ * <p>
  * For example:
  * <pre>
  *   continue;
  *   continue <em>label</em> ;
  * </pre>
  *
- * @jls section 14.16
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls section 14.16
  * @since 1.6
  */
 public interface ContinueTree extends StatementTree {

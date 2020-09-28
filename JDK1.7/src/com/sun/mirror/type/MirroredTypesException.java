@@ -38,13 +38,12 @@ import com.sun.mirror.declaration.Declaration;
  * Thrown when an application attempts to access a sequence of {@link Class}
  * objects each corresponding to a {@link TypeMirror}.
  *
+ * @see MirroredTypeException
+ * @see Declaration#getAnnotation(Class)
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this exception is {@link
  * javax.lang.model.type.MirroredTypesException}.
- *
- * @see MirroredTypeException
- * @see Declaration#getAnnotation(Class)
  */
 @Deprecated
 @SuppressWarnings("deprecation")
@@ -58,7 +57,7 @@ public class MirroredTypesException extends RuntimeException {
     /**
      * Constructs a new MirroredTypesException for the specified types.
      *
-     * @param types  an ordered collection of the types being accessed
+     * @param types an ordered collection of the types being accessed
      */
     public MirroredTypesException(Collection<TypeMirror> types) {
         super("Attempt to access Class objects for TypeMirrors " + types);
@@ -89,7 +88,7 @@ public class MirroredTypesException extends RuntimeException {
      * the pseudo-type representing the type of <tt>void</tt>.
      *
      * @return the fully qualified names, in order, of the types being
-     *          accessed
+     * accessed
      */
     public Collection<String> getQualifiedNames() {
         return Collections.unmodifiableCollection(names);

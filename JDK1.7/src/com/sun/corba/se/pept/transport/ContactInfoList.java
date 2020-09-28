@@ -33,8 +33,7 @@ import java.util.Iterator;
  *
  * @author Harold Carr
  */
-public interface ContactInfoList
-{
+public interface ContactInfoList {
     /**
      * Used to get a
      * {@link com.sun.corba.se.pept.transport.ContactInfoListIterator

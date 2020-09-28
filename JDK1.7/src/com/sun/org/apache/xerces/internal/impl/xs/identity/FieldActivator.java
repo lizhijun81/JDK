@@ -26,10 +26,8 @@ package com.sun.org.apache.xerces.internal.impl.xs.identity;
  * for activating fields within a specific scope; the caller merely
  * requests the fields to be activated.
  *
- * @xerces.internal
- *
  * @author Andy Clark, IBM
- *
+ * @xerces.internal
  */
 public interface FieldActivator {
 
@@ -43,10 +41,10 @@ public interface FieldActivator {
      * the value store.
      *
      * @param identityConstraint The identity constraint.
-     * @param initialDepth  the depth at which the selector began matching
+     * @param initialDepth       the depth at which the selector began matching
      */
     public void startValueScopeFor(IdentityConstraint identityConstraint,
-            int initialDepth);
+                                   int initialDepth);
 
     /**
      * Request to activate the specified field. This method returns the
@@ -54,7 +52,7 @@ public interface FieldActivator {
      * It's also important for the implementor to ensure that it marks whether a Field
      * is permitted to match a value--that is, to call the setMayMatch(Field, Boolean) method.
      *
-     * @param field The field to activate.
+     * @param field        The field to activate.
      * @param initialDepth the 0-indexed depth in the instance document at which the Selector began to match.
      */
     public XPathMatcher activateField(Field field, int initialDepth);
@@ -81,7 +79,7 @@ public interface FieldActivator {
      * Ends the value scope for the specified identity constraint.
      *
      * @param identityConstraint The identity constraint.
-     * @param initialDepth  the 0-indexed depth where the Selector began to match.
+     * @param initialDepth       the 0-indexed depth where the Selector began to match.
      */
     public void endValueScopeFor(IdentityConstraint identityConstraint, int initialDepth);
 

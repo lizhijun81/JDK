@@ -21,6 +21,7 @@
 package com.sun.org.apache.xerces.internal.impl.dv;
 
 import com.sun.org.apache.xerces.internal.utils.SecuritySupport;
+
 import java.util.ResourceBundle;
 import java.util.PropertyResourceBundle;
 import java.util.MissingResourceException;
@@ -31,15 +32,15 @@ import java.util.MissingResourceException;
  * (as defined in Appendix C of the structure spec), plus an array of arguents,
  * for error message substitution.
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
- *
  * @version $Id: DatatypeException.java,v 1.6 2010-11-01 04:39:43 joehw Exp $
+ * @xerces.internal
  */
 public class DatatypeException extends Exception {
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = 1940805832730465578L;
 
     // used to store error code and error substitution arguments
@@ -62,7 +63,7 @@ public class DatatypeException extends Exception {
     /**
      * Return the error code
      *
-     * @return  error code
+     * @return error code
      */
     public String getKey() {
         return key;
@@ -71,7 +72,7 @@ public class DatatypeException extends Exception {
     /**
      * Return the list of error arguments
      *
-     * @return  error arguments
+     * @return error arguments
      */
     public Object[] getArgs() {
         return args;
@@ -79,10 +80,10 @@ public class DatatypeException extends Exception {
 
     /**
      * Overrides this method to get the formatted&localized error message.
-     *
+     * <p>
      * REVISIT: the system locale is used to load the property file.
-     *          do we want to allow the appilcation to specify a
-     *          different locale?
+     * do we want to allow the appilcation to specify a
+     * different locale?
      */
     public String getMessage() {
         ResourceBundle resourceBundle = null;

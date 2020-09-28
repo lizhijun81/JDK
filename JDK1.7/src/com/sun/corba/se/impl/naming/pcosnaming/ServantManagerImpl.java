@@ -49,12 +49,11 @@ import org.omg.PortableServer.ServantLocatorPackage.CookieHolder;
 import com.sun.corba.se.spi.orb.ORB;
 
 /**
- * @author      Rohit Garg
- * @since       JDK1.2
+ * @author Rohit Garg
+ * @since JDK1.2
  */
 
-public class ServantManagerImpl extends org.omg.CORBA.LocalObject implements ServantLocator
-{
+public class ServantManagerImpl extends org.omg.CORBA.LocalObject implements ServantLocator {
 
     // computed using serialver tool
 
@@ -73,46 +72,40 @@ public class ServantManagerImpl extends org.omg.CORBA.LocalObject implements Ser
 
     private final static String objKeyPrefix = "NC";
 
-    ServantManagerImpl(ORB orb, File logDir, NameService aNameService)
-    {
+    ServantManagerImpl(ORB orb, File logDir, NameService aNameService) {
         this.logDir = logDir;
-        this.orb    = orb;
+        this.orb = orb;
         // initialize the counter database
-        counterDb   = new CounterDB(logDir);
-        contexts    = new Hashtable();
+        counterDb = new CounterDB(logDir);
+        contexts = new Hashtable();
         theNameService = aNameService;
     }
 
 
     public Servant preinvoke(byte[] oid, POA adapter, String operation,
-                             CookieHolder cookie) throws ForwardRequest
-    {
+                             CookieHolder cookie) throws ForwardRequest {
 
         String objKey = new String(oid);
 
         Servant servant = (Servant) contexts.get(objKey);
 
-        if (servant == null)
-        {
-                 servant =  readInContext(objKey);
+        if (servant == null) {
+            servant = readInContext(objKey);
         }
 
         return servant;
     }
 
     public void postinvoke(byte[] oid, POA adapter, String operation,
-                           java.lang.Object cookie, Servant servant)
-    {
+                           java.lang.Object cookie, Servant servant) {
         // nada
     }
 
-    public NamingContextImpl readInContext(String objKey)
-    {
+    public NamingContextImpl readInContext(String objKey) {
         NamingContextImpl context = (NamingContextImpl) contexts.get(objKey);
-        if( context != null )
-        {
-                // Returning Context from Cache
-                return context;
+        if (context != null) {
+            // Returning Context from Cache
+            return context;
         }
 
         File contextFile = new File(logDir, objKey);
@@ -121,31 +114,27 @@ public class ServantManagerImpl extends org.omg.CORBA.LocalObject implements Ser
                 FileInputStream fis = new FileInputStream(contextFile);
                 ObjectInputStream ois = new ObjectInputStream(fis);
                 context = (NamingContextImpl) ois.readObject();
-                context.setORB( orb );
-                context.setServantManagerImpl( this );
-                context.setRootNameService( theNameService );
+                context.setORB(orb);
+                context.setServantManagerImpl(this);
+                context.setRootNameService(theNameService);
                 ois.close();
             } catch (Exception ex) {
             }
         }
 
-        if (context != null)
-        {
-                contexts.put(objKey, context);
+        if (context != null) {
+            contexts.put(objKey, context);
         }
         return context;
     }
 
     public NamingContextImpl addContext(String objKey,
-                                        NamingContextImpl context)
-    {
-        File contextFile =  new File(logDir, objKey);
+                                        NamingContextImpl context) {
+        File contextFile = new File(logDir, objKey);
 
-        if (contextFile.exists())
-        {
+        if (contextFile.exists()) {
             context = readInContext(objKey);
-        }
-        else {
+        } else {
             try {
                 FileOutputStream fos = new FileOutputStream(contextFile);
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -154,57 +143,47 @@ public class ServantManagerImpl extends org.omg.CORBA.LocalObject implements Ser
             } catch (Exception ex) {
             }
         }
-        try
-        {
-                contexts.remove( objKey );
-        }
-        catch( Exception e)
-        {
+        try {
+            contexts.remove(objKey);
+        } catch (Exception e) {
         }
         contexts.put(objKey, context);
 
         return context;
     }
 
-    public void updateContext( String objKey,
-                                   NamingContextImpl context )
-    {
-        File contextFile =  new File(logDir, objKey);
-        if (contextFile.exists())
-        {
-                contextFile.delete( );
-                contextFile =  new File(logDir, objKey);
+    public void updateContext(String objKey,
+                              NamingContextImpl context) {
+        File contextFile = new File(logDir, objKey);
+        if (contextFile.exists()) {
+            contextFile.delete();
+            contextFile = new File(logDir, objKey);
         }
 
         try {
-                FileOutputStream fos = new FileOutputStream(contextFile);
-                ObjectOutputStream oos = new ObjectOutputStream(fos);
-                oos.writeObject(context);
-                oos.close();
-            } catch (Exception ex) {
-                ex.printStackTrace( );
-            }
+            FileOutputStream fos = new FileOutputStream(contextFile);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(context);
+            oos.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
-    public static String getRootObjectKey()
-    {
+    public static String getRootObjectKey() {
         return objKeyPrefix + CounterDB.rootCounter;
     }
 
-    public String getNewObjectKey()
-    {
+    public String getNewObjectKey() {
         return objKeyPrefix + counterDb.getNextCounter();
     }
 
 
-
 }
 
-class CounterDB implements Serializable
-{
+class CounterDB implements Serializable {
 
-    CounterDB (File logDir)
-    {
+    CounterDB(File logDir) {
         counterFileName = "counter";
         counterFile = new File(logDir, counterFileName);
         if (!counterFile.exists()) {
@@ -215,19 +194,17 @@ class CounterDB implements Serializable
         }
     }
 
-    private void readCounter()
-    {
+    private void readCounter() {
         try {
             FileInputStream fis = new FileInputStream(counterFile);
             ObjectInputStream ois = new ObjectInputStream(fis);
             counter = (Integer) ois.readObject();
             ois.close();
         } catch (Exception ex) {
-                                }
+        }
     }
 
-    private void writeCounter()
-    {
+    private void writeCounter() {
         try {
             counterFile.delete();
             FileOutputStream fos = new FileOutputStream(counterFile);
@@ -240,8 +217,7 @@ class CounterDB implements Serializable
         }
     }
 
-    public synchronized int getNextCounter()
-    {
+    public synchronized int getNextCounter() {
         int counterVal = counter.intValue();
         counter = new Integer(++counterVal);
         writeCounter();
@@ -250,12 +226,11 @@ class CounterDB implements Serializable
     }
 
 
-
     private Integer counter;
 
     private static String counterFileName = "counter";
 
     private transient File counterFile;
 
-    public  final static int rootCounter = 0;
+    public final static int rootCounter = 0;
 }

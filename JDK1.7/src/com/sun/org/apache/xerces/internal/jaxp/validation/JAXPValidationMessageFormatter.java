@@ -21,6 +21,7 @@
 package com.sun.org.apache.xerces.internal.jaxp.validation;
 
 import com.sun.org.apache.xerces.internal.utils.SecuritySupport;
+
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -42,24 +43,21 @@ final class JAXPValidationMessageFormatter {
      * @param arguments The message replacement text arguments. The order
      *                  of the arguments must match that of the placeholders
      *                  in the actual message.
-     *
-     * @return          the formatted message.
-     *
+     * @return the formatted message.
      * @throws MissingResourceException Thrown if the message with the
      *                                  specified key cannot be found.
      */
     public static String formatMessage(Locale locale,
-        String key, Object[] arguments)
-        throws MissingResourceException {
+                                       String key, Object[] arguments)
+            throws MissingResourceException {
 
         ResourceBundle resourceBundle = null;
         if (locale != null) {
             resourceBundle =
-                SecuritySupport.getResourceBundle("com.sun.org.apache.xerces.internal.impl.msg.JAXPValidationMessages", locale);
-        }
-        else {
+                    SecuritySupport.getResourceBundle("com.sun.org.apache.xerces.internal.impl.msg.JAXPValidationMessages", locale);
+        } else {
             resourceBundle =
-                SecuritySupport.getResourceBundle("com.sun.org.apache.xerces.internal.impl.msg.JAXPValidationMessages");
+                    SecuritySupport.getResourceBundle("com.sun.org.apache.xerces.internal.impl.msg.JAXPValidationMessages");
         }
 
         // format message
@@ -69,8 +67,7 @@ final class JAXPValidationMessageFormatter {
             if (arguments != null) {
                 try {
                     msg = java.text.MessageFormat.format(msg, arguments);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     msg = resourceBundle.getString("FormatFailed");
                     msg += " " + resourceBundle.getString(key);
                 }

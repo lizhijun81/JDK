@@ -57,11 +57,10 @@ import org.xml.sax.Attributes;
  * must have been declared.
  * </p>
  *
- * @since SAX 2.0 (extensions 1.1 alpha)
  * @author David Brownell
+ * @since SAX 2.0 (extensions 1.1 alpha)
  */
-public interface Attributes2 extends Attributes
-{
+public interface Attributes2 extends Attributes {
     /**
      * Returns false unless the attribute was declared in the DTD.
      * This helps distinguish two kinds of attributes that SAX reports
@@ -70,11 +69,11 @@ public interface Attributes2 extends Attributes
      *
      * @param index The attribute index (zero-based).
      * @return true if the attribute was declared in the DTD,
-     *          false otherwise.
-     * @exception java.lang.ArrayIndexOutOfBoundsException When the
-     *            supplied index does not identify an attribute.
+     * false otherwise.
+     * @throws java.lang.ArrayIndexOutOfBoundsException When the
+     *                                                  supplied index does not identify an attribute.
      */
-    public boolean isDeclared (int index);
+    public boolean isDeclared(int index);
 
     /**
      * Returns false unless the attribute was declared in the DTD.
@@ -84,11 +83,11 @@ public interface Attributes2 extends Attributes
      *
      * @param qName The XML qualified (prefixed) name.
      * @return true if the attribute was declared in the DTD,
-     *          false otherwise.
-     * @exception java.lang.IllegalArgumentException When the
-     *            supplied name does not identify an attribute.
+     * false otherwise.
+     * @throws java.lang.IllegalArgumentException When the
+     *                                            supplied name does not identify an attribute.
      */
-    public boolean isDeclared (String qName);
+    public boolean isDeclared(String qName);
 
     /**
      * Returns false unless the attribute was declared in the DTD.
@@ -101,15 +100,15 @@ public interface Attributes2 extends Attributes
      * the DTD.  The declaration will have applied to the attribute's
      * <em>qName</em>.
      *
-     * @param uri The Namespace URI, or the empty string if
-     *        the name has no Namespace URI.
+     * @param uri       The Namespace URI, or the empty string if
+     *                  the name has no Namespace URI.
      * @param localName The attribute's local name.
      * @return true if the attribute was declared in the DTD,
-     *          false otherwise.
-     * @exception java.lang.IllegalArgumentException When the
-     *            supplied names do not identify an attribute.
+     * false otherwise.
+     * @throws java.lang.IllegalArgumentException When the
+     *                                            supplied names do not identify an attribute.
      */
-    public boolean isDeclared (String uri, String localName);
+    public boolean isDeclared(String uri, String localName);
 
     /**
      * Returns true unless the attribute value was provided
@@ -117,11 +116,11 @@ public interface Attributes2 extends Attributes
      *
      * @param index The attribute index (zero-based).
      * @return true if the value was found in the XML text,
-     *          false if the value was provided by DTD defaulting.
-     * @exception java.lang.ArrayIndexOutOfBoundsException When the
-     *            supplied index does not identify an attribute.
+     * false if the value was provided by DTD defaulting.
+     * @throws java.lang.ArrayIndexOutOfBoundsException When the
+     *                                                  supplied index does not identify an attribute.
      */
-    public boolean isSpecified (int index);
+    public boolean isSpecified(int index);
 
     /**
      * Returns true unless the attribute value was provided
@@ -132,15 +131,15 @@ public interface Attributes2 extends Attributes
      * the DTD.  The declaration will have applied to the attribute's
      * <em>qName</em>.
      *
-     * @param uri The Namespace URI, or the empty string if
-     *        the name has no Namespace URI.
+     * @param uri       The Namespace URI, or the empty string if
+     *                  the name has no Namespace URI.
      * @param localName The attribute's local name.
      * @return true if the value was found in the XML text,
-     *          false if the value was provided by DTD defaulting.
-     * @exception java.lang.IllegalArgumentException When the
-     *            supplied names do not identify an attribute.
+     * false if the value was provided by DTD defaulting.
+     * @throws java.lang.IllegalArgumentException When the
+     *                                            supplied names do not identify an attribute.
      */
-    public boolean isSpecified (String uri, String localName);
+    public boolean isSpecified(String uri, String localName);
 
     /**
      * Returns true unless the attribute value was provided
@@ -148,9 +147,9 @@ public interface Attributes2 extends Attributes
      *
      * @param qName The XML qualified (prefixed) name.
      * @return true if the value was found in the XML text,
-     *          false if the value was provided by DTD defaulting.
-     * @exception java.lang.IllegalArgumentException When the
-     *            supplied name does not identify an attribute.
+     * false if the value was provided by DTD defaulting.
+     * @throws java.lang.IllegalArgumentException When the
+     *                                            supplied name does not identify an attribute.
      */
-    public boolean isSpecified (String qName);
+    public boolean isSpecified(String qName);
 }

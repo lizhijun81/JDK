@@ -54,10 +54,10 @@ package org.xml.sax;
  * specific location in an XML document, it should use the
  * {@link org.xml.sax.SAXParseException SAXParseException} subclass.</p>
  *
- * @since SAX 1.0
  * @author David Megginson
  * @version 2.0.1 (sax2r2)
  * @see org.xml.sax.SAXParseException
+ * @since SAX 1.0
  */
 public class SAXException extends Exception {
 
@@ -65,8 +65,7 @@ public class SAXException extends Exception {
     /**
      * Create a new SAXException.
      */
-    public SAXException ()
-    {
+    public SAXException() {
         super();
         this.exception = null;
     }
@@ -77,7 +76,7 @@ public class SAXException extends Exception {
      *
      * @param message The error or warning message.
      */
-    public SAXException (String message) {
+    public SAXException(String message) {
         super(message);
         this.exception = null;
     }
@@ -92,8 +91,7 @@ public class SAXException extends Exception {
      *
      * @param e The exception to be wrapped in a SAXException.
      */
-    public SAXException (Exception e)
-    {
+    public SAXException(Exception e) {
         super();
         this.exception = e;
     }
@@ -106,10 +104,9 @@ public class SAXException extends Exception {
      * one, but the new exception will have its own message.</p>
      *
      * @param message The detail message.
-     * @param e The exception to be wrapped in a SAXException.
+     * @param e       The exception to be wrapped in a SAXException.
      */
-    public SAXException (String message, Exception e)
-    {
+    public SAXException(String message, Exception e) {
         super(message);
         this.exception = e;
     }
@@ -124,8 +121,7 @@ public class SAXException extends Exception {
      *
      * @return The error or warning message.
      */
-    public String getMessage ()
-    {
+    public String getMessage() {
         String message = super.getMessage();
 
         if (message == null && exception != null) {
@@ -141,8 +137,7 @@ public class SAXException extends Exception {
      *
      * @return The embedded exception, or null if there is none.
      */
-    public Exception getException ()
-    {
+    public Exception getException() {
         return exception;
     }
 
@@ -160,15 +155,13 @@ public class SAXException extends Exception {
      *
      * @return A string representation of this exception.
      */
-    public String toString ()
-    {
+    public String toString() {
         if (exception != null) {
             return super.toString() + "\n" + exception.toString();
         } else {
             return super.toString();
         }
     }
-
 
 
     //////////////////////////////////////////////////////////////////////

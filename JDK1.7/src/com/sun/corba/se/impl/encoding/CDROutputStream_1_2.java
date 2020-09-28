@@ -31,8 +31,7 @@ import com.sun.corba.se.spi.ior.iiop.GIOPVersion;
 import com.sun.corba.se.impl.encoding.CodeSetConversion;
 import com.sun.corba.se.impl.orbutil.ORBConstants;
 
-public class CDROutputStream_1_2 extends CDROutputStream_1_1
-{
+public class CDROutputStream_1_2 extends CDROutputStream_1_1 {
     // There's a situation with chunking with fragmentation
     // in which the alignment for a primitive value is needed
     // to fill fragment N, but the primitive won't fit so
@@ -85,8 +84,7 @@ public class CDROutputStream_1_2 extends CDROutputStream_1_1
     // message, there is no need to pad the header, in the unfragmented case.
     private boolean headerPadding;
 
-    protected void handleSpecialChunkBegin(int requiredSize)
-    {
+    protected void handleSpecialChunkBegin(int requiredSize) {
         // If we're chunking and the item won't fit in the buffer
         if (inBlock && requiredSize + bbwi.position() > bbwi.buflen) {
 
@@ -106,8 +104,7 @@ public class CDROutputStream_1_2 extends CDROutputStream_1_1
         }
     }
 
-    protected void handleSpecialChunkEnd()
-    {
+    protected void handleSpecialChunkEnd() {
         // If we're in a chunk and the item spanned fragments
         if (inBlock && specialChunk) {
 
@@ -130,8 +127,7 @@ public class CDROutputStream_1_2 extends CDROutputStream_1_1
     }
 
     // Called after writing primitives
-    private void checkPrimitiveAcrossFragmentedChunk()
-    {
+    private void checkPrimitiveAcrossFragmentedChunk() {
         if (primitiveAcrossFragmentedChunk) {
             primitiveAcrossFragmentedChunk = false;
 
@@ -196,7 +192,7 @@ public class CDROutputStream_1_2 extends CDROutputStream_1_1
 
         bbwi.position(bbwi.position() + computeAlignment(align));
 
-        if (bbwi.position() + n  > bbwi.buflen)
+        if (bbwi.position() + n > bbwi.buflen)
             grow(align, n);
     }
 
@@ -256,8 +252,7 @@ public class CDROutputStream_1_2 extends CDROutputStream_1_1
         return GIOPVersion.V1_2;
     }
 
-    public void write_wchar(char x)
-    {
+    public void write_wchar(char x) {
         // In GIOP 1.2, a wchar is encoded as an unsigned octet length
         // followed by the octets of the converted wchar.  This is good,
         // but it causes problems with our chunking code.  We don't
@@ -272,7 +267,7 @@ public class CDROutputStream_1_2 extends CDROutputStream_1_1
 
         handleSpecialChunkBegin(1 + converter.getNumBytes());
 
-        write_octet((byte)converter.getNumBytes());
+        write_octet((byte) converter.getNumBytes());
 
         byte[] result = converter.getBytes();
 
@@ -283,8 +278,7 @@ public class CDROutputStream_1_2 extends CDROutputStream_1_1
         handleSpecialChunkEnd();
     }
 
-    public void write_wchar_array(char[] value, int offset, int length)
-    {
+    public void write_wchar_array(char[] value, int offset, int length) {
         if (value == null) {
             throw wrapper.nullParam(CompletionStatus.COMPLETED_MAYBE);
         }
@@ -299,7 +293,7 @@ public class CDROutputStream_1_2 extends CDROutputStream_1_1
 
         // Remember that every wchar starts with an octet telling
         // its length.  The buffer size is an upper bound estimate.
-        int maxLength = (int)Math.ceil(converter.getMaxBytesPerChar() * length);
+        int maxLength = (int) Math.ceil(converter.getMaxBytesPerChar() * length);
         byte[] buffer = new byte[maxLength + length];
 
         for (int i = 0; i < length; i++) {
@@ -307,12 +301,12 @@ public class CDROutputStream_1_2 extends CDROutputStream_1_1
             converter.convert(value[offset + i]);
 
             // Make sure to add the octet length
-            buffer[totalNumBytes++] = (byte)converter.getNumBytes();
+            buffer[totalNumBytes++] = (byte) converter.getNumBytes();
 
             // Copy it into our buffer
             System.arraycopy(converter.getBytes(), 0,
-                             buffer, totalNumBytes,
-                             converter.getNumBytes());
+                    buffer, totalNumBytes,
+                    converter.getNumBytes());
 
             totalNumBytes += converter.getNumBytes();
         }

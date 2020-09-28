@@ -20,6 +20,7 @@
 package com.sun.org.apache.xerces.internal.util;
 
 import com.sun.org.apache.xerces.internal.utils.SecuritySupport;
+
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -28,7 +29,6 @@ import java.util.ResourceBundle;
  * Used to format SAX error messages using a specified locale.
  *
  * @author Michael Glavassevich, IBM
- *
  * @version $Id: SAXMessageFormatter.java,v 1.6 2010-11-01 04:40:14 joehw Exp $
  */
 public class SAXMessageFormatter {
@@ -42,24 +42,21 @@ public class SAXMessageFormatter {
      * @param arguments The message replacement text arguments. The order
      *                  of the arguments must match that of the placeholders
      *                  in the actual message.
-     *
-     * @return          the formatted message.
-     *
+     * @return the formatted message.
      * @throws MissingResourceException Thrown if the message with the
      *                                  specified key cannot be found.
      */
     public static String formatMessage(Locale locale,
-        String key, Object[] arguments)
-        throws MissingResourceException {
+                                       String key, Object[] arguments)
+            throws MissingResourceException {
 
         ResourceBundle resourceBundle = null;
         if (locale != null) {
             resourceBundle =
-                SecuritySupport.getResourceBundle("com.sun.org.apache.xerces.internal.impl.msg.SAXMessages", locale);
-        }
-        else {
+                    SecuritySupport.getResourceBundle("com.sun.org.apache.xerces.internal.impl.msg.SAXMessages", locale);
+        } else {
             resourceBundle =
-                SecuritySupport.getResourceBundle("com.sun.org.apache.xerces.internal.impl.msg.SAXMessages");
+                    SecuritySupport.getResourceBundle("com.sun.org.apache.xerces.internal.impl.msg.SAXMessages");
         }
 
         // format message
@@ -69,8 +66,7 @@ public class SAXMessageFormatter {
             if (arguments != null) {
                 try {
                     msg = java.text.MessageFormat.format(msg, arguments);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     msg = resourceBundle.getString("FormatFailed");
                     msg += " " + resourceBundle.getString(key);
                 }

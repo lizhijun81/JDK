@@ -50,6 +50,7 @@ package org.w3c.dom.css;
  * <p> The items in the <code>CSSValueList</code> are accessible via an
  * integral index, starting from 0.
  * <p>See also the <a href='http://www.w3.org/TR/2000/REC-DOM-Level-2-Style-20001113'>Document Object Model (DOM) Level 2 Style Specification</a>.
+ *
  * @since DOM Level 2
  */
 public interface CSSValueList extends CSSValue {
@@ -65,10 +66,11 @@ public interface CSSValueList extends CSSValue {
      * this collection represents the order of the values in the CSS style
      * property. If index is greater than or equal to the number of values
      * in the list, this returns <code>null</code>.
+     *
      * @param index Index into the collection.
      * @return The <code>CSSValue</code> at the <code>index</code> position
-     *   in the <code>CSSValueList</code>, or <code>null</code> if that is
-     *   not a valid index.
+     * in the <code>CSSValueList</code>, or <code>null</code> if that is
+     * not a valid index.
      */
     public CSSValue item(int index);
 

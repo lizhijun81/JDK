@@ -61,9 +61,9 @@ public class InputStreamImageInputStreamSpi extends ImageInputStreamSpi {
     public ImageInputStream createInputStreamInstance(Object input,
                                                       boolean useCache,
                                                       File cacheDir)
-        throws IOException {
+            throws IOException {
         if (input instanceof InputStream) {
-            InputStream is = (InputStream)input;
+            InputStream is = (InputStream) input;
 
             if (useCache) {
                 return new FileCacheImageInputStream(is, cacheDir);

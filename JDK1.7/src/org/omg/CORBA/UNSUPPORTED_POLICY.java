@@ -34,7 +34,7 @@ package org.omg.CORBA;
  */
 public interface UNSUPPORTED_POLICY {
     /**
-     *  The Error code for PolicyError exception.
+     * The Error code for PolicyError exception.
      */
     final short value = (short) (1L);
 };

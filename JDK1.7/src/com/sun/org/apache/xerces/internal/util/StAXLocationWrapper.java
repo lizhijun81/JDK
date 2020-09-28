@@ -31,14 +31,14 @@ import com.sun.org.apache.xerces.internal.xni.XMLLocator;
  * when bridging between StAX and XNI components.</p>
  *
  * @author Michael Glavassevich, IBM
- *
  * @version $Id: StAXLocationWrapper.java,v 1.2 2010-10-26 23:01:13 joehw Exp $
  */
 public final class StAXLocationWrapper implements XMLLocator {
 
     private Location fLocation = null;
 
-    public StAXLocationWrapper() {}
+    public StAXLocationWrapper() {
+    }
 
     public void setLocation(Location location) {
         fLocation = location;

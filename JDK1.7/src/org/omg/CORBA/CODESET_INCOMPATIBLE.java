@@ -30,8 +30,8 @@ package org.omg.CORBA;
  * between client and server native code sets.
  *
  * @see <A href="../../../../technotes/guides/idl/jidlExceptions.html">documentation on
- *      Java&nbsp;IDL exceptions</A>
- * @since   J2SE 1.5
+ * Java&nbsp;IDL exceptions</A>
+ * @since J2SE 1.5
  */
 
 public final class CODESET_INCOMPATIBLE extends SystemException {
@@ -58,7 +58,7 @@ public final class CODESET_INCOMPATIBLE extends SystemException {
      * Constructs an <code>CODESET_INCOMPATIBLE</code> exception with the
      * specified minor code and completion status.
      *
-     * @param minorCode minor code.
+     * @param minorCode        minor code.
      * @param completionStatus completion status.
      */
     public CODESET_INCOMPATIBLE(int minorCode,
@@ -70,8 +70,8 @@ public final class CODESET_INCOMPATIBLE extends SystemException {
      * Constructs an <code>CODESET_INCOMPATIBLE</code> exception with the
      * specified message, minor code, and completion status.
      *
-     * @param detailMessage string containing a detailed message.
-     * @param minorCode minor code.
+     * @param detailMessage    string containing a detailed message.
+     * @param minorCode        minor code.
      * @param completionStatus completion status.
      */
     public CODESET_INCOMPATIBLE(String detailMessage,

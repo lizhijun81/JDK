@@ -36,7 +36,6 @@ import com.sun.org.apache.xerces.internal.impl.dv.*;
  * which is an integer.</P>
  *
  * @xerces.internal
- *
  */
 public class StringDatatypeValidator implements DatatypeValidator {
 
@@ -48,10 +47,10 @@ public class StringDatatypeValidator implements DatatypeValidator {
      * Checks that "content" string is valid string value.
      * If invalid a Datatype validation exception is thrown.
      *
-     * @param content       the string value that needs to be validated
-     * @param context       the validation context
+     * @param content the string value that needs to be validated
+     * @param context the validation context
      * @throws InvalidDatatypeException if the content is
-     *         invalid according to the rules for the validators
+     *                                  invalid according to the rules for the validators
      * @see InvalidDatatypeValueException
      */
     public void validate(String content, ValidationContext context) throws InvalidDatatypeValueException {

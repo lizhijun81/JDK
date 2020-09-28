@@ -37,13 +37,11 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLInputSource;
  * registered external subset resolver does not provide an external subset
  * for a given document, it should return <code>null</code>.</p>
  *
- * @xerces.internal
- *
  * @author Michael Glavassevich, IBM
- *
+ * @xerces.internal
  */
 public interface ExternalSubsetResolver
-    extends XMLEntityResolver {
+        extends XMLEntityResolver {
 
     //
     // ExternalSubsetResolver methods
@@ -55,12 +53,11 @@ public interface ExternalSubsetResolver
      * return <code>null</code>.</p>
      *
      * @param grammarDescription a description of the DTD
-     *
      * @throws XNIException Thrown on general error.
      * @throws IOException  Thrown if resolved entity stream cannot be
      *                      opened or some other i/o error occurs.
      */
     public XMLInputSource getExternalSubset(XMLDTDDescription grammarDescription)
-        throws XNIException, IOException;
+            throws XNIException, IOException;
 
 } // interface ExternalSubsetResolver

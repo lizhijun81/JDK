@@ -45,11 +45,10 @@ class RepositoryIdPool extends Stack {
     public final synchronized RepositoryId popId() {
 
         try {
-            return (RepositoryId)super.pop();
-        }
-        catch(EmptyStackException e) {
+            return (RepositoryId) super.pop();
+        } catch (EmptyStackException e) {
             increasePool(5);
-            return (RepositoryId)super.pop();
+            return (RepositoryId) super.pop();
         }
 
     }
@@ -93,7 +92,7 @@ public class RepositoryIdCache extends Hashtable {
     }
 
     public final synchronized RepositoryId getId(String key) {
-        RepositoryId repId = (RepositoryId)super.get(key);
+        RepositoryId repId = (RepositoryId) super.get(key);
 
         if (repId != null)
             return repId;

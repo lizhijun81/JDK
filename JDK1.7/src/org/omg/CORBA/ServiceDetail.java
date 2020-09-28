@@ -29,12 +29,10 @@ package org.omg.CORBA;
  * An object that represents an ORB service: its <code>service_detail_type</code>
  * field contains the type of the ORB service, and its <code>service_detail</code>
  * field contains a description of the ORB service.
-
  *
  * @author RIP Team
  */
-public final class ServiceDetail implements org.omg.CORBA.portable.IDLEntity
-{
+public final class ServiceDetail implements org.omg.CORBA.portable.IDLEntity {
     /**
      * The type of the ORB service that this <code>ServiceDetail</code>
      * object represents.
@@ -51,7 +49,8 @@ public final class ServiceDetail implements org.omg.CORBA.portable.IDLEntity
      * Constructs a <code>ServiceDetail</code> object with 0 for the type of
      * ORB service and an empty description.
      */
-    public ServiceDetail() { }
+    public ServiceDetail() {
+    }
 
     /**
      * Constructs a <code>ServiceDetail</code> object with the given
@@ -59,7 +58,7 @@ public final class ServiceDetail implements org.omg.CORBA.portable.IDLEntity
      *
      * @param service_detail_type an <code>int</code> specifying the type of
      *                            ORB service
-     * @param service_detail a <code>byte</code> array describing the ORB service
+     * @param service_detail      a <code>byte</code> array describing the ORB service
      */
     public ServiceDetail(int service_detail_type, byte[] service_detail) {
         this.service_detail_type = service_detail_type;

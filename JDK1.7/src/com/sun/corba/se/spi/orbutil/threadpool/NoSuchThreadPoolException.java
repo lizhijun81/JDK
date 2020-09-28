@@ -25,8 +25,7 @@
 
 package com.sun.corba.se.spi.orbutil.threadpool;
 
-public class NoSuchThreadPoolException extends Exception
-{
+public class NoSuchThreadPoolException extends Exception {
 }
 
 // End of file.

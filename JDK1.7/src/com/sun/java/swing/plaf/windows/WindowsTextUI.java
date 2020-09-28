@@ -63,7 +63,7 @@ public abstract class WindowsTextUI extends BasicTextUI {
 
     /* public */
     static class WindowsCaret extends DefaultCaret
-                     implements UIResource {
+            implements UIResource {
         /**
          * Gets the painter for the Highlighter.
          *
@@ -76,7 +76,7 @@ public abstract class WindowsTextUI extends BasicTextUI {
 
     /* public */
     static class WindowsHighlightPainter extends
-                     DefaultHighlighter.DefaultHighlightPainter {
+            DefaultHighlighter.DefaultHighlightPainter {
         WindowsHighlightPainter(Color c) {
             super(c);
         }
@@ -86,11 +86,11 @@ public abstract class WindowsTextUI extends BasicTextUI {
         /**
          * Paints a highlight.
          *
-         * @param g the graphics context
-         * @param offs0 the starting model offset >= 0
-         * @param offs1 the ending model offset >= offs1
+         * @param g      the graphics context
+         * @param offs0  the starting model offset >= 0
+         * @param offs1  the ending model offset >= offs1
          * @param bounds the bounding box for the highlight
-         * @param c the editor
+         * @param c      the editor
          */
         public void paint(Graphics g, int offs0, int offs1, Shape bounds, JTextComponent c) {
             Rectangle alloc = bounds.getBounds();
@@ -105,8 +105,7 @@ public abstract class WindowsTextUI extends BasicTextUI {
 
                 if (color == null) {
                     g.setColor(c.getSelectionColor());
-                }
-                else {
+                } else {
                     g.setColor(color);
                 }
                 boolean firstIsDot = false;
@@ -123,8 +122,7 @@ public abstract class WindowsTextUI extends BasicTextUI {
                         if (firstIsDot) {
                             r.x++;
                             r.width--;
-                        }
-                        else if (secondIsDot) {
+                        } else if (secondIsDot) {
                             r.width--;
                         }
                     }
@@ -139,7 +137,7 @@ public abstract class WindowsTextUI extends BasicTextUI {
                     g.fillRect(p0.x, p0.y, p0ToMarginWidth, p0.height);
                     if ((p0.y + p0.height) != p1.y) {
                         g.fillRect(alloc.x, p0.y + p0.height, alloc.width,
-                                   p1.y - (p0.y + p0.height));
+                                p1.y - (p0.y + p0.height));
                     }
                     if (secondIsDot && p1.x > alloc.x) {
                         p1.x--;
@@ -152,16 +150,17 @@ public abstract class WindowsTextUI extends BasicTextUI {
         }
 
         // --- LayerPainter methods ----------------------------
+
         /**
          * Paints a portion of a highlight.
          *
-         * @param g the graphics context
-         * @param offs0 the starting model offset >= 0
-         * @param offs1 the ending model offset >= offs1
+         * @param g      the graphics context
+         * @param offs0  the starting model offset >= 0
+         * @param offs1  the ending model offset >= offs1
          * @param bounds the bounding box of the view, which is not
-         *        necessarily the region to paint.
-         * @param c the editor
-         * @param view View painting for
+         *               necessarily the region to paint.
+         * @param c      the editor
+         * @param view   View painting for
          * @return region drawing occured in
          */
         public Shape paintLayer(Graphics g, int offs0, int offs1,
@@ -170,8 +169,7 @@ public abstract class WindowsTextUI extends BasicTextUI {
 
             if (color == null) {
                 g.setColor(c.getSelectionColor());
-            }
-            else {
+            } else {
                 g.setColor(color);
             }
             boolean firstIsDot = false;
@@ -182,44 +180,38 @@ public abstract class WindowsTextUI extends BasicTextUI {
                 secondIsDot = (offs1 == dot);
             }
             if (offs0 == view.getStartOffset() &&
-                offs1 == view.getEndOffset()) {
+                    offs1 == view.getEndOffset()) {
                 // Contained in view, can just use bounds.
                 Rectangle alloc;
                 if (bounds instanceof Rectangle) {
-                    alloc = (Rectangle)bounds;
-                }
-                else {
+                    alloc = (Rectangle) bounds;
+                } else {
                     alloc = bounds.getBounds();
                 }
                 if (firstIsDot && alloc.width > 0) {
                     g.fillRect(alloc.x + 1, alloc.y, alloc.width - 1,
-                               alloc.height);
-                }
-                else if (secondIsDot && alloc.width > 0) {
+                            alloc.height);
+                } else if (secondIsDot && alloc.width > 0) {
                     g.fillRect(alloc.x, alloc.y, alloc.width - 1,
-                               alloc.height);
-                }
-                else {
+                            alloc.height);
+                } else {
                     g.fillRect(alloc.x, alloc.y, alloc.width, alloc.height);
                 }
                 return alloc;
-            }
-            else {
+            } else {
                 // Should only render part of View.
                 try {
                     // --- determine locations ---
                     Shape shape = view.modelToView(offs0, Position.Bias.Forward,
-                                                   offs1,Position.Bias.Backward,
-                                                   bounds);
+                            offs1, Position.Bias.Backward,
+                            bounds);
                     Rectangle r = (shape instanceof Rectangle) ?
-                                  (Rectangle)shape : shape.getBounds();
+                            (Rectangle) shape : shape.getBounds();
                     if (firstIsDot && r.width > 0) {
                         g.fillRect(r.x + 1, r.y, r.width - 1, r.height);
-                    }
-                    else if (secondIsDot && r.width > 0) {
+                    } else if (secondIsDot && r.width > 0) {
                         g.fillRect(r.x, r.y, r.width - 1, r.height);
-                    }
-                    else {
+                    } else {
                         g.fillRect(r.x, r.y, r.width, r.height);
                     }
                     return r;

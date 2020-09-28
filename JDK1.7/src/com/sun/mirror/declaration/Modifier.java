@@ -35,13 +35,12 @@ package com.sun.mirror.declaration;
  * then it is customary, though not required, that they appear in the same
  * order as the constants listed in the detail section below.
  *
- * @deprecated All components of this API have been superseded by the
- * standardized annotation processing API.  The replacement for the
- * functionality of this enum is {@link javax.lang.model.element.Modifier}.
- *
  * @author Joseph D. Darcy
  * @author Scott Seligman
  * @since 1.5
+ * @deprecated All components of this API have been superseded by the
+ * standardized annotation processing API.  The replacement for the
+ * functionality of this enum is {@link javax.lang.model.element.Modifier}.
  */
 @Deprecated
 @SuppressWarnings("deprecation")
@@ -50,17 +49,50 @@ public enum Modifier {
     // See JLS2 sections 8.1.1, 8.3.1, 8.4.3, 8.8.3, and 9.1.1.
     // java.lang.reflect.Modifier includes INTERFACE, but that's a VMism.
 
-    /** The modifier <tt>public</tt> */         PUBLIC,
-    /** The modifier <tt>protected</tt> */      PROTECTED,
-    /** The modifier <tt>private</tt> */        PRIVATE,
-    /** The modifier <tt>abstract</tt> */       ABSTRACT,
-    /** The modifier <tt>static</tt> */         STATIC,
-    /** The modifier <tt>final</tt> */          FINAL,
-    /** The modifier <tt>transient</tt> */      TRANSIENT,
-    /** The modifier <tt>volatile</tt> */       VOLATILE,
-    /** The modifier <tt>synchronized</tt> */   SYNCHRONIZED,
-    /** The modifier <tt>native</tt> */         NATIVE,
-    /** The modifier <tt>strictfp</tt> */       STRICTFP;
+    /**
+     * The modifier <tt>public</tt>
+     */
+    PUBLIC,
+    /**
+     * The modifier <tt>protected</tt>
+     */
+    PROTECTED,
+    /**
+     * The modifier <tt>private</tt>
+     */
+    PRIVATE,
+    /**
+     * The modifier <tt>abstract</tt>
+     */
+    ABSTRACT,
+    /**
+     * The modifier <tt>static</tt>
+     */
+    STATIC,
+    /**
+     * The modifier <tt>final</tt>
+     */
+    FINAL,
+    /**
+     * The modifier <tt>transient</tt>
+     */
+    TRANSIENT,
+    /**
+     * The modifier <tt>volatile</tt>
+     */
+    VOLATILE,
+    /**
+     * The modifier <tt>synchronized</tt>
+     */
+    SYNCHRONIZED,
+    /**
+     * The modifier <tt>native</tt>
+     */
+    NATIVE,
+    /**
+     * The modifier <tt>strictfp</tt>
+     */
+    STRICTFP;
 
 
     private String lowercase = null;    // modifier name in lowercase
@@ -70,7 +102,7 @@ public enum Modifier {
      */
     public String toString() {
         if (lowercase == null) {
-           lowercase = name().toLowerCase(java.util.Locale.US);
+            lowercase = name().toLowerCase(java.util.Locale.US);
         }
         return lowercase;
     }

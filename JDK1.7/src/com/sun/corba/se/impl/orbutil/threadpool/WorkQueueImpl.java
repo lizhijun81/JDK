@@ -39,8 +39,7 @@ import com.sun.corba.se.spi.monitoring.MonitoringFactories;
 import com.sun.corba.se.spi.monitoring.MonitoredObject;
 import com.sun.corba.se.spi.monitoring.LongMonitoredAttributeBase;
 
-public class WorkQueueImpl implements WorkQueue
-{
+public class WorkQueueImpl implements WorkQueue {
     private ThreadPool workerThreadPool;
     private LinkedList theWorkQueue = new LinkedList();
     private long workItemsAdded = 0;
@@ -57,7 +56,7 @@ public class WorkQueueImpl implements WorkQueue
     private MonitoredObject workqueueMonitoredObject;
 
     public WorkQueueImpl() {
-        name=ORBConstants.WORKQUEUE_DEFAULT_NAME;
+        name = ORBConstants.WORKQUEUE_DEFAULT_NAME;
         initializeMonitoring();
     }
 
@@ -74,33 +73,33 @@ public class WorkQueueImpl implements WorkQueue
     // Setup monitoring for this workqueue
     private void initializeMonitoring() {
         workqueueMonitoredObject = MonitoringFactories.
-                            getMonitoredObjectFactory().
-                            createMonitoredObject(name,
-                            MonitoringConstants.WORKQUEUE_MONITORING_DESCRIPTION);
+                getMonitoredObjectFactory().
+                createMonitoredObject(name,
+                        MonitoringConstants.WORKQUEUE_MONITORING_DESCRIPTION);
 
         LongMonitoredAttributeBase b1 = new
-            LongMonitoredAttributeBase(MonitoringConstants.WORKQUEUE_TOTAL_WORK_ITEMS_ADDED,
-                    MonitoringConstants.WORKQUEUE_TOTAL_WORK_ITEMS_ADDED_DESCRIPTION) {
-                public Object getValue() {
-                    return new Long(WorkQueueImpl.this.totalWorkItemsAdded());
-                }
-            };
+                LongMonitoredAttributeBase(MonitoringConstants.WORKQUEUE_TOTAL_WORK_ITEMS_ADDED,
+                        MonitoringConstants.WORKQUEUE_TOTAL_WORK_ITEMS_ADDED_DESCRIPTION) {
+                    public Object getValue() {
+                        return new Long(WorkQueueImpl.this.totalWorkItemsAdded());
+                    }
+                };
         workqueueMonitoredObject.addAttribute(b1);
         LongMonitoredAttributeBase b2 = new
-            LongMonitoredAttributeBase(MonitoringConstants.WORKQUEUE_WORK_ITEMS_IN_QUEUE,
-                    MonitoringConstants.WORKQUEUE_WORK_ITEMS_IN_QUEUE_DESCRIPTION) {
-                public Object getValue() {
-                    return new Long(WorkQueueImpl.this.workItemsInQueue());
-                }
-            };
+                LongMonitoredAttributeBase(MonitoringConstants.WORKQUEUE_WORK_ITEMS_IN_QUEUE,
+                        MonitoringConstants.WORKQUEUE_WORK_ITEMS_IN_QUEUE_DESCRIPTION) {
+                    public Object getValue() {
+                        return new Long(WorkQueueImpl.this.workItemsInQueue());
+                    }
+                };
         workqueueMonitoredObject.addAttribute(b2);
         LongMonitoredAttributeBase b3 = new
-            LongMonitoredAttributeBase(MonitoringConstants.WORKQUEUE_AVERAGE_TIME_IN_QUEUE,
-                    MonitoringConstants.WORKQUEUE_AVERAGE_TIME_IN_QUEUE_DESCRIPTION) {
-                public Object getValue() {
-                    return new Long(WorkQueueImpl.this.averageTimeInQueue());
-                }
-            };
+                LongMonitoredAttributeBase(MonitoringConstants.WORKQUEUE_AVERAGE_TIME_IN_QUEUE,
+                        MonitoringConstants.WORKQUEUE_AVERAGE_TIME_IN_QUEUE_DESCRIPTION) {
+                    public Object getValue() {
+                        return new Long(WorkQueueImpl.this.averageTimeInQueue());
+                    }
+                };
         workqueueMonitoredObject.addAttribute(b3);
     }
 
@@ -112,61 +111,60 @@ public class WorkQueueImpl implements WorkQueue
     }
 
     public synchronized void addWork(Work work) {
-            workItemsAdded++;
-            work.setEnqueueTime(System.currentTimeMillis());
-            theWorkQueue.addLast(work);
-            ((ThreadPoolImpl)workerThreadPool).notifyForAvailableWork(this);
+        workItemsAdded++;
+        work.setEnqueueTime(System.currentTimeMillis());
+        theWorkQueue.addLast(work);
+        ((ThreadPoolImpl) workerThreadPool).notifyForAvailableWork(this);
     }
 
-    synchronized Work requestWork(long waitTime) throws TimeoutException, InterruptedException
-    {
+    synchronized Work requestWork(long waitTime) throws TimeoutException, InterruptedException {
         Work workItem;
-        ((ThreadPoolImpl)workerThreadPool).incrementNumberOfAvailableThreads();
+        ((ThreadPoolImpl) workerThreadPool).incrementNumberOfAvailableThreads();
 
-            if (theWorkQueue.size() != 0) {
-                workItem = (Work)theWorkQueue.removeFirst();
-                totalTimeInQueue += System.currentTimeMillis() - workItem.getEnqueueTime();
-                workItemsDequeued++;
-                ((ThreadPoolImpl)workerThreadPool).decrementNumberOfAvailableThreads();
-                return workItem;
-            }
+        if (theWorkQueue.size() != 0) {
+            workItem = (Work) theWorkQueue.removeFirst();
+            totalTimeInQueue += System.currentTimeMillis() - workItem.getEnqueueTime();
+            workItemsDequeued++;
+            ((ThreadPoolImpl) workerThreadPool).decrementNumberOfAvailableThreads();
+            return workItem;
+        }
 
-            try {
+        try {
 
-                long remainingWaitTime = waitTime;
-                long finishTime = System.currentTimeMillis() + waitTime;
+            long remainingWaitTime = waitTime;
+            long finishTime = System.currentTimeMillis() + waitTime;
 
-                do {
+            do {
 
-                    this.wait(remainingWaitTime);
+                this.wait(remainingWaitTime);
 
-                    if (theWorkQueue.size() != 0) {
-                        workItem = (Work)theWorkQueue.removeFirst();
-                        totalTimeInQueue += System.currentTimeMillis() - workItem.getEnqueueTime();
-                        workItemsDequeued++;
-                        ((ThreadPoolImpl)workerThreadPool).decrementNumberOfAvailableThreads();
-                        return workItem;
-                    }
+                if (theWorkQueue.size() != 0) {
+                    workItem = (Work) theWorkQueue.removeFirst();
+                    totalTimeInQueue += System.currentTimeMillis() - workItem.getEnqueueTime();
+                    workItemsDequeued++;
+                    ((ThreadPoolImpl) workerThreadPool).decrementNumberOfAvailableThreads();
+                    return workItem;
+                }
 
-                    remainingWaitTime = finishTime - System.currentTimeMillis();
+                remainingWaitTime = finishTime - System.currentTimeMillis();
 
-                } while (remainingWaitTime > 0);
+            } while (remainingWaitTime > 0);
 
-                ((ThreadPoolImpl)workerThreadPool).decrementNumberOfAvailableThreads();
-                throw new TimeoutException();
+            ((ThreadPoolImpl) workerThreadPool).decrementNumberOfAvailableThreads();
+            throw new TimeoutException();
 
-            } catch (InterruptedException ie) {
-                ((ThreadPoolImpl)workerThreadPool).decrementNumberOfAvailableThreads();
-                throw ie;
-            }
+        } catch (InterruptedException ie) {
+            ((ThreadPoolImpl) workerThreadPool).decrementNumberOfAvailableThreads();
+            throw ie;
+        }
     }
 
     public void setThreadPool(ThreadPool workerThreadPool) {
-            this.workerThreadPool = workerThreadPool;
+        this.workerThreadPool = workerThreadPool;
     }
 
     public ThreadPool getThreadPool() {
-            return workerThreadPool;
+        return workerThreadPool;
     }
 
     /**
@@ -188,7 +186,7 @@ public class WorkQueueImpl implements WorkQueue
     }
 
     public synchronized long averageTimeInQueue() {
-        return (totalTimeInQueue/workItemsDequeued);
+        return (totalTimeInQueue / workItemsDequeued);
     }
 
     public String getName() {

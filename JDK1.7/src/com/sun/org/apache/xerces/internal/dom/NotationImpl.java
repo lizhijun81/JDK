@@ -32,53 +32,64 @@ import org.w3c.dom.Notation;
  * may wish to consult when manipulating the document. A Notation
  * represents a name-value pair, with its nodeName being set to the
  * declared name of the notation.
- * <P>
+ * <p>
  * Notations are also used to formally declare the "targets" of
  * Processing Instructions.
- * <P>
+ * <p>
  * Note that the Notation's data is non-DOM information; the DOM only
  * records what and where it is.
- * <P>
+ * <p>
  * See the XML 1.0 spec, sections 4.7 and 2.6, for more info.
- * <P>
+ * <p>
  * Level 1 of the DOM does not support editing Notation contents.
  *
  * @xerces.internal
- *
- * @since  PR-DOM-Level-1-19980818.
+ * @since PR-DOM-Level-1-19980818.
  */
 public class NotationImpl
-    extends NodeImpl
-    implements Notation {
+        extends NodeImpl
+        implements Notation {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = -764632195890658402L;
 
     //
     // Data
     //
 
-    /** Notation name. */
+    /**
+     * Notation name.
+     */
     protected String name;
 
-    /** Public identifier. */
+    /**
+     * Public identifier.
+     */
     protected String publicId;
 
-    /** System identifier. */
+    /**
+     * System identifier.
+     */
     protected String systemId;
 
-    /** Base URI*/
+    /**
+     * Base URI
+     */
     protected String baseURI;
 
     //
     // Constructors
     //
 
-    /** Factory constructor. */
+    /**
+     * Factory constructor.
+     */
     public NotationImpl(CoreDocumentImpl ownerDoc, String name) {
         super(ownerDoc);
         this.name = name;
@@ -147,9 +158,9 @@ public class NotationImpl
     public void setPublicId(String id) {
 
         if (isReadOnly()) {
-                throw new DOMException(
-                DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                DOMMessageFormatter.formatMessage(DOMMessageFormatter.DOM_DOMAIN, "NO_MODIFICATION_ALLOWED_ERR", null));
+            throw new DOMException(
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR,
+                    DOMMessageFormatter.formatMessage(DOMMessageFormatter.DOM_DOMAIN, "NO_MODIFICATION_ALLOWED_ERR", null));
         }
         if (needsSyncData()) {
             synchronizeData();
@@ -164,10 +175,10 @@ public class NotationImpl
      */
     public void setSystemId(String id) {
 
-        if(isReadOnly()) {
-                throw new DOMException(
-                DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                DOMMessageFormatter.formatMessage(DOMMessageFormatter.DOM_DOMAIN, "NO_MODIFICATION_ALLOWED_ERR", null));
+        if (isReadOnly()) {
+            throw new DOMException(
+                    DOMException.NO_MODIFICATION_ALLOWED_ERR,
+                    DOMMessageFormatter.formatMessage(DOMMessageFormatter.DOM_DOMAIN, "NO_MODIFICATION_ALLOWED_ERR", null));
         }
         if (needsSyncData()) {
             synchronizeData();
@@ -189,11 +200,10 @@ public class NotationImpl
         if (needsSyncData()) {
             synchronizeData();
         }
-        if (baseURI != null && baseURI.length() != 0 ) {// attribute value is always empty string
+        if (baseURI != null && baseURI.length() != 0) {// attribute value is always empty string
             try {
                 return new URI(baseURI).toString();
-            }
-            catch (com.sun.org.apache.xerces.internal.util.URI.MalformedURIException e){
+            } catch (com.sun.org.apache.xerces.internal.util.URI.MalformedURIException e) {
                 // REVISIT: what should happen in this case?
                 return null;
             }
@@ -201,8 +211,10 @@ public class NotationImpl
         return baseURI;
     }
 
-    /** NON-DOM: set base uri*/
-    public void setBaseURI(String uri){
+    /**
+     * NON-DOM: set base uri
+     */
+    public void setBaseURI(String uri) {
         if (needsSyncData()) {
             synchronizeData();
         }

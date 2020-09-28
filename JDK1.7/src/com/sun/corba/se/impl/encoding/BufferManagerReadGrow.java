@@ -26,6 +26,7 @@
 package com.sun.corba.se.impl.encoding;
 
 import java.nio.ByteBuffer;
+
 import com.sun.corba.se.spi.orb.ORB;
 import com.sun.corba.se.spi.logging.CORBALogDomains;
 import com.sun.corba.se.impl.protocol.giopmsgheaders.FragmentMessage;
@@ -33,37 +34,35 @@ import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
 import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 
 public class BufferManagerReadGrow
-    implements BufferManagerRead, MarkAndResetHandler
-{
+        implements BufferManagerRead, MarkAndResetHandler {
     // REVISIT - This should go in an abstract class called
     //           BufferManagerReadBase which should implement
     //           BufferManagerRead. Then, this class should extend
     //           BufferManagerReadBase.
-    private ORB orb ;
+    private ORB orb;
 
-    private ORBUtilSystemException wrapper ;
+    private ORBUtilSystemException wrapper;
 
-    BufferManagerReadGrow( ORB orb )
-    {
-        this.orb = orb ;
-        this.wrapper = ORBUtilSystemException.get( orb,
-            CORBALogDomains.RPC_ENCODING ) ;
+    BufferManagerReadGrow(ORB orb) {
+        this.orb = orb;
+        this.wrapper = ORBUtilSystemException.get(orb,
+                CORBALogDomains.RPC_ENCODING);
     }
 
-    public void processFragment (ByteBuffer byteBuffer, FragmentMessage header)
-    {
+    public void processFragment(ByteBuffer byteBuffer, FragmentMessage header) {
         // REVISIT - should we consider throwing an exception similar to what's
         //           done for underflow()???
     }
 
-    public void init(Message msg) {}
-
-    public ByteBufferWithInfo underflow (ByteBufferWithInfo bbwi)
-    {
-        throw wrapper.unexpectedEof() ;
+    public void init(Message msg) {
     }
 
-    public void cancelProcessing(int requestId) {}
+    public ByteBufferWithInfo underflow(ByteBufferWithInfo bbwi) {
+        throw wrapper.unexpectedEof();
+    }
+
+    public void cancelProcessing(int requestId) {
+    }
 
     // Mark and reset handler -------------------------
 
@@ -82,7 +81,8 @@ public class BufferManagerReadGrow
     }
 
     // This will never happen
-    public void fragmentationOccured(ByteBufferWithInfo newFragment) {}
+    public void fragmentationOccured(ByteBufferWithInfo newFragment) {
+    }
 
     public void reset() {
 
@@ -95,5 +95,6 @@ public class BufferManagerReadGrow
     }
 
     // Nothing to close and cleanup.
-    public void close(ByteBufferWithInfo bbwi) {}
+    public void close(ByteBufferWithInfo bbwi) {
+    }
 }

@@ -38,9 +38,8 @@ import com.sun.corba.se.pept.transport.EventHandler;
  * PEPt architecture.</p>
  *
  * @author Harold Carr
-*/
-public interface Connection
-{
+ */
+public interface Connection {
     /**
      * Used to determine if the <code>Connection</code> should register
      * with the
@@ -48,7 +47,7 @@ public interface Connection
      * TransportManager}
      * {@link com.sun.corba.se.pept.transport.Selector Selector}
      * to handle read events.
-     *
+     * <p>
      * For example, an HTTP transport would not register since the requesting
      * thread would just block on read when waiting for the reply.
      *
@@ -63,7 +62,7 @@ public interface Connection
      * TransportManager}
      * {@link com.sun.corba.se.pept.transport.Selector Selector}
      * to handle read events.
-     *
+     * <p>
      * For example, an HTTP transport would not register since the requesting
      * thread would just block on read when waiting for the reply.
      *
@@ -80,7 +79,6 @@ public interface Connection
 
     /**
      * Close the <code>Connection</code>.
-     *
      */
     public void close();
 
@@ -92,8 +90,7 @@ public interface Connection
      * {@link com.sun.corba.se.pept.transport.Acceptor Acceptor}
      * that created this <code>Connection</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.transport.Acceptor Acceptor}
+     * @return {@link com.sun.corba.se.pept.transport.Acceptor Acceptor}
      */
     public Acceptor getAcceptor();
 
@@ -102,8 +99,7 @@ public interface Connection
      * {@link com.sun.corba.se.pept.transport.ContactInfo ContactInfo}
      * that created this <code>Connection</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.transport.ContactInfo ContactInfo}
+     * @return {@link com.sun.corba.se.pept.transport.ContactInfo ContactInfo}
      */
     public ContactInfo getContactInfo();
 
@@ -112,8 +108,7 @@ public interface Connection
      * {@link com.sun.corba.se.pept.transport.EventHandler EventHandler}
      * associated with this <code>Acceptor</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.transport.EventHandler EventHandler}
+     * @return {@link com.sun.corba.se.pept.transport.EventHandler EventHandler}
      */
     public EventHandler getEventHandler();
 
@@ -157,14 +152,14 @@ public interface Connection
 
     /**
      * The "state" of the <code>Connection</code>.
-     *
+     * <p>
      * param state
      */
     public void setState(String state);
 
     /**
      * Grab a write lock on the <code>Connection</code>.
-     *
+     * <p>
      * If another thread already has a write lock then the calling
      * thread will block until the lock is released.  The calling
      * thread must call
@@ -191,7 +186,7 @@ public interface Connection
      * Register an invocation's
      * {@link com.sun.corba.se.pept.protocol.MessageMediator MessageMediator}
      * with the <code>Connection</code>.
-     *
+     * <p>
      * This is useful in protocols which support fragmentation.
      *
      * @param messageMediator
@@ -200,7 +195,7 @@ public interface Connection
 
     /**
      * If a message expect's a response then this method is called.
-     *
+     * <p>
      * This method might block on a read (e.g., HTTP), put the calling
      * thread to sleep while another thread read's the response (e.g., GIOP),
      * or it may use the calling thread to perform the server-side work

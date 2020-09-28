@@ -26,13 +26,14 @@
 package com.sun.corba.se.impl.protocol.giopmsgheaders;
 
 import java.nio.ByteBuffer;
+
 import org.omg.CORBA.INTERNAL;
 import org.omg.CORBA.CompletionStatus;
 
 import com.sun.corba.se.spi.ior.iiop.GIOPVersion;
 
-import com.sun.corba.se.spi.logging.CORBALogDomains ;
-import com.sun.corba.se.impl.logging.ORBUtilSystemException ;
+import com.sun.corba.se.spi.logging.CORBALogDomains;
+import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 
 /*
  * This implements the GIOP 1.1 & 1.2 Message header.
@@ -47,7 +48,7 @@ public class Message_1_1
     final static int UPPER_THREE_BYTES_OF_INT_MASK = 0xFF;
 
     private static ORBUtilSystemException wrapper =
-        ORBUtilSystemException.get( CORBALogDomains.RPC_PROTOCOL ) ;
+            ORBUtilSystemException.get(CORBALogDomains.RPC_PROTOCOL);
 
     // Instance variables
     int magic = (int) 0;
@@ -62,7 +63,7 @@ public class Message_1_1
     }
 
     Message_1_1(int _magic, GIOPVersion _GIOP_version, byte _flags,
-            byte _message_type, int _message_size) {
+                byte _message_type, int _message_size) {
         magic = _magic;
         GIOP_version = _GIOP_version;
         flags = _flags;
@@ -81,7 +82,7 @@ public class Message_1_1
     }
 
     public int getSize() {
-            return this.message_size;
+        return this.message_size;
     }
 
     public boolean isLittleEndian() {
@@ -89,7 +90,7 @@ public class Message_1_1
     }
 
     public boolean moreFragmentsToFollow() {
-        return ( (this.flags & MORE_FRAGMENTS_BIT) == MORE_FRAGMENTS_BIT );
+        return ((this.flags & MORE_FRAGMENTS_BIT) == MORE_FRAGMENTS_BIT);
     }
 
     // Mutator methods
@@ -105,7 +106,7 @@ public class Message_1_1
         int tmpFlags = poolToUse << 2;
         tmpFlags &= UPPER_THREE_BYTES_OF_INT_MASK;
         tmpFlags |= flags;
-        flags = (byte)tmpFlags;
+        flags = (byte) tmpFlags;
     }
 
     public void setSize(ByteBuffer byteBuffer, int size) {
@@ -118,15 +119,15 @@ public class Message_1_1
 
         int patch = size - GIOPMessageHeaderLength;
         if (!isLittleEndian()) {
-            byteBuffer.put(8,  (byte)((patch >>> 24) & 0xFF));
-            byteBuffer.put(9,  (byte)((patch >>> 16) & 0xFF));
-            byteBuffer.put(10, (byte)((patch >>> 8)  & 0xFF));
-            byteBuffer.put(11, (byte)((patch >>> 0)  & 0xFF));
+            byteBuffer.put(8, (byte) ((patch >>> 24) & 0xFF));
+            byteBuffer.put(9, (byte) ((patch >>> 16) & 0xFF));
+            byteBuffer.put(10, (byte) ((patch >>> 8) & 0xFF));
+            byteBuffer.put(11, (byte) ((patch >>> 0) & 0xFF));
         } else {
-            byteBuffer.put(8,  (byte)((patch >>> 0)  & 0xFF));
-            byteBuffer.put(9,  (byte)((patch >>> 8)  & 0xFF));
-            byteBuffer.put(10, (byte)((patch >>> 16) & 0xFF));
-            byteBuffer.put(11, (byte)((patch >>> 24) & 0xFF));
+            byteBuffer.put(8, (byte) ((patch >>> 0) & 0xFF));
+            byteBuffer.put(9, (byte) ((patch >>> 8) & 0xFF));
+            byteBuffer.put(10, (byte) ((patch >>> 16) & 0xFF));
+            byteBuffer.put(11, (byte) ((patch >>> 24) & 0xFF));
         }
     }
 
@@ -138,18 +139,18 @@ public class Message_1_1
         // check for message type validity
 
         switch (this.message_type) {
-        case GIOPCancelRequest :
-        case GIOPCloseConnection :
-        case GIOPMessageError :
-            throw wrapper.fragmentationDisallowed(
-                CompletionStatus.COMPLETED_MAYBE);
-        case GIOPLocateRequest :
-        case GIOPLocateReply :
-            if (this.GIOP_version.equals(GIOPVersion.V1_1)) {
+            case GIOPCancelRequest:
+            case GIOPCloseConnection:
+            case GIOPMessageError:
                 throw wrapper.fragmentationDisallowed(
-                    CompletionStatus.COMPLETED_MAYBE);
-            }
-            break;
+                        CompletionStatus.COMPLETED_MAYBE);
+            case GIOPLocateRequest:
+            case GIOPLocateReply:
+                if (this.GIOP_version.equals(GIOPVersion.V1_1)) {
+                    throw wrapper.fragmentationDisallowed(
+                            CompletionStatus.COMPLETED_MAYBE);
+                }
+                break;
         }
 
         /*
@@ -166,7 +167,7 @@ public class Message_1_1
             return new FragmentMessage_1_2(this);
         }
 
-        throw wrapper.giopVersionError( CompletionStatus.COMPLETED_MAYBE);
+        throw wrapper.giopVersionError(CompletionStatus.COMPLETED_MAYBE);
     }
 
     // IO methods

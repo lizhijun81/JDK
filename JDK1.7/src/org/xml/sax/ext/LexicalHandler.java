@@ -62,11 +62,10 @@ import org.xml.sax.SAXException;
  * {@link org.xml.sax.SAXNotRecognizedException SAXNotRecognizedException}
  * when you attempt to register the handler.</p>
  *
- * @since SAX 2.0 (extensions 1.0)
  * @author David Megginson
+ * @since SAX 2.0 (extensions 1.0)
  */
-public interface LexicalHandler
-{
+public interface LexicalHandler {
 
     /**
      * Report the start of DTD declarations, if any.
@@ -94,21 +93,21 @@ public interface LexicalHandler
      * {@link org.xml.sax.ContentHandler#startElement startElement}
      * event.</p>
      *
-     * @param name The document type name.
+     * @param name     The document type name.
      * @param publicId The declared public identifier for the
-     *        external DTD subset, or null if none was declared.
+     *                 external DTD subset, or null if none was declared.
      * @param systemId The declared system identifier for the
-     *        external DTD subset, or null if none was declared.
-     *        (Note that this is not resolved against the document
-     *        base URI.)
-     * @exception SAXException The application may raise an
-     *            exception.
+     *                 external DTD subset, or null if none was declared.
+     *                 (Note that this is not resolved against the document
+     *                 base URI.)
+     * @throws SAXException The application may raise an
+     *                      exception.
      * @see #endDTD
      * @see #startEntity
      */
-    public abstract void startDTD (String name, String publicId,
-                                   String systemId)
-        throws SAXException;
+    public abstract void startDTD(String name, String publicId,
+                                  String systemId)
+            throws SAXException;
 
 
     /**
@@ -118,11 +117,11 @@ public interface LexicalHandler
      * DOCTYPE declaration; if the document has no DOCTYPE declaration,
      * this method will not be invoked.</p>
      *
-     * @exception SAXException The application may raise an exception.
+     * @throws SAXException The application may raise an exception.
      * @see #startDTD
      */
-    public abstract void endDTD ()
-        throws SAXException;
+    public abstract void endDTD()
+            throws SAXException;
 
 
     /**
@@ -167,26 +166,26 @@ public interface LexicalHandler
      * <p>All start/endEntity events must be properly nested.
      *
      * @param name The name of the entity.  If it is a parameter
-     *        entity, the name will begin with '%', and if it is the
-     *        external DTD subset, it will be "[dtd]".
-     * @exception SAXException The application may raise an exception.
+     *             entity, the name will begin with '%', and if it is the
+     *             external DTD subset, it will be "[dtd]".
+     * @throws SAXException The application may raise an exception.
      * @see #endEntity
      * @see org.xml.sax.ext.DeclHandler#internalEntityDecl
      * @see org.xml.sax.ext.DeclHandler#externalEntityDecl
      */
-    public abstract void startEntity (String name)
-        throws SAXException;
+    public abstract void startEntity(String name)
+            throws SAXException;
 
 
     /**
      * Report the end of an entity.
      *
      * @param name The name of the entity that is ending.
-     * @exception SAXException The application may raise an exception.
+     * @throws SAXException The application may raise an exception.
      * @see #startEntity
      */
-    public abstract void endEntity (String name)
-        throws SAXException;
+    public abstract void endEntity(String name)
+            throws SAXException;
 
 
     /**
@@ -197,21 +196,21 @@ public interface LexicalHandler
      * characters} event; this event is intended only to report
      * the boundary.</p>
      *
-     * @exception SAXException The application may raise an exception.
+     * @throws SAXException The application may raise an exception.
      * @see #endCDATA
      */
-    public abstract void startCDATA ()
-        throws SAXException;
+    public abstract void startCDATA()
+            throws SAXException;
 
 
     /**
      * Report the end of a CDATA section.
      *
-     * @exception SAXException The application may raise an exception.
+     * @throws SAXException The application may raise an exception.
      * @see #startCDATA
      */
-    public abstract void endCDATA ()
-        throws SAXException;
+    public abstract void endCDATA()
+            throws SAXException;
 
 
     /**
@@ -223,13 +222,13 @@ public interface LexicalHandler
      * nested inside start/endDTD and start/endEntity events (if
      * used).</p>
      *
-     * @param ch An array holding the characters in the comment.
-     * @param start The starting position in the array.
+     * @param ch     An array holding the characters in the comment.
+     * @param start  The starting position in the array.
      * @param length The number of characters to use from the array.
-     * @exception SAXException The application may raise an exception.
+     * @throws SAXException The application may raise an exception.
      */
-    public abstract void comment (char ch[], int start, int length)
-        throws SAXException;
+    public abstract void comment(char ch[], int start, int length)
+            throws SAXException;
 
 }
 

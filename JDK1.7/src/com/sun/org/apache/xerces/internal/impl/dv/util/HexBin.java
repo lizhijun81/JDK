@@ -22,39 +22,38 @@ package com.sun.org.apache.xerces.internal.impl.dv.util;
 
 /**
  * format validation
- *
+ * <p>
  * This class encodes/decodes hexadecimal data
  *
- * @xerces.internal
- *
  * @author Jeffrey Rodriguez
+ * @xerces.internal
  */
-public final class  HexBin {
-    static private final int  BASELENGTH   = 128;
-    static private final int  LOOKUPLENGTH = 16;
-    static final private byte [] hexNumberTable    = new byte[BASELENGTH];
-    static final private char [] lookUpHexAlphabet = new char[LOOKUPLENGTH];
+public final class HexBin {
+    static private final int BASELENGTH = 128;
+    static private final int LOOKUPLENGTH = 16;
+    static final private byte[] hexNumberTable = new byte[BASELENGTH];
+    static final private char[] lookUpHexAlphabet = new char[LOOKUPLENGTH];
 
 
     static {
-        for (int i = 0; i < BASELENGTH; i++ ) {
+        for (int i = 0; i < BASELENGTH; i++) {
             hexNumberTable[i] = -1;
         }
-        for ( int i = '9'; i >= '0'; i--) {
-            hexNumberTable[i] = (byte) (i-'0');
+        for (int i = '9'; i >= '0'; i--) {
+            hexNumberTable[i] = (byte) (i - '0');
         }
-        for ( int i = 'F'; i>= 'A'; i--) {
-            hexNumberTable[i] = (byte) ( i-'A' + 10 );
+        for (int i = 'F'; i >= 'A'; i--) {
+            hexNumberTable[i] = (byte) (i - 'A' + 10);
         }
-        for ( int i = 'f'; i>= 'a'; i--) {
-           hexNumberTable[i] = (byte) ( i-'a' + 10 );
+        for (int i = 'f'; i >= 'a'; i--) {
+            hexNumberTable[i] = (byte) (i - 'a' + 10);
         }
 
-        for(int i = 0; i<10; i++ ) {
-            lookUpHexAlphabet[i] = (char)('0'+i);
+        for (int i = 0; i < 10; i++) {
+            lookUpHexAlphabet[i] = (char) ('0' + i);
         }
-        for(int i = 10; i<=15; i++ ) {
-            lookUpHexAlphabet[i] = (char)('A'+i -10);
+        for (int i = 10; i <= 15; i++) {
+            lookUpHexAlphabet[i] = (char) ('A' + i - 10);
         }
     }
 
@@ -67,7 +66,7 @@ public final class  HexBin {
     static public String encode(byte[] binaryData) {
         if (binaryData == null)
             return null;
-        int lengthData   = binaryData.length;
+        int lengthData = binaryData.length;
         int lengthEncode = lengthData * 2;
         char[] encodedData = new char[lengthEncode];
         int temp;
@@ -75,8 +74,8 @@ public final class  HexBin {
             temp = binaryData[i];
             if (temp < 0)
                 temp += 256;
-            encodedData[i*2] = lookUpHexAlphabet[temp >> 4];
-            encodedData[i*2+1] = lookUpHexAlphabet[temp & 0xf];
+            encodedData[i * 2] = lookUpHexAlphabet[temp >> 4];
+            encodedData[i * 2 + 1] = lookUpHexAlphabet[temp & 0xf];
         }
         return new String(encodedData);
     }
@@ -99,16 +98,16 @@ public final class  HexBin {
         byte[] decodedData = new byte[lengthDecode];
         byte temp1, temp2;
         char tempChar;
-        for( int i = 0; i<lengthDecode; i++ ){
-            tempChar = binaryData[i*2];
+        for (int i = 0; i < lengthDecode; i++) {
+            tempChar = binaryData[i * 2];
             temp1 = (tempChar < BASELENGTH) ? hexNumberTable[tempChar] : -1;
             if (temp1 == -1)
                 return null;
-            tempChar = binaryData[i*2+1];
+            tempChar = binaryData[i * 2 + 1];
             temp2 = (tempChar < BASELENGTH) ? hexNumberTable[tempChar] : -1;
             if (temp2 == -1)
                 return null;
-            decodedData[i] = (byte)((temp1 << 4) | temp2);
+            decodedData[i] = (byte) ((temp1 << 4) | temp2);
         }
         return decodedData;
     }

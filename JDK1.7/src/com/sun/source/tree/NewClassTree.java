@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * A tree node to declare a new instance of a class.
- *
+ * <p>
  * For example:
  * <pre>
  *   new <em>identifier</em> ( )
@@ -42,16 +42,19 @@ import java.util.List;
  *   <em>enclosingExpression</em>.new <em>identifier</em> ( <em>arguments</em> )
  * </pre>
  *
- * @jls section 15.9
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls section 15.9
  * @since 1.6
  */
 public interface NewClassTree extends ExpressionTree {
     ExpressionTree getEnclosingExpression();
+
     List<? extends Tree> getTypeArguments();
+
     ExpressionTree getIdentifier();
+
     List<? extends ExpressionTree> getArguments();
+
     ClassTree getClassBody();
 }

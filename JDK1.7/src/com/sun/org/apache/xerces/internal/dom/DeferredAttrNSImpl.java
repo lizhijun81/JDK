@@ -31,28 +31,31 @@ package com.sun.org.apache.xerces.internal.dom;
  * DeferredAttrNSImpl is to AttrNSImpl, what DeferredAttrImpl is to
  * AttrImpl.
  *
- * @xerces.internal
- *
  * @author Andy Clark, IBM
  * @author Arnaud  Le Hors, IBM
+ * @xerces.internal
  * @see DeferredAttrImpl
  */
 public final class DeferredAttrNSImpl
-    extends AttrNSImpl
-    implements DeferredNode {
+        extends AttrNSImpl
+        implements DeferredNode {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = 6074924934945957154L;
 
     //
     // Data
     //
 
-    /** Node index. */
+    /**
+     * Node index.
+     */
     protected transient int fNodeIndex;
 
     //
@@ -76,7 +79,9 @@ public final class DeferredAttrNSImpl
     // DeferredNode methods
     //
 
-    /** Returns the node index. */
+    /**
+     * Returns the node index.
+     */
     public int getNodeIndex() {
         return fNodeIndex;
     }
@@ -85,7 +90,9 @@ public final class DeferredAttrNSImpl
     // Protected methods
     //
 
-    /** Synchronizes the data (name and value) for fast nodes. */
+    /**
+     * Synchronizes the data (name and value) for fast nodes.
+     */
     protected void synchronizeData() {
 
         // no need to sync in the future
@@ -93,15 +100,14 @@ public final class DeferredAttrNSImpl
 
         // fluff data
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl) ownerDocument();
+                (DeferredDocumentImpl) ownerDocument();
         name = ownerDocument.getNodeName(fNodeIndex);
 
         // extract prefix and local part from QName
         int index = name.indexOf(':');
         if (index < 0) {
             localName = name;
-        }
-        else {
+        } else {
             localName = name.substring(index + 1);
         }
 
@@ -123,7 +129,7 @@ public final class DeferredAttrNSImpl
      */
     protected void synchronizeChildren() {
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl) ownerDocument();
+                (DeferredDocumentImpl) ownerDocument();
         ownerDocument.synchronizeChildren(this, fNodeIndex);
     } // synchronizeChildren()
 

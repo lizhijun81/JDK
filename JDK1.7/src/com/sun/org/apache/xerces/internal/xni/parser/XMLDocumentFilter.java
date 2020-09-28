@@ -27,10 +27,9 @@ import com.sun.org.apache.xerces.internal.xni.XMLDocumentHandler;
  * of document events.
  *
  * @author Andy Clark, IBM
- *
  */
 public interface XMLDocumentFilter
-    extends XMLDocumentHandler, XMLDocumentSource {
+        extends XMLDocumentHandler, XMLDocumentSource {
 
 
 } // interface XMLDocumentFilter

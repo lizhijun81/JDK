@@ -66,10 +66,9 @@ package com.sun.org.apache.xerces.internal.impl.dtd.models;
  * Content model any node.
  *
  * @xerces.internal
- *
  */
 public class CMAny
-    extends CMNode {
+        extends CMNode {
 
     //
     // Data
@@ -102,8 +101,10 @@ public class CMAny
     // Constructors
     //
 
-    /** Constructs a content model any. */
-    public CMAny(int type, String uri, int position)  {
+    /**
+     * Constructs a content model any.
+     */
+    public CMAny(int type, String uri, int position) {
         super(type);
 
         // Store the information
@@ -124,13 +125,11 @@ public class CMAny
         return fURI;
     }
 
-    final int getPosition()
-    {
+    final int getPosition() {
         return fPosition;
     }
 
-    final void setPosition(int newPosition)
-    {
+    final void setPosition(int newPosition) {
         fPosition = newPosition;
     }
 
@@ -140,51 +139,46 @@ public class CMAny
 
     // package
 
-    public boolean isNullable()
-    {
+    public boolean isNullable() {
         // Leaf nodes are never nullable unless its an epsilon node
         return (fPosition == -1);
     }
 
-    public String toString()
-    {
+    public String toString() {
         StringBuffer strRet = new StringBuffer();
         strRet.append("(");
         strRet.append("##any:uri=");
         strRet.append(fURI);
         strRet.append(')');
-        if (fPosition >= 0)
-        {
+        if (fPosition >= 0) {
             strRet.append
-            (
-                " (Pos:"
-                + new Integer(fPosition).toString()
-                + ")"
-            );
+                    (
+                            " (Pos:"
+                                    + new Integer(fPosition).toString()
+                                    + ")"
+                    );
         }
         return strRet.toString();
     }
 
     // protected
 
-    protected void calcFirstPos(CMStateSet toSet)
-    {
+    protected void calcFirstPos(CMStateSet toSet) {
         // If we are an epsilon node, then the first pos is an empty set
         if (fPosition == -1)
             toSet.zeroBits();
 
-        // Otherwise, its just the one bit of our position
+            // Otherwise, its just the one bit of our position
         else
             toSet.setBit(fPosition);
     }
 
-    protected void calcLastPos(CMStateSet toSet)
-    {
+    protected void calcLastPos(CMStateSet toSet) {
         // If we are an epsilon node, then the last pos is an empty set
         if (fPosition == -1)
             toSet.zeroBits();
 
-        // Otherwise, its just the one bit of our position
+            // Otherwise, its just the one bit of our position
         else
             toSet.setBit(fPosition);
     }

@@ -53,7 +53,9 @@ public final class ObjectFactory {
     // name of default properties file to look for in JDK's jre/lib directory
     private static final String DEFAULT_PROPERTIES_FILENAME = "xerces.properties";
 
-    /** Set to true for debugging */
+    /**
+     * Set to true for debugging
+     */
     private static final boolean DEBUG = isDebugEnabled();
 
     /**
@@ -61,8 +63,9 @@ public final class ObjectFactory {
      */
     private static final int DEFAULT_LINE_LENGTH = 80;
 
-    /** cache the contents of the xerces.properties file.
-     *  Until an attempt has been made to read this file, this will
+    /**
+     * cache the contents of the xerces.properties file.
+     * Until an attempt has been made to read this file, this will
      * be null; if the file does not exist or we encounter some other error
      * during the read, this will be empty.
      */
@@ -88,17 +91,15 @@ public final class ObjectFactory {
      *  <li>use fallback classname
      * </ol>
      *
+     * @param factoryId         Name of the factory to find, same as
+     *                          a property name
+     * @param fallbackClassName Implementation class name, if nothing else
+     *                          is found.  Use null to mean no fallback.
      * @return Class object of factory, never null
-     *
-     * @param factoryId             Name of the factory to find, same as
-     *                              a property name
-     * @param fallbackClassName     Implementation class name, if nothing else
-     *                              is found.  Use null to mean no fallback.
-     *
-     * @exception ObjectFactory.ConfigurationError
+     * @throws ObjectFactory.ConfigurationError
      */
     public static Object createObject(String factoryId, String fallbackClassName)
-        throws ConfigurationError {
+            throws ConfigurationError {
         return createObject(factoryId, null, fallbackClassName);
     } // createObject(String,String):Object
 
@@ -112,23 +113,20 @@ public final class ObjectFactory {
      *  <li>use fallback classname
      * </ol>
      *
-     * @return Class object of factory, never null
-     *
-     * @param factoryId             Name of the factory to find, same as
-     *                              a property name
+     * @param factoryId          Name of the factory to find, same as
+     *                           a property name
      * @param propertiesFilename The filename in the $java.home/lib directory
      *                           of the properties file.  If none specified,
      *                           ${java.home}/lib/xerces.properties will be used.
-     * @param fallbackClassName     Implementation class name, if nothing else
-     *                              is found.  Use null to mean no fallback.
-     *
-     * @exception ObjectFactory.ConfigurationError
+     * @param fallbackClassName  Implementation class name, if nothing else
+     *                           is found.  Use null to mean no fallback.
+     * @return Class object of factory, never null
+     * @throws ObjectFactory.ConfigurationError
      */
     public static Object createObject(String factoryId,
                                       String propertiesFilename,
                                       String fallbackClassName)
-        throws ConfigurationError
-    {
+            throws ConfigurationError {
         if (DEBUG) debugPrintln("debug is on");
 
         ClassLoader cl = findClassLoader();
@@ -150,7 +148,7 @@ public final class ObjectFactory {
         // see CR 6400863: Expensive creating of SAX parser in Mustang
         if (fallbackClassName == null) {
             throw new ConfigurationError(
-                "Provider for " + factoryId + " cannot be found", null);
+                    "Provider for " + factoryId + " cannot be found", null);
         }
 
         if (DEBUG) debugPrintln("using fallback, value=" + fallbackClassName);
@@ -162,18 +160,22 @@ public final class ObjectFactory {
     // Private static methods
     //
 
-    /** Returns true if debug has been enabled. */
+    /**
+     * Returns true if debug has been enabled.
+     */
     private static boolean isDebugEnabled() {
         try {
             String val = SecuritySupport.getSystemProperty("xerces.debug");
             // Allow simply setting the prop to turn on debug
             return (val != null && (!"false".equals(val)));
+        } catch (SecurityException se) {
         }
-        catch (SecurityException se) {}
         return false;
     } // isDebugEnabled()
 
-    /** Prints a message to standard error if debugging is enabled. */
+    /**
+     * Prints a message to standard error if debugging is enabled.
+     */
     private static void debugPrintln(String msg) {
         if (DEBUG) {
             System.err.println("XERCES: " + msg);
@@ -185,9 +187,8 @@ public final class ObjectFactory {
      * the context ClassLoader.
      */
     public static ClassLoader findClassLoader()
-        throws ConfigurationError
-    {
-        if (System.getSecurityManager()!=null) {
+            throws ConfigurationError {
+        if (System.getSecurityManager() != null) {
             //this will ensure bootclassloader is used
             return null;
         }
@@ -235,7 +236,8 @@ public final class ObjectFactory {
             // Check for any extension ClassLoaders in chain up to
             // boot ClassLoader
             chain = SecuritySupport.getParentClassLoader(chain);
-        };
+        }
+        ;
 
         // Assert: Context ClassLoader not in chain of
         // boot/extension/system ClassLoaders
@@ -247,13 +249,12 @@ public final class ObjectFactory {
      * or bootclassloader when Security Manager is in place
      */
     public static Object newInstance(String className, boolean doFallback)
-        throws ConfigurationError
-    {
-        if (System.getSecurityManager()!=null) {
+            throws ConfigurationError {
+        if (System.getSecurityManager() != null) {
             return newInstance(className, null, doFallback);
         } else {
             return newInstance(className,
-                findClassLoader (), doFallback);
+                    findClassLoader(), doFallback);
         }
     }
 
@@ -261,23 +262,22 @@ public final class ObjectFactory {
      * Create an instance of a class using the specified ClassLoader
      */
     public static Object newInstance(String className, ClassLoader cl,
-                                      boolean doFallback)
-        throws ConfigurationError
-    {
+                                     boolean doFallback)
+            throws ConfigurationError {
         // assert(className != null);
-        try{
+        try {
             Class providerClass = findProviderClass(className, cl, doFallback);
             Object instance = providerClass.newInstance();
             if (DEBUG) debugPrintln("created new instance of " + providerClass +
-                   " using ClassLoader: " + cl);
+                    " using ClassLoader: " + cl);
             return instance;
         } catch (ClassNotFoundException x) {
             throw new ConfigurationError(
-                "Provider " + className + " not found", x);
+                    "Provider " + className + " not found", x);
         } catch (Exception x) {
             throw new ConfigurationError(
-                "Provider " + className + " could not be instantiated: " + x,
-                x);
+                    "Provider " + className + " could not be instantiated: " + x,
+                    x);
         }
     }
 
@@ -286,22 +286,21 @@ public final class ObjectFactory {
      * or bootclassloader when Security Manager is in place
      */
     public static Class findProviderClass(String className, boolean doFallback)
-        throws ClassNotFoundException, ConfigurationError
-    {
-        if (System.getSecurityManager()!=null) {
+            throws ClassNotFoundException, ConfigurationError {
+        if (System.getSecurityManager() != null) {
             return Class.forName(className);
         } else {
-            return findProviderClass (className,
-                findClassLoader (), doFallback);
+            return findProviderClass(className,
+                    findClassLoader(), doFallback);
         }
     }
+
     /**
      * Find a Class using the specified ClassLoader
      */
     public static Class findProviderClass(String className, ClassLoader cl,
-                                      boolean doFallback)
-        throws ClassNotFoundException, ConfigurationError
-    {
+                                          boolean doFallback)
+            throws ClassNotFoundException, ConfigurationError {
         //throw security exception if the calling thread is not allowed to access the package
         //restrict the access to package as speicified in java.security policy
         SecurityManager security = System.getSecurityManager();
@@ -349,8 +348,7 @@ public final class ObjectFactory {
      * @return instance of provider class if found or null
      */
     private static Object findJarServiceProvider(String factoryId)
-        throws ConfigurationError
-    {
+            throws ConfigurationError {
         String serviceId = "META-INF/services/" + factoryId;
         InputStream is = null;
 
@@ -374,7 +372,7 @@ public final class ObjectFactory {
         }
 
         if (DEBUG) debugPrintln("found jar resource=" + serviceId +
-               " using ClassLoader: " + cl);
+                " using ClassLoader: " + cl);
 
         // Read the service provider name in UTF-8 as specified in
         // the jar spec.  Unfortunately this fails in Microsoft
@@ -407,20 +405,20 @@ public final class ObjectFactory {
         } catch (IOException x) {
             // No provider found
             return null;
-        }
-        finally {
+        } finally {
             try {
                 // try to close the reader.
                 rd.close();
             }
             // Ignore the exception.
-            catch (IOException exc) {}
+            catch (IOException exc) {
+            }
         }
 
         if (factoryClassName != null &&
-            ! "".equals(factoryClassName)) {
+                !"".equals(factoryClassName)) {
             if (DEBUG) debugPrintln("found in resource, value="
-                   + factoryClassName);
+                    + factoryClassName);
 
             // Note: here we do not want to fall back to the current
             // ClassLoader because we want to avoid the case where the

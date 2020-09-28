@@ -61,10 +61,6 @@ import java.util.Locale;
  * once the first parse has completed successfully, but it may not
  * invoke the parse() methods recursively within a parse.</p>
  *
- * @deprecated This interface has been replaced by the SAX2
- *             {@link org.xml.sax.XMLReader XMLReader}
- *             interface, which includes Namespace support.
- * @since SAX 1.0
  * @author David Megginson
  * @see org.xml.sax.EntityResolver
  * @see org.xml.sax.DTDHandler
@@ -72,9 +68,12 @@ import java.util.Locale;
  * @see org.xml.sax.ErrorHandler
  * @see org.xml.sax.HandlerBase
  * @see org.xml.sax.InputSource
+ * @since SAX 1.0
+ * @deprecated This interface has been replaced by the SAX2
+ * {@link org.xml.sax.XMLReader XMLReader}
+ * interface, which includes Namespace support.
  */
-public interface Parser
-{
+public interface Parser {
 
     /**
      * Allow an application to request a locale for errors and warnings.
@@ -85,14 +84,14 @@ public interface Parser
      * not request a locale change in the middle of a parse.</p>
      *
      * @param locale A Java Locale object.
-     * @exception org.xml.sax.SAXException Throws an exception
-     *            (using the previous or default locale) if the
-     *            requested locale is not supported.
+     * @throws org.xml.sax.SAXException Throws an exception
+     *                                  (using the previous or default locale) if the
+     *                                  requested locale is not supported.
      * @see org.xml.sax.SAXException
      * @see org.xml.sax.SAXParseException
      */
-    public abstract void setLocale (Locale locale)
-        throws SAXException;
+    public abstract void setLocale(Locale locale)
+            throws SAXException;
 
 
     /**
@@ -111,7 +110,7 @@ public interface Parser
      * @see EntityResolver
      * @see HandlerBase
      */
-    public abstract void setEntityResolver (EntityResolver resolver);
+    public abstract void setEntityResolver(EntityResolver resolver);
 
 
     /**
@@ -130,7 +129,7 @@ public interface Parser
      * @see DTDHandler
      * @see HandlerBase
      */
-    public abstract void setDTDHandler (DTDHandler handler);
+    public abstract void setDTDHandler(DTDHandler handler);
 
 
     /**
@@ -149,7 +148,7 @@ public interface Parser
      * @see DocumentHandler
      * @see HandlerBase
      */
-    public abstract void setDocumentHandler (DocumentHandler handler);
+    public abstract void setDocumentHandler(DocumentHandler handler);
 
 
     /**
@@ -169,7 +168,7 @@ public interface Parser
      * @see SAXException
      * @see HandlerBase
      */
-    public abstract void setErrorHandler (ErrorHandler handler);
+    public abstract void setErrorHandler(ErrorHandler handler);
 
 
     /**
@@ -186,12 +185,12 @@ public interface Parser
      * different input source.</p>
      *
      * @param source The input source for the top-level of the
-     *        XML document.
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
-     * @exception java.io.IOException An IO exception from the parser,
-     *            possibly from a byte stream or character stream
-     *            supplied by the application.
+     *               XML document.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
+     * @throws java.io.IOException      An IO exception from the parser,
+     *                                  possibly from a byte stream or character stream
+     *                                  supplied by the application.
      * @see org.xml.sax.InputSource
      * @see #parse(java.lang.String)
      * @see #setEntityResolver
@@ -199,8 +198,8 @@ public interface Parser
      * @see #setDocumentHandler
      * @see #setErrorHandler
      */
-    public abstract void parse (InputSource source)
-        throws SAXException, IOException;
+    public abstract void parse(InputSource source)
+            throws SAXException, IOException;
 
 
     /**
@@ -218,15 +217,15 @@ public interface Parser
      * by the application before it is passed to the parser.</p>
      *
      * @param systemId The system identifier (URI).
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
-     * @exception java.io.IOException An IO exception from the parser,
-     *            possibly from a byte stream or character stream
-     *            supplied by the application.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
+     * @throws java.io.IOException      An IO exception from the parser,
+     *                                  possibly from a byte stream or character stream
+     *                                  supplied by the application.
      * @see #parse(org.xml.sax.InputSource)
      */
-    public abstract void parse (String systemId)
-        throws SAXException, IOException;
+    public abstract void parse(String systemId)
+            throws SAXException, IOException;
 
 }
 

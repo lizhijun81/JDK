@@ -30,6 +30,7 @@
  */
 
 package org.omg.CORBA.portable;
+
 import java.io.Serializable;
 
 /**
@@ -41,6 +42,7 @@ import java.io.Serializable;
  * is.read_value(java.io.Serializable) with a uninitialized valuetype
  * to use for unmarshaling. The value returned by the stream is
  * the same value passed in, with all the data unmarshaled.
+ *
  * @see org.omg.CORBA_2_3.ORB
  */
 
@@ -50,6 +52,7 @@ public interface ValueFactory {
      * the ORB runtime while in the process of unmarshaling a value type.
      * A user shall implement this method as part of implementing a type
      * specific value factory.
+     *
      * @param is an InputStream object--from which the value will be read.
      * @return a Serializable object--the value read off of "is" Input stream.
      */

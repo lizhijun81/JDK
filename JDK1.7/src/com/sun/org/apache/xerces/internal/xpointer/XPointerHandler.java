@@ -58,7 +58,6 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLErrorHandler;
  * </p>
  *
  * @xerces.internal
- *
  */
 public final class XPointerHandler extends XIncludeHandler implements
         XPointerProcessor {
@@ -85,7 +84,7 @@ public final class XPointerHandler extends XIncludeHandler implements
     // Supported schemes
     private final String ELEMENT_SCHEME_NAME = "element";
 
-   // Has the XPointer resolved the subresource
+    // Has the XPointer resolved the subresource
     protected boolean fIsXPointerResolved = false;
 
     // Fixup xml:base and xml:lang attributes
@@ -107,7 +106,7 @@ public final class XPointerHandler extends XIncludeHandler implements
     }
 
     public XPointerHandler(SymbolTable symbolTable,
-            XMLErrorHandler errorHandler, XMLErrorReporter errorReporter) {
+                           XMLErrorHandler errorHandler, XMLErrorReporter errorReporter) {
         super();
 
         fXPointerParts = new Vector();
@@ -146,8 +145,8 @@ public final class XPointerHandler extends XIncludeHandler implements
                     super.addToken(tokens, token);
                     return;
                 }
-                reportError("InvalidXPointerToken", new Object[] { tokens
-                        .getTokenString(token) });
+                reportError("InvalidXPointerToken", new Object[]{tokens
+                        .getTokenString(token)});
             }
         };
 
@@ -157,134 +156,133 @@ public final class XPointerHandler extends XIncludeHandler implements
                 length);
 
         if (!success)
-            reportError("InvalidXPointerExpression", new Object[] { xpointer });
+            reportError("InvalidXPointerExpression", new Object[]{xpointer});
 
         while (tokens.hasMore()) {
             int token = tokens.nextToken();
 
             switch (token) {
-            case Tokens.XPTRTOKEN_SHORTHAND: {
+                case Tokens.XPTRTOKEN_SHORTHAND: {
 
-                // The shortHand name
-                token = tokens.nextToken();
-                String shortHandPointerName = tokens.getTokenString(token);
-
-                if (shortHandPointerName == null) {
-                    reportError("InvalidXPointerExpression",
-                            new Object[] { xpointer });
-                }
-
-                XPointerPart shortHandPointer = new ShortHandPointer(
-                        fSymbolTable);
-                shortHandPointer.setSchemeName(shortHandPointerName);
-                fXPointerParts.add(shortHandPointer);
-                break;
-            }
-            case Tokens.XPTRTOKEN_SCHEMENAME: {
-
-                // Retreive the local name and prefix to form the scheme name
-                token = tokens.nextToken();
-                String prefix = tokens.getTokenString(token);
-                token = tokens.nextToken();
-                String localName = tokens.getTokenString(token);
-
-                String schemeName = prefix + localName;
-
-                // The next character should be an open parenthesis
-                int openParenCount = 0;
-                int closeParenCount = 0;
-
-                token = tokens.nextToken();
-                String openParen = tokens.getTokenString(token);
-                if (openParen != "XPTRTOKEN_OPEN_PAREN") {
-
-                    // can not have more than one ShortHand Pointer
-                    if (token == Tokens.XPTRTOKEN_SHORTHAND) {
-                        reportError("MultipleShortHandPointers",
-                                new Object[] { xpointer });
-                    } else {
-                        reportError("InvalidXPointerExpression",
-                                new Object[] { xpointer });
-                    }
-                }
-                openParenCount++;
-
-                // followed by zero or more ( and  the schemeData
-                String schemeData = null;
-                while (tokens.hasMore()) {
+                    // The shortHand name
                     token = tokens.nextToken();
-                    schemeData = tokens.getTokenString(token);
-                    if (schemeData != "XPTRTOKEN_OPEN_PAREN") {
-                        break;
+                    String shortHandPointerName = tokens.getTokenString(token);
+
+                    if (shortHandPointerName == null) {
+                        reportError("InvalidXPointerExpression",
+                                new Object[]{xpointer});
+                    }
+
+                    XPointerPart shortHandPointer = new ShortHandPointer(
+                            fSymbolTable);
+                    shortHandPointer.setSchemeName(shortHandPointerName);
+                    fXPointerParts.add(shortHandPointer);
+                    break;
+                }
+                case Tokens.XPTRTOKEN_SCHEMENAME: {
+
+                    // Retreive the local name and prefix to form the scheme name
+                    token = tokens.nextToken();
+                    String prefix = tokens.getTokenString(token);
+                    token = tokens.nextToken();
+                    String localName = tokens.getTokenString(token);
+
+                    String schemeName = prefix + localName;
+
+                    // The next character should be an open parenthesis
+                    int openParenCount = 0;
+                    int closeParenCount = 0;
+
+                    token = tokens.nextToken();
+                    String openParen = tokens.getTokenString(token);
+                    if (openParen != "XPTRTOKEN_OPEN_PAREN") {
+
+                        // can not have more than one ShortHand Pointer
+                        if (token == Tokens.XPTRTOKEN_SHORTHAND) {
+                            reportError("MultipleShortHandPointers",
+                                    new Object[]{xpointer});
+                        } else {
+                            reportError("InvalidXPointerExpression",
+                                    new Object[]{xpointer});
+                        }
                     }
                     openParenCount++;
-                }
-                token = tokens.nextToken();
-                schemeData = tokens.getTokenString(token);
 
-                // followed by the same number of )
-                token = tokens.nextToken();
-                String closeParen = tokens.getTokenString(token);
-                if (closeParen != "XPTRTOKEN_CLOSE_PAREN") {
-                    reportError("SchemeDataNotFollowedByCloseParenthesis",
-                            new Object[] { xpointer });
-                }
-                closeParenCount++;
+                    // followed by zero or more ( and  the schemeData
+                    String schemeData = null;
+                    while (tokens.hasMore()) {
+                        token = tokens.nextToken();
+                        schemeData = tokens.getTokenString(token);
+                        if (schemeData != "XPTRTOKEN_OPEN_PAREN") {
+                            break;
+                        }
+                        openParenCount++;
+                    }
+                    token = tokens.nextToken();
+                    schemeData = tokens.getTokenString(token);
 
-                while (tokens.hasMore()) {
-                    if (tokens.getTokenString(tokens.peekToken()) != "XPTRTOKEN_OPEN_PAREN") {
-                        break;
+                    // followed by the same number of )
+                    token = tokens.nextToken();
+                    String closeParen = tokens.getTokenString(token);
+                    if (closeParen != "XPTRTOKEN_CLOSE_PAREN") {
+                        reportError("SchemeDataNotFollowedByCloseParenthesis",
+                                new Object[]{xpointer});
                     }
                     closeParenCount++;
-                }
 
-                // check if the number of open parenthesis are equal to the number of close parenthesis
-                if (openParenCount != closeParenCount) {
-                    reportError("UnbalancedParenthesisInXPointerExpression",
-                            new Object[] { xpointer,
-                                    new Integer(openParenCount),
-                                    new Integer(closeParenCount) });
-                }
-
-                // Perform scheme specific parsing of the pointer part
-                if (schemeName.equals(ELEMENT_SCHEME_NAME)) {
-                    XPointerPart elementSchemePointer = new ElementSchemePointer(
-                            fSymbolTable, fErrorReporter);
-                    elementSchemePointer.setSchemeName(schemeName);
-                    elementSchemePointer.setSchemeData(schemeData);
-
-                    // If an exception occurs while parsing the element() scheme expression
-                    // ignore it and move on to the next pointer part
-                    try {
-                        elementSchemePointer.parseXPointer(schemeData);
-                        fXPointerParts.add(elementSchemePointer);
-                    } catch (XNIException e) {
-                        // Re-throw the XPointer element() scheme syntax error.
-                        throw new XNIException (e);
+                    while (tokens.hasMore()) {
+                        if (tokens.getTokenString(tokens.peekToken()) != "XPTRTOKEN_OPEN_PAREN") {
+                            break;
+                        }
+                        closeParenCount++;
                     }
 
-                } else {
-                    // ????
-                    reportWarning("SchemeUnsupported",
-                            new Object[] { schemeName });
-                }
+                    // check if the number of open parenthesis are equal to the number of close parenthesis
+                    if (openParenCount != closeParenCount) {
+                        reportError("UnbalancedParenthesisInXPointerExpression",
+                                new Object[]{xpointer,
+                                        new Integer(openParenCount),
+                                        new Integer(closeParenCount)});
+                    }
 
-                break;
-            }
-            default:
-                reportError("InvalidXPointerExpression",
-                        new Object[] { xpointer });
+                    // Perform scheme specific parsing of the pointer part
+                    if (schemeName.equals(ELEMENT_SCHEME_NAME)) {
+                        XPointerPart elementSchemePointer = new ElementSchemePointer(
+                                fSymbolTable, fErrorReporter);
+                        elementSchemePointer.setSchemeName(schemeName);
+                        elementSchemePointer.setSchemeData(schemeData);
+
+                        // If an exception occurs while parsing the element() scheme expression
+                        // ignore it and move on to the next pointer part
+                        try {
+                            elementSchemePointer.parseXPointer(schemeData);
+                            fXPointerParts.add(elementSchemePointer);
+                        } catch (XNIException e) {
+                            // Re-throw the XPointer element() scheme syntax error.
+                            throw new XNIException(e);
+                        }
+
+                    } else {
+                        // ????
+                        reportWarning("SchemeUnsupported",
+                                new Object[]{schemeName});
+                    }
+
+                    break;
+                }
+                default:
+                    reportError("InvalidXPointerExpression",
+                            new Object[]{xpointer});
             }
         }
 
     }
 
     /**
-     *
      * @see com.sun.org.apache.xerces.internal.xpointer.XPointerProcessor#resolveXPointer(com.sun.org.apache.xerces.internal.xni.QName, com.sun.org.apache.xerces.internal.xni.XMLAttributes, com.sun.org.apache.xerces.internal.xni.Augmentations, int event)
      */
     public boolean resolveXPointer(QName element, XMLAttributes attributes,
-            Augmentations augs, int event) throws XNIException {
+                                   Augmentations augs, int event) throws XNIException {
         boolean resolved = false;
 
         // The result of the first pointer part whose evaluation identifies
@@ -342,12 +340,11 @@ public final class XPointerHandler extends XIncludeHandler implements
      * of the current resource fragment.
      *
      * @see com.sun.org.apache.xerces.internal.xpointer.XPointerPart#isChildFragmentResolved()
-     *
      */
     public boolean isChildFragmentResolved() throws XNIException {
         boolean resolved = (fXPointerPart != null) ? fXPointerPart
-                                .isChildFragmentResolved() : false;
-                return resolved;
+                .isChildFragmentResolved() : false;
+        return resolved;
     }
 
     /**
@@ -370,7 +367,6 @@ public final class XPointerHandler extends XIncludeHandler implements
 
     /**
      * Reports XPointer Errors
-     *
      */
     private void reportError(String key, Object[] arguments)
             throws XNIException {
@@ -380,13 +376,12 @@ public final class XPointerHandler extends XIncludeHandler implements
                 XMLErrorReporter.SEVERITY_ERROR);
         */
         throw new XNIException((fErrorReporter
-                                .getMessageFormatter(XPointerMessageFormatter.XPOINTER_DOMAIN))
-                                .formatMessage(fErrorReporter.getLocale(), key, arguments));
+                .getMessageFormatter(XPointerMessageFormatter.XPOINTER_DOMAIN))
+                .formatMessage(fErrorReporter.getLocale(), key, arguments));
     }
 
     /**
      * Reports XPointer Warnings
-     *
      */
     private void reportWarning(String key, Object[] arguments)
             throws XNIException {
@@ -397,7 +392,6 @@ public final class XPointerHandler extends XIncludeHandler implements
 
     /**
      * Initializes error handling objects
-     *
      */
     protected void initErrorReporter() {
         if (fXPointerErrorReporter == null) {
@@ -442,7 +436,6 @@ public final class XPointerHandler extends XIncludeHandler implements
      * List of XPointer Framework tokens.
      *
      * @xerces.internal
-     *
      */
     private final class Tokens {
 
@@ -457,16 +450,15 @@ public final class XPointerHandler extends XIncludeHandler implements
          * [7] EscapedData ::= NormalChar | '^(' | '^)' | '^^' | '(' SchemeData ')'
          * [8] NormalChar  ::= UnicodeChar - [()^]
          * [9] UnicodeChar ::= [#x0-#x10FFFF]
-         *
          */
         private static final int XPTRTOKEN_OPEN_PAREN = 0,
                 XPTRTOKEN_CLOSE_PAREN = 1, XPTRTOKEN_SHORTHAND = 2,
                 XPTRTOKEN_SCHEMENAME = 3, XPTRTOKEN_SCHEMEDATA = 4;
 
         // Token names
-        private final String[] fgTokenNames = { "XPTRTOKEN_OPEN_PAREN",
+        private final String[] fgTokenNames = {"XPTRTOKEN_OPEN_PAREN",
                 "XPTRTOKEN_CLOSE_PAREN", "XPTRTOKEN_SHORTHAND",
-                "XPTRTOKEN_SCHEMENAME", "XPTRTOKEN_SCHEMEDATA" };
+                "XPTRTOKEN_SCHEMENAME", "XPTRTOKEN_SCHEMEDATA"};
 
         // Token count
         private static final int INITIAL_TOKEN_COUNT = 1 << 8;
@@ -504,6 +496,7 @@ public final class XPointerHandler extends XIncludeHandler implements
 
         /**
          * Returns the token String
+         *
          * @param token The index of the token
          * @return String The token string
          */
@@ -560,7 +553,7 @@ public final class XPointerHandler extends XIncludeHandler implements
         /**
          * Obtains the token at the current position, then advance
          * the current position by one.
-         *
+         * <p>
          * throws If there's no such next token, this method throws
          * <tt>new XNIException("XPointerProcessingError");</tt>.
          */
@@ -574,7 +567,7 @@ public final class XPointerHandler extends XIncludeHandler implements
         /**
          * Obtains the token at the current position, without advancing
          * the current position.
-         *
+         * <p>
          * If there's no such next token, this method throws
          * <tt>new XNIException("XPointerProcessingError");</tt>.
          */
@@ -587,7 +580,7 @@ public final class XPointerHandler extends XIncludeHandler implements
 
         /**
          * Obtains the token at the current position as a String.
-         *
+         * <p>
          * If there's no current token or if the current token
          * is not a string token, this method throws
          * If there's no such next token, this method throws
@@ -603,26 +596,25 @@ public final class XPointerHandler extends XIncludeHandler implements
     }
 
     /**
-     *
      * The XPointer expression scanner.  Scans the XPointer framework expression.
      *
      * @xerces.internal
-     *
      */
     private class Scanner {
 
         /**
          * 7-bit ASCII subset
-         *
-         *  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
-         *  0,  0,  0,  0,  0,  0,  0,  0,  0, HT, LF,  0,  0, CR,  0,  0,  // 0
-         *  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  // 1
+         * <p>
+         * 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+         * 0,  0,  0,  0,  0,  0,  0,  0,  0, HT, LF,  0,  0, CR,  0,  0,  // 0
+         * 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  // 1
          * SP,  !,  ",  #,  $,  %,  &,  ',  (,  ),  *,  +,  ,,  -,  .,  /,  // 2
-         *  0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  :,  ;,  <,  =,  >,  ?,  // 3
-         *  @,  A,  B,  C,  D,  E,  F,  G,  H,  I,  J,  K,  L,  M,  N,  O,  // 4
-         *  P,  Q,  R,  S,  T,  U,  V,  W,  X,  Y,  Z,  [,  \,  ],  ^,  _,  // 5
-         *  `,  a,  b,  c,  d,  e,  f,  g,  h,  i,  j,  k,  l,  m,  n,  o,  // 6
-         *  p,  q,  r,  s,  t,  u,  v,  w,  x,  y,  z,  {,  |,  },  ~, DEL  // 7
+         * 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  :,  ;,  <,  =,  >,  ?,  // 3
+         *
+         * @, A,  B,  C,  D,  E,  F,  G,  H,  I,  J,  K,  L,  M,  N,  O,  // 4
+         * P,  Q,  R,  S,  T,  U,  V,  W,  X,  Y,  Z,  [,  \,  ],  ^,  _,  // 5
+         * `,  a,  b,  c,  d,  e,  f,  g,  h,  i,  j,  k,  l,  m,  n,  o,  // 6
+         * p,  q,  r,  s,  t,  u,  v,  w,  x,  y,  z,  {,  |,  },  ~, DEL  // 7
          */
         private static final byte CHARTYPE_INVALID = 0, // invalid XML character
                 CHARTYPE_OTHER = 1, // not special - one of "#%&;?\`{}~" or DEL
@@ -640,19 +632,21 @@ public final class XPointerHandler extends XIncludeHandler implements
                 CHARTYPE_UNDERSCORE = 13, // '_' (0x5F)
                 CHARTYPE_NONASCII = 14; // Non-ASCII Unicode codepoint (>= 0x80)
 
-        private final byte[] fASCIICharMap = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
+        private final byte[] fASCIICharMap = {0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
                 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 2, 1, 1, 1, 1, 1, 1, 1, 4, 5, 1, 1, 1, 6, 7, 8, 9, 9, 9, 9, 9,
                 9, 9, 9, 9, 9, 10, 1, 1, 11, 1, 1, 1, 12, 12, 12, 12, 12, 12,
                 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
                 12, 12, 12, 12, 1, 1, 1, 3, 13, 1, 12, 12, 12, 12, 12, 12, 12,
                 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12, 12,
-                12, 12, 12, 1, 1, 1, 1, 1 };
+                12, 12, 12, 1, 1, 1, 1, 1};
 
         //
         // Data
         //
-        /** Symbol table. */
+        /**
+         * Symbol table.
+         */
         private SymbolTable fSymbolTable;
 
         /**
@@ -668,10 +662,9 @@ public final class XPointerHandler extends XIncludeHandler implements
 
         /**
          * Scans the XPointer Expression
-         *
          */
         private boolean scanExpr(SymbolTable symbolTable, Tokens tokens,
-                String data, int currentOffset, int endOffset)
+                                 String data, int currentOffset, int endOffset)
                 throws XNIException {
 
             int ch;
@@ -723,65 +716,39 @@ public final class XPointerHandler extends XIncludeHandler implements
 
                 switch (chartype) {
 
-                case CHARTYPE_OPEN_PAREN: // '('
-                    addToken(tokens, Tokens.XPTRTOKEN_OPEN_PAREN);
-                    openParen++;
-                    ++currentOffset;
-                    break;
+                    case CHARTYPE_OPEN_PAREN: // '('
+                        addToken(tokens, Tokens.XPTRTOKEN_OPEN_PAREN);
+                        openParen++;
+                        ++currentOffset;
+                        break;
 
-                case CHARTYPE_CLOSE_PAREN: // ')'
-                    addToken(tokens, Tokens.XPTRTOKEN_CLOSE_PAREN);
-                    closeParen++;
-                    ++currentOffset;
-                    break;
+                    case CHARTYPE_CLOSE_PAREN: // ')'
+                        addToken(tokens, Tokens.XPTRTOKEN_CLOSE_PAREN);
+                        closeParen++;
+                        ++currentOffset;
+                        break;
 
-                case CHARTYPE_CARRET:
-                case CHARTYPE_COLON:
-                case CHARTYPE_DIGIT:
-                case CHARTYPE_EQUAL:
-                case CHARTYPE_LETTER:
-                case CHARTYPE_MINUS:
-                case CHARTYPE_NONASCII:
-                case CHARTYPE_OTHER:
-                case CHARTYPE_PERIOD:
-                case CHARTYPE_SLASH:
-                case CHARTYPE_UNDERSCORE:
-                case CHARTYPE_WHITESPACE:
-                    // Scanning SchemeName | Shorthand
-                    if (openParen == 0) {
-                        nameOffset = currentOffset;
-                        currentOffset = scanNCName(data, endOffset,
-                                currentOffset);
-
-                        if (currentOffset == nameOffset) {
-                            reportError("InvalidShortHandPointer",
-                                    new Object[] { data });
-                            return false;
-                        }
-
-                        if (currentOffset < endOffset) {
-                            ch = data.charAt(currentOffset);
-                        } else {
-                            ch = -1;
-                        }
-
-                        name = symbolTable.addSymbol(data.substring(nameOffset,
-                                currentOffset));
-                        prefix = XMLSymbols.EMPTY_STRING;
-
-                        // The name is a QName => a SchemeName
-                        if (ch == ':') {
-                            if (++currentOffset == endOffset) {
-                                return false;
-                            }
-
-                            ch = data.charAt(currentOffset);
-                            prefix = name;
+                    case CHARTYPE_CARRET:
+                    case CHARTYPE_COLON:
+                    case CHARTYPE_DIGIT:
+                    case CHARTYPE_EQUAL:
+                    case CHARTYPE_LETTER:
+                    case CHARTYPE_MINUS:
+                    case CHARTYPE_NONASCII:
+                    case CHARTYPE_OTHER:
+                    case CHARTYPE_PERIOD:
+                    case CHARTYPE_SLASH:
+                    case CHARTYPE_UNDERSCORE:
+                    case CHARTYPE_WHITESPACE:
+                        // Scanning SchemeName | Shorthand
+                        if (openParen == 0) {
                             nameOffset = currentOffset;
                             currentOffset = scanNCName(data, endOffset,
                                     currentOffset);
 
                             if (currentOffset == nameOffset) {
+                                reportError("InvalidShortHandPointer",
+                                        new Object[]{data});
                                 return false;
                             }
 
@@ -791,61 +758,87 @@ public final class XPointerHandler extends XIncludeHandler implements
                                 ch = -1;
                             }
 
-                            isQName = true;
-                            name = symbolTable.addSymbol(data.substring(
-                                    nameOffset, currentOffset));
-                        }
+                            name = symbolTable.addSymbol(data.substring(nameOffset,
+                                    currentOffset));
+                            prefix = XMLSymbols.EMPTY_STRING;
 
-                        // REVISIT:
-                        if (currentOffset != endOffset) {
-                            addToken(tokens, Tokens.XPTRTOKEN_SCHEMENAME);
-                            tokens.addToken(prefix);
-                            tokens.addToken(name);
-                            isQName = false;
-                        } else if (currentOffset == endOffset) {
-                            // NCName => Shorthand
-                            addToken(tokens, Tokens.XPTRTOKEN_SHORTHAND);
-                            tokens.addToken(name);
-                            isQName = false;
-                        }
+                            // The name is a QName => a SchemeName
+                            if (ch == ':') {
+                                if (++currentOffset == endOffset) {
+                                    return false;
+                                }
 
-                        // reset open/close paren for the next pointer part
-                        closeParen = 0;
+                                ch = data.charAt(currentOffset);
+                                prefix = name;
+                                nameOffset = currentOffset;
+                                currentOffset = scanNCName(data, endOffset,
+                                        currentOffset);
 
-                        break;
+                                if (currentOffset == nameOffset) {
+                                    return false;
+                                }
 
-                    } else if (openParen > 0 && closeParen == 0 && name != null) {
-                        // Scanning SchemeData
-                        dataOffset = currentOffset;
-                        currentOffset = scanData(data, schemeDataBuff,
-                                endOffset, currentOffset);
+                                if (currentOffset < endOffset) {
+                                    ch = data.charAt(currentOffset);
+                                } else {
+                                    ch = -1;
+                                }
 
-                        if (currentOffset == dataOffset) {
-                            reportError("InvalidSchemeDataInXPointer",
-                                    new Object[] { data });
+                                isQName = true;
+                                name = symbolTable.addSymbol(data.substring(
+                                        nameOffset, currentOffset));
+                            }
+
+                            // REVISIT:
+                            if (currentOffset != endOffset) {
+                                addToken(tokens, Tokens.XPTRTOKEN_SCHEMENAME);
+                                tokens.addToken(prefix);
+                                tokens.addToken(name);
+                                isQName = false;
+                            } else if (currentOffset == endOffset) {
+                                // NCName => Shorthand
+                                addToken(tokens, Tokens.XPTRTOKEN_SHORTHAND);
+                                tokens.addToken(name);
+                                isQName = false;
+                            }
+
+                            // reset open/close paren for the next pointer part
+                            closeParen = 0;
+
+                            break;
+
+                        } else if (openParen > 0 && closeParen == 0 && name != null) {
+                            // Scanning SchemeData
+                            dataOffset = currentOffset;
+                            currentOffset = scanData(data, schemeDataBuff,
+                                    endOffset, currentOffset);
+
+                            if (currentOffset == dataOffset) {
+                                reportError("InvalidSchemeDataInXPointer",
+                                        new Object[]{data});
+                                return false;
+                            }
+
+                            if (currentOffset < endOffset) {
+                                ch = data.charAt(currentOffset);
+                            } else {
+                                ch = -1;
+                            }
+
+                            schemeData = symbolTable.addSymbol(schemeDataBuff
+                                    .toString());
+                            addToken(tokens, Tokens.XPTRTOKEN_SCHEMEDATA);
+                            tokens.addToken(schemeData);
+
+                            // reset open/close paren for the next pointer part
+                            openParen = 0;
+                            schemeDataBuff.delete(0, schemeDataBuff.length());
+
+                        } else {
+                            // ex. schemeName()
+                            // Should we throw an exception with a more suitable message instead??
                             return false;
                         }
-
-                        if (currentOffset < endOffset) {
-                            ch = data.charAt(currentOffset);
-                        } else {
-                            ch = -1;
-                        }
-
-                        schemeData = symbolTable.addSymbol(schemeDataBuff
-                                .toString());
-                        addToken(tokens, Tokens.XPTRTOKEN_SCHEMEDATA);
-                        tokens.addToken(schemeData);
-
-                        // reset open/close paren for the next pointer part
-                        openParen = 0;
-                        schemeDataBuff.delete(0, schemeDataBuff.length());
-
-                    } else {
-                        // ex. schemeName()
-                        // Should we throw an exception with a more suitable message instead??
-                        return false;
-                    }
                 }
             } // end while
             return true;
@@ -857,8 +850,8 @@ public final class XPointerHandler extends XIncludeHandler implements
          * [5] NCName ::= (Letter | '_') (NCNameChar)*
          * [6] NCNameChar ::= Letter | Digit | '.' | '-' | '_' | CombiningChar | Extender
          *
-         * @param data A String containing the XPointer expression
-         * @param endOffset The int XPointer expression length
+         * @param data          A String containing the XPointer expression
+         * @param endOffset     The int XPointer expression length
          * @param currentOffset An int representing the current position of the XPointer expression pointer
          */
         private int scanNCName(String data, int endOffset, int currentOffset) {
@@ -902,10 +895,9 @@ public final class XPointerHandler extends XIncludeHandler implements
          * [7]    EscapedData  ::=    NormalChar | '^(' | '^)' | '^^' | '(' SchemeData ')'
          * [8]    NormalChar   ::=    UnicodeChar - [()^]
          * [9]    UnicodeChar  ::=    [#x0-#x10FFFF]
-         *
          */
         private int scanData(String data, StringBuffer schemeData,
-                int endOffset, int currentOffset) {
+                             int endOffset, int currentOffset) {
             while (true) {
 
                 if (currentOffset == endOffset) {
@@ -938,7 +930,7 @@ public final class XPointerHandler extends XIncludeHandler implements
                 } else if (chartype == CHARTYPE_CLOSE_PAREN) {
                     return currentOffset;
 
-                } else  if (chartype == CHARTYPE_CARRET) {
+                } else if (chartype == CHARTYPE_CARRET) {
                     ch = data.charAt(++currentOffset);
                     chartype = (ch >= 0x80) ? CHARTYPE_NONASCII
                             : fASCIICharMap[ch];
@@ -981,14 +973,13 @@ public final class XPointerHandler extends XIncludeHandler implements
     // ************************************************************************
     //  Overridden XMLDocumentHandler methods
     // ************************************************************************
+
     /**
      * If the comment is a child of a matched element, then pass else return.
      *
-     * @param text   The text in the comment.
-     * @param augs   Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by application to signal an error.
+     * @param text The text in the comment.
+     * @param augs Additional information that may include infoset augmentations
+     * @throws XNIException Thrown by application to signal an error.
      */
     public void comment(XMLString text, Augmentations augs) throws XNIException {
         if (!isChildFragmentResolved()) {
@@ -1011,12 +1002,10 @@ public final class XPointerHandler extends XIncludeHandler implements
      * @param target The target.
      * @param data   The data or null if none specified.
      * @param augs   Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by handler to signal an error.
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void processingInstruction(String target, XMLString data,
-            Augmentations augs) throws XNIException {
+                                      Augmentations augs) throws XNIException {
         if (!isChildFragmentResolved()) {
             return;
         }
@@ -1029,19 +1018,17 @@ public final class XPointerHandler extends XIncludeHandler implements
      * @param element    The name of the element.
      * @param attributes The element attributes.
      * @param augs       Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by handler to signal an error.
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void startElement(QName element, XMLAttributes attributes,
-            Augmentations augs) throws XNIException {
+                             Augmentations augs) throws XNIException {
         if (!resolveXPointer(element, attributes, augs,
                 XPointerPart.EVENT_ELEMENT_START)) {
 
             // xml:base and xml:lang processing
-                if (fFixupBase) {
+            if (fFixupBase) {
                 processXMLBaseAttributes(attributes);
-                }
+            }
             if (fFixupLang) {
                 processXMLLangAttributes(attributes);
             }
@@ -1060,18 +1047,16 @@ public final class XPointerHandler extends XIncludeHandler implements
      * @param element    The name of the element.
      * @param attributes The element attributes.
      * @param augs       Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by handler to signal an error.
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void emptyElement(QName element, XMLAttributes attributes,
-            Augmentations augs) throws XNIException {
+                             Augmentations augs) throws XNIException {
         if (!resolveXPointer(element, attributes, augs,
                 XPointerPart.EVENT_ELEMENT_EMPTY)) {
             // xml:base and xml:lang processing
-                if (fFixupBase) {
+            if (fFixupBase) {
                 processXMLBaseAttributes(attributes);
-                }
+            }
             if (fFixupLang) {
                 processXMLLangAttributes(attributes);
             }
@@ -1087,11 +1072,9 @@ public final class XPointerHandler extends XIncludeHandler implements
     /**
      * Character content.
      *
-     * @param text   The content.
-     * @param augs   Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by handler to signal an error.
+     * @param text The content.
+     * @param augs Additional information that may include infoset augmentations
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void characters(XMLString text, Augmentations augs)
             throws XNIException {
@@ -1109,11 +1092,9 @@ public final class XPointerHandler extends XIncludeHandler implements
      * characters in the document are ignorable based on the element
      * content model.
      *
-     * @param text   The ignorable whitespace.
-     * @param augs   Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by handler to signal an error.
+     * @param text The ignorable whitespace.
+     * @param augs Additional information that may include infoset augmentations
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void ignorableWhitespace(XMLString text, Augmentations augs)
             throws XNIException {
@@ -1128,9 +1109,7 @@ public final class XPointerHandler extends XIncludeHandler implements
      *
      * @param element The name of the element.
      * @param augs    Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by handler to signal an error.
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void endElement(QName element, Augmentations augs)
             throws XNIException {
@@ -1146,10 +1125,8 @@ public final class XPointerHandler extends XIncludeHandler implements
     /**
      * The start of a CDATA section.
      *
-     * @param augs   Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by handler to signal an error.
+     * @param augs Additional information that may include infoset augmentations
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void startCDATA(Augmentations augs) throws XNIException {
         if (!isChildFragmentResolved()) {
@@ -1161,10 +1138,8 @@ public final class XPointerHandler extends XIncludeHandler implements
     /**
      * The end of a CDATA section.
      *
-     * @param augs   Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by handler to signal an error.
+     * @param augs Additional information that may include infoset augmentations
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void endCDATA(Augmentations augs) throws XNIException {
         if (!isChildFragmentResolved()) {
@@ -1176,6 +1151,7 @@ public final class XPointerHandler extends XIncludeHandler implements
     // ************************************************************************
     // Overridden XMLComponent methods
     // ************************************************************************
+
     /**
      * <p>
      * Sets the value of a property. This method is called by the component
@@ -1186,12 +1162,11 @@ public final class XPointerHandler extends XIncludeHandler implements
      *
      * @param propertyId The property identifier.
      * @param value      The value of the property.
-     *
      * @throws XMLConfigurationException Thrown for configuration error.
-     *                                  In general, components should
-     *                                  only throw this exception if
-     *                                  it is <strong>really</strong>
-     *                                  a critical error.
+     *                                   In general, components should
+     *                                   only throw this exception if
+     *                                   it is <strong>really</strong>
+     *                                   a critical error.
      */
     public void setProperty(String propertyId, Object value)
             throws XMLConfigurationException {
@@ -1220,7 +1195,7 @@ public final class XPointerHandler extends XIncludeHandler implements
         if (propertyId == Constants.XERCES_FEATURE_PREFIX
                 + Constants.XINCLUDE_FIXUP_LANGUAGE_FEATURE) {
             if (value != null) {
-                fFixupLang = ((Boolean)value).booleanValue();
+                fFixupLang = ((Boolean) value).booleanValue();
             } else {
                 fFixupLang = false;
             }
@@ -1230,7 +1205,7 @@ public final class XPointerHandler extends XIncludeHandler implements
         if (propertyId == Constants.XERCES_FEATURE_PREFIX
                 + Constants.XINCLUDE_FIXUP_BASE_URIS_FEATURE) {
             if (value != null) {
-                fFixupBase = ((Boolean)value).booleanValue();
+                fFixupBase = ((Boolean) value).booleanValue();
             } else {
                 fFixupBase = false;
             }

@@ -34,8 +34,7 @@ package com.sun.corba.se.spi.orbutil.fsm;
  *
  * @author Ken Cavanaugh
  */
-public interface Input
-{
+public interface Input {
 }
 
 // end of Input.java

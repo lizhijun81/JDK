@@ -24,6 +24,7 @@
  */
 
 package com.sun.corba.se.impl.orbutil;
+
 import org.omg.CORBA.INTERNAL;
 import org.omg.CORBA.CompletionStatus;
 
@@ -38,6 +39,7 @@ public class CacheTable {
         int val;
         Entry next;  // this chains the collision list of table "map"
         Entry rnext; // this chains the collision list of table "rmap"
+
         public Entry(java.lang.Object k, int v) {
             key = k;
             val = v;
@@ -45,37 +47,42 @@ public class CacheTable {
             rnext = null;
         }
     }
+
     private boolean noReverseMap;
     // size must be power of 2
     static final int INITIAL_SIZE = 16;
     static final int MAX_SIZE = 1 << 30;
     int size;
     int entryCount;
-    private Entry [] map;
-    private Entry [] rmap;
+    private Entry[] map;
+    private Entry[] rmap;
 
     private ORB orb;
     private ORBUtilSystemException wrapper;
 
-    private CacheTable() {}
-    public  CacheTable(ORB orb, boolean u) {
+    private CacheTable() {
+    }
+
+    public CacheTable(ORB orb, boolean u) {
         //System.out.println("using new cache table");
         this.orb = orb;
         wrapper = ORBUtilSystemException.get(orb,
-            CORBALogDomains.RPC_ENCODING);
+                CORBALogDomains.RPC_ENCODING);
         noReverseMap = u;
         size = INITIAL_SIZE;
         entryCount = 0;
         initTables();
     }
+
     private void initTables() {
         map = new Entry[size];
         rmap = noReverseMap ? null : new Entry[size];
     }
+
     private void grow() {
         if (size == MAX_SIZE)
-                return;
-        Entry [] oldMap = map;
+            return;
+        Entry[] oldMap = map;
         int oldSize = size;
         size <<= 1;
         initTables();
@@ -85,21 +92,25 @@ public class CacheTable {
                 put_table(e.key, e.val);
         }
     }
+
     private int moduloTableSize(int h) {
         // these are the "supplemental hash function" copied from
         // java.util.HashMap, supposed to be "critical"
         h += ~(h << 9);
-        h ^=  (h >>> 14);
-        h +=  (h << 4);
-        h ^=  (h >>> 10);
+        h ^= (h >>> 14);
+        h += (h << 4);
+        h ^= (h >>> 10);
         return h & (size - 1);
     }
+
     private int hash(java.lang.Object key) {
         return moduloTableSize(System.identityHashCode(key));
     }
+
     private int hash(int val) {
         return moduloTableSize(val);
     }
+
     public final void put(java.lang.Object key, int val) {
         if (put_table(key, val)) {
             entryCount++;
@@ -107,6 +118,7 @@ public class CacheTable {
                 grow();
         }
     }
+
     private boolean put_table(java.lang.Object key, int val) {
         int index = hash(key);
         for (Entry e = map[index]; e != null; e = e.next) {
@@ -131,9 +143,11 @@ public class CacheTable {
         }
         return true;
     }
+
     public final boolean containsKey(java.lang.Object key) {
         return (getVal(key) != -1);
     }
+
     public final int getVal(java.lang.Object key) {
         int index = hash(key);
         for (Entry e = map[index]; e != null; e = e.next) {
@@ -142,12 +156,15 @@ public class CacheTable {
         }
         return -1;
     }
+
     public final boolean containsVal(int val) {
         return (getKey(val) != null);
     }
+
     public final boolean containsOrderedVal(int val) {
         return containsVal(val);
     }
+
     public final java.lang.Object getKey(int val) {
         int index = hash(val);
         for (Entry e = rmap[index]; e != null; e = e.rnext) {
@@ -156,6 +173,7 @@ public class CacheTable {
         }
         return null;
     }
+
     public void done() {
         map = null;
         rmap = null;

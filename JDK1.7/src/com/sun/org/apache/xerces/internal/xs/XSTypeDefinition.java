@@ -27,11 +27,12 @@ public interface XSTypeDefinition extends XSObject {
     /**
      * The object describes a complex type.
      */
-    public static final short COMPLEX_TYPE              = 15;
+    public static final short COMPLEX_TYPE = 15;
     /**
      * The object describes a simple type.
      */
-    public static final short SIMPLE_TYPE               = 16;
+    public static final short SIMPLE_TYPE = 16;
+
     /**
      * Return whether this type definition is a simple type or complex type.
      */
@@ -47,10 +48,11 @@ public interface XSTypeDefinition extends XSObject {
      * {final}. For a complex type definition it is a subset of {extension,
      * restriction}. For a simple type definition it is a subset of
      * {extension, list, restriction, union}.
-     * @param restriction  Extension, restriction, list, union constants
-     *   (defined in <code>XSConstants</code>).
+     *
+     * @param restriction Extension, restriction, list, union constants
+     *                    (defined in <code>XSConstants</code>).
      * @return True if <code>restriction</code> is in the final set,
-     *   otherwise false.
+     * otherwise false.
      */
     public boolean isFinal(short restriction);
 
@@ -67,7 +69,7 @@ public interface XSTypeDefinition extends XSObject {
     public short getFinal();
 
     /**
-     *  Convenience attribute. A boolean that specifies if the type definition
+     * Convenience attribute. A boolean that specifies if the type definition
      * is anonymous.
      */
     public boolean getAnonymous();
@@ -75,13 +77,14 @@ public interface XSTypeDefinition extends XSObject {
     /**
      * Convenience method which checks if this type is derived from the given
      * <code>ancestorType</code>.
-     * @param ancestorType  An ancestor type definition.
-     * @param derivationMethod  A bit combination representing a subset of {
-     *   <code>DERIVATION_RESTRICTION, DERIVATION_EXTENSION, DERIVATION_UNION, DERIVATION_LIST</code>
-     *   }.
-     * @return  True if this type is derived from <code>ancestorType</code>
-     *   using only derivation methods from the <code>derivationMethod</code>
-     *   .
+     *
+     * @param ancestorType     An ancestor type definition.
+     * @param derivationMethod A bit combination representing a subset of {
+     *                         <code>DERIVATION_RESTRICTION, DERIVATION_EXTENSION, DERIVATION_UNION, DERIVATION_LIST</code>
+     *                         }.
+     * @return True if this type is derived from <code>ancestorType</code>
+     * using only derivation methods from the <code>derivationMethod</code>
+     * .
      */
     public boolean derivedFromType(XSTypeDefinition ancestorType,
                                    short derivationMethod);
@@ -89,14 +92,15 @@ public interface XSTypeDefinition extends XSObject {
     /**
      * Convenience method which checks if this type is derived from the given
      * ancestor type.
-     * @param namespace  An ancestor type namespace.
-     * @param name  An ancestor type name.
-     * @param derivationMethod  A bit combination representing a subset of {
-     *   <code>DERIVATION_RESTRICTION, DERIVATION_EXTENSION, DERIVATION_UNION, DERIVATION_LIST</code>
-     *   }.
-     * @return  True if this type is derived from <code>ancestorType</code>
-     *   using only derivation methods from the <code>derivationMethod</code>
-     *   .
+     *
+     * @param namespace        An ancestor type namespace.
+     * @param name             An ancestor type name.
+     * @param derivationMethod A bit combination representing a subset of {
+     *                         <code>DERIVATION_RESTRICTION, DERIVATION_EXTENSION, DERIVATION_UNION, DERIVATION_LIST</code>
+     *                         }.
+     * @return True if this type is derived from <code>ancestorType</code>
+     * using only derivation methods from the <code>derivationMethod</code>
+     * .
      */
     public boolean derivedFrom(String namespace,
                                String name,

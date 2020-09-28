@@ -26,6 +26,7 @@
 package com.sun.source.util;
 
 import com.sun.source.tree.*;
+
 import java.util.Iterator;
 
 /**
@@ -38,6 +39,7 @@ import java.util.Iterator;
 public class TreePath implements Iterable<Tree> {
     /**
      * Gets a tree path for a tree node within a compilation unit.
+     *
      * @return null if the node is not found
      */
     public static TreePath getPath(CompilationUnitTree unit, Tree target) {
@@ -46,6 +48,7 @@ public class TreePath implements Iterable<Tree> {
 
     /**
      * Gets a tree path for a tree node within a subtree identified by a TreePath object.
+     *
      * @return null if the node is not found
      */
     public static TreePath getPath(TreePath path, Tree target) {
@@ -55,11 +58,12 @@ public class TreePath implements Iterable<Tree> {
         class Result extends Error {
             static final long serialVersionUID = -5942088234594905625L;
             TreePath path;
+
             Result(TreePath path) {
                 this.path = path;
             }
         }
-        class PathFinder extends TreePathScanner<TreePath,Tree> {
+        class PathFinder extends TreePathScanner<TreePath, Tree> {
             public TreePath scan(Tree tree, Tree target) {
                 if (tree == target)
                     throw new Result(new TreePath(getCurrentPath(), target));
@@ -89,13 +93,13 @@ public class TreePath implements Iterable<Tree> {
         if (t.getKind() == Tree.Kind.COMPILATION_UNIT) {
             compilationUnit = (CompilationUnitTree) t;
             parent = null;
-        }
-        else {
+        } else {
             compilationUnit = p.compilationUnit;
             parent = p;
         }
         leaf = t;
     }
+
     /**
      * Get the compilation unit associated with this path.
      */

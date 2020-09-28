@@ -26,39 +26,42 @@ import org.w3c.dom.Node;
  * This class represents a Document Type <em>declaraction</em> in
  * the document itself, <em>not</em> a Document Type Definition (DTD).
  * An XML document may (or may not) have such a reference.
- * <P>
+ * <p>
  * DocumentType is an Extended DOM feature, used in XML documents but
  * not in HTML.
- * <P>
+ * <p>
  * Note that Entities and Notations are no longer children of the
  * DocumentType, but are parentless nodes hung only in their
  * appropriate NamedNodeMaps.
- * <P>
+ * <p>
  * This area is UNDERSPECIFIED IN REC-DOM-Level-1-19981001
  * Most notably, absolutely no provision was made for storing
  * and using Element and Attribute information. Nor was the linkage
  * between Entities and Entity References nailed down solidly.
  *
  * @xerces.internal
- *
- * @since  PR-DOM-Level-1-19980818.
+ * @since PR-DOM-Level-1-19980818.
  */
 public class DeferredDocumentTypeImpl
-    extends DocumentTypeImpl
-    implements DeferredNode {
+        extends DocumentTypeImpl
+        implements DeferredNode {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = -2172579663227313509L;
 
     //
     // Data
     //
 
-    /** Node index. */
+    /**
+     * Node index.
+     */
     protected transient int fNodeIndex;
 
     //
@@ -82,7 +85,9 @@ public class DeferredDocumentTypeImpl
     // DeferredNode methods
     //
 
-    /** Returns the node index. */
+    /**
+     * Returns the node index.
+     */
     public int getNodeIndex() {
         return fNodeIndex;
     }
@@ -91,7 +96,9 @@ public class DeferredDocumentTypeImpl
     // Protected methods
     //
 
-    /** Synchronizes the data (name and value) for fast nodes. */
+    /**
+     * Synchronizes the data (name and value) for fast nodes.
+     */
     protected void synchronizeData() {
 
         // no need to sync in the future
@@ -99,7 +106,7 @@ public class DeferredDocumentTypeImpl
 
         // fluff data
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl)this.ownerDocument;
+                (DeferredDocumentImpl) this.ownerDocument;
         name = ownerDocument.getNodeName(fNodeIndex);
 
         // public and system ids
@@ -109,7 +116,9 @@ public class DeferredDocumentTypeImpl
         internalSubset = ownerDocument.getNodeValue(extraDataIndex);
     } // synchronizeData()
 
-    /** Synchronizes the entities, notations, and elements. */
+    /**
+     * Synchronizes the entities, notations, and elements.
+     */
     protected void synchronizeChildren() {
 
         // we don't want to generate any event for this so turn them off
@@ -121,17 +130,17 @@ public class DeferredDocumentTypeImpl
 
         // create new node maps
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl)this.ownerDocument;
+                (DeferredDocumentImpl) this.ownerDocument;
 
-        entities  = new NamedNodeMapImpl(this);
+        entities = new NamedNodeMapImpl(this);
         notations = new NamedNodeMapImpl(this);
-        elements  = new NamedNodeMapImpl(this);
+        elements = new NamedNodeMapImpl(this);
 
         // fill node maps
         DeferredNode last = null;
         for (int index = ownerDocument.getLastChild(fNodeIndex);
-            index != -1;
-            index = ownerDocument.getPrevSibling(index)) {
+             index != -1;
+             index = ownerDocument.getPrevSibling(index)) {
 
             DeferredNode node = ownerDocument.getNodeObject(index);
             int type = node.getNodeType();
@@ -157,7 +166,7 @@ public class DeferredDocumentTypeImpl
 
                 // elements
                 case Node.ELEMENT_NODE: {
-                    if (((DocumentImpl)getOwnerDocument()).allowGrammarAccess){
+                    if (((DocumentImpl) getOwnerDocument()).allowGrammarAccess) {
                         insertBefore(node, last);
                         last = node;
                         break;
@@ -167,13 +176,13 @@ public class DeferredDocumentTypeImpl
                 // NOTE: Should never get here! -Ac
                 default: {
                     System.out.println("DeferredDocumentTypeImpl" +
-                                       "#synchronizeInfo: " +
-                                       "node.getNodeType() = " +
-                                       node.getNodeType() +
-                                       ", class = " +
-                                       node.getClass().getName());
+                            "#synchronizeInfo: " +
+                            "node.getNodeType() = " +
+                            node.getNodeType() +
+                            ", class = " +
+                            node.getClass().getName());
                 }
-             }
+            }
         }
 
         // set mutation events flag back to its original value

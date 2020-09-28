@@ -36,8 +36,7 @@ package java.net;
  */
 
 public class URISyntaxException
-    extends Exception
-{
+        extends Exception {
     private static final long serialVersionUID = 2137979680897488891L;
 
     private String input;
@@ -47,16 +46,12 @@ public class URISyntaxException
      * Constructs an instance from the given input string, reason, and error
      * index.
      *
-     * @param  input   The input string
-     * @param  reason  A string explaining why the input could not be parsed
-     * @param  index   The index at which the parse error occurred,
-     *                 or <tt>-1</tt> if the index is not known
-     *
-     * @throws  NullPointerException
-     *          If either the input or reason strings are <tt>null</tt>
-     *
-     * @throws  IllegalArgumentException
-     *          If the error index is less than <tt>-1</tt>
+     * @param input  The input string
+     * @param reason A string explaining why the input could not be parsed
+     * @param index  The index at which the parse error occurred,
+     *               or <tt>-1</tt> if the index is not known
+     * @throws NullPointerException     If either the input or reason strings are <tt>null</tt>
+     * @throws IllegalArgumentException If the error index is less than <tt>-1</tt>
      */
     public URISyntaxException(String input, String reason, int index) {
         super(reason);
@@ -72,11 +67,9 @@ public class URISyntaxException
      * Constructs an instance from the given input string and reason.  The
      * resulting object will have an error index of <tt>-1</tt>.
      *
-     * @param  input   The input string
-     * @param  reason  A string explaining why the input could not be parsed
-     *
-     * @throws  NullPointerException
-     *          If either the input or reason strings are <tt>null</tt>
+     * @param input  The input string
+     * @param reason A string explaining why the input could not be parsed
+     * @throws NullPointerException If either the input or reason strings are <tt>null</tt>
      */
     public URISyntaxException(String input, String reason) {
         this(input, reason, -1);
@@ -85,7 +78,7 @@ public class URISyntaxException
     /**
      * Returns the input string.
      *
-     * @return  The input string
+     * @return The input string
      */
     public String getInput() {
         return input;
@@ -94,7 +87,7 @@ public class URISyntaxException
     /**
      * Returns a string explaining why the input string could not be parsed.
      *
-     * @return  The reason string
+     * @return The reason string
      */
     public String getReason() {
         return super.getMessage();
@@ -104,7 +97,7 @@ public class URISyntaxException
      * Returns an index into the input string of the position at which the
      * parse error occurred, or <tt>-1</tt> if this position is not known.
      *
-     * @return  The error index
+     * @return The error index
      */
     public int getIndex() {
         return index;
@@ -118,7 +111,7 @@ public class URISyntaxException
      * decimal, is inserted after the reason string and before the colon
      * character.
      *
-     * @return  A string describing the parse error
+     * @return A string describing the parse error
      */
     public String getMessage() {
         StringBuffer sb = new StringBuffer();

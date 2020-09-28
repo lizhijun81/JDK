@@ -27,6 +27,7 @@ package com.sun.corba.se.impl.naming.pcosnaming;
 
 import org.omg.CORBA.Object;
 import org.omg.CosNaming.BindingType;
+
 import java.io.Serializable;
 
 /**
@@ -35,8 +36,7 @@ import java.io.Serializable;
  * components associated with the binding.
  */
 public class InternalBindingValue
-                implements Serializable
-{
+        implements Serializable {
     public BindingType theBindingType;
     // The value stores both Stringified Object Reference and
     // Non-Stringified Object Reference. This is done to avoid
@@ -56,13 +56,11 @@ public class InternalBindingValue
         strObjectRef = o;
     }
 
-    public org.omg.CORBA.Object getObjectRef( )
-    {
+    public org.omg.CORBA.Object getObjectRef() {
         return theObjectRef;
     }
 
-    public void setObjectRef( org.omg.CORBA.Object ObjectRef )
-    {
+    public void setObjectRef(org.omg.CORBA.Object ObjectRef) {
         theObjectRef = ObjectRef;
     }
 

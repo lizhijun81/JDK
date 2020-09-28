@@ -78,7 +78,7 @@ public final class StAXInputSource extends XMLInputSource {
         return fConsumeRemainingContent;
     }
 
-    public void setSystemId(String systemId){
+    public void setSystemId(String systemId) {
         throw new UnsupportedOperationException("Cannot set the system ID on a StAXInputSource");
     }
 
@@ -87,8 +87,8 @@ public final class StAXInputSource extends XMLInputSource {
             if (reader != null) {
                 return reader.peek().getLocation().getSystemId();
             }
+        } catch (XMLStreamException e) {
         }
-        catch (XMLStreamException e) {}
         return null;
     }
 

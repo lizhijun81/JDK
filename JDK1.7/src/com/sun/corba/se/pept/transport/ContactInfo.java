@@ -43,8 +43,7 @@ import com.sun.corba.se.pept.transport.ConnectionCache;
  *
  * @author Harold Carr
  */
-public interface ContactInfo
-{
+public interface ContactInfo {
     /**
      * The {@link com.sun.corba.se.pept.broker.Broker Broker} associated
      * with an invocation.
@@ -58,8 +57,7 @@ public interface ContactInfo
      * {@link com.sun.corba.se.pept.broker.ContactInfoList ContactInfoList}
      * for this <code>ContactInfo</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.broker.ContactInfoList ContactInfoList}
+     * @return {@link com.sun.corba.se.pept.broker.ContactInfoList ContactInfoList}
      */
     public ContactInfoList getContactInfoList();
 
@@ -70,16 +68,16 @@ public interface ContactInfo
      * used to handle the specific <em>protocol</em> represented by this
      * <code>ContactInfo</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.protocol.ClientRequestDispatcher
-     * ClientRequestDispatcher} */
+     * @return {@link com.sun.corba.se.pept.protocol.ClientRequestDispatcher
+     * ClientRequestDispatcher}
+     */
     public ClientRequestDispatcher getClientRequestDispatcher();
 
     /**
      * Used to determine if a
      * {@link com.sun.corba.se.pept.transport.Connection Connection}
      * will be present in an invocation.
-     *
+     * <p>
      * For example, it may be
      * <code>false</code> in the case of shared-memory
      * <code>Input/OutputObjects</code>.
@@ -94,11 +92,10 @@ public interface ContactInfo
      * Used to determine if the
      * {@link com.sun.corba.se.pept.transport.Connection Connection}
      * used for a request should be cached.
-     *
+     * <p>
      * If <code>true</code> then PEPt will attempt to reuse an existing
      * {@link com.sun.corba.se.pept.transport.Connection Connection}. If
      * one is not found it will create a new one and cache it for future use.
-     *
      *
      * @return <code>true</code> if
      * {@link com.sun.corba.se.pept.transport.Connection Connection}s
@@ -118,7 +115,7 @@ public interface ContactInfo
      * Set the
      * {@link com.sun.corba.se.pept.transport.Outbound.ConnectionCache OutboundConnectionCache}
      * to be used by this <code>ContactInfo</code>.
-     *
+     * <p>
      * PEPt uses separate caches for each type of <code>ContactInfo</code>
      * as given by {@link #getConnectionCacheType}.
      * {@link #setConnectionCache} and {@link #getConnectionCache} support
@@ -132,14 +129,13 @@ public interface ContactInfo
      * Get the
      * {@link com.sun.corba.se.pept.transport.Outbound.ConnectionCache OutboundConnectionCache}
      * used by this <code>ContactInfo</code>
-     *
+     * <p>
      * PEPt uses separate caches for each type of <code>ContactInfo</code>
      * as given by {@link #getConnectionCacheType}.
      * {@link #setConnectionCache} and {@link #getConnectionCache} support
      * an optimzation to avoid hashing to find that cache.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.transport.ConnectionCache ConnectionCache}
+     * @return {@link com.sun.corba.se.pept.transport.ConnectionCache ConnectionCache}
      */
     public OutboundConnectionCache getConnectionCache();
 
@@ -149,8 +145,7 @@ public interface ContactInfo
      * to send and receive messages on the specific <em>transport</em>
      * represented by this <code>ContactInfo</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.transport.Connection Connection}
+     * @return {@link com.sun.corba.se.pept.transport.Connection Connection}
      */
     public Connection createConnection();
 
@@ -161,8 +156,7 @@ public interface ContactInfo
      * encoding, protocol, transport combination represented by this
      * <code>ContactInfo</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.protocol.MessageMediator MessageMediator}
+     * @return {@link com.sun.corba.se.pept.protocol.MessageMediator MessageMediator}
      */
     public MessageMediator createMessageMediator(Broker broker,
                                                  ContactInfo contactInfo,
@@ -177,8 +171,7 @@ public interface ContactInfo
      * encoding, protocol, transport combination represented by this
      * <code>ContactInfo</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.protocol.MessageMeidator MessageMediator}
+     * @return {@link com.sun.corba.se.pept.protocol.MessageMeidator MessageMediator}
      */
     public MessageMediator createMessageMediator(Broker broker,
                                                  Connection connection);
@@ -190,8 +183,7 @@ public interface ContactInfo
      * encoding, protocol, transport combination represented by this
      * <code>ContactInfo</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.protocol.MessageMediator MessageMediator}
+     * @return {@link com.sun.corba.se.pept.protocol.MessageMediator MessageMediator}
      */
     public MessageMediator finishCreatingMessageMediator(Broker broker,
                                                          Connection connection,
@@ -203,8 +195,7 @@ public interface ContactInfo
      * for the specific <em>encoding</em> represented by this
      * <code>ContactInfo</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.encoding.InputObject InputObject}
+     * @return {@link com.sun.corba.se.pept.encoding.InputObject InputObject}
      */
     public InputObject createInputObject(Broker broker,
                                          MessageMediator messageMediator);
@@ -215,8 +206,7 @@ public interface ContactInfo
      * for the specific <em>encoding</em> represented by this
      * <code>ContactInfo</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.encoding.OutputObject OutputObject}
+     * @return {@link com.sun.corba.se.pept.encoding.OutputObject OutputObject}
      */
     public OutputObject createOutputObject(MessageMediator messageMediator);
 

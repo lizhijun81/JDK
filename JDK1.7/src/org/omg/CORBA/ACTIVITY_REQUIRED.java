@@ -32,8 +32,8 @@ package org.omg.CORBA;
  * was not found associated with the calling thread.
  *
  * @see <A href="../../../../technotes/guides/idl/jidlExceptions.html">documentation on
- *      Java&nbsp;IDL exceptions</A>
- * @since   J2SE 1.5
+ * Java&nbsp;IDL exceptions</A>
+ * @since J2SE 1.5
  */
 
 public final class ACTIVITY_REQUIRED extends SystemException {
@@ -60,7 +60,7 @@ public final class ACTIVITY_REQUIRED extends SystemException {
      * Constructs an <code>ACTIVITY_REQUIRED</code> exception with the
      * specified minor code and completion status.
      *
-     * @param minorCode minor code.
+     * @param minorCode        minor code.
      * @param completionStatus completion status.
      */
     public ACTIVITY_REQUIRED(int minorCode,
@@ -72,8 +72,8 @@ public final class ACTIVITY_REQUIRED extends SystemException {
      * Constructs an <code>ACTIVITY_REQUIRED</code> exception with the
      * specified message, minor code, and completion status.
      *
-     * @param detailMessage string containing a detailed message.
-     * @param minorCode minor code.
+     * @param detailMessage    string containing a detailed message.
+     * @param minorCode        minor code.
      * @param completionStatus completion status.
      */
     public ACTIVITY_REQUIRED(String detailMessage,

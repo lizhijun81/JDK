@@ -31,28 +31,34 @@
  */
 
 package org.omg.CosNaming;
+
 public abstract class _BindingIteratorImplBase extends org.omg.CORBA.DynamicImplementation implements org.omg.CosNaming.BindingIterator {
     // Constructor
     public _BindingIteratorImplBase() {
         super();
     }
+
     // Type strings for this class and its superclases
     private static final String _type_ids[] = {
-        "IDL:omg.org/CosNaming/BindingIterator:1.0"
+            "IDL:omg.org/CosNaming/BindingIterator:1.0"
     };
 
-    public String[] _ids() { return (String[]) _type_ids.clone(); }
+    public String[] _ids() {
+        return (String[]) _type_ids.clone();
+    }
 
     private static java.util.Dictionary _methods = new java.util.Hashtable();
+
     static {
         _methods.put("next_one", new java.lang.Integer(0));
         _methods.put("next_n", new java.lang.Integer(1));
         _methods.put("destroy", new java.lang.Integer(2));
     }
+
     // DSI Dispatch call
     public void invoke(org.omg.CORBA.ServerRequest r) {
         switch (((java.lang.Integer) _methods.get(r.op_name())).intValue()) {
-        case 0: // org.omg.CosNaming.BindingIterator.next_one
+            case 0: // org.omg.CosNaming.BindingIterator.next_one
             {
                 org.omg.CORBA.NVList _list = _orb().create_list(0);
                 org.omg.CORBA.Any _b = _orb().create_any();
@@ -69,7 +75,7 @@ public abstract class _BindingIteratorImplBase extends org.omg.CORBA.DynamicImpl
                 r.result(__result);
             }
             break;
-        case 1: // org.omg.CosNaming.BindingIterator.next_n
+            case 1: // org.omg.CosNaming.BindingIterator.next_n
             {
                 org.omg.CORBA.NVList _list = _orb().create_list(0);
                 org.omg.CORBA.Any _how_many = _orb().create_any();
@@ -91,7 +97,7 @@ public abstract class _BindingIteratorImplBase extends org.omg.CORBA.DynamicImpl
                 r.result(__result);
             }
             break;
-        case 2: // org.omg.CosNaming.BindingIterator.destroy
+            case 2: // org.omg.CosNaming.BindingIterator.destroy
             {
                 org.omg.CORBA.NVList _list = _orb().create_list(0);
                 r.params(_list);
@@ -101,8 +107,8 @@ public abstract class _BindingIteratorImplBase extends org.omg.CORBA.DynamicImpl
                 r.result(__return);
             }
             break;
-        default:
-            throw new org.omg.CORBA.BAD_OPERATION(0, org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
+            default:
+                throw new org.omg.CORBA.BAD_OPERATION(0, org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
         }
     }
 }

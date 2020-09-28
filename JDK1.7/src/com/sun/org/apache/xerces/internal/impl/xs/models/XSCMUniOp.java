@@ -25,13 +25,11 @@ import com.sun.org.apache.xerces.internal.impl.dtd.models.CMStateSet;
 import com.sun.org.apache.xerces.internal.impl.xs.XSParticleDecl;
 
 /**
- *
  * Content model Uni-Op node.
- *
- * @xerces.internal
  *
  * @author Neil Graham, IBM
  * @version $$
+ * @xerces.internal
  */
 public class XSCMUniOp extends CMNode {
     // -------------------------------------------------------------------
@@ -42,8 +40,8 @@ public class XSCMUniOp extends CMNode {
 
         // Insure that its one of the types we require
         if ((type() != XSParticleDecl.PARTICLE_ZERO_OR_ONE)
-        &&  (type() != XSParticleDecl.PARTICLE_ZERO_OR_MORE)
-        &&  (type() != XSParticleDecl.PARTICLE_ONE_OR_MORE)) {
+                && (type() != XSParticleDecl.PARTICLE_ZERO_OR_MORE)
+                && (type() != XSParticleDecl.PARTICLE_ONE_OR_MORE)) {
             throw new RuntimeException("ImplementationMessages.VAL_UST");
         }
 
@@ -69,9 +67,9 @@ public class XSCMUniOp extends CMNode {
         //  repetitions. Otherwise, '*' style nodes are always nullable.
         //
         if (type() == XSParticleDecl.PARTICLE_ONE_OR_MORE)
-                return fChild.isNullable();
-            else
-                return true;
+            return fChild.isNullable();
+        else
+            return true;
     }
 
 
@@ -108,5 +106,5 @@ public class XSCMUniOp extends CMNode {
     //      This is the reference to the one child that we have for this
     //      unary operation.
     // -------------------------------------------------------------------
-    private CMNode  fChild;
+    private CMNode fChild;
 } // XSCMUniOp

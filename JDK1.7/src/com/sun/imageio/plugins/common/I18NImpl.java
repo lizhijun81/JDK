@@ -51,12 +51,12 @@ public class I18NImpl {
         PropertyResourceBundle bundle = null;
         try {
             InputStream stream =
-                Class.forName(className).getResourceAsStream(resource_name);
+                    Class.forName(className).getResourceAsStream(resource_name);
             bundle = new PropertyResourceBundle(stream);
-        } catch(Throwable e) {
+        } catch (Throwable e) {
             throw new RuntimeException(e); // Chain the exception.
         }
 
-        return (String)bundle.handleGetObject(key);
+        return (String) bundle.handleGetObject(key);
     }
 }

@@ -33,9 +33,8 @@ import org.omg.CORBA.SystemException;
  * @author Harold Carr
  */
 public interface CorbaResponseWaitingRoom
-    extends
-        ResponseWaitingRoom
-{
+        extends
+        ResponseWaitingRoom {
     public void signalExceptionToAllWaiters(SystemException systemException);
 
     public MessageMediator getMessageMediator(int requestId);

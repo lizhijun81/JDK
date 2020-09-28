@@ -31,10 +31,9 @@ package com.sun.javadoc;
  * This is an abstract class dealing with information common to
  * these elements.
  *
+ * @author Robert Field
  * @see MemberDoc
  * @see ClassDoc
- *
- * @author Robert Field
  */
 public interface ProgramElementDoc extends Doc {
 
@@ -113,6 +112,7 @@ public interface ProgramElementDoc extends Doc {
      * Return true if this program element is package private.
      */
     boolean isPackagePrivate();
+
     /**
      * Return true if this program element is static.
      */

@@ -130,83 +130,81 @@ package com.sun.corba.se.impl.orbutil.concurrent;
  * <p>This version adds some debugging capability: it will detect an attempt by a thread
  * that holds the lock to acquire it for a second time, and also an attempt by a thread that
  * does not hold the mutex to release it.
+ *
  * @see Semaphore
  * <p>[<a href="http://gee.cs.oswego.edu/dl/classes/EDU/oswego/cs/dl/util/concurrent/intro.html"> Introduction to this package. </a>]
-**/
+ **/
 
-import org.omg.CORBA.INTERNAL ;
+import org.omg.CORBA.INTERNAL;
 
-public class DebugMutex implements Sync  {
+public class DebugMutex implements Sync {
 
-  /** The lock status **/
-  protected boolean inuse_ = false;
-  protected Thread holder_ = null;
+    /** The lock status **/
+    protected boolean inuse_ = false;
+    protected Thread holder_ = null;
 
-  public void acquire() throws InterruptedException {
-    if (Thread.interrupted()) throw new InterruptedException();
-    synchronized(this) {
-      Thread thr = Thread.currentThread();
-      if (holder_ == thr)
-        throw new INTERNAL(
-            "Attempt to acquire Mutex by thread holding the Mutex" ) ;
+    public void acquire() throws InterruptedException {
+        if (Thread.interrupted()) throw new InterruptedException();
+        synchronized (this) {
+            Thread thr = Thread.currentThread();
+            if (holder_ == thr)
+                throw new INTERNAL(
+                        "Attempt to acquire Mutex by thread holding the Mutex");
 
-      try {
-        while (inuse_) wait();
-        inuse_ = true;
-        holder_ = Thread.currentThread();
-      }
-      catch (InterruptedException ex) {
+            try {
+                while (inuse_) wait();
+                inuse_ = true;
+                holder_ = Thread.currentThread();
+            } catch (InterruptedException ex) {
+                notify();
+                throw ex;
+            }
+        }
+    }
+
+    public synchronized void release() {
+        Thread thr = Thread.currentThread();
+        if (thr != holder_)
+            throw new INTERNAL(
+                    "Attempt to release Mutex by thread not holding the Mutex");
+        holder_ = null;
+        inuse_ = false;
         notify();
-        throw ex;
-      }
     }
-  }
-
-  public synchronized void release()  {
-    Thread thr = Thread.currentThread();
-    if (thr != holder_)
-        throw new INTERNAL(
-            "Attempt to release Mutex by thread not holding the Mutex" ) ;
-    holder_ = null;
-    inuse_ = false;
-    notify();
-  }
 
 
-  public boolean attempt(long msecs) throws InterruptedException {
-    if (Thread.interrupted()) throw new InterruptedException();
-    synchronized(this) {
-      Thread thr = Thread.currentThread() ;
+    public boolean attempt(long msecs) throws InterruptedException {
+        if (Thread.interrupted()) throw new InterruptedException();
+        synchronized (this) {
+            Thread thr = Thread.currentThread();
 
-      if (!inuse_) {
-        inuse_ = true;
-        holder_ = thr;
-        return true;
-      } else if (msecs <= 0)
-        return false;
-      else {
-        long waitTime = msecs;
-        long start = System.currentTimeMillis();
-        try {
-          for (;;) {
-            wait(waitTime);
             if (!inuse_) {
-              inuse_ = true;
-              holder_ = thr;
-              return true;
-            }
-            else {
-              waitTime = msecs - (System.currentTimeMillis() - start);
-              if (waitTime <= 0)
+                inuse_ = true;
+                holder_ = thr;
+                return true;
+            } else if (msecs <= 0)
                 return false;
+            else {
+                long waitTime = msecs;
+                long start = System.currentTimeMillis();
+                try {
+                    for (; ; ) {
+                        wait(waitTime);
+                        if (!inuse_) {
+                            inuse_ = true;
+                            holder_ = thr;
+                            return true;
+                        } else {
+                            waitTime = msecs - (System.currentTimeMillis() - start);
+                            if (waitTime <= 0)
+                                return false;
+                        }
+                    }
+                } catch (InterruptedException ex) {
+                    notify();
+                    throw ex;
+                }
             }
-          }
         }
-        catch (InterruptedException ex) {
-          notify();
-          throw ex;
-        }
-      }
     }
-  }
 }

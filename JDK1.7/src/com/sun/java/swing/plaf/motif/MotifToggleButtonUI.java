@@ -48,8 +48,7 @@ import javax.swing.plaf.basic.*;
  *
  * @author Rich Schiavi
  */
-public class MotifToggleButtonUI extends BasicToggleButtonUI
-{
+public class MotifToggleButtonUI extends BasicToggleButtonUI {
     private static final Object MOTIF_TOGGLE_BUTTON_UI_KEY = new Object();
 
     protected Color selectColor;
@@ -75,7 +74,7 @@ public class MotifToggleButtonUI extends BasicToggleButtonUI
     // ********************************
     public void installDefaults(AbstractButton b) {
         super.installDefaults(b);
-        if(!defaults_initialized) {
+        if (!defaults_initialized) {
             selectColor = UIManager.getColor(getPropertyPrefix() + "select");
             defaults_initialized = true;
         }
@@ -105,20 +104,20 @@ public class MotifToggleButtonUI extends BasicToggleButtonUI
             Insets insets = b.getInsets();
             Insets margin = b.getMargin();
 
-            if(b.getBackground() instanceof UIResource) {
+            if (b.getBackground() instanceof UIResource) {
                 g.setColor(getSelectColor());
             }
             g.fillRect(insets.left - margin.left,
-                       insets.top - margin.top,
-                       size.width - (insets.left-margin.left) - (insets.right - margin.right),
-                       size.height - (insets.top-margin.top) - (insets.bottom - margin.bottom));
+                    insets.top - margin.top,
+                    size.width - (insets.left - margin.left) - (insets.right - margin.right),
+                    size.height - (insets.top - margin.top) - (insets.bottom - margin.bottom));
             g.setColor(oldColor);
         }
     }
 
     public Insets getInsets(JComponent c) {
         Border border = c.getBorder();
-        Insets i = border != null? border.getBorderInsets(c) : new Insets(0,0,0,0);
+        Insets i = border != null ? border.getBorderInsets(c) : new Insets(0, 0, 0, 0);
         return i;
     }
 

@@ -25,25 +25,28 @@ import com.sun.org.apache.xerces.internal.xs.XSIDCDefinition;
 /**
  * Schema key reference identity constraint.
  *
- * @xerces.internal
- *
  * @author Andy Clark, IBM
+ * @xerces.internal
  */
 public class KeyRef
-    extends IdentityConstraint {
+        extends IdentityConstraint {
 
     //
     // Data
     //
 
-    /** The key (or unique) being referred to. */
+    /**
+     * The key (or unique) being referred to.
+     */
     protected UniqueOrKey fKey;
 
     //
     // Constructors
     //
 
-    /** Constructs a keyref with the specified name. */
+    /**
+     * Constructs a keyref with the specified name.
+     */
     public KeyRef(String namespace, String identityConstraintName,
                   String elemName, UniqueOrKey key) {
         super(namespace, identityConstraintName, elemName);
@@ -55,7 +58,9 @@ public class KeyRef
     // Public methods
     //
 
-    /** Returns the key being referred to.  */
+    /**
+     * Returns the key being referred to.
+     */
     public UniqueOrKey getKey() {
         return fKey;
     } // getKey(): int

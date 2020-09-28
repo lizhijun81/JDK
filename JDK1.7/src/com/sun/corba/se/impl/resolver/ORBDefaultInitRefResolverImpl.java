@@ -23,28 +23,26 @@
  *
  */
 
-package com.sun.corba.se.impl.resolver ;
+package com.sun.corba.se.impl.resolver;
 
-import com.sun.corba.se.spi.resolver.Resolver ;
+import com.sun.corba.se.spi.resolver.Resolver;
 
-import com.sun.corba.se.spi.orb.Operation ;
+import com.sun.corba.se.spi.orb.Operation;
 
 public class ORBDefaultInitRefResolverImpl implements Resolver {
-    Operation urlHandler ;
-    String orbDefaultInitRef ;
+    Operation urlHandler;
+    String orbDefaultInitRef;
 
-    public ORBDefaultInitRefResolverImpl( Operation urlHandler, String orbDefaultInitRef )
-    {
-        this.urlHandler = urlHandler ;
+    public ORBDefaultInitRefResolverImpl(Operation urlHandler, String orbDefaultInitRef) {
+        this.urlHandler = urlHandler;
 
         // XXX Validate the URL?
-        this.orbDefaultInitRef = orbDefaultInitRef ;
+        this.orbDefaultInitRef = orbDefaultInitRef;
     }
 
-    public org.omg.CORBA.Object resolve( String ident )
-    {
+    public org.omg.CORBA.Object resolve(String ident) {
         // If the ORBDefaultInitRef is not defined simply return null
-        if( orbDefaultInitRef == null ) {
+        if (orbDefaultInitRef == null) {
             return null;
         }
 
@@ -53,17 +51,16 @@ public class ORBDefaultInitRefResolverImpl implements Resolver {
         // corbaloc String in the format
         // <ORBInitDefaultInitDef Param>/<Identifier>
         // and resolve it using resolveCorbaloc method
-        if( orbDefaultInitRef.startsWith( "corbaloc:" ) ) {
+        if (orbDefaultInitRef.startsWith("corbaloc:")) {
             urlString = orbDefaultInitRef + "/" + ident;
         } else {
             urlString = orbDefaultInitRef + "#" + ident;
         }
 
-        return (org.omg.CORBA.Object)urlHandler.operate( urlString ) ;
+        return (org.omg.CORBA.Object) urlHandler.operate(urlString);
     }
 
-    public java.util.Set list()
-    {
-        return new java.util.HashSet() ;
+    public java.util.Set list() {
+        return new java.util.HashSet();
     }
 }

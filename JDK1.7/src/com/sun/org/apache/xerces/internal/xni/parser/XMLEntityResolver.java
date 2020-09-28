@@ -33,10 +33,8 @@ import com.sun.org.apache.xerces.internal.xni.XMLResourceIdentifier;
  * resolve the entity, it should return <code>null</code> so that the
  * parser will try to resolve the entity using a default mechanism.
  *
- * @see XMLParserConfiguration
- *
  * @author Andy Clark, IBM
- *
+ * @see XMLParserConfiguration
  */
 public interface XMLEntityResolver {
 
@@ -49,13 +47,12 @@ public interface XMLEntityResolver {
      * resolved, this method should return null.
      *
      * @param resourceIdentifier location of the XML resource to resolve
-     *
      * @throws XNIException Thrown on general error.
      * @throws IOException  Thrown if resolved entity stream cannot be
      *                      opened or some other i/o error occurs.
      * @see com.sun.org.apache.xerces.internal.xni.XMLResourceIdentifier
      */
     public XMLInputSource resolveEntity(XMLResourceIdentifier resourceIdentifier)
-        throws XNIException, IOException;
+            throws XNIException, IOException;
 
 } // interface XMLEntityResolver

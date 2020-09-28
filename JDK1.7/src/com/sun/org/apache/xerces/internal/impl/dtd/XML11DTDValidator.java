@@ -68,9 +68,8 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLComponentManager;
  * This allows the validator to correctlyhandle XML 1.1
  * documents.
  *
- * @xerces.internal
- *
  * @author Neil Graham
+ * @xerces.internal
  */
 public class XML11DTDValidator extends XMLDTDValidator {
 
@@ -79,13 +78,15 @@ public class XML11DTDValidator extends XMLDTDValidator {
     //
 
     protected final static String DTD_VALIDATOR_PROPERTY =
-        Constants.XERCES_PROPERTY_PREFIX+Constants.DTD_VALIDATOR_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.DTD_VALIDATOR_PROPERTY;
 
     //
     // Constructors
     //
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public XML11DTDValidator() {
 
         super();
@@ -96,7 +97,7 @@ public class XML11DTDValidator extends XMLDTDValidator {
     // will try and use...
     public void reset(XMLComponentManager manager) {
         XMLDTDValidator curr = null;
-        if((curr = (XMLDTDValidator)manager.getProperty(DTD_VALIDATOR_PROPERTY)) != null &&
+        if ((curr = (XMLDTDValidator) manager.getProperty(DTD_VALIDATOR_PROPERTY)) != null &&
                 curr != this) {
             fGrammarBucket = curr.getGrammarBucket();
         }
@@ -104,19 +105,18 @@ public class XML11DTDValidator extends XMLDTDValidator {
     } //reset(XMLComponentManager)
 
     protected void init() {
-        if(fValidation || fDynamicValidation) {
+        if (fValidation || fDynamicValidation) {
             super.init();
             // now overwrite some entries in parent:
 
             try {
-                fValID       = fDatatypeValidatorFactory.getBuiltInDV("XML11ID");
-                fValIDRef    = fDatatypeValidatorFactory.getBuiltInDV("XML11IDREF");
-                fValIDRefs   = fDatatypeValidatorFactory.getBuiltInDV("XML11IDREFS");
-                fValNMTOKEN  = fDatatypeValidatorFactory.getBuiltInDV("XML11NMTOKEN");
+                fValID = fDatatypeValidatorFactory.getBuiltInDV("XML11ID");
+                fValIDRef = fDatatypeValidatorFactory.getBuiltInDV("XML11IDREF");
+                fValIDRefs = fDatatypeValidatorFactory.getBuiltInDV("XML11IDREFS");
+                fValNMTOKEN = fDatatypeValidatorFactory.getBuiltInDV("XML11NMTOKEN");
                 fValNMTOKENS = fDatatypeValidatorFactory.getBuiltInDV("XML11NMTOKENS");
 
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 // should never happen
                 e.printStackTrace(System.err);
             }

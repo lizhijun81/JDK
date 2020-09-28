@@ -29,8 +29,8 @@ import org.omg.CORBA.*;
 import org.omg.PortableServer.*;
 
 final class IdAssignmentPolicyImpl
-extends org.omg.CORBA.LocalObject
-implements org.omg.PortableServer.IdAssignmentPolicy {
+        extends org.omg.CORBA.LocalObject
+        implements org.omg.PortableServer.IdAssignmentPolicy {
 
     public IdAssignmentPolicyImpl(IdAssignmentPolicyValue value) {
         this.value = value;
@@ -40,9 +40,8 @@ implements org.omg.PortableServer.IdAssignmentPolicy {
         return value;
     }
 
-    public int policy_type()
-    {
-        return ID_ASSIGNMENT_POLICY_ID.value ;
+    public int policy_type() {
+        return ID_ASSIGNMENT_POLICY_ID.value;
     }
 
     public Policy copy() {
@@ -55,10 +54,9 @@ implements org.omg.PortableServer.IdAssignmentPolicy {
 
     private IdAssignmentPolicyValue value;
 
-    public String toString()
-    {
+    public String toString() {
         return "IdAssignmentPolicy[" +
-            ((value.value() == IdAssignmentPolicyValue._USER_ID) ?
-                "USER_ID" : "SYSTEM_ID" + "]") ;
+                ((value.value() == IdAssignmentPolicyValue._USER_ID) ?
+                        "USER_ID" : "SYSTEM_ID" + "]");
     }
 }

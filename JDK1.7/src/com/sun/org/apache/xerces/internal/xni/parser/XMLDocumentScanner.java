@@ -21,6 +21,7 @@
 package com.sun.org.apache.xerces.internal.xni.parser;
 
 import java.io.IOException;
+
 import com.sun.org.apache.xerces.internal.xni.XNIException;
 
 /**
@@ -33,14 +34,13 @@ import com.sun.org.apache.xerces.internal.xni.XNIException;
  * instance from the component manager using the following property
  * identifier:
  * <blockquote>
- *  "http://apache.org/xml/properties/internal/document-scanner"
+ * "http://apache.org/xml/properties/internal/document-scanner"
  * </blockquote>
  *
  * @author Andy Clark, IBM
- *
  */
 public interface XMLDocumentScanner
-    extends XMLDocumentSource {
+        extends XMLDocumentSource {
 
     //
     // XMLDocumentScanner methods
@@ -50,7 +50,6 @@ public interface XMLDocumentScanner
      * Sets the input source.
      *
      * @param inputSource The input source.
-     *
      * @throws IOException Thrown on i/o error.
      */
     public void setInputSource(XMLInputSource inputSource) throws IOException;
@@ -65,11 +64,10 @@ public interface XMLDocumentScanner
      *                 of the document and return. A scanner instance is
      *                 permitted to completely scan a document if it does
      *                 not support this "pull" scanning model.
-     *
      * @return True if there is more to scan, false otherwise.
      */
     public boolean scanDocument(boolean complete)
-        throws IOException, XNIException;
+            throws IOException, XNIException;
 
     public int next() throws XNIException, IOException;
 } // interface XMLDocumentScanner

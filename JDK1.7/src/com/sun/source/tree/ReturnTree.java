@@ -27,17 +27,16 @@ package com.sun.source.tree;
 
 /**
  * A tree node for a 'return' statement.
- *
+ * <p>
  * For example:
  * <pre>
  *   return;
  *   return <em>expression</em>;
  * </pre>
  *
- * @jls section 14.17
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls section 14.17
  * @since 1.6
  */
 public interface ReturnTree extends StatementTree {

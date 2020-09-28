@@ -41,7 +41,7 @@ package org.omg.CORBA;
  * Java&nbsp;IDL exceptions</A>
  * @see <A href="../../../../technotes/guides/idl/jidlExceptions.html#minorcodemeanings">meaning of
  * minor codes</A>
- * @since       JDK1.2
+ * @since JDK1.2
  */
 
 public final class BAD_PARAM extends SystemException {
@@ -68,7 +68,8 @@ public final class BAD_PARAM extends SystemException {
     /**
      * Constructs a <code>BAD_PARAM</code> exception with the specified
      * minor code and completion status.
-     * @param minor the minor code
+     *
+     * @param minor     the minor code
      * @param completed the completion status
      */
     public BAD_PARAM(int minor, CompletionStatus completed) {
@@ -81,8 +82,8 @@ public final class BAD_PARAM extends SystemException {
      * A detail message is a <code>String</code> that describes
      * this particular exception.
      *
-     * @param s the <code>String</code> containing a detail message
-     * @param minor the minor code
+     * @param s         the <code>String</code> containing a detail message
+     * @param minor     the minor code
      * @param completed the completion status
      */
     public BAD_PARAM(String s, int minor, CompletionStatus completed) {

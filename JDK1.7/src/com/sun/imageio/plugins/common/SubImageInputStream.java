@@ -37,7 +37,7 @@ public final class SubImageInputStream extends ImageInputStreamImpl {
     int length;
 
     public SubImageInputStream(ImageInputStream stream, int length)
-        throws IOException {
+            throws IOException {
         this.stream = stream;
         this.startingPos = stream.getStreamPosition();
         this.startingLength = this.length = length;

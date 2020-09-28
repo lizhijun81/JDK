@@ -43,10 +43,9 @@ import com.sun.org.apache.xerces.internal.xni.XNIException;
  * value of <code>true</code>.
  *
  * @author Andy Clark, IBM
- *
  */
 public interface XMLPullParserConfiguration
-    extends XMLParserConfiguration {
+        extends XMLParserConfiguration {
 
     //
     // XMLPullParserConfiguration methods
@@ -58,31 +57,26 @@ public interface XMLPullParserConfiguration
      * Sets the input source for the document to parse.
      *
      * @param inputSource The document's input source.
-     *
-     * @exception XMLConfigurationException Thrown if there is a
-     *                        configuration error when initializing the
-     *                        parser.
-     * @exception IOException Thrown on I/O error.
-     *
+     * @throws XMLConfigurationException Thrown if there is a
+     *                                   configuration error when initializing the
+     *                                   parser.
+     * @throws IOException               Thrown on I/O error.
      * @see #parse(boolean)
      */
     public void setInputSource(XMLInputSource inputSource)
-        throws XMLConfigurationException, IOException;
+            throws XMLConfigurationException, IOException;
 
     /**
      * Parses the document in a pull parsing fashion.
      *
      * @param complete True if the pull parser should parse the
      *                 remaining document completely.
-     *
      * @return True if there is more document to parse.
-     *
-     * @exception XNIException Any XNI exception, possibly wrapping
-     *                         another exception.
-     * @exception IOException  An IO exception from the parser, possibly
-     *                         from a byte stream or character stream
-     *                         supplied by the parser.
-     *
+     * @throws XNIException Any XNI exception, possibly wrapping
+     *                      another exception.
+     * @throws IOException  An IO exception from the parser, possibly
+     *                      from a byte stream or character stream
+     *                      supplied by the parser.
      * @see #setInputSource
      */
     public boolean parse(boolean complete) throws XNIException, IOException;

@@ -35,11 +35,10 @@ package com.sun.javadoc;
  * referred to using Type (which can be converted to ClassDoc,
  * if possible).
  *
- * @see Type
- *
- * @since 1.2
  * @author Kaiyang Liu (original)
  * @author Robert Field (rewrite)
+ * @see Type
+ * @since 1.2
  */
 public interface ClassDoc extends ProgramElementDoc, Type {
 
@@ -52,7 +51,7 @@ public interface ClassDoc extends ProgramElementDoc, Type {
     /**
      * Return true if this class implements or interface extends
      * <code>java.io.Serializable</code>.
-     *
+     * <p>
      * Since <code>java.io.Externalizable</code> extends
      * <code>java.io.Serializable</code>,
      * Externalizable objects are also Serializable.
@@ -70,7 +69,7 @@ public interface ClassDoc extends ProgramElementDoc, Type {
      * interface.
      *
      * @return an array of MethodDoc objects that represents
-     *         the serialization methods for this class or interface.
+     * the serialization methods for this class or interface.
      */
     MethodDoc[] serializationMethods();
 
@@ -86,16 +85,15 @@ public interface ClassDoc extends ProgramElementDoc, Type {
      * array component of <code>serialPersistentField</code>.
      *
      * @return an array of <code>FieldDoc</code> objects for the Serializable
-     *         fields of this class or interface.
-     *
+     * fields of this class or interface.
      * @see #definesSerializableFields()
      * @see SerialFieldTag
      */
     FieldDoc[] serializableFields();
 
     /**
-     *  Return true if Serializable fields are explicitly defined with
-     *  the special class member <code>serialPersistentFields</code>.
+     * Return true if Serializable fields are explicitly defined with
+     * the special class member <code>serialPersistentFields</code>.
      *
      * @see #serializableFields()
      * @see SerialFieldTag
@@ -110,7 +108,7 @@ public interface ClassDoc extends ProgramElementDoc, Type {
      * The <code>superclassType</code> method should be used instead.</i>
      *
      * @return the ClassDoc for the superclass of this class, null if
-     *         there is no superclass.
+     * there is no superclass.
      * @see #superclassType
      */
     ClassDoc superclass();
@@ -157,7 +155,7 @@ public interface ClassDoc extends ProgramElementDoc, Type {
      * Return an empty array if there are no interfaces.
      *
      * @return an array of interfaces, each represented by a
-     *         <code>ClassDoc</code> or a <code>ParametrizedType</code>.
+     * <code>ClassDoc</code> or a <code>ParametrizedType</code>.
      * @since 1.5
      */
     Type[] interfaceTypes();
@@ -187,7 +185,7 @@ public interface ClassDoc extends ProgramElementDoc, Type {
      * Excludes enum constants if this is an enum type.
      *
      * @return an array of FieldDoc objects representing the included
-     *         fields in this class or interface.
+     * fields in this class or interface.
      */
     FieldDoc[] fields();
 
@@ -201,8 +199,8 @@ public interface ClassDoc extends ProgramElementDoc, Type {
      *               modifier option.
      *               Specify false to include all fields regardless of
      *               access modifier option.
-     * @return       an array of FieldDoc objects representing the included
-     *               fields in this class or interface.
+     * @return an array of FieldDoc objects representing the included
+     * fields in this class or interface.
      */
     FieldDoc[] fields(boolean filter);
 
@@ -222,8 +220,8 @@ public interface ClassDoc extends ProgramElementDoc, Type {
      * Same as <code>methods(true)</code>.
      *
      * @return an array of MethodDoc objects representing the included
-     *         methods in this class or interface.  Does not include
-     *         constructors or annotation type elements.
+     * methods in this class or interface.  Does not include
+     * constructors or annotation type elements.
      */
     MethodDoc[] methods();
 
@@ -231,14 +229,14 @@ public interface ClassDoc extends ProgramElementDoc, Type {
      * Return methods in this class or interface, filtered to the specified
      * <a href="{@docRoot}/com/sun/javadoc/package-summary.html#included">access
      * modifier option</a>.  Does not include constructors or annotation
-     *          type elements.
+     * type elements.
      *
      * @param filter Specify true to filter according to the specified access
      *               modifier option.
      *               Specify false to include all methods regardless of
      *               access modifier option.
-     * @return       an array of MethodDoc objects representing the included
-     *               methods in this class or interface.
+     * @return an array of MethodDoc objects representing the included
+     * methods in this class or interface.
      */
     MethodDoc[] methods(boolean filter);
 
@@ -250,7 +248,7 @@ public interface ClassDoc extends ProgramElementDoc, Type {
      * Return empty array if this is an interface.
      *
      * @return an array of ConstructorDoc objects representing the included
-     *         constructors in this class.
+     * constructors in this class.
      */
     ConstructorDoc[] constructors();
 
@@ -264,8 +262,8 @@ public interface ClassDoc extends ProgramElementDoc, Type {
      *               modifier option.
      *               Specify false to include all constructors regardless of
      *               access modifier option.
-     * @return       an array of ConstructorDoc objects representing the included
-     *               constructors in this class.
+     * @return an array of ConstructorDoc objects representing the included
+     * constructors in this class.
      */
     ConstructorDoc[] constructors(boolean filter);
 
@@ -280,7 +278,7 @@ public interface ClassDoc extends ProgramElementDoc, Type {
      * or interfaces are not included.
      *
      * @return an array of ClassDoc objects representing the included classes
-     *         and interfaces defined in this class or interface.
+     * and interfaces defined in this class or interface.
      */
     ClassDoc[] innerClasses();
 
@@ -296,8 +294,8 @@ public interface ClassDoc extends ProgramElementDoc, Type {
      *               modifier option.
      *               Specify false to include all nested classes regardless of
      *               access modifier option.
-     * @return       a filtered array of ClassDoc objects representing the included
-     *               classes and interfaces defined in this class or interface.
+     * @return a filtered array of ClassDoc objects representing the included
+     * classes and interfaces defined in this class or interface.
      */
     ClassDoc[] innerClasses(boolean filter);
 
@@ -315,10 +313,9 @@ public interface ClassDoc extends ProgramElementDoc, Type {
      * <cite>The Java&trade; Language Specification</cite>.
      *
      * @return an array of ClassDoc representing the imported classes.
-     *
-     * @deprecated  Import declarations are implementation details that
-     *          should not be exposed here.  In addition, not all imported
-     *          classes are imported through single-type-import declarations.
+     * @deprecated Import declarations are implementation details that
+     * should not be exposed here.  In addition, not all imported
+     * classes are imported through single-type-import declarations.
      */
     @Deprecated
     ClassDoc[] importedClasses();
@@ -329,11 +326,10 @@ public interface ClassDoc extends ProgramElementDoc, Type {
      * <cite>The Java&trade; Language Specification</cite>.
      *
      * @return an array of PackageDoc representing the imported packages.
-     *
-     * @deprecated  Import declarations are implementation details that
-     *          should not be exposed here.  In addition, this method's
-     *          return type does not allow for all type-import-on-demand
-     *          declarations to be returned.
+     * @deprecated Import declarations are implementation details that
+     * should not be exposed here.  In addition, this method's
+     * return type does not allow for all type-import-on-demand
+     * declarations to be returned.
      */
     @Deprecated
     PackageDoc[] importedPackages();

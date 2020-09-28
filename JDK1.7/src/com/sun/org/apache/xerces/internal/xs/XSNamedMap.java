@@ -38,13 +38,14 @@ public interface XSNamedMap extends Map {
     public int getLength();
 
     /**
-     *  Returns the <code>index</code>th item in the collection or
+     * Returns the <code>index</code>th item in the collection or
      * <code>null</code> if <code>index</code> is greater than or equal to
      * the number of objects in the list. The index starts at 0.
-     * @param index  index into the collection.
-     * @return  The <code>XSObject</code> at the <code>index</code>th
-     *   position in the <code>XSObjectList</code>, or <code>null</code> if
-     *   the index specified is not valid.
+     *
+     * @param index index into the collection.
+     * @return The <code>XSObject</code> at the <code>index</code>th
+     * position in the <code>XSObjectList</code>, or <code>null</code> if
+     * the index specified is not valid.
      */
     public XSObject item(int index);
 
@@ -54,14 +55,15 @@ public interface XSNamedMap extends Map {
      * <br>Per XML Namespaces, applications must use the value <code>null</code> as the
      * <code>namespace</code> parameter for methods if they wish to specify
      * no namespace.
+     *
      * @param namespace The namespace URI of the <code>XSObject</code> to
-     *   retrieve, or <code>null</code> if the <code>XSObject</code> has no
-     *   namespace.
+     *                  retrieve, or <code>null</code> if the <code>XSObject</code> has no
+     *                  namespace.
      * @param localName The local name of the <code>XSObject</code> to
-     *   retrieve.
+     *                  retrieve.
      * @return A <code>XSObject</code> (of any type) with the specified local
-     *   name and namespace URI, or <code>null</code> if they do not
-     *   identify any object in this map.
+     * name and namespace URI, or <code>null</code> if they do not
+     * identify any object in this map.
      */
     public XSObject itemByName(String namespace,
                                String localName);

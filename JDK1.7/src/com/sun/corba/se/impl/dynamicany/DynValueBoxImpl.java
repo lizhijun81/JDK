@@ -35,18 +35,17 @@ import org.omg.DynamicAny.DynAnyPackage.TypeMismatch;
 import org.omg.DynamicAny.DynAnyPackage.InvalidValue;
 import org.omg.DynamicAny.DynAnyFactoryPackage.InconsistentTypeCode;
 
-import com.sun.corba.se.spi.orb.ORB ;
-import com.sun.corba.se.spi.logging.CORBALogDomains ;
-import com.sun.corba.se.impl.logging.ORBUtilSystemException ;
+import com.sun.corba.se.spi.orb.ORB;
+import com.sun.corba.se.spi.logging.CORBALogDomains;
+import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 
-public class DynValueBoxImpl extends DynValueCommonImpl implements DynValueBox
-{
+public class DynValueBoxImpl extends DynValueCommonImpl implements DynValueBox {
     //
     // Constructors
     //
 
     private DynValueBoxImpl() {
-        this(null, (Any)null, false);
+        this(null, (Any) null, false);
     }
 
     protected DynValueBoxImpl(ORB orb, Any any, boolean copyValue) {
@@ -62,8 +61,7 @@ public class DynValueBoxImpl extends DynValueCommonImpl implements DynValueBox
     //
 
     public Any get_boxed_value()
-        throws org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (isNull) {
             throw new InvalidValue();
         }
@@ -72,9 +70,8 @@ public class DynValueBoxImpl extends DynValueCommonImpl implements DynValueBox
     }
 
     public void set_boxed_value(org.omg.CORBA.Any boxed)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch
-    {
-        if ( ! isNull && ! boxed.type().equal(this.type())) {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch {
+        if (!isNull && !boxed.type().equal(this.type())) {
             throw new TypeMismatch();
         }
         clearData();
@@ -85,8 +82,7 @@ public class DynValueBoxImpl extends DynValueCommonImpl implements DynValueBox
     }
 
     public DynAny get_boxed_value_as_dyn_any()
-        throws org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (isNull) {
             throw new InvalidValue();
         }
@@ -95,13 +91,12 @@ public class DynValueBoxImpl extends DynValueCommonImpl implements DynValueBox
     }
 
     public void set_boxed_value_as_dyn_any(DynAny boxed)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch
-    {
-        if ( ! isNull && ! boxed.type().equal(this.type())) {
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch {
+        if (!isNull && !boxed.type().equal(this.type())) {
             throw new TypeMismatch();
         }
         clearData();
-        components = new DynAny[] {boxed};
+        components = new DynAny[]{boxed};
         representations = REPRESENTATION_COMPONENTS;
         index = 0;
         isNull = false;
@@ -109,7 +104,7 @@ public class DynValueBoxImpl extends DynValueCommonImpl implements DynValueBox
 
     protected boolean initializeComponentsFromAny() {
         try {
-            components = new DynAny[] {DynAnyUtil.createMostDerivedDynAny(any, orb, false)};
+            components = new DynAny[]{DynAnyUtil.createMostDerivedDynAny(any, orb, false)};
         } catch (InconsistentTypeCode ictc) {
             return false; // impossible
         }
@@ -119,7 +114,7 @@ public class DynValueBoxImpl extends DynValueCommonImpl implements DynValueBox
     protected boolean initializeComponentsFromTypeCode() {
         try {
             any = DynAnyUtil.createDefaultAnyOfType(any.type(), orb);
-            components = new DynAny[] {DynAnyUtil.createMostDerivedDynAny(any, orb, false)};
+            components = new DynAny[]{DynAnyUtil.createMostDerivedDynAny(any, orb, false)};
         } catch (InconsistentTypeCode ictc) {
             return false; // impossible
         }

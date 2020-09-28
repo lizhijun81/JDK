@@ -27,41 +27,44 @@ package com.sun.org.apache.xerces.internal.dom;
  * programmatic information in a document's text without needing to
  * escape these special characters. It's primarily a convenience feature
  * for those who are hand-editing XML.
- * <P>
+ * <p>
  * CDATASection is an Extended DOM feature, and is not used in HTML
  * contexts.
- * <P>
+ * <p>
  * Within the DOM, CDATASections are treated essentially as Text
  * blocks. Their distinct type is retained in order to allow us to
  * properly recreate the XML syntax when we write them out.
- * <P>
+ * <p>
  * Reminder: CDATA IS NOT A COMPLETELY GENERAL SOLUTION; it can't
  * quote its own end-of-block marking. If you need to write out a
  * CDATA that contains the ]]> sequence, it's your responsibility to
  * split that string over two successive CDATAs at that time.
- * <P>
+ * <p>
  * CDATA does not participate in Element.normalize() processing.
  *
  * @xerces.internal
- *
- * @since  PR-DOM-Level-1-19980818.
+ * @since PR-DOM-Level-1-19980818.
  */
 public class DeferredCDATASectionImpl
-    extends CDATASectionImpl
-    implements DeferredNode {
+        extends CDATASectionImpl
+        implements DeferredNode {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = 1983580632355645726L;
 
     //
     // Data
     //
 
-    /** Node index. */
+    /**
+     * Node index.
+     */
     protected transient int fNodeIndex;
 
     //
@@ -84,7 +87,9 @@ public class DeferredCDATASectionImpl
     // DeferredNode methods
     //
 
-    /** Returns the node index. */
+    /**
+     * Returns the node index.
+     */
     public int getNodeIndex() {
         return fNodeIndex;
     }
@@ -93,7 +98,9 @@ public class DeferredCDATASectionImpl
     // Protected methods
     //
 
-    /** Synchronizes the data (name and value) for fast nodes. */
+    /**
+     * Synchronizes the data (name and value) for fast nodes.
+     */
     protected void synchronizeData() {
 
         // no need to sync in the future
@@ -101,7 +108,7 @@ public class DeferredCDATASectionImpl
 
         // fluff data
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl) this.ownerDocument();
+                (DeferredDocumentImpl) this.ownerDocument();
         data = ownerDocument.getNodeValueString(fNodeIndex);
 
     } // synchronizeData()

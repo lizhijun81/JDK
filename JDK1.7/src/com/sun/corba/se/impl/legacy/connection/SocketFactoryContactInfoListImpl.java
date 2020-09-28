@@ -36,17 +36,14 @@ import com.sun.corba.se.impl.transport.CorbaContactInfoListIteratorImpl;
  * @author Harold Carr
  */
 public class SocketFactoryContactInfoListImpl
-    extends
-        CorbaContactInfoListImpl
-{
+        extends
+        CorbaContactInfoListImpl {
     // XREVISIT - is this used?
-    public SocketFactoryContactInfoListImpl(ORB orb)
-    {
+    public SocketFactoryContactInfoListImpl(ORB orb) {
         super(orb);
     }
 
-    public SocketFactoryContactInfoListImpl(ORB orb, IOR targetIOR)
-    {
+    public SocketFactoryContactInfoListImpl(ORB orb, IOR targetIOR) {
         super(orb, targetIOR);
     }
 
@@ -55,8 +52,7 @@ public class SocketFactoryContactInfoListImpl
     // pept.transport.ContactInfoList
     //
 
-    public Iterator iterator()
-    {
+    public Iterator iterator() {
         return new SocketFactoryContactInfoListIteratorImpl(orb, this);
     }
 }

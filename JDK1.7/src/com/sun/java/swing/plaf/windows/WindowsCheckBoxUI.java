@@ -45,8 +45,7 @@ import java.awt.*;
  *
  * @author Jeff Dinkins
  */
-public class WindowsCheckBoxUI extends WindowsRadioButtonUI
-{
+public class WindowsCheckBoxUI extends WindowsRadioButtonUI {
     // NOTE: MetalCheckBoxUI inherts from MetalRadioButtonUI instead
     // of BasicCheckBoxUI because we want to pick up all the
     // painting changes made in MetalRadioButtonUI.
@@ -81,7 +80,7 @@ public class WindowsCheckBoxUI extends WindowsRadioButtonUI
     // ********************************
     public void installDefaults(AbstractButton b) {
         super.installDefaults(b);
-        if(!defaults_initialized) {
+        if (!defaults_initialized) {
             icon = UIManager.getIcon(getPropertyPrefix() + "icon");
             defaults_initialized = true;
         }

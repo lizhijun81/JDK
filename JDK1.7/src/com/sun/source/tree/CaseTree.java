@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * A tree node for a 'case' in a 'switch' statement.
- *
+ * <p>
  * For example:
  * <pre>
  *   case <em>expression</em> :
@@ -39,10 +39,9 @@ import java.util.List;
  *       <em>statements</em>
  * </pre>
  *
- * @jls section 14.11
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls section 14.11
  * @since 1.6
  */
 public interface CaseTree extends Tree {
@@ -50,5 +49,6 @@ public interface CaseTree extends Tree {
      * @return null if and only if this Case is {@code default:}
      */
     ExpressionTree getExpression();
+
     List<? extends StatementTree> getStatements();
 }

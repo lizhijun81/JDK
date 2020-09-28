@@ -35,6 +35,7 @@
 
 
 package java.awt.image;
+
 import java.awt.Rectangle;
 import java.awt.Point;
 
@@ -116,6 +117,7 @@ import sun.awt.image.SunWritableRaster;
  * standard Interleaved, Banded, and Packed SampleModels and that may
  * be processed more efficiently than a Raster created by combining
  * an externally generated SampleModel and DataBuffer.
+ *
  * @see java.awt.image.DataBuffer
  * @see java.awt.image.SampleModel
  * @see java.awt.image.PixelInterleavedSampleModel
@@ -131,19 +133,29 @@ public class Raster {
      */
     protected SampleModel sampleModel;
 
-    /** The DataBuffer that stores the image data. */
+    /**
+     * The DataBuffer that stores the image data.
+     */
     protected DataBuffer dataBuffer;
 
-    /** The X coordinate of the upper-left pixel of this Raster. */
+    /**
+     * The X coordinate of the upper-left pixel of this Raster.
+     */
     protected int minX;
 
-    /** The Y coordinate of the upper-left pixel of this Raster. */
+    /**
+     * The Y coordinate of the upper-left pixel of this Raster.
+     */
     protected int minY;
 
-    /** The width of this Raster. */
+    /**
+     * The width of this Raster.
+     */
     protected int width;
 
-    /** The height of this Raster. */
+    /**
+     * The height of this Raster.
+     */
     protected int height;
 
     /**
@@ -158,16 +170,23 @@ public class Raster {
      */
     protected int sampleModelTranslateY;
 
-    /** The number of bands in the Raster. */
+    /**
+     * The number of bands in the Raster.
+     */
     protected int numBands;
 
-    /** The number of DataBuffer data elements per pixel. */
+    /**
+     * The number of DataBuffer data elements per pixel.
+     */
     protected int numDataElements;
 
-    /** The parent of this Raster, or null. */
+    /**
+     * The parent of this Raster, or null.
+     */
     protected Raster parent;
 
     static private native void initIDs();
+
     static {
         ColorModel.loadLibraries();
         initIDs();
@@ -188,18 +207,19 @@ public class Raster {
      * Raster.createPackedRaster().
      * <p> The only dataTypes supported currently are TYPE_BYTE
      * and TYPE_USHORT.
-     * @param dataType  the data type for storing samples
-     * @param w         the width in pixels of the image data
-     * @param h         the height in pixels of the image data
-     * @param bands     the number of bands
-     * @param location  the upper-left corner of the <code>Raster</code>
+     *
+     * @param dataType the data type for storing samples
+     * @param w        the width in pixels of the image data
+     * @param h        the height in pixels of the image data
+     * @param bands    the number of bands
+     * @param location the upper-left corner of the <code>Raster</code>
      * @return a WritableRaster object with the specified data type,
-     *         width, height and number of bands.
+     * width, height and number of bands.
      * @throws RasterFormatException if <code>w</code> or <code>h</code>
-     *         is less than or equal to zero, or computing either
-     *         <code>location.x + w</code> or
-     *         <code>location.y + h</code> results in integer
-     *         overflow
+     *                               is less than or equal to zero, or computing either
+     *                               <code>location.x + w</code> or
+     *                               <code>location.y + h</code> results in integer
+     *                               overflow
      */
     public static WritableRaster createInterleavedRaster(int dataType,
                                                          int w, int h,
@@ -209,8 +229,8 @@ public class Raster {
         for (int i = 0; i < bands; i++) {
             bandOffsets[i] = i;
         }
-        return createInterleavedRaster(dataType, w, h, w*bands, bands,
-                                       bandOffsets, location);
+        return createInterleavedRaster(dataType, w, h, w * bands, bands,
+                bandOffsets, location);
     }
 
     /**
@@ -230,25 +250,26 @@ public class Raster {
      * Raster.createPackedRaster().
      * <p> The only dataTypes supported currently are TYPE_BYTE
      * and TYPE_USHORT.
-     * @param dataType  the data type for storing samples
-     * @param w         the width in pixels of the image data
-     * @param h         the height in pixels of the image data
+     *
+     * @param dataType       the data type for storing samples
+     * @param w              the width in pixels of the image data
+     * @param h              the height in pixels of the image data
      * @param scanlineStride the line stride of the image data
-     * @param pixelStride the pixel stride of the image data
-     * @param bandOffsets the offsets of all bands
-     * @param location  the upper-left corner of the <code>Raster</code>
+     * @param pixelStride    the pixel stride of the image data
+     * @param bandOffsets    the offsets of all bands
+     * @param location       the upper-left corner of the <code>Raster</code>
      * @return a WritableRaster object with the specified data type,
-     *         width, height, scanline stride, pixel stride and band
-     *         offsets.
-     * @throws RasterFormatException if <code>w</code> or <code>h</code>
-     *         is less than or equal to zero, or computing either
-     *         <code>location.x + w</code> or
-     *         <code>location.y + h</code> results in integer
-     *         overflow
+     * width, height, scanline stride, pixel stride and band
+     * offsets.
+     * @throws RasterFormatException    if <code>w</code> or <code>h</code>
+     *                                  is less than or equal to zero, or computing either
+     *                                  <code>location.x + w</code> or
+     *                                  <code>location.y + h</code> results in integer
+     *                                  overflow
      * @throws IllegalArgumentException if <code>dataType</code> is not
-     *         one of the supported data types, which are
-     *         <code>DataBuffer.TYPE_BYTE</code>, or
-     *         <code>DataBuffer.TYPE_USHORT</code>.
+     *                                  one of the supported data types, which are
+     *                                  <code>DataBuffer.TYPE_BYTE</code>, or
+     *                                  <code>DataBuffer.TYPE_USHORT</code>.
      */
     public static WritableRaster createInterleavedRaster(int dataType,
                                                          int w, int h,
@@ -259,24 +280,24 @@ public class Raster {
         DataBuffer d;
 
         int size = scanlineStride * (h - 1) + // fisrt (h - 1) scans
-            pixelStride * w; // last scan
+                pixelStride * w; // last scan
 
-        switch(dataType) {
-        case DataBuffer.TYPE_BYTE:
-            d = new DataBufferByte(size);
-            break;
+        switch (dataType) {
+            case DataBuffer.TYPE_BYTE:
+                d = new DataBufferByte(size);
+                break;
 
-        case DataBuffer.TYPE_USHORT:
-            d = new DataBufferUShort(size);
-            break;
+            case DataBuffer.TYPE_USHORT:
+                d = new DataBufferUShort(size);
+                break;
 
-        default:
-            throw new IllegalArgumentException("Unsupported data type " +
-                                                dataType);
+            default:
+                throw new IllegalArgumentException("Unsupported data type " +
+                        dataType);
         }
 
         return createInterleavedRaster(d, w, h, scanlineStride,
-                                       pixelStride, bandOffsets, location);
+                pixelStride, bandOffsets, location);
     }
 
     /**
@@ -290,29 +311,30 @@ public class Raster {
      *
      * <p> The only dataTypes supported currently are TYPE_BYTE, TYPE_USHORT,
      * and TYPE_INT.
-     * @param dataType  the data type for storing samples
-     * @param w         the width in pixels of the image data
-     * @param h         the height in pixels of the image data
-     * @param bands     the number of bands
-     * @param location  the upper-left corner of the <code>Raster</code>
+     *
+     * @param dataType the data type for storing samples
+     * @param w        the width in pixels of the image data
+     * @param h        the height in pixels of the image data
+     * @param bands    the number of bands
+     * @param location the upper-left corner of the <code>Raster</code>
      * @return a WritableRaster object with the specified data type,
-     *         width, height and number of bands.
-     * @throws RasterFormatException if <code>w</code> or <code>h</code>
-     *         is less than or equal to zero, or computing either
-     *         <code>location.x + w</code> or
-     *         <code>location.y + h</code> results in integer
-     *         overflow
+     * width, height and number of bands.
+     * @throws RasterFormatException          if <code>w</code> or <code>h</code>
+     *                                        is less than or equal to zero, or computing either
+     *                                        <code>location.x + w</code> or
+     *                                        <code>location.y + h</code> results in integer
+     *                                        overflow
      * @throws ArrayIndexOutOfBoundsException if <code>bands</code>
-     *         is less than 1
+     *                                        is less than 1
      */
     public static WritableRaster createBandedRaster(int dataType,
                                                     int w, int h,
                                                     int bands,
                                                     Point location) {
         if (bands < 1) {
-            throw new ArrayIndexOutOfBoundsException("Number of bands ("+
-                                                     bands+") must"+
-                                                     " be greater than 0");
+            throw new ArrayIndexOutOfBoundsException("Number of bands (" +
+                    bands + ") must" +
+                    " be greater than 0");
         }
         int[] bankIndices = new int[bands];
         int[] bandOffsets = new int[bands];
@@ -322,8 +344,8 @@ public class Raster {
         }
 
         return createBandedRaster(dataType, w, h, w,
-                                  bankIndices, bandOffsets,
-                                  location);
+                bankIndices, bandOffsets,
+                location);
     }
 
     /**
@@ -339,28 +361,29 @@ public class Raster {
      *
      * <p> The only dataTypes supported currently are TYPE_BYTE, TYPE_USHORT,
      * and TYPE_INT.
-     * @param dataType  the data type for storing samples
-     * @param w         the width in pixels of the image data
-     * @param h         the height in pixels of the image data
+     *
+     * @param dataType       the data type for storing samples
+     * @param w              the width in pixels of the image data
+     * @param h              the height in pixels of the image data
      * @param scanlineStride the line stride of the image data
-     * @param bankIndices the bank indices for each band
-     * @param bandOffsets the offsets of all bands
-     * @param location  the upper-left corner of the <code>Raster</code>
+     * @param bankIndices    the bank indices for each band
+     * @param bandOffsets    the offsets of all bands
+     * @param location       the upper-left corner of the <code>Raster</code>
      * @return a WritableRaster object with the specified data type,
-     *         width, height, scanline stride, bank indices and band
-     *         offsets.
-     * @throws RasterFormatException if <code>w</code> or <code>h</code>
-     *         is less than or equal to zero, or computing either
-     *         <code>location.x + w</code> or
-     *         <code>location.y + h</code> results in integer
-     *         overflow
-     * @throws IllegalArgumentException if <code>dataType</code> is not
-     *         one of the supported data types, which are
-     *         <code>DataBuffer.TYPE_BYTE</code>,
-     *         <code>DataBuffer.TYPE_USHORT</code>
-     *         or <code>DataBuffer.TYPE_INT</code>
+     * width, height, scanline stride, bank indices and band
+     * offsets.
+     * @throws RasterFormatException          if <code>w</code> or <code>h</code>
+     *                                        is less than or equal to zero, or computing either
+     *                                        <code>location.x + w</code> or
+     *                                        <code>location.y + h</code> results in integer
+     *                                        overflow
+     * @throws IllegalArgumentException       if <code>dataType</code> is not
+     *                                        one of the supported data types, which are
+     *                                        <code>DataBuffer.TYPE_BYTE</code>,
+     *                                        <code>DataBuffer.TYPE_USHORT</code>
+     *                                        or <code>DataBuffer.TYPE_INT</code>
      * @throws ArrayIndexOutOfBoundsException if <code>bankIndices</code>
-     *         or <code>bandOffsets</code> is <code>null</code>
+     *                                        or <code>bandOffsets</code> is <code>null</code>
      */
     public static WritableRaster createBandedRaster(int dataType,
                                                     int w, int h,
@@ -373,11 +396,11 @@ public class Raster {
 
         if (bankIndices == null) {
             throw new
-                ArrayIndexOutOfBoundsException("Bank indices array is null");
+                    ArrayIndexOutOfBoundsException("Bank indices array is null");
         }
         if (bandOffsets == null) {
             throw new
-                ArrayIndexOutOfBoundsException("Band offsets array is null");
+                    ArrayIndexOutOfBoundsException("Band offsets array is null");
         }
 
         // Figure out the #banks and the largest band offset
@@ -393,29 +416,29 @@ public class Raster {
         }
         int banks = maxBank + 1;
         int size = maxBandOff +
-            scanlineStride * (h - 1) + // fisrt (h - 1) scans
-            w; // last scan
+                scanlineStride * (h - 1) + // fisrt (h - 1) scans
+                w; // last scan
 
-        switch(dataType) {
-        case DataBuffer.TYPE_BYTE:
-            d = new DataBufferByte(size, banks);
-            break;
+        switch (dataType) {
+            case DataBuffer.TYPE_BYTE:
+                d = new DataBufferByte(size, banks);
+                break;
 
-        case DataBuffer.TYPE_USHORT:
-            d = new DataBufferUShort(size, banks);
-            break;
+            case DataBuffer.TYPE_USHORT:
+                d = new DataBufferUShort(size, banks);
+                break;
 
-        case DataBuffer.TYPE_INT:
-            d = new DataBufferInt(size, banks);
-            break;
+            case DataBuffer.TYPE_INT:
+                d = new DataBufferInt(size, banks);
+                break;
 
-        default:
-            throw new IllegalArgumentException("Unsupported data type " +
-                                                dataType);
+            default:
+                throw new IllegalArgumentException("Unsupported data type " +
+                        dataType);
         }
 
         return createBandedRaster(d, w, h, scanlineStride,
-                                  bankIndices, bandOffsets, location);
+                bankIndices, bandOffsets, location);
     }
 
     /**
@@ -430,23 +453,24 @@ public class Raster {
      *
      * <p> The only dataTypes supported currently are TYPE_BYTE, TYPE_USHORT,
      * and TYPE_INT.
+     *
      * @param dataType  the data type for storing samples
      * @param w         the width in pixels of the image data
      * @param h         the height in pixels of the image data
      * @param bandMasks an array containing an entry for each band
      * @param location  the upper-left corner of the <code>Raster</code>
      * @return a WritableRaster object with the specified data type,
-     *         width, height, and band masks.
-     * @throws RasterFormatException if <code>w</code> or <code>h</code>
-     *         is less than or equal to zero, or computing either
-     *         <code>location.x + w</code> or
-     *         <code>location.y + h</code> results in integer
-     *         overflow
+     * width, height, and band masks.
+     * @throws RasterFormatException    if <code>w</code> or <code>h</code>
+     *                                  is less than or equal to zero, or computing either
+     *                                  <code>location.x + w</code> or
+     *                                  <code>location.y + h</code> results in integer
+     *                                  overflow
      * @throws IllegalArgumentException if <code>dataType</code> is not
-     *         one of the supported data types, which are
-     *         <code>DataBuffer.TYPE_BYTE</code>,
-     *         <code>DataBuffer.TYPE_USHORT</code>
-     *         or <code>DataBuffer.TYPE_INT</code>
+     *                                  one of the supported data types, which are
+     *                                  <code>DataBuffer.TYPE_BYTE</code>,
+     *                                  <code>DataBuffer.TYPE_USHORT</code>
+     *                                  or <code>DataBuffer.TYPE_INT</code>
      */
     public static WritableRaster createPackedRaster(int dataType,
                                                     int w, int h,
@@ -454,22 +478,22 @@ public class Raster {
                                                     Point location) {
         DataBuffer d;
 
-        switch(dataType) {
-        case DataBuffer.TYPE_BYTE:
-            d = new DataBufferByte(w*h);
-            break;
+        switch (dataType) {
+            case DataBuffer.TYPE_BYTE:
+                d = new DataBufferByte(w * h);
+                break;
 
-        case DataBuffer.TYPE_USHORT:
-            d = new DataBufferUShort(w*h);
-            break;
+            case DataBuffer.TYPE_USHORT:
+                d = new DataBufferUShort(w * h);
+                break;
 
-        case DataBuffer.TYPE_INT:
-            d = new DataBufferInt(w*h);
-            break;
+            case DataBuffer.TYPE_INT:
+                d = new DataBufferInt(w * h);
+                break;
 
-        default:
-            throw new IllegalArgumentException("Unsupported data type " +
-                                                dataType);
+            default:
+                throw new IllegalArgumentException("Unsupported data type " +
+                        dataType);
         }
 
         return createPackedRaster(d, w, h, w, bandMasks, location);
@@ -494,30 +518,31 @@ public class Raster {
      *
      * <p> The only dataTypes supported currently are TYPE_BYTE, TYPE_USHORT,
      * and TYPE_INT.
-     * @param dataType  the data type for storing samples
-     * @param w         the width in pixels of the image data
-     * @param h         the height in pixels of the image data
-     * @param bands     the number of bands
+     *
+     * @param dataType    the data type for storing samples
+     * @param w           the width in pixels of the image data
+     * @param h           the height in pixels of the image data
+     * @param bands       the number of bands
      * @param bitsPerBand the number of bits per band
-     * @param location  the upper-left corner of the <code>Raster</code>
+     * @param location    the upper-left corner of the <code>Raster</code>
      * @return a WritableRaster object with the specified data type,
-     *         width, height, number of bands, and bits per band.
-     * @throws RasterFormatException if <code>w</code> or <code>h</code>
-     *         is less than or equal to zero, or computing either
-     *         <code>location.x + w</code> or
-     *         <code>location.y + h</code> results in integer
-     *         overflow
+     * width, height, number of bands, and bits per band.
+     * @throws RasterFormatException    if <code>w</code> or <code>h</code>
+     *                                  is less than or equal to zero, or computing either
+     *                                  <code>location.x + w</code> or
+     *                                  <code>location.y + h</code> results in integer
+     *                                  overflow
      * @throws IllegalArgumentException if the product of
-     *         <code>bitsPerBand</code> and <code>bands</code> is
-     *         greater than the number of bits held by
-     *         <code>dataType</code>
+     *                                  <code>bitsPerBand</code> and <code>bands</code> is
+     *                                  greater than the number of bits held by
+     *                                  <code>dataType</code>
      * @throws IllegalArgumentException if <code>bitsPerBand</code> or
-     *         <code>bands</code> is not greater than zero
+     *                                  <code>bands</code> is not greater than zero
      * @throws IllegalArgumentException if <code>dataType</code> is not
-     *         one of the supported data types, which are
-     *         <code>DataBuffer.TYPE_BYTE</code>,
-     *         <code>DataBuffer.TYPE_USHORT</code>
-     *         or <code>DataBuffer.TYPE_INT</code>
+     *                                  one of the supported data types, which are
+     *                                  <code>DataBuffer.TYPE_BYTE</code>,
+     *                                  <code>DataBuffer.TYPE_USHORT</code>
+     *                                  or <code>DataBuffer.TYPE_INT</code>
      */
     public static WritableRaster createPackedRaster(int dataType,
                                                     int w, int h,
@@ -527,35 +552,35 @@ public class Raster {
         DataBuffer d;
 
         if (bands <= 0) {
-            throw new IllegalArgumentException("Number of bands ("+bands+
-                                               ") must be greater than 0");
+            throw new IllegalArgumentException("Number of bands (" + bands +
+                    ") must be greater than 0");
         }
 
         if (bitsPerBand <= 0) {
-            throw new IllegalArgumentException("Bits per band ("+bitsPerBand+
-                                               ") must be greater than 0");
+            throw new IllegalArgumentException("Bits per band (" + bitsPerBand +
+                    ") must be greater than 0");
         }
 
         if (bands != 1) {
             int[] masks = new int[bands];
             int mask = (1 << bitsPerBand) - 1;
-            int shift = (bands-1)*bitsPerBand;
+            int shift = (bands - 1) * bitsPerBand;
 
             /* Make sure the total mask size will fit in the data type */
-            if (shift+bitsPerBand > DataBuffer.getDataTypeSize(dataType)) {
-                throw new IllegalArgumentException("bitsPerBand("+
-                                                   bitsPerBand+") * bands is "+
-                                                   " greater than data type "+
-                                                   "size.");
+            if (shift + bitsPerBand > DataBuffer.getDataTypeSize(dataType)) {
+                throw new IllegalArgumentException("bitsPerBand(" +
+                        bitsPerBand + ") * bands is " +
+                        " greater than data type " +
+                        "size.");
             }
-            switch(dataType) {
-            case DataBuffer.TYPE_BYTE:
-            case DataBuffer.TYPE_USHORT:
-            case DataBuffer.TYPE_INT:
-                break;
-            default:
-                throw new IllegalArgumentException("Unsupported data type " +
-                                                    dataType);
+            switch (dataType) {
+                case DataBuffer.TYPE_BYTE:
+                case DataBuffer.TYPE_USHORT:
+                case DataBuffer.TYPE_INT:
+                    break;
+                default:
+                    throw new IllegalArgumentException("Unsupported data type " +
+                            dataType);
             }
 
             for (int i = 0; i < bands; i++) {
@@ -564,25 +589,24 @@ public class Raster {
             }
 
             return createPackedRaster(dataType, w, h, masks, location);
-        }
-        else {
+        } else {
             double fw = w;
-            switch(dataType) {
-            case DataBuffer.TYPE_BYTE:
-                d = new DataBufferByte((int)(Math.ceil(fw/(8/bitsPerBand)))*h);
-                break;
+            switch (dataType) {
+                case DataBuffer.TYPE_BYTE:
+                    d = new DataBufferByte((int) (Math.ceil(fw / (8 / bitsPerBand))) * h);
+                    break;
 
-            case DataBuffer.TYPE_USHORT:
-                d = new DataBufferUShort((int)(Math.ceil(fw/(16/bitsPerBand)))*h);
-                break;
+                case DataBuffer.TYPE_USHORT:
+                    d = new DataBufferUShort((int) (Math.ceil(fw / (16 / bitsPerBand))) * h);
+                    break;
 
-            case DataBuffer.TYPE_INT:
-                d = new DataBufferInt((int)(Math.ceil(fw/(32/bitsPerBand)))*h);
-                break;
+                case DataBuffer.TYPE_INT:
+                    d = new DataBufferInt((int) (Math.ceil(fw / (32 / bitsPerBand))) * h);
+                    break;
 
-            default:
-                throw new IllegalArgumentException("Unsupported data type " +
-                                                   dataType);
+                default:
+                    throw new IllegalArgumentException("Unsupported data type " +
+                            dataType);
             }
 
             return createPackedRaster(d, w, h, bitsPerBand, location);
@@ -600,29 +624,30 @@ public class Raster {
      * Rasters are not supported.  To create a 1-band Raster of type
      * <code>DataBuffer.TYPE_INT</code>, use
      * Raster.createPackedRaster().
-     * @param dataBuffer the <code>DataBuffer</code> that contains the
-     *        image data
-     * @param w         the width in pixels of the image data
-     * @param h         the height in pixels of the image data
+     *
+     * @param dataBuffer     the <code>DataBuffer</code> that contains the
+     *                       image data
+     * @param w              the width in pixels of the image data
+     * @param h              the height in pixels of the image data
      * @param scanlineStride the line stride of the image data
-     * @param pixelStride the pixel stride of the image data
-     * @param bandOffsets the offsets of all bands
-     * @param location  the upper-left corner of the <code>Raster</code>
+     * @param pixelStride    the pixel stride of the image data
+     * @param bandOffsets    the offsets of all bands
+     * @param location       the upper-left corner of the <code>Raster</code>
      * @return a WritableRaster object with the specified
-     *         <code>DataBuffer</code>, width, height, scanline stride,
-     *         pixel stride and band offsets.
-     * @throws RasterFormatException if <code>w</code> or <code>h</code>
-     *         is less than or equal to zero, or computing either
-     *         <code>location.x + w</code> or
-     *         <code>location.y + h</code> results in integer
-     *         overflow
+     * <code>DataBuffer</code>, width, height, scanline stride,
+     * pixel stride and band offsets.
+     * @throws RasterFormatException    if <code>w</code> or <code>h</code>
+     *                                  is less than or equal to zero, or computing either
+     *                                  <code>location.x + w</code> or
+     *                                  <code>location.y + h</code> results in integer
+     *                                  overflow
      * @throws IllegalArgumentException if <code>dataType</code> is not
-     *         one of the supported data types, which are
-     *         <code>DataBuffer.TYPE_BYTE</code>,
-     *         <code>DataBuffer.TYPE_USHORT</code>
-     * @throws RasterFormatException if <code>dataBuffer</code> has more
-     *         than one bank.
-     * @throws NullPointerException if <code>dataBuffer</code> is null
+     *                                  one of the supported data types, which are
+     *                                  <code>DataBuffer.TYPE_BYTE</code>,
+     *                                  <code>DataBuffer.TYPE_USHORT</code>
+     * @throws RasterFormatException    if <code>dataBuffer</code> has more
+     *                                  than one bank.
+     * @throws NullPointerException     if <code>dataBuffer</code> is null
      */
     public static WritableRaster createInterleavedRaster(DataBuffer dataBuffer,
                                                          int w, int h,
@@ -639,20 +664,20 @@ public class Raster {
         int dataType = dataBuffer.getDataType();
 
         PixelInterleavedSampleModel csm =
-            new PixelInterleavedSampleModel(dataType, w, h,
-                                            pixelStride,
-                                            scanlineStride,
-                                            bandOffsets);
-        switch(dataType) {
-        case DataBuffer.TYPE_BYTE:
-            return new ByteInterleavedRaster(csm, dataBuffer, location);
+                new PixelInterleavedSampleModel(dataType, w, h,
+                        pixelStride,
+                        scanlineStride,
+                        bandOffsets);
+        switch (dataType) {
+            case DataBuffer.TYPE_BYTE:
+                return new ByteInterleavedRaster(csm, dataBuffer, location);
 
-        case DataBuffer.TYPE_USHORT:
-            return new ShortInterleavedRaster(csm, dataBuffer, location);
+            case DataBuffer.TYPE_USHORT:
+                return new ShortInterleavedRaster(csm, dataBuffer, location);
 
-        default:
-            throw new IllegalArgumentException("Unsupported data type " +
-                                                dataType);
+            default:
+                throw new IllegalArgumentException("Unsupported data type " +
+                        dataType);
         }
     }
 
@@ -663,28 +688,29 @@ public class Raster {
      * from bankIndices.length and bandOffsets.length, which must be
      * the same.  The upper left corner of the Raster is given by the
      * location argument.  If location is null, (0, 0) will be used.
-     * @param dataBuffer the <code>DataBuffer</code> that contains the
-     *        image data
-     * @param w         the width in pixels of the image data
-     * @param h         the height in pixels of the image data
+     *
+     * @param dataBuffer     the <code>DataBuffer</code> that contains the
+     *                       image data
+     * @param w              the width in pixels of the image data
+     * @param h              the height in pixels of the image data
      * @param scanlineStride the line stride of the image data
-     * @param bankIndices the bank indices for each band
-     * @param bandOffsets the offsets of all bands
-     * @param location  the upper-left corner of the <code>Raster</code>
+     * @param bankIndices    the bank indices for each band
+     * @param bandOffsets    the offsets of all bands
+     * @param location       the upper-left corner of the <code>Raster</code>
      * @return a WritableRaster object with the specified
-     *         <code>DataBuffer</code>, width, height, scanline stride,
-     *         bank indices and band offsets.
-     * @throws RasterFormatException if <code>w</code> or <code>h</code>
-     *         is less than or equal to zero, or computing either
-     *         <code>location.x + w</code> or
-     *         <code>location.y + h</code> results in integer
-     *         overflow
+     * <code>DataBuffer</code>, width, height, scanline stride,
+     * bank indices and band offsets.
+     * @throws RasterFormatException    if <code>w</code> or <code>h</code>
+     *                                  is less than or equal to zero, or computing either
+     *                                  <code>location.x + w</code> or
+     *                                  <code>location.y + h</code> results in integer
+     *                                  overflow
      * @throws IllegalArgumentException if <code>dataType</code> is not
-     *         one of the supported data types, which are
-     *         <code>DataBuffer.TYPE_BYTE</code>,
-     *         <code>DataBuffer.TYPE_USHORT</code>
-     *         or <code>DataBuffer.TYPE_INT</code>
-     * @throws NullPointerException if <code>dataBuffer</code> is null
+     *                                  one of the supported data types, which are
+     *                                  <code>DataBuffer.TYPE_BYTE</code>,
+     *                                  <code>DataBuffer.TYPE_USHORT</code>
+     *                                  or <code>DataBuffer.TYPE_INT</code>
+     * @throws NullPointerException     if <code>dataBuffer</code> is null
      */
     public static WritableRaster createBandedRaster(DataBuffer dataBuffer,
                                                     int w, int h,
@@ -696,34 +722,34 @@ public class Raster {
             throw new NullPointerException("DataBuffer cannot be null");
         }
         if (location == null) {
-           location = new Point(0,0);
+            location = new Point(0, 0);
         }
         int dataType = dataBuffer.getDataType();
 
         int bands = bankIndices.length;
         if (bandOffsets.length != bands) {
             throw new IllegalArgumentException(
-                                   "bankIndices.length != bandOffsets.length");
+                    "bankIndices.length != bandOffsets.length");
         }
 
         BandedSampleModel bsm =
-            new BandedSampleModel(dataType, w, h,
-                                  scanlineStride,
-                                  bankIndices, bandOffsets);
+                new BandedSampleModel(dataType, w, h,
+                        scanlineStride,
+                        bankIndices, bandOffsets);
 
-        switch(dataType) {
-        case DataBuffer.TYPE_BYTE:
-            return new ByteBandedRaster(bsm, dataBuffer, location);
+        switch (dataType) {
+            case DataBuffer.TYPE_BYTE:
+                return new ByteBandedRaster(bsm, dataBuffer, location);
 
-        case DataBuffer.TYPE_USHORT:
-            return new ShortBandedRaster(bsm, dataBuffer, location);
+            case DataBuffer.TYPE_USHORT:
+                return new ShortBandedRaster(bsm, dataBuffer, location);
 
-        case DataBuffer.TYPE_INT:
-            return new SunWritableRaster(bsm, dataBuffer, location);
+            case DataBuffer.TYPE_INT:
+                return new SunWritableRaster(bsm, dataBuffer, location);
 
-        default:
-            throw new IllegalArgumentException("Unsupported data type " +
-                                                dataType);
+            default:
+                throw new IllegalArgumentException("Unsupported data type " +
+                        dataType);
         }
     }
 
@@ -733,29 +759,30 @@ public class Raster {
      * band masks.  The number of bands is inferred from bandMasks.length.
      * The upper left corner of the Raster is given by
      * the location argument.  If location is null, (0, 0) will be used.
-     * @param dataBuffer the <code>DataBuffer</code> that contains the
-     *        image data
-     * @param w         the width in pixels of the image data
-     * @param h         the height in pixels of the image data
+     *
+     * @param dataBuffer     the <code>DataBuffer</code> that contains the
+     *                       image data
+     * @param w              the width in pixels of the image data
+     * @param h              the height in pixels of the image data
      * @param scanlineStride the line stride of the image data
-     * @param bandMasks an array containing an entry for each band
-     * @param location  the upper-left corner of the <code>Raster</code>
+     * @param bandMasks      an array containing an entry for each band
+     * @param location       the upper-left corner of the <code>Raster</code>
      * @return a WritableRaster object with the specified
-     *         <code>DataBuffer</code>, width, height, scanline stride,
-     *         and band masks.
-     * @throws RasterFormatException if <code>w</code> or <code>h</code>
-     *         is less than or equal to zero, or computing either
-     *         <code>location.x + w</code> or
-     *         <code>location.y + h</code> results in integer
-     *         overflow
+     * <code>DataBuffer</code>, width, height, scanline stride,
+     * and band masks.
+     * @throws RasterFormatException    if <code>w</code> or <code>h</code>
+     *                                  is less than or equal to zero, or computing either
+     *                                  <code>location.x + w</code> or
+     *                                  <code>location.y + h</code> results in integer
+     *                                  overflow
      * @throws IllegalArgumentException if <code>dataType</code> is not
-     *         one of the supported data types, which are
-     *         <code>DataBuffer.TYPE_BYTE</code>,
-     *         <code>DataBuffer.TYPE_USHORT</code>
-     *         or <code>DataBuffer.TYPE_INT</code>
-     * @throws RasterFormatException if <code>dataBuffer</code> has more
-     *         than one bank.
-     * @throws NullPointerException if <code>dataBuffer</code> is null
+     *                                  one of the supported data types, which are
+     *                                  <code>DataBuffer.TYPE_BYTE</code>,
+     *                                  <code>DataBuffer.TYPE_USHORT</code>
+     *                                  or <code>DataBuffer.TYPE_INT</code>
+     * @throws RasterFormatException    if <code>dataBuffer</code> has more
+     *                                  than one bank.
+     * @throws NullPointerException     if <code>dataBuffer</code> is null
      */
     public static WritableRaster createPackedRaster(DataBuffer dataBuffer,
                                                     int w, int h,
@@ -766,27 +793,27 @@ public class Raster {
             throw new NullPointerException("DataBuffer cannot be null");
         }
         if (location == null) {
-           location = new Point(0,0);
+            location = new Point(0, 0);
         }
         int dataType = dataBuffer.getDataType();
 
         SinglePixelPackedSampleModel sppsm =
-            new SinglePixelPackedSampleModel(dataType, w, h, scanlineStride,
-                                             bandMasks);
+                new SinglePixelPackedSampleModel(dataType, w, h, scanlineStride,
+                        bandMasks);
 
-        switch(dataType) {
-        case DataBuffer.TYPE_BYTE:
-            return new ByteInterleavedRaster(sppsm, dataBuffer, location);
+        switch (dataType) {
+            case DataBuffer.TYPE_BYTE:
+                return new ByteInterleavedRaster(sppsm, dataBuffer, location);
 
-        case DataBuffer.TYPE_USHORT:
-            return new ShortInterleavedRaster(sppsm, dataBuffer, location);
+            case DataBuffer.TYPE_USHORT:
+                return new ShortInterleavedRaster(sppsm, dataBuffer, location);
 
-        case DataBuffer.TYPE_INT:
-            return new IntegerInterleavedRaster(sppsm, dataBuffer, location);
+            case DataBuffer.TYPE_INT:
+                return new IntegerInterleavedRaster(sppsm, dataBuffer, location);
 
-        default:
-            throw new IllegalArgumentException("Unsupported data type " +
-                                                dataType);
+            default:
+                throw new IllegalArgumentException("Unsupported data type " +
+                        dataType);
         }
     }
 
@@ -795,28 +822,29 @@ public class Raster {
      * specified DataBuffer, width, height, and bits per pixel.  The upper
      * left corner of the Raster is given by the location argument.  If
      * location is null, (0, 0) will be used.
-     * @param dataBuffer the <code>DataBuffer</code> that contains the
-     *        image data
-     * @param w         the width in pixels of the image data
-     * @param h         the height in pixels of the image data
+     *
+     * @param dataBuffer   the <code>DataBuffer</code> that contains the
+     *                     image data
+     * @param w            the width in pixels of the image data
+     * @param h            the height in pixels of the image data
      * @param bitsPerPixel the number of bits for each pixel
-     * @param location  the upper-left corner of the <code>Raster</code>
+     * @param location     the upper-left corner of the <code>Raster</code>
      * @return a WritableRaster object with the specified
-     *         <code>DataBuffer</code>, width, height, and
-     *         bits per pixel.
-     * @throws RasterFormatException if <code>w</code> or <code>h</code>
-     *         is less than or equal to zero, or computing either
-     *         <code>location.x + w</code> or
-     *         <code>location.y + h</code> results in integer
-     *         overflow
+     * <code>DataBuffer</code>, width, height, and
+     * bits per pixel.
+     * @throws RasterFormatException    if <code>w</code> or <code>h</code>
+     *                                  is less than or equal to zero, or computing either
+     *                                  <code>location.x + w</code> or
+     *                                  <code>location.y + h</code> results in integer
+     *                                  overflow
      * @throws IllegalArgumentException if <code>dataType</code> is not
-     *         one of the supported data types, which are
-     *         <code>DataBuffer.TYPE_BYTE</code>,
-     *         <code>DataBuffer.TYPE_USHORT</code>
-     *         or <code>DataBuffer.TYPE_INT</code>
-     * @throws RasterFormatException if <code>dataBuffer</code> has more
-     *         than one bank.
-     * @throws NullPointerException if <code>dataBuffer</code> is null
+     *                                  one of the supported data types, which are
+     *                                  <code>DataBuffer.TYPE_BYTE</code>,
+     *                                  <code>DataBuffer.TYPE_USHORT</code>
+     *                                  or <code>DataBuffer.TYPE_INT</code>
+     * @throws RasterFormatException    if <code>dataBuffer</code> has more
+     *                                  than one bank.
+     * @throws NullPointerException     if <code>dataBuffer</code> is null
      */
     public static WritableRaster createPackedRaster(DataBuffer dataBuffer,
                                                     int w, int h,
@@ -826,28 +854,28 @@ public class Raster {
             throw new NullPointerException("DataBuffer cannot be null");
         }
         if (location == null) {
-           location = new Point(0,0);
+            location = new Point(0, 0);
         }
         int dataType = dataBuffer.getDataType();
 
         if (dataType != DataBuffer.TYPE_BYTE &&
-            dataType != DataBuffer.TYPE_USHORT &&
-            dataType != DataBuffer.TYPE_INT) {
+                dataType != DataBuffer.TYPE_USHORT &&
+                dataType != DataBuffer.TYPE_INT) {
             throw new IllegalArgumentException("Unsupported data type " +
-                                               dataType);
+                    dataType);
         }
 
         if (dataBuffer.getNumBanks() != 1) {
             throw new
-                RasterFormatException("DataBuffer for packed Rasters"+
-                                      " must only have 1 bank.");
+                    RasterFormatException("DataBuffer for packed Rasters" +
+                    " must only have 1 bank.");
         }
 
         MultiPixelPackedSampleModel mppsm =
                 new MultiPixelPackedSampleModel(dataType, w, h, bitsPerPixel);
 
         if (dataType == DataBuffer.TYPE_BYTE &&
-            (bitsPerPixel == 1 || bitsPerPixel == 2 || bitsPerPixel == 4)) {
+                (bitsPerPixel == 1 || bitsPerPixel == 2 || bitsPerPixel == 4)) {
             return new BytePackedRaster(mppsm, dataBuffer, location);
         } else {
             return new SunWritableRaster(mppsm, dataBuffer, location);
@@ -856,25 +884,26 @@ public class Raster {
 
 
     /**
-     *  Creates a Raster with the specified SampleModel and DataBuffer.
-     *  The upper left corner of the Raster is given by the location argument.
-     *  If location is null, (0, 0) will be used.
-     *  @param sm the specified <code>SampleModel</code>
-     *  @param db the specified <code>DataBuffer</code>
-     *  @param location the upper-left corner of the <code>Raster</code>
-     *  @return a <code>Raster</code> with the specified
-     *          <code>SampleModel</code>, <code>DataBuffer</code>, and
-     *          location.
+     * Creates a Raster with the specified SampleModel and DataBuffer.
+     * The upper left corner of the Raster is given by the location argument.
+     * If location is null, (0, 0) will be used.
+     *
+     * @param sm       the specified <code>SampleModel</code>
+     * @param db       the specified <code>DataBuffer</code>
+     * @param location the upper-left corner of the <code>Raster</code>
+     * @return a <code>Raster</code> with the specified
+     * <code>SampleModel</code>, <code>DataBuffer</code>, and
+     * location.
      * @throws RasterFormatException if computing either
-     *         <code>location.x + sm.getWidth()</code> or
-     *         <code>location.y + sm.getHeight()</code> results in integer
-     *         overflow
+     *                               <code>location.x + sm.getWidth()</code> or
+     *                               <code>location.y + sm.getHeight()</code> results in integer
+     *                               overflow
      * @throws RasterFormatException if <code>db</code> has more
-     *         than one bank and <code>sm</code> is a
-     *         PixelInterleavedSampleModel, SinglePixelPackedSampleModel,
-     *         or MultiPixelPackedSampleModel.
-     *  @throws NullPointerException if either SampleModel or DataBuffer is
-     *          null
+     *                               than one bank and <code>sm</code> is a
+     *                               PixelInterleavedSampleModel, SinglePixelPackedSampleModel,
+     *                               or MultiPixelPackedSampleModel.
+     * @throws NullPointerException  if either SampleModel or DataBuffer is
+     *                               null
      */
     public static Raster createRaster(SampleModel sm,
                                       DataBuffer db,
@@ -884,12 +913,12 @@ public class Raster {
         }
 
         if (location == null) {
-           location = new Point(0,0);
+            location = new Point(0, 0);
         }
         int dataType = sm.getDataType();
 
         if (sm instanceof PixelInterleavedSampleModel) {
-            switch(dataType) {
+            switch (dataType) {
                 case DataBuffer.TYPE_BYTE:
                     return new ByteInterleavedRaster(sm, db, location);
 
@@ -897,7 +926,7 @@ public class Raster {
                     return new ShortInterleavedRaster(sm, db, location);
             }
         } else if (sm instanceof SinglePixelPackedSampleModel) {
-            switch(dataType) {
+            switch (dataType) {
                 case DataBuffer.TYPE_BYTE:
                     return new ByteInterleavedRaster(sm, db, location);
 
@@ -908,59 +937,61 @@ public class Raster {
                     return new IntegerInterleavedRaster(sm, db, location);
             }
         } else if (sm instanceof MultiPixelPackedSampleModel &&
-                   dataType == DataBuffer.TYPE_BYTE &&
-                   sm.getSampleSize(0) < 8) {
+                dataType == DataBuffer.TYPE_BYTE &&
+                sm.getSampleSize(0) < 8) {
             return new BytePackedRaster(sm, db, location);
         }
 
         // we couldn't do anything special - do the generic thing
 
-        return new Raster(sm,db,location);
+        return new Raster(sm, db, location);
     }
 
     /**
-     *  Creates a WritableRaster with the specified SampleModel.
-     *  The upper left corner of the Raster is given by the location argument.
-     *  If location is null, (0, 0) will be used.
-     *  @param sm the specified <code>SampleModel</code>
-     *  @param location the upper-left corner of the
-     *         <code>WritableRaster</code>
-     *  @return a <code>WritableRaster</code> with the specified
-     *          <code>SampleModel</code> and location.
-     *  @throws RasterFormatException if computing either
-     *          <code>location.x + sm.getWidth()</code> or
-     *          <code>location.y + sm.getHeight()</code> results in integer
-     *          overflow
+     * Creates a WritableRaster with the specified SampleModel.
+     * The upper left corner of the Raster is given by the location argument.
+     * If location is null, (0, 0) will be used.
+     *
+     * @param sm       the specified <code>SampleModel</code>
+     * @param location the upper-left corner of the
+     *                 <code>WritableRaster</code>
+     * @return a <code>WritableRaster</code> with the specified
+     * <code>SampleModel</code> and location.
+     * @throws RasterFormatException if computing either
+     *                               <code>location.x + sm.getWidth()</code> or
+     *                               <code>location.y + sm.getHeight()</code> results in integer
+     *                               overflow
      */
     public static WritableRaster createWritableRaster(SampleModel sm,
                                                       Point location) {
         if (location == null) {
-           location = new Point(0,0);
+            location = new Point(0, 0);
         }
 
         return createWritableRaster(sm, sm.createDataBuffer(), location);
     }
 
     /**
-     *  Creates a WritableRaster with the specified SampleModel and DataBuffer.
-     *  The upper left corner of the Raster is given by the location argument.
-     *  If location is null, (0, 0) will be used.
-     *  @param sm the specified <code>SampleModel</code>
-     *  @param db the specified <code>DataBuffer</code>
-     *  @param location the upper-left corner of the
-     *         <code>WritableRaster</code>
-     *  @return a <code>WritableRaster</code> with the specified
-     *          <code>SampleModel</code>, <code>DataBuffer</code>, and
-     *          location.
+     * Creates a WritableRaster with the specified SampleModel and DataBuffer.
+     * The upper left corner of the Raster is given by the location argument.
+     * If location is null, (0, 0) will be used.
+     *
+     * @param sm       the specified <code>SampleModel</code>
+     * @param db       the specified <code>DataBuffer</code>
+     * @param location the upper-left corner of the
+     *                 <code>WritableRaster</code>
+     * @return a <code>WritableRaster</code> with the specified
+     * <code>SampleModel</code>, <code>DataBuffer</code>, and
+     * location.
      * @throws RasterFormatException if computing either
-     *         <code>location.x + sm.getWidth()</code> or
-     *         <code>location.y + sm.getHeight()</code> results in integer
-     *         overflow
+     *                               <code>location.x + sm.getWidth()</code> or
+     *                               <code>location.y + sm.getHeight()</code> results in integer
+     *                               overflow
      * @throws RasterFormatException if <code>db</code> has more
-     *         than one bank and <code>sm</code> is a
-     *         PixelInterleavedSampleModel, SinglePixelPackedSampleModel,
-     *         or MultiPixelPackedSampleModel.
-     * @throws NullPointerException if either SampleModel or DataBuffer is null
+     *                               than one bank and <code>sm</code> is a
+     *                               PixelInterleavedSampleModel, SinglePixelPackedSampleModel,
+     *                               or MultiPixelPackedSampleModel.
+     * @throws NullPointerException  if either SampleModel or DataBuffer is null
      */
     public static WritableRaster createWritableRaster(SampleModel sm,
                                                       DataBuffer db,
@@ -969,13 +1000,13 @@ public class Raster {
             throw new NullPointerException("SampleModel and DataBuffer cannot be null");
         }
         if (location == null) {
-           location = new Point(0,0);
+            location = new Point(0, 0);
         }
 
         int dataType = sm.getDataType();
 
         if (sm instanceof PixelInterleavedSampleModel) {
-            switch(dataType) {
+            switch (dataType) {
                 case DataBuffer.TYPE_BYTE:
                     return new ByteInterleavedRaster(sm, db, location);
 
@@ -983,7 +1014,7 @@ public class Raster {
                     return new ShortInterleavedRaster(sm, db, location);
             }
         } else if (sm instanceof SinglePixelPackedSampleModel) {
-            switch(dataType) {
+            switch (dataType) {
                 case DataBuffer.TYPE_BYTE:
                     return new ByteInterleavedRaster(sm, db, location);
 
@@ -994,68 +1025,70 @@ public class Raster {
                     return new IntegerInterleavedRaster(sm, db, location);
             }
         } else if (sm instanceof MultiPixelPackedSampleModel &&
-                   dataType == DataBuffer.TYPE_BYTE &&
-                   sm.getSampleSize(0) < 8) {
+                dataType == DataBuffer.TYPE_BYTE &&
+                sm.getSampleSize(0) < 8) {
             return new BytePackedRaster(sm, db, location);
         }
 
         // we couldn't do anything special - do the generic thing
 
-        return new SunWritableRaster(sm,db,location);
+        return new SunWritableRaster(sm, db, location);
     }
 
     /**
-     *  Constructs a Raster with the given SampleModel.  The Raster's
-     *  upper left corner is origin and it is the same size as the
-     *  SampleModel.  A DataBuffer large enough to describe the
-     *  Raster is automatically created.
-     *  @param sampleModel     The SampleModel that specifies the layout
-     *  @param origin          The Point that specified the origin
-     *  @throws RasterFormatException if computing either
-     *          <code>origin.x + sampleModel.getWidth()</code> or
-     *          <code>origin.y + sampleModel.getHeight()</code> results in
-     *          integer overflow
-     *  @throws NullPointerException either <code>sampleModel</code> or
-     *          <code>origin</code> is null
+     * Constructs a Raster with the given SampleModel.  The Raster's
+     * upper left corner is origin and it is the same size as the
+     * SampleModel.  A DataBuffer large enough to describe the
+     * Raster is automatically created.
+     *
+     * @param sampleModel The SampleModel that specifies the layout
+     * @param origin      The Point that specified the origin
+     * @throws RasterFormatException if computing either
+     *                               <code>origin.x + sampleModel.getWidth()</code> or
+     *                               <code>origin.y + sampleModel.getHeight()</code> results in
+     *                               integer overflow
+     * @throws NullPointerException  either <code>sampleModel</code> or
+     *                               <code>origin</code> is null
      */
     protected Raster(SampleModel sampleModel,
                      Point origin) {
         this(sampleModel,
-             sampleModel.createDataBuffer(),
-             new Rectangle(origin.x,
-                           origin.y,
-                           sampleModel.getWidth(),
-                           sampleModel.getHeight()),
-             origin,
-             null);
+                sampleModel.createDataBuffer(),
+                new Rectangle(origin.x,
+                        origin.y,
+                        sampleModel.getWidth(),
+                        sampleModel.getHeight()),
+                origin,
+                null);
     }
 
     /**
-     *  Constructs a Raster with the given SampleModel and DataBuffer.
-     *  The Raster's upper left corner is origin and it is the same size
-     *  as the SampleModel.  The DataBuffer is not initialized and must
-     *  be compatible with SampleModel.
-     *  @param sampleModel     The SampleModel that specifies the layout
-     *  @param dataBuffer      The DataBuffer that contains the image data
-     *  @param origin          The Point that specifies the origin
-     *  @throws RasterFormatException if computing either
-     *          <code>origin.x + sampleModel.getWidth()</code> or
-     *          <code>origin.y + sampleModel.getHeight()</code> results in
-     *          integer overflow
-     *  @throws NullPointerException either <code>sampleModel</code> or
-     *          <code>origin</code> is null
+     * Constructs a Raster with the given SampleModel and DataBuffer.
+     * The Raster's upper left corner is origin and it is the same size
+     * as the SampleModel.  The DataBuffer is not initialized and must
+     * be compatible with SampleModel.
+     *
+     * @param sampleModel The SampleModel that specifies the layout
+     * @param dataBuffer  The DataBuffer that contains the image data
+     * @param origin      The Point that specifies the origin
+     * @throws RasterFormatException if computing either
+     *                               <code>origin.x + sampleModel.getWidth()</code> or
+     *                               <code>origin.y + sampleModel.getHeight()</code> results in
+     *                               integer overflow
+     * @throws NullPointerException  either <code>sampleModel</code> or
+     *                               <code>origin</code> is null
      */
     protected Raster(SampleModel sampleModel,
                      DataBuffer dataBuffer,
                      Point origin) {
         this(sampleModel,
-             dataBuffer,
-             new Rectangle(origin.x,
-                           origin.y,
-                           sampleModel.getWidth(),
-                           sampleModel.getHeight()),
-             origin,
-             null);
+                dataBuffer,
+                new Rectangle(origin.x,
+                        origin.y,
+                        sampleModel.getWidth(),
+                        sampleModel.getHeight()),
+                origin,
+                null);
     }
 
     /**
@@ -1066,23 +1099,24 @@ public class Raster {
      * (The base Raster is the Raster's ancestor which has no parent.)
      * sampleModelTranslate specifies the sampleModelTranslateX and
      * sampleModelTranslateY values of the new Raster.
-     *
+     * <p>
      * Note that this constructor should generally be called by other
      * constructors or create methods, it should not be used directly.
-     * @param sampleModel     The SampleModel that specifies the layout
-     * @param dataBuffer      The DataBuffer that contains the image data
-     * @param aRegion         The Rectangle that specifies the image area
-     * @param sampleModelTranslate  The Point that specifies the translation
-     *                        from SampleModel to Raster coordinates
-     * @param parent          The parent (if any) of this raster
-     * @throws NullPointerException if any of <code>sampleModel</code>,
-     *         <code>dataBuffer</code>, <code>aRegion</code> or
-     *         <code>sampleModelTranslate</code> is null
+     *
+     * @param sampleModel          The SampleModel that specifies the layout
+     * @param dataBuffer           The DataBuffer that contains the image data
+     * @param aRegion              The Rectangle that specifies the image area
+     * @param sampleModelTranslate The Point that specifies the translation
+     *                             from SampleModel to Raster coordinates
+     * @param parent               The parent (if any) of this raster
+     * @throws NullPointerException  if any of <code>sampleModel</code>,
+     *                               <code>dataBuffer</code>, <code>aRegion</code> or
+     *                               <code>sampleModelTranslate</code> is null
      * @throws RasterFormatException if <code>aRegion</code> has width
-     *         or height less than or equal to zero, or computing either
-     *         <code>aRegion.x + aRegion.width</code> or
-     *         <code>aRegion.y + aRegion.height</code> results in integer
-     *         overflow
+     *                               or height less than or equal to zero, or computing either
+     *                               <code>aRegion.x + aRegion.width</code> or
+     *                               <code>aRegion.y + aRegion.height</code> results in integer
+     *                               overflow
      */
     protected Raster(SampleModel sampleModel,
                      DataBuffer dataBuffer,
@@ -1091,40 +1125,41 @@ public class Raster {
                      Raster parent) {
 
         if ((sampleModel == null) || (dataBuffer == null) ||
-            (aRegion == null) || (sampleModelTranslate == null)) {
+                (aRegion == null) || (sampleModelTranslate == null)) {
             throw new NullPointerException("SampleModel, dataBuffer, aRegion and " +
-                                           "sampleModelTranslate cannot be null");
+                    "sampleModelTranslate cannot be null");
         }
-       this.sampleModel = sampleModel;
-       this.dataBuffer = dataBuffer;
-       minX = aRegion.x;
-       minY = aRegion.y;
-       width = aRegion.width;
-       height = aRegion.height;
-       if (width <= 0 || height <= 0) {
-           throw new RasterFormatException("negative or zero " +
-               ((width <= 0) ? "width" : "height"));
-       }
-       if ((minX + width) < minX) {
-           throw new RasterFormatException(
-               "overflow condition for X coordinates of Raster");
-       }
-       if ((minY + height) < minY) {
-           throw new RasterFormatException(
-               "overflow condition for Y coordinates of Raster");
-       }
+        this.sampleModel = sampleModel;
+        this.dataBuffer = dataBuffer;
+        minX = aRegion.x;
+        minY = aRegion.y;
+        width = aRegion.width;
+        height = aRegion.height;
+        if (width <= 0 || height <= 0) {
+            throw new RasterFormatException("negative or zero " +
+                    ((width <= 0) ? "width" : "height"));
+        }
+        if ((minX + width) < minX) {
+            throw new RasterFormatException(
+                    "overflow condition for X coordinates of Raster");
+        }
+        if ((minY + height) < minY) {
+            throw new RasterFormatException(
+                    "overflow condition for Y coordinates of Raster");
+        }
 
-       sampleModelTranslateX = sampleModelTranslate.x;
-       sampleModelTranslateY = sampleModelTranslate.y;
+        sampleModelTranslateX = sampleModelTranslate.x;
+        sampleModelTranslateY = sampleModelTranslate.y;
 
-       numBands = sampleModel.getNumBands();
-       numDataElements = sampleModel.getNumDataElements();
-       this.parent = parent;
+        numBands = sampleModel.getNumBands();
+        numDataElements = sampleModel.getNumDataElements();
+        this.parent = parent;
     }
 
 
     /**
      * Returns the parent Raster (if any) of this Raster or null.
+     *
      * @return the parent Raster or <code>null</code>.
      */
     public Raster getParent() {
@@ -1136,8 +1171,9 @@ public class Raster {
      * SampleModel to that of the Raster.  To convert a pixel's X
      * coordinate from the Raster coordinate system to the SampleModel
      * coordinate system, this value must be subtracted.
+     *
      * @return the X translation from the coordinate space of the
-     *         Raster's SampleModel to that of the Raster.
+     * Raster's SampleModel to that of the Raster.
      */
     final public int getSampleModelTranslateX() {
         return sampleModelTranslateX;
@@ -1148,8 +1184,9 @@ public class Raster {
      * SampleModel to that of the Raster.  To convert a pixel's Y
      * coordinate from the Raster coordinate system to the SampleModel
      * coordinate system, this value must be subtracted.
+     *
      * @return the Y translation from the coordinate space of the
-     *         Raster's SampleModel to that of the Raster.
+     * Raster's SampleModel to that of the Raster.
      */
     final public int getSampleModelTranslateY() {
         return sampleModelTranslateY;
@@ -1158,79 +1195,83 @@ public class Raster {
     /**
      * Create a compatible WritableRaster the same size as this Raster with
      * the same SampleModel and a new initialized DataBuffer.
+     *
      * @return a compatible <code>WritableRaster</code> with the same sample
-     *         model and a new data buffer.
+     * model and a new data buffer.
      */
     public WritableRaster createCompatibleWritableRaster() {
-        return new SunWritableRaster(sampleModel, new Point(0,0));
+        return new SunWritableRaster(sampleModel, new Point(0, 0));
     }
 
     /**
      * Create a compatible WritableRaster with the specified size, a new
      * SampleModel, and a new initialized DataBuffer.
+     *
      * @param w the specified width of the new <code>WritableRaster</code>
      * @param h the specified height of the new <code>WritableRaster</code>
      * @return a compatible <code>WritableRaster</code> with the specified
-     *         size and a new sample model and data buffer.
-     * @exception RasterFormatException if the width or height is less than
+     * size and a new sample model and data buffer.
+     * @throws RasterFormatException if the width or height is less than
      *                               or equal to zero.
      */
     public WritableRaster createCompatibleWritableRaster(int w, int h) {
-        if (w <= 0 || h <=0) {
+        if (w <= 0 || h <= 0) {
             throw new RasterFormatException("negative " +
-                                          ((w <= 0) ? "width" : "height"));
+                    ((w <= 0) ? "width" : "height"));
         }
 
-        SampleModel sm = sampleModel.createCompatibleSampleModel(w,h);
+        SampleModel sm = sampleModel.createCompatibleSampleModel(w, h);
 
-        return new SunWritableRaster(sm, new Point(0,0));
+        return new SunWritableRaster(sm, new Point(0, 0));
     }
 
     /**
      * Create a compatible WritableRaster with location (minX, minY)
      * and size (width, height) specified by rect, a
      * new SampleModel, and a new initialized DataBuffer.
+     *
      * @param rect a <code>Rectangle</code> that specifies the size and
-     *        location of the <code>WritableRaster</code>
+     *             location of the <code>WritableRaster</code>
      * @return a compatible <code>WritableRaster</code> with the specified
-     *         size and location and a new sample model and data buffer.
+     * size and location and a new sample model and data buffer.
      * @throws RasterFormatException if <code>rect</code> has width
-     *         or height less than or equal to zero, or computing either
-     *         <code>rect.x + rect.width</code> or
-     *         <code>rect.y + rect.height</code> results in integer
-     *         overflow
-     * @throws NullPointerException if <code>rect</code> is null
+     *                               or height less than or equal to zero, or computing either
+     *                               <code>rect.x + rect.width</code> or
+     *                               <code>rect.y + rect.height</code> results in integer
+     *                               overflow
+     * @throws NullPointerException  if <code>rect</code> is null
      */
     public WritableRaster createCompatibleWritableRaster(Rectangle rect) {
         if (rect == null) {
             throw new NullPointerException("Rect cannot be null");
         }
         return createCompatibleWritableRaster(rect.x, rect.y,
-                                              rect.width, rect.height);
+                rect.width, rect.height);
     }
 
     /**
      * Create a compatible WritableRaster with the specified
      * location (minX, minY) and size (width, height), a
      * new SampleModel, and a new initialized DataBuffer.
+     *
      * @param x the X coordinate of the upper-left corner of
-     *        the <code>WritableRaster</code>
+     *          the <code>WritableRaster</code>
      * @param y the Y coordinate of the upper-left corner of
-     *        the <code>WritableRaster</code>
+     *          the <code>WritableRaster</code>
      * @param w the specified width of the <code>WritableRaster</code>
      * @param h the specified height of the <code>WritableRaster</code>
      * @return a compatible <code>WritableRaster</code> with the specified
-     *         size and location and a new sample model and data buffer.
+     * size and location and a new sample model and data buffer.
      * @throws RasterFormatException if <code>w</code> or <code>h</code>
-     *         is less than or equal to zero, or computing either
-     *         <code>x + w</code> or
-     *         <code>y + h</code> results in integer
-     *         overflow
+     *                               is less than or equal to zero, or computing either
+     *                               <code>x + w</code> or
+     *                               <code>y + h</code> results in integer
+     *                               overflow
      */
     public WritableRaster createCompatibleWritableRaster(int x, int y,
                                                          int w, int h) {
         WritableRaster ret = createCompatibleWritableRaster(w, h);
-        return ret.createWritableChild(0,0,w,h,x,y,null);
+        return ret.createWritableChild(0, 0, w, h, x, y, null);
     }
 
     /**
@@ -1240,20 +1281,20 @@ public class Raster {
      * through its getParent() method.
      *
      * @param childMinX the X coordinate of the upper-left
-     *        corner of the new <code>Raster</code>
+     *                  corner of the new <code>Raster</code>
      * @param childMinY the Y coordinate of the upper-left
-     *        corner of the new <code>Raster</code>
+     *                  corner of the new <code>Raster</code>
      * @return a new <code>Raster</code> with the same size, SampleModel,
-     *         and DataBuffer as this <code>Raster</code>, but with the
-     *         specified location.
+     * and DataBuffer as this <code>Raster</code>, but with the
+     * specified location.
      * @throws RasterFormatException if  computing either
-     *         <code>childMinX + this.getWidth()</code> or
-     *         <code>childMinY + this.getHeight()</code> results in integer
-     *         overflow
+     *                               <code>childMinX + this.getWidth()</code> or
+     *                               <code>childMinY + this.getHeight()</code> results in integer
+     *                               overflow
      */
     public Raster createTranslatedChild(int childMinX, int childMinY) {
-        return createChild(minX,minY,width,height,
-                           childMinX,childMinY,null);
+        return createChild(minX, minY, width, height,
+                childMinX, childMinY, null);
     }
 
     /**
@@ -1286,27 +1327,27 @@ public class Raster {
      * this method should be called with childMinX equal to parentX,
      * childMinY equal to parentY, and bandList equal to null.
      *
-     * @param parentX The X coordinate of the upper-left corner
-     *        in this Raster's coordinates
-     * @param parentY The Y coordinate of the upper-left corner
-     *        in this Raster's coordinates
-     * @param width      Width of the region starting at (parentX, parentY)
-     * @param height     Height of the region starting at (parentX, parentY).
+     * @param parentX   The X coordinate of the upper-left corner
+     *                  in this Raster's coordinates
+     * @param parentY   The Y coordinate of the upper-left corner
+     *                  in this Raster's coordinates
+     * @param width     Width of the region starting at (parentX, parentY)
+     * @param height    Height of the region starting at (parentX, parentY).
      * @param childMinX The X coordinate of the upper-left corner
-     *                   of the returned Raster
+     *                  of the returned Raster
      * @param childMinY The Y coordinate of the upper-left corner
-     *                   of the returned Raster
-     * @param bandList   Array of band indices, or null to use all bands
+     *                  of the returned Raster
+     * @param bandList  Array of band indices, or null to use all bands
      * @return a new <code>Raster</code>.
-     * @exception RasterFormatException if the specified subregion is outside
+     * @throws RasterFormatException if the specified subregion is outside
      *                               of the raster bounds.
      * @throws RasterFormatException if <code>width</code> or
-     *         <code>height</code>
-     *         is less than or equal to zero, or computing any of
-     *         <code>parentX + width</code>, <code>parentY + height</code>,
-     *         <code>childMinX + width</code>, or
-     *         <code>childMinY + height</code> results in integer
-     *         overflow
+     *                               <code>height</code>
+     *                               is less than or equal to zero, or computing any of
+     *                               <code>parentX + width</code>, <code>parentY + height</code>,
+     *                               <code>childMinX + width</code>, or
+     *                               <code>childMinY + height</code> results in integer
+     *                               overflow
      */
     public Raster createChild(int parentX, int parentY,
                               int width, int height,
@@ -1319,11 +1360,11 @@ public class Raster {
             throw new RasterFormatException("parentY lies outside raster");
         }
         if ((parentX + width < parentX) ||
-            (parentX + width > this.width + this.minX)) {
+                (parentX + width > this.width + this.minX)) {
             throw new RasterFormatException("(parentX + width) is outside raster");
         }
         if ((parentY + height < parentY) ||
-            (parentY + height > this.height + this.minY)) {
+                (parentY + height > this.height + this.minY)) {
             throw new RasterFormatException("(parentY + height) is outside raster");
         }
 
@@ -1343,95 +1384,112 @@ public class Raster {
         int deltaY = childMinY - parentY;
 
         return new Raster(subSampleModel, getDataBuffer(),
-                          new Rectangle(childMinX, childMinY, width, height),
-                          new Point(sampleModelTranslateX + deltaX,
-                                    sampleModelTranslateY + deltaY), this);
+                new Rectangle(childMinX, childMinY, width, height),
+                new Point(sampleModelTranslateX + deltaX,
+                        sampleModelTranslateY + deltaY), this);
     }
 
     /**
      * Returns the bounding Rectangle of this Raster. This function returns
      * the same information as getMinX/MinY/Width/Height.
+     *
      * @return the bounding box of this <code>Raster</code>.
      */
     public Rectangle getBounds() {
         return new Rectangle(minX, minY, width, height);
     }
 
-    /** Returns the minimum valid X coordinate of the Raster.
-     *  @return the minimum x coordinate of this <code>Raster</code>.
+    /**
+     * Returns the minimum valid X coordinate of the Raster.
+     *
+     * @return the minimum x coordinate of this <code>Raster</code>.
      */
     final public int getMinX() {
         return minX;
     }
 
-    /** Returns the minimum valid Y coordinate of the Raster.
-     *  @return the minimum y coordinate of this <code>Raster</code>.
+    /**
+     * Returns the minimum valid Y coordinate of the Raster.
+     *
+     * @return the minimum y coordinate of this <code>Raster</code>.
      */
     final public int getMinY() {
         return minY;
     }
 
-    /** Returns the width in pixels of the Raster.
-     *  @return the width of this <code>Raster</code>.
+    /**
+     * Returns the width in pixels of the Raster.
+     *
+     * @return the width of this <code>Raster</code>.
      */
     final public int getWidth() {
         return width;
     }
 
-    /** Returns the height in pixels of the Raster.
-     *  @return the height of this <code>Raster</code>.
+    /**
+     * Returns the height in pixels of the Raster.
+     *
+     * @return the height of this <code>Raster</code>.
      */
     final public int getHeight() {
         return height;
     }
 
-    /** Returns the number of bands (samples per pixel) in this Raster.
-     *  @return the number of bands of this <code>Raster</code>.
+    /**
+     * Returns the number of bands (samples per pixel) in this Raster.
+     *
+     * @return the number of bands of this <code>Raster</code>.
      */
     final public int getNumBands() {
         return numBands;
     }
 
     /**
-     *  Returns the number of data elements needed to transfer one pixel
-     *  via the getDataElements and setDataElements methods.  When pixels
-     *  are transferred via these methods, they may be transferred in a
-     *  packed or unpacked format, depending on the implementation of the
-     *  underlying SampleModel.  Using these methods, pixels are transferred
-     *  as an array of getNumDataElements() elements of a primitive type given
-     *  by getTransferType().  The TransferType may or may not be the same
-     *  as the storage data type of the DataBuffer.
-     *  @return the number of data elements.
+     * Returns the number of data elements needed to transfer one pixel
+     * via the getDataElements and setDataElements methods.  When pixels
+     * are transferred via these methods, they may be transferred in a
+     * packed or unpacked format, depending on the implementation of the
+     * underlying SampleModel.  Using these methods, pixels are transferred
+     * as an array of getNumDataElements() elements of a primitive type given
+     * by getTransferType().  The TransferType may or may not be the same
+     * as the storage data type of the DataBuffer.
+     *
+     * @return the number of data elements.
      */
     final public int getNumDataElements() {
         return sampleModel.getNumDataElements();
     }
 
     /**
-     *  Returns the TransferType used to transfer pixels via the
-     *  getDataElements and setDataElements methods.  When pixels
-     *  are transferred via these methods, they may be transferred in a
-     *  packed or unpacked format, depending on the implementation of the
-     *  underlying SampleModel.  Using these methods, pixels are transferred
-     *  as an array of getNumDataElements() elements of a primitive type given
-     *  by getTransferType().  The TransferType may or may not be the same
-     *  as the storage data type of the DataBuffer.  The TransferType will
-     *  be one of the types defined in DataBuffer.
-     *  @return this transfer type.
+     * Returns the TransferType used to transfer pixels via the
+     * getDataElements and setDataElements methods.  When pixels
+     * are transferred via these methods, they may be transferred in a
+     * packed or unpacked format, depending on the implementation of the
+     * underlying SampleModel.  Using these methods, pixels are transferred
+     * as an array of getNumDataElements() elements of a primitive type given
+     * by getTransferType().  The TransferType may or may not be the same
+     * as the storage data type of the DataBuffer.  The TransferType will
+     * be one of the types defined in DataBuffer.
+     *
+     * @return this transfer type.
      */
     final public int getTransferType() {
         return sampleModel.getTransferType();
     }
 
-    /** Returns the DataBuffer associated with this Raster.
-     *  @return the <code>DataBuffer</code> of this <code>Raster</code>.
+    /**
+     * Returns the DataBuffer associated with this Raster.
+     *
+     * @return the <code>DataBuffer</code> of this <code>Raster</code>.
      */
     public DataBuffer getDataBuffer() {
         return dataBuffer;
     }
 
-    /** Returns the SampleModel that describes the layout of the image data.
-     *  @return the <code>SampleModel</code> of this <code>Raster</code>.
+    /**
+     * Returns the SampleModel that describes the layout of the image data.
+     *
+     * @return the <code>SampleModel</code> of this <code>Raster</code>.
      */
     public SampleModel getSampleModel() {
         return sampleModel;
@@ -1449,23 +1507,23 @@ public class Raster {
      * checking is not guaranteed.
      * A ClassCastException will be thrown if the input object is non null
      * and references anything other than an array of TransferType.
-     * @see java.awt.image.SampleModel#getDataElements(int, int, Object, DataBuffer)
-     * @param x        The X coordinate of the pixel location
-     * @param y        The Y coordinate of the pixel location
-     * @param outData  An object reference to an array of type defined by
-     *                 getTransferType() and length getNumDataElements().
-     *                 If null, an array of appropriate type and size will be
-     *                 allocated
-     * @return         An object reference to an array of type defined by
-     *                 getTransferType() with the requested pixel data.
      *
+     * @param x       The X coordinate of the pixel location
+     * @param y       The Y coordinate of the pixel location
+     * @param outData An object reference to an array of type defined by
+     *                getTransferType() and length getNumDataElements().
+     *                If null, an array of appropriate type and size will be
+     *                allocated
+     * @return An object reference to an array of type defined by
+     * getTransferType() with the requested pixel data.
      * @throws ArrayIndexOutOfBoundsException if the coordinates are not
-     * in bounds, or if outData is too small to hold the output.
+     *                                        in bounds, or if outData is too small to hold the output.
+     * @see java.awt.image.SampleModel#getDataElements(int, int, Object, DataBuffer)
      */
     public Object getDataElements(int x, int y, Object outData) {
         return sampleModel.getDataElements(x - sampleModelTranslateX,
-                                           y - sampleModelTranslateY,
-                                           outData, dataBuffer);
+                y - sampleModelTranslateY,
+                outData, dataBuffer);
     }
 
     /**
@@ -1481,25 +1539,25 @@ public class Raster {
      * checking is not guaranteed.
      * A ClassCastException will be thrown if the input object is non null
      * and references anything other than an array of TransferType.
-     * @see java.awt.image.SampleModel#getDataElements(int, int, int, int, Object, DataBuffer)
-     * @param x    The X coordinate of the upper-left pixel location
-     * @param y    The Y coordinate of the upper-left pixel location
-     * @param w    Width of the pixel rectangle
-     * @param h   Height of the pixel rectangle
-     * @param outData  An object reference to an array of type defined by
-     *                 getTransferType() and length w*h*getNumDataElements().
-     *                 If null, an array of appropriate type and size will be
-     *                 allocated.
-     * @return         An object reference to an array of type defined by
-     *                 getTransferType() with the requested pixel data.
      *
+     * @param x       The X coordinate of the upper-left pixel location
+     * @param y       The Y coordinate of the upper-left pixel location
+     * @param w       Width of the pixel rectangle
+     * @param h       Height of the pixel rectangle
+     * @param outData An object reference to an array of type defined by
+     *                getTransferType() and length w*h*getNumDataElements().
+     *                If null, an array of appropriate type and size will be
+     *                allocated.
+     * @return An object reference to an array of type defined by
+     * getTransferType() with the requested pixel data.
      * @throws ArrayIndexOutOfBoundsException if the coordinates are not
-     * in bounds, or if outData is too small to hold the output.
+     *                                        in bounds, or if outData is too small to hold the output.
+     * @see java.awt.image.SampleModel#getDataElements(int, int, int, int, Object, DataBuffer)
      */
     public Object getDataElements(int x, int y, int w, int h, Object outData) {
         return sampleModel.getDataElements(x - sampleModelTranslateX,
-                                           y - sampleModelTranslateY,
-                                           w, h, outData, dataBuffer);
+                y - sampleModelTranslateY,
+                w, h, outData, dataBuffer);
     }
 
     /**
@@ -1507,18 +1565,18 @@ public class Raster {
      * An ArrayIndexOutOfBoundsException may be thrown
      * if the coordinates are not in bounds.  However, explicit bounds
      * checking is not guaranteed.
-     * @param x The X coordinate of the pixel location
-     * @param y The Y coordinate of the pixel location
+     *
+     * @param x      The X coordinate of the pixel location
+     * @param y      The Y coordinate of the pixel location
      * @param iArray An optionally preallocated int array
      * @return the samples for the specified pixel.
-     *
      * @throws ArrayIndexOutOfBoundsException if the coordinates are not
-     * in bounds, or if iArray is too small to hold the output.
+     *                                        in bounds, or if iArray is too small to hold the output.
      */
     public int[] getPixel(int x, int y, int iArray[]) {
         return sampleModel.getPixel(x - sampleModelTranslateX,
-                                    y - sampleModelTranslateY,
-                                    iArray, dataBuffer);
+                y - sampleModelTranslateY,
+                iArray, dataBuffer);
     }
 
     /**
@@ -1527,18 +1585,18 @@ public class Raster {
      * An ArrayIndexOutOfBoundsException may be thrown
      * if the coordinates are not in bounds.  However, explicit bounds
      * checking is not guaranteed.
-     * @param x The X coordinate of the pixel location
-     * @param y The Y coordinate of the pixel location
+     *
+     * @param x      The X coordinate of the pixel location
+     * @param y      The Y coordinate of the pixel location
      * @param fArray An optionally preallocated float array
      * @return the samples for the specified pixel.
-     *
      * @throws ArrayIndexOutOfBoundsException if the coordinates are not
-     * in bounds, or if fArray is too small to hold the output.
+     *                                        in bounds, or if fArray is too small to hold the output.
      */
     public float[] getPixel(int x, int y, float fArray[]) {
         return sampleModel.getPixel(x - sampleModelTranslateX,
-                                    y - sampleModelTranslateY,
-                                    fArray, dataBuffer);
+                y - sampleModelTranslateY,
+                fArray, dataBuffer);
     }
 
     /**
@@ -1546,18 +1604,18 @@ public class Raster {
      * An ArrayIndexOutOfBoundsException may be thrown
      * if the coordinates are not in bounds.  However, explicit bounds
      * checking is not guaranteed.
-     * @param x The X coordinate of the pixel location
-     * @param y The Y coordinate of the pixel location
+     *
+     * @param x      The X coordinate of the pixel location
+     * @param y      The Y coordinate of the pixel location
      * @param dArray An optionally preallocated double array
      * @return the samples for the specified pixel.
-     *
      * @throws ArrayIndexOutOfBoundsException if the coordinates are not
-     * in bounds, or if dArray is too small to hold the output.
+     *                                        in bounds, or if dArray is too small to hold the output.
      */
     public double[] getPixel(int x, int y, double dArray[]) {
         return sampleModel.getPixel(x - sampleModelTranslateX,
-                                    y - sampleModelTranslateY,
-                                    dArray, dataBuffer);
+                y - sampleModelTranslateY,
+                dArray, dataBuffer);
     }
 
     /**
@@ -1566,20 +1624,20 @@ public class Raster {
      * An ArrayIndexOutOfBoundsException may be thrown
      * if the coordinates are not in bounds.  However, explicit bounds
      * checking is not guaranteed.
+     *
      * @param x      The X coordinate of the upper-left pixel location
      * @param y      The Y coordinate of the upper-left pixel location
      * @param w      Width of the pixel rectangle
      * @param h      Height of the pixel rectangle
      * @param iArray An optionally pre-allocated int array
      * @return the samples for the specified rectangle of pixels.
-     *
      * @throws ArrayIndexOutOfBoundsException if the coordinates are not
-     * in bounds, or if iArray is too small to hold the output.
+     *                                        in bounds, or if iArray is too small to hold the output.
      */
     public int[] getPixels(int x, int y, int w, int h, int iArray[]) {
         return sampleModel.getPixels(x - sampleModelTranslateX,
-                                     y - sampleModelTranslateY, w, h,
-                                     iArray, dataBuffer);
+                y - sampleModelTranslateY, w, h,
+                iArray, dataBuffer);
     }
 
     /**
@@ -1588,21 +1646,21 @@ public class Raster {
      * An ArrayIndexOutOfBoundsException may be thrown
      * if the coordinates are not in bounds.  However, explicit bounds
      * checking is not guaranteed.
-     * @param x        The X coordinate of the pixel location
-     * @param y        The Y coordinate of the pixel location
-     * @param w        Width of the pixel rectangle
-     * @param h        Height of the pixel rectangle
-     * @param fArray   An optionally pre-allocated float array
-     * @return the samples for the specified rectangle of pixels.
      *
+     * @param x      The X coordinate of the pixel location
+     * @param y      The Y coordinate of the pixel location
+     * @param w      Width of the pixel rectangle
+     * @param h      Height of the pixel rectangle
+     * @param fArray An optionally pre-allocated float array
+     * @return the samples for the specified rectangle of pixels.
      * @throws ArrayIndexOutOfBoundsException if the coordinates are not
-     * in bounds, or if fArray is too small to hold the output.
+     *                                        in bounds, or if fArray is too small to hold the output.
      */
     public float[] getPixels(int x, int y, int w, int h,
                              float fArray[]) {
         return sampleModel.getPixels(x - sampleModelTranslateX,
-                                     y - sampleModelTranslateY, w, h,
-                                     fArray, dataBuffer);
+                y - sampleModelTranslateY, w, h,
+                fArray, dataBuffer);
     }
 
     /**
@@ -1611,21 +1669,21 @@ public class Raster {
      * An ArrayIndexOutOfBoundsException may be thrown
      * if the coordinates are not in bounds.  However, explicit bounds
      * checking is not guaranteed.
-     * @param x        The X coordinate of the upper-left pixel location
-     * @param y        The Y coordinate of the upper-left pixel location
-     * @param w        Width of the pixel rectangle
-     * @param h        Height of the pixel rectangle
-     * @param dArray   An optionally pre-allocated double array
-     * @return the samples for the specified rectangle of pixels.
      *
+     * @param x      The X coordinate of the upper-left pixel location
+     * @param y      The Y coordinate of the upper-left pixel location
+     * @param w      Width of the pixel rectangle
+     * @param h      Height of the pixel rectangle
+     * @param dArray An optionally pre-allocated double array
+     * @return the samples for the specified rectangle of pixels.
      * @throws ArrayIndexOutOfBoundsException if the coordinates are not
-     * in bounds, or if dArray is too small to hold the output.
+     *                                        in bounds, or if dArray is too small to hold the output.
      */
     public double[] getPixels(int x, int y, int w, int h,
                               double dArray[]) {
         return sampleModel.getPixels(x - sampleModelTranslateX,
-                                     y - sampleModelTranslateY,
-                                     w, h, dArray, dataBuffer);
+                y - sampleModelTranslateY,
+                w, h, dArray, dataBuffer);
     }
 
 
@@ -1635,19 +1693,19 @@ public class Raster {
      * An ArrayIndexOutOfBoundsException may be thrown
      * if the coordinates are not in bounds.  However, explicit bounds
      * checking is not guaranteed.
-     * @param x        The X coordinate of the pixel location
-     * @param y        The Y coordinate of the pixel location
-     * @param b        The band to return
-     * @return the sample in the specified band for the pixel at the
-     *         specified coordinate.
      *
+     * @param x The X coordinate of the pixel location
+     * @param y The Y coordinate of the pixel location
+     * @param b The band to return
+     * @return the sample in the specified band for the pixel at the
+     * specified coordinate.
      * @throws ArrayIndexOutOfBoundsException if the coordinates or
-     * the band index are not in bounds.
+     *                                        the band index are not in bounds.
      */
     public int getSample(int x, int y, int b) {
         return sampleModel.getSample(x - sampleModelTranslateX,
-                                     y - sampleModelTranslateY, b,
-                                     dataBuffer);
+                y - sampleModelTranslateY, b,
+                dataBuffer);
     }
 
     /**
@@ -1656,19 +1714,19 @@ public class Raster {
      * An ArrayIndexOutOfBoundsException may be thrown
      * if the coordinates are not in bounds.  However, explicit bounds
      * checking is not guaranteed.
-     * @param x        The X coordinate of the pixel location
-     * @param y        The Y coordinate of the pixel location
-     * @param b        The band to return
-     * @return the sample in the specified band for the pixel at the
-     *         specified coordinate.
      *
+     * @param x The X coordinate of the pixel location
+     * @param y The Y coordinate of the pixel location
+     * @param b The band to return
+     * @return the sample in the specified band for the pixel at the
+     * specified coordinate.
      * @throws ArrayIndexOutOfBoundsException if the coordinates or
-     * the band index are not in bounds.
+     *                                        the band index are not in bounds.
      */
     public float getSampleFloat(int x, int y, int b) {
         return sampleModel.getSampleFloat(x - sampleModelTranslateX,
-                                          y - sampleModelTranslateY, b,
-                                          dataBuffer);
+                y - sampleModelTranslateY, b,
+                dataBuffer);
     }
 
     /**
@@ -1677,19 +1735,19 @@ public class Raster {
      * An ArrayIndexOutOfBoundsException may be thrown
      * if the coordinates are not in bounds.  However, explicit bounds
      * checking is not guaranteed.
-     * @param x        The X coordinate of the pixel location
-     * @param y        The Y coordinate of the pixel location
-     * @param b        The band to return
-     * @return the sample in the specified band for the pixel at the
-     *         specified coordinate.
      *
+     * @param x The X coordinate of the pixel location
+     * @param y The Y coordinate of the pixel location
+     * @param b The band to return
+     * @return the sample in the specified band for the pixel at the
+     * specified coordinate.
      * @throws ArrayIndexOutOfBoundsException if the coordinates or
-     * the band index are not in bounds.
+     *                                        the band index are not in bounds.
      */
     public double getSampleDouble(int x, int y, int b) {
         return sampleModel.getSampleDouble(x - sampleModelTranslateX,
-                                           y - sampleModelTranslateY,
-                                           b, dataBuffer);
+                y - sampleModelTranslateY,
+                b, dataBuffer);
     }
 
     /**
@@ -1698,25 +1756,25 @@ public class Raster {
      * An ArrayIndexOutOfBoundsException may be thrown
      * if the coordinates are not in bounds.  However, explicit bounds
      * checking is not guaranteed.
-     * @param x        The X coordinate of the upper-left pixel location
-     * @param y        The Y coordinate of the upper-left pixel location
-     * @param w        Width of the pixel rectangle
-     * @param h        Height of the pixel rectangle
-     * @param b        The band to return
-     * @param iArray   An optionally pre-allocated int array
-     * @return the samples for the specified band for the specified
-     *         rectangle of pixels.
      *
+     * @param x      The X coordinate of the upper-left pixel location
+     * @param y      The Y coordinate of the upper-left pixel location
+     * @param w      Width of the pixel rectangle
+     * @param h      Height of the pixel rectangle
+     * @param b      The band to return
+     * @param iArray An optionally pre-allocated int array
+     * @return the samples for the specified band for the specified
+     * rectangle of pixels.
      * @throws ArrayIndexOutOfBoundsException if the coordinates or
-     * the band index are not in bounds, or if iArray is too small to
-     * hold the output.
+     *                                        the band index are not in bounds, or if iArray is too small to
+     *                                        hold the output.
      */
     public int[] getSamples(int x, int y, int w, int h, int b,
                             int iArray[]) {
         return sampleModel.getSamples(x - sampleModelTranslateX,
-                                      y - sampleModelTranslateY,
-                                      w, h, b, iArray,
-                                      dataBuffer);
+                y - sampleModelTranslateY,
+                w, h, b, iArray,
+                dataBuffer);
     }
 
     /**
@@ -1725,24 +1783,24 @@ public class Raster {
      * An ArrayIndexOutOfBoundsException may be thrown
      * if the coordinates are not in bounds.  However, explicit bounds
      * checking is not guaranteed.
-     * @param x        The X coordinate of the upper-left pixel location
-     * @param y        The Y coordinate of the upper-left pixel location
-     * @param w        Width of the pixel rectangle
-     * @param h        Height of the pixel rectangle
-     * @param b        The band to return
-     * @param fArray   An optionally pre-allocated float array
-     * @return the samples for the specified band for the specified
-     *         rectangle of pixels.
      *
+     * @param x      The X coordinate of the upper-left pixel location
+     * @param y      The Y coordinate of the upper-left pixel location
+     * @param w      Width of the pixel rectangle
+     * @param h      Height of the pixel rectangle
+     * @param b      The band to return
+     * @param fArray An optionally pre-allocated float array
+     * @return the samples for the specified band for the specified
+     * rectangle of pixels.
      * @throws ArrayIndexOutOfBoundsException if the coordinates or
-     * the band index are not in bounds, or if fArray is too small to
-     * hold the output.
+     *                                        the band index are not in bounds, or if fArray is too small to
+     *                                        hold the output.
      */
     public float[] getSamples(int x, int y, int w, int h, int b,
                               float fArray[]) {
         return sampleModel.getSamples(x - sampleModelTranslateX,
-                                      y - sampleModelTranslateY,
-                                      w, h, b, fArray, dataBuffer);
+                y - sampleModelTranslateY,
+                w, h, b, fArray, dataBuffer);
     }
 
     /**
@@ -1751,24 +1809,24 @@ public class Raster {
      * An ArrayIndexOutOfBoundsException may be thrown
      * if the coordinates are not in bounds.  However, explicit bounds
      * checking is not guaranteed.
-     * @param x        The X coordinate of the upper-left pixel location
-     * @param y        The Y coordinate of the upper-left pixel location
-     * @param w        Width of the pixel rectangle
-     * @param h        Height of the pixel rectangle
-     * @param b        The band to return
-     * @param dArray   An optionally pre-allocated double array
-     * @return the samples for the specified band for the specified
-     *         rectangle of pixels.
      *
+     * @param x      The X coordinate of the upper-left pixel location
+     * @param y      The Y coordinate of the upper-left pixel location
+     * @param w      Width of the pixel rectangle
+     * @param h      Height of the pixel rectangle
+     * @param b      The band to return
+     * @param dArray An optionally pre-allocated double array
+     * @return the samples for the specified band for the specified
+     * rectangle of pixels.
      * @throws ArrayIndexOutOfBoundsException if the coordinates or
-     * the band index are not in bounds, or if dArray is too small to
-     * hold the output.
+     *                                        the band index are not in bounds, or if dArray is too small to
+     *                                        hold the output.
      */
     public double[] getSamples(int x, int y, int w, int h, int b,
                                double dArray[]) {
-         return sampleModel.getSamples(x - sampleModelTranslateX,
-                                       y - sampleModelTranslateY,
-                                       w, h, b, dArray, dataBuffer);
+        return sampleModel.getSamples(x - sampleModelTranslateX,
+                y - sampleModelTranslateY,
+                w, h, b, dArray, dataBuffer);
     }
 
 }

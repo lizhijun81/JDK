@@ -67,10 +67,8 @@ package com.sun.org.apache.xerces.internal.impl;
  * method calls in accordance with Namespaces in XML 1.1.  It extends the standard,
  * Namespace-1.0-compliant binder in order to do this.
  *
- * @xerces.internal
- *
  * @author Neil Graham, IBM
- *
+ * @xerces.internal
  */
 public class XML11NamespaceBinder extends XMLNamespaceBinder {
 
@@ -86,7 +84,9 @@ public class XML11NamespaceBinder extends XMLNamespaceBinder {
     // Constructors
     //
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public XML11NamespaceBinder() {
     } // <init>()
     //

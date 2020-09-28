@@ -43,8 +43,7 @@ import java.beans.PropertyVetoException;
  * @since 1.3
  */
 public class MotifInternalFrameTitlePane
-    extends BasicInternalFrameTitlePane implements LayoutManager, ActionListener, PropertyChangeListener
-{
+        extends BasicInternalFrameTitlePane implements LayoutManager, ActionListener, PropertyChangeListener {
     SystemButton systemButton;
     MinimizeButton minimizeButton;
     MaximizeButton maximizeButton;
@@ -115,7 +114,7 @@ public class MotifInternalFrameTitlePane
                 }
                 if ((evt.getClickCount() == 2)) {
                     closeAction.actionPerformed(new
-                        ActionEvent(evt.getSource(),
+                            ActionEvent(evt.getSource(),
                             ActionEvent.ACTION_PERFORMED,
                             null, evt.getWhen(), 0));
                     systemMenu.setVisible(false);
@@ -158,19 +157,19 @@ public class MotifInternalFrameTitlePane
 
     public void propertyChange(PropertyChangeEvent evt) {
         String prop = evt.getPropertyName();
-        JInternalFrame f = (JInternalFrame)evt.getSource();
+        JInternalFrame f = (JInternalFrame) evt.getSource();
         boolean value = false;
         if (JInternalFrame.IS_SELECTED_PROPERTY.equals(prop)) {
             repaint();
         } else if (prop.equals("maximizable")) {
-            if ((Boolean)evt.getNewValue() == Boolean.TRUE)
+            if ((Boolean) evt.getNewValue() == Boolean.TRUE)
                 add(maximizeButton);
             else
                 remove(maximizeButton);
             revalidate();
             repaint();
         } else if (prop.equals("iconable")) {
-            if ((Boolean)evt.getNewValue() == Boolean.TRUE)
+            if ((Boolean) evt.getNewValue() == Boolean.TRUE)
                 add(minimizeButton);
             else
                 remove(minimizeButton);
@@ -182,9 +181,13 @@ public class MotifInternalFrameTitlePane
         enableActions();
     }
 
-    public void addLayoutComponent(String name, Component c) {}
-    public void removeLayoutComponent(Component c) {}
-    public Dimension preferredLayoutSize(Container c)  {
+    public void addLayoutComponent(String name, Component c) {
+    }
+
+    public void removeLayoutComponent(Component c) {
+    }
+
+    public Dimension preferredLayoutSize(Container c) {
         return minimumLayoutSize(c);
     }
 
@@ -197,29 +200,29 @@ public class MotifInternalFrameTitlePane
         systemButton.setBounds(0, 0, BUTTON_SIZE, BUTTON_SIZE);
         int x = w - BUTTON_SIZE;
 
-        if(frame.isMaximizable()) {
+        if (frame.isMaximizable()) {
             maximizeButton.setBounds(x, 0, BUTTON_SIZE, BUTTON_SIZE);
             x -= BUTTON_SIZE;
-        } else if(maximizeButton.getParent() != null) {
+        } else if (maximizeButton.getParent() != null) {
             maximizeButton.getParent().remove(maximizeButton);
         }
 
-        if(frame.isIconifiable()) {
+        if (frame.isIconifiable()) {
             minimizeButton.setBounds(x, 0, BUTTON_SIZE, BUTTON_SIZE);
             x -= BUTTON_SIZE;
-        } else if(minimizeButton.getParent() != null) {
+        } else if (minimizeButton.getParent() != null) {
             minimizeButton.getParent().remove(minimizeButton);
         }
 
         title.setBounds(BUTTON_SIZE, 0, x, BUTTON_SIZE);
     }
 
-    protected void showSystemMenu(){
-      systemMenu.show(systemButton, 0, BUTTON_SIZE);
+    protected void showSystemMenu() {
+        systemMenu.show(systemButton, 0, BUTTON_SIZE);
     }
 
-    protected void hideSystemMenu(){
-      systemMenu.setVisible(false);
+    protected void hideSystemMenu() {
+        systemMenu.setVisible(false);
     }
 
     static Dimension buttonDimension = new Dimension(BUTTON_SIZE, BUTTON_SIZE);
@@ -295,8 +298,12 @@ public class MotifInternalFrameTitlePane
     }
 
     private class SystemButton extends FrameButton {
-        public boolean isFocusTraversable() { return false; }
-        public void requestFocus() {}
+        public boolean isFocusTraversable() {
+            return false;
+        }
+
+        public void requestFocus() {
+        }
 
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
@@ -315,15 +322,16 @@ public class MotifInternalFrameTitlePane
             setText(title);
             setHorizontalAlignment(SwingConstants.CENTER);
             setBorder(BorderFactory.createBevelBorder(
-                BevelBorder.RAISED,
-                UIManager.getColor("activeCaptionBorder"),
-                UIManager.getColor("inactiveCaptionBorder")));
+                    BevelBorder.RAISED,
+                    UIManager.getColor("activeCaptionBorder"),
+                    UIManager.getColor("inactiveCaptionBorder")));
 
             // Forward mouse events to titlebar for moves.
             addMouseMotionListener(new MouseMotionListener() {
                 public void mouseDragged(MouseEvent e) {
                     forwardEventToParent(e);
                 }
+
                 public void mouseMoved(MouseEvent e) {
                     forwardEventToParent(e);
                 }
@@ -332,15 +340,19 @@ public class MotifInternalFrameTitlePane
                 public void mouseClicked(MouseEvent e) {
                     forwardEventToParent(e);
                 }
+
                 public void mousePressed(MouseEvent e) {
                     forwardEventToParent(e);
                 }
+
                 public void mouseReleased(MouseEvent e) {
                     forwardEventToParent(e);
                 }
+
                 public void mouseEntered(MouseEvent e) {
                     forwardEventToParent(e);
                 }
+
                 public void mouseExited(MouseEvent e) {
                     forwardEventToParent(e);
                 }
@@ -349,10 +361,10 @@ public class MotifInternalFrameTitlePane
 
         void forwardEventToParent(MouseEvent e) {
             getParent().dispatchEvent(new MouseEvent(
-                getParent(), e.getID(), e.getWhen(), e.getModifiers(),
-                e.getX(), e.getY(),  e.getXOnScreen(),
-                e.getYOnScreen(), e.getClickCount(),
-                e.isPopupTrigger(),  MouseEvent.NOBUTTON));
+                    getParent(), e.getID(), e.getWhen(), e.getModifiers(),
+                    e.getX(), e.getY(), e.getXOnScreen(),
+                    e.getYOnScreen(), e.getClickCount(),
+                    e.isPopupTrigger(), MouseEvent.NOBUTTON));
         }
 
         public void paintComponent(Graphics g) {
@@ -366,8 +378,8 @@ public class MotifInternalFrameTitlePane
             String frameTitle = frame.getTitle();
             if (frameTitle != null) {
                 MotifGraphicsUtils.drawStringInRect(frame, g, frameTitle,
-                                                    0, 0, d.width, d.height,
-                                                    SwingConstants.CENTER);
+                        0, 0, d.width, d.height,
+                        SwingConstants.CENTER);
             }
         }
     }

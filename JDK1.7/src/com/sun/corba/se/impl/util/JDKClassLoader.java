@@ -31,34 +31,34 @@
 
 package com.sun.corba.se.impl.util;
 
-import sun.corba.Bridge ;
+import sun.corba.Bridge;
 
-import java.util.Map ;
-import java.util.WeakHashMap ;
-import java.util.Collections ;
+import java.util.Map;
+import java.util.WeakHashMap;
+import java.util.Collections;
 
-import java.security.AccessController ;
-import java.security.PrivilegedAction ;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 /**
- *  Utility method for crawling call stack to load class
+ * Utility method for crawling call stack to load class
  */
 class JDKClassLoader {
 
     private static final JDKClassLoaderCache classCache
-        = new JDKClassLoaderCache();
+            = new JDKClassLoaderCache();
 
     private static final Bridge bridge =
-        (Bridge)AccessController.doPrivileged(
-            new PrivilegedAction() {
-                public Object run() {
-                    return Bridge.get() ;
-                }
-            }
-        ) ;
+            (Bridge) AccessController.doPrivileged(
+                    new PrivilegedAction() {
+                        public Object run() {
+                            return Bridge.get();
+                        }
+                    }
+            );
 
     static Class loadClass(Class aClass, String className)
-        throws ClassNotFoundException {
+            throws ClassNotFoundException {
 
         // Maintain the same error semantics as Class.forName()
         if (className == null) {
@@ -95,7 +95,7 @@ class JDKClassLoader {
                 // loader isn't known to fail, so try
                 // to load it.
                 return Class.forName(className, false, loader);
-            } catch(ClassNotFoundException cnfe) {
+            } catch (ClassNotFoundException cnfe) {
                 // Record that we failed to find the class
                 // with this particular loader.  This way, we won't
                 // waste time looking with this loader, again.
@@ -108,8 +108,7 @@ class JDKClassLoader {
     /**
      * Private cache implementation specific to JDKClassLoader.
      */
-    private static class JDKClassLoaderCache
-    {
+    private static class JDKClassLoaderCache {
         // JDKClassLoader couldn't find the class with the located
         // ClassLoader.  Note this in our cache so JDKClassLoader
         // can abort early next time.
@@ -135,7 +134,7 @@ class JDKClassLoader {
 
         // Synchronized WeakHashMap
         private final Map cache
-            = Collections.synchronizedMap(new WeakHashMap());
+                = Collections.synchronizedMap(new WeakHashMap());
 
         // Cache result used to mark the caches when there is
         // no way JDKClassLoader could succeed with the given
@@ -144,8 +143,7 @@ class JDKClassLoader {
 
         // Key consisting of the class name and the latest
         // user defined class loader
-        private static class CacheKey
-        {
+        private static class CacheKey {
             String className;
             ClassLoader loader;
 
@@ -170,7 +168,7 @@ class JDKClassLoader {
                     if (obj == null)
                         return false;
 
-                    CacheKey other = (CacheKey)obj;
+                    CacheKey other = (CacheKey) obj;
 
                     // I've made a decision to actually compare the
                     // loader references.  I don't want a case when

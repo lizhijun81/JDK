@@ -27,7 +27,7 @@ package com.sun.source.tree;
 
 /**
  * A tree node for a 'do' statement.
- *
+ * <p>
  * For example:
  * <pre>
  *   do
@@ -35,13 +35,13 @@ package com.sun.source.tree;
  *   while ( <em>expression</em> );
  * </pre>
  *
- * @jls section 14.13
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls section 14.13
  * @since 1.6
  */
 public interface DoWhileLoopTree extends StatementTree {
     ExpressionTree getCondition();
+
     StatementTree getStatement();
 }

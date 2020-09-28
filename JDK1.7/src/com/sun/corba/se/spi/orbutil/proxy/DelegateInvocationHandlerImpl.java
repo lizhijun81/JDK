@@ -23,43 +23,42 @@
  *
  */
 
-package com.sun.corba.se.spi.orbutil.proxy ;
+package com.sun.corba.se.spi.orbutil.proxy;
 
-import java.io.Serializable ;
+import java.io.Serializable;
 
-import java.util.Map ;
-import java.util.LinkedHashMap ;
+import java.util.Map;
+import java.util.LinkedHashMap;
 
-import java.lang.reflect.Proxy ;
-import java.lang.reflect.Method ;
-import java.lang.reflect.InvocationHandler ;
-import java.lang.reflect.InvocationTargetException ;
-import com.sun.corba.se.impl.presentation.rmi.DynamicAccessPermission ;
+import java.lang.reflect.Proxy;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 
-public abstract class DelegateInvocationHandlerImpl
-{
-    private DelegateInvocationHandlerImpl() {}
+import com.sun.corba.se.impl.presentation.rmi.DynamicAccessPermission;
 
-    public static InvocationHandler create( final Object delegate )
-    {
+public abstract class DelegateInvocationHandlerImpl {
+    private DelegateInvocationHandlerImpl() {
+    }
+
+    public static InvocationHandler create(final Object delegate) {
         SecurityManager s = System.getSecurityManager();
         if (s != null) {
             s.checkPermission(new DynamicAccessPermission("access"));
         }
         return new InvocationHandler() {
-            public Object invoke( Object proxy, Method method, Object[] args )
-                throws Throwable
-            {
+            public Object invoke(Object proxy, Method method, Object[] args)
+                    throws Throwable {
                 // This throws an IllegalArgument exception if the delegate
                 // is not assignable from method.getDeclaring class.
                 try {
-                    return method.invoke( delegate, args ) ;
+                    return method.invoke(delegate, args);
                 } catch (InvocationTargetException ite) {
                     // Propagate the underlying exception as the
                     // result of the invocation
-                    throw ite.getCause() ;
+                    throw ite.getCause();
                 }
             }
-        } ;
+        };
     }
 }

@@ -36,7 +36,6 @@ package com.sun.source.tree;
  *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
- *
  * @since 1.6
  */
 public interface Tree {
@@ -602,5 +601,5 @@ public interface Tree {
      * @param <R> result type of this operation.
      * @param <D> type of additonal data.
      */
-    <R,D> R accept(TreeVisitor<R,D> visitor, D data);
+    <R, D> R accept(TreeVisitor<R, D> visitor, D data);
 }

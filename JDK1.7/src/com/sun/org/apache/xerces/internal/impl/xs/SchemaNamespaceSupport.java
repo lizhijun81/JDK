@@ -27,15 +27,13 @@ import com.sun.org.apache.xerces.internal.util.NamespaceSupport;
  * class in order to easily implement some features that we need for
  * efficient schema handling.  It will not be generally useful.
  *
- * @xerces.internal
- *
  * @author Neil Graham, IBM
- *
+ * @xerces.internal
  */
 public class SchemaNamespaceSupport
-    extends NamespaceSupport {
+        extends NamespaceSupport {
 
-    public SchemaNamespaceSupport () {
+    public SchemaNamespaceSupport() {
         super();
     } // constructor
 
@@ -47,8 +45,8 @@ public class SchemaNamespaceSupport
         System.arraycopy(nSupport.fNamespace, 0, fNamespace, 0, fNamespaceSize);
         fCurrentContext = nSupport.fCurrentContext;
         if (fContext.length <= fCurrentContext)
-            fContext = new int[fCurrentContext+1];
-        System.arraycopy(nSupport.fContext, 0, fContext, 0, fCurrentContext+1);
+            fContext = new int[fCurrentContext + 1];
+        System.arraycopy(nSupport.fContext, 0, fContext, 0, fCurrentContext + 1);
     } // end constructor
 
     /**
@@ -62,8 +60,8 @@ public class SchemaNamespaceSupport
      * It's worth noting that the context from which the strings are
      * being imported had better be using the same SymbolTable.
      */
-    public void setEffectiveContext (String [] namespaceDecls) {
-        if(namespaceDecls == null || namespaceDecls.length == 0) return;
+    public void setEffectiveContext(String[] namespaceDecls) {
+        if (namespaceDecls == null || namespaceDecls.length == 0) return;
         pushContext();
         int newSize = fNamespaceSize + namespaceDecls.length;
         if (fNamespace.length < newSize) {
@@ -73,7 +71,7 @@ public class SchemaNamespaceSupport
             fNamespace = tempNSArray;
         }
         System.arraycopy(namespaceDecls, 0, fNamespace, fNamespaceSize,
-                         namespaceDecls.length);
+                namespaceDecls.length);
         fNamespaceSize = newSize;
     } // setEffectiveContext(String):void
 
@@ -82,7 +80,7 @@ public class SchemaNamespaceSupport
      * a NamespaceSupport object.  This array contains all
      * declarations except those at the global level.
      */
-    public String [] getEffectiveLocalContext() {
+    public String[] getEffectiveLocalContext() {
         // the trick here is to recognize that all local contexts
         // happen to start at fContext[3].
         // context 1: empty
@@ -95,7 +93,7 @@ public class SchemaNamespaceSupport
             if (copyCount > 0) {
                 returnVal = new String[copyCount];
                 System.arraycopy(fNamespace, bottomLocalContext, returnVal, 0,
-                                 copyCount);
+                        copyCount);
             }
         }
         return returnVal;

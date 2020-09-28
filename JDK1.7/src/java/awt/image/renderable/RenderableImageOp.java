@@ -34,6 +34,7 @@
  **********************************************************************/
 
 package java.awt.image.renderable;
+
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
@@ -47,13 +48,19 @@ import java.util.Vector;
  */
 public class RenderableImageOp implements RenderableImage {
 
-    /** A ParameterBlock containing source and parameters. */
+    /**
+     * A ParameterBlock containing source and parameters.
+     */
     ParameterBlock paramBlock;
 
-    /** The associated ContextualRenderedImageFactory. */
+    /**
+     * The associated ContextualRenderedImageFactory.
+     */
     ContextualRenderedImageFactory myCRIF;
 
-    /** The bounding box of the results of this RenderableImageOp. */
+    /**
+     * The bounding box of the results of this RenderableImageOp.
+     */
     Rectangle2D boundingBox;
 
 
@@ -64,10 +71,10 @@ public class RenderableImageOp implements RenderableImage {
      * parameters.  Any RenderedImage sources referenced by the
      * ParameterBlock will be ignored.
      *
-     * @param CRIF a ContextualRenderedImageFactory object
+     * @param CRIF       a ContextualRenderedImageFactory object
      * @param paramBlock a ParameterBlock containing this operation's source
-     *        images and other parameters necessary for the operation
-     *        to run.
+     *                   images and other parameters necessary for the operation
+     *                   to run.
      */
     public RenderableImageOp(ContextualRenderedImageFactory CRIF,
                              ParameterBlock paramBlock) {
@@ -96,7 +103,7 @@ public class RenderableImageOp implements RenderableImage {
             while (i < paramBlock.getNumSources()) {
                 Object o = paramBlock.getSource(i);
                 if (o instanceof RenderableImage) {
-                    sources.add((RenderableImage)o);
+                    sources.add((RenderableImage) o);
                     i++;
                 } else {
                     break;
@@ -113,7 +120,7 @@ public class RenderableImageOp implements RenderableImage {
      *
      * @param name the name of the property to get, as a String.
      * @return a reference to the property Object, or the value
-     *         java.awt.Image.UndefinedProperty.
+     * java.awt.Image.UndefinedProperty.
      */
     public Object getProperty(String name) {
         return myCRIF.getProperty(paramBlock, name);
@@ -121,6 +128,7 @@ public class RenderableImageOp implements RenderableImage {
 
     /**
      * Return a list of names recognized by getProperty.
+     *
      * @return a list of property names.
      */
     public String[] getPropertyNames() {
@@ -133,9 +141,10 @@ public class RenderableImageOp implements RenderableImage {
      * may produce different results.  This method may be used to
      * determine whether an existing rendering may be cached and
      * reused.  The CRIF's isDynamic method will be called.
+     *
      * @return <code>true</code> if successive renderings with the
-     *         same arguments might produce different results;
-     *         <code>false</code> otherwise.
+     * same arguments might produce different results;
+     * <code>false</code> otherwise.
      */
     public boolean isDynamic() {
         return myCRIF.isDynamic();
@@ -152,7 +161,7 @@ public class RenderableImageOp implements RenderableImage {
         if (boundingBox == null) {
             boundingBox = myCRIF.getBounds2D(paramBlock);
         }
-        return (float)boundingBox.getWidth();
+        return (float) boundingBox.getWidth();
     }
 
     /**
@@ -165,7 +174,7 @@ public class RenderableImageOp implements RenderableImage {
         if (boundingBox == null) {
             boundingBox = myCRIF.getBounds2D(paramBlock);
         }
-        return (float)boundingBox.getHeight();
+        return (float) boundingBox.getHeight();
     }
 
     /**
@@ -175,7 +184,7 @@ public class RenderableImageOp implements RenderableImage {
         if (boundingBox == null) {
             boundingBox = myCRIF.getBounds2D(paramBlock);
         }
-        return (float)boundingBox.getMinX();
+        return (float) boundingBox.getMinX();
     }
 
     /**
@@ -185,7 +194,7 @@ public class RenderableImageOp implements RenderableImage {
         if (boundingBox == null) {
             boundingBox = myCRIF.getBounds2D(paramBlock);
         }
-        return (float)boundingBox.getMinY();
+        return (float) boundingBox.getMinY();
     }
 
     /**
@@ -200,14 +209,15 @@ public class RenderableImageOp implements RenderableImage {
      */
     public ParameterBlock setParameterBlock(ParameterBlock paramBlock) {
         ParameterBlock oldParamBlock = this.paramBlock;
-        this.paramBlock = (ParameterBlock)paramBlock.clone();
+        this.paramBlock = (ParameterBlock) paramBlock.clone();
         return oldParamBlock;
     }
 
     /**
      * Returns a reference to the current parameter block.
+     *
      * @return the <code>ParameterBlock</code> of this
-     *         <code>RenderableImageOp</code>.
+     * <code>RenderableImageOp</code>.
      * @see #setParameterBlock(ParameterBlock)
      */
     public ParameterBlock getParameterBlock() {
@@ -234,17 +244,17 @@ public class RenderableImageOp implements RenderableImage {
      * that are obtained via the getSources() method on the created
      * RenderedImage may have such a property.
      *
-     * @param w the width of rendered image in pixels, or 0.
-     * @param h the height of rendered image in pixels, or 0.
+     * @param w     the width of rendered image in pixels, or 0.
+     * @param h     the height of rendered image in pixels, or 0.
      * @param hints a RenderingHints object containg hints.
      * @return a RenderedImage containing the rendered data.
      */
     public RenderedImage createScaledRendering(int w, int h,
                                                RenderingHints hints) {
         // DSR -- code to try to get a unit scale
-        double sx = (double)w/getWidth();
-        double sy = (double)h/getHeight();
-        if (Math.abs(sx/sy - 1.0) < 0.01) {
+        double sx = (double) w / getWidth();
+        double sy = (double) h / getHeight();
+        if (Math.abs(sx / sy - 1.0) < 0.01) {
             sx = sy;
         }
         AffineTransform usr2dev = AffineTransform.getScaleInstance(sx, sy);
@@ -313,7 +323,7 @@ public class RenderableImageOp implements RenderableImage {
         // Clone the original ParameterBlock; if the ParameterBlock
         // contains RenderableImage sources, they will be replaced by
         // RenderedImages.
-        ParameterBlock renderedParamBlock = (ParameterBlock)paramBlock.clone();
+        ParameterBlock renderedParamBlock = (ParameterBlock) paramBlock.clone();
         Vector sources = getRenderableSources();
 
         try {
@@ -324,9 +334,9 @@ public class RenderableImageOp implements RenderableImage {
                 Vector renderedSources = new Vector();
                 for (int i = 0; i < sources.size(); i++) {
                     rcOut = myCRIF.mapRenderContext(i, renderContext,
-                                                    paramBlock, this);
+                            paramBlock, this);
                     RenderedImage rdrdImage =
-                       ((RenderableImage)sources.elementAt(i)).createRendering(rcOut);
+                            ((RenderableImage) sources.elementAt(i)).createRendering(rcOut);
                     if (rdrdImage == null) {
                         return null;
                     }

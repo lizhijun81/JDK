@@ -27,6 +27,7 @@ package com.sun.java.swing;
 
 import sun.awt.EventQueueDelegate;
 import sun.awt.AppContext;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -47,48 +48,47 @@ import javax.swing.RepaintManager;
  * public API and its API may change in incompatable ways between dot dot
  * releases and even patch releases. You should not rely on this class even
  * existing.
- *
+ * <p>
  * This is a second part of sun.swing.SwingUtilities2. It is required
  * to provide services for JavaFX applets.
- *
  */
 public class SwingUtilities3 {
     /**
      * The {@code clientProperty} key for delegate {@code RepaintManager}
      */
     private static final Object DELEGATE_REPAINT_MANAGER_KEY =
-        new StringBuilder("DelegateRepaintManagerKey");
+            new StringBuilder("DelegateRepaintManagerKey");
 
     /**
-      * Registers delegate RepaintManager for {@code JComponent}.
-      */
+     * Registers delegate RepaintManager for {@code JComponent}.
+     */
     public static void setDelegateRepaintManager(JComponent component,
-                                                RepaintManager repaintManager) {
+                                                 RepaintManager repaintManager) {
         /* setting up flag in AppContext to speed up lookups in case
          * there are no delegate RepaintManagers used.
          */
         AppContext.getAppContext().put(DELEGATE_REPAINT_MANAGER_KEY,
-                                       Boolean.TRUE);
+                Boolean.TRUE);
 
         component.putClientProperty(DELEGATE_REPAINT_MANAGER_KEY,
-                                    repaintManager);
+                repaintManager);
     }
 
     private static final Map<Container, Boolean> vsyncedMap =
-        Collections.synchronizedMap(new WeakHashMap<Container, Boolean>());
+            Collections.synchronizedMap(new WeakHashMap<Container, Boolean>());
 
     /**
      * Sets vsyncRequested state for the {@code rootContainer}.  If
      * {@code isRequested} is {@code true} then vsynced
      * {@code BufferStrategy} is enabled for this {@code rootContainer}.
-     *
+     * <p>
      * Note: requesting vsynced painting does not guarantee one. The outcome
      * depends on current RepaintManager's RepaintManager.PaintManager
      * and on the capabilities of the graphics hardware/software and what not.
      *
      * @param rootContainer topmost container. Should be either {@code Window}
-     *  or {@code Applet}
-     * @param isRequested the value to set vsyncRequested state to
+     *                      or {@code Applet}
+     * @param isRequested   the value to set vsyncRequested state to
      */
     public static void setVsyncRequested(Container rootContainer,
                                          boolean isRequested) {
@@ -115,19 +115,19 @@ public class SwingUtilities3 {
      * Returns delegate {@code RepaintManager} for {@code component} hierarchy.
      */
     public static RepaintManager getDelegateRepaintManager(Component
-                                                            component) {
+                                                                   component) {
         RepaintManager delegate = null;
         if (Boolean.TRUE == AppContext.getAppContext().get(
-                                               DELEGATE_REPAINT_MANAGER_KEY)) {
+                DELEGATE_REPAINT_MANAGER_KEY)) {
             while (delegate == null && component != null) {
                 while (component != null
-                         && ! (component instanceof JComponent)) {
+                        && !(component instanceof JComponent)) {
                     component = component.getParent();
                 }
                 if (component != null) {
                     delegate = (RepaintManager)
-                        ((JComponent) component)
-                          .getClientProperty(DELEGATE_REPAINT_MANAGER_KEY);
+                            ((JComponent) component)
+                                    .getClientProperty(DELEGATE_REPAINT_MANAGER_KEY);
                     component = component.getParent();
                 }
 
@@ -146,7 +146,7 @@ public class SwingUtilities3 {
     }
 
     private static class EventQueueDelegateFromMap
-    implements EventQueueDelegate.Delegate {
+            implements EventQueueDelegate.Delegate {
         private final AWTEvent[] afterDispatchEventArgument;
         private final Object[] afterDispatchHandleArgument;
         private final Callable<Void> afterDispatchCallable;
@@ -170,7 +170,7 @@ public class SwingUtilities3 {
 
             methodMap = objectMap.get("getNextEvent");
             getNextEventEventQueueArgument =
-                (EventQueue[]) methodMap.get("eventQueue");
+                    (EventQueue[]) methodMap.get("eventQueue");
             getNextEventCallable = (Callable<AWTEvent>) methodMap.get("method");
         }
 

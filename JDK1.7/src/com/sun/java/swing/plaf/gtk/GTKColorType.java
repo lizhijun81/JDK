@@ -58,34 +58,29 @@ public class GTKColorType extends ColorType {
         if (s == 0.0) {
             if (h == 0.0) {
                 r = g = b = l;
-            }
-            else {
+            } else {
                 r = g = b = 0;
             }
-        }
-        else {
+        } else {
             r = hlsValue(m1, m2, h + 120);
             g = hlsValue(m1, m2, h);
             b = hlsValue(m1, m2, h - 120);
         }
-        return (((int)(r * 255)) << 16) | (((int)(g * 255.0)) << 8) |
-               ((int)(b * 255));
+        return (((int) (r * 255)) << 16) | (((int) (g * 255.0)) << 8) |
+                ((int) (b * 255));
     }
 
     private static float hlsValue(float n1, float n2, float h) {
         if (h > 360) {
             h -= 360;
-        }
-        else if (h < 0) {
+        } else if (h < 0) {
             h += 360;
         }
         if (h < 60) {
             return n1 + (n2 - n1) * h / 60.0f;
-        }
-        else if (h < 180) {
+        } else if (h < 180) {
             return n2;
-        }
-        else if (h < 240) {
+        } else if (h < 240) {
             return n1 + (n2 - n1) * (240.0f - h) / 60.0f;
         }
         return n1;
@@ -108,14 +103,12 @@ public class GTKColorType extends ColorType {
 
         if (max != min) {
             float delta = max - min;
-            s = (l <= .5f) ? (delta / (max + min)) : (delta / (2.0f - max -min));
+            s = (l <= .5f) ? (delta / (max + min)) : (delta / (2.0f - max - min));
             if (r == max) {
                 h = (g - b) / delta;
-            }
-            else if (g == max) {
+            } else if (g == max) {
                 h = 2.0f + (b - r) / delta;
-            }
-            else {
+            } else {
                 h = 4.0f + (r - g) / delta;
             }
             h *= 60.0f;
@@ -137,9 +130,9 @@ public class GTKColorType extends ColorType {
      * The transformation is done in the HLS color space using the specified
      * arguments to scale.
      *
-     * @param color Color to alter
+     * @param color    Color to alter
      * @param hFactory Amount to scale the hue
-     * @param lFactor Amount to scale the lightness
+     * @param lFactor  Amount to scale the lightness
      * @param sFactory Amount to sacle saturation
      * @return newly created color
      */
@@ -149,7 +142,7 @@ public class GTKColorType extends ColorType {
         float l;
         float s;
 
-        synchronized(HLS_COLOR_LOCK) {
+        synchronized (HLS_COLOR_LOCK) {
             float[] hls = rgbToHLS(color.getRGB(), HLS_COLORS);
             h = hls[0];
             l = hls[1];

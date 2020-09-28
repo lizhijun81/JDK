@@ -38,12 +38,10 @@ import com.sun.org.apache.xerces.internal.util.XML11Char;
  * must uniquely identify the elements which bear
  * them.</P>
  *
- * @xerces.internal
- *
  * @author Jeffrey Rodriguez, IBM
  * @author Sandy Gao, IBM
  * @author Neil Graham, IBM
- *
+ * @xerces.internal
  */
 public class XML11IDDatatypeValidator extends IDDatatypeValidator {
 
@@ -56,21 +54,20 @@ public class XML11IDDatatypeValidator extends IDDatatypeValidator {
      * Checks that "content" string is valid ID value.
      * If invalid a Datatype validation exception is thrown.
      *
-     * @param content       the string value that needs to be validated
-     * @param context       the validation context
+     * @param content the string value that needs to be validated
+     * @param context the validation context
      * @throws InvalidDatatypeException if the content is
-     *         invalid according to the rules for the validators
+     *                                  invalid according to the rules for the validators
      * @see InvalidDatatypeValueException
      */
     public void validate(String content, ValidationContext context) throws InvalidDatatypeValueException {
 
         //Check if is valid key-[81] EncName ::= [A-Za-z] ([A-Za-z0-9._] | '-')*
-        if(context.useNamespaces()) {
+        if (context.useNamespaces()) {
             if (!XML11Char.isXML11ValidNCName(content)) {
                 throw new InvalidDatatypeValueException("IDInvalidWithNamespaces", new Object[]{content});
             }
-        }
-        else {
+        } else {
             if (!XML11Char.isXML11ValidName(content)) {
                 throw new InvalidDatatypeValueException("IDInvalid", new Object[]{content});
             }

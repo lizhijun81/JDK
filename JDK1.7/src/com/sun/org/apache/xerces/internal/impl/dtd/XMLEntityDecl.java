@@ -62,6 +62,7 @@
 package com.sun.org.apache.xerces.internal.impl.dtd;
 
 /**
+ *
  */
 public class XMLEntityDecl {
 
@@ -69,29 +70,45 @@ public class XMLEntityDecl {
     // Data
     //
 
-    /** name */
+    /**
+     * name
+     */
     public String name;
 
-    /** publicId */
+    /**
+     * publicId
+     */
     public String publicId;
 
-    /** systemId */
+    /**
+     * systemId
+     */
     public String systemId;
 
-    /** baseSystemId */
+    /**
+     * baseSystemId
+     */
     public String baseSystemId;
 
-    /** notation */
+    /**
+     * notation
+     */
     public String notation;
 
-    /** isPE */
+    /**
+     * isPE
+     */
     public boolean isPE;
 
     /** inExternal */
-    /** <strong>Note:</strong> flag of where the entity is defined, not whether it is a external entity */
+    /**
+     * <strong>Note:</strong> flag of where the entity is defined, not whether it is a external entity
+     */
     public boolean inExternal;
 
-    /** Value. */
+    /**
+     * Value.
+     */
     public String value;
 
     //
@@ -130,28 +147,28 @@ public class XMLEntityDecl {
     public void setValues(String name, String publicId, String systemId,
                           String baseSystemId, String notation,
                           String value, boolean isPE, boolean inExternal) {
-        this.name         = name;
-        this.publicId     = publicId;
-        this.systemId     = systemId;
+        this.name = name;
+        this.publicId = publicId;
+        this.systemId = systemId;
         this.baseSystemId = baseSystemId;
-        this.notation     = notation;
-        this.value        = value;
-        this.isPE         = isPE;
-        this.inExternal   = inExternal;
+        this.notation = notation;
+        this.value = value;
+        this.isPE = isPE;
+        this.inExternal = inExternal;
     } // setValues(String,String,String,String,String,boolean,boolean)
 
     /**
      * clear
      */
     public void clear() {
-       this.name         = null;
-       this.publicId     = null;
-       this.systemId     = null;
-       this.baseSystemId = null;
-       this.notation     = null;
-       this.value        = null;
-       this.isPE         = false;
-       this.inExternal   = false;
+        this.name = null;
+        this.publicId = null;
+        this.systemId = null;
+        this.baseSystemId = null;
+        this.notation = null;
+        this.value = null;
+        this.isPE = false;
+        this.inExternal = false;
 
     } // clear
 

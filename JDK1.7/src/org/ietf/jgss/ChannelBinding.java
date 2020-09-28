@@ -35,12 +35,12 @@ import java.util.Arrays;
  * context establishment.  They enable the GSS-API callers to bind the
  * establishment of the security context to relevant characteristics
  * like addresses or to application specific data.<p>
- *
+ * <p>
  * The caller initiating the security context must determine the
  * appropriate channel binding values to set in the GSSContext object.
  * The acceptor must provide an identical binding in order to validate
  * that received tokens possess correct channel-related characteristics.<p>
- *
+ * <p>
  * Use of channel bindings is optional in GSS-API. ChannelBinding can be
  * set for the {@link GSSContext GSSContext} using the {@link
  * GSSContext#setChannelBinding(ChannelBinding) setChannelBinding} method
@@ -49,7 +49,7 @@ import java.util.Arrays;
  * acceptSecContext} has been performed.  Unless the <code>setChannelBinding</code>
  * method has been used to set the ChannelBinding for a GSSContext object,
  * <code>null</code> ChannelBinding will be assumed. <p>
- *
+ * <p>
  * Conceptually, the GSS-API concatenates the initiator and acceptor
  * address information, and the application supplied byte array to form an
  * octet string.  The mechanism calculates a MIC over this octet string and
@@ -65,14 +65,14 @@ import java.util.Arrays;
  * actual channel binding data in the token (rather than just a MIC);
  * applications should therefore not use confidential data as
  * channel-binding components.<p>
- *
- *  Individual mechanisms may impose additional constraints on addresses
- *  that may appear in channel bindings.  For example, a mechanism may
- *  verify that the initiator address field of the channel binding
- *  contains the correct network address of the host system.  Portable
- *  applications should therefore ensure that they either provide correct
- *  information for the address fields, or omit setting of the addressing
- *  information.
+ * <p>
+ * Individual mechanisms may impose additional constraints on addresses
+ * that may appear in channel bindings.  For example, a mechanism may
+ * verify that the initiator address field of the channel binding
+ * contains the correct network address of the host system.  Portable
+ * applications should therefore ensure that they either provide correct
+ * information for the address fields, or omit setting of the addressing
+ * information.
  *
  * @author Mayank Upadhyay
  * @since 1.4
@@ -81,25 +81,25 @@ public class ChannelBinding {
 
     private InetAddress initiator;
     private InetAddress acceptor;
-    private  byte[] appData;
+    private byte[] appData;
 
     /**
      * Create a ChannelBinding object with user supplied address information
      * and data.  <code>null</code> values can be used for any fields which the
      * application does not want to specify.
      *
-     * @param initAddr the address of the context initiator.
-     * <code>null</code> value can be supplied to indicate that the
-     * application does not want to set this value.
+     * @param initAddr   the address of the context initiator.
+     *                   <code>null</code> value can be supplied to indicate that the
+     *                   application does not want to set this value.
      * @param acceptAddr the address of the context
-     * acceptor. <code>null</code> value can be supplied to indicate that
-     * the application does not want to set this value.
-     * @param appData application supplied data to be used as part of the
-     * channel bindings. <code>null</code> value can be supplied to
-     * indicate that the application does not want to set this value.
+     *                   acceptor. <code>null</code> value can be supplied to indicate that
+     *                   the application does not want to set this value.
+     * @param appData    application supplied data to be used as part of the
+     *                   channel bindings. <code>null</code> value can be supplied to
+     *                   indicate that the application does not want to set this value.
      */
     public ChannelBinding(InetAddress initAddr, InetAddress acceptAddr,
-                        byte[] appData) {
+                          byte[] appData) {
 
         initiator = initAddr;
         acceptor = acceptAddr;
@@ -107,7 +107,7 @@ public class ChannelBinding {
         if (appData != null) {
             this.appData = new byte[appData.length];
             java.lang.System.arraycopy(appData, 0, this.appData, 0,
-                                appData.length);
+                    appData.length);
         }
     }
 
@@ -115,7 +115,7 @@ public class ChannelBinding {
      * Creates a ChannelBinding object without any addressing information.
      *
      * @param appData application supplied data to be used as part of the
-     * channel bindings.
+     *                channel bindings.
      */
     public ChannelBinding(byte[] appData) {
         this(null, null, appData);
@@ -172,20 +172,20 @@ public class ChannelBinding {
         if (this == obj)
             return true;
 
-        if (! (obj instanceof ChannelBinding))
+        if (!(obj instanceof ChannelBinding))
             return false;
 
         ChannelBinding cb = (ChannelBinding) obj;
 
         if ((initiator != null && cb.initiator == null) ||
-            (initiator == null && cb.initiator != null))
+                (initiator == null && cb.initiator != null))
             return false;
 
         if (initiator != null && !initiator.equals(cb.initiator))
             return false;
 
         if ((acceptor != null && cb.acceptor == null) ||
-            (acceptor == null && cb.acceptor != null))
+                (acceptor == null && cb.acceptor != null))
             return false;
 
         if (acceptor != null && !acceptor.equals(cb.acceptor))

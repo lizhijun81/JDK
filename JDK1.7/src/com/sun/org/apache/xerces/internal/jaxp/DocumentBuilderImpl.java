@@ -57,43 +57,60 @@ import org.xml.sax.SAXNotSupportedException;
  * @version $Id: DocumentBuilderImpl.java,v 1.8 2010-11-01 04:40:06 joehw Exp $
  */
 public class DocumentBuilderImpl extends DocumentBuilder
-        implements JAXPConstants
-{
-    /** Feature identifier: namespaces. */
+        implements JAXPConstants {
+    /**
+     * Feature identifier: namespaces.
+     */
     private static final String NAMESPACES_FEATURE =
-        Constants.SAX_FEATURE_PREFIX + Constants.NAMESPACES_FEATURE;
+            Constants.SAX_FEATURE_PREFIX + Constants.NAMESPACES_FEATURE;
 
-    /** Feature identifier: include ignorable white space. */
+    /**
+     * Feature identifier: include ignorable white space.
+     */
     private static final String INCLUDE_IGNORABLE_WHITESPACE =
-        Constants.XERCES_FEATURE_PREFIX + Constants.INCLUDE_IGNORABLE_WHITESPACE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.INCLUDE_IGNORABLE_WHITESPACE;
 
-    /** Feature identifier: create entiry ref nodes feature. */
+    /**
+     * Feature identifier: create entiry ref nodes feature.
+     */
     private static final String CREATE_ENTITY_REF_NODES_FEATURE =
-        Constants.XERCES_FEATURE_PREFIX + Constants.CREATE_ENTITY_REF_NODES_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.CREATE_ENTITY_REF_NODES_FEATURE;
 
-    /** Feature identifier: include comments feature. */
+    /**
+     * Feature identifier: include comments feature.
+     */
     private static final String INCLUDE_COMMENTS_FEATURE =
-        Constants.XERCES_FEATURE_PREFIX + Constants.INCLUDE_COMMENTS_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.INCLUDE_COMMENTS_FEATURE;
 
-    /** Feature identifier: create cdata nodes feature. */
+    /**
+     * Feature identifier: create cdata nodes feature.
+     */
     private static final String CREATE_CDATA_NODES_FEATURE =
-        Constants.XERCES_FEATURE_PREFIX + Constants.CREATE_CDATA_NODES_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.CREATE_CDATA_NODES_FEATURE;
 
-    /** Feature identifier: XInclude processing */
+    /**
+     * Feature identifier: XInclude processing
+     */
     private static final String XINCLUDE_FEATURE =
-        Constants.XERCES_FEATURE_PREFIX + Constants.XINCLUDE_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.XINCLUDE_FEATURE;
 
-    /** feature identifier: XML Schema validation */
+    /**
+     * feature identifier: XML Schema validation
+     */
     private static final String XMLSCHEMA_VALIDATION_FEATURE =
-        Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_VALIDATION_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_VALIDATION_FEATURE;
 
-    /** Feature identifier: validation */
+    /**
+     * Feature identifier: validation
+     */
     private static final String VALIDATION_FEATURE =
-        Constants.SAX_FEATURE_PREFIX + Constants.VALIDATION_FEATURE;
+            Constants.SAX_FEATURE_PREFIX + Constants.VALIDATION_FEATURE;
 
-    /** Property identifier: security manager. */
+    /**
+     * Property identifier: security manager.
+     */
     private static final String SECURITY_MANAGER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.SECURITY_MANAGER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SECURITY_MANAGER_PROPERTY;
 
     private final DOMParser domParser;
     private final Schema grammar;
@@ -103,20 +120,23 @@ public class DocumentBuilderImpl extends DocumentBuilder
     private final ValidationManager fSchemaValidationManager;
     private final UnparsedEntityHandler fUnparsedEntityHandler;
 
-    /** Initial ErrorHandler */
+    /**
+     * Initial ErrorHandler
+     */
     private final ErrorHandler fInitErrorHandler;
 
-    /** Initial EntityResolver */
+    /**
+     * Initial EntityResolver
+     */
     private final EntityResolver fInitEntityResolver;
 
     DocumentBuilderImpl(DocumentBuilderFactoryImpl dbf, Hashtable dbfAttrs, Hashtable features)
-        throws SAXNotRecognizedException, SAXNotSupportedException {
+            throws SAXNotRecognizedException, SAXNotSupportedException {
         this(dbf, dbfAttrs, features, false);
     }
 
     DocumentBuilderImpl(DocumentBuilderFactoryImpl dbf, Hashtable dbfAttrs, Hashtable features, boolean secureProcessing)
-        throws SAXNotRecognizedException, SAXNotSupportedException
-    {
+            throws SAXNotRecognizedException, SAXNotSupportedException {
         domParser = new DOMParser();
 
         // If validating, provide a default ErrorHandler that prints
@@ -125,8 +145,7 @@ public class DocumentBuilderImpl extends DocumentBuilder
         if (dbf.isValidating()) {
             fInitErrorHandler = new DefaultValidationErrorHandler();
             setErrorHandler(fInitErrorHandler);
-        }
-        else {
+        } else {
             fInitErrorHandler = domParser.getErrorHandler();
         }
 
@@ -183,11 +202,10 @@ public class DocumentBuilderImpl extends DocumentBuilder
             config.addRecognizedProperties(validatorComponent.getRecognizedProperties());
             setFeatures(features);      // Must set before calling setDocumentHandler()
             config.setDocumentHandler((XMLDocumentHandler) validatorComponent);
-            ((XMLDocumentSource)validatorComponent).setDocumentHandler(domParser);
+            ((XMLDocumentSource) validatorComponent).setDocumentHandler(domParser);
             domParser.setDocumentSource((XMLDocumentSource) validatorComponent);
             fSchemaValidator = validatorComponent;
-        }
-        else {
+        } else {
             fSchemaValidationManager = null;
             fUnparsedEntityHandler = null;
             fSchemaValidatorComponentManager = null;
@@ -203,7 +221,7 @@ public class DocumentBuilderImpl extends DocumentBuilder
     }
 
     private void setFeatures(Hashtable features)
-        throws SAXNotSupportedException, SAXNotRecognizedException {
+            throws SAXNotSupportedException, SAXNotRecognizedException {
         if (features != null) {
             Iterator entries = features.entrySet().iterator();
             while (entries.hasNext()) {
@@ -217,14 +235,13 @@ public class DocumentBuilderImpl extends DocumentBuilder
 
     /**
      * Set any DocumentBuilderFactory attributes of our underlying DOMParser
-     *
+     * <p>
      * Note: code does not handle possible conflicts between DOMParser
      * attribute names and JAXP specific attribute names,
      * eg. DocumentBuilderFactory.setValidating()
      */
     private void setDocumentBuilderFactoryAttributes(Hashtable dbfAttrs)
-        throws SAXNotSupportedException, SAXNotRecognizedException
-    {
+            throws SAXNotSupportedException, SAXNotRecognizedException {
         if (dbfAttrs == null) {
             // Nothing to do
             return;
@@ -237,39 +254,39 @@ public class DocumentBuilderImpl extends DocumentBuilder
             Object val = entry.getValue();
             if (val instanceof Boolean) {
                 // Assume feature
-                domParser.setFeature(name, ((Boolean)val).booleanValue());
+                domParser.setFeature(name, ((Boolean) val).booleanValue());
             } else {
                 // Assume property
                 if (JAXP_SCHEMA_LANGUAGE.equals(name)) {
                     // JAXP 1.2 support
                     //None of the properties will take effect till the setValidating(true) has been called
-                    if ( W3C_XML_SCHEMA.equals(val) ) {
-                        if( isValidating() ) {
+                    if (W3C_XML_SCHEMA.equals(val)) {
+                        if (isValidating()) {
                             domParser.setFeature(XMLSCHEMA_VALIDATION_FEATURE, true);
                             // this should allow us not to emit DTD errors, as expected by the
                             // spec when schema validation is enabled
                             domParser.setProperty(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
                         }
                     }
-                        } else if(JAXP_SCHEMA_SOURCE.equals(name)){
-                        if( isValidating() ) {
-                                                String value=(String)dbfAttrs.get(JAXP_SCHEMA_LANGUAGE);
-                                                if(value !=null && W3C_XML_SCHEMA.equals(value)){
-                                        domParser.setProperty(name, val);
-                                                }else{
+                } else if (JAXP_SCHEMA_SOURCE.equals(name)) {
+                    if (isValidating()) {
+                        String value = (String) dbfAttrs.get(JAXP_SCHEMA_LANGUAGE);
+                        if (value != null && W3C_XML_SCHEMA.equals(value)) {
+                            domParser.setProperty(name, val);
+                        } else {
                             throw new IllegalArgumentException(
-                                DOMMessageFormatter.formatMessage(DOMMessageFormatter.DOM_DOMAIN,
-                                "jaxp-order-not-supported",
-                                new Object[] {JAXP_SCHEMA_LANGUAGE, JAXP_SCHEMA_SOURCE}));
-                                                }
-                                        }
+                                    DOMMessageFormatter.formatMessage(DOMMessageFormatter.DOM_DOMAIN,
+                                            "jaxp-order-not-supported",
+                                            new Object[]{JAXP_SCHEMA_LANGUAGE, JAXP_SCHEMA_SOURCE}));
+                        }
+                    }
                 } else {
                     // Let Xerces code handle the property
                     domParser.setProperty(name, val);
-                                }
-                        }
                 }
+            }
         }
+    }
 
     /**
      * Non-preferred: use the getDOMImplementation() method instead of this
@@ -287,8 +304,8 @@ public class DocumentBuilderImpl extends DocumentBuilder
     public Document parse(InputSource is) throws SAXException, IOException {
         if (is == null) {
             throw new IllegalArgumentException(
-                DOMMessageFormatter.formatMessage(DOMMessageFormatter.DOM_DOMAIN,
-                "jaxp-null-input-source", null));
+                    DOMMessageFormatter.formatMessage(DOMMessageFormatter.DOM_DOMAIN,
+                            "jaxp-null-input-source", null));
         }
         if (fSchemaValidator != null) {
             if (fSchemaValidationManager != null) {
@@ -306,8 +323,7 @@ public class DocumentBuilderImpl extends DocumentBuilder
     public boolean isNamespaceAware() {
         try {
             return domParser.getFeature(NAMESPACES_FEATURE);
-        }
-        catch (SAXException x) {
+        } catch (SAXException x) {
             throw new IllegalStateException(x.getMessage());
         }
     }
@@ -315,21 +331,20 @@ public class DocumentBuilderImpl extends DocumentBuilder
     public boolean isValidating() {
         try {
             return domParser.getFeature(VALIDATION_FEATURE);
-        }
-        catch (SAXException x) {
+        } catch (SAXException x) {
             throw new IllegalStateException(x.getMessage());
         }
     }
 
     /**
      * Gets the XInclude processing mode for this parser
+     *
      * @return the state of XInclude processing mode
      */
     public boolean isXIncludeAware() {
         try {
             return domParser.getFeature(XINCLUDE_FEATURE);
-        }
-        catch (SAXException exc) {
+        } catch (SAXException exc) {
             return false;
         }
     }

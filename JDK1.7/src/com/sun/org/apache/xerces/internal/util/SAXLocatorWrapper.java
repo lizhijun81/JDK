@@ -30,14 +30,14 @@ import com.sun.org.apache.xerces.internal.xni.XMLLocator;
  * when bridging between SAX and XNI components.</p>
  *
  * @author Michael Glavassevich, IBM
- *
  */
 public final class SAXLocatorWrapper implements XMLLocator {
 
     private Locator fLocator = null;
     private Locator2 fLocator2 = null;
 
-    public SAXLocatorWrapper() {}
+    public SAXLocatorWrapper() {
+    }
 
     public void setLocator(Locator locator) {
         fLocator = locator;

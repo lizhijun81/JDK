@@ -55,8 +55,8 @@ public class WindowsPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI {
             Component parent = c.getParent();
             if (parent instanceof JComponent) {
                 Object gutterOffsetObject =
-                    ((JComponent) parent).getClientProperty(
-                        WindowsPopupMenuUI.GUTTER_OFFSET_KEY);
+                        ((JComponent) parent).getClientProperty(
+                                WindowsPopupMenuUI.GUTTER_OFFSET_KEY);
                 if (gutterOffsetObject instanceof Integer) {
                     /*
                      * gutter offset is in parent's coordinates.
@@ -77,7 +77,7 @@ public class WindowsPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI {
             g.drawLine(1, y - 1, s.width - 2, y - 1);
 
             g.setColor(c.getBackground());
-            g.drawLine(1, y,     s.width - 2, y);
+            g.drawLine(1, y, s.width - 2, y);
         }
     }
 
@@ -88,7 +88,7 @@ public class WindowsPopupMenuSeparatorUI extends BasicPopupMenuSeparatorUI {
             fontHeight = c.getFontMetrics(font).getHeight();
         }
 
-        return new Dimension(0, fontHeight/2 + 2);
+        return new Dimension(0, fontHeight / 2 + 2);
     }
 
 }

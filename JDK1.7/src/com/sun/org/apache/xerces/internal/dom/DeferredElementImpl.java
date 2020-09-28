@@ -33,38 +33,41 @@ import org.w3c.dom.NamedNodeMap;
  * document.  They contain both the data for the element itself
  * (element name and attributes), and any contained nodes, including
  * document text (as children).
- * <P>
+ * <p>
  * Elements may have Attributes associated with them; the API for this is
  * defined in Node, but the function is implemented here. In general, XML
  * applications should retrive Attributes as Nodes, since they may contain
  * entity references and hence be a fairly complex sub-tree. HTML users will
  * be dealing with simple string values, and convenience methods are provided
  * to work in terms of Strings.
- * <P>
+ * <p>
  * DeferredElementImpl inherits from ElementImpl which does not support
  * Namespaces. DeferredElementNSImpl, which inherits from ElementNSImpl, does.
- * @see DeferredElementNSImpl
  *
  * @xerces.internal
- *
- * @since  PR-DOM-Level-1-19980818.
+ * @see DeferredElementNSImpl
+ * @since PR-DOM-Level-1-19980818.
  */
 public class DeferredElementImpl
-    extends ElementImpl
-    implements DeferredNode {
+        extends ElementImpl
+        implements DeferredNode {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = -7670981133940934842L;
 
     //
     // Data
     //
 
-    /** Node index. */
+    /**
+     * Node index.
+     */
     protected transient int fNodeIndex;
 
     //
@@ -87,7 +90,9 @@ public class DeferredElementImpl
     // DeferredNode methods
     //
 
-    /** Returns the node index. */
+    /**
+     * Returns the node index.
+     */
     public final int getNodeIndex() {
         return fNodeIndex;
     }
@@ -96,7 +101,9 @@ public class DeferredElementImpl
     // Protected methods
     //
 
-    /** Synchronizes the data (name and value) for fast nodes. */
+    /**
+     * Synchronizes the data (name and value) for fast nodes.
+     */
     protected final void synchronizeData() {
 
         // no need to sync in the future
@@ -104,7 +111,7 @@ public class DeferredElementImpl
 
         // fluff data
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl)this.ownerDocument;
+                (DeferredDocumentImpl) this.ownerDocument;
 
         // we don't want to generate any event for this so turn them off
         boolean orig = ownerDocument.mutationEvents;
@@ -118,7 +125,7 @@ public class DeferredElementImpl
         if (index != -1) {
             NamedNodeMap attrs = getAttributes();
             do {
-                NodeImpl attr = (NodeImpl)ownerDocument.getNodeObject(index);
+                NodeImpl attr = (NodeImpl) ownerDocument.getNodeObject(index);
                 attrs.setNamedItem(attr);
                 index = ownerDocument.getPrevSibling(index);
             } while (index != -1);
@@ -131,7 +138,7 @@ public class DeferredElementImpl
 
     protected final void synchronizeChildren() {
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl) ownerDocument();
+                (DeferredDocumentImpl) ownerDocument();
         ownerDocument.synchronizeChildren(this, fNodeIndex);
     } // synchronizeChildren()
 

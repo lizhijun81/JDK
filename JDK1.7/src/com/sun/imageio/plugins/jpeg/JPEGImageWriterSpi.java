@@ -40,27 +40,27 @@ import java.util.Locale;
 
 public class JPEGImageWriterSpi extends ImageWriterSpi {
 
-    private static String [] readerSpiNames =
-        {"com.sun.imageio.plugins.jpeg.JPEGImageReaderSpi"};
+    private static String[] readerSpiNames =
+            {"com.sun.imageio.plugins.jpeg.JPEGImageReaderSpi"};
 
     public JPEGImageWriterSpi() {
         super(JPEG.vendor,
-              JPEG.version,
-              JPEG.names,
-              JPEG.suffixes,
-              JPEG.MIMETypes,
-              "com.sun.imageio.plugins.jpeg.JPEGImageWriter",
-              new Class[] { ImageOutputStream.class },
-              readerSpiNames,
-              true,
-              JPEG.nativeStreamMetadataFormatName,
-              JPEG.nativeStreamMetadataFormatClassName,
-              null, null,
-              true,
-              JPEG.nativeImageMetadataFormatName,
-              JPEG.nativeImageMetadataFormatClassName,
-              null, null
-              );
+                JPEG.version,
+                JPEG.names,
+                JPEG.suffixes,
+                JPEG.MIMETypes,
+                "com.sun.imageio.plugins.jpeg.JPEGImageWriter",
+                new Class[]{ImageOutputStream.class},
+                readerSpiNames,
+                true,
+                JPEG.nativeStreamMetadataFormatName,
+                JPEG.nativeStreamMetadataFormatClassName,
+                null, null,
+                true,
+                JPEG.nativeImageMetadataFormatName,
+                JPEG.nativeImageMetadataFormatClassName,
+                null, null
+        );
     }
 
     public String getDescription(Locale locale) {
@@ -92,7 +92,7 @@ public class JPEGImageWriterSpi extends ImageWriterSpi {
     }
 
     public ImageWriter createWriterInstance(Object extension)
-        throws IIOException {
+            throws IIOException {
         return new JPEGImageWriter(this);
     }
 }

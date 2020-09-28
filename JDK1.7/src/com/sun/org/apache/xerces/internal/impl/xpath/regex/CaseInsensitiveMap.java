@@ -28,8 +28,8 @@ package com.sun.org.apache.xerces.internal.impl.xpath.regex;
 public class CaseInsensitiveMap {
 
     private static int CHUNK_SHIFT = 10;           /* 2^10 = 1k */
-    private static int CHUNK_SIZE = (1<<CHUNK_SHIFT);
-    private static int CHUNK_MASK = (CHUNK_SIZE-1);
+    private static int CHUNK_SIZE = (1 << CHUNK_SHIFT);
+    private static int CHUNK_MASK = (CHUNK_SIZE - 1);
     private static int INITIAL_CHUNK_COUNT = 64;   /* up to 0xFFFF */
 
     private static int[][][] caseInsensitiveMap;
@@ -39,8 +39,8 @@ public class CaseInsensitiveMap {
     private static int UPPER_CASE_MATCH = 2;
 
     /**
-     *  Return a list of code point characters (not including the input value)
-     *  that can be substituted in a case insensitive match
+     * Return a list of code point characters (not including the input value)
+     * that can be substituted in a case insensitive match
      */
     static public int[] get(int codePoint) {
         if (mapBuilt == Boolean.FALSE) {
@@ -63,12 +63,12 @@ public class CaseInsensitiveMap {
 
     private static void buildCaseInsensitiveMap() {
         caseInsensitiveMap = new int[INITIAL_CHUNK_COUNT][][];
-        for (int i=0; i<INITIAL_CHUNK_COUNT; i++) {
+        for (int i = 0; i < INITIAL_CHUNK_COUNT; i++) {
             caseInsensitiveMap[i] = new int[CHUNK_SIZE][];
         }
 
         int lc, uc;
-        for (int i=0; i<0x10000; i++) {
+        for (int i = 0; i < 0x10000; i++) {
             lc = Character.toLowerCase(i);
             uc = Character.toUpperCase(i);
 
@@ -121,8 +121,8 @@ public class CaseInsensitiveMap {
     }
 
     private static int[] updateMap(int codePoint, int[] codePointMap,
-            int ciCodePoint, int[] ciCodePointMap, int matchType) {
-        for (int i=0; i<ciCodePointMap.length; i+=2) {
+                                   int ciCodePoint, int[] ciCodePointMap, int matchType) {
+        for (int i = 0; i < ciCodePointMap.length; i += 2) {
             int c = ciCodePointMap[i];
             int[] cMap = getMapping(c);
             if (cMap != null) {
@@ -132,7 +132,7 @@ public class CaseInsensitiveMap {
                         set(c, cMap);
                     }
                     if (!contains(codePointMap, c)) {
-                        codePointMap = expandAndAdd(codePointMap, c,matchType);
+                        codePointMap = expandAndAdd(codePointMap, c, matchType);
                     }
                 }
             }
@@ -147,7 +147,7 @@ public class CaseInsensitiveMap {
     }
 
     private static boolean contains(int[] map, int codePoint) {
-        for (int i=0; i<map.length; i += 2) {
+        for (int i = 0; i < map.length; i += 2) {
             if (map[i] == codePoint) {
                 return true;
             }
@@ -156,8 +156,8 @@ public class CaseInsensitiveMap {
     }
 
     private static boolean contains(int[] map, int codePoint, int matchType) {
-        for (int i=0; i<map.length; i += 2) {
-            if (map[i] == codePoint && map[i+1] == matchType) {
+        for (int i = 0; i < map.length; i += 2) {
+            if (map[i] == codePoint && map[i + 1] == matchType) {
                 return true;
             }
         }
@@ -170,7 +170,7 @@ public class CaseInsensitiveMap {
 
         System.arraycopy(srcMap, 0, newMap, 0, oldLen);
         newMap[oldLen] = codePoint;
-        newMap[oldLen+1] = matchType;
+        newMap[oldLen + 1] = matchType;
         return newMap;
     }
 }

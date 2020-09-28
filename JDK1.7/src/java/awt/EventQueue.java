@@ -97,8 +97,7 @@ import sun.misc.JavaSecurityAccess;
  * @author Thomas Ball
  * @author Fred Ecks
  * @author David Mendenhall
- *
- * @since       1.1
+ * @since 1.1
  */
 public class EventQueue {
     private static final AtomicInteger threadInitNumber = new AtomicInteger(0);
@@ -153,9 +152,9 @@ public class EventQueue {
     private EventDispatchThread dispatchThread;
 
     private final ThreadGroup threadGroup =
-        Thread.currentThread().getThreadGroup();
+            Thread.currentThread().getThreadGroup();
     private final ClassLoader classLoader =
-        Thread.currentThread().getContextClassLoader();
+            Thread.currentThread().getContextClassLoader();
 
     /*
      * The time stamp of the last dispatched InputEvent or ActionEvent.
@@ -185,31 +184,34 @@ public class EventQueue {
 
     static {
         AWTAccessor.setEventQueueAccessor(
-            new AWTAccessor.EventQueueAccessor() {
-                public Thread getDispatchThread(EventQueue eventQueue) {
-                    return eventQueue.getDispatchThread();
-                }
-                public boolean isDispatchThreadImpl(EventQueue eventQueue) {
-                    return eventQueue.isDispatchThreadImpl();
-                }
-                public void removeSourceEvents(EventQueue eventQueue,
-                                               Object source,
-                                               boolean removeAllEvents)
-                {
-                    eventQueue.removeSourceEvents(source, removeAllEvents);
-                }
-                public boolean noEvents(EventQueue eventQueue) {
-                    return eventQueue.noEvents();
-                }
-                public void wakeup(EventQueue eventQueue, boolean isShutdown) {
-                    eventQueue.wakeup(isShutdown);
-                }
-                public void invokeAndWait(Object source, Runnable r)
-                    throws InterruptedException, InvocationTargetException
-                {
-                    EventQueue.invokeAndWait(source, r);
-                }
-            });
+                new AWTAccessor.EventQueueAccessor() {
+                    public Thread getDispatchThread(EventQueue eventQueue) {
+                        return eventQueue.getDispatchThread();
+                    }
+
+                    public boolean isDispatchThreadImpl(EventQueue eventQueue) {
+                        return eventQueue.isDispatchThreadImpl();
+                    }
+
+                    public void removeSourceEvents(EventQueue eventQueue,
+                                                   Object source,
+                                                   boolean removeAllEvents) {
+                        eventQueue.removeSourceEvents(source, removeAllEvents);
+                    }
+
+                    public boolean noEvents(EventQueue eventQueue) {
+                        return eventQueue.noEvents();
+                    }
+
+                    public void wakeup(EventQueue eventQueue, boolean isShutdown) {
+                        eventQueue.wakeup(isShutdown);
+                    }
+
+                    public void invokeAndWait(Object source, Runnable r)
+                            throws InterruptedException, InvocationTargetException {
+                        EventQueue.invokeAndWait(source, r);
+                    }
+                });
     }
 
     public EventQueue() {
@@ -226,8 +228,8 @@ public class EventQueue {
          */
 
         appContext = AppContext.getAppContext();
-        pushPopLock = (Lock)appContext.get(AppContext.EVENT_QUEUE_LOCK_KEY);
-        pushPopCond = (Condition)appContext.get(AppContext.EVENT_QUEUE_COND_KEY);
+        pushPopLock = (Lock) appContext.get(AppContext.EVENT_QUEUE_LOCK_KEY);
+        pushPopCond = (Condition) appContext.get(AppContext.EVENT_QUEUE_COND_KEY);
     }
 
     /**
@@ -237,7 +239,7 @@ public class EventQueue {
      * <code>coalesceEvents</code> method will be called.
      *
      * @param theEvent an instance of <code>java.awt.AWTEvent</code>,
-     *          or a subclass of it
+     *                 or a subclass of it
      * @throws NullPointerException if <code>theEvent</code> is <code>null</code>
      */
     public void postEvent(AWTEvent theEvent) {
@@ -252,7 +254,7 @@ public class EventQueue {
      * <code>coalesceEvents</code> method will be called.
      *
      * @param theEvent an instance of <code>java.awt.AWTEvent</code>,
-     *          or a subclass of it
+     *                 or a subclass of it
      */
     private final void postEventPrivate(AWTEvent theEvent) {
         theEvent.isPosted = true;
@@ -278,7 +280,7 @@ public class EventQueue {
 
     private static int getPriority(AWTEvent theEvent) {
         if (theEvent instanceof PeerEvent) {
-            PeerEvent peerEvent = (PeerEvent)theEvent;
+            PeerEvent peerEvent = (PeerEvent) theEvent;
             if ((peerEvent.getFlags() & PeerEvent.ULTIMATE_PRIORITY_EVENT) != 0) {
                 return ULTIMATE_PRIORITY;
             }
@@ -301,8 +303,8 @@ public class EventQueue {
      * coalescing as appropriate.
      *
      * @param theEvent an instance of <code>java.awt.AWTEvent</code>,
-     *          or a subclass of it
-     * @param priority  the desired priority of the event
+     *                 or a subclass of it
+     * @param priority the desired priority of the event
      */
     private void postEvent(AWTEvent theEvent, int priority) {
         if (coalesceEvent(theEvent, priority)) {
@@ -339,18 +341,18 @@ public class EventQueue {
     }
 
     private boolean coalescePaintEvent(PaintEvent e) {
-        ComponentPeer sourcePeer = ((Component)e.getSource()).peer;
+        ComponentPeer sourcePeer = ((Component) e.getSource()).peer;
         if (sourcePeer != null) {
             sourcePeer.coalescePaintEvent(e);
         }
-        EventQueueItem[] cache = ((Component)e.getSource()).eventCache;
+        EventQueueItem[] cache = ((Component) e.getSource()).eventCache;
         if (cache == null) {
             return false;
         }
         int index = eventToCacheIndex(e);
 
         if (index != -1 && cache[index] != null) {
-            PaintEvent merged = mergePaintEvents(e, (PaintEvent)cache[index].event);
+            PaintEvent merged = mergePaintEvents(e, (PaintEvent) cache[index].event);
             if (merged != null) {
                 cache[index].event = merged;
                 return true;
@@ -376,7 +378,7 @@ public class EventQueue {
             // SunDropTargetEvent should not coalesce with MouseEvent
             return false;
         }
-        EventQueueItem[] cache = ((Component)e.getSource()).eventCache;
+        EventQueueItem[] cache = ((Component) e.getSource()).eventCache;
         if (cache == null) {
             return false;
         }
@@ -389,13 +391,13 @@ public class EventQueue {
     }
 
     private boolean coalescePeerEvent(PeerEvent e) {
-        EventQueueItem[] cache = ((Component)e.getSource()).eventCache;
+        EventQueueItem[] cache = ((Component) e.getSource()).eventCache;
         if (cache == null) {
             return false;
         }
         int index = eventToCacheIndex(e);
         if (index != -1 && cache[index] != null) {
-            e = e.coalesceEvents((PeerEvent)cache[index].event);
+            e = e.coalesceEvents((PeerEvent) cache[index].event);
             if (e != null) {
                 cache[index].event = e;
                 return true;
@@ -415,14 +417,13 @@ public class EventQueue {
      */
     private boolean coalesceOtherEvent(AWTEvent e, int priority) {
         int id = e.getID();
-        Component source = (Component)e.getSource();
+        Component source = (Component) e.getSource();
         for (EventQueueItem entry = queues[priority].head;
-            entry != null; entry = entry.next)
-        {
+             entry != null; entry = entry.next) {
             // Give Component.coalesceEvents a chance
             if (entry.event.getSource() == source && entry.event.getID() == id) {
                 AWTEvent coalescedEvent = source.coalesceEvents(
-                    entry.event, e);
+                        entry.event, e);
                 if (coalescedEvent != null) {
                     entry.event = coalescedEvent;
                     return true;
@@ -437,31 +438,30 @@ public class EventQueue {
             return false;
         }
         if (e instanceof PeerEvent) {
-            return coalescePeerEvent((PeerEvent)e);
+            return coalescePeerEvent((PeerEvent) e);
         }
         // The worst case
-        if (((Component)e.getSource()).isCoalescingEnabled()
-            && coalesceOtherEvent(e, priority))
-        {
+        if (((Component) e.getSource()).isCoalescingEnabled()
+                && coalesceOtherEvent(e, priority)) {
             return true;
         }
         if (e instanceof PaintEvent) {
-            return coalescePaintEvent((PaintEvent)e);
+            return coalescePaintEvent((PaintEvent) e);
         }
         if (e instanceof MouseEvent) {
-            return coalesceMouseEvent((MouseEvent)e);
+            return coalesceMouseEvent((MouseEvent) e);
         }
         return false;
     }
 
     private void cacheEQItem(EventQueueItem entry) {
-        if(entry.event instanceof SunDropTargetEvent) {
+        if (entry.event instanceof SunDropTargetEvent) {
             // Do not cache SunDropTargetEvent, it should not coalesce
             return;
         }
         int index = eventToCacheIndex(entry.event);
         if (index != -1 && entry.event.getSource() instanceof Component) {
-            Component source = (Component)entry.event.getSource();
+            Component source = (Component) entry.event.getSource();
             if (source.eventCache == null) {
                 source.eventCache = new EventQueueItem[CACHE_LENGTH];
             }
@@ -472,7 +472,7 @@ public class EventQueue {
     private void uncacheEQItem(EventQueueItem entry) {
         int index = eventToCacheIndex(entry.event);
         if (index != -1 && entry.event.getSource() instanceof Component) {
-            Component source = (Component)entry.event.getSource();
+            Component source = (Component) entry.event.getSource();
             if (source.eventCache == null) {
                 return;
             }
@@ -488,23 +488,24 @@ public class EventQueue {
     private static final int CACHE_LENGTH = 5;
 
     private static int eventToCacheIndex(AWTEvent e) {
-        switch(e.getID()) {
-        case PaintEvent.PAINT:
-            return PAINT;
-        case PaintEvent.UPDATE:
-            return UPDATE;
-        case MouseEvent.MOUSE_MOVED:
-            return MOVE;
-        case MouseEvent.MOUSE_DRAGGED:
-            return DRAG;
-        default:
-            return e instanceof PeerEvent ? PEER : -1;
+        switch (e.getID()) {
+            case PaintEvent.PAINT:
+                return PAINT;
+            case PaintEvent.UPDATE:
+                return UPDATE;
+            case MouseEvent.MOUSE_MOVED:
+                return MOVE;
+            case MouseEvent.MOUSE_DRAGGED:
+                return DRAG;
+            default:
+                return e instanceof PeerEvent ? PEER : -1;
         }
     }
 
     /**
      * Returns whether an event is pending on any of the separate
      * Queues.
+     *
      * @return whether an event is pending on any of the separate Queues
      */
     private boolean noEvents() {
@@ -521,9 +522,9 @@ public class EventQueue {
      * Removes an event from the <code>EventQueue</code> and
      * returns it.  This method will block until an event has
      * been posted by another thread.
+     *
      * @return the next <code>AWTEvent</code>
-     * @exception InterruptedException
-     *            if any thread has interrupted this thread
+     * @throws InterruptedException if any thread has interrupted this thread
      */
     public AWTEvent getNextEvent() throws InterruptedException {
         do {
@@ -544,7 +545,7 @@ public class EventQueue {
             } finally {
                 pushPopLock.unlock();
             }
-        } while(true);
+        } while (true);
     }
 
     /*
@@ -577,8 +578,7 @@ public class EventQueue {
             try {
                 for (int i = 0; i < NUM_PRIORITIES; i++) {
                     for (EventQueueItem entry = queues[i].head, prev = null;
-                         entry != null; prev = entry, entry = entry.next)
-                    {
+                         entry != null; prev = entry, entry = entry.next) {
                         if (entry.event.getID() == id) {
                             if (prev == null) {
                                 queues[i].head = entry.next;
@@ -599,12 +599,13 @@ public class EventQueue {
             } finally {
                 pushPopLock.unlock();
             }
-        } while(true);
+        } while (true);
     }
 
     /**
      * Returns the first event on the <code>EventQueue</code>
      * without removing it.
+     *
      * @return the first event
      */
     public AWTEvent peekEvent() {
@@ -624,9 +625,10 @@ public class EventQueue {
 
     /**
      * Returns the first event with the specified id, if any.
+     *
      * @param id the id of the type of event desired
      * @return the first event of the specified id or <code>null</code>
-     *    if there is no such event
+     * if there is no such event
      */
     public AWTEvent peekEvent(int id) {
         pushPopLock.lock();
@@ -647,7 +649,7 @@ public class EventQueue {
     }
 
     private static final JavaSecurityAccess javaSecurityAccess =
-        SharedSecrets.getJavaSecurityAccess();
+            SharedSecrets.getJavaSecurityAccess();
 
     /**
      * Dispatches an event. The manner in which the event is
@@ -682,10 +684,11 @@ public class EventQueue {
      * </tr>
      * </table>
      * <p> </p>
+     *
      * @param event an instance of <code>java.awt.AWTEvent</code>,
-     *          or a subclass of it
+     *              or a subclass of it
      * @throws NullPointerException if <code>event</code> is <code>null</code>
-     * @since           1.2
+     * @since 1.2
      */
     protected void dispatchEvent(final AWTEvent event) {
         final Object src = event.getSource();
@@ -703,23 +706,23 @@ public class EventQueue {
             javaSecurityAccess.doIntersectionPrivilege(action, stack, eventAcc);
         } else {
             javaSecurityAccess.doIntersectionPrivilege(
-                new PrivilegedAction<Void>() {
-                    public Void run() {
-                        javaSecurityAccess.doIntersectionPrivilege(action, eventAcc);
-                        return null;
-                    }
-                }, stack, srcAcc);
+                    new PrivilegedAction<Void>() {
+                        public Void run() {
+                            javaSecurityAccess.doIntersectionPrivilege(action, eventAcc);
+                            return null;
+                        }
+                    }, stack, srcAcc);
         }
     }
 
     private static AccessControlContext getAccessControlContextFrom(Object src) {
         return src instanceof Component ?
-            ((Component)src).getAccessControlContext() :
-            src instanceof MenuComponent ?
-                ((MenuComponent)src).getAccessControlContext() :
-                src instanceof TrayIcon ?
-                    ((TrayIcon)src).getAccessControlContext() :
-                    null;
+                ((Component) src).getAccessControlContext() :
+                src instanceof MenuComponent ?
+                        ((MenuComponent) src).getAccessControlContext() :
+                        src instanceof TrayIcon ?
+                                ((TrayIcon) src).getAccessControlContext() :
+                                null;
     }
 
     /**
@@ -730,14 +733,14 @@ public class EventQueue {
         if (event instanceof ActiveEvent) {
             // This could become the sole method of dispatching in time.
             setCurrentEventAndMostRecentTimeImpl(event);
-            ((ActiveEvent)event).dispatch();
+            ((ActiveEvent) event).dispatch();
         } else if (src instanceof Component) {
-            ((Component)src).dispatchEvent(event);
+            ((Component) src).dispatchEvent(event);
             event.dispatched();
         } else if (src instanceof MenuComponent) {
-            ((MenuComponent)src).dispatchEvent(event);
+            ((MenuComponent) src).dispatchEvent(event);
         } else if (src instanceof TrayIcon) {
-            ((TrayIcon)src).dispatchEvent(event);
+            ((TrayIcon) src).dispatchEvent(event);
         } else if (src instanceof AWTAutoShutdown) {
             if (noEvents()) {
                 dispatchThread.stopDispatching();
@@ -766,26 +769,26 @@ public class EventQueue {
      * <code>System.currentTimeMillis()</code>) will be returned instead.
      *
      * @return the timestamp of the last <code>InputEvent</code>,
-     *         <code>ActionEvent</code>, or <code>InvocationEvent</code> to be
-     *         dispatched, or <code>System.currentTimeMillis()</code> if this
-     *         method is invoked on a thread other than an event dispatching
-     *         thread
+     * <code>ActionEvent</code>, or <code>InvocationEvent</code> to be
+     * dispatched, or <code>System.currentTimeMillis()</code> if this
+     * method is invoked on a thread other than an event dispatching
+     * thread
      * @see java.awt.event.InputEvent#getWhen
      * @see java.awt.event.ActionEvent#getWhen
      * @see java.awt.event.InvocationEvent#getWhen
      * @see #isDispatchThread
-     *
      * @since 1.4
      */
     public static long getMostRecentEventTime() {
         return Toolkit.getEventQueue().getMostRecentEventTimeImpl();
     }
+
     private long getMostRecentEventTimeImpl() {
         pushPopLock.lock();
         try {
             return (Thread.currentThread() == dispatchThread)
-                ? mostRecentEventTime
-                : System.currentTimeMillis();
+                    ? mostRecentEventTime
+                    : System.currentTimeMillis();
         } finally {
             pushPopLock.unlock();
         }
@@ -812,18 +815,19 @@ public class EventQueue {
      * method is invoked from another thread, null will be returned.
      *
      * @return the event currently being dispatched, or null if this method is
-     *         invoked on a thread other than an event dispatching thread
+     * invoked on a thread other than an event dispatching thread
      * @since 1.4
      */
     public static AWTEvent getCurrentEvent() {
         return Toolkit.getEventQueue().getCurrentEventImpl();
     }
+
     private AWTEvent getCurrentEventImpl() {
         pushPopLock.lock();
         try {
-                return (Thread.currentThread() == dispatchThread)
-                ? ((AWTEvent)currentEvent.get())
-                : null;
+            return (Thread.currentThread() == dispatchThread)
+                    ? ((AWTEvent) currentEvent.get())
+                    : null;
         } finally {
             pushPopLock.unlock();
         }
@@ -835,10 +839,10 @@ public class EventQueue {
      * for processing by it.
      *
      * @param newEventQueue an <code>EventQueue</code>
-     *          (or subclass thereof) instance to be use
-     * @see      java.awt.EventQueue#pop
+     *                      (or subclass thereof) instance to be use
      * @throws NullPointerException if <code>newEventQueue</code> is <code>null</code>
-     * @since           1.2
+     * @see java.awt.EventQueue#pop
+     * @since 1.2
      */
     public void push(EventQueue newEventQueue) {
         if (eventLog.isLoggable(PlatformLogger.FINE)) {
@@ -853,8 +857,7 @@ public class EventQueue {
             }
 
             if ((topQueue.dispatchThread != null) &&
-                (topQueue.dispatchThread.getEventQueue() == this))
-            {
+                    (topQueue.dispatchThread.getEventQueue() == this)) {
                 newEventQueue.dispatchThread = topQueue.dispatchThread;
                 topQueue.dispatchThread.setEventQueue(newEventQueue);
             }
@@ -898,10 +901,10 @@ public class EventQueue {
      * Warning: To avoid deadlock, do not declare this method
      * synchronized in a subclass.
      *
-     * @exception EmptyStackException if no previous push was made
-     *  on this <code>EventQueue</code>
-     * @see      java.awt.EventQueue#push
-     * @since           1.2
+     * @throws EmptyStackException if no previous push was made
+     *                             on this <code>EventQueue</code>
+     * @see java.awt.EventQueue#push
+     * @since 1.2
      */
     protected void pop() throws EmptyStackException {
         if (eventLog.isLoggable(PlatformLogger.FINE)) {
@@ -934,8 +937,7 @@ public class EventQueue {
             }
 
             if ((topQueue.dispatchThread != null) &&
-                (topQueue.dispatchThread.getEventQueue() == this))
-            {
+                    (topQueue.dispatchThread.getEventQueue() == this)) {
                 prevQueue.dispatchThread = topQueue.dispatchThread;
                 topQueue.dispatchThread.setEventQueue(prevQueue);
             }
@@ -961,12 +963,10 @@ public class EventQueue {
      * event loop and dispatch the events from this queue.
      *
      * @return secondaryLoop A new secondary loop object, which can
-     *                       be used to launch a new nested event
-     *                       loop and dispatch events from this queue
-     *
+     * be used to launch a new nested event
+     * loop and dispatch events from this queue
      * @see SecondaryLoop#enter
      * @see SecondaryLoop#exit
-     *
      * @since 1.7
      */
     public SecondaryLoop createSecondaryLoop() {
@@ -1004,10 +1004,10 @@ public class EventQueue {
      * @return true if running in
      * {@link Toolkit#getSystemEventQueue the current AWT EventQueue}'s
      * dispatch thread
-     * @see             #invokeLater
-     * @see             #invokeAndWait
-     * @see             Toolkit#getSystemEventQueue
-     * @since           1.2
+     * @see #invokeLater
+     * @see #invokeAndWait
+     * @see Toolkit#getSystemEventQueue
+     * @since 1.2
      */
     public static boolean isDispatchThread() {
         EventQueue eq = Toolkit.getEventQueue();
@@ -1034,18 +1034,18 @@ public class EventQueue {
         try {
             if (dispatchThread == null && !threadGroup.isDestroyed() && !appContext.isDisposed()) {
                 dispatchThread = AccessController.doPrivileged(
-                    new PrivilegedAction<EventDispatchThread>() {
-                        public EventDispatchThread run() {
-                            EventDispatchThread t =
-                                new EventDispatchThread(threadGroup,
-                                                        name,
-                                                        EventQueue.this);
-                            t.setContextClassLoader(classLoader);
-                            t.setPriority(Thread.NORM_PRIORITY + 1);
-                            t.setDaemon(false);
-                            return t;
+                        new PrivilegedAction<EventDispatchThread>() {
+                            public EventDispatchThread run() {
+                                EventDispatchThread t =
+                                        new EventDispatchThread(threadGroup,
+                                                name,
+                                                EventQueue.this);
+                                t.setContextClassLoader(classLoader);
+                                t.setPriority(Thread.NORM_PRIORITY + 1);
+                                t.setDaemon(false);
+                                return t;
+                            }
                         }
-                    }
                 );
                 AWTAutoShutdown.getInstance().notifyThreadBusy(dispatchThread);
                 dispatchThread.start();
@@ -1125,19 +1125,18 @@ public class EventQueue {
                 EventQueueItem prev = null;
                 while (entry != null) {
                     if ((entry.event.getSource() == source)
-                        && (removeAllEvents
-                            || ! (entry.event instanceof SequencedEvent
-                                  || entry.event instanceof SentEvent
-                                  || entry.event instanceof FocusEvent
-                                  || entry.event instanceof WindowEvent
-                                  || entry.event instanceof KeyEvent
-                                  || entry.event instanceof InputMethodEvent)))
-                    {
+                            && (removeAllEvents
+                            || !(entry.event instanceof SequencedEvent
+                            || entry.event instanceof SentEvent
+                            || entry.event instanceof FocusEvent
+                            || entry.event instanceof WindowEvent
+                            || entry.event instanceof KeyEvent
+                            || entry.event instanceof InputMethodEvent))) {
                         if (entry.event instanceof SequencedEvent) {
-                            ((SequencedEvent)entry.event).dispose();
+                            ((SequencedEvent) entry.event).dispose();
                         }
                         if (entry.event instanceof SentEvent) {
-                            ((SentEvent)entry.event).dispose();
+                            ((SentEvent) entry.event).dispose();
                         }
                         if (prev == null) {
                             queues[i].head = entry.next;
@@ -1160,6 +1159,7 @@ public class EventQueue {
     static void setCurrentEventAndMostRecentTime(AWTEvent e) {
         Toolkit.getEventQueue().setCurrentEventAndMostRecentTimeImpl(e);
     }
+
     private void setCurrentEventAndMostRecentTimeImpl(AWTEvent e) {
         pushPopLock.lock();
         try {
@@ -1179,16 +1179,16 @@ public class EventQueue {
             // will no longer be an issue.
             long mostRecentEventTime2 = Long.MIN_VALUE;
             if (e instanceof InputEvent) {
-                InputEvent ie = (InputEvent)e;
+                InputEvent ie = (InputEvent) e;
                 mostRecentEventTime2 = ie.getWhen();
             } else if (e instanceof InputMethodEvent) {
-                InputMethodEvent ime = (InputMethodEvent)e;
+                InputMethodEvent ime = (InputMethodEvent) e;
                 mostRecentEventTime2 = ime.getWhen();
             } else if (e instanceof ActionEvent) {
-                ActionEvent ae = (ActionEvent)e;
+                ActionEvent ae = (ActionEvent) e;
                 mostRecentEventTime2 = ae.getWhen();
             } else if (e instanceof InvocationEvent) {
-                InvocationEvent ie = (InvocationEvent)e;
+                InvocationEvent ie = (InvocationEvent) e;
                 mostRecentEventTime2 = ie.getWhen();
             }
             mostRecentEventTime = Math.max(mostRecentEventTime, mostRecentEventTime2);
@@ -1203,19 +1203,19 @@ public class EventQueue {
      * {@link Toolkit#getSystemEventQueue the system EventQueue}.
      * This will happen after all pending events are processed.
      *
-     * @param runnable  the <code>Runnable</code> whose <code>run</code>
-     *                  method should be executed
-     *                  asynchronously in the
-     *                  {@link #isDispatchThread event dispatch thread}
-     *                  of {@link Toolkit#getSystemEventQueue the system EventQueue}
-     * @see             #invokeAndWait
-     * @see             Toolkit#getSystemEventQueue
-     * @see             #isDispatchThread
-     * @since           1.2
+     * @param runnable the <code>Runnable</code> whose <code>run</code>
+     *                 method should be executed
+     *                 asynchronously in the
+     *                 {@link #isDispatchThread event dispatch thread}
+     *                 of {@link Toolkit#getSystemEventQueue the system EventQueue}
+     * @see #invokeAndWait
+     * @see Toolkit#getSystemEventQueue
+     * @see #isDispatchThread
+     * @since 1.2
      */
     public static void invokeLater(Runnable runnable) {
         Toolkit.getEventQueue().postEvent(
-            new InvocationEvent(Toolkit.getDefaultToolkit(), runnable));
+                new InvocationEvent(Toolkit.getDefaultToolkit(), runnable));
     }
 
     /**
@@ -1227,38 +1227,37 @@ public class EventQueue {
      * will throw an Error if called from the
      * {@link #isDispatchThread event dispatcher thread}.
      *
-     * @param runnable  the <code>Runnable</code> whose <code>run</code>
-     *                  method should be executed
-     *                  synchronously in the
-     *                  {@link #isDispatchThread event dispatch thread}
-     *                  of {@link Toolkit#getSystemEventQueue the system EventQueue}
-     * @exception       InterruptedException  if any thread has
-     *                  interrupted this thread
-     * @exception       InvocationTargetException  if an throwable is thrown
-     *                  when running <code>runnable</code>
-     * @see             #invokeLater
-     * @see             Toolkit#getSystemEventQueue
-     * @see             #isDispatchThread
-     * @since           1.2
+     * @param runnable the <code>Runnable</code> whose <code>run</code>
+     *                 method should be executed
+     *                 synchronously in the
+     *                 {@link #isDispatchThread event dispatch thread}
+     *                 of {@link Toolkit#getSystemEventQueue the system EventQueue}
+     * @throws InterruptedException      if any thread has
+     *                                   interrupted this thread
+     * @throws InvocationTargetException if an throwable is thrown
+     *                                   when running <code>runnable</code>
+     * @see #invokeLater
+     * @see Toolkit#getSystemEventQueue
+     * @see #isDispatchThread
+     * @since 1.2
      */
     public static void invokeAndWait(Runnable runnable)
-        throws InterruptedException, InvocationTargetException
-    {
+            throws InterruptedException, InvocationTargetException {
         invokeAndWait(Toolkit.getDefaultToolkit(), runnable);
     }
 
     static void invokeAndWait(Object source, Runnable runnable)
-        throws InterruptedException, InvocationTargetException
-    {
+            throws InterruptedException, InvocationTargetException {
         if (EventQueue.isDispatchThread()) {
             throw new Error("Cannot call invokeAndWait from the event dispatcher thread");
         }
 
-        class AWTInvocationLock {}
+        class AWTInvocationLock {
+        }
         Object lock = new AWTInvocationLock();
 
         InvocationEvent event =
-            new InvocationEvent(source, runnable, lock, true);
+                new InvocationEvent(source, runnable, lock, true);
 
         synchronized (lock) {
             Toolkit.getEventQueue().postEvent(event);

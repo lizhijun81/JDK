@@ -34,13 +34,13 @@ package org.omg.CORBA;
  * It contains a minor code, which gives more detailed information about
  * what caused the exception, and a completion status. It may also contain
  * a string describing the exception.
- * <P>
+ * <p>
  * See the section <A href="../../../../technotes/guides/idl/jidlExceptions.html#minorcodemeanings">meaning
  * of minor codes</A> to see the minor codes for this exception.
  *
  * @see <A href="../../../../technotes/guides/idl/jidlExceptions.html">documentation on
  * Java&nbsp;IDL exceptions</A>
- * @since       JDK1.2
+ * @since JDK1.2
  */
 
 public final class DATA_CONVERSION extends SystemException {
@@ -55,6 +55,7 @@ public final class DATA_CONVERSION extends SystemException {
 
     /**
      * Constructs a <code>DATA_CONVERSION</code> exception with the specified detail.
+     *
      * @param s the String containing a detail message
      */
     public DATA_CONVERSION(String s) {
@@ -64,7 +65,8 @@ public final class DATA_CONVERSION extends SystemException {
     /**
      * Constructs a <code>DATA_CONVERSION</code> exception with the specified
      * minor code and completion status.
-     * @param minor the minor code
+     *
+     * @param minor     the minor code
      * @param completed the completion status
      */
     public DATA_CONVERSION(int minor, CompletionStatus completed) {
@@ -75,8 +77,9 @@ public final class DATA_CONVERSION extends SystemException {
      * Constructs a <code>DATA_CONVERSION</code> exception with the specified detail
      * message, minor code, and completion status.
      * A detail message is a String that describes this particular exception.
-     * @param s the String containing a detail message
-     * @param minor the minor code
+     *
+     * @param s         the String containing a detail message
+     * @param minor     the minor code
      * @param completed the completion status
      */
     public DATA_CONVERSION(String s, int minor, CompletionStatus completed) {

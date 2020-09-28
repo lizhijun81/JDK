@@ -39,7 +39,7 @@ import javax.imageio.stream.ImageInputStream;
  * unlikely case where a user defines their own subclass of one of those
  * streams, we need some way to get back to the behavior of
  * ImageInputStreamImpl, which will call close() as part of finalization.
- *
+ * <p>
  * Typically an Image{Input,Output}Stream will construct an instance of
  * StreamFinalizer in its constructor if it detects that it has been
  * subclassed by the user.  The ImageInputStream instance will hold a
@@ -47,7 +47,7 @@ import javax.imageio.stream.ImageInputStream;
  * reference back to the ImageInputStream from which it was created.  When
  * both are no longer reachable, the StreamFinalizer.finalize() method will
  * be called, which will take care of closing down the ImageInputStream.
- *
+ * <p>
  * Clearly this is a bit of a hack, but it will likely only be used in the
  * rarest of circumstances: when a user has subclassed one of the public
  * stream classes.  (It should be no worse than the old days when the public

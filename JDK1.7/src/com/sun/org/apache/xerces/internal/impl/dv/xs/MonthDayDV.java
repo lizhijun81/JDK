@@ -29,12 +29,10 @@ import com.sun.org.apache.xerces.internal.impl.dv.ValidationContext;
 /**
  * Validator for &lt;gMonthDay&gt; datatype (W3C Schema Datatypes)
  *
- * @xerces.internal
- *
  * @author Elena Litani
  * @author Gopal Sharma, SUN Microsystem Inc.
- *
  * @version $Id: MonthDayDV.java,v 1.7 2010-11-01 04:39:47 joehw Exp $
+ * @xerces.internal
  */
 
 public class MonthDayDV extends AbstractDateTimeDV {
@@ -45,13 +43,13 @@ public class MonthDayDV extends AbstractDateTimeDV {
     /**
      * Convert a string to a compiled form
      *
-     * @param  content The lexical representation of gMonthDay
+     * @param content The lexical representation of gMonthDay
      * @return a valid and normalized gMonthDay object
      */
     public Object getActualValue(String content, ValidationContext context) throws InvalidDatatypeValueException {
-        try{
+        try {
             return parse(content);
-        } catch(Exception ex){
+        } catch (Exception ex) {
             throw new InvalidDatatypeValueException("cvc-datatype-valid.1.2.1", new Object[]{content, "gMonthDay"});
         }
     }
@@ -59,35 +57,34 @@ public class MonthDayDV extends AbstractDateTimeDV {
     /**
      * Parses, validates and computes normalized version of gMonthDay object
      *
-     * @param str    The lexical representation of gMonthDay object --MM-DD
-     *               with possible time zone Z or (-),(+)hh:mm
+     * @param str The lexical representation of gMonthDay object --MM-DD
+     *            with possible time zone Z or (-),(+)hh:mm
      * @return normalized date representation
-     * @exception SchemaDateTimeException Invalid lexical representation
+     * @throws SchemaDateTimeException Invalid lexical representation
      */
-    protected DateTimeData parse(String str) throws SchemaDateTimeException{
+    protected DateTimeData parse(String str) throws SchemaDateTimeException {
         DateTimeData date = new DateTimeData(str, this);
         int len = str.length();
 
         //initialize
-        date.year=YEAR;
+        date.year = YEAR;
 
-        if (str.charAt(0)!='-' || str.charAt(1)!='-') {
-            throw new SchemaDateTimeException("Invalid format for gMonthDay: "+str);
+        if (str.charAt(0) != '-' || str.charAt(1) != '-') {
+            throw new SchemaDateTimeException("Invalid format for gMonthDay: " + str);
         }
-        date.month=parseInt(str, 2, 4);
-        int start=4;
+        date.month = parseInt(str, 2, 4);
+        int start = 4;
 
-        if (str.charAt(start++)!='-') {
+        if (str.charAt(start++) != '-') {
             throw new SchemaDateTimeException("Invalid format for gMonthDay: " + str);
         }
 
-        date.day=parseInt(str, start, start+2);
+        date.day = parseInt(str, start, start + 2);
 
-        if ( MONTHDAY_SIZE<len ) {
+        if (MONTHDAY_SIZE < len) {
             if (!isNextCharUTCSign(str, MONTHDAY_SIZE, len)) {
-                throw new SchemaDateTimeException ("Error in month parsing:" +str);
-            }
-            else {
+                throw new SchemaDateTimeException("Error in month parsing:" + str);
+            } else {
                 getTimeZone(str, date, MONTHDAY_SIZE, len);
             }
         }
@@ -98,7 +95,7 @@ public class MonthDayDV extends AbstractDateTimeDV {
         //save unnormalized values
         saveUnnormalized(date);
 
-        if ( date.utc!=0 && date.utc!='Z' ) {
+        if (date.utc != 0 && date.utc != 'Z') {
             normalize(date);
         }
         date.position = 1;
@@ -108,7 +105,7 @@ public class MonthDayDV extends AbstractDateTimeDV {
     /**
      * Converts gMonthDay object representation to String
      *
-     * @param date   gmonthDay object
+     * @param date gmonthDay object
      * @return lexical representation of month: --MM-DD with an optional time zone sign
      */
     protected String dateToString(DateTimeData date) {
@@ -118,7 +115,7 @@ public class MonthDayDV extends AbstractDateTimeDV {
         append(message, date.month, 2);
         message.append('-');
         append(message, date.day, 2);
-        append(message, (char)date.utc, 0);
+        append(message, (char) date.utc, 0);
         return message.toString();
     }
 

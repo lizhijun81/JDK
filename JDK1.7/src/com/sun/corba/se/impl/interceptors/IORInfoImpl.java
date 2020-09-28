@@ -25,7 +25,7 @@
 
 package com.sun.corba.se.impl.interceptors;
 
-import java.util.Iterator ;
+import java.util.Iterator;
 
 import org.omg.IOP.TaggedComponent;
 
@@ -42,7 +42,7 @@ import org.omg.PortableInterceptor.IORInfo;
 import org.omg.PortableInterceptor.ObjectReferenceTemplate;
 import org.omg.PortableInterceptor.ObjectReferenceFactory;
 
-import com.sun.corba.se.spi.orb.ORB ;
+import com.sun.corba.se.spi.orb.ORB;
 
 import com.sun.corba.se.spi.oa.ObjectAdapter;
 
@@ -51,59 +51,58 @@ import com.sun.corba.se.spi.legacy.interceptor.UnknownType;
 
 import com.sun.corba.se.spi.ior.IORTemplate;
 import com.sun.corba.se.spi.ior.TaggedProfileTemplate;
-import com.sun.corba.se.spi.ior.TaggedComponentFactoryFinder ;
+import com.sun.corba.se.spi.ior.TaggedComponentFactoryFinder;
 
-import com.sun.corba.se.spi.logging.CORBALogDomains ;
+import com.sun.corba.se.spi.logging.CORBALogDomains;
 
-import com.sun.corba.se.impl.logging.InterceptorsSystemException ;
-import com.sun.corba.se.impl.logging.OMGSystemException ;
-import com.sun.corba.se.impl.logging.ORBUtilSystemException ;
+import com.sun.corba.se.impl.logging.InterceptorsSystemException;
+import com.sun.corba.se.impl.logging.OMGSystemException;
+import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 
 /**
  * IORInfoImpl is the implementation of the IORInfo class, as described
  * in orbos/99-12-02, section 7.
  */
 public final class IORInfoImpl
-    extends LocalObject
-    implements IORInfo, IORInfoExt
-{
+        extends LocalObject
+        implements IORInfo, IORInfoExt {
     // State values that determine which methods are allowed.
     // get_effective_policy, manager_id, and adapter_state are valid unless STATE_DONE
 
     // add_component, and add_component_to_profile are valid.
-    private static final int STATE_INITIAL = 0 ;
+    private static final int STATE_INITIAL = 0;
 
     // adapter_template, and R/W to current_factory are valid
-    private static final int STATE_ESTABLISHED = 1 ;
+    private static final int STATE_ESTABLISHED = 1;
 
     // No methods are valid in this state
-    private static final int STATE_DONE = 2 ;
+    private static final int STATE_DONE = 2;
 
     // The current state of this object
-    private int state = STATE_INITIAL ;
+    private int state = STATE_INITIAL;
 
     // The ObjectAdapter associated with this IORInfo object.
     private ObjectAdapter adapter;
 
-    private ORB orb ;
+    private ORB orb;
 
-    private ORBUtilSystemException orbutilWrapper ;
-    private InterceptorsSystemException wrapper ;
-    private OMGSystemException omgWrapper ;
+    private ORBUtilSystemException orbutilWrapper;
+    private InterceptorsSystemException wrapper;
+    private OMGSystemException omgWrapper;
 
     /**
      * Creates a new IORInfo implementation.  This info object will establish
      * tagged components with the template for the provided IOR Template.
      */
-    IORInfoImpl( ObjectAdapter adapter ) {
-        this.orb = adapter.getORB() ;
+    IORInfoImpl(ObjectAdapter adapter) {
+        this.orb = adapter.getORB();
 
-        orbutilWrapper = ORBUtilSystemException.get( orb,
-            CORBALogDomains.RPC_PROTOCOL ) ;
-        wrapper = InterceptorsSystemException.get( orb,
-            CORBALogDomains.RPC_PROTOCOL ) ;
-        omgWrapper = OMGSystemException.get( orb,
-            CORBALogDomains.RPC_PROTOCOL ) ;
+        orbutilWrapper = ORBUtilSystemException.get(orb,
+                CORBALogDomains.RPC_PROTOCOL);
+        wrapper = InterceptorsSystemException.get(orb,
+                CORBALogDomains.RPC_PROTOCOL);
+        omgWrapper = OMGSystemException.get(orb,
+                CORBALogDomains.RPC_PROTOCOL);
 
         this.adapter = adapter;
     }
@@ -120,15 +119,15 @@ public final class IORInfoImpl
      * operation will raise INV_POLICY with a standard minor code of 2.
      *
      * @param type The CORBA::PolicyType specifying the type of policy to
-     *   return.
+     *             return.
      * @return The effective CORBA::Policy object of the requested type.
-     *   If the given policy type is known, but no policy of that tpye is
-     *   in effect, then this operation will return a nil object reference.
+     * If the given policy type is known, but no policy of that tpye is
+     * in effect, then this operation will return a nil object reference.
      */
-    public Policy get_effective_policy (int type) {
-        checkState( STATE_INITIAL, STATE_ESTABLISHED ) ;
+    public Policy get_effective_policy(int type) {
+        checkState(STATE_INITIAL, STATE_ESTABLISHED);
 
-        return adapter.getEffectivePolicy( type );
+        return adapter.getEffectivePolicy(type);
     }
 
     /**
@@ -141,12 +140,12 @@ public final class IORInfoImpl
      *
      * @param tagged_component The IOP::TaggedComponent to add
      */
-    public void add_ior_component (TaggedComponent tagged_component) {
-        checkState( STATE_INITIAL ) ;
+    public void add_ior_component(TaggedComponent tagged_component) {
+        checkState(STATE_INITIAL);
 
-        if( tagged_component == null ) nullParam();
-        addIORComponentToProfileInternal( tagged_component,
-                                          adapter.getIORTemplate().iterator());
+        if (tagged_component == null) nullParam();
+        addIORComponentToProfileInternal(tagged_component,
+                adapter.getIORTemplate().iterator());
     }
 
     /**
@@ -162,62 +161,56 @@ public final class IORInfoImpl
      * with a minor code of TBD_BP + 3.
      *
      * @param tagged_component The IOP::TaggedComponent to add.
-     * @param profile_id The IOP::ProfileId tof the profile to which this
-     *     component will be added.
+     * @param profile_id       The IOP::ProfileId tof the profile to which this
+     *                         component will be added.
      */
-    public void add_ior_component_to_profile (
-        TaggedComponent tagged_component, int profile_id )
-    {
-        checkState( STATE_INITIAL ) ;
+    public void add_ior_component_to_profile(
+            TaggedComponent tagged_component, int profile_id) {
+        checkState(STATE_INITIAL);
 
-        if( tagged_component == null ) nullParam();
+        if (tagged_component == null) nullParam();
         addIORComponentToProfileInternal(
-            tagged_component, adapter.getIORTemplate().iteratorById(
-            profile_id ) );
+                tagged_component, adapter.getIORTemplate().iteratorById(
+                        profile_id));
     }
 
     /**
      * @param type The type of the server port
-     *     (see connection.ORBSocketFactory for discussion).
+     *             (see connection.ORBSocketFactory for discussion).
      * @return The listen port number for that type.
      * @throws UnknownType if no port of the given type is found.
      */
     public int getServerPort(String type)
-        throws UnknownType
-    {
-        checkState( STATE_INITIAL, STATE_ESTABLISHED ) ;
+            throws UnknownType {
+        checkState(STATE_INITIAL, STATE_ESTABLISHED);
 
         int port =
-            orb.getLegacyServerSocketManager()
-                .legacyGetTransientOrPersistentServerPort(type);
+                orb.getLegacyServerSocketManager()
+                        .legacyGetTransientOrPersistentServerPort(type);
         if (port == -1) {
             throw new UnknownType();
         }
         return port;
     }
 
-    public ObjectAdapter getObjectAdapter()
-    {
+    public ObjectAdapter getObjectAdapter() {
         return adapter;
     }
 
-    public int manager_id()
-    {
-        checkState( STATE_INITIAL, STATE_ESTABLISHED) ;
+    public int manager_id() {
+        checkState(STATE_INITIAL, STATE_ESTABLISHED);
 
-        return adapter.getManagerId() ;
+        return adapter.getManagerId();
     }
 
-    public short state()
-    {
-        checkState( STATE_INITIAL, STATE_ESTABLISHED) ;
+    public short state() {
+        checkState(STATE_INITIAL, STATE_ESTABLISHED);
 
-        return adapter.getState() ;
+        return adapter.getState();
     }
 
-    public ObjectReferenceTemplate adapter_template()
-    {
-        checkState( STATE_ESTABLISHED) ;
+    public ObjectReferenceTemplate adapter_template() {
+        checkState(STATE_ESTABLISHED);
 
         // At this point, the iortemp must contain only a single
         // IIOPProfileTemplate.  This is a restriction of our
@@ -231,21 +224,19 @@ public final class IORInfoImpl
         // extracting the single IIOPProfileTemplate to create
         // an ObjectReferenceTemplate here.
 
-        return adapter.getAdapterTemplate() ;
+        return adapter.getAdapterTemplate();
     }
 
-    public ObjectReferenceFactory current_factory()
-    {
-        checkState( STATE_ESTABLISHED) ;
+    public ObjectReferenceFactory current_factory() {
+        checkState(STATE_ESTABLISHED);
 
-        return adapter.getCurrentFactory() ;
+        return adapter.getCurrentFactory();
     }
 
-    public void current_factory( ObjectReferenceFactory factory )
-    {
-        checkState( STATE_ESTABLISHED) ;
+    public void current_factory(ObjectReferenceFactory factory) {
+        checkState(STATE_ESTABLISHED);
 
-        adapter.setCurrentFactory( factory ) ;
+        adapter.setCurrentFactory(factory);
     }
 
     /**
@@ -253,28 +244,27 @@ public final class IORInfoImpl
      * present in the iterator.
      */
     private void addIORComponentToProfileInternal(
-        TaggedComponent tagged_component, Iterator iterator )
-    {
+            TaggedComponent tagged_component, Iterator iterator) {
         // Convert the given IOP::TaggedComponent into the appropriate
         // type for the TaggedProfileTemplate
         TaggedComponentFactoryFinder finder =
-            orb.getTaggedComponentFactoryFinder();
-        Object newTaggedComponent = finder.create( orb, tagged_component );
+                orb.getTaggedComponentFactoryFinder();
+        Object newTaggedComponent = finder.create(orb, tagged_component);
 
         // Iterate through TaggedProfileTemplates and add the given tagged
         // component to the appropriate one(s).
         boolean found = false;
-        while( iterator.hasNext() ) {
+        while (iterator.hasNext()) {
             found = true;
             TaggedProfileTemplate taggedProfileTemplate =
-                (TaggedProfileTemplate)iterator.next();
-            taggedProfileTemplate.add( newTaggedComponent );
+                    (TaggedProfileTemplate) iterator.next();
+            taggedProfileTemplate.add(newTaggedComponent);
         }
 
         // If no profile was found with the given id, throw a BAD_PARAM:
         // (See orbos/00-08-06, section 21.5.3.3.)
-        if( !found ) {
-            throw omgWrapper.invalidProfileId() ;
+        if (!found) {
+            throw omgWrapper.invalidProfileId();
         }
     }
 
@@ -282,37 +272,32 @@ public final class IORInfoImpl
      * Called when an invalid null parameter was passed.  Throws a
      * BAD_PARAM with a minor code of 1
      */
-    private void nullParam()
-    {
-        throw orbutilWrapper.nullParam() ;
+    private void nullParam() {
+        throw orbutilWrapper.nullParam();
     }
 
     // REVISIT: add minor codes!
 
-    private void checkState( int expectedState )
-    {
+    private void checkState(int expectedState) {
         if (expectedState != state)
-            throw wrapper.badState1( new Integer(expectedState), new Integer(state) ) ;
+            throw wrapper.badState1(new Integer(expectedState), new Integer(state));
     }
 
-    private void checkState( int expectedState1, int expectedState2 )
-    {
+    private void checkState(int expectedState1, int expectedState2) {
         if ((expectedState1 != state) && (expectedState2 != state))
-            throw wrapper.badState2( new Integer(expectedState1),
-                new Integer(expectedState2), new Integer(state) ) ;
+            throw wrapper.badState2(new Integer(expectedState1),
+                    new Integer(expectedState2), new Integer(state));
     }
 
-    void makeStateEstablished()
-    {
-        checkState( STATE_INITIAL ) ;
+    void makeStateEstablished() {
+        checkState(STATE_INITIAL);
 
-        state = STATE_ESTABLISHED ;
+        state = STATE_ESTABLISHED;
     }
 
-    void makeStateDone()
-    {
-        checkState( STATE_ESTABLISHED ) ;
+    void makeStateDone() {
+        checkState(STATE_ESTABLISHED);
 
-        state = STATE_DONE ;
+        state = STATE_DONE;
     }
 }

@@ -34,6 +34,7 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.metadata.IIOMetadataFormat;
 import javax.imageio.metadata.IIOMetadataFormatImpl;
+
 import org.w3c.dom.Node;
 import com.sun.imageio.plugins.common.I18N;
 
@@ -42,7 +43,7 @@ import com.sun.imageio.plugins.common.ImageUtil;
 public class WBMPMetadata extends IIOMetadata {
 
     static final String nativeMetadataFormatName =
-        "javax_imageio_wbmp_1.0";
+            "javax_imageio_wbmp_1.0";
 
     public int wbmpType;
 
@@ -51,9 +52,9 @@ public class WBMPMetadata extends IIOMetadata {
 
     public WBMPMetadata() {
         super(true,
-              nativeMetadataFormatName,
-              "com.sun.imageio.plugins.wbmp.WBMPMetadataFormat",
-              null, null);
+                nativeMetadataFormatName,
+                "com.sun.imageio.plugins.wbmp.WBMPMetadataFormat",
+                null, null);
     }
 
     public boolean isReadOnly() {
@@ -64,7 +65,7 @@ public class WBMPMetadata extends IIOMetadata {
         if (formatName.equals(nativeMetadataFormatName)) {
             return getNativeTree();
         } else if (formatName.equals
-                   (IIOMetadataFormatImpl.standardMetadataFormatName)) {
+                (IIOMetadataFormatImpl.standardMetadataFormatName)) {
             return getStandardTree();
         } else {
             throw new IllegalArgumentException(I18N.getString("WBMPMetadata0"));
@@ -73,7 +74,7 @@ public class WBMPMetadata extends IIOMetadata {
 
     private Node getNativeTree() {
         IIOMetadataNode root =
-            new IIOMetadataNode(nativeMetadataFormatName);
+                new IIOMetadataNode(nativeMetadataFormatName);
 
         addChildNode(root, "WBMPType", new Integer(wbmpType));
         addChildNode(root, "Width", new Integer(width));

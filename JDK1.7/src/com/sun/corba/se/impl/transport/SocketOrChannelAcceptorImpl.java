@@ -49,10 +49,10 @@ import com.sun.corba.se.pept.transport.Selector;
 import com.sun.corba.se.spi.extension.RequestPartitioningPolicy;
 import com.sun.corba.se.spi.ior.IORTemplate;
 import com.sun.corba.se.spi.ior.TaggedProfileTemplate;
-import com.sun.corba.se.spi.ior.iiop.IIOPAddress ;
+import com.sun.corba.se.spi.ior.iiop.IIOPAddress;
 import com.sun.corba.se.spi.ior.iiop.IIOPFactories;
-import com.sun.corba.se.spi.ior.iiop.IIOPProfileTemplate ;
-import com.sun.corba.se.spi.ior.iiop.GIOPVersion ;
+import com.sun.corba.se.spi.ior.iiop.IIOPProfileTemplate;
+import com.sun.corba.se.spi.ior.iiop.GIOPVersion;
 import com.sun.corba.se.spi.ior.iiop.AlternateIIOPAddressComponent;
 import com.sun.corba.se.spi.logging.CORBALogDomains;
 import com.sun.corba.se.spi.orb.ORB;
@@ -78,9 +78,9 @@ import com.sun.corba.se.spi.legacy.connection.LegacyServerSocketEndPointInfo;
  * @author Harold Carr
  */
 public class SocketOrChannelAcceptorImpl
-    extends
+        extends
         EventHandlerBase
-    implements
+        implements
         CorbaAcceptor,
         SocketOrChannelAcceptor,
         Work,
@@ -94,7 +94,7 @@ public class SocketOrChannelAcceptorImpl
     protected int port;
     protected long enqueueTime;
     protected boolean initialized;
-    protected ORBUtilSystemException wrapper ;
+    protected ORBUtilSystemException wrapper;
     protected InboundConnectionCache connectionCache;
 
     // BEGIN Legacy
@@ -104,11 +104,10 @@ public class SocketOrChannelAcceptorImpl
     protected int locatorPort;
     // END Legacy
 
-    public SocketOrChannelAcceptorImpl(ORB orb)
-    {
+    public SocketOrChannelAcceptorImpl(ORB orb) {
         this.orb = orb;
-        wrapper = ORBUtilSystemException.get( orb,
-            CORBALogDomains.RPC_TRANSPORT ) ;
+        wrapper = ORBUtilSystemException.get(orb,
+                CORBALogDomains.RPC_TRANSPORT);
 
         setWork(this);
         initialized = false;
@@ -120,16 +119,14 @@ public class SocketOrChannelAcceptorImpl
         // END Legacy support.
     }
 
-    public SocketOrChannelAcceptorImpl(ORB orb, int port)
-    {
+    public SocketOrChannelAcceptorImpl(ORB orb, int port) {
         this(orb);
         this.port = port;
     }
 
     // BEGIN Legacy support.
     public SocketOrChannelAcceptorImpl(ORB orb, int port,
-                                       String name, String type)
-    {
+                                       String name, String type) {
         this(orb, port);
         this.name = name;
         this.type = type;
@@ -141,8 +138,7 @@ public class SocketOrChannelAcceptorImpl
     // pept.transport.Acceptor
     //
 
-    public boolean initialize()
-    {
+    public boolean initialize() {
         if (initialized) {
             return false;
         }
@@ -158,18 +154,17 @@ public class SocketOrChannelAcceptorImpl
                 inetSocketAddress = new InetSocketAddress(host, port);
             }
             serverSocket = orb.getORBData().getSocketFactory()
-                .createServerSocket(type, inetSocketAddress);
+                    .createServerSocket(type, inetSocketAddress);
             internalInitialize();
         } catch (Throwable t) {
-            throw wrapper.createListenerFailed( t, Integer.toString(port) ) ;
+            throw wrapper.createListenerFailed(t, Integer.toString(port));
         }
         initialized = true;
         return true;
     }
 
     protected void internalInitialize()
-        throws Exception
-    {
+            throws Exception {
         // Determine the listening port (for the IOR).
         // This is important when using emphemeral ports (i.e.,
         // when the port value to the constructor is 0).
@@ -186,45 +181,39 @@ public class SocketOrChannelAcceptorImpl
 
         if (serverSocketChannel != null) {
             setUseSelectThreadToWait(
-                orb.getORBData().acceptorSocketUseSelectThreadToWait());
+                    orb.getORBData().acceptorSocketUseSelectThreadToWait());
             serverSocketChannel.configureBlocking(
-                ! orb.getORBData().acceptorSocketUseSelectThreadToWait());
+                    !orb.getORBData().acceptorSocketUseSelectThreadToWait());
         } else {
             // Configure to use listener and reader threads.
             setUseSelectThreadToWait(false);
         }
         setUseWorkerThreadForEvent(
-            orb.getORBData().acceptorSocketUseWorkerThreadForEvent());
+                orb.getORBData().acceptorSocketUseWorkerThreadForEvent());
 
     }
 
-    public boolean initialized()
-    {
+    public boolean initialized() {
         return initialized;
     }
 
-    public String getConnectionCacheType()
-    {
+    public String getConnectionCacheType() {
         return this.getClass().toString();
     }
 
-    public void setConnectionCache(InboundConnectionCache connectionCache)
-    {
+    public void setConnectionCache(InboundConnectionCache connectionCache) {
         this.connectionCache = connectionCache;
     }
 
-    public InboundConnectionCache getConnectionCache()
-    {
+    public InboundConnectionCache getConnectionCache() {
         return connectionCache;
     }
 
-    public boolean shouldRegisterAcceptEvent()
-    {
+    public boolean shouldRegisterAcceptEvent() {
         return true;
     }
 
-    public void accept()
-    {
+    public void accept() {
         try {
             SocketChannel socketChannel = null;
             Socket socket = null;
@@ -235,16 +224,16 @@ public class SocketOrChannelAcceptorImpl
                 socket = socketChannel.socket();
             }
             orb.getORBData().getSocketFactory()
-                .setAcceptedSocketOptions(this, serverSocket, socket);
+                    .setAcceptedSocketOptions(this, serverSocket, socket);
             if (orb.transportDebugFlag) {
                 dprint(".accept: " +
-                       (serverSocketChannel == null
-                        ? serverSocket.toString()
-                        : serverSocketChannel.toString()));
+                        (serverSocketChannel == null
+                                ? serverSocket.toString()
+                                : serverSocketChannel.toString()));
             }
 
             CorbaConnection connection =
-                new SocketOrChannelConnectionImpl(orb, this, socket);
+                    new SocketOrChannelConnectionImpl(orb, this, socket);
             if (orb.transportDebugFlag) {
                 dprint(".accept: new: " + connection);
             }
@@ -275,8 +264,7 @@ public class SocketOrChannelAcceptorImpl
         }
     }
 
-    public void close ()
-    {
+    public void close() {
         try {
             if (orb.transportDebugFlag) {
                 dprint(".close->:");
@@ -300,8 +288,7 @@ public class SocketOrChannelAcceptorImpl
         }
     }
 
-    public EventHandler getEventHandler()
-    {
+    public EventHandler getEventHandler() {
         return this;
     }
 
@@ -310,35 +297,32 @@ public class SocketOrChannelAcceptorImpl
     // CorbaAcceptor
     //
 
-    public String getObjectAdapterId()
-    {
+    public String getObjectAdapterId() {
         return null;
     }
 
-    public String getObjectAdapterManagerId()
-    {
+    public String getObjectAdapterManagerId() {
         return null;
     }
 
     public void addToIORTemplate(IORTemplate iorTemplate,
                                  Policies policies,
-                                 String codebase)
-    {
+                                 String codebase) {
         Iterator iterator = iorTemplate.iteratorById(
-            org.omg.IOP.TAG_INTERNET_IOP.value);
+                org.omg.IOP.TAG_INTERNET_IOP.value);
 
         String hostname = orb.getORBData().getORBServerHost();
 
         if (iterator.hasNext()) {
             // REVISIT - how does this play with legacy ORBD port exchange?
             IIOPAddress iiopAddress =
-                IIOPFactories.makeIIOPAddress(orb, hostname, port);
+                    IIOPFactories.makeIIOPAddress(orb, hostname, port);
             AlternateIIOPAddressComponent iiopAddressComponent =
-                IIOPFactories.makeAlternateIIOPAddressComponent(iiopAddress);
+                    IIOPFactories.makeAlternateIIOPAddressComponent(iiopAddress);
 
             while (iterator.hasNext()) {
                 TaggedProfileTemplate taggedProfileTemplate =
-                    (TaggedProfileTemplate) iterator.next();
+                        (TaggedProfileTemplate) iterator.next();
                 taggedProfileTemplate.add(iiopAddressComponent);
             }
         } else {
@@ -350,37 +334,36 @@ public class SocketOrChannelAcceptorImpl
                 templatePort = port;
             } else {
                 templatePort = orb.getLegacyServerSocketManager()
-                   .legacyGetPersistentServerPort(SocketInfo.IIOP_CLEAR_TEXT);
+                        .legacyGetPersistentServerPort(SocketInfo.IIOP_CLEAR_TEXT);
             }
             IIOPAddress addr =
-                IIOPFactories.makeIIOPAddress(orb, hostname, templatePort);
+                    IIOPFactories.makeIIOPAddress(orb, hostname, templatePort);
             IIOPProfileTemplate iiopProfile =
-                IIOPFactories.makeIIOPProfileTemplate(orb, version, addr);
+                    IIOPFactories.makeIIOPProfileTemplate(orb, version, addr);
             if (version.supportsIORIIOPProfileComponents()) {
                 iiopProfile.add(IIOPFactories.makeCodeSetsComponent(orb));
                 iiopProfile.add(IIOPFactories.makeMaxStreamFormatVersionComponent());
                 RequestPartitioningPolicy rpPolicy = (RequestPartitioningPolicy)
-                    policies.get_effective_policy(
-                                      ORBConstants.REQUEST_PARTITIONING_POLICY);
+                        policies.get_effective_policy(
+                                ORBConstants.REQUEST_PARTITIONING_POLICY);
                 if (rpPolicy != null) {
                     iiopProfile.add(
-                         IIOPFactories.makeRequestPartitioningComponent(
-                             rpPolicy.getValue()));
+                            IIOPFactories.makeRequestPartitioningComponent(
+                                    rpPolicy.getValue()));
                 }
                 if (codebase != null && codebase != "") {
-                    iiopProfile.add(IIOPFactories. makeJavaCodebaseComponent(codebase));
+                    iiopProfile.add(IIOPFactories.makeJavaCodebaseComponent(codebase));
                 }
                 if (orb.getORBData().isJavaSerializationEnabled()) {
                     iiopProfile.add(
-                           IIOPFactories.makeJavaSerializationComponent());
+                            IIOPFactories.makeJavaSerializationComponent());
                 }
             }
             iorTemplate.add(iiopProfile);
         }
     }
 
-    public String getMonitoringName()
-    {
+    public String getMonitoringName() {
         return "AcceptedConnections";
     }
 
@@ -389,23 +372,19 @@ public class SocketOrChannelAcceptorImpl
     // EventHandler methods
     //
 
-    public SelectableChannel getChannel()
-    {
+    public SelectableChannel getChannel() {
         return serverSocketChannel;
     }
 
-    public int getInterestOps()
-    {
+    public int getInterestOps() {
         return SelectionKey.OP_ACCEPT;
     }
 
-    public Acceptor getAcceptor()
-    {
+    public Acceptor getAcceptor() {
         return this;
     }
 
-    public Connection getConnection()
-    {
+    public Connection getConnection() {
         throw new RuntimeException("Should not happen.");
     }
 
@@ -421,14 +400,13 @@ public class SocketOrChannelAcceptorImpl
     }
     */
 
-    public void doWork()
-    {
+    public void doWork() {
         try {
             if (orb.transportDebugFlag) {
                 dprint(".doWork->: " + this);
             }
             if (selectionKey.isAcceptable()) {
-                        accept();
+                accept();
             } else {
                 if (orb.transportDebugFlag) {
                     dprint(".doWork: ! selectionKey.isAcceptable: " + this);
@@ -437,23 +415,23 @@ public class SocketOrChannelAcceptorImpl
         } catch (SecurityException se) {
             if (orb.transportDebugFlag) {
                 dprint(".doWork: ignoring SecurityException: "
-                       + se
-                       + " " + this);
+                        + se
+                        + " " + this);
             }
             String permissionStr = ORBUtility.getClassSecurityInfo(getClass());
             wrapper.securityExceptionInAccept(se, permissionStr);
         } catch (Exception ex) {
             if (orb.transportDebugFlag) {
                 dprint(".doWork: ignoring Exception: "
-                       + ex
-                       + " " + this);
+                        + ex
+                        + " " + this);
             }
             wrapper.exceptionInAccept(ex);
         } catch (Throwable t) {
             if (orb.transportDebugFlag) {
                 dprint(".doWork: ignoring Throwable: "
-                       + t
-                       + " " + this);
+                        + t
+                        + " " + this);
             }
         } finally {
 
@@ -481,13 +459,11 @@ public class SocketOrChannelAcceptorImpl
         }
     }
 
-    public void setEnqueueTime(long timeInMillis)
-    {
+    public void setEnqueueTime(long timeInMillis) {
         enqueueTime = timeInMillis;
     }
 
-    public long getEnqueueTime()
-    {
+    public long getEnqueueTime() {
         return enqueueTime;
     }
 
@@ -498,8 +474,7 @@ public class SocketOrChannelAcceptorImpl
 
     // REVISIT: refactor into common base or delegate.
     public MessageMediator createMessageMediator(Broker broker,
-                                                 Connection connection)
-    {
+                                                 Connection connection) {
         // REVISIT - no factoring so cheat to avoid code dup right now.
         // REVISIT **** COUPLING !!!!
         ContactInfo contactInfo = new SocketOrChannelContactInfoImpl();
@@ -509,34 +484,31 @@ public class SocketOrChannelAcceptorImpl
     // REVISIT: refactor into common base or delegate.
     public MessageMediator finishCreatingMessageMediator(Broker broker,
                                                          Connection connection,
-                                                         MessageMediator messageMediator)
-    {
+                                                         MessageMediator messageMediator) {
         // REVISIT - no factoring so cheat to avoid code dup right now.
         // REVISIT **** COUPLING !!!!
         ContactInfo contactInfo = new SocketOrChannelContactInfoImpl();
         return contactInfo.finishCreatingMessageMediator(broker,
-                                          connection, messageMediator);
+                connection, messageMediator);
     }
 
     public InputObject createInputObject(Broker broker,
-                                         MessageMediator messageMediator)
-    {
+                                         MessageMediator messageMediator) {
         CorbaMessageMediator corbaMessageMediator = (CorbaMessageMediator)
-            messageMediator;
-        return new CDRInputObject((ORB)broker,
-                                  (CorbaConnection)messageMediator.getConnection(),
-                                  corbaMessageMediator.getDispatchBuffer(),
-                                  corbaMessageMediator.getDispatchHeader());
+                messageMediator;
+        return new CDRInputObject((ORB) broker,
+                (CorbaConnection) messageMediator.getConnection(),
+                corbaMessageMediator.getDispatchBuffer(),
+                corbaMessageMediator.getDispatchHeader());
     }
 
     public OutputObject createOutputObject(Broker broker,
-                                           MessageMediator messageMediator)
-    {
+                                           MessageMediator messageMediator) {
         CorbaMessageMediator corbaMessageMediator = (CorbaMessageMediator)
-            messageMediator;
+                messageMediator;
         return sun.corba.OutputStreamFactory.newCDROutputObject((ORB) broker,
-                       corbaMessageMediator, corbaMessageMediator.getReplyHeader(),
-                       corbaMessageMediator.getStreamFormatVersion());
+                corbaMessageMediator, corbaMessageMediator.getReplyHeader(),
+                corbaMessageMediator.getStreamFormatVersion());
     }
 
     ////////////////////////////////////////////////////
@@ -544,8 +516,7 @@ public class SocketOrChannelAcceptorImpl
     // SocketOrChannelAcceptor
     //
 
-    public ServerSocket getServerSocket()
-    {
+    public ServerSocket getServerSocket() {
         return serverSocket;
     }
 
@@ -554,8 +525,7 @@ public class SocketOrChannelAcceptorImpl
     // Implementation.
     //
 
-    public String toString()
-    {
+    public String toString() {
         String sock;
         if (serverSocketChannel == null) {
             if (serverSocket == null) {
@@ -568,27 +538,24 @@ public class SocketOrChannelAcceptorImpl
         }
 
         return
-            toStringName() +
-            "["
-            + sock + " "
-            + type + " "
-            + shouldUseSelectThreadToWait() + " "
-            + shouldUseWorkerThreadForEvent()
-            + "]" ;
+                toStringName() +
+                        "["
+                        + sock + " "
+                        + type + " "
+                        + shouldUseSelectThreadToWait() + " "
+                        + shouldUseWorkerThreadForEvent()
+                        + "]";
     }
 
-    protected String toStringName()
-    {
+    protected String toStringName() {
         return "SocketOrChannelAcceptorImpl";
     }
 
-    protected void dprint(String msg)
-    {
+    protected void dprint(String msg) {
         ORBUtility.dprint(toStringName(), msg);
     }
 
-    protected void dprint(String msg, Throwable t)
-    {
+    protected void dprint(String msg, Throwable t) {
         dprint(msg);
         t.printStackTrace(System.out);
     }
@@ -599,44 +566,37 @@ public class SocketOrChannelAcceptorImpl
     // LegacyServerSocketEndPointInfo and EndPointInfo
     //
 
-    public String getType()
-    {
+    public String getType() {
         return type;
     }
 
-    public String getHostName()
-    {
+    public String getHostName() {
         return hostname;
     }
 
-    public String getHost()
-    {
+    public String getHost() {
         return hostname;
     }
 
-    public int getPort()
-    {
+    public int getPort() {
         return port;
     }
 
-    public int getLocatorPort()
-    {
+    public int getLocatorPort() {
         return locatorPort;
     }
 
-    public void setLocatorPort (int port)
-    {
+    public void setLocatorPort(int port) {
         locatorPort = port;
     }
 
-    public String getName()
-    {
+    public String getName() {
         // Kluge alert:
         // Work and Legacy both define getName.
         // Try to make this behave best for most cases.
         String result =
-            name.equals(LegacyServerSocketEndPointInfo.NO_NAME) ?
-            this.toString() : name;
+                name.equals(LegacyServerSocketEndPointInfo.NO_NAME) ?
+                        this.toString() : name;
         return result;
     }
     // END Legacy support

@@ -39,8 +39,10 @@ package org.omg.CORBA;
 
 public final class UnknownUserException extends UserException {
 
-    /** The <code>Any</code> instance that contains the actual user exception thrown
-     *  by the server.
+    /**
+     * The <code>Any</code> instance that contains the actual user exception thrown
+     * by the server.
+     *
      * @serial
      */
     public Any except;
@@ -57,7 +59,7 @@ public final class UnknownUserException extends UserException {
      * <code>Any</code> object.
      *
      * @param a an <code>Any</code> object that contains a user exception returned
-     *         by the server
+     *          by the server
      */
     public UnknownUserException(Any a) {
         super();

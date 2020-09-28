@@ -47,18 +47,17 @@ import com.sun.corba.se.impl.orbutil.ORBConstants;
 import com.sun.corba.se.spi.logging.CORBALogDomains;
 
 
-public class ThreadPoolManagerImpl implements ThreadPoolManager
-{
+public class ThreadPoolManagerImpl implements ThreadPoolManager {
     private ThreadPool threadPool;
     private ThreadGroup threadGroup;
 
     private static final ORBUtilSystemException wrapper =
-        ORBUtilSystemException.get(CORBALogDomains.RPC_TRANSPORT);
+            ORBUtilSystemException.get(CORBALogDomains.RPC_TRANSPORT);
 
     public ThreadPoolManagerImpl() {
         threadGroup = getThreadGroup();
         threadPool = new ThreadPoolImpl(threadGroup,
-            ORBConstants.THREADPOOL_DEFAULT_NAME);
+                ORBConstants.THREADPOOL_DEFAULT_NAME);
     }
 
     private static AtomicInteger tgCount = new AtomicInteger();
@@ -86,21 +85,21 @@ public class ThreadPoolManagerImpl implements ThreadPoolManager
             // this will prevent an ORB thread created during applet-init from
             // being killed when an applet dies.
             tg = AccessController.doPrivileged(
-                new PrivilegedAction<ThreadGroup>() {
-                    public ThreadGroup run() {
-                        ThreadGroup tg = Thread.currentThread().getThreadGroup();
-                        ThreadGroup ptg = tg;
-                        try {
-                            while (ptg != null) {
-                                tg = ptg;
-                                ptg = tg.getParent();
+                    new PrivilegedAction<ThreadGroup>() {
+                        public ThreadGroup run() {
+                            ThreadGroup tg = Thread.currentThread().getThreadGroup();
+                            ThreadGroup ptg = tg;
+                            try {
+                                while (ptg != null) {
+                                    tg = ptg;
+                                    ptg = tg.getParent();
+                                }
+                            } catch (SecurityException se) {
+                                // Discontinue going higher on a security exception.
                             }
-                        } catch (SecurityException se) {
-                            // Discontinue going higher on a security exception.
+                            return new ThreadGroup(tg, "ORB ThreadGroup " + tgCount.getAndIncrement());
                         }
-                        return new ThreadGroup(tg, "ORB ThreadGroup " + tgCount.getAndIncrement());
                     }
-                }
             );
         } catch (SecurityException e) {
             // something wrong, we go back to the original code
@@ -141,53 +140,53 @@ public class ThreadPoolManagerImpl implements ThreadPoolManager
     }
 
     /**
-    * This method will return an instance of the threadpool given a threadpoolId,
-    * that can be used by any component in the app. server.
-    *
-    * @throws NoSuchThreadPoolException thrown when invalid threadpoolId is passed
-    * as a parameter
-    */
+     * This method will return an instance of the threadpool given a threadpoolId,
+     * that can be used by any component in the app. server.
+     *
+     * @throws NoSuchThreadPoolException thrown when invalid threadpoolId is passed
+     *                                   as a parameter
+     */
     public ThreadPool getThreadPool(String threadpoolId)
-        throws NoSuchThreadPoolException {
+            throws NoSuchThreadPoolException {
 
         return threadPool;
     }
 
     /**
-    * This method will return an instance of the threadpool given a numeric threadpoolId.
-    * This method will be used by the ORB to support the functionality of
-    * dedicated threadpool for EJB beans
-    *
-    * @throws NoSuchThreadPoolException thrown when invalidnumericIdForThreadpool is passed
-    * as a parameter
-    */
+     * This method will return an instance of the threadpool given a numeric threadpoolId.
+     * This method will be used by the ORB to support the functionality of
+     * dedicated threadpool for EJB beans
+     *
+     * @throws NoSuchThreadPoolException thrown when invalidnumericIdForThreadpool is passed
+     *                                   as a parameter
+     */
     public ThreadPool getThreadPool(int numericIdForThreadpool)
-        throws NoSuchThreadPoolException {
+            throws NoSuchThreadPoolException {
 
         return threadPool;
     }
 
     /**
-    * This method is used to return the numeric id of the threadpool, given a String
-    * threadpoolId. This is used by the POA interceptors to add the numeric threadpool
-    * Id, as a tagged component in the IOR. This is used to provide the functionality of
-    * dedicated threadpool for EJB beans
-    */
-    public int  getThreadPoolNumericId(String threadpoolId) {
+     * This method is used to return the numeric id of the threadpool, given a String
+     * threadpoolId. This is used by the POA interceptors to add the numeric threadpool
+     * Id, as a tagged component in the IOR. This is used to provide the functionality of
+     * dedicated threadpool for EJB beans
+     */
+    public int getThreadPoolNumericId(String threadpoolId) {
         return 0;
     }
 
     /**
-    * Return a String Id for a numericId of a threadpool managed by the threadpool
-    * manager
-    */
+     * Return a String Id for a numericId of a threadpool managed by the threadpool
+     * manager
+     */
     public String getThreadPoolStringId(int numericIdForThreadpool) {
-       return "";
+        return "";
     }
 
     /**
-    * Returns the first instance of ThreadPool in the ThreadPoolManager
-    */
+     * Returns the first instance of ThreadPool in the ThreadPoolManager
+     */
     public ThreadPool getDefaultThreadPool() {
         return threadPool;
     }
@@ -201,6 +200,7 @@ public class ThreadPoolManagerImpl implements ThreadPoolManager
         //nio select starts working and we start using ThreadPoolChooser
         return null;
     }
+
     /**
      * Return an instance of ThreadPoolChooser based on the componentIndex that was
      * passed as argument. This is added for improved performance so that the caller

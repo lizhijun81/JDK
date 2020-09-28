@@ -29,10 +29,10 @@ import java.awt.Font;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.plaf.synth.*;
+
 import com.sun.java.swing.plaf.gtk.GTKEngine.WidgetType;
 
 /**
- *
  * @author Scott Violet
  */
 class GTKStyleFactory extends SynthStyleFactory {
@@ -55,7 +55,7 @@ class GTKStyleFactory extends SynthStyleFactory {
      * Returns the <code>GTKStyle</code> to use based on the
      * <code>Region</code> id
      *
-     * @param c this parameter isn't used, may be null.
+     * @param c  this parameter isn't used, may be null.
      * @param id of the region to get the style.
      */
     public synchronized SynthStyle getStyle(JComponent c, Region id) {
@@ -67,27 +67,25 @@ class GTKStyleFactory extends SynthStyleFactory {
             // factors (see GTKStyle.getScrollBarInsets()) so use a
             // complex key here.
             if (c != null) {
-                JScrollBar sb = (JScrollBar)c;
+                JScrollBar sb = (JScrollBar) c;
                 boolean sp = (sb.getParent() instanceof JScrollPane);
                 boolean horiz = (sb.getOrientation() == JScrollBar.HORIZONTAL);
                 boolean ltr = sb.getComponentOrientation().isLeftToRight();
                 boolean focusable = sb.isFocusable();
                 key = new ComplexKey(wt, sp, horiz, ltr, focusable);
             }
-        }
-        else if (id == Region.CHECK_BOX || id == Region.RADIO_BUTTON) {
+        } else if (id == Region.CHECK_BOX || id == Region.RADIO_BUTTON) {
             // The style/insets of a checkbox or radiobutton can depend
             // on the component orientation, so use a complex key here.
             if (c != null) {
                 boolean ltr = c.getComponentOrientation().isLeftToRight();
                 key = new ComplexKey(wt, ltr);
             }
-        }
-        else if (id == Region.BUTTON) {
+        } else if (id == Region.BUTTON) {
             // The style/insets of a button can depend on whether it is
             // default capable or in a toolbar, so use a complex key here.
             if (c != null) {
-                JButton btn = (JButton)c;
+                JButton btn = (JButton) c;
                 boolean toolButton = (btn.getParent() instanceof JToolBar);
                 boolean defaultCapable = btn.isDefaultCapable();
                 key = new ComplexKey(wt, toolButton, defaultCapable);
@@ -138,7 +136,7 @@ class GTKStyleFactory extends SynthStyleFactory {
             int hash = wt.hashCode();
             if (args != null) {
                 for (Object arg : args) {
-                    hash = hash*29 + (arg == null ? 0 : arg.hashCode());
+                    hash = hash * 29 + (arg == null ? 0 : arg.hashCode());
                 }
             }
             return hash;
@@ -149,18 +147,17 @@ class GTKStyleFactory extends SynthStyleFactory {
             if (!(o instanceof ComplexKey)) {
                 return false;
             }
-            ComplexKey that = (ComplexKey)o;
+            ComplexKey that = (ComplexKey) o;
             if (this.wt == that.wt) {
                 if (this.args == null && that.args == null) {
                     return true;
                 }
                 if (this.args != null && that.args != null &&
-                    this.args.length == that.args.length)
-                {
+                        this.args.length == that.args.length) {
                     for (int i = 0; i < this.args.length; i++) {
                         Object a1 = this.args[i];
                         Object a2 = that.args[i];
-                        if (!(a1==null ? a2==null : a1.equals(a2))) {
+                        if (!(a1 == null ? a2 == null : a1.equals(a2))) {
                             return false;
                         }
                     }
@@ -177,7 +174,7 @@ class GTKStyleFactory extends SynthStyleFactory {
                 str += ",args=[";
                 for (int i = 0; i < args.length; i++) {
                     str += args[i];
-                    if (i < args.length-1) str += ",";
+                    if (i < args.length - 1) str += ",";
                 }
                 str += "]";
             }

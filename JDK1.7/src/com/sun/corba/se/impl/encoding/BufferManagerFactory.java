@@ -42,11 +42,10 @@ import org.omg.CORBA.INTERNAL;
  * in CDR*putStream.
  */
 
-public class BufferManagerFactory
-{
-    public static final int GROW    = 0;
+public class BufferManagerFactory {
+    public static final int GROW = 0;
     public static final int COLLECT = 1;
-    public static final int STREAM  = 2;
+    public static final int STREAM = 2;
 
     // The next two methods allow creation of BufferManagers based on GIOP version.
     // We may want more criteria to be involved in this decision.
@@ -62,8 +61,7 @@ public class BufferManagerFactory
             return new BufferManagerReadGrow(orb);
         }
 
-        switch (version.intValue())
-        {
+        switch (version.intValue()) {
             case GIOPVersion.VERSION_1_0:
                 return new BufferManagerReadGrow(orb);
             case GIOPVersion.VERSION_1_1:
@@ -74,7 +72,7 @@ public class BufferManagerFactory
             default:
                 // REVISIT - what is appropriate?
                 throw new INTERNAL("Unknown GIOP version: "
-                                   + version);
+                        + version);
         }
     }
 
@@ -84,8 +82,8 @@ public class BufferManagerFactory
         if (encodingVersion != Message.CDR_ENC_VERSION) {
             if (strategy != BufferManagerFactory.GROW) {
                 ORBUtilSystemException wrapper =
-                    ORBUtilSystemException.get((ORB)orb,
-                                               CORBALogDomains.RPC_ENCODING);
+                        ORBUtilSystemException.get((ORB) orb,
+                                CORBALogDomains.RPC_ENCODING);
                 throw wrapper.invalidBuffMgrStrategy("newBufferManagerRead");
             }
             return new BufferManagerReadGrow(orb);
@@ -99,7 +97,7 @@ public class BufferManagerFactory
                 return new BufferManagerReadStream(orb);
             default:
                 throw new INTERNAL("Unknown buffer manager read strategy: "
-                                   + strategy);
+                        + strategy);
         }
     }
 
@@ -108,8 +106,8 @@ public class BufferManagerFactory
         if (encodingVersion != Message.CDR_ENC_VERSION) {
             if (strategy != BufferManagerFactory.GROW) {
                 ORBUtilSystemException wrapper =
-                    ORBUtilSystemException.get((ORB)orb,
-                                               CORBALogDomains.RPC_ENCODING);
+                        ORBUtilSystemException.get((ORB) orb,
+                                CORBALogDomains.RPC_ENCODING);
                 throw wrapper.invalidBuffMgrStrategy("newBufferManagerWrite");
             }
             return new BufferManagerWriteGrow(orb);
@@ -123,18 +121,18 @@ public class BufferManagerFactory
                 return new BufferManagerWriteStream(orb);
             default:
                 throw new INTERNAL("Unknown buffer manager write strategy: "
-                                   + strategy);
+                        + strategy);
         }
     }
 
     public static BufferManagerWrite newBufferManagerWrite(
-        GIOPVersion version, byte encodingVersion, ORB orb) {
+            GIOPVersion version, byte encodingVersion, ORB orb) {
         if (encodingVersion != Message.CDR_ENC_VERSION) {
             return new BufferManagerWriteGrow(orb);
         }
         return BufferManagerFactory.newBufferManagerWrite(
-            orb.getORBData().getGIOPBuffMgrStrategy(version),
-            encodingVersion, orb);
+                orb.getORBData().getGIOPBuffMgrStrategy(version),
+                encodingVersion, orb);
     }
 
     public static BufferManagerRead defaultBufferManagerRead(ORB orb) {

@@ -43,7 +43,6 @@ import java.util.Locale;
  * @see ThrowsTag
  * @see SerialFieldTag
  * @see Doc#tags()
- *
  */
 public interface Tag {
 
@@ -106,7 +105,7 @@ public interface Tag {
      * For example, given the following comment
      * tag:
      * <p>
-     *  <code>This is a {&#064;link Doc commentlabel} example.</code>
+     * <code>This is a {&#064;link Doc commentlabel} example.</code>
      * <p>
      * return an array of Tag objects:
      * <ul>
@@ -146,12 +145,13 @@ public interface Tag {
      * {@link BreakIterator#getSentenceInstance(Locale)}.
      *
      * @return an array of {@link Tag} objects representing the
-     *         first sentence of the comment
+     * first sentence of the comment
      */
     Tag[] firstSentenceTags();
 
     /**
      * Return the source position of this tag.
+     *
      * @return the source position of this tag.
      */
     public SourcePosition position();

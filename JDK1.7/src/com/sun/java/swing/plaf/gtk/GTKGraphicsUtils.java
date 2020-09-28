@@ -48,10 +48,10 @@ class GTKGraphicsUtils extends SynthGraphicsUtils {
         }
         int componentState = context.getComponentState();
         if ((componentState & SynthConstants.DISABLED) ==
-                              SynthConstants.DISABLED){
+                SynthConstants.DISABLED) {
             Color orgColor = g.getColor();
             g.setColor(context.getStyle().getColor(context,
-                                                   GTKColorType.WHITE));
+                    GTKColorType.WHITE));
             x += 1;
             y += 1;
             super.paintText(context, g, text, x, y, mnemonicIndex);
@@ -60,14 +60,13 @@ class GTKGraphicsUtils extends SynthGraphicsUtils {
             x -= 1;
             y -= 1;
             super.paintText(context, g, text, x, y, mnemonicIndex);
-        }
-        else {
+        } else {
             String themeName = GTKLookAndFeel.getGtkThemeName();
             if (themeName != null && themeName.startsWith("blueprint") &&
-                shouldShadowText(context.getRegion(), componentState)) {
+                    shouldShadowText(context.getRegion(), componentState)) {
 
                 g.setColor(Color.BLACK);
-                super.paintText(context, g, text, x+1, y+1, mnemonicIndex);
+                super.paintText(context, g, text, x + 1, y + 1, mnemonicIndex);
                 g.setColor(Color.WHITE);
             }
 
@@ -80,10 +79,10 @@ class GTKGraphicsUtils extends SynthGraphicsUtils {
      * render the text as html nor will it offset by the insets of the
      * component.
      *
-     * @param ss SynthContext
-     * @param g Graphics used to render string in.
-     * @param text Text to render
-     * @param bounds Bounds of the text to be drawn.
+     * @param ss            SynthContext
+     * @param g             Graphics used to render string in.
+     * @param text          Text to render
+     * @param bounds        Bounds of the text to be drawn.
      * @param mnemonicIndex Index to draw string at.
      */
     public void paintText(SynthContext context, Graphics g, String text,
@@ -95,13 +94,12 @@ class GTKGraphicsUtils extends SynthGraphicsUtils {
 
         Region id = context.getRegion();
         if ((id == Region.RADIO_BUTTON ||
-             id == Region.CHECK_BOX ||
-             id == Region.TABBED_PANE_TAB) &&
-            (context.getComponentState() & SynthConstants.FOCUSED) != 0)
-        {
+                id == Region.CHECK_BOX ||
+                id == Region.TABBED_PANE_TAB) &&
+                (context.getComponentState() & SynthConstants.FOCUSED) != 0) {
             JComponent source = context.getComponent();
             if (!(source instanceof AbstractButton) ||
-                ((AbstractButton)source).isFocusPainted()) {
+                    ((AbstractButton) source).isFocusPainted()) {
 
                 // The "bounds" parameter encompasses only the actual text;
                 // when drawing the focus, we need to expand that bounding
@@ -110,23 +108,23 @@ class GTKGraphicsUtils extends SynthGraphicsUtils {
                 // taken these values into account, so there should always
                 // be enough space allocated for drawing the focus indicator.
                 int synthState = context.getComponentState();
-                GTKStyle style = (GTKStyle)context.getStyle();
+                GTKStyle style = (GTKStyle) context.getStyle();
                 int focusSize =
-                    style.getClassSpecificIntValue(context,
-                                                   "focus-line-width", 1);
+                        style.getClassSpecificIntValue(context,
+                                "focus-line-width", 1);
                 int focusPad =
-                    style.getClassSpecificIntValue(context,
-                                                   "focus-padding", 1);
+                        style.getClassSpecificIntValue(context,
+                                "focus-padding", 1);
                 int totalFocus = focusSize + focusPad;
                 int x = bounds.x - totalFocus;
                 int y = bounds.y - totalFocus;
-                int w = bounds.width  + (2 * totalFocus);
+                int w = bounds.width + (2 * totalFocus);
                 int h = bounds.height + (2 * totalFocus);
 
                 Color color = g.getColor();
                 GTKPainter.INSTANCE.paintFocus(context, g, id,
-                                               synthState, "checkbutton",
-                                               x, y, w, h);
+                        synthState, "checkbutton",
+                        x, y, w, h);
                 g.setColor(color);
             }
         }
@@ -135,10 +133,10 @@ class GTKGraphicsUtils extends SynthGraphicsUtils {
 
     private static boolean shouldShadowText(Region id, int state) {
         int gtkState = GTKLookAndFeel.synthStateToGTKState(id, state);
-        return((gtkState == SynthConstants.MOUSE_OVER) &&
-               (id == Region.MENU ||
-                id == Region.MENU_ITEM ||
-                id == Region.CHECK_BOX_MENU_ITEM ||
-                id == Region.RADIO_BUTTON_MENU_ITEM));
+        return ((gtkState == SynthConstants.MOUSE_OVER) &&
+                (id == Region.MENU ||
+                        id == Region.MENU_ITEM ||
+                        id == Region.CHECK_BOX_MENU_ITEM ||
+                        id == Region.RADIO_BUTTON_MENU_ITEM));
     }
 }

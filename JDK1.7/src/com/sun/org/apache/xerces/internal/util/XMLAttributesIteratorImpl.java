@@ -26,15 +26,15 @@
 package com.sun.org.apache.xerces.internal.util;
 
 //java imports
-import java.util.Iterator ;
+
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 //xerces imports
-import com.sun.org.apache.xerces.internal.util.XMLAttributesImpl ;
+import com.sun.org.apache.xerces.internal.util.XMLAttributesImpl;
 
 /**
- *
- * @author  Neeraj Bajaj, Sun Microsystems
+ * @author Neeraj Bajaj, Sun Microsystems
  */
 
 /**
@@ -50,35 +50,33 @@ import com.sun.org.apache.xerces.internal.util.XMLAttributesImpl ;
 public class XMLAttributesIteratorImpl extends XMLAttributesImpl implements Iterator {
 
     //pointer to current position.
-    protected int fCurrent = 0 ;
+    protected int fCurrent = 0;
 
-    protected XMLAttributesImpl.Attribute fLastReturnedItem ;
+    protected XMLAttributesImpl.Attribute fLastReturnedItem;
 
     /** Creates a new instance of XMLAttributesIteratorImpl */
     public XMLAttributesIteratorImpl() {
     }
 
     public boolean hasNext() {
-        return fCurrent < getLength() ? true : false ;
+        return fCurrent < getLength() ? true : false;
     }//hasNext()
 
     public Object next() {
-        if(hasNext()){
+        if (hasNext()) {
             // should this be of type javax.xml.stream.Attribute ?
-            return fLastReturnedItem = fAttributes[fCurrent++] ;
-        }
-        else{
-            throw new NoSuchElementException() ;
+            return fLastReturnedItem = fAttributes[fCurrent++];
+        } else {
+            throw new NoSuchElementException();
         }
     }//next
 
     public void remove() {
         //make sure that only last returned item can be removed.
-        if(fLastReturnedItem == fAttributes[fCurrent - 1]){
+        if (fLastReturnedItem == fAttributes[fCurrent - 1]) {
             //remove the attribute at current index and lower the current position by 1.
-            removeAttributeAt(fCurrent--) ;
-        }
-        else {
+            removeAttributeAt(fCurrent--);
+        } else {
             //either the next method has been called yet, or the remove method has already been called
             //after the last call to the next method.
             throw new IllegalStateException();
@@ -86,8 +84,8 @@ public class XMLAttributesIteratorImpl extends XMLAttributesImpl implements Iter
     }//remove
 
     public void removeAllAttributes() {
-        super.removeAllAttributes() ;
-        fCurrent = 0 ;
+        super.removeAllAttributes();
+        fCurrent = 0;
     }
     /** xxx: should we be doing this way ? Attribute event defines so many functions which doesn't make any sense
      *for Attribute.

@@ -32,6 +32,9 @@ import java.io.File;
 /**
  * Represents a position in a source file.
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  There is no direct
  * replacement for the functionality of this interface since the
@@ -39,10 +42,6 @@ import java.io.File;
  * API implicitly takes a source position argument via any element,
  * annotation mirror, or annotation value passed along with the
  * message.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")

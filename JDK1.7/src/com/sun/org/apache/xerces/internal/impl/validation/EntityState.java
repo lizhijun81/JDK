@@ -26,9 +26,8 @@ package com.sun.org.apache.xerces.internal.impl.validation;
  * by components that store information about entity declarations, as well as by
  * entity validator that will need to validate attributes of type entity.
  *
- * @xerces.internal
- *
  * @author Elena Litani, IBM
+ * @xerces.internal
  */
 public interface EntityState {
     /**
@@ -37,7 +36,7 @@ public interface EntityState {
      * @param name
      * @return true if name is a declared entity
      */
-    public boolean isEntityDeclared (String name);
+    public boolean isEntityDeclared(String name);
 
     /**
      * Query method to check if entity is unparsed.
@@ -45,5 +44,5 @@ public interface EntityState {
      * @param name
      * @return true if name is an unparsed entity
      */
-    public boolean isEntityUnparsed (String name);
+    public boolean isEntityUnparsed(String name);
 }

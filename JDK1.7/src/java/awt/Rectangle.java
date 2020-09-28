@@ -113,12 +113,11 @@ import java.beans.Transient;
  * the range of 32-bit integers, but zero dimension along one or both
  * axes, then the stored dimensions will be zero in those axes.
  *
- * @author      Sami Shaio
+ * @author Sami Shaio
  * @since 1.0
  */
 public class Rectangle extends Rectangle2D
-    implements Shape, java.io.Serializable
-{
+        implements Shape, java.io.Serializable {
 
     /**
      * The X coordinate of the upper-left corner of the <code>Rectangle</code>.
@@ -142,6 +141,7 @@ public class Rectangle extends Rectangle2D
 
     /**
      * The width of the <code>Rectangle</code>.
+     *
      * @serial
      * @see #setSize(int, int)
      * @see #getSize()
@@ -162,7 +162,7 @@ public class Rectangle extends Rectangle2D
     /*
      * JDK 1.1 serialVersionUID
      */
-     private static final long serialVersionUID = -4345857070255674764L;
+    private static final long serialVersionUID = -4345857070255674764L;
 
     /**
      * Initialize JNI field and method IDs
@@ -189,8 +189,9 @@ public class Rectangle extends Rectangle2D
     /**
      * Constructs a new <code>Rectangle</code>, initialized to match
      * the values of the specified <code>Rectangle</code>.
-     * @param r  the <code>Rectangle</code> from which to copy initial values
-     *           to a newly constructed <code>Rectangle</code>
+     *
+     * @param r the <code>Rectangle</code> from which to copy initial values
+     *          to a newly constructed <code>Rectangle</code>
      * @since 1.1
      */
     public Rectangle(Rectangle r) {
@@ -202,10 +203,11 @@ public class Rectangle extends Rectangle2D
      * specified as
      * {@code (x,y)} and whose width and height
      * are specified by the arguments of the same name.
-     * @param     x the specified X coordinate
-     * @param     y the specified Y coordinate
-     * @param     width    the width of the <code>Rectangle</code>
-     * @param     height   the height of the <code>Rectangle</code>
+     *
+     * @param x      the specified X coordinate
+     * @param y      the specified Y coordinate
+     * @param width  the width of the <code>Rectangle</code>
+     * @param height the height of the <code>Rectangle</code>
      * @since 1.0
      */
     public Rectangle(int x, int y, int width, int height) {
@@ -219,7 +221,8 @@ public class Rectangle extends Rectangle2D
      * Constructs a new <code>Rectangle</code> whose upper-left corner
      * is at (0,&nbsp;0) in the coordinate space, and whose width and
      * height are specified by the arguments of the same name.
-     * @param width the width of the <code>Rectangle</code>
+     *
+     * @param width  the width of the <code>Rectangle</code>
      * @param height the height of the <code>Rectangle</code>
      */
     public Rectangle(int width, int height) {
@@ -231,10 +234,11 @@ public class Rectangle extends Rectangle2D
      * specified by the {@link Point} argument, and
      * whose width and height are specified by the
      * {@link Dimension} argument.
+     *
      * @param p a <code>Point</code> that is the upper-left corner of
-     * the <code>Rectangle</code>
+     *          the <code>Rectangle</code>
      * @param d a <code>Dimension</code>, representing the
-     * width and height of the <code>Rectangle</code>
+     *          width and height of the <code>Rectangle</code>
      */
     public Rectangle(Point p, Dimension d) {
         this(p.x, p.y, d.width, d.height);
@@ -243,8 +247,9 @@ public class Rectangle extends Rectangle2D
     /**
      * Constructs a new <code>Rectangle</code> whose upper-left corner is the
      * specified <code>Point</code>, and whose width and height are both zero.
+     *
      * @param p a <code>Point</code> that is the top left corner
-     * of the <code>Rectangle</code>
+     *          of the <code>Rectangle</code>
      */
     public Rectangle(Point p) {
         this(p.x, p.y, 0, 0);
@@ -254,6 +259,7 @@ public class Rectangle extends Rectangle2D
      * Constructs a new <code>Rectangle</code> whose top left corner is
      * (0,&nbsp;0) and whose width and height are specified
      * by the <code>Dimension</code> argument.
+     *
      * @param d a <code>Dimension</code>, specifying width and height
      */
     public Rectangle(Dimension d) {
@@ -263,6 +269,7 @@ public class Rectangle extends Rectangle2D
     /**
      * Returns the X coordinate of the bounding <code>Rectangle</code> in
      * <code>double</code> precision.
+     *
      * @return the X coordinate of the bounding <code>Rectangle</code>.
      */
     public double getX() {
@@ -272,6 +279,7 @@ public class Rectangle extends Rectangle2D
     /**
      * Returns the Y coordinate of the bounding <code>Rectangle</code> in
      * <code>double</code> precision.
+     *
      * @return the Y coordinate of the bounding <code>Rectangle</code>.
      */
     public double getY() {
@@ -281,6 +289,7 @@ public class Rectangle extends Rectangle2D
     /**
      * Returns the width of the bounding <code>Rectangle</code> in
      * <code>double</code> precision.
+     *
      * @return the width of the bounding <code>Rectangle</code>.
      */
     public double getWidth() {
@@ -290,6 +299,7 @@ public class Rectangle extends Rectangle2D
     /**
      * Returns the height of the bounding <code>Rectangle</code> in
      * <code>double</code> precision.
+     *
      * @return the height of the bounding <code>Rectangle</code>.
      */
     public double getHeight() {
@@ -302,12 +312,13 @@ public class Rectangle extends Rectangle2D
      * This method is included for completeness, to parallel the
      * <code>getBounds</code> method of
      * {@link Component}.
-     * @return    a new <code>Rectangle</code>, equal to the
+     *
+     * @return a new <code>Rectangle</code>, equal to the
      * bounding <code>Rectangle</code> for this <code>Rectangle</code>.
-     * @see       java.awt.Component#getBounds
-     * @see       #setBounds(Rectangle)
-     * @see       #setBounds(int, int, int, int)
-     * @since     1.1
+     * @see java.awt.Component#getBounds
+     * @see #setBounds(Rectangle)
+     * @see #setBounds(int, int, int, int)
+     * @since 1.1
      */
     @Transient
     public Rectangle getBounds() {
@@ -316,6 +327,7 @@ public class Rectangle extends Rectangle2D
 
     /**
      * {@inheritDoc}
+     *
      * @since 1.2
      */
     public Rectangle2D getBounds2D() {
@@ -328,10 +340,11 @@ public class Rectangle extends Rectangle2D
      * <p>
      * This method is included for completeness, to parallel the
      * <code>setBounds</code> method of <code>Component</code>.
+     *
      * @param r the specified <code>Rectangle</code>
-     * @see       #getBounds
-     * @see       java.awt.Component#setBounds(java.awt.Rectangle)
-     * @since     1.1
+     * @see #getBounds
+     * @see java.awt.Component#setBounds(java.awt.Rectangle)
+     * @since 1.1
      */
     public void setBounds(Rectangle r) {
         setBounds(r.x, r.y, r.width, r.height);
@@ -345,15 +358,16 @@ public class Rectangle extends Rectangle2D
      * <p>
      * This method is included for completeness, to parallel the
      * <code>setBounds</code> method of <code>Component</code>.
-     * @param x the new X coordinate for the upper-left
-     *                    corner of this <code>Rectangle</code>
-     * @param y the new Y coordinate for the upper-left
-     *                    corner of this <code>Rectangle</code>
-     * @param width the new width for this <code>Rectangle</code>
+     *
+     * @param x      the new X coordinate for the upper-left
+     *               corner of this <code>Rectangle</code>
+     * @param y      the new Y coordinate for the upper-left
+     *               corner of this <code>Rectangle</code>
+     * @param width  the new width for this <code>Rectangle</code>
      * @param height the new height for this <code>Rectangle</code>
-     * @see       #getBounds
-     * @see       java.awt.Component#setBounds(int, int, int, int)
-     * @since     1.1
+     * @see #getBounds
+     * @see java.awt.Component#setBounds(int, int, int, int)
+     * @since 1.1
      */
     public void setBounds(int x, int y, int width, int height) {
         reshape(x, y, width, height);
@@ -367,11 +381,12 @@ public class Rectangle extends Rectangle2D
      * maximum range of integers, the result will be the best
      * representation of the specified {@code Rectangle} intersected
      * with the maximum integer bounds.
-     * @param x the X coordinate of the upper-left corner of
-     *                  the specified rectangle
-     * @param y the Y coordinate of the upper-left corner of
-     *                  the specified rectangle
-     * @param width the width of the specified rectangle
+     *
+     * @param x      the X coordinate of the upper-left corner of
+     *               the specified rectangle
+     * @param y      the Y coordinate of the upper-left corner of
+     *               the specified rectangle
+     * @param width  the width of the specified rectangle
      * @param height the new height of the specified rectangle
      */
     public void setRect(double x, double y, double width, double height) {
@@ -389,7 +404,7 @@ public class Rectangle extends Rectangle2D
             neww = -1;
         } else {
             newx = clip(x, false);
-            if (width >= 0) width += x-newx;
+            if (width >= 0) width += x - newx;
             neww = clip(width, width >= 0);
         }
 
@@ -399,12 +414,13 @@ public class Rectangle extends Rectangle2D
             newh = -1;
         } else {
             newy = clip(y, false);
-            if (height >= 0) height += y-newy;
+            if (height >= 0) height += y - newy;
             newh = clip(height, height >= 0);
         }
 
         reshape(newx, newy, neww, newh);
     }
+
     // Return best integer representation for v, clipped to integer
     // range and floor-ed or ceiling-ed, depending on the boolean.
     private static int clip(double v, boolean doceil) {
@@ -423,11 +439,12 @@ public class Rectangle extends Rectangle2D
      * <code>x</code>, <code>y</code>, <code>width</code>,
      * and <code>height</code>.
      * <p>
-     * @param x the new X coordinate for the upper-left
-     *                    corner of this <code>Rectangle</code>
-     * @param y the new Y coordinate for the upper-left
-     *                    corner of this <code>Rectangle</code>
-     * @param width the new width for this <code>Rectangle</code>
+     *
+     * @param x      the new X coordinate for the upper-left
+     *               corner of this <code>Rectangle</code>
+     * @param y      the new Y coordinate for the upper-left
+     *               corner of this <code>Rectangle</code>
+     * @param width  the new width for this <code>Rectangle</code>
      * @param height the new height for this <code>Rectangle</code>
      * @deprecated As of JDK version 1.1,
      * replaced by <code>setBounds(int, int, int, int)</code>.
@@ -445,12 +462,13 @@ public class Rectangle extends Rectangle2D
      * <p>
      * This method is included for completeness, to parallel the
      * <code>getLocation</code> method of <code>Component</code>.
+     *
      * @return the <code>Point</code> that is the upper-left corner of
-     *                  this <code>Rectangle</code>.
-     * @see       java.awt.Component#getLocation
-     * @see       #setLocation(Point)
-     * @see       #setLocation(int, int)
-     * @since     1.1
+     * this <code>Rectangle</code>.
+     * @see java.awt.Component#getLocation
+     * @see #setLocation(Point)
+     * @see #setLocation(int, int)
+     * @since 1.1
      */
     public Point getLocation() {
         return new Point(x, y);
@@ -461,11 +479,12 @@ public class Rectangle extends Rectangle2D
      * <p>
      * This method is included for completeness, to parallel the
      * <code>setLocation</code> method of <code>Component</code>.
+     *
      * @param p the <code>Point</code> specifying the new location
-     *                for this <code>Rectangle</code>
-     * @see       java.awt.Component#setLocation(java.awt.Point)
-     * @see       #getLocation
-     * @since     1.1
+     *          for this <code>Rectangle</code>
+     * @see java.awt.Component#setLocation(java.awt.Point)
+     * @see #getLocation
+     * @since 1.1
      */
     public void setLocation(Point p) {
         setLocation(p.x, p.y);
@@ -476,11 +495,12 @@ public class Rectangle extends Rectangle2D
      * <p>
      * This method is included for completeness, to parallel the
      * <code>setLocation</code> method of <code>Component</code>.
+     *
      * @param x the X coordinate of the new location
      * @param y the Y coordinate of the new location
-     * @see       #getLocation
-     * @see       java.awt.Component#setLocation(int, int)
-     * @since     1.1
+     * @see #getLocation
+     * @see java.awt.Component#setLocation(int, int)
+     * @since 1.1
      */
     public void setLocation(int x, int y) {
         move(x, y);
@@ -489,6 +509,7 @@ public class Rectangle extends Rectangle2D
     /**
      * Moves this <code>Rectangle</code> to the specified location.
      * <p>
+     *
      * @param x the X coordinate of the new location
      * @param y the Y coordinate of the new location
      * @deprecated As of JDK version 1.1,
@@ -504,12 +525,13 @@ public class Rectangle extends Rectangle2D
      * Translates this <code>Rectangle</code> the indicated distance,
      * to the right along the X coordinate axis, and
      * downward along the Y coordinate axis.
+     *
      * @param dx the distance to move this <code>Rectangle</code>
-     *                 along the X axis
+     *           along the X axis
      * @param dy the distance to move this <code>Rectangle</code>
-     *                 along the Y axis
-     * @see       java.awt.Rectangle#setLocation(int, int)
-     * @see       java.awt.Rectangle#setLocation(java.awt.Point)
+     *           along the Y axis
+     * @see java.awt.Rectangle#setLocation(int, int)
+     * @see java.awt.Rectangle#setLocation(java.awt.Point)
      */
     public void translate(int dx, int dy) {
         int oldv = this.x;
@@ -584,12 +606,13 @@ public class Rectangle extends Rectangle2D
      * <p>
      * This method is included for completeness, to parallel the
      * <code>getSize</code> method of <code>Component</code>.
+     *
      * @return a <code>Dimension</code>, representing the size of
-     *            this <code>Rectangle</code>.
-     * @see       java.awt.Component#getSize
-     * @see       #setSize(Dimension)
-     * @see       #setSize(int, int)
-     * @since     1.1
+     * this <code>Rectangle</code>.
+     * @see java.awt.Component#getSize
+     * @see #setSize(Dimension)
+     * @see #setSize(int, int)
+     * @since 1.1
      */
     public Dimension getSize() {
         return new Dimension(width, height);
@@ -601,10 +624,11 @@ public class Rectangle extends Rectangle2D
      * <p>
      * This method is included for completeness, to parallel the
      * <code>setSize</code> method of <code>Component</code>.
+     *
      * @param d the new size for the <code>Dimension</code> object
-     * @see       java.awt.Component#setSize(java.awt.Dimension)
-     * @see       #getSize
-     * @since     1.1
+     * @see java.awt.Component#setSize(java.awt.Dimension)
+     * @see #getSize
+     * @since 1.1
      */
     public void setSize(Dimension d) {
         setSize(d.width, d.height);
@@ -616,11 +640,12 @@ public class Rectangle extends Rectangle2D
      * <p>
      * This method is included for completeness, to parallel the
      * <code>setSize</code> method of <code>Component</code>.
-     * @param width the new width for this <code>Rectangle</code>
+     *
+     * @param width  the new width for this <code>Rectangle</code>
      * @param height the new height for this <code>Rectangle</code>
-     * @see       java.awt.Component#setSize(int, int)
-     * @see       #getSize
-     * @since     1.1
+     * @see java.awt.Component#setSize(int, int)
+     * @see #getSize
+     * @since 1.1
      */
     public void setSize(int width, int height) {
         resize(width, height);
@@ -630,7 +655,8 @@ public class Rectangle extends Rectangle2D
      * Sets the size of this <code>Rectangle</code> to the specified
      * width and height.
      * <p>
-     * @param width the new width for this <code>Rectangle</code>
+     *
+     * @param width  the new width for this <code>Rectangle</code>
      * @param height the new height for this <code>Rectangle</code>
      * @deprecated As of JDK version 1.1,
      * replaced by <code>setSize(int, int)</code>.
@@ -644,11 +670,12 @@ public class Rectangle extends Rectangle2D
     /**
      * Checks whether or not this <code>Rectangle</code> contains the
      * specified <code>Point</code>.
+     *
      * @param p the <code>Point</code> to test
-     * @return    <code>true</code> if the specified <code>Point</code>
-     *            is inside this <code>Rectangle</code>;
-     *            <code>false</code> otherwise.
-     * @since     1.1
+     * @return <code>true</code> if the specified <code>Point</code>
+     * is inside this <code>Rectangle</code>;
+     * <code>false</code> otherwise.
+     * @since 1.1
      */
     public boolean contains(Point p) {
         return contains(p.x, p.y);
@@ -658,13 +685,13 @@ public class Rectangle extends Rectangle2D
      * Checks whether or not this <code>Rectangle</code> contains the
      * point at the specified location {@code (x,y)}.
      *
-     * @param  x the specified X coordinate
-     * @param  y the specified Y coordinate
-     * @return    <code>true</code> if the point
-     *            {@code (x,y)} is inside this
-     *            <code>Rectangle</code>;
-     *            <code>false</code> otherwise.
-     * @since     1.1
+     * @param x the specified X coordinate
+     * @param y the specified Y coordinate
+     * @return <code>true</code> if the point
+     * {@code (x,y)} is inside this
+     * <code>Rectangle</code>;
+     * <code>false</code> otherwise.
+     * @since 1.1
      */
     public boolean contains(int x, int y) {
         return inside(x, y);
@@ -674,11 +701,11 @@ public class Rectangle extends Rectangle2D
      * Checks whether or not this <code>Rectangle</code> entirely contains
      * the specified <code>Rectangle</code>.
      *
-     * @param     r   the specified <code>Rectangle</code>
-     * @return    <code>true</code> if the <code>Rectangle</code>
-     *            is contained entirely inside this <code>Rectangle</code>;
-     *            <code>false</code> otherwise
-     * @since     1.2
+     * @param r the specified <code>Rectangle</code>
+     * @return <code>true</code> if the <code>Rectangle</code>
+     * is contained entirely inside this <code>Rectangle</code>;
+     * <code>false</code> otherwise
+     * @since 1.2
      */
     public boolean contains(Rectangle r) {
         return contains(r.x, r.y, r.width, r.height);
@@ -689,15 +716,16 @@ public class Rectangle extends Rectangle2D
      * the <code>Rectangle</code>
      * at the specified location {@code (X,Y)} with the
      * specified dimensions {@code (W,H)}.
-     * @param     X the specified X coordinate
-     * @param     Y the specified Y coordinate
-     * @param     W   the width of the <code>Rectangle</code>
-     * @param     H   the height of the <code>Rectangle</code>
-     * @return    <code>true</code> if the <code>Rectangle</code> specified by
-     *            {@code (X, Y, W, H)}
-     *            is entirely enclosed inside this <code>Rectangle</code>;
-     *            <code>false</code> otherwise.
-     * @since     1.1
+     *
+     * @param X the specified X coordinate
+     * @param Y the specified Y coordinate
+     * @param W the width of the <code>Rectangle</code>
+     * @param H the height of the <code>Rectangle</code>
+     * @return <code>true</code> if the <code>Rectangle</code> specified by
+     * {@code (X, Y, W, H)}
+     * is entirely enclosed inside this <code>Rectangle</code>;
+     * <code>false</code> otherwise.
+     * @since 1.1
      */
     public boolean contains(int X, int Y, int W, int H) {
         int w = this.width;
@@ -740,12 +768,12 @@ public class Rectangle extends Rectangle2D
      * Checks whether or not this <code>Rectangle</code> contains the
      * point at the specified location {@code (X,Y)}.
      *
-     * @param  X the specified X coordinate
-     * @param  Y the specified Y coordinate
-     * @return    <code>true</code> if the point
-     *            {@code (X,Y)} is inside this
-     *            <code>Rectangle</code>;
-     *            <code>false</code> otherwise.
+     * @param X the specified X coordinate
+     * @param Y the specified Y coordinate
+     * @return <code>true</code> if the point
+     * {@code (X,Y)} is inside this
+     * <code>Rectangle</code>;
+     * <code>false</code> otherwise.
      * @deprecated As of JDK version 1.1,
      * replaced by <code>contains(int, int)</code>.
      */
@@ -776,9 +804,9 @@ public class Rectangle extends Rectangle2D
      * their intersection is nonempty.
      *
      * @param r the specified <code>Rectangle</code>
-     * @return    <code>true</code> if the specified <code>Rectangle</code>
-     *            and this <code>Rectangle</code> intersect;
-     *            <code>false</code> otherwise.
+     * @return <code>true</code> if the specified <code>Rectangle</code>
+     * and this <code>Rectangle</code> intersect;
+     * <code>false</code> otherwise.
      */
     public boolean intersects(Rectangle r) {
         int tw = this.width;
@@ -810,21 +838,25 @@ public class Rectangle extends Rectangle2D
      * If the two rectangles do not intersect, the result will be
      * an empty rectangle.
      *
-     * @param     r   the specified <code>Rectangle</code>
-     * @return    the largest <code>Rectangle</code> contained in both the
-     *            specified <code>Rectangle</code> and in
-     *            this <code>Rectangle</code>; or if the rectangles
-     *            do not intersect, an empty rectangle.
+     * @param r the specified <code>Rectangle</code>
+     * @return the largest <code>Rectangle</code> contained in both the
+     * specified <code>Rectangle</code> and in
+     * this <code>Rectangle</code>; or if the rectangles
+     * do not intersect, an empty rectangle.
      */
     public Rectangle intersection(Rectangle r) {
         int tx1 = this.x;
         int ty1 = this.y;
         int rx1 = r.x;
         int ry1 = r.y;
-        long tx2 = tx1; tx2 += this.width;
-        long ty2 = ty1; ty2 += this.height;
-        long rx2 = rx1; rx2 += r.width;
-        long ry2 = ry1; ry2 += r.height;
+        long tx2 = tx1;
+        tx2 += this.width;
+        long ty2 = ty1;
+        ty2 += this.height;
+        long rx2 = rx1;
+        rx2 += r.width;
+        long ry2 = ry1;
+        ry2 += r.height;
         if (tx1 < rx1) tx1 = rx1;
         if (ty1 < ry1) ty1 = ry1;
         if (tx2 > rx2) tx2 = rx2;
@@ -857,10 +889,11 @@ public class Rectangle extends Rectangle2D
      * too large to be expressed as an {@code int}, the result
      * will have a dimension of {@code Integer.MAX_VALUE} along
      * that dimension.
+     *
      * @param r the specified <code>Rectangle</code>
-     * @return    the smallest <code>Rectangle</code> containing both
-     *            the specified <code>Rectangle</code> and this
-     *            <code>Rectangle</code>.
+     * @return the smallest <code>Rectangle</code> containing both
+     * the specified <code>Rectangle</code> and this
+     * <code>Rectangle</code>.
      */
     public Rectangle union(Rectangle r) {
         long tx2 = this.width;
@@ -925,6 +958,7 @@ public class Rectangle extends Rectangle2D
      * <pre>
      *     r.add(newx, newy, 1, 1);
      * </pre>
+     *
      * @param newx the X coordinate of the new point
      * @param newy the Y coordinate of the new point
      */
@@ -976,6 +1010,7 @@ public class Rectangle extends Rectangle2D
      * <pre>
      *     r.add(pt.x, pt.y, 1, 1);
      * </pre>
+     *
      * @param pt the new <code>Point</code> to add to this
      *           <code>Rectangle</code>
      */
@@ -1004,7 +1039,8 @@ public class Rectangle extends Rectangle2D
      * too large to be expressed as an {@code int}, the result
      * will have a dimension of {@code Integer.MAX_VALUE} along
      * that dimension.
-     * @param  r the specified <code>Rectangle</code>
+     *
+     * @param r the specified <code>Rectangle</code>
      */
     public void add(Rectangle r) {
         long tx2 = this.width;
@@ -1059,6 +1095,7 @@ public class Rectangle extends Rectangle2D
      * values of {@code width} and {@code height} grow
      * from negative to non-negative or shrink from non-negative
      * to negative.
+     *
      * @param h the horizontal expansion
      * @param v the vertical expansion
      */
@@ -1117,6 +1154,7 @@ public class Rectangle extends Rectangle2D
 
     /**
      * {@inheritDoc}
+     *
      * @since 1.2
      */
     public boolean isEmpty() {
@@ -1125,6 +1163,7 @@ public class Rectangle extends Rectangle2D
 
     /**
      * {@inheritDoc}
+     *
      * @since 1.2
      */
     public int outcode(double x, double y) {
@@ -1157,6 +1196,7 @@ public class Rectangle extends Rectangle2D
 
     /**
      * {@inheritDoc}
+     *
      * @since 1.2
      */
     public Rectangle2D createIntersection(Rectangle2D r) {
@@ -1170,6 +1210,7 @@ public class Rectangle extends Rectangle2D
 
     /**
      * {@inheritDoc}
+     *
      * @since 1.2
      */
     public Rectangle2D createUnion(Rectangle2D r) {
@@ -1188,14 +1229,15 @@ public class Rectangle extends Rectangle2D
      * <code>null</code> and is a <code>Rectangle</code> object that has the
      * same upper-left corner, width, and height as
      * this <code>Rectangle</code>.
+     *
      * @param obj the <code>Object</code> to compare with
-     *                this <code>Rectangle</code>
-     * @return    <code>true</code> if the objects are equal;
-     *            <code>false</code> otherwise.
+     *            this <code>Rectangle</code>
+     * @return <code>true</code> if the objects are equal;
+     * <code>false</code> otherwise.
      */
     public boolean equals(Object obj) {
         if (obj instanceof Rectangle) {
-            Rectangle r = (Rectangle)obj;
+            Rectangle r = (Rectangle) obj;
             return ((x == r.x) &&
                     (y == r.y) &&
                     (width == r.width) &&
@@ -1207,8 +1249,9 @@ public class Rectangle extends Rectangle2D
     /**
      * Returns a <code>String</code> representing this
      * <code>Rectangle</code> and its values.
+     *
      * @return a <code>String</code> representing this
-     *               <code>Rectangle</code> object's coordinate and size values.
+     * <code>Rectangle</code> object's coordinate and size values.
      */
     public String toString() {
         return getClass().getName() + "[x=" + x + ",y=" + y + ",width=" + width + ",height=" + height + "]";

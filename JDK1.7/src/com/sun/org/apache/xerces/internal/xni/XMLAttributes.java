@@ -71,10 +71,8 @@ package com.sun.org.apache.xerces.internal.xni;
  * pipeline can modify the values or change the attributes that are
  * propogated to the next stage.
  *
- * @see XMLDocumentHandler#startElement
- *
  * @author Andy Clark, IBM
- *
+ * @see XMLDocumentHandler#startElement
  */
 public interface XMLAttributes {
 
@@ -104,9 +102,7 @@ public interface XMLAttributes {
      *                  parenthesis and suffixed by a close parenthesis.
      *                  For example: "(true|false)".
      * @param attrValue The attribute value.
-     *
      * @return Returns the attribute index.
-     *
      * @see #setNonNormalizedValue
      * @see #setSpecified
      */
@@ -146,9 +142,8 @@ public interface XMLAttributes {
      * Look up the index of an attribute by XML 1.0 qualified name.
      *
      * @param qName The qualified (prefixed) name.
-     *
      * @return The index of the attribute, or -1 if it does not
-     *         appear in the list.
+     * appear in the list.
      */
     public int getIndex(String qName);
 
@@ -158,9 +153,8 @@ public interface XMLAttributes {
      * @param uri       The Namespace URI, or the empty string if
      *                  the name has no Namespace URI.
      * @param localName The attribute's local name.
-     *
      * @return The index of the attribute, or -1 if it does not
-     *         appear in the list.
+     * appear in the list.
      */
     public int getIndex(String uri, String localPart);
 
@@ -192,11 +186,9 @@ public interface XMLAttributes {
      * Look up an attribute's Namespace URI by index.
      *
      * @param index The attribute index (zero-based).
-     *
      * @return The Namespace URI, or the empty string if none
-     *         is available, or null if the index is out of
-     *         range.
-     *
+     * is available, or null if the index is out of
+     * range.
      * @see #getLength
      */
     public String getURI(int index);
@@ -205,11 +197,9 @@ public interface XMLAttributes {
      * Look up an attribute's local name by index.
      *
      * @param index The attribute index (zero-based).
-     *
      * @return The local name, or the empty string if Namespace
-     *         processing is not being performed, or null
-     *         if the index is out of range.
-     *
+     * processing is not being performed, or null
+     * if the index is out of range.
      * @see #getLength
      */
     public String getLocalName(int index);
@@ -218,11 +208,9 @@ public interface XMLAttributes {
      * Look up an attribute's XML 1.0 qualified name by index.
      *
      * @param index The attribute index (zero-based).
-     *
      * @return The XML 1.0 qualified name, or the empty string
-     *         if none is available, or null if the index
-     *         is out of range.
-     *
+     * if none is available, or null if the index
+     * is out of range.
      * @see #getLength
      */
     public String getQName(int index);
@@ -262,10 +250,8 @@ public interface XMLAttributes {
      * parser will report the type as "NMTOKEN".
      *
      * @param index The attribute index (zero-based).
-     *
      * @return The attribute's type as a string, or null if the
-     *         index is out of range.
-     *
+     * index is out of range.
      * @see #getLength
      */
     public String getType(int index);
@@ -277,10 +263,9 @@ public interface XMLAttributes {
      * of the possible types.
      *
      * @param qName The XML 1.0 qualified name.
-     *
      * @return The attribute type as a string, or null if the
-     *         attribute is not in the list or if qualified names
-     *         are not available.
+     * attribute is not in the list or if qualified names
+     * are not available.
      */
     public String getType(String qName);
 
@@ -293,10 +278,9 @@ public interface XMLAttributes {
      * @param uri       The Namespace URI, or the empty String if the
      *                  name has no Namespace URI.
      * @param localName The local name of the attribute.
-     *
      * @return The attribute type as a string, or null if the
-     *         attribute is not in the list or if Namespace
-     *         processing is not being performed.
+     * attribute is not in the list or if Namespace
+     * processing is not being performed.
      */
     public String getType(String uri, String localName);
 
@@ -306,7 +290,6 @@ public interface XMLAttributes {
      *
      * @param attrIndex The attribute index.
      * @param attrValue The new attribute value.
-     *
      * @see #setNonNormalizedValue
      */
     public void setValue(int attrIndex, String attrValue);
@@ -322,10 +305,8 @@ public interface XMLAttributes {
      * single space.
      *
      * @param index The attribute index (zero-based).
-     *
      * @return The attribute's value as a string, or null if the
-     *         index is out of range.
-     *
+     * index is out of range.
      * @see #getLength
      */
     public String getValue(int index);
@@ -337,10 +318,9 @@ public interface XMLAttributes {
      * of the possible values.
      *
      * @param qName The XML 1.0 qualified name.
-     *
      * @return The attribute value as a string, or null if the
-     *         attribute is not in the list or if qualified names
-     *         are not available.
+     * attribute is not in the list or if qualified names
+     * are not available.
      */
     public String getValue(String qName);
 
@@ -353,9 +333,8 @@ public interface XMLAttributes {
      * @param uri       The Namespace URI, or the empty String if the
      *                  name has no Namespace URI.
      * @param localName The local name of the attribute.
-     *
      * @return The attribute value as a string, or null if the
-     *         attribute is not in the list.
+     * attribute is not in the list.
      */
     public String getValue(String uri, String localName);
 
@@ -401,7 +380,7 @@ public interface XMLAttributes {
      * @param attributeIndex The attribute index.
      * @return Augmentations
      */
-    public Augmentations getAugmentations (int attributeIndex);
+    public Augmentations getAugmentations(int attributeIndex);
 
     /**
      * Look up an augmentation by namespace name.
@@ -411,7 +390,7 @@ public interface XMLAttributes {
      * @param localPart
      * @return Augmentations
      */
-    public Augmentations getAugmentations (String uri, String localPart);
+    public Augmentations getAugmentations(String uri, String localPart);
 
 
     /**
@@ -419,9 +398,7 @@ public interface XMLAttributes {
      * <p>
      *
      * @param qName The XML 1.0 qualified name.
-     *
      * @return Augmentations
-     *
      */
     public Augmentations getAugmentations(String qName);
 
@@ -432,8 +409,6 @@ public interface XMLAttributes {
      * @param augs      The augmentations.
      */
     public void setAugmentations(int attrIndex, Augmentations augs);
-
-
 
 
 } // interface XMLAttributes

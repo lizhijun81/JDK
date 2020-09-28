@@ -25,15 +25,13 @@
 package com.sun.corba.se.impl.encoding;
 
 /**
- *
  * Information from the OSF code set registry version 1.2g.
- *
+ * <p>
  * Use the Entry corresponding to the desired code set.
- *
+ * <p>
  * Consider rename to CodeSetRegistry since OSF is dead.
  */
-public final class OSFCodeSetRegistry
-{
+public final class OSFCodeSetRegistry {
     // Numbers from the OSF code set registry version 1.2g.
     //
     // Please see the individual Entry definitions for
@@ -44,15 +42,15 @@ public final class OSFCodeSetRegistry
     public static final int UCS_2_VALUE = 0x00010100;
     public static final int ISO_646_VALUE = 0x00010020;
 
-    private OSFCodeSetRegistry() {}
+    private OSFCodeSetRegistry() {
+    }
 
     /**
      * An entry in the OSF registry which allows users
      * to find out the equivalent Java character encoding
      * name as well as some other facts from the registry.
      */
-    public final static class Entry
-    {
+    public final static class Entry {
         private String javaName;
         private int encodingNum;
         private boolean isFixedWidth;
@@ -109,7 +107,7 @@ public final class OSFCodeSetRegistry
                 return false;
 
             OSFCodeSetRegistry.Entry other
-                = (OSFCodeSetRegistry.Entry)obj;
+                    = (OSFCodeSetRegistry.Entry) obj;
 
             return (javaName.equals(other.javaName) &&
                     encodingNum == other.encodingNum &&
@@ -130,10 +128,10 @@ public final class OSFCodeSetRegistry
      * when nothing else is specified.
      */
     public static final Entry ISO_8859_1
-        = new Entry("ISO-8859-1",
-                    ISO_8859_1_VALUE,
-                    true,
-                    1);
+            = new Entry("ISO-8859-1",
+            ISO_8859_1_VALUE,
+            true,
+            1);
 
     /**
      * UTF-16 as specified in the OSF registry has an optional
@@ -143,29 +141,29 @@ public final class OSFCodeSetRegistry
      * now, they're used internally by CodeSetConversion.
      */
     static final Entry UTF_16BE
-        = new Entry("UTF-16BE",
-                    -1,
-                    true,
-                    2);
+            = new Entry("UTF-16BE",
+            -1,
+            true,
+            2);
 
     static final Entry UTF_16LE
-        = new Entry("UTF-16LE",
-                    -2,
-                    true,
-                    2);
+            = new Entry("UTF-16LE",
+            -2,
+            true,
+            2);
 
     /**
      * Fallback wchar code set.
-     *
+     * <p>
      * In the resolution of issue 3405b, UTF-16 defaults to big endian, so
      * doesn't have to have a byte order marker.  Unfortunately, this has to be
      * a special case for compatibility.
      */
     public static final Entry UTF_16
-        = new Entry("UTF-16",
-                    UTF_16_VALUE,
-                    true,
-                    4);
+            = new Entry("UTF-16",
+            UTF_16_VALUE,
+            true,
+            4);
 
     /**
      * Fallback char code set.  Also the code set for char data
@@ -173,10 +171,10 @@ public final class OSFCodeSetRegistry
      * only one octet, it is really the same as Latin-1.
      */
     public static final Entry UTF_8
-        = new Entry("UTF-8",
-                    UTF_8_VALUE,
-                    false,
-                    6);
+            = new Entry("UTF-8",
+            UTF_8_VALUE,
+            false,
+            6);
 
     /*
      * At least in JDK 1.3, UCS-2 isn't one of the mandatory Java character
@@ -190,10 +188,10 @@ public final class OSFCodeSetRegistry
      * won't work!  Beware!
      */
     public static final Entry UCS_2
-        = new Entry("UCS-2",
-                    UCS_2_VALUE,
-                    true,
-                    2);
+            = new Entry("UCS-2",
+            UCS_2_VALUE,
+            true,
+            2);
 
     /**
      * This is the encoding older JavaSoft ORBs advertised as their
@@ -202,17 +200,17 @@ public final class OSFCodeSetRegistry
      * were really sending ISO8859-1.
      */
     public static final Entry ISO_646
-        = new Entry("US-ASCII",
-                    ISO_646_VALUE,
-                    true,
-                    1);
+            = new Entry("US-ASCII",
+            ISO_646_VALUE,
+            true,
+            1);
 
     /**
      * Given an OSF registry value, return the corresponding Entry.
      * Returns null if an Entry for that value is unavailable.
      */
     public static Entry lookupEntry(int encodingValue) {
-        switch(encodingValue) {
+        switch (encodingValue) {
             case ISO_8859_1_VALUE:
                 return OSFCodeSetRegistry.ISO_8859_1;
             case UTF_16_VALUE:

@@ -52,9 +52,8 @@ import com.sun.corba.se.pept.protocol.MessageMediator;
  * set header metadata.</p>
  *
  * @author Harold Carr
-*/
-public interface OutputObject
-{
+ */
+public interface OutputObject {
     public void setMessageMediator(MessageMediator messageMediator);
 
     public MessageMediator getMessageMediator();

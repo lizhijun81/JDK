@@ -49,9 +49,8 @@ public class NTSidUserPrincipal extends NTSid {
      * <p>
      *
      * @param name a string version of the Windows NT SID for this user.<p>
-     *
-     * @exception NullPointerException if the <code>name</code>
-     *                  is <code>null</code>.
+     * @throws NullPointerException if the <code>name</code>
+     *                              is <code>null</code>.
      */
     public NTSidUserPrincipal(String name) {
         super(name);
@@ -68,7 +67,7 @@ public class NTSidUserPrincipal extends NTSid {
         java.text.MessageFormat form = new java.text.MessageFormat
                 (sun.security.util.ResourcesMgr.getString
                         ("NTSidUserPrincipal.name",
-                        "sun.security.util.AuthResources"));
+                                "sun.security.util.AuthResources"));
         Object[] source = {getName()};
         return form.format(source);
     }
@@ -83,13 +82,12 @@ public class NTSidUserPrincipal extends NTSid {
      *
      * @param o Object to be compared for equality with this
      *          <code>NTSidUserPrincipal</code>.
-     *
      * @return true if the specified Object is equal equal to this
-     *          <code>NTSidUserPrincipal</code>.
+     * <code>NTSidUserPrincipal</code>.
      */
     public boolean equals(Object o) {
-            if (o == null)
-                return false;
+        if (o == null)
+            return false;
 
         if (this == o)
             return true;

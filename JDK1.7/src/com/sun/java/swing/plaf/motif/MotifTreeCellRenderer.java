@@ -46,8 +46,7 @@ import java.util.*;
  *
  * @author Jeff Dinkins
  */
-public class MotifTreeCellRenderer extends DefaultTreeCellRenderer
-{
+public class MotifTreeCellRenderer extends DefaultTreeCellRenderer {
     static final int LEAF_SIZE = 13;
     static final Icon LEAF_ICON = new IconUIResource(new TreeLeafIcon());
 

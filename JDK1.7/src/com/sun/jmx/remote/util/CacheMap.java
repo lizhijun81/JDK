@@ -48,18 +48,17 @@ public class CacheMap<K, V> extends WeakHashMap<K, V> {
      * <code>nSoftReferences</code> as soft references.</p>
      *
      * @param nSoftReferences Maximum number of keys to keep as soft
-     * references.  Access times for {@link #get(Object) get} and
-     * {@link #put(Object, Object) put} have a component that scales
-     * linearly with <code>nSoftReferences</code>, so this value
-     * should not be too great.
-     *
+     *                        references.  Access times for {@link #get(Object) get} and
+     *                        {@link #put(Object, Object) put} have a component that scales
+     *                        linearly with <code>nSoftReferences</code>, so this value
+     *                        should not be too great.
      * @throws IllegalArgumentException if
-     * <code>nSoftReferences</code> is negative.
+     *                                  <code>nSoftReferences</code> is negative.
      */
     public CacheMap(int nSoftReferences) {
         if (nSoftReferences < 0) {
             throw new IllegalArgumentException("nSoftReferences = " +
-                                               nSoftReferences);
+                    nSoftReferences);
         }
         this.nSoftReferences = nSoftReferences;
     }

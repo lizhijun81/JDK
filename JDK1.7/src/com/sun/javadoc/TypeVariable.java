@@ -52,7 +52,7 @@ public interface TypeVariable extends Type {
      * which this type variable is declared.
      *
      * @return the class, interface, method, or constructor within
-     *         which this type variable is declared.
+     * which this type variable is declared.
      */
     ProgramElementDoc owner();
 }

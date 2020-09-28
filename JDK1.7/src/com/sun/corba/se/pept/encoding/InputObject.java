@@ -32,7 +32,7 @@ import com.sun.corba.se.pept.protocol.MessageMediator;
 /**
  * <p> An <code>InputObject</code> is the interface used by the
  * presentation block to get programming language typed data from data
- *  encoded in a message. </p>
+ * encoded in a message. </p>
  *
  * <p> The implementation of an <code>InputObject</code> contains the
  * encoded data.  When the presentation block asks for data the
@@ -50,9 +50,8 @@ import com.sun.corba.se.pept.protocol.MessageMediator;
  * obtain header metadata.</p>
  *
  * @author Harold Carr
-*/
-public interface InputObject
-{
+ */
+public interface InputObject {
     public void setMessageMediator(MessageMediator messageMediator);
 
     public MessageMediator getMessageMediator();

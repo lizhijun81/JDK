@@ -42,15 +42,14 @@ import java.awt.event.*;
  *
  * @author David Kloba
  */
-public class WindowsDesktopPaneUI extends BasicDesktopPaneUI
-{
+public class WindowsDesktopPaneUI extends BasicDesktopPaneUI {
     public static ComponentUI createUI(JComponent c) {
         return new WindowsDesktopPaneUI();
     }
 
     protected void installDesktopManager() {
         desktopManager = desktop.getDesktopManager();
-        if(desktopManager == null) {
+        if (desktopManager == null) {
             desktopManager = new WindowsDesktopManager();
             desktop.setDesktopManager(desktopManager);
         }
@@ -64,7 +63,7 @@ public class WindowsDesktopPaneUI extends BasicDesktopPaneUI
         super.installKeyboardActions();
 
         // Request focus if it isn't set.
-        if(!desktop.requestDefaultFocus()) {
+        if (!desktop.requestDefaultFocus()) {
             desktop.requestFocus();
         }
     }

@@ -34,8 +34,8 @@ package org.omg.CORBA;
  * originally requested.
  *
  * @see <A href="../../../../technotes/guides/idl/jidlExceptions.html">documentation on
- *      Java&nbsp;IDL exceptions</A>
- * @since   J2SE 1.5
+ * Java&nbsp;IDL exceptions</A>
+ * @since J2SE 1.5
  */
 
 public final class ACTIVITY_COMPLETED extends SystemException {
@@ -62,7 +62,7 @@ public final class ACTIVITY_COMPLETED extends SystemException {
      * Constructs an <code>ACTIVITY_COMPLETED</code> exception with the
      * specified minor code and completion status.
      *
-     * @param minorCode minor code.
+     * @param minorCode        minor code.
      * @param completionStatus completion status.
      */
     public ACTIVITY_COMPLETED(int minorCode,
@@ -74,8 +74,8 @@ public final class ACTIVITY_COMPLETED extends SystemException {
      * Constructs an <code>ACTIVITY_COMPLETED</code> exception with the
      * specified message, minor code, and completion status.
      *
-     * @param detailMessage string containing a detailed message.
-     * @param minorCode minor code.
+     * @param detailMessage    string containing a detailed message.
+     * @param minorCode        minor code.
      * @param completionStatus completion status.
      */
     public ACTIVITY_COMPLETED(String detailMessage,

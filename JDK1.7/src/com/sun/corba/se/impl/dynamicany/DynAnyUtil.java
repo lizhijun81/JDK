@@ -36,15 +36,16 @@ import org.omg.CORBA.portable.InputStream;
 import org.omg.DynamicAny.*;
 import org.omg.DynamicAny.DynAnyPackage.TypeMismatch;
 import org.omg.DynamicAny.DynAnyFactoryPackage.InconsistentTypeCode;
+
 import java.math.BigDecimal;
+
 import com.sun.corba.se.impl.corba.AnyImpl;
 
-import com.sun.corba.se.spi.orb.ORB ;
-import com.sun.corba.se.spi.logging.CORBALogDomains ;
-import com.sun.corba.se.impl.logging.ORBUtilSystemException ;
+import com.sun.corba.se.spi.orb.ORB;
+import com.sun.corba.se.spi.logging.CORBALogDomains;
+import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 
-public class DynAnyUtil
-{
+public class DynAnyUtil {
     static boolean isConsistentType(TypeCode typeCode) {
         int kind = typeCode.kind().value();
         return (kind != TCKind._tk_Principal &&
@@ -67,9 +68,8 @@ public class DynAnyUtil
     }
 
     static DynAny createMostDerivedDynAny(Any any, ORB orb, boolean copyValue)
-        throws org.omg.DynamicAny.DynAnyFactoryPackage.InconsistentTypeCode
-    {
-        if (any == null || ! DynAnyUtil.isConsistentType(any.type()))
+            throws org.omg.DynamicAny.DynAnyFactoryPackage.InconsistentTypeCode {
+        if (any == null || !DynAnyUtil.isConsistentType(any.type()))
             throw new org.omg.DynamicAny.DynAnyFactoryPackage.InconsistentTypeCode();
 
         switch (any.type().kind().value()) {
@@ -95,9 +95,8 @@ public class DynAnyUtil
     }
 
     static DynAny createMostDerivedDynAny(TypeCode typeCode, ORB orb)
-        throws org.omg.DynamicAny.DynAnyFactoryPackage.InconsistentTypeCode
-    {
-        if (typeCode == null || ! DynAnyUtil.isConsistentType(typeCode))
+            throws org.omg.DynamicAny.DynAnyFactoryPackage.InconsistentTypeCode {
+        if (typeCode == null || !DynAnyUtil.isConsistentType(typeCode))
             throw new org.omg.DynamicAny.DynAnyFactoryPackage.InconsistentTypeCode();
 
         switch (typeCode.kind().value()) {
@@ -141,8 +140,8 @@ public class DynAnyUtil
 
     // Creates a default Any of the given type.
     static Any createDefaultAnyOfType(TypeCode typeCode, ORB orb) {
-        ORBUtilSystemException wrapper = ORBUtilSystemException.get( orb,
-            CORBALogDomains.RPC_PRESENTATION ) ;
+        ORBUtilSystemException wrapper = ORBUtilSystemException.get(orb,
+                CORBALogDomains.RPC_PRESENTATION);
 
         Any returnValue = orb.create_any();
         // The spec for DynAny differs from Any on initialization via type code:
@@ -161,11 +160,11 @@ public class DynAnyUtil
                 break;
             case TCKind._tk_short:
                 // zero for numeric types
-                returnValue.insert_short((short)0);
+                returnValue.insert_short((short) 0);
                 break;
             case TCKind._tk_ushort:
                 // zero for numeric types
-                returnValue.insert_ushort((short)0);
+                returnValue.insert_ushort((short) 0);
                 break;
             case TCKind._tk_long:
                 // zero for numeric types
@@ -177,31 +176,31 @@ public class DynAnyUtil
                 break;
             case TCKind._tk_longlong:
                 // zero for numeric types
-                returnValue.insert_longlong((long)0);
+                returnValue.insert_longlong((long) 0);
                 break;
             case TCKind._tk_ulonglong:
                 // zero for numeric types
-                returnValue.insert_ulonglong((long)0);
+                returnValue.insert_ulonglong((long) 0);
                 break;
             case TCKind._tk_float:
                 // zero for numeric types
-                returnValue.insert_float((float)0.0);
+                returnValue.insert_float((float) 0.0);
                 break;
             case TCKind._tk_double:
                 // zero for numeric types
-                returnValue.insert_double((double)0.0);
+                returnValue.insert_double((double) 0.0);
                 break;
             case TCKind._tk_octet:
                 // zero for types octet, char, and wchar
-                returnValue.insert_octet((byte)0);
+                returnValue.insert_octet((byte) 0);
                 break;
             case TCKind._tk_char:
                 // zero for types octet, char, and wchar
-                returnValue.insert_char((char)0);
+                returnValue.insert_char((char) 0);
                 break;
             case TCKind._tk_wchar:
                 // zero for types octet, char, and wchar
-                returnValue.insert_wchar((char)0);
+                returnValue.insert_wchar((char) 0);
                 break;
             case TCKind._tk_string:
                 // the empty string for string and wstring
@@ -263,20 +262,21 @@ public class DynAnyUtil
                 break;
             case TCKind._tk_longdouble:
                 // Unspecified for Java
-                throw wrapper.tkLongDoubleNotSupported() ;
+                throw wrapper.tkLongDoubleNotSupported();
             default:
-                throw wrapper.typecodeNotSupported() ;
+                throw wrapper.typecodeNotSupported();
         }
         return returnValue;
     }
-/*
-    static Any setTypeOfAny(TypeCode typeCode, Any value) {
-        if (value != null) {
-            value.read_value(value.create_input_stream(), typeCode);
+
+    /*
+        static Any setTypeOfAny(TypeCode typeCode, Any value) {
+            if (value != null) {
+                value.read_value(value.create_input_stream(), typeCode);
+            }
+            return value;
         }
-        return value;
-    }
-*/
+    */
     static Any copy(Any inAny, ORB orb) {
         return new AnyImpl(orb, inAny);
     }
@@ -311,7 +311,7 @@ public class DynAnyUtil
         // Returning simply the value of Any.isInitialized() is not enough.
         // The DynAny spec says that Anys containing null strings do not contain
         // a "legal value" (see ptc 99-10-07, 9.2.3.3)
-        boolean isInitialized = ((AnyImpl)any).isInitialized();
+        boolean isInitialized = ((AnyImpl) any).isInitialized();
         switch (any.type().kind().value()) {
             case TCKind._tk_string:
                 return (isInitialized && (any.extract_string() != null));

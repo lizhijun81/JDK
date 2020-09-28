@@ -55,8 +55,9 @@ public interface XMLGrammarPool {
      * called by a validator before the validation starts. the application
      * can provide an initial set of grammars available to the current
      * validation attempt. </p>
+     *
      * @param grammarType the type of the grammar, from the
-     *  <code>com.sun.org.apache.xerces.internal.xni.grammars.Grammar</code> interface.
+     *                    <code>com.sun.org.apache.xerces.internal.xni.grammars.Grammar</code> interface.
      * @return the set of grammars the validator may put in its "bucket"
      */
     public Grammar[] retrieveInitialGrammarSet(String grammarType);
@@ -67,9 +68,10 @@ public interface XMLGrammarPool {
      * This method is called after the
      * validation finishes. The application may then choose to cache some
      * of the returned grammars. </p>
+     *
      * @param grammarType the type of the grammars being returned;
-     * @param grammars an array containing the set of grammars being
-     *  returned; order is not significant.
+     * @param grammars    an array containing the set of grammars being
+     *                    returned; order is not significant.
      */
     public void cacheGrammars(String grammarType, Grammar[] grammars);
 
@@ -80,9 +82,10 @@ public interface XMLGrammarPool {
      * call the EntityResolver.  <strong>An application must not call its
      * EntityResolver itself from this method; this may result in infinite
      * recursions.</strong>
+     *
      * @param desc The description of the Grammar being requested.
      * @return the Grammar corresponding to this description or null if
-     *  no such Grammar is known.
+     * no such Grammar is known.
      */
     public Grammar retrieveGrammar(XMLGrammarDescription desc);
 

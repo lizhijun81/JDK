@@ -27,37 +27,40 @@ package com.sun.org.apache.xerces.internal.dom;
  * may wish to consult when manipulating the document. A Notation
  * represents a name-value pair, with its nodeName being set to the
  * declared name of the notation.
- * <P>
+ * <p>
  * Notations are also used to formally declare the "targets" of
  * Processing Instructions.
- * <P>
+ * <p>
  * Note that the Notation's data is non-DOM information; the DOM only
  * records what and where it is.
- * <P>
+ * <p>
  * See the XML 1.0 spec, sections 4.7 and 2.6, for more info.
- * <P>
+ * <p>
  * Level 1 of the DOM does not support editing Notation contents.
  *
  * @xerces.internal
- *
- * @since  PR-DOM-Level-1-19980818.
+ * @since PR-DOM-Level-1-19980818.
  */
 public class DeferredNotationImpl
-    extends NotationImpl
-    implements DeferredNode {
+        extends NotationImpl
+        implements DeferredNode {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = 5705337172887990848L;
 
     //
     // Data
     //
 
-    /** Node index. */
+    /**
+     * Node index.
+     */
     protected transient int fNodeIndex;
 
     //
@@ -80,7 +83,9 @@ public class DeferredNotationImpl
     // DeferredNode methods
     //
 
-    /** Returns the node index. */
+    /**
+     * Returns the node index.
+     */
     public int getNodeIndex() {
         return fNodeIndex;
     }
@@ -100,7 +105,7 @@ public class DeferredNotationImpl
 
         // name
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl)this.ownerDocument();
+                (DeferredDocumentImpl) this.ownerDocument();
         name = ownerDocument.getNodeName(fNodeIndex);
 
         ownerDocument.getNodeType(fNodeIndex);

@@ -27,7 +27,7 @@ package com.sun.source.tree;
 
 /**
  * A tree node for an 'assert' statement.
- *
+ * <p>
  * For example:
  * <pre>
  *   assert <em>condition</em> ;
@@ -35,13 +35,13 @@ package com.sun.source.tree;
  *   assert <em>condition</em> : <em>detail</em> ;
  * </pre>
  *
- * @jls section 14.10
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls section 14.10
  * @since 1.6
  */
 public interface AssertTree extends StatementTree {
     ExpressionTree getCondition();
+
     ExpressionTree getDetail();
 }

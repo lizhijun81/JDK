@@ -61,11 +61,10 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLInputSource;
  * </ul>
  *
  * @author Neil Graham, IBM
- *
  * @version $Id: XMLGrammarCachingConfiguration.java,v 1.6 2010-11-01 04:40:10 joehw Exp $
  */
 public class XMLGrammarCachingConfiguration
-    extends XIncludeAwareParserConfiguration {
+        extends XIncludeAwareParserConfiguration {
 
     //
     // Constants
@@ -87,7 +86,7 @@ public class XMLGrammarCachingConfiguration
 
     // schema full checking constant
     protected static final String SCHEMA_FULL_CHECKING =
-            Constants.XERCES_FEATURE_PREFIX+Constants.SCHEMA_FULL_CHECKING;
+            Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_FULL_CHECKING;
 
     // Data
 
@@ -101,7 +100,9 @@ public class XMLGrammarCachingConfiguration
     // Constructors
     //
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public XMLGrammarCachingConfiguration() {
         this(fStaticSymbolTable, fStaticGrammarPool, null);
     } // <init>()
@@ -127,7 +128,7 @@ public class XMLGrammarCachingConfiguration
      * @param grammarPool The grammar pool to use.
      */
     public XMLGrammarCachingConfiguration(SymbolTable symbolTable,
-                                       XMLGrammarPool grammarPool) {
+                                          XMLGrammarPool grammarPool) {
         this(symbolTable, grammarPool, null);
     } // <init>(SymbolTable,XMLGrammarPool)
 
@@ -144,8 +145,8 @@ public class XMLGrammarCachingConfiguration
      * @param parentSettings The parent settings.
      */
     public XMLGrammarCachingConfiguration(SymbolTable symbolTable,
-                                       XMLGrammarPool grammarPool,
-                                       XMLComponentManager parentSettings) {
+                                          XMLGrammarPool grammarPool,
+                                          XMLComponentManager parentSettings) {
         super(symbolTable, grammarPool, parentSettings);
 
         // REVISIT:  may need to add some features/properties
@@ -195,17 +196,17 @@ public class XMLGrammarCachingConfiguration
      * This method also adds this grammar to the XMLGrammarPool
      *
      * @param type The type of the grammar to be constructed
-     * @param uri The location of the grammar to be constructed.
-     * <strong>The parser will not expand this URI or make it
-     * available to the EntityResolver</strong>
+     * @param uri  The location of the grammar to be constructed.
+     *             <strong>The parser will not expand this URI or make it
+     *             available to the EntityResolver</strong>
      * @return The newly created <code>Grammar</code>.
-     * @exception XNIException thrown on an error in grammar
-     * construction
-     * @exception IOException thrown if an error is encountered
-     * in reading the file
+     * @throws XNIException thrown on an error in grammar
+     *                      construction
+     * @throws IOException  thrown if an error is encountered
+     *                      in reading the file
      */
     public Grammar parseGrammar(String type, String uri)
-                              throws XNIException, IOException {
+            throws XNIException, IOException {
         XMLInputSource source = new XMLInputSource(null, uri, null);
         return parseGrammar(type, source);
 
@@ -217,22 +218,22 @@ public class XMLGrammarCachingConfiguration
      * This method also adds this grammar to the XMLGrammarPool
      *
      * @param type The type of the grammar to be constructed
-     * @param is The XMLInputSource containing this grammar's
-     * information
-     * <strong>If a URI is included in the systemId field, the parser will not expand this URI or make it
-     * available to the EntityResolver</strong>
+     * @param is   The XMLInputSource containing this grammar's
+     *             information
+     *             <strong>If a URI is included in the systemId field, the parser will not expand this URI or make it
+     *             available to the EntityResolver</strong>
      * @return The newly created <code>Grammar</code>.
-     * @exception XNIException thrown on an error in grammar
-     * construction
-     * @exception IOException thrown if an error is encountered
-     * in reading the file
+     * @throws XNIException thrown on an error in grammar
+     *                      construction
+     * @throws IOException  thrown if an error is encountered
+     *                      in reading the file
      */
     public Grammar parseGrammar(String type, XMLInputSource
-                is) throws XNIException, IOException {
-        if(type.equals(XMLGrammarDescription.XML_SCHEMA)) {
+            is) throws XNIException, IOException {
+        if (type.equals(XMLGrammarDescription.XML_SCHEMA)) {
             // by default, make all XMLGrammarPoolImpl's schema grammars available to fSchemaHandler
             return parseXMLSchema(is);
-        } else if(type.equals(XMLGrammarDescription.XML_DTD)) {
+        } else if (type.equals(XMLGrammarDescription.XML_DTD)) {
             return parseDTD(is);
         }
         // don't know this grammar...
@@ -251,9 +252,9 @@ public class XMLGrammarCachingConfiguration
      * Therefore, bucket must not be null!
      */
     SchemaGrammar parseXMLSchema(XMLInputSource is)
-                throws IOException {
+            throws IOException {
         XMLEntityResolver resolver = getEntityResolver();
-        if(resolver != null) {
+        if (resolver != null) {
             fSchemaLoader.setEntityResolver(resolver);
         }
         if (fErrorReporter.getMessageFormatter(XSMessageFormatter.SCHEMA_DOMAIN) == null) {
@@ -266,18 +267,18 @@ public class XMLGrammarCachingConfiguration
         fSchemaLoader.setProperty(propName, getProperty(propName));
         propName = propPrefix + Constants.SCHEMA_NONS_LOCATION;
         fSchemaLoader.setProperty(propName, getProperty(propName));
-        propName = Constants.JAXP_PROPERTY_PREFIX+Constants.SCHEMA_SOURCE;
+        propName = Constants.JAXP_PROPERTY_PREFIX + Constants.SCHEMA_SOURCE;
         fSchemaLoader.setProperty(propName, getProperty(propName));
         fSchemaLoader.setFeature(SCHEMA_FULL_CHECKING, getFeature(SCHEMA_FULL_CHECKING));
 
         // Should check whether the grammar with this namespace is already in
         // the grammar resolver. But since we don't know the target namespace
         // of the document here, we leave such check to XSDHandler
-        SchemaGrammar grammar = (SchemaGrammar)fSchemaLoader.loadGrammar(is);
+        SchemaGrammar grammar = (SchemaGrammar) fSchemaLoader.loadGrammar(is);
         // by default, hand it off to the grammar pool
         if (grammar != null) {
             fGrammarPool.cacheGrammars(XMLGrammarDescription.XML_SCHEMA,
-                                      new Grammar[]{grammar});
+                    new Grammar[]{grammar});
         }
 
         return grammar;
@@ -287,9 +288,9 @@ public class XMLGrammarCachingConfiguration
     /* This method parses an external DTD entity.
      */
     DTDGrammar parseDTD(XMLInputSource is)
-                throws IOException {
+            throws IOException {
         XMLEntityResolver resolver = getEntityResolver();
-        if(resolver != null) {
+        if (resolver != null) {
             fDTDLoader.setEntityResolver(resolver);
         }
         fDTDLoader.setProperty(ERROR_REPORTER, fErrorReporter);
@@ -297,11 +298,11 @@ public class XMLGrammarCachingConfiguration
         // Should check whether the grammar with this namespace is already in
         // the grammar resolver. But since we don't know the target namespace
         // of the document here, we leave such check to the application...
-        DTDGrammar grammar = (DTDGrammar)fDTDLoader.loadGrammar(is);
+        DTDGrammar grammar = (DTDGrammar) fDTDLoader.loadGrammar(is);
         // by default, hand it off to the grammar pool
         if (grammar != null) {
             fGrammarPool.cacheGrammars(XMLGrammarDescription.XML_DTD,
-                                      new Grammar[]{grammar});
+                    new Grammar[]{grammar});
         }
 
         return grammar;

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="WireFrame">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/JDK_demos_8u66/src/demo/applets/WireFrame/src.zip!/" />
+      <root url="jar://$PROJECT_DIR$/JDK_demos_8u66/src/demo/applets/WireFrame/WireFrame.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

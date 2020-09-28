@@ -26,25 +26,28 @@
 package com.sun.mirror.apt;
 
 import com.sun.mirror.apt.*;
+
 import java.util.*;
 
 /**
  * Utilities to create specialized annotation processors.
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  There is no direct analog
  * of the functionality of this class in the standardized API.
- *
- * @since 1.5
- * @author Joseph D. Darcy
- * @author Scott Seligman
  */
 @Deprecated
 @SuppressWarnings("deprecation")
 public class AnnotationProcessors {
     static class NoOpAP implements AnnotationProcessor {
-        NoOpAP() {}
-        public void process(){}
+        NoOpAP() {
+        }
+
+        public void process() {
+        }
     }
 
     /**
@@ -56,11 +59,12 @@ public class AnnotationProcessors {
     static class CompositeAnnotationProcessor implements AnnotationProcessor {
 
         private List<AnnotationProcessor> aps =
-            new LinkedList<AnnotationProcessor>();
+                new LinkedList<AnnotationProcessor>();
 
         /**
          * Constructs a new composite annotation processor.
-         * @param aps  the component annotation processors
+         *
+         * @param aps the component annotation processors
          */
         public CompositeAnnotationProcessor(Collection<AnnotationProcessor> aps) {
             this.aps.addAll(aps);
@@ -68,10 +72,11 @@ public class AnnotationProcessors {
 
         /**
          * Constructs a new composite annotation processor.
-         * @param aps  the component annotation processors
+         *
+         * @param aps the component annotation processors
          */
         public CompositeAnnotationProcessor(AnnotationProcessor... aps) {
-            for(AnnotationProcessor ap: aps)
+            for (AnnotationProcessor ap : aps)
                 this.aps.add(ap);
         }
 
@@ -80,15 +85,15 @@ public class AnnotationProcessors {
          * in the order in which the processors were passed to the constructor.
          */
         public void process() {
-            for(AnnotationProcessor ap: aps)
+            for (AnnotationProcessor ap : aps)
                 ap.process();
         }
     }
 
 
     /**
-     *  An annotation processor that does nothing and has no state.
-     *  May be used multiple times.
+     * An annotation processor that does nothing and has no state.
+     * May be used multiple times.
      *
      * @since 1.5
      */

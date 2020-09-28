@@ -66,6 +66,7 @@ import com.sun.org.apache.xerces.internal.xni.Augmentations;
 import com.sun.org.apache.xerces.internal.xni.QName;
 import com.sun.org.apache.xerces.internal.xni.XMLAttributes;
 import com.sun.org.apache.xerces.internal.xni.XMLString;
+
 /**
  * The XMLAttributesImpl class is an implementation of the XMLAttributes
  * interface which defines a collection of attributes for an element.
@@ -77,22 +78,22 @@ import com.sun.org.apache.xerces.internal.xni.XMLString;
  * pipeline can modify the values or change the attributes that are
  * propogated to the next stage.
  *
- * @see com.sun.org.apache.xerces.internal.xni.XMLDocumentHandler#startElement
- *
  * @author Andy Clark, IBM
  * @author Elena Litani, IBM
  * @author Michael Glavassevich, IBM
- *
  * @version $Id: XMLAttributesImpl.java,v 1.7 2010/05/07 20:13:09 joehw Exp $
+ * @see com.sun.org.apache.xerces.internal.xni.XMLDocumentHandler#startElement
  */
 public class XMLAttributesImpl
-implements XMLAttributes, XMLBufferListener {
+        implements XMLAttributes, XMLBufferListener {
 
     //
     // Constants
     //
 
-    /** Default table size. */
+    /**
+     * Default table size.
+     */
     protected static final int TABLE_SIZE = 101;
 
     /**
@@ -107,7 +108,9 @@ implements XMLAttributes, XMLBufferListener {
 
     // features
 
-    /** Namespaces. */
+    /**
+     * Namespaces.
+     */
     protected boolean fNamespaces = true;
 
     // data
@@ -119,10 +122,14 @@ implements XMLAttributes, XMLBufferListener {
      */
     protected int fLargeCount = 1;
 
-    /** Attribute count. */
+    /**
+     * Attribute count.
+     */
     protected int fLength;
 
-    /** Attribute information. */
+    /**
+     * Attribute information.
+     */
     protected Attribute[] fAttributes = new Attribute[4];
 
     /**
@@ -153,7 +160,9 @@ implements XMLAttributes, XMLBufferListener {
     // Constructors
     //
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public XMLAttributesImpl() {
         this(TABLE_SIZE);
     }
@@ -177,7 +186,6 @@ implements XMLAttributes, XMLBufferListener {
      * is needed to return the correct value from the getLocalName method.
      *
      * @param namespaces True if namespace processing is turned on.
-     *
      * @see #getLocalName
      */
     public void setNamespaces(boolean namespaces) {
@@ -202,30 +210,29 @@ implements XMLAttributes, XMLBufferListener {
      *
      * @param name  The attribute name.
      * @param type  The attribute type. The type name is determined by
-     *                  the type specified for this attribute in the DTD.
-     *                  For example: "CDATA", "ID", "NMTOKEN", etc. However,
-     *                  attributes of type enumeration will have the type
-     *                  value specified as the pipe ('|') separated list of
-     *                  the enumeration values prefixed by an open
-     *                  parenthesis and suffixed by a close parenthesis.
-     *                  For example: "(true|false)".
+     *              the type specified for this attribute in the DTD.
+     *              For example: "CDATA", "ID", "NMTOKEN", etc. However,
+     *              attributes of type enumeration will have the type
+     *              value specified as the pipe ('|') separated list of
+     *              the enumeration values prefixed by an open
+     *              parenthesis and suffixed by a close parenthesis.
+     *              For example: "(true|false)".
      * @param value The attribute value.
-     *
      * @return Returns the attribute index.
-     *
      * @see #setNonNormalizedValue
      * @see #setSpecified
      */
     public int addAttribute(QName name, String type, String value) {
-      return addAttribute(name,type,value,null);
+        return addAttribute(name, type, value, null);
     }
-    public int addAttribute(QName name, String type, String value,XMLString valueCache) {
+
+    public int addAttribute(QName name, String type, String value, XMLString valueCache) {
 
         int index;
         if (fLength < SIZE_LIMIT) {
             index = name.uri != null && !name.uri.equals("")
-                ? getIndexFast(name.uri, name.localpart)
-                : getIndexFast(name.rawname);
+                    ? getIndexFast(name.uri, name.localpart)
+                    : getIndexFast(name.rawname);
 
             if (index == -1) {
                 index = fLength;
@@ -238,10 +245,9 @@ implements XMLAttributes, XMLBufferListener {
                     fAttributes = attributes;
                 }
             }
-        }
-        else if (name.uri == null ||
-            name.uri.length() == 0 ||
-            (index = getIndexFast(name.uri, name.localpart)) == -1) {
+        } else if (name.uri == null ||
+                name.uri.length() == 0 ||
+                (index = getIndexFast(name.uri, name.localpart)) == -1) {
 
             /**
              * If attributes were removed from the list after the table
@@ -320,7 +326,7 @@ implements XMLAttributes, XMLBufferListener {
         attribute.specified = false;
 
         // clear augmentations
-        if(attribute.augs != null)
+        if (attribute.augs != null)
             attribute.augs.removeAllItems();
 
         return index;
@@ -348,10 +354,10 @@ implements XMLAttributes, XMLBufferListener {
         if (attrIndex < fLength - 1) {
             Attribute removedAttr = fAttributes[attrIndex];
             System.arraycopy(fAttributes, attrIndex + 1,
-                             fAttributes, attrIndex, fLength - attrIndex - 1);
+                    fAttributes, attrIndex, fLength - attrIndex - 1);
             // Make the discarded Attribute object available for re-use
             // by tucking it after the Attributes that are still in use
-            fAttributes[fLength-1] = removedAttr;
+            fAttributes[fLength - 1] = removedAttr;
         }
         fLength--;
     } // removeAttributeAt(int)
@@ -400,14 +406,13 @@ implements XMLAttributes, XMLBufferListener {
      *
      * @param attrIndex The attribute index.
      * @param attrValue The new attribute value.
-     *
      * @see #setNonNormalizedValue
      */
     public void setValue(int attrIndex, String attrValue) {
-        setValue(attrIndex,attrValue,null);
+        setValue(attrIndex, attrValue, null);
     }
 
-    public void setValue(int attrIndex, String attrValue,XMLString value) {
+    public void setValue(int attrIndex, String attrValue, XMLString value) {
         Attribute attribute = fAttributes[attrIndex];
         attribute.value = attrValue;
         attribute.nonNormalizedValue = attrValue;
@@ -494,7 +499,7 @@ implements XMLAttributes, XMLBufferListener {
      *
      * @param index The attribute index (zero-based).
      * @return The attribute's type as a string, or null if the
-     *         index is out of range.
+     * index is out of range.
      * @see #getLength
      */
     public String getType(int index) {
@@ -512,8 +517,8 @@ implements XMLAttributes, XMLBufferListener {
      *
      * @param qname The XML 1.0 qualified name.
      * @return The attribute type as a string, or null if the
-     *         attribute is not in the list or if qualified names
-     *         are not available.
+     * attribute is not in the list or if qualified names
+     * are not available.
      */
     public String getType(String qname) {
         int index = getIndex(qname);
@@ -530,14 +535,14 @@ implements XMLAttributes, XMLBufferListener {
      *
      * @param index The attribute index (zero-based).
      * @return The attribute's value as a string, or null if the
-     *         index is out of range.
+     * index is out of range.
      * @see #getLength
      */
     public String getValue(int index) {
         if (index < 0 || index >= fLength) {
             return null;
         }
-        if(fAttributes[index].value == null && fAttributes[index].xmlValue != null)
+        if (fAttributes[index].value == null && fAttributes[index].xmlValue != null)
             fAttributes[index].value = fAttributes[index].xmlValue.toString();
         return fAttributes[index].value;
     } // getValue(int):String
@@ -550,14 +555,14 @@ implements XMLAttributes, XMLBufferListener {
      *
      * @param qname The XML 1.0 qualified name.
      * @return The attribute value as a string, or null if the
-     *         attribute is not in the list or if qualified names
-     *         are not available.
+     * attribute is not in the list or if qualified names
+     * are not available.
      */
     public String getValue(String qname) {
         int index = getIndex(qname);
-        if(index == -1 )
+        if (index == -1)
             return null;
-        if(fAttributes[index].value == null)
+        if (fAttributes[index].value == null)
             fAttributes[index].value = fAttributes[index].xmlValue.toString();
         return fAttributes[index].value;
     } // getValue(String):String
@@ -579,7 +584,7 @@ implements XMLAttributes, XMLBufferListener {
      *
      * @param i The index of the attribute in the list (starting at 0).
      * @return The name of the indexed attribute, or null
-     *         if the index is out of range.
+     * if the index is out of range.
      * @see #getLength
      */
     public String getName(int index) {
@@ -598,13 +603,13 @@ implements XMLAttributes, XMLBufferListener {
      *
      * @param qName The qualified (prefixed) name.
      * @return The index of the attribute, or -1 if it does not
-     *         appear in the list.
+     * appear in the list.
      */
     public int getIndex(String qName) {
         for (int i = 0; i < fLength; i++) {
             Attribute attribute = fAttributes[i];
             if (attribute.name.rawname != null &&
-                attribute.name.rawname.equals(qName)) {
+                    attribute.name.rawname.equals(qName)) {
                 return i;
             }
         }
@@ -614,19 +619,19 @@ implements XMLAttributes, XMLBufferListener {
     /**
      * Look up the index of an attribute by Namespace name.
      *
-     * @param uri The Namespace URI, or null if
-     *        the name has no Namespace URI.
+     * @param uri       The Namespace URI, or null if
+     *                  the name has no Namespace URI.
      * @param localName The attribute's local name.
      * @return The index of the attribute, or -1 if it does not
-     *         appear in the list.
+     * appear in the list.
      */
     public int getIndex(String uri, String localPart) {
         for (int i = 0; i < fLength; i++) {
             Attribute attribute = fAttributes[i];
             if (attribute.name.localpart != null &&
-                attribute.name.localpart.equals(localPart) &&
-                ((uri==attribute.name.uri) ||
-            (uri!=null && attribute.name.uri!=null && attribute.name.uri.equals(uri)))) {
+                    attribute.name.localpart.equals(localPart) &&
+                    ((uri == attribute.name.uri) ||
+                            (uri != null && attribute.name.uri != null && attribute.name.uri.equals(uri)))) {
                 return i;
             }
         }
@@ -639,13 +644,13 @@ implements XMLAttributes, XMLBufferListener {
      *
      * @param localName The attribute's local name.
      * @return The index of the attribute, or -1 if it does not
-     *         appear in the list.
+     * appear in the list.
      */
     public int getIndexByLocalName(String localPart) {
         for (int i = 0; i < fLength; i++) {
             Attribute attribute = fAttributes[i];
             if (attribute.name.localpart != null &&
-                attribute.name.localpart.equals(localPart)) {
+                    attribute.name.localpart.equals(localPart)) {
                 return i;
             }
         }
@@ -657,8 +662,8 @@ implements XMLAttributes, XMLBufferListener {
      *
      * @param index The attribute index (zero-based).
      * @return The local name, or the empty string if Namespace
-     *         processing is not being performed, or null
-     *         if the index is out of range.
+     * processing is not being performed, or null
+     * if the index is out of range.
      * @see #getLength
      */
     public String getLocalName(int index) {
@@ -676,8 +681,8 @@ implements XMLAttributes, XMLBufferListener {
      *
      * @param index The attribute index (zero-based).
      * @return The XML 1.0 qualified name, or the empty string
-     *         if none is available, or null if the index
-     *         is out of range.
+     * if none is available, or null if the index
+     * is out of range.
      * @see #getLength
      */
     public String getQName(int index) {
@@ -688,7 +693,7 @@ implements XMLAttributes, XMLBufferListener {
         return rawname != null ? rawname : "";
     } // getQName(int):String
 
-    public QName getQualifiedName(int index){
+    public QName getQualifiedName(int index) {
         if (index < 0 || index >= fLength) {
             return null;
         }
@@ -701,12 +706,12 @@ implements XMLAttributes, XMLBufferListener {
      * <p>See {@link #getType(int) getType(int)} for a description
      * of the possible types.</p>
      *
-     * @param uri The Namespace URI, or null if the
-     *        name has no Namespace URI.
+     * @param uri       The Namespace URI, or null if the
+     *                  name has no Namespace URI.
      * @param localName The local name of the attribute.
      * @return The attribute type as a string, or null if the
-     *         attribute is not in the list or if Namespace
-     *         processing is not being performed.
+     * attribute is not in the list or if Namespace
+     * processing is not being performed.
      */
     public String getType(String uri, String localName) {
         if (!fNamespaces) {
@@ -715,6 +720,7 @@ implements XMLAttributes, XMLBufferListener {
         int index = getIndex(uri, localName);
         return index != -1 ? getType(index) : null;
     } // getType(String,String):String
+
     /**
      * Look up the index of an attribute by XML 1.0 qualified name.
      * <p>
@@ -725,7 +731,7 @@ implements XMLAttributes, XMLBufferListener {
      *
      * @param qName The qualified (prefixed) name.
      * @return The index of the attribute, or -1 if it does not
-     *         appear in the list.
+     * appear in the list.
      */
     public int getIndexFast(String qName) {
         for (int i = 0; i < fLength; ++i) {
@@ -756,10 +762,9 @@ implements XMLAttributes, XMLBufferListener {
      * not be mixed with calls to <code>addAttribute</code> unless
      * it has been determined that all the attribute names are unique.
      *
-     * @param name the attribute name
-     * @param type the attribute type
+     * @param name  the attribute name
+     * @param type  the attribute type
      * @param value the attribute value
-     *
      * @see #setNonNormalizedValue
      * @see #setSpecified
      * @see #checkDuplicatesNS
@@ -770,8 +775,7 @@ implements XMLAttributes, XMLBufferListener {
             Attribute[] attributes;
             if (fLength < SIZE_LIMIT) {
                 attributes = new Attribute[fAttributes.length + 4];
-            }
-            else {
+            } else {
                 attributes = new Attribute[fAttributes.length << 1];
             }
             System.arraycopy(fAttributes, 0, attributes, 0, fAttributes.length);
@@ -813,7 +817,7 @@ implements XMLAttributes, XMLBufferListener {
                 for (int j = i + 1; j < fLength; ++j) {
                     Attribute att2 = fAttributes[j];
                     if (att1.name.localpart == att2.name.localpart &&
-                        att1.name.uri == att2.name.uri) {
+                            att1.name.uri == att2.name.uri) {
                         return att2.name;
                     }
                 }
@@ -848,7 +852,7 @@ implements XMLAttributes, XMLBufferListener {
                     Attribute found = fAttributeTableView[bucket];
                     while (found != null) {
                         if (found.name.localpart == attr.name.localpart &&
-                            found.name.uri == attr.name.uri) {
+                                found.name.uri == attr.name.uri) {
                             return attr.name;
                         }
                         found = found.next;
@@ -871,17 +875,17 @@ implements XMLAttributes, XMLBufferListener {
      * only be used internally. We cannot use this method in any
      * code exposed to users as they may not pass in unique strings.
      *
-     * @param uri The Namespace URI, or null if
-     *        the name has no Namespace URI.
+     * @param uri       The Namespace URI, or null if
+     *                  the name has no Namespace URI.
      * @param localName The attribute's local name.
      * @return The index of the attribute, or -1 if it does not
-     *         appear in the list.
+     * appear in the list.
      */
     public int getIndexFast(String uri, String localPart) {
         for (int i = 0; i < fLength; ++i) {
             Attribute attribute = fAttributes[i];
             if (attribute.name.localpart == localPart &&
-                attribute.name.uri == uri) {
+                    attribute.name.uri == uri) {
                 return i;
             }
         }
@@ -919,17 +923,16 @@ implements XMLAttributes, XMLBufferListener {
      * where the given attribute name would be hashed.
      *
      * @param localpart the local part of the attribute
-     * @param uri the namespace name of the attribute
+     * @param uri       the namespace name of the attribute
      * @return the position in the table view where the given attribute
      * would be hashed
      */
     protected int getTableViewBucket(String localpart, String uri) {
         if (uri == null) {
             return (localpart.hashCode() & 0x7FFFFFFF) % fTableViewBuckets;
-        }
-        else {
+        } else {
             return ((localpart.hashCode() + uri.hashCode())
-               & 0x7FFFFFFF) % fTableViewBuckets;
+                    & 0x7FFFFFFF) % fTableViewBuckets;
         }
     }
 
@@ -955,8 +958,7 @@ implements XMLAttributes, XMLBufferListener {
         if (fAttributeTableView == null) {
             fAttributeTableView = new Attribute[fTableViewBuckets];
             fAttributeTableViewChainState = new int[fTableViewBuckets];
-        }
-        else {
+        } else {
             cleanTableView();
         }
     }
@@ -978,8 +980,7 @@ implements XMLAttributes, XMLBufferListener {
                 fAttributeTableViewChainState[bucket] = fLargeCount;
                 attr.next = null;
                 fAttributeTableView[bucket] = attr;
-            }
-            else {
+            } else {
                 // Update table view
                 attr.next = fAttributeTableView[bucket];
                 fAttributeTableView[bucket] = attr;
@@ -1026,10 +1027,10 @@ implements XMLAttributes, XMLBufferListener {
      * <p>See {@link #getValue(int) getValue(int)} for a description
      * of the possible values.</p>
      *
-     * @param uri The Namespace URI, or null namespaces are ignored.
+     * @param uri       The Namespace URI, or null namespaces are ignored.
      * @param localName The local name of the attribute.
      * @return The attribute value as a string, or null if the
-     *         attribute is not in the list.
+     * attribute is not in the list.
      */
     public String getValue(String uri, String localName) {
         int index = getIndex(uri, localName);
@@ -1039,11 +1040,11 @@ implements XMLAttributes, XMLBufferListener {
     /**
      * Look up an augmentations by Namespace name.
      *
-     * @param uri The Namespace URI, or null if the
+     * @param uri       The Namespace URI, or null if the
      * @param localName The local name of the attribute.
      * @return Augmentations
      */
-    public Augmentations getAugmentations (String uri, String localName) {
+    public Augmentations getAugmentations(String uri, String localName) {
         int index = getIndex(uri, localName);
         return index != -1 ? fAttributes[index].augs : null;
     }
@@ -1053,15 +1054,12 @@ implements XMLAttributes, XMLBufferListener {
      * <p>
      *
      * @param qName The XML 1.0 qualified name.
-     *
      * @return Augmentations
-     *
      */
-    public Augmentations getAugmentations(String qName){
+    public Augmentations getAugmentations(String qName) {
         int index = getIndex(qName);
         return index != -1 ? fAttributes[index].augs : null;
     }
-
 
 
     /**
@@ -1070,7 +1068,7 @@ implements XMLAttributes, XMLBufferListener {
      * @param attributeIndex The attribute index.
      * @return Augmentations
      */
-    public Augmentations getAugmentations (int attributeIndex){
+    public Augmentations getAugmentations(int attributeIndex) {
         if (attributeIndex < 0 || attributeIndex >= fLength) {
             return null;
         }
@@ -1123,19 +1121,21 @@ implements XMLAttributes, XMLBufferListener {
     } // getType(String,String):String
 
     //XMLBufferListener methods
+
     /**
      * This method will be invoked by XMLEntityReader before ScannedEntities buffer
      * is reloaded.
      */
     public void refresh() {
-        if(fLength > 0){
-            for(int i = 0 ; i < fLength ; i++){
+        if (fLength > 0) {
+            for (int i = 0; i < fLength; i++) {
                 getValue(i);
             }
         }
     }
+
     public void refresh(int pos) {
-        }
+    }
 
     //
     // Classes
@@ -1154,25 +1154,39 @@ implements XMLAttributes, XMLBufferListener {
 
         // basic info
 
-        /** Name. */
+        /**
+         * Name.
+         */
         public QName name = new QName();
 
-        /** Type. */
+        /**
+         * Type.
+         */
         public String type;
 
-        /** Value. */
+        /**
+         * Value.
+         */
         public String value;
 
-        /** This will point to the ScannedEntities buffer.*/
+        /**
+         * This will point to the ScannedEntities buffer.
+         */
         public XMLString xmlValue;
 
-        /** Non-normalized value. */
+        /**
+         * Non-normalized value.
+         */
         public String nonNormalizedValue;
 
-        /** Specified. */
+        /**
+         * Specified.
+         */
         public boolean specified;
 
-        /** Schema ID type. */
+        /**
+         * Schema ID type.
+         */
         public boolean schemaId;
 
         /**
@@ -1184,7 +1198,9 @@ implements XMLAttributes, XMLBufferListener {
 
         // Additional data for attribute table view
 
-        /** Pointer to the next attribute in the chain. **/
+        /**
+         * Pointer to the next attribute in the chain.
+         **/
         public Attribute next;
 
     } // class Attribute

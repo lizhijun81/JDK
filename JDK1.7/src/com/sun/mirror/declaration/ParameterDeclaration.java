@@ -32,14 +32,13 @@ import com.sun.mirror.type.TypeMirror;
 /**
  * Represents a formal parameter of a method or constructor.
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this interface is included in {@link
  * javax.lang.model.element.VariableElement}.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")

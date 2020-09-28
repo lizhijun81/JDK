@@ -27,38 +27,36 @@ import com.sun.org.apache.xerces.internal.xs.datatypes.XSFloat;
 /**
  * Represent the schema type "float"
  *
- * @xerces.internal
- *
  * @author Neeraj Bajaj, Sun Microsystems, inc.
  * @author Sandy Gao, IBM
- *
  * @version $Id: FloatDV.java,v 1.7 2010-11-01 04:39:47 joehw Exp $
+ * @xerces.internal
  */
 public class FloatDV extends TypeValidator {
 
-    public short getAllowedFacets(){
-        return ( XSSimpleTypeDecl.FACET_PATTERN | XSSimpleTypeDecl.FACET_WHITESPACE | XSSimpleTypeDecl.FACET_ENUMERATION |XSSimpleTypeDecl.FACET_MAXINCLUSIVE |XSSimpleTypeDecl.FACET_MININCLUSIVE | XSSimpleTypeDecl.FACET_MAXEXCLUSIVE  | XSSimpleTypeDecl.FACET_MINEXCLUSIVE  );
+    public short getAllowedFacets() {
+        return (XSSimpleTypeDecl.FACET_PATTERN | XSSimpleTypeDecl.FACET_WHITESPACE | XSSimpleTypeDecl.FACET_ENUMERATION | XSSimpleTypeDecl.FACET_MAXINCLUSIVE | XSSimpleTypeDecl.FACET_MININCLUSIVE | XSSimpleTypeDecl.FACET_MAXEXCLUSIVE | XSSimpleTypeDecl.FACET_MINEXCLUSIVE);
     }//getAllowedFacets()
 
     //convert a String to Float form, we have to take care of cases specified in spec like INF, -INF and NaN
     public Object getActualValue(String content, ValidationContext context) throws InvalidDatatypeValueException {
-        try{
+        try {
             return new XFloat(content);
-        } catch (NumberFormatException ex){
+        } catch (NumberFormatException ex) {
             throw new InvalidDatatypeValueException("cvc-datatype-valid.1.2.1", new Object[]{content, "float"});
         }
     }//getActualValue()
 
     // Can't call Float#compareTo method, because it's introduced in jdk 1.2
-    public int compare(Object value1, Object value2){
-        return ((XFloat)value1).compareTo((XFloat)value2);
+    public int compare(Object value1, Object value2) {
+        return ((XFloat) value1).compareTo((XFloat) value2);
     }//compare()
 
     //distinguishes between identity and equality for float datatype
     //0.0 is equal but not identical to -0.0
-    public boolean isIdentical (Object value1, Object value2) {
+    public boolean isIdentical(Object value1, Object value2) {
         if (value2 instanceof XFloat) {
-            return ((XFloat)value1).isIdentical((XFloat)value2);
+            return ((XFloat) value1).isIdentical((XFloat) value2);
         }
         return false;
     }//isIdentical()
@@ -66,20 +64,17 @@ public class FloatDV extends TypeValidator {
     private static final class XFloat implements XSFloat {
 
         private final float value;
+
         public XFloat(String s) throws NumberFormatException {
             if (DoubleDV.isPossibleFP(s)) {
                 value = Float.parseFloat(s);
-            }
-            else if ( s.equals("INF") ) {
+            } else if (s.equals("INF")) {
                 value = Float.POSITIVE_INFINITY;
-            }
-            else if ( s.equals("-INF") ) {
+            } else if (s.equals("-INF")) {
                 value = Float.NEGATIVE_INFINITY;
-            }
-            else if ( s.equals("NaN") ) {
+            } else if (s.equals("NaN")) {
                 value = Float.NaN;
-            }
-            else {
+            } else {
                 throw new NumberFormatException(s);
             }
         }
@@ -90,7 +85,7 @@ public class FloatDV extends TypeValidator {
 
             if (!(val instanceof XFloat))
                 return false;
-            XFloat oval = (XFloat)val;
+            XFloat oval = (XFloat) val;
 
             // NOTE: we don't distinguish 0.0 from -0.0
             if (value == oval.value)
@@ -108,14 +103,14 @@ public class FloatDV extends TypeValidator {
         }
 
         // NOTE: 0.0 is equal but not identical to -0.0
-        public boolean isIdentical (XFloat val) {
+        public boolean isIdentical(XFloat val) {
             if (val == this) {
                 return true;
             }
 
             if (value == val.value) {
                 return (value != 0.0f ||
-                    (Float.floatToIntBits(value) == Float.floatToIntBits(val.value)));
+                        (Float.floatToIntBits(value) == Float.floatToIntBits(val.value)));
             }
 
             if (value != value && val.value != val.value)
@@ -153,6 +148,7 @@ public class FloatDV extends TypeValidator {
         }
 
         private String canonical;
+
         public synchronized String toString() {
             if (canonical == null) {
                 if (value == Float.POSITIVE_INFINITY)
@@ -161,7 +157,7 @@ public class FloatDV extends TypeValidator {
                     canonical = "-INF";
                 else if (value != value)
                     canonical = "NaN";
-                // NOTE: we don't distinguish 0.0 from -0.0
+                    // NOTE: we don't distinguish 0.0 from -0.0
                 else if (value == 0)
                     canonical = "0.0E1";
                 else {
@@ -174,7 +170,7 @@ public class FloatDV extends TypeValidator {
                     if (canonical.indexOf('E') == -1) {
                         int len = canonical.length();
                         // at most 3 longer: E, -, 9
-                        char[] chars = new char[len+3];
+                        char[] chars = new char[len + 3];
                         canonical.getChars(0, len, chars, 0);
                         // expected decimal point position
                         int edp = chars[0] == '-' ? 2 : 1;
@@ -184,14 +180,14 @@ public class FloatDV extends TypeValidator {
                             int dp = canonical.indexOf('.');
                             // move the digits: ddd.d --> d.ddd
                             for (int i = dp; i > edp; i--) {
-                                chars[i] = chars[i-1];
+                                chars[i] = chars[i - 1];
                             }
                             chars[edp] = '.';
                             // trim trailing zeros: d00.0 --> d.000 --> d.
-                            while (chars[len-1] == '0')
+                            while (chars[len - 1] == '0')
                                 len--;
                             // add the last zero if necessary: d. --> d.0
-                            if (chars[len-1] == '.')
+                            if (chars[len - 1] == '.')
                                 len++;
                             // append E: d.dd --> d.ddE
                             chars[len++] = 'E';
@@ -199,19 +195,18 @@ public class FloatDV extends TypeValidator {
                             int shift = dp - edp;
                             // append the exponent --> d.ddEd
                             // the exponent is at most 7
-                            chars[len++] = (char)(shift + '0');
-                        }
-                        else {
+                            chars[len++] = (char) (shift + '0');
+                        } else {
                             // non-zero digit point
                             int nzp = edp + 1;
                             // skip zeros: 0.003
                             while (chars[nzp] == '0')
                                 nzp++;
                             // put the first non-zero digit to the left of '.'
-                            chars[edp-1] = chars[nzp];
+                            chars[edp - 1] = chars[nzp];
                             chars[edp] = '.';
                             // move other digits (non-zero) to the right of '.'
-                            for (int i = nzp+1, j = edp+1; i < len; i++, j++)
+                            for (int i = nzp + 1, j = edp + 1; i < len; i++, j++)
                                 chars[j] = chars[i];
                             // adjust the length
                             len -= nzp - edp;
@@ -225,7 +220,7 @@ public class FloatDV extends TypeValidator {
                             int shift = nzp - edp;
                             // append the exponent --> d.ddEd
                             // the exponent is at most 3
-                            chars[len++] = (char)(shift + '0');
+                            chars[len++] = (char) (shift + '0');
                         }
                         canonical = new String(chars, 0, len);
                     }

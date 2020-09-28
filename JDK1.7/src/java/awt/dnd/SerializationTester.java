@@ -38,11 +38,13 @@ import java.io.Serializable;
  */
 final class SerializationTester {
     private static ObjectOutputStream stream;
+
     static {
         try {
             stream = new ObjectOutputStream(new OutputStream() {
-                    public void write(int b) {}
-                });
+                public void write(int b) {
+                }
+            });
         } catch (IOException cannotHappen) {
         }
     }
@@ -69,5 +71,6 @@ final class SerializationTester {
         return true;
     }
 
-    private SerializationTester() {}
+    private SerializationTester() {
+    }
 }

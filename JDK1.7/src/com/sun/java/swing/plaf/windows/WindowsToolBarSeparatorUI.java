@@ -43,12 +43,12 @@ import static com.sun.java.swing.plaf.windows.XPStyle.Skin;
  */
 public class WindowsToolBarSeparatorUI extends BasicToolBarSeparatorUI {
 
-    public static ComponentUI createUI( JComponent c ) {
+    public static ComponentUI createUI(JComponent c) {
         return new WindowsToolBarSeparatorUI();
     }
 
     public Dimension getPreferredSize(JComponent c) {
-        Dimension size = ((JToolBar.Separator)c).getSeparatorSize();
+        Dimension size = ((JToolBar.Separator) c).getSeparatorSize();
 
         if (size != null) {
             size = size.getSize();
@@ -56,14 +56,14 @@ public class WindowsToolBarSeparatorUI extends BasicToolBarSeparatorUI {
             size = new Dimension(6, 6);
             XPStyle xp = XPStyle.getXP();
             if (xp != null) {
-                boolean vertical = ((JSeparator)c).getOrientation() == SwingConstants.VERTICAL;
+                boolean vertical = ((JSeparator) c).getOrientation() == SwingConstants.VERTICAL;
                 Part part = vertical ? Part.TP_SEPARATOR : Part.TP_SEPARATORVERT;
                 Skin skin = xp.getSkin(c, part);
                 size.width = skin.getWidth();
                 size.height = skin.getHeight();
             }
 
-            if (((JSeparator)c).getOrientation() == SwingConstants.VERTICAL) {
+            if (((JSeparator) c).getOrientation() == SwingConstants.VERTICAL) {
                 size.height = 0;
             } else {
                 size.width = 0;
@@ -74,15 +74,15 @@ public class WindowsToolBarSeparatorUI extends BasicToolBarSeparatorUI {
 
     public Dimension getMaximumSize(JComponent c) {
         Dimension pref = getPreferredSize(c);
-        if (((JSeparator)c).getOrientation() == SwingConstants.VERTICAL) {
+        if (((JSeparator) c).getOrientation() == SwingConstants.VERTICAL) {
             return new Dimension(pref.width, Short.MAX_VALUE);
         } else {
             return new Dimension(Short.MAX_VALUE, pref.height);
         }
     }
 
-    public void paint( Graphics g, JComponent c ) {
-        boolean vertical = ((JSeparator)c).getOrientation() == SwingConstants.VERTICAL;
+    public void paint(Graphics g, JComponent c) {
+        boolean vertical = ((JSeparator) c).getOrientation() == SwingConstants.VERTICAL;
         Dimension size = c.getSize();
 
         XPStyle xp = XPStyle.getXP();
@@ -97,28 +97,28 @@ public class WindowsToolBarSeparatorUI extends BasicToolBarSeparatorUI {
             skin.paintSkin(g, dx, dy, dw, dh, null);
         } else {
 
-        Color temp = g.getColor();
+            Color temp = g.getColor();
 
-        UIDefaults table = UIManager.getLookAndFeelDefaults();
+            UIDefaults table = UIManager.getLookAndFeelDefaults();
 
-        Color shadow = table.getColor("ToolBar.shadow");
-        Color highlight = table.getColor("ToolBar.highlight");
+            Color shadow = table.getColor("ToolBar.shadow");
+            Color highlight = table.getColor("ToolBar.highlight");
 
-        if (vertical) {
-            int x = (size.width / 2) - 1;
-            g.setColor(shadow);
-            g.drawLine(x, 2, x, size.height - 2);
+            if (vertical) {
+                int x = (size.width / 2) - 1;
+                g.setColor(shadow);
+                g.drawLine(x, 2, x, size.height - 2);
 
-            g.setColor(highlight);
-            g.drawLine(x + 1, 2, x + 1, size.height - 2);
-        } else {
-            int y = (size.height / 2) - 1;
-            g.setColor(shadow);
-            g.drawLine(2, y, size.width - 2, y);
-            g.setColor(highlight);
-            g.drawLine(2, y + 1, size.width - 2, y + 1);
-        }
-        g.setColor(temp);
+                g.setColor(highlight);
+                g.drawLine(x + 1, 2, x + 1, size.height - 2);
+            } else {
+                int y = (size.height / 2) - 1;
+                g.setColor(shadow);
+                g.drawLine(2, y, size.width - 2, y);
+                g.setColor(highlight);
+                g.drawLine(2, y + 1, size.width - 2, y + 1);
+            }
+            g.setColor(temp);
         }
     }
 }

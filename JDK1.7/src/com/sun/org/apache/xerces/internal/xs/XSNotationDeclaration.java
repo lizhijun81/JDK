@@ -21,17 +21,17 @@
 package com.sun.org.apache.xerces.internal.xs;
 
 /**
- *  This interface represents the Notation Declaration schema component.
+ * This interface represents the Notation Declaration schema component.
  */
 public interface XSNotationDeclaration extends XSObject {
     /**
-     *  The URI reference representing the system identifier for the notation
+     * The URI reference representing the system identifier for the notation
      * declaration, if present, <code>null</code> otherwise.
      */
     public String getSystemId();
 
     /**
-     *  The string representing the public identifier for this notation
+     * The string representing the public identifier for this notation
      * declaration, if present; <code>null</code> otherwise.
      */
     public String getPublicId();

@@ -27,6 +27,7 @@ package com.sun.source.util;
 
 import com.sun.source.tree.CompilationUnitTree;
 import com.sun.source.tree.Tree;
+
 import java.io.IOException;
 import javax.lang.model.element.Element;
 import javax.lang.model.type.TypeMirror;
@@ -51,7 +52,7 @@ public abstract class JavacTask implements CompilationTask {
      * @throws IOException if an unhandled I/O error occurred in the compiler.
      */
     public abstract Iterable<? extends CompilationUnitTree> parse()
-        throws IOException;
+            throws IOException;
 
     /**
      * Complete all analysis.
@@ -79,6 +80,7 @@ public abstract class JavacTask implements CompilationTask {
      * Get a type mirror of the tree node determined by the specified path.
      */
     public abstract TypeMirror getTypeMirror(Iterable<? extends Tree> path);
+
     /**
      * Get a utility object for dealing with program elements.
      */

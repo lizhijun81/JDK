@@ -30,7 +30,7 @@ package org.omg.CORBA;
  * <code>SET_OVERRIDE</code> and <code>ADD_OVERRIDE</code>, which
  * indicate whether policies should replace the
  * existing policies of an <code>Object</code> or be added to them.
- * <P>
+ * <p>
  * The method {@link org.omg.CORBA.Object#_set_policy_override} takes
  * either <code>SetOverrideType.SET_OVERRIDE</code> or
  * <code>SetOverrideType.ADD_OVERRIDE</code> as its second argument.
@@ -44,7 +44,7 @@ package org.omg.CORBA;
  * are replaced with the given ones.
  *
  * @author OMG
- * @since   JDK1.2
+ * @since JDK1.2
  */
 
 public class SetOverrideType implements org.omg.CORBA.portable.IDLEntity {
@@ -72,7 +72,7 @@ public class SetOverrideType implements org.omg.CORBA.portable.IDLEntity {
     /**
      * Retrieves the value of this <code>SetOverrideType</code> instance.
      *
-     * @return  the <code>int</code> for this <code>SetOverrideType</code> instance.
+     * @return the <code>int</code> for this <code>SetOverrideType</code> instance.
      */
     public int value() {
         return _value;
@@ -82,41 +82,40 @@ public class SetOverrideType implements org.omg.CORBA.portable.IDLEntity {
      * Converts the given <code>int</code> to the corresponding
      * <code>SetOverrideType</code> instance.
      *
-     * @param  i the <code>int</code> to convert; must be either
-     *         <code>SetOverrideType._SET_OVERRIDE</code> or
-     *         <code>SetOverrideType._ADD_OVERRIDE</code>
-     * @return  the <code>SetOverrideType</code> instance whose value
-     *       matches the given <code>int</code>
-     * @exception  BAD_PARAM  if the given <code>int</code> does not
-     *       match the value of
-     *       any <code>SetOverrideType</code> instance
+     * @param i the <code>int</code> to convert; must be either
+     *          <code>SetOverrideType._SET_OVERRIDE</code> or
+     *          <code>SetOverrideType._ADD_OVERRIDE</code>
+     * @return the <code>SetOverrideType</code> instance whose value
+     * matches the given <code>int</code>
+     * @throws BAD_PARAM if the given <code>int</code> does not
+     *                   match the value of
+     *                   any <code>SetOverrideType</code> instance
      */
-    public static SetOverrideType from_int(int i)
-    {
+    public static SetOverrideType from_int(int i) {
         switch (i) {
-        case _SET_OVERRIDE:
-            return SET_OVERRIDE;
-        case _ADD_OVERRIDE:
-            return ADD_OVERRIDE;
-        default:
-            throw new org.omg.CORBA.BAD_PARAM();
+            case _SET_OVERRIDE:
+                return SET_OVERRIDE;
+            case _ADD_OVERRIDE:
+                return ADD_OVERRIDE;
+            default:
+                throw new org.omg.CORBA.BAD_PARAM();
         }
     }
 
     /**
      * Constructs a <code>SetOverrideType</code> instance from an
      * <code>int</code>.
+     *
      * @param _value must be either <code>SET_OVERRIDE</code> or
-     *        <code>ADD_OVERRIDE</code>
+     *               <code>ADD_OVERRIDE</code>
      */
-    protected SetOverrideType(int _value){
+    protected SetOverrideType(int _value) {
         this._value = _value;
     }
 
     /**
      * The field containing the value for this <code>SetOverrideType</code>
      * object.
-     *
      */
     private int _value;
 }

@@ -34,6 +34,7 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.metadata.IIOMetadataFormat;
 import javax.imageio.metadata.IIOMetadataFormatImpl;
+
 import org.w3c.dom.Node;
 import com.sun.imageio.plugins.common.I18N;
 
@@ -41,11 +42,11 @@ import com.sun.imageio.plugins.common.ImageUtil;
 
 public class BMPMetadata extends IIOMetadata implements BMPConstants {
     public static final String nativeMetadataFormatName =
-        "javax_imageio_bmp_1.0";
+            "javax_imageio_bmp_1.0";
 
     // Fields for Image Descriptor
     public String bmpVersion;
-    public int width ;
+    public int width;
     public int height;
     public short bitsPerPixel;
     public int compression;
@@ -97,9 +98,9 @@ public class BMPMetadata extends IIOMetadata implements BMPConstants {
 
     public BMPMetadata() {
         super(true,
-              nativeMetadataFormatName,
-              "com.sun.imageio.plugins.bmp.BMPMetadataFormat",
-              null, null);
+                nativeMetadataFormatName,
+                "com.sun.imageio.plugins.bmp.BMPMetadataFormat",
+                null, null);
     }
 
     public boolean isReadOnly() {
@@ -110,7 +111,7 @@ public class BMPMetadata extends IIOMetadata implements BMPConstants {
         if (formatName.equals(nativeMetadataFormatName)) {
             return getNativeTree();
         } else if (formatName.equals
-                   (IIOMetadataFormatImpl.standardMetadataFormatName)) {
+                (IIOMetadataFormatImpl.standardMetadataFormatName)) {
             return getStandardTree();
         } else {
             throw new IllegalArgumentException(I18N.getString("BMPMetadata0"));
@@ -127,7 +128,7 @@ public class BMPMetadata extends IIOMetadata implements BMPConstants {
 
     private Node getNativeTree() {
         IIOMetadataNode root =
-            new IIOMetadataNode(nativeMetadataFormatName);
+                new IIOMetadataNode(nativeMetadataFormatName);
 
         addChildNode(root, "BMPVersion", bmpVersion);
         addChildNode(root, "Width", new Integer(width));
@@ -146,7 +147,7 @@ public class BMPMetadata extends IIOMetadata implements BMPConstants {
         int version = 0;
         for (int i = 0; i < bmpVersion.length(); i++)
             if (Character.isDigit(bmpVersion.charAt(i)))
-                version = bmpVersion.charAt(i) -'0';
+                version = bmpVersion.charAt(i) - '0';
 
         if (version >= 4) {
             node = addChildNode(root, "Mask", null);
@@ -172,16 +173,16 @@ public class BMPMetadata extends IIOMetadata implements BMPConstants {
 
             for (int i = 0, j = 0; i < paletteSize; i++) {
                 IIOMetadataNode entry =
-                    addChildNode(node, "PaletteEntry", null);
+                        addChildNode(node, "PaletteEntry", null);
                 red = palette[j++] & 0xff;
                 green = palette[j++] & 0xff;
                 blue = palette[j++] & 0xff;
-                addChildNode(entry, "Red", new Byte((byte)red));
-                addChildNode(entry, "Green", new Byte((byte)green));
-                addChildNode(entry, "Blue", new Byte((byte)blue));
+                addChildNode(entry, "Red", new Byte((byte) red));
+                addChildNode(entry, "Green", new Byte((byte) green));
+                addChildNode(entry, "Blue", new Byte((byte) blue));
                 if (numComps == 4)
                     addChildNode(entry, "Alpha",
-                                 new Byte((byte)(palette[j++] & 0xff)));
+                            new Byte((byte) (palette[j++] & 0xff)));
             }
         }
 
@@ -199,7 +200,7 @@ public class BMPMetadata extends IIOMetadata implements BMPConstants {
 
             for (int i = 0, j = 0; i < paletteSize; i++) {
                 IIOMetadataNode subNode1 = new IIOMetadataNode("PaletteEntry");
-                subNode1.setAttribute("index", ""+i);
+                subNode1.setAttribute("index", "" + i);
                 subNode1.setAttribute("red", "" + palette[j++]);
                 subNode1.setAttribute("green", "" + palette[j++]);
                 subNode1.setAttribute("blue", "" + palette[j++]);
@@ -232,7 +233,7 @@ public class BMPMetadata extends IIOMetadata implements BMPConstants {
             bits = "8 8 8 ";
         else if (bitsPerPixel == 16 || bitsPerPixel == 32) {
             bits = "" + countBits(redMask) + " " + countBits(greenMask) +
-                  countBits(blueMask) + "" + countBits(alphaMask);
+                    countBits(blueMask) + "" + countBits(alphaMask);
         }
 
         IIOMetadataNode subNode = new IIOMetadataNode("BitsPerSample");
@@ -277,7 +278,7 @@ public class BMPMetadata extends IIOMetadata implements BMPConstants {
 
     private String countBits(int num) {
         int count = 0;
-        while(num > 0) {
+        while (num > 0) {
             if ((num & 1) == 1)
                 count++;
             num >>>= 1;

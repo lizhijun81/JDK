@@ -27,7 +27,7 @@ package com.sun.org.apache.xerces.internal.xs;
 public interface XSFacet extends XSObject {
     /**
      * The name of the facet, e.g. <code>FACET_LENGTH, FACET_TOTALDIGITS</code>
-     *  (see <code>XSSimpleTypeDefinition</code>).
+     * (see <code>XSSimpleTypeDefinition</code>).
      */
     public short getFacetKind();
 

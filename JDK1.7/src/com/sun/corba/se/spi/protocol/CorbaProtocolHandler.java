@@ -31,7 +31,7 @@ import org.omg.CORBA.portable.UnknownException;
 
 import com.sun.corba.se.pept.protocol.ProtocolHandler;
 
-import com.sun.corba.se.spi.ior.IOR ;
+import com.sun.corba.se.spi.ior.IOR;
 import com.sun.corba.se.spi.protocol.CorbaMessageMediator;
 
 import com.sun.corba.se.spi.servicecontext.ServiceContexts;
@@ -42,8 +42,7 @@ import com.sun.corba.se.impl.protocol.giopmsgheaders.RequestMessage;
  * @author Harold Carr
  */
 public interface CorbaProtocolHandler
-    extends ProtocolHandler
-{
+        extends ProtocolHandler {
     public void handleRequest(RequestMessage header,
                               CorbaMessageMediator messageMediator);
 
@@ -51,27 +50,31 @@ public interface CorbaProtocolHandler
                               CorbaMessageMediator messageMediator);
 
     public CorbaMessageMediator createResponse(
-        CorbaMessageMediator messageMediator,
-        ServiceContexts svc);
+            CorbaMessageMediator messageMediator,
+            ServiceContexts svc);
+
     public CorbaMessageMediator createUserExceptionResponse(
-        CorbaMessageMediator messageMediator,
-        ServiceContexts svc);
+            CorbaMessageMediator messageMediator,
+            ServiceContexts svc);
+
     public CorbaMessageMediator createUnknownExceptionResponse(
-        CorbaMessageMediator messageMediator,
-        UnknownException ex);
+            CorbaMessageMediator messageMediator,
+            UnknownException ex);
+
     public CorbaMessageMediator createSystemExceptionResponse(
-        CorbaMessageMediator messageMediator,
-        SystemException ex,
-        ServiceContexts svc);
+            CorbaMessageMediator messageMediator,
+            SystemException ex,
+            ServiceContexts svc);
+
     public CorbaMessageMediator createLocationForward(
-        CorbaMessageMediator messageMediator,
-        IOR ior,
-        ServiceContexts svc);
+            CorbaMessageMediator messageMediator,
+            IOR ior,
+            ServiceContexts svc);
 
     public void handleThrowableDuringServerDispatch(
-        CorbaMessageMediator request,
-        Throwable exception,
-        CompletionStatus completionStatus);
+            CorbaMessageMediator request,
+            Throwable exception,
+            CompletionStatus completionStatus);
 
 }
 

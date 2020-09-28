@@ -31,19 +31,24 @@
  */
 
 package org.omg.CosNaming;
+
 public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplementation implements org.omg.CosNaming.NamingContext {
     // Constructor
     public _NamingContextImplBase() {
         super();
     }
+
     // Type strings for this class and its superclases
     private static final String _type_ids[] = {
-        "IDL:omg.org/CosNaming/NamingContext:1.0"
+            "IDL:omg.org/CosNaming/NamingContext:1.0"
     };
 
-    public String[] _ids() { return (String[]) _type_ids.clone(); }
+    public String[] _ids() {
+        return (String[]) _type_ids.clone();
+    }
 
     private static java.util.Dictionary _methods = new java.util.Hashtable();
+
     static {
         _methods.put("bind", new java.lang.Integer(0));
         _methods.put("bind_context", new java.lang.Integer(1));
@@ -56,10 +61,11 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
         _methods.put("bind_new_context", new java.lang.Integer(8));
         _methods.put("destroy", new java.lang.Integer(9));
     }
+
     // DSI Dispatch call
     public void invoke(org.omg.CORBA.ServerRequest r) {
         switch (((java.lang.Integer) _methods.get(r.op_name())).intValue()) {
-        case 0: // org.omg.CosNaming.NamingContext.bind
+            case 0: // org.omg.CosNaming.NamingContext.bind
             {
                 org.omg.CORBA.NVList _list = _orb().create_list(0);
                 org.omg.CORBA.Any _n = _orb().create_any();
@@ -75,26 +81,22 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 obj = _obj.extract_Object();
                 try {
                     this.bind(n, obj);
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.NotFound e0) {
+                } catch (org.omg.CosNaming.NamingContextPackage.NotFound e0) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.NotFoundHelper.insert(_except, e0);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.CannotProceed e1) {
+                } catch (org.omg.CosNaming.NamingContextPackage.CannotProceed e1) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.CannotProceedHelper.insert(_except, e1);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.InvalidName e2) {
+                } catch (org.omg.CosNaming.NamingContextPackage.InvalidName e2) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.InvalidNameHelper.insert(_except, e2);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.AlreadyBound e3) {
+                } catch (org.omg.CosNaming.NamingContextPackage.AlreadyBound e3) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.AlreadyBoundHelper.insert(_except, e3);
                     r.except(_except);
@@ -105,7 +107,7 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 r.result(__return);
             }
             break;
-        case 1: // org.omg.CosNaming.NamingContext.bind_context
+            case 1: // org.omg.CosNaming.NamingContext.bind_context
             {
                 org.omg.CORBA.NVList _list = _orb().create_list(0);
                 org.omg.CORBA.Any _n = _orb().create_any();
@@ -121,26 +123,22 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 nc = org.omg.CosNaming.NamingContextHelper.extract(_nc);
                 try {
                     this.bind_context(n, nc);
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.NotFound e0) {
+                } catch (org.omg.CosNaming.NamingContextPackage.NotFound e0) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.NotFoundHelper.insert(_except, e0);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.CannotProceed e1) {
+                } catch (org.omg.CosNaming.NamingContextPackage.CannotProceed e1) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.CannotProceedHelper.insert(_except, e1);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.InvalidName e2) {
+                } catch (org.omg.CosNaming.NamingContextPackage.InvalidName e2) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.InvalidNameHelper.insert(_except, e2);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.AlreadyBound e3) {
+                } catch (org.omg.CosNaming.NamingContextPackage.AlreadyBound e3) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.AlreadyBoundHelper.insert(_except, e3);
                     r.except(_except);
@@ -151,7 +149,7 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 r.result(__return);
             }
             break;
-        case 2: // org.omg.CosNaming.NamingContext.rebind
+            case 2: // org.omg.CosNaming.NamingContext.rebind
             {
                 org.omg.CORBA.NVList _list = _orb().create_list(0);
                 org.omg.CORBA.Any _n = _orb().create_any();
@@ -167,20 +165,17 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 obj = _obj.extract_Object();
                 try {
                     this.rebind(n, obj);
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.NotFound e0) {
+                } catch (org.omg.CosNaming.NamingContextPackage.NotFound e0) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.NotFoundHelper.insert(_except, e0);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.CannotProceed e1) {
+                } catch (org.omg.CosNaming.NamingContextPackage.CannotProceed e1) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.CannotProceedHelper.insert(_except, e1);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.InvalidName e2) {
+                } catch (org.omg.CosNaming.NamingContextPackage.InvalidName e2) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.InvalidNameHelper.insert(_except, e2);
                     r.except(_except);
@@ -191,7 +186,7 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 r.result(__return);
             }
             break;
-        case 3: // org.omg.CosNaming.NamingContext.rebind_context
+            case 3: // org.omg.CosNaming.NamingContext.rebind_context
             {
                 org.omg.CORBA.NVList _list = _orb().create_list(0);
                 org.omg.CORBA.Any _n = _orb().create_any();
@@ -207,20 +202,17 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 nc = org.omg.CosNaming.NamingContextHelper.extract(_nc);
                 try {
                     this.rebind_context(n, nc);
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.NotFound e0) {
+                } catch (org.omg.CosNaming.NamingContextPackage.NotFound e0) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.NotFoundHelper.insert(_except, e0);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.CannotProceed e1) {
+                } catch (org.omg.CosNaming.NamingContextPackage.CannotProceed e1) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.CannotProceedHelper.insert(_except, e1);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.InvalidName e2) {
+                } catch (org.omg.CosNaming.NamingContextPackage.InvalidName e2) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.InvalidNameHelper.insert(_except, e2);
                     r.except(_except);
@@ -231,7 +223,7 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 r.result(__return);
             }
             break;
-        case 4: // org.omg.CosNaming.NamingContext.resolve
+            case 4: // org.omg.CosNaming.NamingContext.resolve
             {
                 org.omg.CORBA.NVList _list = _orb().create_list(0);
                 org.omg.CORBA.Any _n = _orb().create_any();
@@ -243,20 +235,17 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 org.omg.CORBA.Object ___result;
                 try {
                     ___result = this.resolve(n);
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.NotFound e0) {
+                } catch (org.omg.CosNaming.NamingContextPackage.NotFound e0) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.NotFoundHelper.insert(_except, e0);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.CannotProceed e1) {
+                } catch (org.omg.CosNaming.NamingContextPackage.CannotProceed e1) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.CannotProceedHelper.insert(_except, e1);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.InvalidName e2) {
+                } catch (org.omg.CosNaming.NamingContextPackage.InvalidName e2) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.InvalidNameHelper.insert(_except, e2);
                     r.except(_except);
@@ -267,7 +256,7 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 r.result(__result);
             }
             break;
-        case 5: // org.omg.CosNaming.NamingContext.unbind
+            case 5: // org.omg.CosNaming.NamingContext.unbind
             {
                 org.omg.CORBA.NVList _list = _orb().create_list(0);
                 org.omg.CORBA.Any _n = _orb().create_any();
@@ -278,20 +267,17 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 n = org.omg.CosNaming.NameHelper.extract(_n);
                 try {
                     this.unbind(n);
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.NotFound e0) {
+                } catch (org.omg.CosNaming.NamingContextPackage.NotFound e0) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.NotFoundHelper.insert(_except, e0);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.CannotProceed e1) {
+                } catch (org.omg.CosNaming.NamingContextPackage.CannotProceed e1) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.CannotProceedHelper.insert(_except, e1);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.InvalidName e2) {
+                } catch (org.omg.CosNaming.NamingContextPackage.InvalidName e2) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.InvalidNameHelper.insert(_except, e2);
                     r.except(_except);
@@ -302,7 +288,7 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 r.result(__return);
             }
             break;
-        case 6: // org.omg.CosNaming.NamingContext.list
+            case 6: // org.omg.CosNaming.NamingContext.list
             {
                 org.omg.CORBA.NVList _list = _orb().create_list(0);
                 org.omg.CORBA.Any _how_many = _orb().create_any();
@@ -329,7 +315,7 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 r.result(__return);
             }
             break;
-        case 7: // org.omg.CosNaming.NamingContext.new_context
+            case 7: // org.omg.CosNaming.NamingContext.new_context
             {
                 org.omg.CORBA.NVList _list = _orb().create_list(0);
                 r.params(_list);
@@ -340,7 +326,7 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 r.result(__result);
             }
             break;
-        case 8: // org.omg.CosNaming.NamingContext.bind_new_context
+            case 8: // org.omg.CosNaming.NamingContext.bind_new_context
             {
                 org.omg.CORBA.NVList _list = _orb().create_list(0);
                 org.omg.CORBA.Any _n = _orb().create_any();
@@ -352,26 +338,22 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 org.omg.CosNaming.NamingContext ___result;
                 try {
                     ___result = this.bind_new_context(n);
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.NotFound e0) {
+                } catch (org.omg.CosNaming.NamingContextPackage.NotFound e0) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.NotFoundHelper.insert(_except, e0);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.AlreadyBound e1) {
+                } catch (org.omg.CosNaming.NamingContextPackage.AlreadyBound e1) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.AlreadyBoundHelper.insert(_except, e1);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.CannotProceed e2) {
+                } catch (org.omg.CosNaming.NamingContextPackage.CannotProceed e2) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.CannotProceedHelper.insert(_except, e2);
                     r.except(_except);
                     return;
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.InvalidName e3) {
+                } catch (org.omg.CosNaming.NamingContextPackage.InvalidName e3) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.InvalidNameHelper.insert(_except, e3);
                     r.except(_except);
@@ -382,14 +364,13 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 r.result(__result);
             }
             break;
-        case 9: // org.omg.CosNaming.NamingContext.destroy
+            case 9: // org.omg.CosNaming.NamingContext.destroy
             {
                 org.omg.CORBA.NVList _list = _orb().create_list(0);
                 r.params(_list);
                 try {
                     this.destroy();
-                }
-                catch (org.omg.CosNaming.NamingContextPackage.NotEmpty e0) {
+                } catch (org.omg.CosNaming.NamingContextPackage.NotEmpty e0) {
                     org.omg.CORBA.Any _except = _orb().create_any();
                     org.omg.CosNaming.NamingContextPackage.NotEmptyHelper.insert(_except, e0);
                     r.except(_except);
@@ -400,8 +381,8 @@ public abstract class _NamingContextImplBase extends org.omg.CORBA.DynamicImplem
                 r.result(__return);
             }
             break;
-        default:
-            throw new org.omg.CORBA.BAD_OPERATION(0, org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
+            default:
+                throw new org.omg.CORBA.BAD_OPERATION(0, org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
         }
     }
 }

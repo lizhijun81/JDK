@@ -66,7 +66,7 @@ import com.sun.corba.se.pept.transport.Selector;
 import com.sun.corba.se.spi.ior.IOR;
 import com.sun.corba.se.spi.ior.iiop.GIOPVersion;
 import com.sun.corba.se.spi.logging.CORBALogDomains;
-import com.sun.corba.se.spi.orb.ORB ;
+import com.sun.corba.se.spi.orb.ORB;
 import com.sun.corba.se.spi.orbutil.threadpool.NoSuchThreadPoolException;
 import com.sun.corba.se.spi.orbutil.threadpool.NoSuchWorkQueueException;
 import com.sun.corba.se.spi.orbutil.threadpool.Work;
@@ -93,12 +93,11 @@ import com.sun.corba.se.impl.transport.CorbaResponseWaitingRoomImpl;
  * @author Harold Carr
  */
 public class SocketOrChannelConnectionImpl
-    extends
+        extends
         EventHandlerBase
-    implements
+        implements
         CorbaConnection,
-        Work
-{
+        Work {
     public static boolean dprintWriteLocks = false;
 
     //
@@ -108,8 +107,8 @@ public class SocketOrChannelConnectionImpl
     protected long enqueueTime;
 
     protected SocketChannel socketChannel;
-    public SocketChannel getSocketChannel()
-    {
+
+    public SocketChannel getSocketChannel() {
         return socketChannel;
     }
 
@@ -155,7 +154,7 @@ public class SocketOrChannelConnectionImpl
     // necessary.
     protected CachedCodeBase cachedCodeBase = new CachedCodeBase(this);
 
-    protected ORBUtilSystemException wrapper ;
+    protected ORBUtilSystemException wrapper;
 
     // transport read timeout values
     protected ReadTimeouts readTimeouts;
@@ -168,11 +167,10 @@ public class SocketOrChannelConnectionImpl
     protected CorbaMessageMediator partialMessageMediator = null;
 
     // Used in genericRPCMSGFramework test.
-    protected SocketOrChannelConnectionImpl(ORB orb)
-    {
+    protected SocketOrChannelConnectionImpl(ORB orb) {
         this.orb = orb;
-        wrapper = ORBUtilSystemException.get( orb,
-            CORBALogDomains.RPC_TRANSPORT ) ;
+        wrapper = ORBUtilSystemException.get(orb,
+                CORBALogDomains.RPC_TRANSPORT);
 
         setWork(this);
         responseWaitingRoom = new CorbaResponseWaitingRoomImpl(orb, this);
@@ -182,9 +180,8 @@ public class SocketOrChannelConnectionImpl
     // Both client and servers.
     protected SocketOrChannelConnectionImpl(ORB orb,
                                             boolean useSelectThreadToWait,
-                                            boolean useWorkerThread)
-    {
-        this(orb) ;
+                                            boolean useWorkerThread) {
+        this(orb);
         setUseSelectThreadToWait(useSelectThreadToWait);
         setUseWorkerThreadForEvent(useWorkerThread);
     }
@@ -196,16 +193,15 @@ public class SocketOrChannelConnectionImpl
                                          boolean useWorkerThread,
                                          String socketType,
                                          String hostname,
-                                         int port)
-    {
+                                         int port) {
         this(orb, useSelectThreadToWait, useWorkerThread);
 
         this.contactInfo = contactInfo;
 
         try {
             socket = orb.getORBData().getSocketFactory()
-                .createSocket(socketType,
-                              new InetSocketAddress(hostname, port));
+                    .createSocket(socketType,
+                            new InetSocketAddress(hostname, port));
             socketChannel = socket.getChannel();
 
             if (socketChannel != null) {
@@ -221,7 +217,7 @@ public class SocketOrChannelConnectionImpl
             }
         } catch (Throwable t) {
             throw wrapper.connectFailure(t, socketType, hostname,
-                                         Integer.toString(port));
+                    Integer.toString(port));
         }
         state = OPENING;
     }
@@ -231,12 +227,11 @@ public class SocketOrChannelConnectionImpl
                                          CorbaContactInfo contactInfo,
                                          String socketType,
                                          String hostname,
-                                         int port)
-    {
+                                         int port) {
         this(orb, contactInfo,
-             orb.getORBData().connectionSocketUseSelectThreadToWait(),
-             orb.getORBData().connectionSocketUseWorkerThreadForEvent(),
-             socketType, hostname, port);
+                orb.getORBData().connectionSocketUseSelectThreadToWait(),
+                orb.getORBData().connectionSocketUseWorkerThreadForEvent(),
+                socketType, hostname, port);
     }
 
     // Server-side constructor.
@@ -244,8 +239,7 @@ public class SocketOrChannelConnectionImpl
                                          Acceptor acceptor,
                                          Socket socket,
                                          boolean useSelectThreadToWait,
-                                         boolean useWorkerThread)
-    {
+                                         boolean useWorkerThread) {
         this(orb, useSelectThreadToWait, useWorkerThread);
 
         this.socket = socket;
@@ -272,15 +266,14 @@ public class SocketOrChannelConnectionImpl
     // Server-side convenience
     public SocketOrChannelConnectionImpl(ORB orb,
                                          Acceptor acceptor,
-                                         Socket socket)
-    {
+                                         Socket socket) {
         this(orb, acceptor, socket,
-             (socket.getChannel() == null
-              ? false
-              : orb.getORBData().connectionSocketUseSelectThreadToWait()),
-             (socket.getChannel() == null
-              ? false
-              : orb.getORBData().connectionSocketUseWorkerThreadForEvent()));
+                (socket.getChannel() == null
+                        ? false
+                        : orb.getORBData().connectionSocketUseSelectThreadToWait()),
+                (socket.getChannel() == null
+                        ? false
+                        : orb.getORBData().connectionSocketUseWorkerThreadForEvent()));
     }
 
     ////////////////////////////////////////////////////
@@ -288,18 +281,15 @@ public class SocketOrChannelConnectionImpl
     // framework.transport.Connection
     //
 
-    public boolean shouldRegisterReadEvent()
-    {
+    public boolean shouldRegisterReadEvent() {
         return true;
     }
 
-    public boolean shouldRegisterServerReadEvent()
-    {
+    public boolean shouldRegisterServerReadEvent() {
         return true;
     }
 
-    public boolean read()
-    {
+    public boolean read() {
         try {
             if (orb.transportDebugFlag) {
                 dprint(".read->: " + this);
@@ -318,8 +308,7 @@ public class SocketOrChannelConnectionImpl
         }
     }
 
-    protected CorbaMessageMediator readBits()
-    {
+    protected CorbaMessageMediator readBits() {
         try {
 
             if (orb.transportDebugFlag) {
@@ -330,12 +319,12 @@ public class SocketOrChannelConnectionImpl
             // REVISIT - use common factory base class.
             if (contactInfo != null) {
                 messageMediator =
-                    contactInfo.createMessageMediator(orb, this);
+                        contactInfo.createMessageMediator(orb, this);
             } else if (acceptor != null) {
                 messageMediator = acceptor.createMessageMediator(orb, this);
             } else {
                 throw
-                    new RuntimeException("SocketOrChannelConnectionImpl.readBits");
+                        new RuntimeException("SocketOrChannelConnectionImpl.readBits");
             }
             return (CorbaMessageMediator) messageMediator;
 
@@ -363,7 +352,7 @@ public class SocketOrChannelConnectionImpl
             } catch (IOException e) {
                 if (orb.transportDebugFlag) {
                     dprint(".readBits: " + this +
-                           ": sendMessageError: IOException: " + e, e);
+                            ": sendMessageError: IOException: " + e, e);
                 }
             }
             // REVISIT - make sure reader thread is killed.
@@ -385,8 +374,7 @@ public class SocketOrChannelConnectionImpl
         return null;
     }
 
-    protected CorbaMessageMediator finishReadingBits(MessageMediator messageMediator)
-    {
+    protected CorbaMessageMediator finishReadingBits(MessageMediator messageMediator) {
         try {
 
             if (orb.transportDebugFlag) {
@@ -396,13 +384,13 @@ public class SocketOrChannelConnectionImpl
             // REVISIT - use common factory base class.
             if (contactInfo != null) {
                 messageMediator =
-                    contactInfo.finishCreatingMessageMediator(orb, this, messageMediator);
+                        contactInfo.finishCreatingMessageMediator(orb, this, messageMediator);
             } else if (acceptor != null) {
                 messageMediator =
-                    acceptor.finishCreatingMessageMediator(orb, this, messageMediator);
+                        acceptor.finishCreatingMessageMediator(orb, this, messageMediator);
             } else {
                 throw
-                    new RuntimeException("SocketOrChannelConnectionImpl.finishReadingBits");
+                        new RuntimeException("SocketOrChannelConnectionImpl.finishReadingBits");
             }
             return (CorbaMessageMediator) messageMediator;
 
@@ -430,7 +418,7 @@ public class SocketOrChannelConnectionImpl
             } catch (IOException e) {
                 if (orb.transportDebugFlag) {
                     dprint(".finishReadingBits: " + this +
-                           ": sendMessageError: IOException: " + e, e);
+                            ": sendMessageError: IOException: " + e, e);
                 }
             }
             // REVISIT - make sure reader thread is killed.
@@ -452,8 +440,7 @@ public class SocketOrChannelConnectionImpl
         return null;
     }
 
-    protected boolean dispatch(CorbaMessageMediator messageMediator)
-    {
+    protected boolean dispatch(CorbaMessageMediator messageMediator) {
         try {
             if (orb.transportDebugFlag) {
                 dprint(".dispatch->: " + this);
@@ -467,14 +454,14 @@ public class SocketOrChannelConnectionImpl
             //
 
             boolean result =
-                messageMediator.getProtocolHandler()
-                .handleRequest(messageMediator);
+                    messageMediator.getProtocolHandler()
+                            .handleRequest(messageMediator);
 
             return result;
 
         } catch (ThreadDeath td) {
             if (orb.transportDebugFlag) {
-                dprint(".dispatch: ThreadDeath", td );
+                dprint(".dispatch: ThreadDeath", td);
             }
             try {
                 purgeCalls(wrapper.connectionAbort(td), false, false);
@@ -486,7 +473,7 @@ public class SocketOrChannelConnectionImpl
             throw td;
         } catch (Throwable ex) {
             if (orb.transportDebugFlag) {
-                dprint(".dispatch: Throwable", ex ) ;
+                dprint(".dispatch: Throwable", ex);
             }
 
             try {
@@ -510,18 +497,16 @@ public class SocketOrChannelConnectionImpl
         return true;
     }
 
-    public boolean shouldUseDirectByteBuffers()
-    {
+    public boolean shouldUseDirectByteBuffers() {
         return getSocketChannel() != null;
     }
 
     public ByteBuffer read(int size, int offset, int length, long max_wait_time)
-        throws IOException
-    {
+            throws IOException {
         if (shouldUseDirectByteBuffers()) {
 
             ByteBuffer byteBuffer =
-                orb.getByteBufferPool().getByteBuffer(size);
+                    orb.getByteBufferPool().getByteBuffer(size);
 
             if (orb.transportDebugFlag) {
                 // print address of ByteBuffer gotten from pool
@@ -543,7 +528,7 @@ public class SocketOrChannelConnectionImpl
 
         byte[] buf = new byte[size];
         readFully(getSocket().getInputStream(), buf,
-                  offset, length, max_wait_time);
+                offset, length, max_wait_time);
         ByteBuffer byteBuffer = ByteBuffer.wrap(buf);
         byteBuffer.limit(size);
         return byteBuffer;
@@ -551,12 +536,11 @@ public class SocketOrChannelConnectionImpl
 
     public ByteBuffer read(ByteBuffer byteBuffer, int offset,
                            int length, long max_wait_time)
-        throws IOException
-    {
+            throws IOException {
         int size = offset + length;
         if (shouldUseDirectByteBuffers()) {
 
-            if (! byteBuffer.isDirect()) {
+            if (!byteBuffer.isDirect()) {
                 throw wrapper.unexpectedNonDirectByteBufferWithChannelSocket();
             }
             if (size > byteBuffer.capacity()) {
@@ -565,7 +549,7 @@ public class SocketOrChannelConnectionImpl
                     int bbAddress = System.identityHashCode(byteBuffer);
                     StringBuffer bbsb = new StringBuffer(80);
                     bbsb.append(".read: releasing ByteBuffer id (")
-                        .append(bbAddress).append(") to ByteBufferPool.");
+                            .append(bbAddress).append(") to ByteBufferPool.");
                     String bbmsg = bbsb.toString();
                     dprint(bbmsg);
                 }
@@ -584,13 +568,12 @@ public class SocketOrChannelConnectionImpl
         }
         byte[] buf = new byte[size];
         readFully(getSocket().getInputStream(), buf,
-                  offset, length, max_wait_time);
+                offset, length, max_wait_time);
         return ByteBuffer.wrap(buf);
     }
 
     public void readFully(ByteBuffer byteBuffer, int size, long max_wait_time)
-        throws IOException
-    {
+            throws IOException {
         int n = 0;
         int bytecount = 0;
         long time_to_wait = readTimeouts.get_initial_time_to_wait();
@@ -618,34 +601,30 @@ public class SocketOrChannelConnectionImpl
 
             if (bytecount < 0) {
                 throw new IOException("End-of-stream");
-            }
-            else if (bytecount == 0) {
+            } else if (bytecount == 0) {
                 try {
                     Thread.sleep(time_to_wait);
                     total_time_in_wait += time_to_wait;
                     time_to_wait =
-                        (long)(time_to_wait*readTimeouts.get_backoff_factor());
-                }
-                catch (InterruptedException ie) {
+                            (long) (time_to_wait * readTimeouts.get_backoff_factor());
+                } catch (InterruptedException ie) {
                     // ignore exception
                     if (orb.transportDebugFlag) {
                         dprint("readFully(): unexpected exception "
                                 + ie.toString());
                     }
                 }
-            }
-            else {
+            } else {
                 n += bytecount;
             }
         }
         while (n < size && total_time_in_wait < max_wait_time);
 
-        if (n < size && total_time_in_wait >= max_wait_time)
-        {
+        if (n < size && total_time_in_wait >= max_wait_time) {
             // failed to read entire message
             throw wrapper.transportReadTimeoutExceeded(new Integer(size),
-                                      new Integer(n), new Long(max_wait_time),
-                                      new Long(total_time_in_wait));
+                    new Integer(n), new Long(max_wait_time),
+                    new Long(total_time_in_wait));
         }
 
         getConnectionCache().stampTime(this);
@@ -654,8 +633,7 @@ public class SocketOrChannelConnectionImpl
     // To support non-channel connections.
     public void readFully(java.io.InputStream is, byte[] buf,
                           int offset, int size, long max_wait_time)
-        throws IOException
-    {
+            throws IOException {
         int n = 0;
         int bytecount = 0;
         long time_to_wait = readTimeouts.get_initial_time_to_wait();
@@ -682,42 +660,37 @@ public class SocketOrChannelConnectionImpl
             bytecount = is.read(buf, offset + n, size - n);
             if (bytecount < 0) {
                 throw new IOException("End-of-stream");
-            }
-            else if (bytecount == 0) {
+            } else if (bytecount == 0) {
                 try {
                     Thread.sleep(time_to_wait);
                     total_time_in_wait += time_to_wait;
                     time_to_wait =
-                        (long)(time_to_wait*readTimeouts.get_backoff_factor());
-                }
-                catch (InterruptedException ie) {
+                            (long) (time_to_wait * readTimeouts.get_backoff_factor());
+                } catch (InterruptedException ie) {
                     // ignore exception
                     if (orb.transportDebugFlag) {
                         dprint("readFully(): unexpected exception "
                                 + ie.toString());
                     }
                 }
-            }
-            else {
+            } else {
                 n += bytecount;
             }
         }
         while (n < size && total_time_in_wait < max_wait_time);
 
-        if (n < size && total_time_in_wait >= max_wait_time)
-        {
+        if (n < size && total_time_in_wait >= max_wait_time) {
             // failed to read entire message
             throw wrapper.transportReadTimeoutExceeded(new Integer(size),
-                                      new Integer(n), new Long(max_wait_time),
-                                      new Long(total_time_in_wait));
+                    new Integer(n), new Long(max_wait_time),
+                    new Long(total_time_in_wait));
         }
 
         getConnectionCache().stampTime(this);
     }
 
     public void write(ByteBuffer byteBuffer)
-        throws IOException
-    {
+            throws IOException {
         if (shouldUseDirectByteBuffers()) {
             /* NOTE: cannot perform this test.  If one ask for a
                ByteBuffer from the pool which is bigger than the size
@@ -735,7 +708,7 @@ public class SocketOrChannelConnectionImpl
             while (byteBuffer.hasRemaining());
 
         } else {
-            if (! byteBuffer.hasArray()) {
+            if (!byteBuffer.hasArray()) {
                 throw wrapper.unexpectedDirectByteBufferWithNonChannelSocket();
             }
             byte[] tmpBuf = byteBuffer.array();
@@ -752,8 +725,7 @@ public class SocketOrChannelConnectionImpl
     /**
      * Note:it is possible for this to be called more than once
      */
-    public synchronized void close()
-    {
+    public synchronized void close() {
         try {
             if (orb.transportDebugFlag) {
                 dprint(".close->: " + this);
@@ -781,7 +753,7 @@ public class SocketOrChannelConnectionImpl
                     wrapper.exceptionWhenSendingCloseConnection(t);
                 }
 
-                synchronized ( stateEvent ){
+                synchronized (stateEvent) {
                     state = CLOSE_SENT;
                     stateEvent.notifyAll();
                 }
@@ -820,44 +792,40 @@ public class SocketOrChannelConnectionImpl
     }
 
     public void closeConnectionResources() {
-           if (orb.transportDebugFlag) {
-               dprint(".closeConnectionResources->: " + this);
-           }
-           Selector selector = orb.getTransportManager().getSelector(0);
-           selector.unregisterForEvent(this);
-           try {
-             if (socketChannel != null)
-              socketChannel.close() ;
-                if (socket != null && !socket.isClosed())
-                socket.close() ;
-           } catch (IOException e) {
-             if (orb.transportDebugFlag) {
-                 dprint( ".closeConnectionResources: " + this, e ) ;
-             }
-           }
-           if (orb.transportDebugFlag) {
-               dprint(".closeConnectionResources<-: " + this);
-           }
-     }
+        if (orb.transportDebugFlag) {
+            dprint(".closeConnectionResources->: " + this);
+        }
+        Selector selector = orb.getTransportManager().getSelector(0);
+        selector.unregisterForEvent(this);
+        try {
+            if (socketChannel != null)
+                socketChannel.close();
+            if (socket != null && !socket.isClosed())
+                socket.close();
+        } catch (IOException e) {
+            if (orb.transportDebugFlag) {
+                dprint(".closeConnectionResources: " + this, e);
+            }
+        }
+        if (orb.transportDebugFlag) {
+            dprint(".closeConnectionResources<-: " + this);
+        }
+    }
 
 
-    public Acceptor getAcceptor()
-    {
+    public Acceptor getAcceptor() {
         return acceptor;
     }
 
-    public ContactInfo getContactInfo()
-    {
+    public ContactInfo getContactInfo() {
         return contactInfo;
     }
 
-    public EventHandler getEventHandler()
-    {
+    public EventHandler getEventHandler() {
         return this;
     }
 
-    public OutputObject createOutputObject(MessageMediator messageMediator)
-    {
+    public OutputObject createOutputObject(MessageMediator messageMediator) {
         // REVISIT - remove this method from Connection and all it subclasses.
         throw new RuntimeException("*****SocketOrChannelConnectionImpl.createOutputObject - should not be called.");
     }
@@ -866,37 +834,31 @@ public class SocketOrChannelConnectionImpl
     // throw the correct error when handling code sets.
     // Can we determine if we are on the server side by
     // other means?  XREVISIT
-    public boolean isServer()
-    {
+    public boolean isServer() {
         return isServer;
     }
 
-    public boolean isBusy()
-    {
+    public boolean isBusy() {
         if (serverRequestCount > 0 ||
-            getResponseWaitingRoom().numberRegistered() > 0)
-        {
+                getResponseWaitingRoom().numberRegistered() > 0) {
             return true;
         } else {
             return false;
         }
     }
 
-    public long getTimeStamp()
-    {
+    public long getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(long time)
-    {
+    public void setTimeStamp(long time) {
         timeStamp = time;
     }
 
-    public void setState(String stateString)
-    {
+    public void setState(String stateString) {
         synchronized (stateEvent) {
             if (stateString.equals("ESTABLISHED")) {
-                state =  ESTABLISHED;
+                state = ESTABLISHED;
                 stateEvent.notifyAll();
             } else {
                 // REVISIT: ASSERT
@@ -911,96 +873,94 @@ public class SocketOrChannelConnectionImpl
      * IMPORTANT: this connection's lock must be acquired before
      * setting the writeLock and must be unlocked after setting the writeLock.
      */
-    public void writeLock()
-    {
-      try {
-        if (dprintWriteLocks && orb.transportDebugFlag) {
-            dprint(".writeLock->: " + this);
-        }
-        // Keep looping till we can set the writeLock.
-        while ( true ) {
-            int localState = state;
-            switch ( localState ) {
+    public void writeLock() {
+        try {
+            if (dprintWriteLocks && orb.transportDebugFlag) {
+                dprint(".writeLock->: " + this);
+            }
+            // Keep looping till we can set the writeLock.
+            while (true) {
+                int localState = state;
+                switch (localState) {
 
-            case OPENING:
-                synchronized (stateEvent) {
-                    if (state != OPENING) {
-                        // somebody has changed 'state' so be careful
+                    case OPENING:
+                        synchronized (stateEvent) {
+                            if (state != OPENING) {
+                                // somebody has changed 'state' so be careful
+                                break;
+                            }
+                            try {
+                                stateEvent.wait();
+                            } catch (InterruptedException ie) {
+                                if (orb.transportDebugFlag) {
+                                    dprint(".writeLock: OPENING InterruptedException: " + this);
+                                }
+                            }
+                        }
+                        // Loop back
                         break;
-                    }
-                    try {
-                        stateEvent.wait();
-                    } catch (InterruptedException ie) {
+
+                    case ESTABLISHED:
+                        synchronized (writeEvent) {
+                            if (!writeLocked) {
+                                writeLocked = true;
+                                return;
+                            }
+
+                            try {
+                                // do not stay here too long if state != ESTABLISHED
+                                // Bug 4752117
+                                while (state == ESTABLISHED && writeLocked) {
+                                    writeEvent.wait(100);
+                                }
+                            } catch (InterruptedException ie) {
+                                if (orb.transportDebugFlag) {
+                                    dprint(".writeLock: ESTABLISHED InterruptedException: " + this);
+                                }
+                            }
+                        }
+                        // Loop back
+                        break;
+
+                    //
+                    // XXX
+                    // Need to distinguish between client and server roles
+                    // here probably.
+                    //
+                    case ABORT:
+                        synchronized (stateEvent) {
+                            if (state != ABORT) {
+                                break;
+                            }
+                            throw wrapper.writeErrorSend();
+                        }
+
+                    case CLOSE_RECVD:
+                        // the connection has been closed or closing
+                        // ==> throw rebind exception
+                        synchronized (stateEvent) {
+                            if (state != CLOSE_RECVD) {
+                                break;
+                            }
+                            throw wrapper.connectionCloseRebind();
+                        }
+
+                    default:
                         if (orb.transportDebugFlag) {
-                            dprint(".writeLock: OPENING InterruptedException: " + this);
+                            dprint(".writeLock: default: " + this);
                         }
-                    }
+                        // REVISIT
+                        throw new RuntimeException(".writeLock: bad state");
                 }
-                // Loop back
-                break;
-
-            case ESTABLISHED:
-                synchronized (writeEvent) {
-                    if (!writeLocked) {
-                        writeLocked = true;
-                        return;
-                    }
-
-                    try {
-                        // do not stay here too long if state != ESTABLISHED
-                        // Bug 4752117
-                        while (state == ESTABLISHED && writeLocked) {
-                            writeEvent.wait(100);
-                        }
-                    } catch (InterruptedException ie) {
-                        if (orb.transportDebugFlag) {
-                            dprint(".writeLock: ESTABLISHED InterruptedException: " + this);
-                        }
-                    }
-                }
-                // Loop back
-                break;
-
-                //
-                // XXX
-                // Need to distinguish between client and server roles
-                // here probably.
-                //
-            case ABORT:
-                synchronized ( stateEvent ){
-                    if (state != ABORT) {
-                        break;
-                    }
-                    throw wrapper.writeErrorSend() ;
-                }
-
-            case CLOSE_RECVD:
-                // the connection has been closed or closing
-                // ==> throw rebind exception
-                synchronized ( stateEvent ){
-                    if (state != CLOSE_RECVD) {
-                        break;
-                    }
-                    throw wrapper.connectionCloseRebind() ;
-                }
-
-            default:
-                if (orb.transportDebugFlag) {
-                    dprint(".writeLock: default: " + this);
-                }
-                // REVISIT
-                throw new RuntimeException(".writeLock: bad state");
+            }
+        } finally {
+            if (dprintWriteLocks && orb.transportDebugFlag) {
+                dprint(".writeLock<-: " + this);
             }
         }
-      } finally {
-        if (dprintWriteLocks && orb.transportDebugFlag) {
-            dprint(".writeLock<-: " + this);
-        }
-      }
     }
 
-    public void writeUnlock()
-    {
+    public void writeUnlock() {
         try {
             if (dprintWriteLocks && orb.transportDebugFlag) {
                 dprint(".writeUnlock->: " + this);
@@ -1017,8 +977,7 @@ public class SocketOrChannelConnectionImpl
     }
 
     // Assumes the caller handles writeLock and writeUnlock
-    public void sendWithoutLock(OutputObject outputObject)
-    {
+    public void sendWithoutLock(OutputObject outputObject) {
         // Don't we need to check for CloseConnection
         // here?  REVISIT
 
@@ -1086,28 +1045,23 @@ public class SocketOrChannelConnectionImpl
         }
     }
 
-    public void registerWaiter(MessageMediator messageMediator)
-    {
+    public void registerWaiter(MessageMediator messageMediator) {
         responseWaitingRoom.registerWaiter(messageMediator);
     }
 
-    public void unregisterWaiter(MessageMediator messageMediator)
-    {
+    public void unregisterWaiter(MessageMediator messageMediator) {
         responseWaitingRoom.unregisterWaiter(messageMediator);
     }
 
-    public InputObject waitForResponse(MessageMediator messageMediator)
-    {
+    public InputObject waitForResponse(MessageMediator messageMediator) {
         return responseWaitingRoom.waitForResponse(messageMediator);
     }
 
-    public void setConnectionCache(ConnectionCache connectionCache)
-    {
+    public void setConnectionCache(ConnectionCache connectionCache) {
         this.connectionCache = connectionCache;
     }
 
-    public ConnectionCache getConnectionCache()
-    {
+    public ConnectionCache getConnectionCache() {
         return connectionCache;
     }
 
@@ -1116,8 +1070,7 @@ public class SocketOrChannelConnectionImpl
     // EventHandler methods
     //
 
-    public void setUseSelectThreadToWait(boolean x)
-    {
+    public void setUseSelectThreadToWait(boolean x) {
         useSelectThreadToWait = x;
         // REVISIT - Reading of a GIOP header only is information
         //           that should be passed into the constructor
@@ -1125,13 +1078,12 @@ public class SocketOrChannelConnectionImpl
         setReadGiopHeaderOnly(shouldUseSelectThreadToWait());
     }
 
-    public void handleEvent()
-    {
+    public void handleEvent() {
         if (orb.transportDebugFlag) {
             dprint(".handleEvent->: " + this);
         }
         getSelectionKey().interestOps(getSelectionKey().interestOps() &
-                                      (~ getInterestOps()));
+                (~getInterestOps()));
 
         if (shouldUseWorkerThreadForEvent()) {
             Throwable throwable = null;
@@ -1140,14 +1092,14 @@ public class SocketOrChannelConnectionImpl
                 if (shouldReadGiopHeaderOnly()) {
                     partialMessageMediator = readBits();
                     poolToUse =
-                        partialMessageMediator.getThreadPoolToUse();
+                            partialMessageMediator.getThreadPoolToUse();
                 }
 
                 if (orb.transportDebugFlag) {
                     dprint(".handleEvent: addWork to pool: " + poolToUse);
                 }
                 orb.getThreadPoolManager().getThreadPool(poolToUse)
-                    .getWorkQueue(0).addWork(getWork());
+                        .getWorkQueue(0).addWork(getWork());
             } catch (NoSuchThreadPoolException e) {
                 throwable = e;
             } catch (NoSuchWorkQueueException e) {
@@ -1173,20 +1125,17 @@ public class SocketOrChannelConnectionImpl
         }
     }
 
-    public SelectableChannel getChannel()
-    {
+    public SelectableChannel getChannel() {
         return socketChannel;
     }
 
-    public int getInterestOps()
-    {
+    public int getInterestOps() {
         return SelectionKey.OP_READ;
     }
 
     //    public Acceptor getAcceptor() - already defined above.
 
-    public Connection getConnection()
-    {
+    public Connection getConnection() {
         return this;
     }
 
@@ -1195,13 +1144,11 @@ public class SocketOrChannelConnectionImpl
     // Work methods.
     //
 
-    public String getName()
-    {
+    public String getName() {
         return this.toString();
     }
 
-    public void doWork()
-    {
+    public void doWork() {
         try {
             if (orb.transportDebugFlag) {
                 dprint(".doWork->: " + this);
@@ -1214,12 +1161,11 @@ public class SocketOrChannelConnectionImpl
 
             if (!shouldReadGiopHeaderOnly()) {
                 read();
-            }
-            else {
+            } else {
                 // get the partialMessageMediator
                 // created by SelectorThread
                 CorbaMessageMediator messageMediator =
-                                         this.getPartialMessageMediator();
+                        this.getPartialMessageMediator();
 
                 // read remaining info needed in a MessageMediator
                 messageMediator = finishReadingBits(messageMediator);
@@ -1233,8 +1179,8 @@ public class SocketOrChannelConnectionImpl
         } catch (Throwable t) {
             if (orb.transportDebugFlag) {
                 dprint(".doWork: ignoring Throwable: "
-                       + t
-                       + " " + this);
+                        + t
+                        + " " + this);
             }
         } finally {
             if (orb.transportDebugFlag) {
@@ -1243,13 +1189,11 @@ public class SocketOrChannelConnectionImpl
         }
     }
 
-    public void setEnqueueTime(long timeInMillis)
-    {
+    public void setEnqueueTime(long timeInMillis) {
         enqueueTime = timeInMillis;
     }
 
-    public long getEnqueueTime()
-    {
+    public long getEnqueueTime() {
         return enqueueTime;
     }
 
@@ -1267,8 +1211,7 @@ public class SocketOrChannelConnectionImpl
         shouldReadGiopHeaderOnly = shouldReadHeaderOnly;
     }
 
-    public ResponseWaitingRoom getResponseWaitingRoom()
-    {
+    public ResponseWaitingRoom getResponseWaitingRoom() {
         return responseWaitingRoom;
     }
 
@@ -1276,45 +1219,40 @@ public class SocketOrChannelConnectionImpl
     // higher interface.
 
     public void serverRequestMapPut(int requestId,
-                                    CorbaMessageMediator messageMediator)
-    {
+                                    CorbaMessageMediator messageMediator) {
         serverRequestMap.put(new Integer(requestId), messageMediator);
     }
 
-    public CorbaMessageMediator serverRequestMapGet(int requestId)
-    {
+    public CorbaMessageMediator serverRequestMapGet(int requestId) {
         return (CorbaMessageMediator)
-            serverRequestMap.get(new Integer(requestId));
+                serverRequestMap.get(new Integer(requestId));
     }
 
-    public void serverRequestMapRemove(int requestId)
-    {
+    public void serverRequestMapRemove(int requestId) {
         serverRequestMap.remove(new Integer(requestId));
     }
 
 
     // REVISIT: this is also defined in:
     // com.sun.corba.se.spi.legacy.connection.Connection
-    public java.net.Socket getSocket()
-    {
+    public java.net.Socket getSocket() {
         return socket;
     }
 
-    /** It is possible for a Close Connection to have been
-     ** sent here, but we will not check for this. A "lazy"
-     ** Exception will be thrown in the Worker thread after the
-     ** incoming request has been processed even though the connection
-     ** is closed before the request is processed. This is o.k because
-     ** it is a boundary condition. To prevent it we would have to add
-     ** more locks which would reduce performance in the normal case.
+    /**
+     * It is possible for a Close Connection to have been
+     * * sent here, but we will not check for this. A "lazy"
+     * * Exception will be thrown in the Worker thread after the
+     * * incoming request has been processed even though the connection
+     * * is closed before the request is processed. This is o.k because
+     * * it is a boundary condition. To prevent it we would have to add
+     * * more locks which would reduce performance in the normal case.
      **/
-    public synchronized void serverRequestProcessingBegins()
-    {
+    public synchronized void serverRequestProcessingBegins() {
         serverRequestCount++;
     }
 
-    public synchronized void serverRequestProcessingEnds()
-    {
+    public synchronized void serverRequestProcessingEnds() {
         serverRequestCount--;
     }
 
@@ -1322,16 +1260,14 @@ public class SocketOrChannelConnectionImpl
     //
     //
 
-    public synchronized int getNextRequestId()
-    {
+    public synchronized int getNextRequestId() {
         return requestId++;
     }
 
     // Negotiated code sets for char and wchar data
     protected CodeSetComponentInfo.CodeSetContext codeSetContext = null;
 
-    public ORB getBroker()
-    {
+    public ORB getBroker() {
         return orb;
     }
 
@@ -1345,7 +1281,7 @@ public class SocketOrChannelConnectionImpl
         // Thread B checks to see if there is a context.  If we didn't synch,
         //     it might decide to outlaw wchar/wstring.
         if (codeSetContext == null) {
-            synchronized(this) {
+            synchronized (this) {
                 return codeSetContext;
             }
         }
@@ -1358,11 +1294,11 @@ public class SocketOrChannelConnectionImpl
         if (codeSetContext == null) {
 
             if (OSFCodeSetRegistry.lookupEntry(csc.getCharCodeSet()) == null ||
-                OSFCodeSetRegistry.lookupEntry(csc.getWCharCodeSet()) == null) {
+                    OSFCodeSetRegistry.lookupEntry(csc.getWCharCodeSet()) == null) {
                 // If the client says it's negotiated a code set that
                 // isn't a fallback and we never said we support, then
                 // it has a bug.
-                throw wrapper.badCodesetsFromClient() ;
+                throw wrapper.badCodesetsFromClient();
             }
 
             codeSetContext = csc;
@@ -1380,55 +1316,53 @@ public class SocketOrChannelConnectionImpl
     // new fragments.  Only the ReaderThread touches the clientReplyMap,
     // so it doesn't incur synchronization overhead.
 
-    public MessageMediator clientRequestMapGet(int requestId)
-    {
+    public MessageMediator clientRequestMapGet(int requestId) {
         return responseWaitingRoom.getMessageMediator(requestId);
     }
 
     protected MessageMediator clientReply_1_1;
 
-    public void clientReply_1_1_Put(MessageMediator x)
-    {
+    public void clientReply_1_1_Put(MessageMediator x) {
         clientReply_1_1 = x;
     }
 
-    public MessageMediator clientReply_1_1_Get()
-    {
-        return  clientReply_1_1;
+    public MessageMediator clientReply_1_1_Get() {
+        return clientReply_1_1;
     }
 
-    public void clientReply_1_1_Remove()
-    {
+    public void clientReply_1_1_Remove() {
         clientReply_1_1 = null;
     }
 
     protected MessageMediator serverRequest_1_1;
 
-    public void serverRequest_1_1_Put(MessageMediator x)
-    {
+    public void serverRequest_1_1_Put(MessageMediator x) {
         serverRequest_1_1 = x;
     }
 
-    public MessageMediator serverRequest_1_1_Get()
-    {
-        return  serverRequest_1_1;
+    public MessageMediator serverRequest_1_1_Get() {
+        return serverRequest_1_1;
     }
 
-    public void serverRequest_1_1_Remove()
-    {
+    public void serverRequest_1_1_Remove() {
         serverRequest_1_1 = null;
     }
 
-    protected String getStateString( int state )
-    {
-        synchronized ( stateEvent ){
+    protected String getStateString(int state) {
+        synchronized (stateEvent) {
             switch (state) {
-            case OPENING : return "OPENING" ;
-            case ESTABLISHED : return "ESTABLISHED" ;
-            case CLOSE_SENT : return "CLOSE_SENT" ;
-            case CLOSE_RECVD : return "CLOSE_RECVD" ;
-            case ABORT : return "ABORT" ;
-            default : return "???" ;
+                case OPENING:
+                    return "OPENING";
+                case ESTABLISHED:
+                    return "ESTABLISHED";
+                case CLOSE_SENT:
+                    return "CLOSE_SENT";
+                case CLOSE_RECVD:
+                    return "CLOSE_RECVD";
+                case ABORT:
+                    return "ABORT";
+                default:
+                    return "???";
             }
         }
     }
@@ -1438,44 +1372,43 @@ public class SocketOrChannelConnectionImpl
     }
 
     // Can never be unset...
-    public synchronized void setPostInitialContexts(){
+    public synchronized void setPostInitialContexts() {
         postInitialContexts = true;
     }
 
     /**
      * Wake up the outstanding requests on the connection, and hand them
      * COMM_FAILURE exception with a given minor code.
-     *
+     * <p>
      * Also, delete connection from connection table and
      * stop the reader thread.
-
+     * <p>
      * Note that this should only ever be called by the Reader thread for
      * this connection.
      *
      * @param minor_code The minor code for the COMM_FAILURE major code.
-     * @param die Kill the reader thread (this thread) before exiting.
+     * @param die        Kill the reader thread (this thread) before exiting.
      */
     public void purgeCalls(SystemException systemException,
-                           boolean die, boolean lockHeld)
-    {
+                           boolean die, boolean lockHeld) {
         int minor_code = systemException.minor;
 
-        try{
+        try {
             if (orb.transportDebugFlag) {
                 dprint(".purgeCalls->: "
-                       + minor_code + "/" + die + "/" + lockHeld
-                       + " " + this);
+                        + minor_code + "/" + die + "/" + lockHeld
+                        + " " + this);
             }
 
             // If this invocation is a result of ThreadDeath caused
             // by a previous execution of this routine, just exit.
 
-            synchronized ( stateEvent ){
+            synchronized (stateEvent) {
                 if ((state == ABORT) || (state == CLOSE_RECVD)) {
                     if (orb.transportDebugFlag) {
                         dprint(".purgeCalls: exiting since state is: "
-                               + getStateString(state)
-                               + " " + this);
+                                + getStateString(state)
+                                + " " + this);
                     }
                     return;
                 }
@@ -1489,13 +1422,13 @@ public class SocketOrChannelConnectionImpl
             } catch (SystemException ex) {
                 if (orb.transportDebugFlag)
                     dprint(".purgeCalls: SystemException" + ex
-                           + "; continuing " + this);
+                            + "; continuing " + this);
             }
 
             // Mark the state of the connection
             // and determine the request status
             org.omg.CORBA.CompletionStatus completion_status;
-            synchronized ( stateEvent ){
+            synchronized (stateEvent) {
                 if (minor_code == ORBUtilSystemException.CONNECTION_REBIND) {
                     state = CLOSE_RECVD;
                     systemException.completed = CompletionStatus.COMPLETED_NO;
@@ -1513,7 +1446,7 @@ public class SocketOrChannelConnectionImpl
             } catch (Exception ex) {
                 if (orb.transportDebugFlag) {
                     dprint(".purgeCalls: Exception closing socket: " + ex
-                           + " " + this);
+                            + " " + this);
                 }
             }
 
@@ -1523,9 +1456,9 @@ public class SocketOrChannelConnectionImpl
             responseWaitingRoom.signalExceptionToAllWaiters(systemException);
 
             if (contactInfo != null) {
-                ((OutboundConnectionCache)getConnectionCache()).remove(contactInfo);
+                ((OutboundConnectionCache) getConnectionCache()).remove(contactInfo);
             } else if (acceptor != null) {
-                ((InboundConnectionCache)getConnectionCache()).remove(this);
+                ((InboundConnectionCache) getConnectionCache()).remove(this);
             }
 
             //
@@ -1545,27 +1478,25 @@ public class SocketOrChannelConnectionImpl
         } finally {
             if (orb.transportDebugFlag) {
                 dprint(".purgeCalls<-: "
-                       + minor_code + "/" + die + "/" + lockHeld
-                       + " " + this);
+                        + minor_code + "/" + die + "/" + lockHeld
+                        + " " + this);
             }
         }
     }
 
     /*************************************************************************
-    * The following methods are for dealing with Connection cleaning for
-    * better scalability of servers in high network load conditions.
-    **************************************************************************/
+     * The following methods are for dealing with Connection cleaning for
+     * better scalability of servers in high network load conditions.
+     **************************************************************************/
 
     public void sendCloseConnection(GIOPVersion giopVersion)
-        throws IOException
-    {
+            throws IOException {
         Message msg = MessageBase.createCloseConnection(giopVersion);
         sendHelper(giopVersion, msg);
     }
 
     public void sendMessageError(GIOPVersion giopVersion)
-        throws IOException
-    {
+            throws IOException {
         Message msg = MessageBase.createMessageError(giopVersion);
         sendHelper(giopVersion, msg);
     }
@@ -1573,23 +1504,22 @@ public class SocketOrChannelConnectionImpl
     /**
      * Send a CancelRequest message. This does not lock the connection, so the
      * caller needs to ensure this method is called appropriately.
-     * @exception IOException - could be due to abortive connection closure.
+     *
+     * @throws IOException - could be due to abortive connection closure.
      */
     public void sendCancelRequest(GIOPVersion giopVersion, int requestId)
-        throws IOException
-    {
+            throws IOException {
 
         Message msg = MessageBase.createCancelRequest(giopVersion, requestId);
         sendHelper(giopVersion, msg);
     }
 
     protected void sendHelper(GIOPVersion giopVersion, Message msg)
-        throws IOException
-    {
+            throws IOException {
         // REVISIT: See comments in CDROutputObject constructor.
         CDROutputObject outputObject =
-            sun.corba.OutputStreamFactory.newCDROutputObject((ORB)orb, null, giopVersion,
-                                this, msg, ORBConstants.STREAM_FORMAT_VERSION_1);
+                sun.corba.OutputStreamFactory.newCDROutputObject((ORB) orb, null, giopVersion,
+                        this, msg, ORBConstants.STREAM_FORMAT_VERSION_1);
         msg.write(outputObject);
 
         outputObject.writeTo(this);
@@ -1597,8 +1527,7 @@ public class SocketOrChannelConnectionImpl
 
     public void sendCancelRequestWithLock(GIOPVersion giopVersion,
                                           int requestId)
-        throws IOException
-    {
+            throws IOException {
         writeLock();
         try {
             sendCancelRequest(giopVersion, requestId);
@@ -1650,29 +1579,26 @@ public class SocketOrChannelConnectionImpl
         return partialMessageMediator;
     }
 
-    public String toString()
-    {
-        synchronized ( stateEvent ){
+    public String toString() {
+        synchronized (stateEvent) {
             return
-                "SocketOrChannelConnectionImpl[" + " "
-                + (socketChannel == null ?
-                   socket.toString() : socketChannel.toString()) + " "
-                + getStateString( state ) + " "
-                + shouldUseSelectThreadToWait() + " "
-                + shouldUseWorkerThreadForEvent() + " "
-                + shouldReadGiopHeaderOnly()
-                + "]" ;
+                    "SocketOrChannelConnectionImpl[" + " "
+                            + (socketChannel == null ?
+                            socket.toString() : socketChannel.toString()) + " "
+                            + getStateString(state) + " "
+                            + shouldUseSelectThreadToWait() + " "
+                            + shouldUseWorkerThreadForEvent() + " "
+                            + shouldReadGiopHeaderOnly()
+                            + "]";
         }
     }
 
     // Must be public - used in encoding.
-    public void dprint(String msg)
-    {
+    public void dprint(String msg) {
         ORBUtility.dprint("SocketOrChannelConnectionImpl", msg);
     }
 
-    protected void dprint(String msg, Throwable t)
-    {
+    protected void dprint(String msg, Throwable t) {
         dprint(msg);
         t.printStackTrace(System.out);
     }

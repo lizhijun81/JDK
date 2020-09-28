@@ -47,6 +47,8 @@ public interface ReplyMessage extends Message, LocateReplyOrReplyMessage {
     int NEEDS_ADDRESSING_MODE = 5;  // 1.2
 
     ServiceContexts getServiceContexts();
-    void setServiceContexts( ServiceContexts sc );
-    void setIOR( IOR newIOR );
+
+    void setServiceContexts(ServiceContexts sc);
+
+    void setIOR(IOR newIOR);
 }

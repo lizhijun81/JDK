@@ -33,30 +33,27 @@ import com.sun.corba.se.impl.presentation.rmi.StubFactoryFactoryProxyImpl;
 import com.sun.corba.se.impl.presentation.rmi.StubFactoryFactoryStaticImpl;
 import com.sun.corba.se.impl.presentation.rmi.StubFactoryStaticImpl;
 
-public abstract class PresentationDefaults
-{
-    private static StubFactoryFactoryStaticImpl staticImpl = null ;
+public abstract class PresentationDefaults {
+    private static StubFactoryFactoryStaticImpl staticImpl = null;
 
-    private PresentationDefaults() {}
+    private PresentationDefaults() {
+    }
 
     public synchronized static PresentationManager.StubFactoryFactory
-        getStaticStubFactoryFactory()
-    {
+    getStaticStubFactoryFactory() {
         if (staticImpl == null)
-            staticImpl = new StubFactoryFactoryStaticImpl( );
+            staticImpl = new StubFactoryFactoryStaticImpl();
 
-        return staticImpl ;
+        return staticImpl;
     }
 
     public static PresentationManager.StubFactoryFactory
-        getProxyStubFactoryFactory()
-    {
+    getProxyStubFactoryFactory() {
         return new StubFactoryFactoryProxyImpl();
     }
 
     public static PresentationManager.StubFactory makeStaticStubFactory(
-        Class stubClass )
-    {
-        return new StubFactoryStaticImpl( stubClass ) ;
+            Class stubClass) {
+        return new StubFactoryStaticImpl(stubClass);
     }
 }

@@ -112,7 +112,6 @@ package com.sun.org.apache.xerces.internal.impl.dtd;
  * for element content models.
  *
  * @xerces.internal
- *
  */
 public class XMLContentSpec {
 
@@ -126,19 +125,29 @@ public class XMLContentSpec {
      */
     public static final short CONTENTSPECNODE_LEAF = 0;
 
-    /** Represents a zero or one occurence count, '?'. */
+    /**
+     * Represents a zero or one occurence count, '?'.
+     */
     public static final short CONTENTSPECNODE_ZERO_OR_ONE = 1;
 
-    /** Represents a zero or more occurence count, '*'. */
+    /**
+     * Represents a zero or more occurence count, '*'.
+     */
     public static final short CONTENTSPECNODE_ZERO_OR_MORE = 2;
 
-    /** Represents a one or more occurence count, '+'. */
+    /**
+     * Represents a one or more occurence count, '+'.
+     */
     public static final short CONTENTSPECNODE_ONE_OR_MORE = 3;
 
-    /** Represents choice, '|'. */
+    /**
+     * Represents choice, '|'.
+     */
     public static final short CONTENTSPECNODE_CHOICE = 4;
 
-    /** Represents sequence, ','. */
+    /**
+     * Represents sequence, ','.
+     */
     public static final short CONTENTSPECNODE_SEQ = 5;
 
     /**
@@ -162,17 +171,23 @@ public class XMLContentSpec {
      */
     public static final short CONTENTSPECNODE_ANY_OTHER = 7;
 
-    /** Represents any local element (XML Schema: ##local). */
+    /**
+     * Represents any local element (XML Schema: ##local).
+     */
     public static final short CONTENTSPECNODE_ANY_LOCAL = 8;
 
-    /** prcessContent is 'lax' **/
+    /**
+     * prcessContent is 'lax'
+     **/
     public static final short CONTENTSPECNODE_ANY_LAX = 22;
 
     public static final short CONTENTSPECNODE_ANY_OTHER_LAX = 23;
 
     public static final short CONTENTSPECNODE_ANY_LOCAL_LAX = 24;
 
-    /** processContent is 'skip' **/
+    /**
+     * processContent is 'skip'
+     **/
 
     public static final short CONTENTSPECNODE_ANY_SKIP = 38;
 
@@ -203,7 +218,7 @@ public class XMLContentSpec {
 
     /**
      * The "right hand" value of the content spec node.
-     *  leaf name.uri, right child for binary ops
+     * leaf name.uri, right child for binary ops
      */
     public Object otherValue;
 
@@ -211,12 +226,16 @@ public class XMLContentSpec {
     // Constructors
     //
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public XMLContentSpec() {
         clear();
     }
 
-    /** Constructs a content spec with the specified values. */
+    /**
+     * Constructs a content spec with the specified values.
+     */
     public XMLContentSpec(short type, Object value, Object otherValue) {
         setValues(type, value, otherValue);
     }
@@ -241,21 +260,27 @@ public class XMLContentSpec {
     // Public methods
     //
 
-    /** Clears the values. */
+    /**
+     * Clears the values.
+     */
     public void clear() {
         type = -1;
         value = null;
         otherValue = null;
     }
 
-    /** Sets the values. */
+    /**
+     * Sets the values.
+     */
     public void setValues(short type, Object value, Object otherValue) {
         this.type = type;
         this.value = value;
         this.otherValue = otherValue;
     }
 
-    /** Sets the values of the specified content spec. */
+    /**
+     * Sets the values of the specified content spec.
+     */
     public void setValues(XMLContentSpec contentSpec) {
         type = contentSpec.type;
         value = contentSpec.value;
@@ -279,20 +304,24 @@ public class XMLContentSpec {
     // Object methods
     //
 
-    /** Returns a hash code for this node. */
+    /**
+     * Returns a hash code for this node.
+     */
     public int hashCode() {
         return type << 16 |
-               value.hashCode() << 8 |
-               otherValue.hashCode();
+                value.hashCode() << 8 |
+                otherValue.hashCode();
     }
 
-    /** Returns true if the two objects are equal. */
+    /**
+     * Returns true if the two objects are equal.
+     */
     public boolean equals(Object object) {
         if (object != null && object instanceof XMLContentSpec) {
-            XMLContentSpec contentSpec = (XMLContentSpec)object;
+            XMLContentSpec contentSpec = (XMLContentSpec) object;
             return type == contentSpec.type &&
-                   value == contentSpec.value &&
-                   otherValue == contentSpec.otherValue;
+                    value == contentSpec.value &&
+                    otherValue == contentSpec.otherValue;
         }
         return false;
     }
@@ -326,7 +355,6 @@ public class XMLContentSpec {
          *                         spec "nodes" have a unique identifier.
          * @param contentSpec      The content spec struct to fill in with
          *                         the information.
-         *
          * @return Returns true if the contentSpecIndex was found.
          */
         public boolean getContentSpec(int contentSpecIndex, XMLContentSpec contentSpec);

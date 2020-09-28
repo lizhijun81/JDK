@@ -30,22 +30,23 @@ import org.omg.CORBA.Any;
 import org.omg.CORBA.NO_IMPLEMENT;
 import org.omg.DynamicAny.*;
 import org.omg.DynamicAny.DynAnyPackage.*;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
+
 import org.omg.CORBA.TypeCodePackage.BadKind;
 
-import com.sun.corba.se.spi.orb.ORB ;
-import com.sun.corba.se.spi.logging.CORBALogDomains ;
-import com.sun.corba.se.impl.logging.ORBUtilSystemException ;
+import com.sun.corba.se.spi.orb.ORB;
+import com.sun.corba.se.spi.logging.CORBALogDomains;
+import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 
-public class DynFixedImpl extends DynAnyBasicImpl implements DynFixed
-{
+public class DynFixedImpl extends DynAnyBasicImpl implements DynFixed {
     //
     // Constructors
     //
 
     private DynFixedImpl() {
-        this(null, (Any)null, false);
+        this(null, (Any) null, false);
     }
 
     protected DynFixedImpl(ORB orb, Any any, boolean copyValue) {
@@ -70,9 +71,9 @@ public class DynFixedImpl extends DynAnyBasicImpl implements DynFixed
     // DynFixed interface methods
     //
 
-    public String get_value () {
+    public String get_value() {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         return any.extract_fixed().toString();
     }
@@ -94,12 +95,11 @@ public class DynFixedImpl extends DynAnyBasicImpl implements DynFixed
     // If val does not contain a valid fixed-point literal or contains extraneous characters
     // other than leading or trailing white space, the operation raises TypeMismatch.
     //
-    public boolean set_value (String val)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+    public boolean set_value(String val)
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         int digits = 0;
         int scale = 0;
@@ -144,7 +144,7 @@ public class DynFixedImpl extends DynAnyBasicImpl implements DynFixed
             fractionPart = null;
             currentScale = 0;
             currentDigits = integerPart.length();
-        } else if (dotIndex == 0 ) {
+        } else if (dotIndex == 0) {
             integerPart = null;
             fractionPart = string;
             currentScale = fractionPart.length();

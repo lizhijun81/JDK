@@ -23,36 +23,39 @@ package com.sun.org.apache.xerces.internal.dom;
 /**
  * Text nodes hold the non-markup, non-Entity content of
  * an Element or Attribute.
- * <P>
+ * <p>
  * When a document is first made available to the DOM, there is only
  * one Text object for each block of adjacent plain-text. Users (ie,
  * applications) may create multiple adjacent Texts during editing --
  * see {@link org.w3c.dom.Element#normalize} for discussion.
- * <P>
+ * <p>
  * Note that CDATASection is a subclass of Text. This is conceptually
  * valid, since they're really just two different ways of quoting
  * characters when they're written out as part of an XML stream.
  *
  * @xerces.internal
- *
- * @since  PR-DOM-Level-1-19980818.
+ * @since PR-DOM-Level-1-19980818.
  */
 public class DeferredTextImpl
-    extends TextImpl
-    implements DeferredNode {
+        extends TextImpl
+        implements DeferredNode {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = 2310613872100393425L;
 
     //
     // Data
     //
 
-    /** Node index. */
+    /**
+     * Node index.
+     */
     protected transient int fNodeIndex;
 
     //
@@ -75,7 +78,9 @@ public class DeferredTextImpl
     // DeferredNode methods
     //
 
-    /** Returns the node index. */
+    /**
+     * Returns the node index.
+     */
     public int getNodeIndex() {
         return fNodeIndex;
     }
@@ -84,7 +89,9 @@ public class DeferredTextImpl
     // Protected methods
     //
 
-    /** Synchronizes the underlying data. */
+    /**
+     * Synchronizes the underlying data.
+     */
     protected void synchronizeData() {
 
         // no need for future synchronizations
@@ -92,7 +99,7 @@ public class DeferredTextImpl
 
         // get initial text value
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl) this.ownerDocument();
+                (DeferredDocumentImpl) this.ownerDocument();
         data = ownerDocument.getNodeValueString(fNodeIndex);
 
         // NOTE: We used to normalize adjacent text node values here.

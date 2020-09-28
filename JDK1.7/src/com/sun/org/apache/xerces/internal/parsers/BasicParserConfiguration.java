@@ -93,12 +93,11 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLParserConfiguration;
  *
  * @author Arnaud  Le Hors, IBM
  * @author Andy Clark, IBM
- *
  * @version $Id: BasicParserConfiguration.java,v 1.6 2010-11-01 04:40:09 joehw Exp $
  */
 public abstract class BasicParserConfiguration
-    extends ParserConfigurationSettings
-    implements XMLParserConfiguration {
+        extends ParserConfigurationSettings
+        implements XMLParserConfiguration {
 
     //
     // Constants
@@ -106,39 +105,55 @@ public abstract class BasicParserConfiguration
 
     // feature identifiers
 
-    /** Feature identifier: validation. */
+    /**
+     * Feature identifier: validation.
+     */
     protected static final String VALIDATION =
-        Constants.SAX_FEATURE_PREFIX + Constants.VALIDATION_FEATURE;
+            Constants.SAX_FEATURE_PREFIX + Constants.VALIDATION_FEATURE;
 
-    /** Feature identifier: namespaces. */
+    /**
+     * Feature identifier: namespaces.
+     */
     protected static final String NAMESPACES =
-        Constants.SAX_FEATURE_PREFIX + Constants.NAMESPACES_FEATURE;
+            Constants.SAX_FEATURE_PREFIX + Constants.NAMESPACES_FEATURE;
 
-    /** Feature identifier: external general entities. */
+    /**
+     * Feature identifier: external general entities.
+     */
     protected static final String EXTERNAL_GENERAL_ENTITIES =
-        Constants.SAX_FEATURE_PREFIX + Constants.EXTERNAL_GENERAL_ENTITIES_FEATURE;
+            Constants.SAX_FEATURE_PREFIX + Constants.EXTERNAL_GENERAL_ENTITIES_FEATURE;
 
-    /** Feature identifier: external parameter entities. */
+    /**
+     * Feature identifier: external parameter entities.
+     */
     protected static final String EXTERNAL_PARAMETER_ENTITIES =
-        Constants.SAX_FEATURE_PREFIX + Constants.EXTERNAL_PARAMETER_ENTITIES_FEATURE;
+            Constants.SAX_FEATURE_PREFIX + Constants.EXTERNAL_PARAMETER_ENTITIES_FEATURE;
 
     // property identifiers
 
-    /** Property identifier: xml string. */
+    /**
+     * Property identifier: xml string.
+     */
     protected static final String XML_STRING =
-        Constants.SAX_PROPERTY_PREFIX + Constants.XML_STRING_PROPERTY;
+            Constants.SAX_PROPERTY_PREFIX + Constants.XML_STRING_PROPERTY;
 
-    /** Property identifier: symbol table. */
+    /**
+     * Property identifier: symbol table.
+     */
     protected static final String SYMBOL_TABLE =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY;
 
-    /** Property identifier: error handler. */
+    /**
+     * Property identifier: error handler.
+     */
     protected static final String ERROR_HANDLER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_HANDLER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_HANDLER_PROPERTY;
 
-    /** Property identifier: entity resolver. */
+    /**
+     * Property identifier: entity resolver.
+     */
     protected static final String ENTITY_RESOLVER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ENTITY_RESOLVER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ENTITY_RESOLVER_PROPERTY;
 
     //
     // Data
@@ -146,37 +161,53 @@ public abstract class BasicParserConfiguration
 
     // components (non-configurable)
 
-    /** Symbol table. */
+    /**
+     * Symbol table.
+     */
     protected SymbolTable fSymbolTable;
 
 
     // data
 
-    /** Locale. */
+    /**
+     * Locale.
+     */
     protected Locale fLocale;
 
-    /** Components. */
+    /**
+     * Components.
+     */
     protected ArrayList fComponents;
 
     // handlers
 
-    /** The document handler. */
+    /**
+     * The document handler.
+     */
     protected XMLDocumentHandler fDocumentHandler;
 
-    /** The DTD handler. */
+    /**
+     * The DTD handler.
+     */
     protected XMLDTDHandler fDTDHandler;
 
-    /** The DTD content model handler. */
+    /**
+     * The DTD content model handler.
+     */
     protected XMLDTDContentModelHandler fDTDContentModelHandler;
 
-    /** Last component in the document pipeline */
+    /**
+     * Last component in the document pipeline
+     */
     protected XMLDocumentSource fLastComponent;
 
     //
     // Constructors
     //
 
-    /** Default Constructor. */
+    /**
+     * Default Constructor.
+     */
     protected BasicParserConfiguration() {
         this(null, null);
     } // <init>()
@@ -211,25 +242,25 @@ public abstract class BasicParserConfiguration
         // add default recognized features
         final String[] recognizedFeatures = {
                 PARSER_SETTINGS,
-            VALIDATION,
-            NAMESPACES,
-            EXTERNAL_GENERAL_ENTITIES,
-            EXTERNAL_PARAMETER_ENTITIES,
+                VALIDATION,
+                NAMESPACES,
+                EXTERNAL_GENERAL_ENTITIES,
+                EXTERNAL_PARAMETER_ENTITIES,
         };
         addRecognizedFeatures(recognizedFeatures);
         fFeatures.put(PARSER_SETTINGS, Boolean.TRUE);
         // set state for default features
-                fFeatures.put(VALIDATION, Boolean.FALSE);
-                fFeatures.put(NAMESPACES, Boolean.TRUE);
-                fFeatures.put(EXTERNAL_GENERAL_ENTITIES, Boolean.TRUE);
-                fFeatures.put(EXTERNAL_PARAMETER_ENTITIES, Boolean.TRUE);
+        fFeatures.put(VALIDATION, Boolean.FALSE);
+        fFeatures.put(NAMESPACES, Boolean.TRUE);
+        fFeatures.put(EXTERNAL_GENERAL_ENTITIES, Boolean.TRUE);
+        fFeatures.put(EXTERNAL_PARAMETER_ENTITIES, Boolean.TRUE);
 
         // add default recognized properties
         final String[] recognizedProperties = {
-            XML_STRING,
-            SYMBOL_TABLE,
-            ERROR_HANDLER,
-            ENTITY_RESOLVER,
+                XML_STRING,
+                SYMBOL_TABLE,
+                ERROR_HANDLER,
+                ENTITY_RESOLVER,
         };
         addRecognizedProperties(recognizedProperties);
 
@@ -306,34 +337,35 @@ public abstract class BasicParserConfiguration
      * parsing early, it should throw an exception.
      *
      * @param inputSource The input source for the top-level of the
-     *               XML document.
-     *
-     * @exception XNIException Any XNI exception, possibly wrapping
-     *                         another exception.
-     * @exception IOException  An IO exception from the parser, possibly
-     *                         from a byte stream or character stream
-     *                         supplied by the parser.
+     *                    XML document.
+     * @throws XNIException Any XNI exception, possibly wrapping
+     *                      another exception.
+     * @throws IOException  An IO exception from the parser, possibly
+     *                      from a byte stream or character stream
+     *                      supplied by the parser.
      */
     public abstract void parse(XMLInputSource inputSource)
-        throws XNIException, IOException;
+            throws XNIException, IOException;
 
     /**
      * Sets the document handler on the last component in the pipeline
      * to receive information about the document.
      *
-     * @param documentHandler   The document handler.
+     * @param documentHandler The document handler.
      */
     public void setDocumentHandler(XMLDocumentHandler documentHandler) {
         fDocumentHandler = documentHandler;
         if (fLastComponent != null) {
             fLastComponent.setDocumentHandler(fDocumentHandler);
-            if (fDocumentHandler !=null){
+            if (fDocumentHandler != null) {
                 fDocumentHandler.setDocumentSource(fLastComponent);
             }
         }
     } // setDocumentHandler(XMLDocumentHandler)
 
-    /** Returns the registered document handler. */
+    /**
+     * Returns the registered document handler.
+     */
     public XMLDocumentHandler getDocumentHandler() {
         return fDocumentHandler;
     } // getDocumentHandler():XMLDocumentHandler
@@ -347,7 +379,9 @@ public abstract class BasicParserConfiguration
         fDTDHandler = dtdHandler;
     } // setDTDHandler(XMLDTDHandler)
 
-    /** Returns the registered DTD handler. */
+    /**
+     * Returns the registered DTD handler.
+     */
     public XMLDTDHandler getDTDHandler() {
         return fDTDHandler;
     } // getDTDHandler():XMLDTDHandler
@@ -361,7 +395,9 @@ public abstract class BasicParserConfiguration
         fDTDContentModelHandler = handler;
     } // setDTDContentModelHandler(XMLDTDContentModelHandler)
 
-    /** Returns the registered DTD content model handler. */
+    /**
+     * Returns the registered DTD content model handler.
+     */
     public XMLDTDContentModelHandler getDTDContentModelHandler() {
         return fDTDContentModelHandler;
     } // getDTDContentModelHandler():XMLDTDContentModelHandler
@@ -382,12 +418,12 @@ public abstract class BasicParserConfiguration
      * Return the current entity resolver.
      *
      * @return The current entity resolver, or null if none
-     *         has been registered.
+     * has been registered.
      * @see #setEntityResolver
      */
     public XMLEntityResolver getEntityResolver() {
         // REVISIT: Should this be a property?
-        return (XMLEntityResolver)fProperties.get(ENTITY_RESOLVER);
+        return (XMLEntityResolver) fProperties.get(ENTITY_RESOLVER);
     } // getEntityResolver():XMLEntityResolver
 
     /**
@@ -404,8 +440,8 @@ public abstract class BasicParserConfiguration
      * handler immediately.</p>
      *
      * @param errorHandler The error handler.
-     * @exception java.lang.NullPointerException If the handler
-     *            argument is null.
+     * @throws java.lang.NullPointerException If the handler
+     *                                        argument is null.
      * @see #getErrorHandler
      */
     public void setErrorHandler(XMLErrorHandler errorHandler) {
@@ -417,29 +453,28 @@ public abstract class BasicParserConfiguration
      * Return the current error handler.
      *
      * @return The current error handler, or null if none
-     *         has been registered.
+     * has been registered.
      * @see #setErrorHandler
      */
     public XMLErrorHandler getErrorHandler() {
         // REVISIT: Should this be a property?
-        return (XMLErrorHandler)fProperties.get(ERROR_HANDLER);
+        return (XMLErrorHandler) fProperties.get(ERROR_HANDLER);
     } // getErrorHandler():XMLErrorHandler
 
     /**
      * Set the state of a feature.
-     *
+     * <p>
      * Set the state of any feature in a SAX2 parser.  The parser
      * might not recognize the feature, and if it does recognize
      * it, it might not be able to fulfill the request.
      *
      * @param featureId The unique identifier (URI) of the feature.
-     * @param state The requested state of the feature (true or false).
-     *
-     * @exception com.sun.org.apache.xerces.internal.xni.parser.XMLConfigurationException If the
-     *            requested feature is not known.
+     * @param state     The requested state of the feature (true or false).
+     * @throws com.sun.org.apache.xerces.internal.xni.parser.XMLConfigurationException If the
+     *                                                                                 requested feature is not known.
      */
     public void setFeature(String featureId, boolean state)
-        throws XMLConfigurationException {
+            throws XMLConfigurationException {
 
         // forward to every component
         int count = fComponents.size();
@@ -459,7 +494,7 @@ public abstract class BasicParserConfiguration
      * @param value
      */
     public void setProperty(String propertyId, Object value)
-        throws XMLConfigurationException {
+            throws XMLConfigurationException {
 
         // forward to every component
         int count = fComponents.size();
@@ -477,15 +512,16 @@ public abstract class BasicParserConfiguration
      * Set the locale to use for messages.
      *
      * @param locale The locale object to use for localization of messages.
-     *
-     * @exception XNIException Thrown if the parser does not support the
-     *                         specified locale.
+     * @throws XNIException Thrown if the parser does not support the
+     *                      specified locale.
      */
     public void setLocale(Locale locale) throws XNIException {
         fLocale = locale;
     } // setLocale(Locale)
 
-    /** Returns the locale. */
+    /**
+     * Returns the locale.
+     */
     public Locale getLocale() {
         return fLocale;
     } // getLocale():Locale
@@ -514,11 +550,11 @@ public abstract class BasicParserConfiguration
      *
      * @param propertyId The unique identifier (URI) of the property
      *                   being set.
-     * @exception com.sun.org.apache.xerces.internal.xni.parser.XMLConfigurationException If the
-     *            requested feature is not known or supported.
+     * @throws com.sun.org.apache.xerces.internal.xni.parser.XMLConfigurationException If the
+     *                                                                                 requested feature is not known or supported.
      */
     protected PropertyState checkProperty(String propertyId)
-        throws XMLConfigurationException {
+            throws XMLConfigurationException {
 
         // special cases
         if (propertyId.startsWith(Constants.SAX_PROPERTY_PREFIX)) {
@@ -535,7 +571,7 @@ public abstract class BasicParserConfiguration
             //   parse begins).
             //
             if (suffixLength == Constants.XML_STRING_PROPERTY.length() &&
-                propertyId.endsWith(Constants.XML_STRING_PROPERTY)) {
+                    propertyId.endsWith(Constants.XML_STRING_PROPERTY)) {
                 // REVISIT - we should probably ask xml-dev for a precise
                 // definition of what this is actually supposed to return, and
                 // in exactly which circumstances.
@@ -554,7 +590,6 @@ public abstract class BasicParserConfiguration
      * returns. Otherwise, the appropriate exception is thrown.
      *
      * @param featureId The unique identifier (URI) of the feature.
-     *
      * @throws XMLConfigurationException Thrown for configuration error.
      *                                   In general, components should
      *                                   only throw this exception if
@@ -562,7 +597,7 @@ public abstract class BasicParserConfiguration
      *                                   a critical error.
      */
     protected FeatureState checkFeature(String featureId)
-        throws XMLConfigurationException {
+            throws XMLConfigurationException {
 
         //
         // Xerces Features
@@ -574,13 +609,13 @@ public abstract class BasicParserConfiguration
             // special performance feature: no one by component manager is allowed to set it
             //
             if (suffixLength == Constants.PARSER_SETTINGS.length() &&
-                featureId.endsWith(Constants.PARSER_SETTINGS)) {
+                    featureId.endsWith(Constants.PARSER_SETTINGS)) {
                 return FeatureState.NOT_SUPPORTED;
             }
         }
 
         return super.checkFeature(featureId);
-     } // checkFeature(String)
+    } // checkFeature(String)
 
 
 } // class BasicParserConfiguration

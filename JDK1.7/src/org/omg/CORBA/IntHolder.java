@@ -42,12 +42,12 @@ import org.omg.CORBA.portable.OutputStream;
  * must also fill the "in" value to be sent to the server.
  * Before the method invocation returns, the ORB will fill in the
  * value corresponding to the "out" value returned from the server.
- * <P>
+ * <p>
  * If <code>myIntHolder</code> is an instance of <code>IntHolder</code>,
  * the value stored in its <code>value</code> field can be accessed with
  * <code>myIntHolder.value</code>.
  *
- * @since       JDK1.2
+ * @since JDK1.2
  */
 public final class IntHolder implements Streamable {
 
@@ -68,6 +68,7 @@ public final class IntHolder implements Streamable {
      * Constructs a new <code>IntHolder</code> object with its
      * <code>value</code> field initialized to the given
      * <code>int</code>.
+     *
      * @param initial the <code>int</code> with which to initialize
      *                the <code>value</code> field of the newly-created
      *                <code>IntHolder</code> object
@@ -103,8 +104,8 @@ public final class IntHolder implements Streamable {
      * to the value held in this <code>IntHolder</code> object's
      * <code>value</code> field.
      *
-     * @return    the type code for the value held in this <code>IntHolder</code>
-     *            object
+     * @return the type code for the value held in this <code>IntHolder</code>
+     * object
      */
     public org.omg.CORBA.TypeCode _type() {
         return ORB.init().get_primitive_tc(TCKind.tk_long);

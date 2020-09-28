@@ -27,8 +27,7 @@ package com.sun.corba.se.impl.encoding;
 import com.sun.corba.se.spi.ior.iiop.GIOPVersion;
 import com.sun.corba.se.impl.orbutil.ORBConstants;
 
-public class CDRInputStream_1_2 extends CDRInputStream_1_1
-{
+public class CDRInputStream_1_2 extends CDRInputStream_1_1 {
     // Indicates whether the header is padded. In GIOP 1.2 and above,
     // the body must be aligned on an 8-octet boundary, and so the header is
     // padded appropriately. However, if there is no body to a request or reply
@@ -62,7 +61,7 @@ public class CDRInputStream_1_2 extends CDRInputStream_1_1
     // inherits the headerPadding flag, in case of GIOP 1.2 and above, streams.
     public CDRInputStreamBase dup() {
         CDRInputStreamBase result = super.dup();
-        ((CDRInputStream_1_2)result).headerPadding = this.headerPadding;
+        ((CDRInputStream_1_2) result).headerPadding = this.headerPadding;
         return result;
     }
 
@@ -91,7 +90,7 @@ public class CDRInputStream_1_2 extends CDRInputStream_1_1
         // never requires alignment with the header since it ends
         // on an 8 byte boundary.
 
-        int alignIncr = computeAlignment(bbwi.position(),align);
+        int alignIncr = computeAlignment(bbwi.position(), align);
         bbwi.position(bbwi.position() + alignIncr);
 
         if (bbwi.position() + n > bbwi.buflen) {
@@ -115,7 +114,7 @@ public class CDRInputStream_1_2 extends CDRInputStream_1_1
         // assigned, and a single 16 bit Java char isn't enough.
         // Better to use strings for i18n purposes.
         if (getWCharConverter().getNumChars() > 1)
-            throw wrapper.btcResultMoreThanOneChar() ;
+            throw wrapper.btcResultMoreThanOneChar();
 
         return result[0];
     }
@@ -138,7 +137,7 @@ public class CDRInputStream_1_2 extends CDRInputStream_1_1
         checkForNegativeLength(len);
 
         return new String(getConvertedChars(len, getWCharConverter()),
-                          0,
-                          getWCharConverter().getNumChars());
+                0,
+                getWCharConverter().getNumChars());
     }
 }

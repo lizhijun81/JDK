@@ -37,6 +37,7 @@ import java.beans.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+
 import sun.awt.shell.ShellFolder;
 import sun.swing.SwingUtilities2;
 
@@ -142,7 +143,7 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
     }
 
     public String getFileName() {
-        if(filenameTextField != null) {
+        if (filenameTextField != null) {
             return filenameTextField.getText();
         } else {
             return null;
@@ -150,7 +151,7 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
     }
 
     public void setFileName(String filename) {
-        if(filenameTextField != null) {
+        if (filenameTextField != null) {
             filenameTextField.setText(filename);
         }
     }
@@ -175,9 +176,9 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
         return new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent e) {
                 String prop = e.getPropertyName();
-                if(prop.equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)) {
+                if (prop.equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)) {
                     File f = (File) e.getNewValue();
-                    if(f != null) {
+                    if (f != null) {
                         setFileName(getFileChooser().getName(f));
                     }
                 } else if (prop.equals(JFileChooser.SELECTED_FILES_CHANGED_PROPERTY)) {
@@ -189,37 +190,37 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
                     }
                 } else if (prop.equals(JFileChooser.FILE_FILTER_CHANGED_PROPERTY)) {
                     fileList.clearSelection();
-                } else if(prop.equals(JFileChooser.DIRECTORY_CHANGED_PROPERTY)) {
+                } else if (prop.equals(JFileChooser.DIRECTORY_CHANGED_PROPERTY)) {
                     directoryList.clearSelection();
                     ListSelectionModel sm = directoryList.getSelectionModel();
                     if (sm instanceof DefaultListSelectionModel) {
-                        ((DefaultListSelectionModel)sm).moveLeadSelectionIndex(0);
+                        ((DefaultListSelectionModel) sm).moveLeadSelectionIndex(0);
                         sm.setAnchorSelectionIndex(0);
                     }
                     fileList.clearSelection();
                     sm = fileList.getSelectionModel();
                     if (sm instanceof DefaultListSelectionModel) {
-                        ((DefaultListSelectionModel)sm).moveLeadSelectionIndex(0);
+                        ((DefaultListSelectionModel) sm).moveLeadSelectionIndex(0);
                         sm.setAnchorSelectionIndex(0);
                     }
                     File currentDirectory = getFileChooser().getCurrentDirectory();
-                    if(currentDirectory != null) {
+                    if (currentDirectory != null) {
                         try {
-                            setDirectoryName(ShellFolder.getNormalizedFile((File)e.getNewValue()).getPath());
+                            setDirectoryName(ShellFolder.getNormalizedFile((File) e.getNewValue()).getPath());
                         } catch (IOException ioe) {
-                            setDirectoryName(((File)e.getNewValue()).getAbsolutePath());
+                            setDirectoryName(((File) e.getNewValue()).getAbsolutePath());
                         }
                         if ((getFileChooser().getFileSelectionMode() == JFileChooser.DIRECTORIES_ONLY) && !getFileChooser().isMultiSelectionEnabled()) {
                             setFileName(getDirectoryName());
                         }
                     }
-                } else if(prop.equals(JFileChooser.FILE_SELECTION_MODE_CHANGED_PROPERTY)) {
+                } else if (prop.equals(JFileChooser.FILE_SELECTION_MODE_CHANGED_PROPERTY)) {
                     if (fileNameLabel != null) {
                         populateFileNameLabel();
                     }
                     directoryList.clearSelection();
                 } else if (prop.equals(JFileChooser.MULTI_SELECTION_ENABLED_CHANGED_PROPERTY)) {
-                    if(getFileChooser().isMultiSelectionEnabled()) {
+                    if (getFileChooser().isMultiSelectionEnabled()) {
                         fileList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
                     } else {
                         fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -227,12 +228,12 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
                         getFileChooser().setSelectedFiles(null);
                     }
                 } else if (prop.equals(JFileChooser.ACCESSORY_CHANGED_PROPERTY)) {
-                    if(getAccessoryPanel() != null) {
-                        if(e.getOldValue() != null) {
+                    if (getAccessoryPanel() != null) {
+                        if (e.getOldValue() != null) {
                             getAccessoryPanel().remove((JComponent) e.getOldValue());
                         }
                         JComponent accessory = (JComponent) e.getNewValue();
-                        if(accessory != null) {
+                        if (accessory != null) {
                             getAccessoryPanel().add(accessory, BorderLayout.CENTER);
                             getAccessoryPanel().setPreferredSize(PREF_ACC_SIZE);
                             getAccessoryPanel().setMaximumSize(MAX_SIZE);
@@ -249,9 +250,9 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
                 } else if (prop.equals(JFileChooser.CONTROL_BUTTONS_ARE_SHOWN_CHANGED_PROPERTY)) {
                     doControlButtonsChanged(e);
                 } else if (prop.equals("componentOrientation")) {
-                    ComponentOrientation o = (ComponentOrientation)e.getNewValue();
-                    JFileChooser cc = (JFileChooser)e.getSource();
-                    if (o != (ComponentOrientation)e.getOldValue()) {
+                    ComponentOrientation o = (ComponentOrientation) e.getNewValue();
+                    JFileChooser cc = (JFileChooser) e.getSource();
+                    if (o != (ComponentOrientation) e.getOldValue()) {
                         cc.applyComponentOrientation(o);
                     }
                 }
@@ -263,7 +264,7 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
     // ComponentUI Interface Implementation methods
     //
     public static ComponentUI createUI(JComponent c) {
-        return new MotifFileChooserUI((JFileChooser)c);
+        return new MotifFileChooserUI((JFileChooser) c);
     }
 
     public void installUI(JComponent c) {
@@ -300,7 +301,7 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
 
         File currentDirectory = fc.getCurrentDirectory();
         String curDirName = null;
-        if(currentDirectory != null) {
+        if (currentDirectory != null) {
             curDirName = currentDirectory.getPath();
         }
         pathField = new JTextField(curDirName) {
@@ -391,8 +392,8 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
 
         JComponent accessoryPanel = getAccessoryPanel();
         JComponent accessory = fc.getAccessory();
-        if(accessoryPanel != null) {
-            if(accessory == null) {
+        if (accessoryPanel != null) {
+            if (accessory == null) {
                 accessoryPanel.setPreferredSize(ZERO_ACC_SIZE);
                 accessoryPanel.setMaximumSize(ZERO_ACC_SIZE);
             } else {
@@ -496,7 +497,7 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
         bottomPanel.add(buttonPanel, BorderLayout.SOUTH);
         bottomPanel.setInheritsPopupMenu(true);
         if (fc.getControlButtonsAreShown()) {
-           fc.add(bottomPanel, BorderLayout.SOUTH);
+            fc.add(bottomPanel, BorderLayout.SOUTH);
         }
     }
 
@@ -509,7 +510,7 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
 
     private void doControlButtonsChanged(PropertyChangeEvent e) {
         if (getFileChooser().getControlButtonsAreShown()) {
-            getFileChooser().add(bottomPanel,BorderLayout.SOUTH);
+            getFileChooser().add(bottomPanel, BorderLayout.SOUTH);
         } else {
             getFileChooser().remove(getBottomPanel());
         }
@@ -528,21 +529,21 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
 
         Locale l = fc.getLocale();
 
-        enterFolderNameLabelText = UIManager.getString("FileChooser.enterFolderNameLabelText",l);
+        enterFolderNameLabelText = UIManager.getString("FileChooser.enterFolderNameLabelText", l);
         enterFolderNameLabelMnemonic = UIManager.getInt("FileChooser.enterFolderNameLabelMnemonic");
-        enterFileNameLabelText = UIManager.getString("FileChooser.enterFileNameLabelText",l);
+        enterFileNameLabelText = UIManager.getString("FileChooser.enterFileNameLabelText", l);
         enterFileNameLabelMnemonic = UIManager.getInt("FileChooser.enterFileNameLabelMnemonic");
 
-        filesLabelText = UIManager.getString("FileChooser.filesLabelText",l);
+        filesLabelText = UIManager.getString("FileChooser.filesLabelText", l);
         filesLabelMnemonic = UIManager.getInt("FileChooser.filesLabelMnemonic");
 
-        foldersLabelText = UIManager.getString("FileChooser.foldersLabelText",l);
+        foldersLabelText = UIManager.getString("FileChooser.foldersLabelText", l);
         foldersLabelMnemonic = UIManager.getInt("FileChooser.foldersLabelMnemonic");
 
-        pathLabelText = UIManager.getString("FileChooser.pathLabelText",l);
+        pathLabelText = UIManager.getString("FileChooser.pathLabelText", l);
         pathLabelMnemonic = UIManager.getInt("FileChooser.pathLabelMnemonic");
 
-        filterLabelText = UIManager.getString("FileChooser.filterLabelText",l);
+        filterLabelText = UIManager.getString("FileChooser.filterLabelText", l);
         filterLabelMnemonic = UIManager.getInt("FileChooser.filterLabelMnemonic");
     }
 
@@ -559,7 +560,7 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
     protected JScrollPane createFilesList() {
         fileList = new JList();
 
-        if(getFileChooser().isMultiSelectionEnabled()) {
+        if (getFileChooser().isMultiSelectionEnabled()) {
             fileList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         } else {
             fileList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -613,17 +614,17 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
 
     public Dimension getPreferredSize(JComponent c) {
         Dimension prefSize =
-            (getFileChooser().getAccessory() != null) ? WITH_ACCELERATOR_PREF_SIZE : PREF_SIZE;
+                (getFileChooser().getAccessory() != null) ? WITH_ACCELERATOR_PREF_SIZE : PREF_SIZE;
         Dimension d = c.getLayout().preferredLayoutSize(c);
         if (d != null) {
             return new Dimension(d.width < prefSize.width ? prefSize.width : d.width,
-                                 d.height < prefSize.height ? prefSize.height : d.height);
+                    d.height < prefSize.height ? prefSize.height : d.height);
         } else {
             return prefSize;
         }
     }
 
-    public Dimension getMinimumSize(JComponent x)  {
+    public Dimension getMinimumSize(JComponent x) {
         return MIN_SIZE;
     }
 
@@ -636,7 +637,7 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
         c.setAlignmentY(JComponent.TOP_ALIGNMENT);
     }
 
-    protected class FileCellRenderer extends DefaultListCellRenderer  {
+    protected class FileCellRenderer extends DefaultListCellRenderer {
         public Component getListCellRendererComponent(JList list, Object value, int index,
                                                       boolean isSelected, boolean cellHasFocus) {
 
@@ -647,7 +648,7 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
         }
     }
 
-    protected class DirectoryCellRenderer extends DefaultListCellRenderer  {
+    protected class DirectoryCellRenderer extends DefaultListCellRenderer {
         public Component getListCellRendererComponent(JList list, Object value, int index,
                                                       boolean isSelected, boolean cellHasFocus) {
 
@@ -683,7 +684,7 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
         // incremental adjustment values instead of saying that the
         // whole list has changed.
         public void fireContentsChanged() {
-            fireContentsChanged(this, 0, getModel().getDirectories().size()-1);
+            fireContentsChanged(this, 0, getModel().getDirectories().size() - 1);
         }
 
         // PENDING(jeff) - fire the correct interval changed - currently sending
@@ -727,7 +728,7 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
         // incremental adjustment values instead of saying that the
         // whole list has changed.
         public void fireContentsChanged() {
-            fireContentsChanged(this, 0, getModel().getFiles().size()-1);
+            fireContentsChanged(this, 0, getModel().getFiles().size() - 1);
         }
 
         // PENDING(jeff) - fire the interval changed
@@ -757,13 +758,13 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
      */
     public class FilterComboBoxRenderer extends DefaultListCellRenderer {
         public Component getListCellRendererComponent(JList list,
-            Object value, int index, boolean isSelected,
-            boolean cellHasFocus) {
+                                                      Object value, int index, boolean isSelected,
+                                                      boolean cellHasFocus) {
 
             super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 
             if (value != null && value instanceof FileFilter) {
-                setText(((FileFilter)value).getDescription());
+                setText(((FileFilter) value).getDescription());
             }
 
             return this;
@@ -775,6 +776,7 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
      */
     protected class FilterComboBoxModel extends AbstractListModel implements ComboBoxModel, PropertyChangeListener {
         protected FileFilter[] filters;
+
         protected FilterComboBoxModel() {
             super();
             filters = getFileChooser().getChoosableFileFilters();
@@ -782,7 +784,7 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
 
         public void propertyChange(PropertyChangeEvent e) {
             String prop = e.getPropertyName();
-            if(prop.equals(JFileChooser.CHOOSABLE_FILE_FILTER_CHANGED_PROPERTY)) {
+            if (prop.equals(JFileChooser.CHOOSABLE_FILE_FILTER_CHANGED_PROPERTY)) {
                 filters = (FileFilter[]) e.getNewValue();
                 fireContentsChanged(this, -1, -1);
             } else if (prop.equals(JFileChooser.FILE_FILTER_CHANGED_PROPERTY)) {
@@ -791,7 +793,7 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
         }
 
         public void setSelectedItem(Object filter) {
-            if(filter != null) {
+            if (filter != null) {
                 getFileChooser().setFileFilter((FileFilter) filter);
                 fireContentsChanged(this, -1, -1);
             }
@@ -805,7 +807,7 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
             // setFileFilter in JFileChooser.
             FileFilter currentFilter = getFileChooser().getFileFilter();
             boolean found = false;
-            if(currentFilter != null) {
+            if (currentFilter != null) {
                 for (FileFilter filter : filters) {
                     if (filter == currentFilter) {
                         found = true;
@@ -819,7 +821,7 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
         }
 
         public int getSize() {
-            if(filters != null) {
+            if (filters != null) {
                 return filters.length;
             } else {
                 return 0;
@@ -827,11 +829,11 @@ public class MotifFileChooserUI extends BasicFileChooserUI {
         }
 
         public Object getElementAt(int index) {
-            if(index > getSize() - 1) {
+            if (index > getSize() - 1) {
                 // This shouldn't happen. Try to recover gracefully.
                 return getFileChooser().getFileFilter();
             }
-            if(filters != null) {
+            if (filters != null) {
                 return filters[index];
             } else {
                 return null;

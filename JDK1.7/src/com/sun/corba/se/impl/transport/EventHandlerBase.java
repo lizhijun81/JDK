@@ -41,9 +41,8 @@ import com.sun.corba.se.spi.orbutil.threadpool.Work;
 import com.sun.corba.se.impl.orbutil.ORBUtility;
 
 public abstract class EventHandlerBase
-    implements
-        EventHandler
-{
+        implements
+        EventHandler {
     protected ORB orb;
     protected Work work;
     protected boolean useWorkerThreadForEvent;
@@ -55,23 +54,19 @@ public abstract class EventHandlerBase
     // EventHandler methods
     //
 
-    public void setUseSelectThreadToWait(boolean x)
-    {
+    public void setUseSelectThreadToWait(boolean x) {
         useSelectThreadToWait = x;
     }
 
-    public boolean shouldUseSelectThreadToWait()
-    {
+    public boolean shouldUseSelectThreadToWait() {
         return useSelectThreadToWait;
     }
 
-    public void setSelectionKey(SelectionKey selectionKey)
-    {
+    public void setSelectionKey(SelectionKey selectionKey) {
         this.selectionKey = selectionKey;
     }
 
-    public SelectionKey getSelectionKey()
-    {
+    public SelectionKey getSelectionKey() {
         return selectionKey;
     }
 
@@ -81,13 +76,12 @@ public abstract class EventHandlerBase
      * Only one thread should call it - a reader/listener/select thread.
      * Not stateless: interest ops, registration.
      */
-    public void handleEvent()
-    {
+    public void handleEvent() {
         if (orb.transportDebugFlag) {
             dprint(".handleEvent->: " + this);
         }
         getSelectionKey().interestOps(getSelectionKey().interestOps() &
-                                      (~ getInterestOps()));
+                (~getInterestOps()));
         if (shouldUseWorkerThreadForEvent()) {
             Throwable throwable = null;
             try {
@@ -95,7 +89,7 @@ public abstract class EventHandlerBase
                     dprint(".handleEvent: addWork to pool: " + 0);
                 }
                 orb.getThreadPoolManager().getThreadPool(0)
-                    .getWorkQueue(0).addWork(getWork());
+                        .getWorkQueue(0).addWork(getWork());
             } catch (NoSuchThreadPoolException e) {
                 throwable = e;
             } catch (NoSuchWorkQueueException e) {
@@ -121,28 +115,23 @@ public abstract class EventHandlerBase
         }
     }
 
-    public boolean shouldUseWorkerThreadForEvent()
-    {
+    public boolean shouldUseWorkerThreadForEvent() {
         return useWorkerThreadForEvent;
     }
 
-    public void setUseWorkerThreadForEvent(boolean x)
-    {
+    public void setUseWorkerThreadForEvent(boolean x) {
         useWorkerThreadForEvent = x;
     }
 
-    public void setWork(Work work)
-    {
+    public void setWork(Work work) {
         this.work = work;
     }
 
-    public Work getWork()
-    {
+    public Work getWork() {
         return work;
     }
 
-    private void dprint(String msg)
-    {
+    private void dprint(String msg) {
         ORBUtility.dprint("EventHandlerBase", msg);
     }
 }

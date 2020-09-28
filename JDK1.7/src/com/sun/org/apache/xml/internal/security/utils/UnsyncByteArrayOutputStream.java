@@ -24,10 +24,10 @@ import java.io.OutputStream;
 
 /**
  * A simple Unsynced ByteArrayOutputStream
- * @author raul
  *
+ * @author raul
  */
-public class UnsyncByteArrayOutputStream extends OutputStream  {
+public class UnsyncByteArrayOutputStream extends OutputStream {
     private static final int INITIAL_SIZE = 8192;
     private static ThreadLocal bufCache = new ThreadLocal() {
         protected synchronized Object initialValue() {
@@ -40,7 +40,7 @@ public class UnsyncByteArrayOutputStream extends OutputStream  {
     private int pos = 0;
 
     public UnsyncByteArrayOutputStream() {
-        buf = (byte[])bufCache.get();
+        buf = (byte[]) bufCache.get();
     }
 
     public void write(byte[] arg0) {
@@ -66,7 +66,7 @@ public class UnsyncByteArrayOutputStream extends OutputStream  {
         if (newPos > size) {
             expandSize(newPos);
         }
-        buf[pos++] = (byte)arg0;
+        buf[pos++] = (byte) arg0;
     }
 
     public byte[] toByteArray() {
@@ -82,7 +82,7 @@ public class UnsyncByteArrayOutputStream extends OutputStream  {
     private void expandSize(int newPos) {
         int newSize = size;
         while (newPos > newSize) {
-            newSize = newSize<<2;
+            newSize = newSize << 2;
         }
         byte newBuf[] = new byte[newSize];
         System.arraycopy(buf, 0, newBuf, 0, pos);

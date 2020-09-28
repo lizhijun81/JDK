@@ -1,10 +1,10 @@
 package com.sun.org.apache.xerces.internal.xinclude;
+
 import com.sun.org.apache.xerces.internal.xni.parser.XMLComponent;
 import com.sun.org.apache.xerces.internal.xni.parser.XMLDocumentFilter;
 
 
-
-public interface XPointerSchema extends XMLComponent, XMLDocumentFilter{
+public interface XPointerSchema extends XMLComponent, XMLDocumentFilter {
 
     /**
      * set the Schema Name  eg element , xpointer
@@ -13,7 +13,6 @@ public interface XPointerSchema extends XMLComponent, XMLDocumentFilter{
 
     /**
      * Return  Schema Name  eg element , xpointer
-     *
      */
     public String getXpointerSchemaName();
 

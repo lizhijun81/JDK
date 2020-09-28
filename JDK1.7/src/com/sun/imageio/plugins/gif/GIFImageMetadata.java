@@ -35,23 +35,24 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.metadata.IIOMetadataFormat;
 import javax.imageio.metadata.IIOMetadataFormatImpl;
+
 import org.w3c.dom.Node;
 
 public class GIFImageMetadata extends GIFMetadata {
 
     // package scope
     static final String
-        nativeMetadataFormatName = "javax_imageio_gif_image_1.0";
+            nativeMetadataFormatName = "javax_imageio_gif_image_1.0";
 
     static final String[] disposalMethodNames = {
-        "none",
-        "doNotDispose",
-        "restoreToBackgroundColor",
-        "restoreToPrevious",
-        "undefinedDisposalMethod4",
-        "undefinedDisposalMethod5",
-        "undefinedDisposalMethod6",
-        "undefinedDisposalMethod7"
+            "none",
+            "doNotDispose",
+            "restoreToBackgroundColor",
+            "restoreToPrevious",
+            "undefinedDisposalMethod4",
+            "undefinedDisposalMethod5",
+            "undefinedDisposalMethod6",
+            "undefinedDisposalMethod7"
     };
 
     // Fields from Image Descriptor
@@ -100,20 +101,19 @@ public class GIFImageMetadata extends GIFMetadata {
                                String nativeMetadataFormatName,
                                String nativeMetadataFormatClassName,
                                String[] extraMetadataFormatNames,
-                               String[] extraMetadataFormatClassNames)
-    {
+                               String[] extraMetadataFormatClassNames) {
         super(standardMetadataFormatSupported,
-              nativeMetadataFormatName,
-              nativeMetadataFormatClassName,
-              extraMetadataFormatNames,
-              extraMetadataFormatClassNames);
+                nativeMetadataFormatName,
+                nativeMetadataFormatClassName,
+                extraMetadataFormatNames,
+                extraMetadataFormatClassNames);
     }
 
     public GIFImageMetadata() {
         this(true,
-              nativeMetadataFormatName,
-              "com.sun.imageio.plugins.gif.GIFImageMetadataFormat",
-              null, null);
+                nativeMetadataFormatName,
+                "com.sun.imageio.plugins.gif.GIFImageMetadataFormat",
+                null, null);
     }
 
     public boolean isReadOnly() {
@@ -124,7 +124,7 @@ public class GIFImageMetadata extends GIFMetadata {
         if (formatName.equals(nativeMetadataFormatName)) {
             return getNativeTree();
         } else if (formatName.equals
-                   (IIOMetadataFormatImpl.standardMetadataFormatName)) {
+                (IIOMetadataFormatImpl.standardMetadataFormatName)) {
             return getStandardTree();
         } else {
             throw new IllegalArgumentException("Not a recognized format!");
@@ -142,36 +142,36 @@ public class GIFImageMetadata extends GIFMetadata {
     private Node getNativeTree() {
         IIOMetadataNode node; // scratch node
         IIOMetadataNode root =
-            new IIOMetadataNode(nativeMetadataFormatName);
+                new IIOMetadataNode(nativeMetadataFormatName);
 
         // Image descriptor
         node = new IIOMetadataNode("ImageDescriptor");
         node.setAttribute("imageLeftPosition",
-                          Integer.toString(imageLeftPosition));
+                Integer.toString(imageLeftPosition));
         node.setAttribute("imageTopPosition",
-                          Integer.toString(imageTopPosition));
+                Integer.toString(imageTopPosition));
         node.setAttribute("imageWidth", Integer.toString(imageWidth));
         node.setAttribute("imageHeight", Integer.toString(imageHeight));
         node.setAttribute("interlaceFlag",
-                          interlaceFlag ? "TRUE" : "FALSE");
+                interlaceFlag ? "TRUE" : "FALSE");
         root.appendChild(node);
 
         // Local color table
         if (localColorTable != null) {
             node = new IIOMetadataNode("LocalColorTable");
-            int numEntries = localColorTable.length/3;
+            int numEntries = localColorTable.length / 3;
             node.setAttribute("sizeOfLocalColorTable",
-                              Integer.toString(numEntries));
+                    Integer.toString(numEntries));
             node.setAttribute("sortFlag",
-                              sortFlag ? "TRUE" : "FALSE");
+                    sortFlag ? "TRUE" : "FALSE");
 
             for (int i = 0; i < numEntries; i++) {
                 IIOMetadataNode entry =
-                    new IIOMetadataNode("ColorTableEntry");
+                        new IIOMetadataNode("ColorTableEntry");
                 entry.setAttribute("index", Integer.toString(i));
-                int r = localColorTable[3*i] & 0xff;
-                int g = localColorTable[3*i + 1] & 0xff;
-                int b = localColorTable[3*i + 2] & 0xff;
+                int r = localColorTable[3 * i] & 0xff;
+                int g = localColorTable[3 * i + 1] & 0xff;
+                int b = localColorTable[3 * i + 2] & 0xff;
                 entry.setAttribute("red", Integer.toString(r));
                 entry.setAttribute("green", Integer.toString(g));
                 entry.setAttribute("blue", Integer.toString(b));
@@ -183,35 +183,35 @@ public class GIFImageMetadata extends GIFMetadata {
         // Graphic control extension
         node = new IIOMetadataNode("GraphicControlExtension");
         node.setAttribute("disposalMethod",
-                          disposalMethodNames[disposalMethod]);
+                disposalMethodNames[disposalMethod]);
         node.setAttribute("userInputFlag",
-                          userInputFlag ? "TRUE" : "FALSE");
+                userInputFlag ? "TRUE" : "FALSE");
         node.setAttribute("transparentColorFlag",
-                          transparentColorFlag ? "TRUE" : "FALSE");
+                transparentColorFlag ? "TRUE" : "FALSE");
         node.setAttribute("delayTime",
-                          Integer.toString(delayTime));
+                Integer.toString(delayTime));
         node.setAttribute("transparentColorIndex",
-                          Integer.toString(transparentColorIndex));
+                Integer.toString(transparentColorIndex));
         root.appendChild(node);
 
         if (hasPlainTextExtension) {
             node = new IIOMetadataNode("PlainTextExtension");
             node.setAttribute("textGridLeft",
-                              Integer.toString(textGridLeft));
+                    Integer.toString(textGridLeft));
             node.setAttribute("textGridTop",
-                              Integer.toString(textGridTop));
+                    Integer.toString(textGridTop));
             node.setAttribute("textGridWidth",
-                              Integer.toString(textGridWidth));
+                    Integer.toString(textGridWidth));
             node.setAttribute("textGridHeight",
-                              Integer.toString(textGridHeight));
+                    Integer.toString(textGridHeight));
             node.setAttribute("characterCellWidth",
-                              Integer.toString(characterCellWidth));
+                    Integer.toString(characterCellWidth));
             node.setAttribute("characterCellHeight",
-                              Integer.toString(characterCellHeight));
+                    Integer.toString(characterCellHeight));
             node.setAttribute("textForegroundColor",
-                              Integer.toString(textForegroundColor));
+                    Integer.toString(textForegroundColor));
             node.setAttribute("textBackgroundColor",
-                              Integer.toString(textBackgroundColor));
+                    Integer.toString(textBackgroundColor));
             node.setAttribute("text", toISO8859(text));
 
             root.appendChild(node);
@@ -219,20 +219,20 @@ public class GIFImageMetadata extends GIFMetadata {
 
         // Application extensions
         int numAppExtensions = applicationIDs == null ?
-            0 : applicationIDs.size();
+                0 : applicationIDs.size();
         if (numAppExtensions > 0) {
             node = new IIOMetadataNode("ApplicationExtensions");
             for (int i = 0; i < numAppExtensions; i++) {
                 IIOMetadataNode appExtNode =
-                    new IIOMetadataNode("ApplicationExtension");
-                byte[] applicationID = (byte[])applicationIDs.get(i);
+                        new IIOMetadataNode("ApplicationExtension");
+                byte[] applicationID = (byte[]) applicationIDs.get(i);
                 appExtNode.setAttribute("applicationID",
-                                        toISO8859(applicationID));
-                byte[] authenticationCode = (byte[])authenticationCodes.get(i);
+                        toISO8859(applicationID));
+                byte[] authenticationCode = (byte[]) authenticationCodes.get(i);
                 appExtNode.setAttribute("authenticationCode",
-                                        toISO8859(authenticationCode));
-                byte[] appData = (byte[])applicationData.get(i);
-                appExtNode.setUserObject((byte[])appData.clone());
+                        toISO8859(authenticationCode));
+                byte[] appData = (byte[]) applicationData.get(i);
+                appExtNode.setUserObject((byte[]) appData.clone());
                 node.appendChild(appExtNode);
             }
 
@@ -245,8 +245,8 @@ public class GIFImageMetadata extends GIFMetadata {
             node = new IIOMetadataNode("CommentExtensions");
             for (int i = 0; i < numComments; i++) {
                 IIOMetadataNode commentNode =
-                    new IIOMetadataNode("CommentExtension");
-                byte[] comment = (byte[])comments.get(i);
+                        new IIOMetadataNode("CommentExtension");
+                byte[] comment = (byte[]) comments.get(i);
                 commentNode.setAttribute("value", toISO8859(comment));
                 node.appendChild(commentNode);
             }
@@ -277,17 +277,17 @@ public class GIFImageMetadata extends GIFMetadata {
 
         if (localColorTable != null) {
             node = new IIOMetadataNode("Palette");
-            int numEntries = localColorTable.length/3;
+            int numEntries = localColorTable.length / 3;
             for (int i = 0; i < numEntries; i++) {
                 IIOMetadataNode entry =
-                    new IIOMetadataNode("PaletteEntry");
+                        new IIOMetadataNode("PaletteEntry");
                 entry.setAttribute("index", Integer.toString(i));
                 entry.setAttribute("red",
-                           Integer.toString(localColorTable[3*i] & 0xff));
+                        Integer.toString(localColorTable[3 * i] & 0xff));
                 entry.setAttribute("green",
-                           Integer.toString(localColorTable[3*i + 1] & 0xff));
+                        Integer.toString(localColorTable[3 * i + 1] & 0xff));
                 entry.setAttribute("blue",
-                           Integer.toString(localColorTable[3*i + 2] & 0xff));
+                        Integer.toString(localColorTable[3 * i + 2] & 0xff));
                 node.appendChild(entry);
             }
             chroma_node.appendChild(node);
@@ -383,7 +383,7 @@ public class GIFImageMetadata extends GIFMetadata {
         IIOMetadataNode node = null; // scratch node
 
         while (commentIter.hasNext()) {
-            byte[] comment = (byte[])commentIter.next();
+            byte[] comment = (byte[]) commentIter.next();
             String s = null;
             try {
                 s = new String(comment, "ISO-8859-1");
@@ -407,14 +407,14 @@ public class GIFImageMetadata extends GIFMetadata {
         }
 
         IIOMetadataNode transparency_node =
-            new IIOMetadataNode("Transparency");
+                new IIOMetadataNode("Transparency");
         IIOMetadataNode node = null; // scratch node
 
         // Alpha not in format
 
         node = new IIOMetadataNode("TransparentIndex");
         node.setAttribute("value",
-                          Integer.toString(transparentColorIndex));
+                Integer.toString(transparentColorIndex));
         transparency_node.appendChild(node);
 
         // TransparentColor not in format
@@ -425,18 +425,15 @@ public class GIFImageMetadata extends GIFMetadata {
     }
 
     public void setFromTree(String formatName, Node root)
-        throws IIOInvalidTreeException
-    {
+            throws IIOInvalidTreeException {
         throw new IllegalStateException("Metadata is read-only!");
     }
 
-    protected void mergeNativeTree(Node root) throws IIOInvalidTreeException
-    {
+    protected void mergeNativeTree(Node root) throws IIOInvalidTreeException {
         throw new IllegalStateException("Metadata is read-only!");
     }
 
-    protected void mergeStandardTree(Node root) throws IIOInvalidTreeException
-    {
+    protected void mergeStandardTree(Node root) throws IIOInvalidTreeException {
         throw new IllegalStateException("Metadata is read-only!");
     }
 

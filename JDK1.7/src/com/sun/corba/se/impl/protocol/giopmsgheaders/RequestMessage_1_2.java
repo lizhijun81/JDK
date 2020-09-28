@@ -36,8 +36,8 @@ import com.sun.corba.se.impl.orbutil.ORBConstants;
 import com.sun.corba.se.impl.encoding.CDRInputStream_1_2;
 import com.sun.corba.se.impl.encoding.CDROutputStream_1_2;
 
-import com.sun.corba.se.spi.logging.CORBALogDomains ;
-import com.sun.corba.se.impl.logging.ORBUtilSystemException ;
+import com.sun.corba.se.spi.logging.CORBALogDomains;
+import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 
 /**
  * This implements the GIOP 1.2 Request header.
@@ -51,7 +51,7 @@ public final class RequestMessage_1_2 extends Message_1_2
     // Instance variables
 
     private ORB orb = null;
-    private ORBUtilSystemException wrapper = null ;
+    private ORBUtilSystemException wrapper = null;
     private byte response_flags = (byte) 0;
     private byte reserved[] = null;
     private TargetAddress target = null;
@@ -63,18 +63,18 @@ public final class RequestMessage_1_2 extends Message_1_2
 
     RequestMessage_1_2(ORB orb) {
         this.orb = orb;
-        this.wrapper = ORBUtilSystemException.get( orb,
-            CORBALogDomains.RPC_PROTOCOL ) ;
+        this.wrapper = ORBUtilSystemException.get(orb,
+                CORBALogDomains.RPC_PROTOCOL);
     }
 
     RequestMessage_1_2(ORB orb, int _request_id, byte _response_flags,
-            byte[] _reserved, TargetAddress _target,
-            String _operation, ServiceContexts _service_contexts) {
+                       byte[] _reserved, TargetAddress _target,
+                       String _operation, ServiceContexts _service_contexts) {
         super(Message.GIOPBigMagic, GIOPVersion.V1_2, FLAG_NO_FRAG_BIG_ENDIAN,
-            Message.GIOPRequest, 0);
+                Message.GIOPRequest, 0);
         this.orb = orb;
-        this.wrapper = ORBUtilSystemException.get( orb,
-            CORBALogDomains.RPC_PROTOCOL ) ;
+        this.wrapper = ORBUtilSystemException.get(orb,
+                CORBALogDomains.RPC_PROTOCOL);
         request_id = _request_id;
         response_flags = _response_flags;
         reserved = _reserved;
@@ -102,7 +102,7 @@ public final class RequestMessage_1_2 extends Message_1_2
                 a location forward response or system exception response.
         */
 
-        if ( (this.response_flags & RESPONSE_EXPECTED_BIT) == RESPONSE_EXPECTED_BIT ) {
+        if ((this.response_flags & RESPONSE_EXPECTED_BIT) == RESPONSE_EXPECTED_BIT) {
             return true;
         }
 
@@ -142,21 +142,21 @@ public final class RequestMessage_1_2 extends Message_1_2
         this.request_id = istream.read_ulong();
         this.response_flags = istream.read_octet();
         this.reserved = new byte[3];
-        for (int _o0 = 0;_o0 < (3); ++_o0) {
+        for (int _o0 = 0; _o0 < (3); ++_o0) {
             this.reserved[_o0] = istream.read_octet();
         }
         this.target = TargetAddressHelper.read(istream);
         getObjectKey(); // this does AddressingDisposition check
         this.operation = istream.read_string();
         this.service_contexts
-            = new ServiceContexts((org.omg.CORBA_2_3.portable.InputStream) istream);
+                = new ServiceContexts((org.omg.CORBA_2_3.portable.InputStream) istream);
 
         // CORBA formal 00-11-0 15.4.2.2 GIOP 1.2 body must be
         // aligned on an 8 octet boundary.
         // Ensures that the first read operation called from the stub code,
         // during body deconstruction, would skip the header padding, that was
         // inserted to ensure that the body was aligned on an 8-octet boundary.
-        ((CDRInputStream)istream).setHeaderPadding(true);
+        ((CDRInputStream) istream).setHeaderPadding(true);
 
     }
 
@@ -167,21 +167,21 @@ public final class RequestMessage_1_2 extends Message_1_2
         nullCheck(this.reserved);
         if (this.reserved.length != (3)) {
             throw wrapper.badReservedLength(
-                org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
+                    org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
         }
-        for (int _i0 = 0;_i0 < (3); ++_i0) {
+        for (int _i0 = 0; _i0 < (3); ++_i0) {
             ostream.write_octet(this.reserved[_i0]);
         }
         nullCheck(this.target);
         TargetAddressHelper.write(ostream, this.target);
         ostream.write_string(this.operation);
         if (this.service_contexts != null) {
-                service_contexts.write(
-                (org.omg.CORBA_2_3.portable.OutputStream) ostream,
-                GIOPVersion.V1_2);
-            } else {
-                ServiceContexts.writeNullServiceContext(
-                (org.omg.CORBA_2_3.portable.OutputStream) ostream);
+            service_contexts.write(
+                    (org.omg.CORBA_2_3.portable.OutputStream) ostream,
+                    GIOPVersion.V1_2);
+        } else {
+            ServiceContexts.writeNullServiceContext(
+                    (org.omg.CORBA_2_3.portable.OutputStream) ostream);
         }
 
         // CORBA formal 00-11-0 15.4.2.2 GIOP 1.2 body must be
@@ -189,12 +189,11 @@ public final class RequestMessage_1_2 extends Message_1_2
         // Ensures that the first write operation called from the stub code,
         // during body construction, would insert a header padding, such that
         // the body is aligned on an 8-octet boundary.
-        ((CDROutputStream)ostream).setHeaderPadding(true);
+        ((CDROutputStream) ostream).setHeaderPadding(true);
     }
 
     public void callback(MessageHandler handler)
-        throws java.io.IOException
-    {
+            throws java.io.IOException {
         handler.handleInput(this);
     }
 } // class RequestMessage_1_2

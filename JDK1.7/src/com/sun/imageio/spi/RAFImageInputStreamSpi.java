@@ -53,13 +53,13 @@ public class RAFImageInputStreamSpi extends ImageInputStreamSpi {
                                                       File cacheDir) {
         if (input instanceof RandomAccessFile) {
             try {
-                return new FileImageInputStream((RandomAccessFile)input);
+                return new FileImageInputStream((RandomAccessFile) input);
             } catch (Exception e) {
                 return null;
             }
         } else {
             throw new IllegalArgumentException
-                ("input not a RandomAccessFile!");
+                    ("input not a RandomAccessFile!");
         }
     }
 }

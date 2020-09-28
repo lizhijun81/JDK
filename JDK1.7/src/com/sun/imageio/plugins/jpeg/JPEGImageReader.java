@@ -71,7 +71,9 @@ public class JPEGImageReader extends ImageReader {
      */
     private long structPointer = 0;
 
-    /** The input stream we read from */
+    /**
+     * The input stream we read from
+     */
     private ImageInputStream iis = null;
 
     /**
@@ -87,10 +89,10 @@ public class JPEGImageReader extends ImageReader {
 
     static {
         java.security.AccessController.doPrivileged(
-            new sun.security.action.LoadLibraryAction("jpeg"));
+                new sun.security.action.LoadLibraryAction("jpeg"));
         initReaderIDs(ImageInputStream.class,
-                      JPEGQTable.class,
-                      JPEGHuffmanTable.class);
+                JPEGQTable.class,
+                JPEGHuffmanTable.class);
     }
 
     // The following warnings are converted to strings when used
@@ -130,9 +132,13 @@ public class JPEGImageReader extends ImageReader {
     // Unlike metadata, which may never be retrieved, we need this
     // if we are to read an image at all.
 
-    /** Set by setImageData native code callback */
+    /**
+     * Set by setImageData native code callback
+     */
     private int width;
-    /** Set by setImageData native code callback */
+    /**
+     * Set by setImageData native code callback
+     */
     private int height;
     /**
      * Set by setImageData native code callback.  A modified
@@ -144,37 +150,59 @@ public class JPEGImageReader extends ImageReader {
      * IJG+NIFTY colorspace code.
      */
     private int outColorSpaceCode;
-    /** Set by setImageData native code callback */
+    /**
+     * Set by setImageData native code callback
+     */
     private int numComponents;
-    /** Set by setImageData native code callback */
+    /**
+     * Set by setImageData native code callback
+     */
     private ColorSpace iccCS = null;
 
 
-    /** If we need to post-convert in Java, convert with this op */
+    /**
+     * If we need to post-convert in Java, convert with this op
+     */
     private ColorConvertOp convert = null;
 
-    /** The image we are going to fill */
+    /**
+     * The image we are going to fill
+     */
     private BufferedImage image = null;
 
-    /** An intermediate Raster to hold decoded data */
+    /**
+     * An intermediate Raster to hold decoded data
+     */
     private WritableRaster raster = null;
 
-    /** A view of our target Raster that we can setRect to */
+    /**
+     * A view of our target Raster that we can setRect to
+     */
     private WritableRaster target = null;
 
-    /** The databuffer for the above Raster */
+    /**
+     * The databuffer for the above Raster
+     */
     private DataBufferByte buffer = null;
 
-    /** The region in the destination where we will write pixels */
+    /**
+     * The region in the destination where we will write pixels
+     */
     private Rectangle destROI = null;
 
-    /** The list of destination bands, if any */
-    private int [] destinationBands = null;
+    /**
+     * The list of destination bands, if any
+     */
+    private int[] destinationBands = null;
 
-    /** Stream metadata, cached, even when the stream is changed. */
+    /**
+     * Stream metadata, cached, even when the stream is changed.
+     */
     private JPEGMetadata streamMetadata = null;
 
-    /** Image metadata, valid for the imageMetadataIndex only. */
+    /**
+     * Image metadata, valid for the imageMetadataIndex only.
+     */
     private JPEGMetadata imageMetadata = null;
     private int imageMetadataIndex = -1;
 
@@ -188,7 +216,7 @@ public class JPEGImageReader extends ImageReader {
      * Tables that have been read from a tables-only image at the
      * beginning of a stream.
      */
-    private JPEGQTable [] abbrevQTables = null;
+    private JPEGQTable[] abbrevQTables = null;
     private JPEGHuffmanTable[] abbrevDCHuffmanTables = null;
     private JPEGHuffmanTable[] abbrevACHuffmanTables = null;
 
@@ -211,13 +239,19 @@ public class JPEGImageReader extends ImageReader {
      */
     private boolean tablesOnlyChecked = false;
 
-    /** The referent to be registered with the Disposer. */
+    /**
+     * The referent to be registered with the Disposer.
+     */
     private Object disposerReferent = new Object();
 
-    /** The DisposerRecord that handles the actual disposal of this reader. */
+    /**
+     * The DisposerRecord that handles the actual disposal of this reader.
+     */
     private DisposerRecord disposerRecord;
 
-    /** Sets up static C structures. */
+    /**
+     * Sets up static C structures.
+     */
     private static native void initReaderIDs(Class iisClass,
                                              Class qTableClass,
                                              Class huffClass);
@@ -229,7 +263,9 @@ public class JPEGImageReader extends ImageReader {
         Disposer.addRecord(disposerReferent, disposerRecord);
     }
 
-    /** Sets up per-reader C structure and returns a pointer to it. */
+    /**
+     * Sets up per-reader C structure and returns a pointer to it.
+     */
     private native long initJPEGImageReader();
 
     /**
@@ -240,12 +276,12 @@ public class JPEGImageReader extends ImageReader {
     protected void warningOccurred(int code) {
         cbLock.lock();
         try {
-            if ((code < 0) || (code > MAX_WARNING)){
+            if ((code < 0) || (code > MAX_WARNING)) {
                 throw new InternalError("Invalid warning index");
             }
             processWarningOccurred
-                ("com.sun.imageio.plugins.jpeg.JPEGImageReaderResources",
-                 Integer.toString(code));
+                    ("com.sun.imageio.plugins.jpeg.JPEGImageReaderResources",
+                            Integer.toString(code));
         } finally {
             cbLock.unlock();
         }
@@ -275,8 +311,7 @@ public class JPEGImageReader extends ImageReader {
 
     public void setInput(Object input,
                          boolean seekForwardOnly,
-                         boolean ignoreMetadata)
-    {
+                         boolean ignoreMetadata) {
         setThreadLock();
         try {
             cbLock.check();
@@ -294,7 +329,7 @@ public class JPEGImageReader extends ImageReader {
     /**
      * This method is called from native code in order to fill
      * native input buffer.
-     *
+     * <p>
      * We block any attempt to change the reading state during this
      * method, in order to prevent a corruption of the native decoder
      * state.
@@ -352,11 +387,11 @@ public class JPEGImageReader extends ImageReader {
                 iis.seek(savePos);
                 haveSeeked = true;
                 streamMetadata = new JPEGMetadata(true, false,
-                                                  iis, this);
+                        iis, this);
                 long pos = iis.getStreamPosition();
                 if (debug) {
                     System.out.println
-                        ("pos after constructing stream metadata is " + pos);
+                            ("pos after constructing stream metadata is " + pos);
                 }
             }
             // Now we are at the first image if there are any, so add it
@@ -370,7 +405,7 @@ public class JPEGImageReader extends ImageReader {
             currentImage = 0;
         }
         if (seekForwardOnly) {
-            Long pos = (Long) imagePositions.get(imagePositions.size()-1);
+            Long pos = (Long) imagePositions.get(imagePositions.size() - 1);
             iis.flushBefore(pos.longValue());
         }
         tablesOnlyChecked = true;
@@ -388,7 +423,7 @@ public class JPEGImageReader extends ImageReader {
     }
 
     private int getNumImagesOnThread(boolean allowSearch)
-      throws IOException {
+            throws IOException {
         if (numImages != 0) {
             return numImages;
         }
@@ -398,7 +433,7 @@ public class JPEGImageReader extends ImageReader {
         if (allowSearch == true) {
             if (seekForwardOnly) {
                 throw new IllegalStateException(
-                    "seekForwardOnly and allowSearch can't both be true!");
+                        "seekForwardOnly and allowSearch can't both be true!");
             }
             // Otherwise we have to read the entire stream
 
@@ -417,33 +452,33 @@ public class JPEGImageReader extends ImageReader {
             while (!done) {
                 done = buffer.scanForFF(this);
                 switch (buffer.buf[buffer.bufPtr] & 0xff) {
-                case JPEG.SOI:
-                    numImages++;
-                    // FALL THROUGH to decrement buffer vars
-                    // This first set doesn't have a length
-                case 0: // not a marker, just a data 0xff
-                case JPEG.RST0:
-                case JPEG.RST1:
-                case JPEG.RST2:
-                case JPEG.RST3:
-                case JPEG.RST4:
-                case JPEG.RST5:
-                case JPEG.RST6:
-                case JPEG.RST7:
-                case JPEG.EOI:
-                    buffer.bufAvail--;
-                    buffer.bufPtr++;
-                    break;
+                    case JPEG.SOI:
+                        numImages++;
+                        // FALL THROUGH to decrement buffer vars
+                        // This first set doesn't have a length
+                    case 0: // not a marker, just a data 0xff
+                    case JPEG.RST0:
+                    case JPEG.RST1:
+                    case JPEG.RST2:
+                    case JPEG.RST3:
+                    case JPEG.RST4:
+                    case JPEG.RST5:
+                    case JPEG.RST6:
+                    case JPEG.RST7:
+                    case JPEG.EOI:
+                        buffer.bufAvail--;
+                        buffer.bufPtr++;
+                        break;
                     // All the others have a length
-                default:
-                    buffer.bufAvail--;
-                    buffer.bufPtr++;
-                    buffer.loadBuf(2);
-                    int length = ((buffer.buf[buffer.bufPtr++] & 0xff) << 8) |
-                        (buffer.buf[buffer.bufPtr++] & 0xff);
-                    buffer.bufAvail -= 2;
-                    length -= 2; // length includes itself
-                    buffer.skipData(length);
+                    default:
+                        buffer.bufAvail--;
+                        buffer.bufPtr++;
+                        buffer.loadBuf(2);
+                        int length = ((buffer.buf[buffer.bufPtr++] & 0xff) << 8) |
+                                (buffer.buf[buffer.bufPtr++] & 0xff);
+                        buffer.bufAvail -= 2;
+                        length -= 2; // length includes itself
+                        buffer.skipData(length);
                 }
             }
 
@@ -476,12 +511,12 @@ public class JPEGImageReader extends ImageReader {
             checkTablesOnly();
         }
         if (imageIndex < imagePositions.size()) {
-            iis.seek(((Long)(imagePositions.get(imageIndex))).longValue());
+            iis.seek(((Long) (imagePositions.get(imageIndex))).longValue());
         } else {
             // read to start of image, saving positions
             // First seek to the last position we already have, and skip the
             // entire image
-            Long pos = (Long) imagePositions.get(imagePositions.size()-1);
+            Long pos = (Long) imagePositions.get(imagePositions.size() - 1);
             iis.seek(pos.longValue());
             skipImage();
             // Now add all intervening positions, skipping images
@@ -582,7 +617,7 @@ public class JPEGImageReader extends ImageReader {
         }
         cbLock.lock();
         try {
-            iis.seek(iis.getStreamPosition()-num);
+            iis.seek(iis.getStreamPosition() - num);
             // The buffer is clear after this, so no need to set haveSeeked.
         } finally {
             cbLock.unlock();
@@ -593,7 +628,7 @@ public class JPEGImageReader extends ImageReader {
      * Reads header information for the given image, if possible.
      */
     private void readHeader(int imageIndex, boolean reset)
-        throws IOException {
+            throws IOException {
         gotoImage(imageIndex);
         readNativeHeader(reset); // Ignore return
         currentImage = imageIndex;
@@ -622,7 +657,7 @@ public class JPEGImageReader extends ImageReader {
     private native boolean readImageHeader(long structPointer,
                                            boolean clearBuffer,
                                            boolean reset)
-        throws IOException;
+            throws IOException;
 
     /*
      * Called by the native code whenever an image header has been
@@ -635,7 +670,7 @@ public class JPEGImageReader extends ImageReader {
                               int colorSpaceCode,
                               int outColorSpaceCode,
                               int numComponents,
-                              byte [] iccData) {
+                              byte[] iccData) {
         this.width = width;
         this.height = height;
         this.colorSpaceCode = colorSpaceCode;
@@ -664,7 +699,7 @@ public class JPEGImageReader extends ImageReader {
 
         ICC_Profile oldProfile = null;
         if (iccCS instanceof ICC_ColorSpace) {
-            oldProfile = ((ICC_ColorSpace)iccCS).getProfile();
+            oldProfile = ((ICC_ColorSpace) iccCS).getProfile();
         }
         byte[] oldData = null;
         if (oldProfile != null) {
@@ -681,12 +716,11 @@ public class JPEGImageReader extends ImageReader {
          * embedded data.
          */
         if (oldData == null ||
-            !java.util.Arrays.equals(oldData, newData))
-        {
+                !java.util.Arrays.equals(oldData, newData)) {
             iccCS = new ICC_ColorSpace(newProfile);
             // verify new color space
             try {
-                float[] colors = iccCS.fromRGB(new float[] {1f, 0f, 0f});
+                float[] colors = iccCS.fromRGB(new float[]{1f, 0f, 0f});
             } catch (CMMException e) {
                 /*
                  * Embedded profile seems to be corrupted.
@@ -745,7 +779,7 @@ public class JPEGImageReader extends ImageReader {
     }
 
     public ImageTypeSpecifier getRawImageType(int imageIndex)
-        throws IOException {
+            throws IOException {
         setThreadLock();
         try {
             if (currentImage != imageIndex) {
@@ -762,7 +796,7 @@ public class JPEGImageReader extends ImageReader {
     }
 
     public Iterator getImageTypes(int imageIndex)
-        throws IOException {
+            throws IOException {
         setThreadLock();
         try {
             return getImageTypesOnThread(imageIndex);
@@ -772,7 +806,7 @@ public class JPEGImageReader extends ImageReader {
     }
 
     private Iterator getImageTypesOnThread(int imageIndex)
-        throws IOException {
+            throws IOException {
         if (currentImage != imageIndex) {
             cbLock.check();
             readHeader(imageIndex, true);
@@ -799,59 +833,59 @@ public class JPEGImageReader extends ImageReader {
         ArrayList<ImageTypeProducer> list = new ArrayList<ImageTypeProducer>(1);
 
         switch (colorSpaceCode) {
-        case JPEG.JCS_GRAYSCALE:
-            list.add(raw);
-            list.add(getImageType(JPEG.JCS_RGB));
-            break;
-        case JPEG.JCS_RGB:
-            list.add(raw);
-            list.add(getImageType(JPEG.JCS_GRAYSCALE));
-            list.add(getImageType(JPEG.JCS_YCC));
-            break;
-        case JPEG.JCS_RGBA:
-            list.add(raw);
-            break;
-        case JPEG.JCS_YCC:
-            if (raw != null) {  // Might be null if PYCC.pf not installed
+            case JPEG.JCS_GRAYSCALE:
                 list.add(raw);
                 list.add(getImageType(JPEG.JCS_RGB));
-            }
-            break;
-        case JPEG.JCS_YCCA:
-            if (raw != null) {  // Might be null if PYCC.pf not installed
+                break;
+            case JPEG.JCS_RGB:
                 list.add(raw);
-            }
-            break;
-        case JPEG.JCS_YCbCr:
-            // As there is no YCbCr ColorSpace, we can't support
-            // the raw type.
+                list.add(getImageType(JPEG.JCS_GRAYSCALE));
+                list.add(getImageType(JPEG.JCS_YCC));
+                break;
+            case JPEG.JCS_RGBA:
+                list.add(raw);
+                break;
+            case JPEG.JCS_YCC:
+                if (raw != null) {  // Might be null if PYCC.pf not installed
+                    list.add(raw);
+                    list.add(getImageType(JPEG.JCS_RGB));
+                }
+                break;
+            case JPEG.JCS_YCCA:
+                if (raw != null) {  // Might be null if PYCC.pf not installed
+                    list.add(raw);
+                }
+                break;
+            case JPEG.JCS_YCbCr:
+                // As there is no YCbCr ColorSpace, we can't support
+                // the raw type.
 
-            // due to 4705399, use RGB as default in order to avoid
-            // slowing down of drawing operations with result image.
-            list.add(getImageType(JPEG.JCS_RGB));
+                // due to 4705399, use RGB as default in order to avoid
+                // slowing down of drawing operations with result image.
+                list.add(getImageType(JPEG.JCS_RGB));
 
-            if (iccCS != null) {
-                list.add(new ImageTypeProducer() {
-                    protected ImageTypeSpecifier produce() {
-                        return ImageTypeSpecifier.createInterleaved
-                         (iccCS,
-                          JPEG.bOffsRGB,  // Assume it's for RGB
-                          DataBuffer.TYPE_BYTE,
-                          false,
-                          false);
-                    }
-                });
+                if (iccCS != null) {
+                    list.add(new ImageTypeProducer() {
+                        protected ImageTypeSpecifier produce() {
+                            return ImageTypeSpecifier.createInterleaved
+                                    (iccCS,
+                                            JPEG.bOffsRGB,  // Assume it's for RGB
+                                            DataBuffer.TYPE_BYTE,
+                                            false,
+                                            false);
+                        }
+                    });
 
-            }
+                }
 
-            list.add(getImageType(JPEG.JCS_GRAYSCALE));
-            list.add(getImageType(JPEG.JCS_YCC));
-            break;
-        case JPEG.JCS_YCbCrA:  // Default is to convert to RGBA
-            // As there is no YCbCr ColorSpace, we can't support
-            // the raw type.
-            list.add(getImageType(JPEG.JCS_RGBA));
-            break;
+                list.add(getImageType(JPEG.JCS_GRAYSCALE));
+                list.add(getImageType(JPEG.JCS_YCC));
+                break;
+            case JPEG.JCS_YCbCrA:  // Default is to convert to RGBA
+                // As there is no YCbCr ColorSpace, we can't support
+                // the raw type.
+                list.add(getImageType(JPEG.JCS_RGBA));
+                break;
         }
 
         return new ImageTypeIterator(list.iterator());
@@ -869,7 +903,7 @@ public class JPEGImageReader extends ImageReader {
      */
     private void checkColorConversion(BufferedImage image,
                                       ImageReadParam param)
-        throws IIOException {
+            throws IIOException {
 
         // If we are rearranging channels at all, the default
         // conversions remain in place.  If the user wants
@@ -877,7 +911,7 @@ public class JPEGImageReader extends ImageReader {
         // a Raster.
         if (param != null) {
             if ((param.getSourceBands() != null) ||
-                (param.getDestinationBands() != null)) {
+                    (param.getDestinationBands() != null)) {
                 // Accept default conversions out of decoder, silently
                 return;
             }
@@ -900,77 +934,75 @@ public class JPEGImageReader extends ImageReader {
         int csType = cs.getType();
         convert = null;
         switch (outColorSpaceCode) {
-        case JPEG.JCS_GRAYSCALE:  // Its gray in the file
-            if  (csType == ColorSpace.TYPE_RGB) { // We want RGB
-                // IJG can do this for us more efficiently
-                setOutColorSpace(structPointer, JPEG.JCS_RGB);
-                // Update java state according to changes
-                // in the native part of decoder.
-                outColorSpaceCode = JPEG.JCS_RGB;
-                numComponents = 3;
-            } else if (csType != ColorSpace.TYPE_GRAY) {
-                throw new IIOException("Incompatible color conversion");
-            }
-            break;
-        case JPEG.JCS_RGB:  // IJG wants to go to RGB
-            if (csType ==  ColorSpace.TYPE_GRAY) {  // We want gray
-                if (colorSpaceCode == JPEG.JCS_YCbCr) {
-                    // If the jpeg space is YCbCr, IJG can do it
-                    setOutColorSpace(structPointer, JPEG.JCS_GRAYSCALE);
+            case JPEG.JCS_GRAYSCALE:  // Its gray in the file
+                if (csType == ColorSpace.TYPE_RGB) { // We want RGB
+                    // IJG can do this for us more efficiently
+                    setOutColorSpace(structPointer, JPEG.JCS_RGB);
                     // Update java state according to changes
                     // in the native part of decoder.
-                    outColorSpaceCode = JPEG.JCS_GRAYSCALE;
-                    numComponents = 1;
+                    outColorSpaceCode = JPEG.JCS_RGB;
+                    numComponents = 3;
+                } else if (csType != ColorSpace.TYPE_GRAY) {
+                    throw new IIOException("Incompatible color conversion");
                 }
-            } else if ((iccCS != null) &&
-                       (cm.getNumComponents() == numComponents) &&
-                       (cs != iccCS)) {
-                // We have an ICC profile but it isn't used in the dest
-                // image.  So convert from the profile cs to the target cs
-                convert = new ColorConvertOp(iccCS, cs, null);
-                // Leave IJG conversion in place; we still need it
-            } else if ((iccCS == null) &&
-                       (!cs.isCS_sRGB()) &&
-                       (cm.getNumComponents() == numComponents)) {
-                // Target isn't sRGB, so convert from sRGB to the target
-                convert = new ColorConvertOp(JPEG.JCS.sRGB, cs, null);
-            } else if (csType != ColorSpace.TYPE_RGB) {
-                throw new IIOException("Incompatible color conversion");
-            }
-            break;
-        case JPEG.JCS_RGBA:
-            // No conversions available; image must be RGBA
-            if ((csType != ColorSpace.TYPE_RGB) ||
-                (cm.getNumComponents() != numComponents)) {
-                throw new IIOException("Incompatible color conversion");
-            }
-            break;
-        case JPEG.JCS_YCC:
-            {
+                break;
+            case JPEG.JCS_RGB:  // IJG wants to go to RGB
+                if (csType == ColorSpace.TYPE_GRAY) {  // We want gray
+                    if (colorSpaceCode == JPEG.JCS_YCbCr) {
+                        // If the jpeg space is YCbCr, IJG can do it
+                        setOutColorSpace(structPointer, JPEG.JCS_GRAYSCALE);
+                        // Update java state according to changes
+                        // in the native part of decoder.
+                        outColorSpaceCode = JPEG.JCS_GRAYSCALE;
+                        numComponents = 1;
+                    }
+                } else if ((iccCS != null) &&
+                        (cm.getNumComponents() == numComponents) &&
+                        (cs != iccCS)) {
+                    // We have an ICC profile but it isn't used in the dest
+                    // image.  So convert from the profile cs to the target cs
+                    convert = new ColorConvertOp(iccCS, cs, null);
+                    // Leave IJG conversion in place; we still need it
+                } else if ((iccCS == null) &&
+                        (!cs.isCS_sRGB()) &&
+                        (cm.getNumComponents() == numComponents)) {
+                    // Target isn't sRGB, so convert from sRGB to the target
+                    convert = new ColorConvertOp(JPEG.JCS.sRGB, cs, null);
+                } else if (csType != ColorSpace.TYPE_RGB) {
+                    throw new IIOException("Incompatible color conversion");
+                }
+                break;
+            case JPEG.JCS_RGBA:
+                // No conversions available; image must be RGBA
+                if ((csType != ColorSpace.TYPE_RGB) ||
+                        (cm.getNumComponents() != numComponents)) {
+                    throw new IIOException("Incompatible color conversion");
+                }
+                break;
+            case JPEG.JCS_YCC: {
                 ColorSpace YCC = JPEG.JCS.getYCC();
                 if (YCC == null) { // We can't do YCC at all
                     throw new IIOException("Incompatible color conversion");
                 }
                 if ((cs != YCC) &&
-                    (cm.getNumComponents() == numComponents)) {
+                        (cm.getNumComponents() == numComponents)) {
                     convert = new ColorConvertOp(YCC, cs, null);
                 }
             }
             break;
-        case JPEG.JCS_YCCA:
-            {
+            case JPEG.JCS_YCCA: {
                 ColorSpace YCC = JPEG.JCS.getYCC();
                 // No conversions available; image must be YCCA
                 if ((YCC == null) || // We can't do YCC at all
-                    (cs != YCC) ||
-                    (cm.getNumComponents() != numComponents)) {
+                        (cs != YCC) ||
+                        (cm.getNumComponents() != numComponents)) {
                     throw new IIOException("Incompatible color conversion");
                 }
             }
             break;
-        default:
-            // Anything else we can't handle at all
-            throw new IIOException("Incompatible color conversion");
+            default:
+                // Anything else we can't handle at all
+                throw new IIOException("Incompatible color conversion");
         }
     }
 
@@ -1000,14 +1032,14 @@ public class JPEGImageReader extends ImageReader {
     }
 
     public IIOMetadata getImageMetadata(int imageIndex)
-        throws IOException {
+            throws IOException {
         setThreadLock();
         try {
             // imageMetadataIndex will always be either a valid index or
             // -1, in which case imageMetadata will not be null.
             // So we can leave checking imageIndex for gotoImage.
             if ((imageMetadataIndex == imageIndex)
-                && (imageMetadata != null)) {
+                    && (imageMetadata != null)) {
                 return imageMetadata;
             }
 
@@ -1026,7 +1058,7 @@ public class JPEGImageReader extends ImageReader {
     }
 
     public BufferedImage read(int imageIndex, ImageReadParam param)
-        throws IOException {
+            throws IOException {
         setThreadLock();
         try {
             cbLock.check();
@@ -1056,7 +1088,7 @@ public class JPEGImageReader extends ImageReader {
         WritableRaster imRas = null;
         int numImageBands = 0;
 
-        if (!wantRaster){
+        if (!wantRaster) {
             // Can we read this image?
             Iterator imageTypes = getImageTypes(imageIndex);
             if (imageTypes.hasNext() == false) {
@@ -1093,7 +1125,7 @@ public class JPEGImageReader extends ImageReader {
         // is filled we will call back to acceptPixels below to copy
         // this to whatever kind of buffer our image has.
 
-        int [] srcBands = JPEG.bandOffsets[numComponents-1];
+        int[] srcBands = JPEG.bandOffsets[numComponents - 1];
         int numRasterBands = (wantRaster ? numComponents : numImageBands);
         destinationBands = null;
 
@@ -1133,33 +1165,33 @@ public class JPEGImageReader extends ImageReader {
             }
         }
 
-        int lineSize = destROI.width*numRasterBands;
+        int lineSize = destROI.width * numRasterBands;
 
         buffer = new DataBufferByte(lineSize);
 
-        int [] bandOffs = JPEG.bandOffsets[numRasterBands-1];
+        int[] bandOffs = JPEG.bandOffsets[numRasterBands - 1];
 
         raster = Raster.createInterleavedRaster(buffer,
-                                                destROI.width, 1,
-                                                lineSize,
-                                                numRasterBands,
-                                                bandOffs,
-                                                null);
+                destROI.width, 1,
+                lineSize,
+                numRasterBands,
+                bandOffs,
+                null);
 
         // Now that we have the Raster we'll decode to, get a view of the
         // target Raster that will permit a simple setRect for each scanline
         if (wantRaster) {
-            target =  Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
-                                                     destROI.width,
-                                                     destROI.height,
-                                                     lineSize,
-                                                     numRasterBands,
-                                                     bandOffs,
-                                                     null);
+            target = Raster.createInterleavedRaster(DataBuffer.TYPE_BYTE,
+                    destROI.width,
+                    destROI.height,
+                    lineSize,
+                    numRasterBands,
+                    bandOffs,
+                    null);
         } else {
             target = imRas;
         }
-        int [] bandSizes = target.getSampleModel().getSampleSize();
+        int[] bandSizes = target.getSampleModel().getSampleSize();
 
         /*
          * If the process is sequential, and we have restart markers,
@@ -1169,7 +1201,7 @@ public class JPEGImageReader extends ImageReader {
 
         // Check for update listeners (don't call back if none)
         boolean callbackUpdates = ((updateListeners != null)
-                                   || (progressListeners != null));
+                || (progressListeners != null));
 
         // Set up progression data
         initProgressData();
@@ -1178,13 +1210,13 @@ public class JPEGImageReader extends ImageReader {
         if (imageIndex == imageMetadataIndex) { // We have metadata
             knownPassCount = 0;
             for (Iterator iter = imageMetadata.markerSequence.iterator();
-                 iter.hasNext();) {
+                 iter.hasNext(); ) {
                 if (iter.next() instanceof SOSMarkerSegment) {
                     knownPassCount++;
                 }
             }
         }
-        progInterval = Math.max((target.getHeight()-1) / 20, 1);
+        progInterval = Math.max((target.getHeight() - 1) / 20, 1);
         if (knownPassCount > 0) {
             progInterval *= knownPassCount;
         } else if (maxProgressivePass != Integer.MAX_VALUE) {
@@ -1195,7 +1227,7 @@ public class JPEGImageReader extends ImageReader {
             System.out.println("**** Read Data *****");
             System.out.println("numRasterBands is " + numRasterBands);
             System.out.print("srcBands:");
-            for (int i = 0; i<srcBands.length;i++)
+            for (int i = 0; i < srcBands.length; i++)
                 System.out.print(" " + srcBands[i]);
             System.out.println();
             System.out.println("destination bands is " + destinationBands);
@@ -1224,18 +1256,18 @@ public class JPEGImageReader extends ImageReader {
         // just a 1-line intermediate data transfer buffer that will not
         // affect the acceleration of the resulting image.
         aborted = readImage(structPointer,
-                            buffer.getData(),
-                            numRasterBands,
-                            srcBands,
-                            bandSizes,
-                            srcROI.x, srcROI.y,
-                            srcROI.width, srcROI.height,
-                            periodX, periodY,
-                            abbrevQTables,
-                            abbrevDCHuffmanTables,
-                            abbrevACHuffmanTables,
-                            minProgressivePass, maxProgressivePass,
-                            callbackUpdates);
+                buffer.getData(),
+                numRasterBands,
+                srcBands,
+                bandSizes,
+                srcROI.x, srcROI.y,
+                srcROI.width, srcROI.height,
+                periodX, periodY,
+                abbrevQTables,
+                abbrevDCHuffmanTables,
+                abbrevACHuffmanTables,
+                minProgressivePass, maxProgressivePass,
+                callbackUpdates);
 
         if (aborted) {
             processReadAborted();
@@ -1262,21 +1294,21 @@ public class JPEGImageReader extends ImageReader {
         cbLock.lock();
         try {
             processImageUpdate(image,
-                               destROI.x, destROI.y+y,
-                               raster.getWidth(), 1,
-                               1, 1,
-                               destinationBands);
-            if ((y > 0) && (y%progInterval == 0)) {
-                int height = target.getHeight()-1;
-                float percentOfPass = ((float)y)/height;
+                    destROI.x, destROI.y + y,
+                    raster.getWidth(), 1,
+                    1, 1,
+                    destinationBands);
+            if ((y > 0) && (y % progInterval == 0)) {
+                int height = target.getHeight() - 1;
+                float percentOfPass = ((float) y) / height;
                 if (progressive) {
                     if (knownPassCount != UNKNOWN) {
-                        processImageProgress((pass + percentOfPass)*100.0F
-                                             / knownPassCount);
+                        processImageProgress((pass + percentOfPass) * 100.0F
+                                / knownPassCount);
                     } else if (maxProgressivePass != Integer.MAX_VALUE) {
                         // Use the range of allowed progressive passes
-                        processImageProgress((pass + percentOfPass)*100.0F
-                                             / (maxProgressivePass - minProgressivePass + 1));
+                        processImageProgress((pass + percentOfPass) * 100.0F
+                                / (maxProgressivePass - minProgressivePass + 1));
                     } else {
                         // Assume there are a minimum of MIN_ESTIMATED_PASSES
                         // and that there is always one more pass
@@ -1287,27 +1319,27 @@ public class JPEGImageReader extends ImageReader {
                         // that there is always one more pass.  This is monotonic
                         // and asymptotic to 1.0, which is what we need.
                         int remainingPasses = // including this one
-                            Math.max(2, MIN_ESTIMATED_PASSES-pass);
-                        int totalPasses = pass + remainingPasses-1;
-                        progInterval = Math.max(height/20*totalPasses,
-                                                totalPasses);
-                        if (y%progInterval == 0) {
+                                Math.max(2, MIN_ESTIMATED_PASSES - pass);
+                        int totalPasses = pass + remainingPasses - 1;
+                        progInterval = Math.max(height / 20 * totalPasses,
+                                totalPasses);
+                        if (y % progInterval == 0) {
                             percentToDate = previousPassPercentage +
-                                (1.0F - previousPassPercentage)
-                                * (percentOfPass)/remainingPasses;
+                                    (1.0F - previousPassPercentage)
+                                            * (percentOfPass) / remainingPasses;
                             if (debug) {
                                 System.out.print("pass= " + pass);
                                 System.out.print(", y= " + y);
                                 System.out.print(", progInt= " + progInterval);
                                 System.out.print(", % of pass: " + percentOfPass);
                                 System.out.print(", rem. passes: "
-                                                 + remainingPasses);
+                                        + remainingPasses);
                                 System.out.print(", prev%: "
-                                                 + previousPassPercentage);
+                                        + previousPassPercentage);
                                 System.out.print(", %ToDate: " + percentToDate);
                                 System.out.print(" ");
                             }
-                            processImageProgress(percentToDate*100.0F);
+                            processImageProgress(percentToDate * 100.0F);
                         }
                     }
                 } else {
@@ -1327,24 +1359,24 @@ public class JPEGImageReader extends ImageReader {
         progInterval = 0;
     }
 
-    private void passStarted (int pass) {
+    private void passStarted(int pass) {
         cbLock.lock();
         try {
             this.pass = pass;
             previousPassPercentage = percentToDate;
             processPassStarted(image,
-                               pass,
-                               minProgressivePass,
-                               maxProgressivePass,
-                               0, 0,
-                               1,1,
-                               destinationBands);
+                    pass,
+                    minProgressivePass,
+                    maxProgressivePass,
+                    0, 0,
+                    1, 1,
+                    destinationBands);
         } finally {
             cbLock.unlock();
         }
     }
 
-    private void passComplete () {
+    private void passComplete() {
         cbLock.lock();
         try {
             processPassComplete(image);
@@ -1386,16 +1418,16 @@ public class JPEGImageReader extends ImageReader {
      * Returns <code>true</code> if the read was aborted.
      */
     private native boolean readImage(long structPointer,
-                                     byte [] buffer,
+                                     byte[] buffer,
                                      int numRasterBands,
-                                     int [] srcBands,
-                                     int [] bandSizes,
+                                     int[] srcBands,
+                                     int[] bandSizes,
                                      int sourceXOffset, int sourceYOffset,
                                      int sourceWidth, int sourceHeight,
                                      int periodX, int periodY,
-                                     JPEGQTable [] abbrevQTables,
-                                     JPEGHuffmanTable [] abbrevDCHuffmanTables,
-                                     JPEGHuffmanTable [] abbrevACHuffmanTables,
+                                     JPEGQTable[] abbrevQTables,
+                                     JPEGHuffmanTable[] abbrevDCHuffmanTables,
+                                     JPEGHuffmanTable[] abbrevACHuffmanTables,
                                      int minProgressivePass,
                                      int maxProgressivePass,
                                      boolean wantUpdates);
@@ -1415,10 +1447,14 @@ public class JPEGImageReader extends ImageReader {
         }
     }
 
-    /** Set the C level abort flag. Keep it atomic for thread safety. */
+    /**
+     * Set the C level abort flag. Keep it atomic for thread safety.
+     */
     private native void abortRead(long structPointer);
 
-    /** Resets library state when an exception occurred during a read. */
+    /**
+     * Resets library state when an exception occurred during a read.
+     */
     private native void resetLibraryState(long structPointer);
 
     public boolean canReadRaster() {
@@ -1426,7 +1462,7 @@ public class JPEGImageReader extends ImageReader {
     }
 
     public Raster readRaster(int imageIndex, ImageReadParam param)
-        throws IOException {
+            throws IOException {
         setThreadLock();
         Raster retval = null;
         try {
@@ -1449,7 +1485,7 @@ public class JPEGImageReader extends ImageReader {
             // Apply the destination offset, if any, as a logical offset
             if (saveDestOffset != null) {
                 target = target.createWritableTranslatedChild(saveDestOffset.x,
-                                                              saveDestOffset.y);
+                        saveDestOffset.y);
             }
         } catch (RuntimeException e) {
             resetLibraryState(structPointer);
@@ -1475,8 +1511,8 @@ public class JPEGImageReader extends ImageReader {
             getImageMetadata(imageIndex);  // checks iis state for us
             // Now check the jfif segments
             JFIFMarkerSegment jfif =
-                (JFIFMarkerSegment) imageMetadata.findMarkerSegment
-                (JFIFMarkerSegment.class, true);
+                    (JFIFMarkerSegment) imageMetadata.findMarkerSegment
+                            (JFIFMarkerSegment.class, true);
             int retval = 0;
             if (jfif != null) {
                 retval = (jfif.thumb == null) ? 0 : 1;
@@ -1489,40 +1525,40 @@ public class JPEGImageReader extends ImageReader {
     }
 
     public int getThumbnailWidth(int imageIndex, int thumbnailIndex)
-        throws IOException {
+            throws IOException {
         setThreadLock();
         try {
             cbLock.check();
 
             if ((thumbnailIndex < 0)
-                || (thumbnailIndex >= getNumThumbnails(imageIndex))) {
+                    || (thumbnailIndex >= getNumThumbnails(imageIndex))) {
                 throw new IndexOutOfBoundsException("No such thumbnail");
             }
             // Now we know that there is a jfif segment
             JFIFMarkerSegment jfif =
-                (JFIFMarkerSegment) imageMetadata.findMarkerSegment
-                (JFIFMarkerSegment.class, true);
-            return  jfif.getThumbnailWidth(thumbnailIndex);
+                    (JFIFMarkerSegment) imageMetadata.findMarkerSegment
+                            (JFIFMarkerSegment.class, true);
+            return jfif.getThumbnailWidth(thumbnailIndex);
         } finally {
             clearThreadLock();
         }
     }
 
     public int getThumbnailHeight(int imageIndex, int thumbnailIndex)
-        throws IOException {
+            throws IOException {
         setThreadLock();
         try {
             cbLock.check();
 
             if ((thumbnailIndex < 0)
-                || (thumbnailIndex >= getNumThumbnails(imageIndex))) {
+                    || (thumbnailIndex >= getNumThumbnails(imageIndex))) {
                 throw new IndexOutOfBoundsException("No such thumbnail");
             }
             // Now we know that there is a jfif segment
             JFIFMarkerSegment jfif =
-                (JFIFMarkerSegment) imageMetadata.findMarkerSegment
-                (JFIFMarkerSegment.class, true);
-            return  jfif.getThumbnailHeight(thumbnailIndex);
+                    (JFIFMarkerSegment) imageMetadata.findMarkerSegment
+                            (JFIFMarkerSegment.class, true);
+            return jfif.getThumbnailHeight(thumbnailIndex);
         } finally {
             clearThreadLock();
         }
@@ -1530,20 +1566,20 @@ public class JPEGImageReader extends ImageReader {
 
     public BufferedImage readThumbnail(int imageIndex,
                                        int thumbnailIndex)
-        throws IOException {
+            throws IOException {
         setThreadLock();
         try {
             cbLock.check();
 
             if ((thumbnailIndex < 0)
-                || (thumbnailIndex >= getNumThumbnails(imageIndex))) {
+                    || (thumbnailIndex >= getNumThumbnails(imageIndex))) {
                 throw new IndexOutOfBoundsException("No such thumbnail");
             }
             // Now we know that there is a jfif segment and that iis is good
             JFIFMarkerSegment jfif =
-                (JFIFMarkerSegment) imageMetadata.findMarkerSegment
-                (JFIFMarkerSegment.class, true);
-            return  jfif.getThumbnail(iis, thumbnailIndex, this);
+                    (JFIFMarkerSegment) imageMetadata.findMarkerSegment
+                            (JFIFMarkerSegment.class, true);
+            return jfif.getThumbnail(iis, thumbnailIndex, this);
         } finally {
             clearThreadLock();
         }
@@ -1625,11 +1661,11 @@ public class JPEGImageReader extends ImageReader {
                 // it looks like that this reader instance is used
                 // by multiple threads.
                 throw new IllegalStateException("Attempt to use instance of " +
-                                                this + " locked on thread " +
-                                                theThread + " from thread " +
-                                                currThread);
+                        this + " locked on thread " +
+                        theThread + " from thread " +
+                        currThread);
             } else {
-                theLockCount ++;
+                theLockCount++;
             }
         } else {
             theThread = currThread;
@@ -1641,11 +1677,11 @@ public class JPEGImageReader extends ImageReader {
         Thread currThread = Thread.currentThread();
         if (theThread == null || theThread != currThread) {
             throw new IllegalStateException("Attempt to clear thread lock " +
-                                            " form wrong thread." +
-                                            " Locked thread: " + theThread +
-                                            "; current thread: " + currThread);
+                    " form wrong thread." +
+                    " Locked thread: " + theThread +
+                    "; current thread: " + currThread);
         }
-        theLockCount --;
+        theLockCount--;
         if (theLockCount == 0) {
             theThread = null;
         }
@@ -1687,50 +1723,50 @@ public class JPEGImageReader extends ImageReader {
  * and extracts specifier instances on demand.
  */
 class ImageTypeIterator implements Iterator<ImageTypeSpecifier> {
-     private Iterator<ImageTypeProducer> producers;
-     private ImageTypeSpecifier theNext = null;
+    private Iterator<ImageTypeProducer> producers;
+    private ImageTypeSpecifier theNext = null;
 
-     public ImageTypeIterator(Iterator<ImageTypeProducer> producers) {
-         this.producers = producers;
-     }
+    public ImageTypeIterator(Iterator<ImageTypeProducer> producers) {
+        this.producers = producers;
+    }
 
-     public boolean hasNext() {
-         if (theNext != null) {
-             return true;
-         }
-         if (!producers.hasNext()) {
-             return false;
-         }
-         do {
-             theNext = producers.next().getType();
-         } while (theNext == null && producers.hasNext());
+    public boolean hasNext() {
+        if (theNext != null) {
+            return true;
+        }
+        if (!producers.hasNext()) {
+            return false;
+        }
+        do {
+            theNext = producers.next().getType();
+        } while (theNext == null && producers.hasNext());
 
-         return (theNext != null);
-     }
+        return (theNext != null);
+    }
 
-     public ImageTypeSpecifier next() {
-         if (theNext != null || hasNext()) {
-             ImageTypeSpecifier t = theNext;
-             theNext = null;
-             return t;
-         } else {
-             throw new NoSuchElementException();
-         }
-     }
+    public ImageTypeSpecifier next() {
+        if (theNext != null || hasNext()) {
+            ImageTypeSpecifier t = theNext;
+            theNext = null;
+            return t;
+        } else {
+            throw new NoSuchElementException();
+        }
+    }
 
-     public void remove() {
-         producers.remove();
-     }
+    public void remove() {
+        producers.remove();
+    }
 }
 
 /**
  * An internal helper class that provides means for deferred creation
  * of ImageTypeSpecifier instance required to describe available
  * destination types.
- *
+ * <p>
  * This implementation only supports standard
  * jpeg color spaces (defined by corresponding JCS color space code).
- *
+ * <p>
  * To support other color spaces one can override produce() method to
  * return custom instance of ImageTypeSpecifier.
  */
@@ -1759,8 +1795,8 @@ class ImageTypeProducer {
         return type;
     }
 
-    private static final ImageTypeProducer [] defaultTypes =
-            new ImageTypeProducer [JPEG.NUM_JCS_CODES];
+    private static final ImageTypeProducer[] defaultTypes =
+            new ImageTypeProducer[JPEG.NUM_JCS_CODES];
 
     public synchronized static ImageTypeProducer getTypeProducer(int csCode) {
         if (csCode < 0 || csCode >= JPEG.NUM_JCS_CODES) {
@@ -1795,10 +1831,10 @@ class ImageTypeProducer {
                 if (JPEG.JCS.getYCC() != null) {
                     return ImageTypeSpecifier.createInterleaved(
                             JPEG.JCS.getYCC(),
-                        JPEG.bandOffsets[2],
-                        DataBuffer.TYPE_BYTE,
-                        false,
-                        false);
+                            JPEG.bandOffsets[2],
+                            DataBuffer.TYPE_BYTE,
+                            false,
+                            false);
                 } else {
                     return null;
                 }
@@ -1806,10 +1842,10 @@ class ImageTypeProducer {
                 if (JPEG.JCS.getYCC() != null) {
                     return ImageTypeSpecifier.createInterleaved(
                             JPEG.JCS.getYCC(),
-                        JPEG.bandOffsets[3],
-                        DataBuffer.TYPE_BYTE,
-                        true,
-                        false);
+                            JPEG.bandOffsets[3],
+                            DataBuffer.TYPE_BYTE,
+                            true,
+                            false);
                 } else {
                     return null;
                 }

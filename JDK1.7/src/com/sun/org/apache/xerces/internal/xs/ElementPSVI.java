@@ -21,7 +21,7 @@
 package com.sun.org.apache.xerces.internal.xs;
 
 /**
- *  Represents a PSVI item for one element information item.
+ * Represents a PSVI item for one element information item.
  */
 public interface ElementPSVI extends ItemPSVI {
     /**
@@ -31,7 +31,7 @@ public interface ElementPSVI extends ItemPSVI {
     public XSElementDeclaration getElementDeclaration();
 
     /**
-     *  [notation]: the notation declaration.
+     * [notation]: the notation declaration.
      */
     public XSNotationDeclaration getNotation();
 

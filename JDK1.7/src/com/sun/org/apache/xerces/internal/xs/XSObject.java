@@ -26,7 +26,7 @@ package com.sun.org.apache.xerces.internal.xs;
  */
 public interface XSObject {
     /**
-     *  The <code>type</code> of this object, i.e.
+     * The <code>type</code> of this object, i.e.
      * <code>ELEMENT_DECLARATION</code>.
      */
     public short getType();
@@ -43,7 +43,7 @@ public interface XSObject {
     public String getName();
 
     /**
-     *  The [target namespace] of this object, or <code>null</code> if it is
+     * The [target namespace] of this object, or <code>null</code> if it is
      * unspecified.
      */
     public String getNamespace();

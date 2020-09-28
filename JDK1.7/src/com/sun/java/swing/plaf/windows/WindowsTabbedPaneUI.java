@@ -68,15 +68,15 @@ public class WindowsTabbedPaneUI extends BasicTabbedPaneUI {
         contentOpaque = UIManager.getBoolean("TabbedPane.contentOpaque");
 
         // focus forward traversal key
-        if (managingFocusForwardTraversalKeys==null) {
+        if (managingFocusForwardTraversalKeys == null) {
             managingFocusForwardTraversalKeys = new HashSet<KeyStroke>();
             managingFocusForwardTraversalKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, 0));
         }
         tabPane.setFocusTraversalKeys(KeyboardFocusManager.FORWARD_TRAVERSAL_KEYS, managingFocusForwardTraversalKeys);
         // focus backward traversal key
-        if (managingFocusBackwardTraversalKeys==null) {
+        if (managingFocusBackwardTraversalKeys == null) {
             managingFocusBackwardTraversalKeys = new HashSet<KeyStroke>();
-            managingFocusBackwardTraversalKeys.add( KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_MASK));
+            managingFocusBackwardTraversalKeys.add(KeyStroke.getKeyStroke(KeyEvent.VK_TAB, InputEvent.SHIFT_MASK));
         }
         tabPane.setFocusTraversalKeys(KeyboardFocusManager.BACKWARD_TRAVERSAL_KEYS, managingFocusBackwardTraversalKeys);
     }
@@ -100,7 +100,7 @@ public class WindowsTabbedPaneUI extends BasicTabbedPaneUI {
             super.setRolloverTab(index);
             Rectangle r1 = null;
             Rectangle r2 = null;
-            if ( (oldRolloverTab >= 0) && (oldRolloverTab < tabPane.getTabCount()) ) {
+            if ((oldRolloverTab >= 0) && (oldRolloverTab < tabPane.getTabCount())) {
                 r1 = getTabBounds(tabPane, oldRolloverTab);
             }
             if (index >= 0) {
@@ -155,14 +155,14 @@ public class WindowsTabbedPaneUI extends BasicTabbedPaneUI {
     }
 
     protected void paintTabBackground(Graphics g, int tabPlacement, int tabIndex,
-                                      int x, int y, int w, int h, boolean isSelected ) {
+                                      int x, int y, int w, int h, boolean isSelected) {
         if (XPStyle.getXP() == null) {
             super.paintTabBackground(g, tabPlacement, tabIndex, x, y, w, h, isSelected);
         }
     }
 
     protected void paintTabBorder(Graphics g, int tabPlacement, int tabIndex,
-                                  int x, int y, int w, int h, boolean isSelected ) {
+                                  int x, int y, int w, int h, boolean isSelected) {
         XPStyle xp = XPStyle.getXP();
         if (xp != null) {
             Part part;
@@ -200,27 +200,31 @@ public class WindowsTabbedPaneUI extends BasicTabbedPaneUI {
 
     private void paintRotatedSkin(Graphics g, Skin skin, int tabPlacement,
                                   int x, int y, int w, int h, State state) {
-        Graphics2D g2d = (Graphics2D)g.create();
+        Graphics2D g2d = (Graphics2D) g.create();
         g2d.translate(x, y);
         switch (tabPlacement) {
-           case RIGHT:  g2d.translate(w, 0);
-                        g2d.rotate(Math.toRadians(90.0));
-                        skin.paintSkin(g2d, 0, 0, h, w, state);
-                        break;
+            case RIGHT:
+                g2d.translate(w, 0);
+                g2d.rotate(Math.toRadians(90.0));
+                skin.paintSkin(g2d, 0, 0, h, w, state);
+                break;
 
-           case LEFT:   g2d.scale(-1.0, 1.0);
-                        g2d.rotate(Math.toRadians(90.0));
-                        skin.paintSkin(g2d, 0, 0, h, w, state);
-                        break;
+            case LEFT:
+                g2d.scale(-1.0, 1.0);
+                g2d.rotate(Math.toRadians(90.0));
+                skin.paintSkin(g2d, 0, 0, h, w, state);
+                break;
 
-           case BOTTOM: g2d.translate(0, h);
-                        g2d.scale(-1.0, 1.0);
-                        g2d.rotate(Math.toRadians(180.0));
-                        skin.paintSkin(g2d, 0, 0, w, h, state);
-                        break;
+            case BOTTOM:
+                g2d.translate(0, h);
+                g2d.scale(-1.0, 1.0);
+                g2d.rotate(Math.toRadians(180.0));
+                skin.paintSkin(g2d, 0, 0, w, h, state);
+                break;
 
-           case TOP:
-           default:     skin.paintSkin(g2d, 0, 0, w, h, state);
+            case TOP:
+            default:
+                skin.paintSkin(g2d, 0, 0, w, h, state);
         }
         g2d.dispose();
     }

@@ -49,15 +49,15 @@ import javax.naming.NamingEnumeration;
 public abstract class VersionHelper {
     private static VersionHelper helper = null;
 
-    final static String[] PROPS = new String[] {
-        javax.naming.Context.INITIAL_CONTEXT_FACTORY,
-        javax.naming.Context.OBJECT_FACTORIES,
-        javax.naming.Context.URL_PKG_PREFIXES,
-        javax.naming.Context.STATE_FACTORIES,
-        javax.naming.Context.PROVIDER_URL,
-        javax.naming.Context.DNS_URL,
-        // The following shouldn't create a runtime dependence on ldap package.
-        javax.naming.ldap.LdapContext.CONTROL_FACTORIES
+    final static String[] PROPS = new String[]{
+            javax.naming.Context.INITIAL_CONTEXT_FACTORY,
+            javax.naming.Context.OBJECT_FACTORIES,
+            javax.naming.Context.URL_PKG_PREFIXES,
+            javax.naming.Context.STATE_FACTORIES,
+            javax.naming.Context.PROVIDER_URL,
+            javax.naming.Context.DNS_URL,
+            // The following shouldn't create a runtime dependence on ldap package.
+            javax.naming.ldap.LdapContext.CONTROL_FACTORIES
     };
 
     public final static int INITIAL_CONTEXT_FACTORY = 0;
@@ -68,7 +68,8 @@ public abstract class VersionHelper {
     public final static int DNS_URL = 5;
     public final static int CONTROL_FACTORIES = 6;
 
-    VersionHelper() {} // Disallow anyone from creating one of these.
+    VersionHelper() {
+    } // Disallow anyone from creating one of these.
 
     static {
         helper = new VersionHelper12();
@@ -79,13 +80,13 @@ public abstract class VersionHelper {
     }
 
     public abstract Class loadClass(String className)
-        throws ClassNotFoundException;
+            throws ClassNotFoundException;
 
     abstract Class loadClass(String className, ClassLoader cl)
-        throws ClassNotFoundException;
+            throws ClassNotFoundException;
 
     public abstract Class loadClass(String className, String codebase)
-        throws ClassNotFoundException, MalformedURLException;
+            throws ClassNotFoundException, MalformedURLException;
 
     /*
      * Returns a JNDI property from the system properties.  Returns
@@ -123,7 +124,7 @@ public abstract class VersionHelper {
      * Java implementations.
      */
     abstract NamingEnumeration getResources(ClassLoader cl, String name)
-        throws IOException;
+            throws IOException;
 
     /*
      * Returns the context class loader associated with the current thread.
@@ -134,7 +135,7 @@ public abstract class VersionHelper {
     abstract ClassLoader getContextClassLoader();
 
     static protected URL[] getUrlArray(String codebase)
-        throws MalformedURLException {
+            throws MalformedURLException {
         // Parse codebase into separate URLs
         StringTokenizer parser = new StringTokenizer(codebase);
         Vector vec = new Vector(10);
@@ -143,7 +144,7 @@ public abstract class VersionHelper {
         }
         String[] url = new String[vec.size()];
         for (int i = 0; i < url.length; i++) {
-            url[i] = (String)vec.elementAt(i);
+            url[i] = (String) vec.elementAt(i);
         }
 
         URL[] urlArray = new URL[url.length];

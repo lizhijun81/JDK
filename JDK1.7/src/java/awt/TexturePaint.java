@@ -43,9 +43,10 @@ import java.awt.image.ColorModel;
  * specified <code>Rectangle2D</code> infinitely in all directions
  * in user space and mapping the <code>BufferedImage</code> to each
  * replicated <code>Rectangle2D</code>.
+ *
+ * @version 1.48, 06/05/07
  * @see Paint
  * @see Graphics2D#setPaint
- * @version 1.48, 06/05/07
  */
 
 public class TexturePaint implements Paint {
@@ -58,10 +59,11 @@ public class TexturePaint implements Paint {
 
     /**
      * Constructs a <code>TexturePaint</code> object.
-     * @param txtr the <code>BufferedImage</code> object with the texture
-     * used for painting
+     *
+     * @param txtr   the <code>BufferedImage</code> object with the texture
+     *               used for painting
      * @param anchor the <code>Rectangle2D</code> in user space used to
-     * anchor and replicate the texture
+     *               anchor and replicate the texture
      */
     public TexturePaint(BufferedImage txtr,
                         Rectangle2D anchor) {
@@ -75,6 +77,7 @@ public class TexturePaint implements Paint {
     /**
      * Returns the <code>BufferedImage</code> texture used to
      * fill the shapes.
+     *
      * @return a <code>BufferedImage</code>.
      */
     public BufferedImage getImage() {
@@ -84,13 +87,14 @@ public class TexturePaint implements Paint {
     /**
      * Returns a copy of the anchor rectangle which positions and
      * sizes the textured image.
+     *
      * @return the <code>Rectangle2D</code> used to anchor and
      * size this <code>TexturePaint</code>.
      */
     public Rectangle2D getAnchorRect() {
         return new Rectangle2D.Double(tx, ty,
-                                      sx * bufImg.getWidth(),
-                                      sy * bufImg.getHeight());
+                sx * bufImg.getWidth(),
+                sy * bufImg.getHeight());
     }
 
     /**
@@ -100,19 +104,19 @@ public class TexturePaint implements Paint {
      * method in the {@link Paint} interface for information
      * on null parameter handling.
      *
-     * @param cm the preferred {@link ColorModel} which represents the most convenient
-     *           format for the caller to receive the pixel data, or {@code null}
-     *           if there is no preference.
+     * @param cm           the preferred {@link ColorModel} which represents the most convenient
+     *                     format for the caller to receive the pixel data, or {@code null}
+     *                     if there is no preference.
      * @param deviceBounds the device space bounding box
      *                     of the graphics primitive being rendered.
-     * @param userBounds the user space bounding box
-     *                   of the graphics primitive being rendered.
-     * @param xform the {@link AffineTransform} from user
-     *              space into device space.
-     * @param hints the set of hints that the context object can use to
-     *              choose between rendering alternatives.
+     * @param userBounds   the user space bounding box
+     *                     of the graphics primitive being rendered.
+     * @param xform        the {@link AffineTransform} from user
+     *                     space into device space.
+     * @param hints        the set of hints that the context object can use to
+     *                     choose between rendering alternatives.
      * @return the {@code PaintContext} for
-     *         generating color patterns.
+     * generating color patterns.
      * @see Paint
      * @see PaintContext
      * @see ColorModel
@@ -135,11 +139,12 @@ public class TexturePaint implements Paint {
         xform.scale(sx, sy);
 
         return TexturePaintContext.getContext(bufImg, xform, hints,
-                                              deviceBounds);
+                deviceBounds);
     }
 
     /**
      * Returns the transparency mode for this <code>TexturePaint</code>.
+     *
      * @return the transparency mode for this <code>TexturePaint</code>
      * as an integer value.
      * @see Transparency

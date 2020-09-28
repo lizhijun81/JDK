@@ -61,67 +61,97 @@ final class XMLSchemaValidatorComponentManager extends ParserConfigurationSettin
 
     // feature identifiers
 
-    /** Feature identifier: schema validation. */
+    /**
+     * Feature identifier: schema validation.
+     */
     private static final String SCHEMA_VALIDATION =
-        Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_VALIDATION_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_VALIDATION_FEATURE;
 
-    /** Feature identifier: validation. */
+    /**
+     * Feature identifier: validation.
+     */
     private static final String VALIDATION =
-        Constants.SAX_FEATURE_PREFIX + Constants.VALIDATION_FEATURE;
+            Constants.SAX_FEATURE_PREFIX + Constants.VALIDATION_FEATURE;
 
-    /** Feature identifier: send element default value via characters() */
+    /**
+     * Feature identifier: send element default value via characters()
+     */
     private static final String SCHEMA_ELEMENT_DEFAULT =
-        Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_ELEMENT_DEFAULT;
+            Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_ELEMENT_DEFAULT;
 
-    /** Feature identifier: use grammar pool only. */
+    /**
+     * Feature identifier: use grammar pool only.
+     */
     private static final String USE_GRAMMAR_POOL_ONLY =
-        Constants.XERCES_FEATURE_PREFIX + Constants.USE_GRAMMAR_POOL_ONLY_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.USE_GRAMMAR_POOL_ONLY_FEATURE;
 
     // property identifiers
 
-    /** Property identifier: entity manager. */
+    /**
+     * Property identifier: entity manager.
+     */
     private static final String ENTITY_MANAGER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ENTITY_MANAGER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ENTITY_MANAGER_PROPERTY;
 
-    /** Property identifier: entity resolver. */
+    /**
+     * Property identifier: entity resolver.
+     */
     private static final String ENTITY_RESOLVER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ENTITY_RESOLVER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ENTITY_RESOLVER_PROPERTY;
 
-    /** Property identifier: error handler. */
+    /**
+     * Property identifier: error handler.
+     */
     private static final String ERROR_HANDLER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_HANDLER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_HANDLER_PROPERTY;
 
-    /** Property identifier: error reporter. */
+    /**
+     * Property identifier: error reporter.
+     */
     private static final String ERROR_REPORTER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_REPORTER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_REPORTER_PROPERTY;
 
-    /** Property identifier: namespace context. */
+    /**
+     * Property identifier: namespace context.
+     */
     private static final String NAMESPACE_CONTEXT =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.NAMESPACE_CONTEXT_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.NAMESPACE_CONTEXT_PROPERTY;
 
-    /** Property identifier: XML Schema validator. */
+    /**
+     * Property identifier: XML Schema validator.
+     */
     private static final String SCHEMA_VALIDATOR =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.SCHEMA_VALIDATOR_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SCHEMA_VALIDATOR_PROPERTY;
 
-    /** Property identifier: security manager. */
+    /**
+     * Property identifier: security manager.
+     */
     private static final String SECURITY_MANAGER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.SECURITY_MANAGER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SECURITY_MANAGER_PROPERTY;
 
-    /** Property identifier: symbol table. */
+    /**
+     * Property identifier: symbol table.
+     */
     private static final String SYMBOL_TABLE =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY;
 
-    /** Property identifier: validation manager. */
+    /**
+     * Property identifier: validation manager.
+     */
     private static final String VALIDATION_MANAGER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.VALIDATION_MANAGER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.VALIDATION_MANAGER_PROPERTY;
 
-    /** Property identifier: grammar pool. */
+    /**
+     * Property identifier: grammar pool.
+     */
     private static final String XMLGRAMMAR_POOL =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.XMLGRAMMAR_POOL_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.XMLGRAMMAR_POOL_PROPERTY;
 
-    /** Property identifier: locale. */
+    /**
+     * Property identifier: locale.
+     */
     private static final String LOCALE =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.LOCALE_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.LOCALE_PROPERTY;
 
     //
     // Data
@@ -143,55 +173,81 @@ final class XMLSchemaValidatorComponentManager extends ParserConfigurationSettin
      */
     private boolean fUseGrammarPoolOnly;
 
-    /** Lookup map for components required for validation. **/
+    /**
+     * Lookup map for components required for validation.
+     **/
     private final HashMap fComponents = new HashMap();
 
     //
     // Components
     //
 
-    /** Entity manager. */
+    /**
+     * Entity manager.
+     */
     private XMLEntityManager fEntityManager;
 
-    /** Error reporter. */
+    /**
+     * Error reporter.
+     */
     private XMLErrorReporter fErrorReporter;
 
-    /** Namespace context. */
+    /**
+     * Namespace context.
+     */
     private NamespaceContext fNamespaceContext;
 
-    /** XML Schema validator. */
+    /**
+     * XML Schema validator.
+     */
     private XMLSchemaValidator fSchemaValidator;
 
-    /** Validation manager. */
+    /**
+     * Validation manager.
+     */
     private ValidationManager fValidationManager;
 
     //
     // Configuration
     //
 
-    /** Stores initial feature values for validator reset. */
+    /**
+     * Stores initial feature values for validator reset.
+     */
     private final HashMap fInitFeatures = new HashMap();
 
-    /** Stores initial property values for validator reset. */
+    /**
+     * Stores initial property values for validator reset.
+     */
     private final HashMap fInitProperties = new HashMap();
 
-    /** Stores the initial security manager. */
+    /**
+     * Stores the initial security manager.
+     */
     private final SecurityManager fInitSecurityManager;
 
     //
     // User Objects
     //
 
-    /** Application's ErrorHandler. **/
+    /**
+     * Application's ErrorHandler.
+     **/
     private ErrorHandler fErrorHandler = null;
 
-    /** Application's LSResourceResolver. */
+    /**
+     * Application's LSResourceResolver.
+     */
     private LSResourceResolver fResourceResolver = null;
 
-    /** Locale chosen by the application. */
+    /**
+     * Locale chosen by the application.
+     */
     private Locale fLocale = null;
 
-    /** Constructs a component manager suitable for Xerces' schema validator. */
+    /**
+     * Constructs a component manager suitable for Xerces' schema validator.
+     */
     public XMLSchemaValidatorComponentManager(XSGrammarPoolContainer grammarContainer) {
         // setup components
         fEntityManager = new XMLEntityManager();
@@ -237,8 +293,7 @@ final class XMLSchemaValidatorComponentManager extends ParserConfigurationSettin
         Boolean secureProcessing = grammarContainer.getFeature(XMLConstants.FEATURE_SECURE_PROCESSING);
         if (Boolean.TRUE.equals(secureProcessing)) {
             fInitSecurityManager = new SecurityManager();
-        }
-        else {
+        } else {
             fInitSecurityManager = null;
         }
         fComponents.put(SECURITY_MANAGER, fInitSecurityManager);
@@ -250,7 +305,6 @@ final class XMLSchemaValidatorComponentManager extends ParserConfigurationSettin
      *
      * @param featureId The feature identifier.
      * @return true if the feature is supported
-     *
      * @throws XMLConfigurationException Thrown for configuration error.
      *                                   In general, components should
      *                                   only throw this exception if
@@ -261,17 +315,13 @@ final class XMLSchemaValidatorComponentManager extends ParserConfigurationSettin
             throws XMLConfigurationException {
         if (PARSER_SETTINGS.equals(featureId)) {
             return FeatureState.is(fConfigUpdated);
-        }
-        else if (VALIDATION.equals(featureId) || SCHEMA_VALIDATION.equals(featureId)) {
+        } else if (VALIDATION.equals(featureId) || SCHEMA_VALIDATION.equals(featureId)) {
             return FeatureState.is(true);
-        }
-        else if (USE_GRAMMAR_POOL_ONLY.equals(featureId)) {
+        } else if (USE_GRAMMAR_POOL_ONLY.equals(featureId)) {
             return FeatureState.is(fUseGrammarPoolOnly);
-        }
-        else if (XMLConstants.FEATURE_SECURE_PROCESSING.equals(featureId)) {
+        } else if (XMLConstants.FEATURE_SECURE_PROCESSING.equals(featureId)) {
             return FeatureState.is(getProperty(SECURITY_MANAGER) != null);
-        }
-        else if (SCHEMA_ELEMENT_DEFAULT.equals(featureId)) {
+        } else if (SCHEMA_ELEMENT_DEFAULT.equals(featureId)) {
             return FeatureState.is(true); //pre-condition: VALIDATION and SCHEMA_VALIDATION are always true
         }
         return super.getFeatureState(featureId);
@@ -281,18 +331,15 @@ final class XMLSchemaValidatorComponentManager extends ParserConfigurationSettin
      * Set the state of a feature.
      *
      * @param featureId The unique identifier (URI) of the feature.
-     * @param state The requested state of the feature (true or false).
-     *
-     * @exception XMLConfigurationException If the requested feature is not known.
+     * @param state     The requested state of the feature (true or false).
+     * @throws XMLConfigurationException If the requested feature is not known.
      */
     public void setFeature(String featureId, boolean value) throws XMLConfigurationException {
         if (PARSER_SETTINGS.equals(featureId)) {
             throw new XMLConfigurationException(Status.NOT_SUPPORTED, featureId);
-        }
-        else if (value == false && (VALIDATION.equals(featureId) || SCHEMA_VALIDATION.equals(featureId))) {
+        } else if (value == false && (VALIDATION.equals(featureId) || SCHEMA_VALIDATION.equals(featureId))) {
             throw new XMLConfigurationException(Status.NOT_SUPPORTED, featureId);
-        }
-        else if (USE_GRAMMAR_POOL_ONLY.equals(featureId) && value != fUseGrammarPoolOnly) {
+        } else if (USE_GRAMMAR_POOL_ONLY.equals(featureId) && value != fUseGrammarPoolOnly) {
             throw new XMLConfigurationException(Status.NOT_SUPPORTED, featureId);
         }
         if (XMLConstants.FEATURE_SECURE_PROCESSING.equals(featureId)) {
@@ -318,7 +365,6 @@ final class XMLSchemaValidatorComponentManager extends ParserConfigurationSettin
      *
      * @param propertyId The property identifier.
      * @return the value of the property
-     *
      * @throws XMLConfigurationException Thrown for configuration error.
      *                                   In general, components should
      *                                   only throw this exception if
@@ -333,8 +379,7 @@ final class XMLSchemaValidatorComponentManager extends ParserConfigurationSettin
         final Object component = fComponents.get(propertyId);
         if (component != null) {
             return PropertyState.is(component);
-        }
-        else if (fComponents.containsKey(propertyId)) {
+        } else if (fComponents.containsKey(propertyId)) {
             return PropertyState.is(null);
         }
         return super.getPropertyState(propertyId);
@@ -344,15 +389,14 @@ final class XMLSchemaValidatorComponentManager extends ParserConfigurationSettin
      * Sets the state of a property.
      *
      * @param propertyId The unique identifier (URI) of the property.
-     * @param value The requested state of the property.
-     *
-     * @exception XMLConfigurationException If the requested property is not known.
+     * @param value      The requested state of the property.
+     * @throws XMLConfigurationException If the requested property is not known.
      */
     public void setProperty(String propertyId, Object value) throws XMLConfigurationException {
-        if ( ENTITY_MANAGER.equals(propertyId) || ERROR_REPORTER.equals(propertyId) ||
-             NAMESPACE_CONTEXT.equals(propertyId) || SCHEMA_VALIDATOR.equals(propertyId) ||
-             SYMBOL_TABLE.equals(propertyId) || VALIDATION_MANAGER.equals(propertyId) ||
-             XMLGRAMMAR_POOL.equals(propertyId)) {
+        if (ENTITY_MANAGER.equals(propertyId) || ERROR_REPORTER.equals(propertyId) ||
+                NAMESPACE_CONTEXT.equals(propertyId) || SCHEMA_VALIDATOR.equals(propertyId) ||
+                SYMBOL_TABLE.equals(propertyId) || VALIDATION_MANAGER.equals(propertyId) ||
+                XMLGRAMMAR_POOL.equals(propertyId)) {
             throw new XMLConfigurationException(Status.NOT_SUPPORTED, propertyId);
         }
         fConfigUpdated = true;
@@ -363,8 +407,7 @@ final class XMLSchemaValidatorComponentManager extends ParserConfigurationSettin
                 SECURITY_MANAGER.equals(propertyId)) {
             fComponents.put(propertyId, value);
             return;
-        }
-        else if (LOCALE.equals(propertyId)) {
+        } else if (LOCALE.equals(propertyId)) {
             setLocale((Locale) value);
             fComponents.put(propertyId, value);
             return;
@@ -382,7 +425,7 @@ final class XMLSchemaValidatorComponentManager extends ParserConfigurationSettin
      * properties which were previously absent from the configuration.
      *
      * @param component The component whose recognized features
-     * and properties will be added to the configuration
+     *                  and properties will be added to the configuration
      */
     public void addRecognizedParamsAndSetDefaults(XMLComponent component, XSGrammarPoolContainer grammarContainer) {
 
@@ -399,7 +442,9 @@ final class XMLSchemaValidatorComponentManager extends ParserConfigurationSettin
         setPropertyDefaults(component, recognizedProperties);
     }
 
-    /** Calls reset on each of the components owned by this component manager. **/
+    /**
+     * Calls reset on each of the components owned by this component manager.
+     **/
     public void reset() throws XNIException {
         fNamespaceContext.reset();
         fValidationManager.reset();
@@ -438,7 +483,9 @@ final class XMLSchemaValidatorComponentManager extends ParserConfigurationSettin
         return fLocale;
     }
 
-    /** Cleans out configuration, restoring it to its initial state. */
+    /**
+     * Cleans out configuration, restoring it to its initial state.
+     */
     void restoreInitialState() {
         fConfigUpdated = true;
 
@@ -480,9 +527,11 @@ final class XMLSchemaValidatorComponentManager extends ParserConfigurationSettin
         }
     }
 
-    /** Sets feature defaults for the given component on this configuration. */
+    /**
+     * Sets feature defaults for the given component on this configuration.
+     */
     private void setFeatureDefaults(final XMLComponent component,
-            final String [] recognizedFeatures, XSGrammarPoolContainer grammarContainer) {
+                                    final String[] recognizedFeatures, XSGrammarPoolContainer grammarContainer) {
         if (recognizedFeatures != null) {
             for (int i = 0; i < recognizedFeatures.length; ++i) {
                 String featureId = recognizedFeatures[i];
@@ -505,8 +554,10 @@ final class XMLSchemaValidatorComponentManager extends ParserConfigurationSettin
         }
     }
 
-    /** Sets property defaults for the given component on this configuration. */
-    private void setPropertyDefaults(final XMLComponent component, final String [] recognizedProperties) {
+    /**
+     * Sets property defaults for the given component on this configuration.
+     */
+    private void setPropertyDefaults(final XMLComponent component, final String[] recognizedProperties) {
         if (recognizedProperties != null) {
             for (int i = 0; i < recognizedProperties.length; ++i) {
                 String propertyId = recognizedProperties[i];

@@ -64,14 +64,14 @@ public abstract class Doclet {
      * Check for doclet-added options.  Returns the number of
      * arguments you must specify on the command line for the
      * given option.  For example, "-d docs" would return 2.
-     * <P>
+     * <p>
      * This method is required if the doclet contains any options.
      * If this method is missing, Javadoc will print an invalid flag
      * error for every option.
      *
      * @return number of arguments on the command line for an option
-     *         including the option name itself.  Zero return means
-     *         option not known.  Negative value means error occurred.
+     * including the option name itself.  Zero return means
+     * option not known.  Negative value means error occurred.
      */
     public static int optionLength(String option) {
         return 0;  // default is option unknown
@@ -79,12 +79,12 @@ public abstract class Doclet {
 
     /**
      * Check that options have the correct arguments.
-     * <P>
+     * <p>
      * This method is not required, but is recommended,
      * as every option will be considered valid if this method
      * is not present.  It will default gracefully (to true)
      * if absent.
-     * <P>
+     * <p>
      * Printing option related error messages (using the provided
      * DocErrorReporter) is the responsibility of this method.
      *
@@ -102,7 +102,7 @@ public abstract class Doclet {
      * This method is required by any doclet supporting a language version
      * newer than 1.1.
      *
-     * @return  the language version supported by this doclet.
+     * @return the language version supported by this doclet.
      * @since 1.5
      */
     public static LanguageVersion languageVersion() {

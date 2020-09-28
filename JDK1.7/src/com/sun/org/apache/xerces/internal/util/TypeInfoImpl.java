@@ -71,25 +71,26 @@ import org.w3c.dom.TypeInfo;
  * <p>
  * This class is immutable.
  *
- * @author
- *     Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
+ * @author Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
  */
 public class TypeInfoImpl implements TypeInfo {
 
     private final String typeNamespace;
     private final String typeName;
-        private final static String dtdNamespaceURI = "http://www.w3.org/TR/REC-xml";
-        public TypeInfoImpl(){
-                typeNamespace = null;
-                typeName = null;
-        }
+    private final static String dtdNamespaceURI = "http://www.w3.org/TR/REC-xml";
+
+    public TypeInfoImpl() {
+        typeNamespace = null;
+        typeName = null;
+    }
+
     public TypeInfoImpl(String typeNamespace, String typeName) {
         this.typeNamespace = typeNamespace;
         this.typeName = typeName;
     }
 
     public TypeInfoImpl(XSTypeDefinition t) {
-        this( t.getNamespace(), t.getName() );
+        this(t.getNamespace(), t.getName());
     }
 
     public String getTypeName() {
@@ -103,7 +104,7 @@ public class TypeInfoImpl implements TypeInfo {
     /**
      * Always returns false.
      */
-    public boolean isDerivedFrom(String typeNamespaceArg,  String typeNameArg, int derivationMethod) {
+    public boolean isDerivedFrom(String typeNamespaceArg, String typeNameArg, int derivationMethod) {
         return false;
     }
 
@@ -118,17 +119,17 @@ public class TypeInfoImpl implements TypeInfo {
      * Since DTD has a very limited type names, we can actually
      * cache the {@link TypeInfo} objects.
      */
-    public static TypeInfo getDTDTypeInfo( String name ) {
-        TypeInfo t = (TypeInfo)dtdCache.get(name);
-        if(t==null) throw new IllegalArgumentException("Unknown DTD datatype "+name);
+    public static TypeInfo getDTDTypeInfo(String name) {
+        TypeInfo t = (TypeInfo) dtdCache.get(name);
+        if (t == null) throw new IllegalArgumentException("Unknown DTD datatype " + name);
         return t;
     }
 
     static {
         String[] typeNames = new String[]{
-            "CDATA", "ID", "IDREF", "IDREFS", "NMTOKEN", "NMTOKENS",
-            "ENTITY", "ENTITIES", "NOTATION"};
-        for( int i=0; i<typeNames.length; i++ )
-            dtdCache.put(typeNames[i],new TypeInfoImpl(dtdNamespaceURI,typeNames[i]));
+                "CDATA", "ID", "IDREF", "IDREFS", "NMTOKEN", "NMTOKENS",
+                "ENTITY", "ENTITIES", "NOTATION"};
+        for (int i = 0; i < typeNames.length; i++)
+            dtdCache.put(typeNames[i], new TypeInfoImpl(dtdNamespaceURI, typeNames[i]));
     }
 }

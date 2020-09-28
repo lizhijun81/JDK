@@ -42,8 +42,11 @@ import org.omg.CORBA.ORB;
 import org.omg.CORBA.TypeCodePackage.*;
 import org.omg.CORBA.TypeCode;
 import org.omg.CORBA.TCKind;
+
 import java.lang.reflect.*;
+
 import com.sun.corba.se.impl.util.RepositoryId;
+
 import java.util.*;
 import javax.rmi.CORBA.Util;
 import javax.rmi.CORBA.ValueHandler;
@@ -58,39 +61,39 @@ public class ValueUtility {
     public static final short PUBLIC_MEMBER = 1;
 
     private static final String primitiveConstants[] = {
-        null,       // tk_null         0
-        null,           // tk_void         1
-        "S",            // tk_short        2
-        "I",            // tk_long         3
-        "S",            // tk_ushort       4
-        "I",            // tk_ulong        5
-        "F",            // tk_float        6
-        "D",            // tk_double       7
-        "Z",            // tk_boolean      8
-        "C",            // tk_char         9
-        "B",            // tk_octet        10
-        null,           // tk_any          11
-        null,           // tk_typecode     12
-        null,           // tk_principal    13
-        null,           // tk_objref       14
-        null,           // tk_struct       15
-        null,           // tk_union        16
-        null,           // tk_enum         17
-        null,           // tk_string       18
-        null,           // tk_sequence     19
-        null,           // tk_array        20
-        null,           // tk_alias        21
-        null,           // tk_except       22
-        "J",            // tk_longlong     23
-        "J",            // tk_ulonglong    24
-        "D",            // tk_longdouble   25
-        "C",            // tk_wchar        26
-        null,           // tk_wstring      27
-        null,       // tk_fixed        28
-        null,       // tk_value        29
-        null,       // tk_value_box    30
-        null,       // tk_native       31
-        null,       // tk_abstract_interface 32
+            null,       // tk_null         0
+            null,           // tk_void         1
+            "S",            // tk_short        2
+            "I",            // tk_long         3
+            "S",            // tk_ushort       4
+            "I",            // tk_ulong        5
+            "F",            // tk_float        6
+            "D",            // tk_double       7
+            "Z",            // tk_boolean      8
+            "C",            // tk_char         9
+            "B",            // tk_octet        10
+            null,           // tk_any          11
+            null,           // tk_typecode     12
+            null,           // tk_principal    13
+            null,           // tk_objref       14
+            null,           // tk_struct       15
+            null,           // tk_union        16
+            null,           // tk_enum         17
+            null,           // tk_string       18
+            null,           // tk_sequence     19
+            null,           // tk_array        20
+            null,           // tk_alias        21
+            null,           // tk_except       22
+            "J",            // tk_longlong     23
+            "J",            // tk_ulonglong    24
+            "D",            // tk_longdouble   25
+            "C",            // tk_wchar        26
+            null,           // tk_wstring      27
+            null,       // tk_fixed        28
+            null,       // tk_value        29
+            null,       // tk_value_box    30
+            null,       // tk_native       31
+            null,       // tk_abstract_interface 32
     };
 
     static {
@@ -98,10 +101,11 @@ public class ValueUtility {
             public ValueHandlerImpl newValueHandlerImpl() {
                 return ValueHandlerImpl.getInstance();
             }
+
             public Class<?> loadClass(String className) throws ClassNotFoundException {
                 if (Thread.currentThread().getContextClassLoader() != null) {
                     return Thread.currentThread().getContextClassLoader().
-                        loadClass(className);
+                            loadClass(className);
                 } else {
                     return ClassLoader.getSystemClassLoader().loadClass(className);
                 }
@@ -110,7 +114,7 @@ public class ValueUtility {
     }
 
     public static String getSignature(ValueMember member)
-        throws ClassNotFoundException {
+            throws ClassNotFoundException {
 
         // REVISIT.  Can the type be something that is
         // non-primitive yet not a value_box, value, or objref?
@@ -118,8 +122,8 @@ public class ValueUtility {
         // exception.
 
         if (member.type.kind().value() == TCKind._tk_value_box ||
-            member.type.kind().value() == TCKind._tk_value ||
-            member.type.kind().value() == TCKind._tk_objref) {
+                member.type.kind().value() == TCKind._tk_value ||
+                member.type.kind().value() == TCKind._tk_objref) {
             Class c = RepositoryId.cache.getId(member.id).getClassFromType();
             return ObjectStreamClass.getSignature(c);
 
@@ -130,7 +134,7 @@ public class ValueUtility {
 
     }
 
-    public static FullValueDescription translate(ORB orb, ObjectStreamClass osc, ValueHandler vh){
+    public static FullValueDescription translate(ORB orb, ObjectStreamClass osc, ValueHandler vh) {
 
         // Create FullValueDescription
         FullValueDescription result = new FullValueDescription();
@@ -184,14 +188,14 @@ public class ValueUtility {
         int abstractCount = 0;
 
         // Skip FVD supported_interfaces
-        result.supported_interfaces =  new String[interfaces.length];
+        result.supported_interfaces = new String[interfaces.length];
         for (int interfaceIndex = 0; interfaceIndex < interfaces.length;
              interfaceIndex++) {
             result.supported_interfaces[interfaceIndex] =
-                vhandler.createForAnyType(interfaces[interfaceIndex]);
+                    vhandler.createForAnyType(interfaces[interfaceIndex]);
 
             if ((!(java.rmi.Remote.class.isAssignableFrom(interfaces[interfaceIndex]))) ||
-                (!Modifier.isPublic(interfaces[interfaceIndex].getModifiers())))
+                    (!Modifier.isPublic(interfaces[interfaceIndex].getModifiers())))
                 abstractCount++;
         }
 
@@ -200,9 +204,9 @@ public class ValueUtility {
         for (int interfaceIndex = 0; interfaceIndex < interfaces.length;
              interfaceIndex++) {
             if ((!(java.rmi.Remote.class.isAssignableFrom(interfaces[interfaceIndex]))) ||
-                (!Modifier.isPublic(interfaces[interfaceIndex].getModifiers())))
+                    (!Modifier.isPublic(interfaces[interfaceIndex].getModifiers())))
                 result.abstract_base_values[interfaceIndex] =
-                    vhandler.createForAnyType(interfaces[interfaceIndex]);
+                        vhandler.createForAnyType(interfaces[interfaceIndex]);
 
         }
 
@@ -223,11 +227,10 @@ public class ValueUtility {
 
     }
 
-    private static ValueMember[] translateMembers (ORB orb,
-                                                   ObjectStreamClass osc,
-                                                   ValueHandler vh,
-                                                   IdentityKeyValueStack createdIDs)
-    {
+    private static ValueMember[] translateMembers(ORB orb,
+                                                  ObjectStreamClass osc,
+                                                  ValueHandler vh,
+                                                  IdentityKeyValueStack createdIDs) {
         ValueHandlerImpl vhandler = (com.sun.corba.se.impl.io.ValueHandlerImpl) vh;
         ObjectStreamField fields[] = osc.getFields();
         int fieldsLength = fields.length;
@@ -259,40 +262,40 @@ public class ValueUtility {
             }
 
             switch (fields[i].getTypeCode()) {
-            case 'B':
-                members[i].type = orb.get_primitive_tc(TCKind.tk_octet); //11638
-                break;
-            case 'C':
-                members[i].type
-                    = orb.get_primitive_tc(vhandler.getJavaCharTCKind()); // 11638
-                break;
-            case 'F':
-                members[i].type = orb.get_primitive_tc(TCKind.tk_float); //11638
-                break;
-            case 'D' :
-                members[i].type = orb.get_primitive_tc(TCKind.tk_double); //11638
-                break;
-            case 'I':
-                members[i].type = orb.get_primitive_tc(TCKind.tk_long); //11638
-                break;
-            case 'J':
-                members[i].type = orb.get_primitive_tc(TCKind.tk_longlong); //11638
-                break;
-            case 'S':
-                members[i].type = orb.get_primitive_tc(TCKind.tk_short); //11638
-                break;
-            case 'Z':
-                members[i].type = orb.get_primitive_tc(TCKind.tk_boolean); //11638
-                break;
-        // case '[':
-        //      members[i].type = orb.get_primitive_tc(TCKind.tk_value_box); //11638
-        //      members[i].id = RepositoryId.createForAnyType(fields[i].getType());
-        //      break;
-            default:
-                members[i].type = createTypeCodeForClassInternal(orb, fields[i].getClazz(), vhandler,
-                                  createdIDs);
-                members[i].id = vhandler.createForAnyType(fields[i].getType());
-                break;
+                case 'B':
+                    members[i].type = orb.get_primitive_tc(TCKind.tk_octet); //11638
+                    break;
+                case 'C':
+                    members[i].type
+                            = orb.get_primitive_tc(vhandler.getJavaCharTCKind()); // 11638
+                    break;
+                case 'F':
+                    members[i].type = orb.get_primitive_tc(TCKind.tk_float); //11638
+                    break;
+                case 'D':
+                    members[i].type = orb.get_primitive_tc(TCKind.tk_double); //11638
+                    break;
+                case 'I':
+                    members[i].type = orb.get_primitive_tc(TCKind.tk_long); //11638
+                    break;
+                case 'J':
+                    members[i].type = orb.get_primitive_tc(TCKind.tk_longlong); //11638
+                    break;
+                case 'S':
+                    members[i].type = orb.get_primitive_tc(TCKind.tk_short); //11638
+                    break;
+                case 'Z':
+                    members[i].type = orb.get_primitive_tc(TCKind.tk_boolean); //11638
+                    break;
+                // case '[':
+                //      members[i].type = orb.get_primitive_tc(TCKind.tk_value_box); //11638
+                //      members[i].id = RepositoryId.createForAnyType(fields[i].getType());
+                //      break;
+                default:
+                    members[i].type = createTypeCodeForClassInternal(orb, fields[i].getClazz(), vhandler,
+                            createdIDs);
+                    members[i].id = vhandler.createForAnyType(fields[i].getType());
+                    break;
             } // end switch
 
         } // end for loop
@@ -300,7 +303,7 @@ public class ValueUtility {
         return members;
     }
 
-    private static boolean exists(String str, String strs[]){
+    private static boolean exists(String str, String strs[]) {
         for (int i = 0; i < strs.length; i++)
             if (str.equals(strs[i]))
                 return true;
@@ -309,7 +312,7 @@ public class ValueUtility {
     }
 
     public static boolean isAssignableFrom(String clzRepositoryId, FullValueDescription type,
-                                           com.sun.org.omg.SendingContext.CodeBase sender){
+                                           com.sun.org.omg.SendingContext.CodeBase sender) {
 
         if (exists(clzRepositoryId, type.supported_interfaces))
             return true;
@@ -318,7 +321,7 @@ public class ValueUtility {
             return true;
 
         if ((type.base_value != null) &&
-            (!type.base_value.equals(""))) {
+                (!type.base_value.equals(""))) {
             FullValueDescription parent = sender.meta(type.base_value);
 
             return isAssignableFrom(clzRepositoryId, parent, sender);
@@ -328,7 +331,7 @@ public class ValueUtility {
 
     }
 
-    public static TypeCode createTypeCodeForClass (ORB orb, java.lang.Class c, ValueHandler vh) {
+    public static TypeCode createTypeCodeForClass(ORB orb, java.lang.Class c, ValueHandler vh) {
         // Maps classes to repositoryIDs strings. This is used to detect recursive types.
         IdentityKeyValueStack createdIDs = new IdentityKeyValueStack();
         // Stores all types created for resolving indirect types at the end.
@@ -336,14 +339,13 @@ public class ValueUtility {
         return tc;
     }
 
-    private static TypeCode createTypeCodeForClassInternal (ORB orb,
-                                                            java.lang.Class c,
-                                                            ValueHandler vh,
-                                                            IdentityKeyValueStack createdIDs)
-    {
+    private static TypeCode createTypeCodeForClassInternal(ORB orb,
+                                                           java.lang.Class c,
+                                                           ValueHandler vh,
+                                                           IdentityKeyValueStack createdIDs) {
         // This wrapper method is the protection against infinite recursion.
         TypeCode tc = null;
-        String id = (String)createdIDs.get(c);
+        String id = (String) createdIDs.get(c);
         if (id != null) {
             return orb.create_recursive_tc(id);
         } else {
@@ -363,10 +365,12 @@ public class ValueUtility {
         private static class KeyValuePair {
             Object key;
             Object value;
+
             KeyValuePair(Object key, Object value) {
                 this.key = key;
                 this.value = value;
             }
+
             boolean equals(KeyValuePair pair) {
                 return pair.key == this.key;
             }
@@ -378,8 +382,8 @@ public class ValueUtility {
             if (pairs == null) {
                 return null;
             }
-            for (Iterator i = pairs.iterator(); i.hasNext();) {
-                KeyValuePair pair = (KeyValuePair)i.next();
+            for (Iterator i = pairs.iterator(); i.hasNext(); ) {
+                KeyValuePair pair = (KeyValuePair) i.next();
                 if (pair.key == key) {
                     return pair.value;
                 }
@@ -399,31 +403,30 @@ public class ValueUtility {
         }
     }
 
-    private static TypeCode createTypeCodeInternal (ORB orb,
-                                                    java.lang.Class c,
-                                                    ValueHandler vh,
-                                                    String id,
-                                                    IdentityKeyValueStack createdIDs)
-    {
-        if ( c.isArray() ) {
+    private static TypeCode createTypeCodeInternal(ORB orb,
+                                                   java.lang.Class c,
+                                                   ValueHandler vh,
+                                                   String id,
+                                                   IdentityKeyValueStack createdIDs) {
+        if (c.isArray()) {
             // Arrays - may recurse for multi-dimensional arrays
             Class componentClass = c.getComponentType();
             TypeCode embeddedType;
-            if ( componentClass.isPrimitive() ){
+            if (componentClass.isPrimitive()) {
                 embeddedType
-                    = ValueUtility.getPrimitiveTypeCodeForClass(orb,
-                                                                componentClass,
-                                                                vh);
+                        = ValueUtility.getPrimitiveTypeCodeForClass(orb,
+                        componentClass,
+                        vh);
             } else {
                 embeddedType = createTypeCodeForClassInternal(orb, componentClass, vh,
-                                                              createdIDs);
+                        createdIDs);
             }
-            TypeCode t = orb.create_sequence_tc (0, embeddedType);
-            return orb.create_value_box_tc (id, "Sequence", t);
-        } else if ( c == java.lang.String.class ) {
+            TypeCode t = orb.create_sequence_tc(0, embeddedType);
+            return orb.create_value_box_tc(id, "Sequence", t);
+        } else if (c == java.lang.String.class) {
             // Strings
-            TypeCode t = orb.create_string_tc (0);
-            return orb.create_value_box_tc (id, "StringValue", t);
+            TypeCode t = orb.create_string_tc(0);
+            return orb.create_value_box_tc(id, "StringValue", t);
         } else if (java.rmi.Remote.class.isAssignableFrom(c)) {
             return orb.get_primitive_tc(TCKind.tk_objref);
         } else if (org.omg.CORBA.Object.class.isAssignableFrom(c)) {
@@ -435,7 +438,7 @@ public class ValueUtility {
         ObjectStreamClass osc = ObjectStreamClass.lookup(c);
 
         if (osc == null) {
-            return orb.create_value_box_tc (id, "Value", orb.get_primitive_tc (TCKind.tk_value));
+            return orb.create_value_box_tc(id, "Value", orb.get_primitive_tc(TCKind.tk_value));
         }
 
         // type modifier
@@ -450,34 +453,34 @@ public class ValueUtility {
         }
 
         // members
-        ValueMember[] members = translateMembers (orb, osc, vh, createdIDs);
+        ValueMember[] members = translateMembers(orb, osc, vh, createdIDs);
 
         return orb.create_value_tc(id, c.getName(), modifier, base, members);
     }
 
-    public static TypeCode getPrimitiveTypeCodeForClass (ORB orb,
-                                                         Class c,
-                                                         ValueHandler vh) {
+    public static TypeCode getPrimitiveTypeCodeForClass(ORB orb,
+                                                        Class c,
+                                                        ValueHandler vh) {
 
         if (c == Integer.TYPE) {
-            return orb.get_primitive_tc (TCKind.tk_long);
+            return orb.get_primitive_tc(TCKind.tk_long);
         } else if (c == Byte.TYPE) {
-            return orb.get_primitive_tc (TCKind.tk_octet);
+            return orb.get_primitive_tc(TCKind.tk_octet);
         } else if (c == Long.TYPE) {
-            return orb.get_primitive_tc (TCKind.tk_longlong);
+            return orb.get_primitive_tc(TCKind.tk_longlong);
         } else if (c == Float.TYPE) {
-            return orb.get_primitive_tc (TCKind.tk_float);
+            return orb.get_primitive_tc(TCKind.tk_float);
         } else if (c == Double.TYPE) {
-            return orb.get_primitive_tc (TCKind.tk_double);
+            return orb.get_primitive_tc(TCKind.tk_double);
         } else if (c == Short.TYPE) {
-            return orb.get_primitive_tc (TCKind.tk_short);
+            return orb.get_primitive_tc(TCKind.tk_short);
         } else if (c == Character.TYPE) {
-            return orb.get_primitive_tc (((ValueHandlerImpl)vh).getJavaCharTCKind());
+            return orb.get_primitive_tc(((ValueHandlerImpl) vh).getJavaCharTCKind());
         } else if (c == Boolean.TYPE) {
-            return orb.get_primitive_tc (TCKind.tk_boolean);
+            return orb.get_primitive_tc(TCKind.tk_boolean);
         } else {
             // _REVISIT_ Not sure if this is right.
-            return orb.get_primitive_tc (TCKind.tk_any);
+            return orb.get_primitive_tc(TCKind.tk_any);
         }
     }
 }

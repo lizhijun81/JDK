@@ -67,14 +67,15 @@ public interface ProcessingInstruction extends Node {
      * preceding the <code>?&gt;</code>.
      */
     public String getData();
+
     /**
      * The content of this processing instruction. This is from the first non
      * white space character after the target to the character immediately
      * preceding the <code>?&gt;</code>.
-     * @exception DOMException
-     *   NO_MODIFICATION_ALLOWED_ERR: Raised when the node is readonly.
+     *
+     * @throws DOMException NO_MODIFICATION_ALLOWED_ERR: Raised when the node is readonly.
      */
     public void setData(String data)
-                                   throws DOMException;
+            throws DOMException;
 
 }

@@ -19,14 +19,14 @@ package com.sun.image.codec.jpeg;
 
 /**
  * JPEGImageDecoder Interface
- *
+ * <p>
  * JPEGImageDecoder decompresses an JPEG InputStream into a Raster or
  * a BufferedImage depending upon the method invoked. Decoding the
  * JPEG input stream is controlled by the parameters in the
  * JPEGDecodeParam object.  If no JPEGDecodeParam object has been
  * specified then one is created to contain information about a
  * decompressed JPEG stream.<P>
- *
+ * <p>
  * The JPEGDecodeParam object is updated with information from the
  * file header during decompression. If the input stream contains
  * tables only information (no image data), the JPEGDecodeParam object
@@ -35,7 +35,7 @@ package com.sun.image.codec.jpeg;
  * the current JPEGDecodeParam object will be used to decode in
  * decoding the JPEG stream. If no tables are set in the
  * JPEGDecodeParam object, an exception will be thrown.<P>
- *
+ * <p>
  * ColorSpace comments: First off JPEG by specification is color
  * blind!  That said, some color space conversion is done in the name
  * of better compression ratios.  If a BufferedImage is requested
@@ -44,7 +44,7 @@ package com.sun.image.codec.jpeg;
  * decoder to handle alpha channels.  See the JPEGDecodeParam
  * description for more details on additional color space
  * designations ( @see JPEGDecodeParam ).<P>
- *
+ * <p>
  * This decoder can process interchange, abbreviated and progressive
  * jpeg streams.  However, progressive jpeg streams are treated as
  * interchange streams.  They return once with the entire image in the
@@ -103,11 +103,11 @@ public interface JPEGImageDecoder {
      */
     public void setJPEGDecodeParam(JPEGDecodeParam jdp);
 
-        /**
-         * Get the input stream that decoding will occur from.
-         * @return The stream that the decoder is currently assciated with.
-         */
-        public InputStream getInputStream();
+    /**
+     * Get the input stream that decoding will occur from.
+     * @return The stream that the decoder is currently assciated with.
+     */
+    public InputStream getInputStream();
 
     /**
      * Decode the JPEG stream that was passed as part of
@@ -121,7 +121,7 @@ public interface JPEGImageDecoder {
      *            stream or an unknown condition is encountered.
      */
     public Raster decodeAsRaster()
-                throws IOException, ImageFormatException;
+            throws IOException, ImageFormatException;
 
     /**
      * Decodes the current JPEG data stream.  The result of decoding
@@ -134,6 +134,6 @@ public interface JPEGImageDecoder {
      *            stream or an unknown condition is encountered.
      */
     public BufferedImage decodeAsBufferedImage()
-                throws IOException, ImageFormatException;
+            throws IOException, ImageFormatException;
 
 } // end class JPEGImageDecoder

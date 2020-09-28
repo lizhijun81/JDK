@@ -29,11 +29,9 @@ import com.sun.org.apache.xerces.internal.xs.datatypes.XSQName;
 /**
  * Represent the schema type "QName" and "NOTATION"
  *
- * @xerces.internal
- *
  * @author Neeraj Bajaj, Sun Microsystems, inc.
  * @author Sandy Gao, IBM
- *
+ * @xerces.internal
  */
 public class QNameDV extends TypeValidator {
 
@@ -44,15 +42,15 @@ public class QNameDV extends TypeValidator {
     }
 
     public Object getActualValue(String content, ValidationContext context)
-        throws InvalidDatatypeValueException {
+            throws InvalidDatatypeValueException {
 
         // "prefix:localpart" or "localpart"
         // get prefix and local part out of content
         String prefix, localpart;
         int colonptr = content.indexOf(":");
         if (colonptr > 0) {
-            prefix = context.getSymbol(content.substring(0,colonptr));
-            localpart = content.substring(colonptr+1);
+            prefix = context.getSymbol(content.substring(0, colonptr));
+            localpart = content.substring(colonptr + 1);
         } else {
             prefix = EMPTY_STRING;
             localpart = content;
@@ -62,7 +60,7 @@ public class QNameDV extends TypeValidator {
         if (prefix.length() > 0 && !XMLChar.isValidNCName(prefix))
             throw new InvalidDatatypeValueException("cvc-datatype-valid.1.2.1", new Object[]{content, "QName"});
 
-        if(!XMLChar.isValidNCName(localpart))
+        if (!XMLChar.isValidNCName(localpart))
             throw new InvalidDatatypeValueException("cvc-datatype-valid.1.2.1", new Object[]{content, "QName"});
 
         // resove prefix to a uri, report an error if failed
@@ -77,22 +75,26 @@ public class QNameDV extends TypeValidator {
     // REVISIT: qname and notation shouldn't support length facets.
     //          now we just return the length of the rawname
     public int getDataLength(Object value) {
-        return ((XQName)value).rawname.length();
+        return ((XQName) value).rawname.length();
     }
 
     /**
      * represent QName data
      */
     private static final class XQName extends QName implements XSQName {
-        /** Constructs a QName with the specified values. */
+        /**
+         * Constructs a QName with the specified values.
+         */
         public XQName(String prefix, String localpart, String rawname, String uri) {
             setValues(prefix, localpart, rawname, uri);
         } // <init>(String,String,String,String)
 
-        /** Returns true if the two objects are equal. */
+        /**
+         * Returns true if the two objects are equal.
+         */
         public boolean equals(Object object) {
             if (object instanceof QName) {
-                QName qname = (QName)object;
+                QName qname = (QName) object;
                 return uri == qname.uri && localpart == qname.localpart;
             }
             return false;
@@ -101,9 +103,11 @@ public class QNameDV extends TypeValidator {
         public synchronized String toString() {
             return rawname;
         }
+
         public javax.xml.namespace.QName getJAXPQName() {
             return new javax.xml.namespace.QName(uri, localpart, prefix);
         }
+
         public QName getXNIQName() {
             return this;
         }

@@ -36,18 +36,17 @@ import org.omg.DynamicAny.DynAnyPackage.TypeMismatch;
 import org.omg.DynamicAny.DynAnyPackage.InvalidValue;
 import org.omg.DynamicAny.DynAnyFactoryPackage.InconsistentTypeCode;
 
-import com.sun.corba.se.spi.orb.ORB ;
-import com.sun.corba.se.spi.logging.CORBALogDomains ;
-import com.sun.corba.se.impl.logging.ORBUtilSystemException ;
+import com.sun.corba.se.spi.orb.ORB;
+import com.sun.corba.se.spi.logging.CORBALogDomains;
+import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 
-public class DynArrayImpl extends DynAnyCollectionImpl implements DynArray
-{
+public class DynArrayImpl extends DynAnyCollectionImpl implements DynArray {
     //
     // Constructors
     //
 
     private DynArrayImpl() {
-        this(null, (Any)null, false);
+        this(null, (Any) null, false);
     }
 
     protected DynArrayImpl(ORB orb, Any any, boolean copyValue) {
@@ -76,7 +75,7 @@ public class DynArrayImpl extends DynAnyCollectionImpl implements DynArray
         components = new DynAny[length];
         anys = new Any[length];
 
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             // _REVISIT_ Could use read_xxx_array() methods on InputStream for efficiency
             // but only for primitive types
             anys[i] = DynAnyUtil.extractAnyFromStream(contentType, input, orb);
@@ -102,7 +101,7 @@ public class DynArrayImpl extends DynAnyCollectionImpl implements DynArray
         components = new DynAny[length];
         anys = new Any[length];
 
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             createDefaultComponentAt(i, contentType);
         }
         return true;
@@ -129,8 +128,7 @@ public class DynArrayImpl extends DynAnyCollectionImpl implements DynArray
     //
 
     protected void checkValue(Object[] value)
-        throws org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+            throws org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (value == null || value.length != getBound()) {
             throw new InvalidValue();
         }

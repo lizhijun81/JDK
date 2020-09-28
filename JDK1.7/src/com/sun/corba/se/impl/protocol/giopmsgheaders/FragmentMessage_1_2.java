@@ -38,12 +38,13 @@ public final class FragmentMessage_1_2 extends Message_1_2
 
     // Constructors
 
-    FragmentMessage_1_2() {}
+    FragmentMessage_1_2() {
+    }
 
     // This is currently never called.
     FragmentMessage_1_2(int _request_id) {
         super(Message.GIOPBigMagic, GIOPVersion.V1_2, FLAG_NO_FRAG_BIG_ENDIAN,
-            Message.GIOPFragment, 0);
+                Message.GIOPFragment, 0);
         this.message_type = GIOPFragment;
         request_id = _request_id;
     }
@@ -56,21 +57,21 @@ public final class FragmentMessage_1_2 extends Message_1_2
         this.message_size = 0;
 
         switch (msg12.message_type) {
-        case GIOPRequest :
-            this.request_id = ((RequestMessage) msg12).getRequestId();
-            break;
-        case GIOPReply :
-            this.request_id = ((ReplyMessage) msg12).getRequestId();
-            break;
-        case GIOPLocateRequest :
-            this.request_id = ((LocateRequestMessage) msg12).getRequestId();
-            break;
-        case GIOPLocateReply :
-            this.request_id = ((LocateReplyMessage) msg12).getRequestId();
-            break;
-        case GIOPFragment :
-            this.request_id = ((FragmentMessage) msg12).getRequestId();
-            break;
+            case GIOPRequest:
+                this.request_id = ((RequestMessage) msg12).getRequestId();
+                break;
+            case GIOPReply:
+                this.request_id = ((ReplyMessage) msg12).getRequestId();
+                break;
+            case GIOPLocateRequest:
+                this.request_id = ((LocateRequestMessage) msg12).getRequestId();
+                break;
+            case GIOPLocateReply:
+                this.request_id = ((LocateReplyMessage) msg12).getRequestId();
+                break;
+            case GIOPFragment:
+                this.request_id = ((FragmentMessage) msg12).getRequestId();
+                break;
         }
     }
 
@@ -101,8 +102,7 @@ public final class FragmentMessage_1_2 extends Message_1_2
     }
 
     public void callback(MessageHandler handler)
-        throws java.io.IOException
-    {
+            throws java.io.IOException {
         handler.handleInput(this);
     }
 } // class FragmentMessage_1_2

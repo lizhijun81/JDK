@@ -26,10 +26,8 @@ import com.sun.org.apache.xerces.internal.impl.dv.ValidationContext;
 /**
  * Represent the schema type "integer"
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
- *
+ * @xerces.internal
  */
 public class IntegerDV extends DecimalDV {
 

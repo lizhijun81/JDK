@@ -41,9 +41,8 @@ import com.sun.corba.se.impl.transport.SocketOrChannelContactInfoImpl;
  * @author Harold Carr
  */
 public class SocketFactoryContactInfoImpl
-    extends
-        SocketOrChannelContactInfoImpl
-{
+        extends
+        SocketOrChannelContactInfoImpl {
     protected ORBUtilSystemException wrapper;
     protected SocketInfo socketInfo;
 
@@ -51,27 +50,25 @@ public class SocketFactoryContactInfoImpl
     // See SocketOrChannelAcceptorImpl.createMessageMediator
     // See SocketFactoryContactInfoImpl.constructor()
     // See SocketOrChannelContactInfoImpl.constructor()
-    public SocketFactoryContactInfoImpl()
-    {
+    public SocketFactoryContactInfoImpl() {
     }
 
     public SocketFactoryContactInfoImpl(
-        ORB orb,
-        CorbaContactInfoList contactInfoList,
-        IOR effectiveTargetIOR,
-        short addressingDisposition,
-        SocketInfo cookie)
-    {
+            ORB orb,
+            CorbaContactInfoList contactInfoList,
+            IOR effectiveTargetIOR,
+            short addressingDisposition,
+            SocketInfo cookie) {
         super(orb, contactInfoList);
         this.effectiveTargetIOR = effectiveTargetIOR;
         this.addressingDisposition = addressingDisposition;
 
-        wrapper = ORBUtilSystemException.get( orb,
-            CORBALogDomains.RPC_TRANSPORT ) ;
+        wrapper = ORBUtilSystemException.get(orb,
+                CORBALogDomains.RPC_TRANSPORT);
 
         socketInfo =
-            orb.getORBData().getLegacySocketFactory()
-                .getEndPointInfo(orb, effectiveTargetIOR, cookie);
+                orb.getORBData().getLegacySocketFactory()
+                        .getEndPointInfo(orb, effectiveTargetIOR, cookie);
 
         socketType = socketInfo.getType();
         hostname = socketInfo.getHost();
@@ -83,13 +80,12 @@ public class SocketFactoryContactInfoImpl
     // pept.transport.ContactInfo
     //
 
-    public Connection createConnection()
-    {
+    public Connection createConnection() {
         Connection connection =
-            new SocketFactoryConnectionImpl(
-                orb, this,
-                orb.getORBData().connectionSocketUseSelectThreadToWait(),
-                orb.getORBData().connectionSocketUseWorkerThreadForEvent());
+                new SocketFactoryConnectionImpl(
+                        orb, this,
+                        orb.getORBData().connectionSocketUseSelectThreadToWait(),
+                        orb.getORBData().connectionSocketUseWorkerThreadForEvent());
         return connection;
     }
 
@@ -98,14 +94,13 @@ public class SocketFactoryContactInfoImpl
     // java.lang.Object
     //
 
-    public String toString()
-    {
+    public String toString() {
         return
-            "SocketFactoryContactInfoImpl["
-            + socketType + " "
-            + hostname + " "
-            + port
-            + "]";
+                "SocketFactoryContactInfoImpl["
+                        + socketType + " "
+                        + hostname + " "
+                        + port
+                        + "]";
     }
 }
 

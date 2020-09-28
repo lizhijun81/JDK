@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * A tree node for a 'try' statement.
- *
+ * <p>
  * For example:
  * <pre>
  *   try
@@ -39,15 +39,17 @@ import java.util.List;
  *       <em>finallyBlock</em>
  * </pre>
  *
- * @jls section 14.20
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls section 14.20
  * @since 1.6
  */
 public interface TryTree extends StatementTree {
     BlockTree getBlock();
+
     List<? extends CatchTree> getCatches();
+
     BlockTree getFinallyBlock();
+
     List<? extends Tree> getResources();
 }

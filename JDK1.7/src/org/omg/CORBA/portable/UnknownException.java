@@ -30,6 +30,7 @@
  */
 
 package org.omg.CORBA.portable;
+
 /**
  * The org.omg.CORBA.portable.UnknownException is used for reporting
  * unknown exceptions between ties and ORBs and between ORBs and stubs.
@@ -47,8 +48,10 @@ public class UnknownException extends org.omg.CORBA.SystemException {
      * UnknownException.
      */
     public Throwable originalEx;
+
     /**
      * Constructs an UnknownException object.
+     *
      * @param ex a Throwable object--to be wrapped in this exception.
      */
     public UnknownException(Throwable ex) {

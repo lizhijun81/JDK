@@ -35,21 +35,20 @@ import com.sun.org.apache.xerces.internal.xni.Augmentations;
  *
  * @author Elena Litani, IBM
  */
-public class AugmentationsImpl implements Augmentations{
+public class AugmentationsImpl implements Augmentations {
 
     private AugmentationsItemsContainer fAugmentationsContainer =
-                                        new SmallContainer();
+            new SmallContainer();
 
     /**
      * Add additional information identified by a key to the Augmentations structure.
      *
-     * @param key    Identifier, can't be <code>null</code>
-     * @param item   Additional information
-     *
+     * @param key  Identifier, can't be <code>null</code>
+     * @param item Additional information
      * @return the previous value of the specified key in the Augmentations strucutre,
-     *         or <code>null</code> if it did not have one.
+     * or <code>null</code> if it did not have one.
      */
-    public Object putItem (String key, Object item){
+    public Object putItem(String key, Object item) {
         Object oldValue = fAugmentationsContainer.putItem(key, item);
 
         if (oldValue == null && fAugmentationsContainer.isFull()) {
@@ -63,12 +62,11 @@ public class AugmentationsImpl implements Augmentations{
     /**
      * Get information identified by a key from the Augmentations structure
      *
-     * @param key    Identifier, can't be <code>null</code>
-     *
+     * @param key Identifier, can't be <code>null</code>
      * @return the value to which the key is mapped in the Augmentations structure;
-     *         <code>null</code> if the key is not mapped to any value.
+     * <code>null</code> if the key is not mapped to any value.
      */
-    public Object getItem(String key){
+    public Object getItem(String key) {
         return fAugmentationsContainer.getItem(key);
     }
 
@@ -76,17 +74,16 @@ public class AugmentationsImpl implements Augmentations{
     /**
      * Remove additional info from the Augmentations structure
      *
-     * @param key    Identifier, can't be <code>null</code>
+     * @param key Identifier, can't be <code>null</code>
      */
-    public Object removeItem (String key){
+    public Object removeItem(String key) {
         return fAugmentationsContainer.removeItem(key);
     }
 
     /**
      * Returns an enumeration of the keys in the Augmentations structure
-     *
      */
-    public Enumeration keys (){
+    public Enumeration keys() {
         return fAugmentationsContainer.keys();
     }
 
@@ -103,17 +100,23 @@ public class AugmentationsImpl implements Augmentations{
 
     abstract class AugmentationsItemsContainer {
         abstract public Object putItem(Object key, Object item);
+
         abstract public Object getItem(Object key);
+
         abstract public Object removeItem(Object key);
+
         abstract public Enumeration keys();
+
         abstract public void clear();
+
         abstract public boolean isFull();
+
         abstract public AugmentationsItemsContainer expand();
     }
 
     class SmallContainer extends AugmentationsItemsContainer {
         final static int SIZE_LIMIT = 10;
-        final Object[] fAugmentations = new Object[SIZE_LIMIT*2];
+        final Object[] fAugmentations = new Object[SIZE_LIMIT * 2];
         int fNumEntries = 0;
 
         public Enumeration keys() {
@@ -121,9 +124,9 @@ public class AugmentationsImpl implements Augmentations{
         }
 
         public Object getItem(Object key) {
-            for (int i = 0; i < fNumEntries*2; i = i + 2) {
+            for (int i = 0; i < fNumEntries * 2; i = i + 2) {
                 if (fAugmentations[i].equals(key)) {
-                    return fAugmentations[i+1];
+                    return fAugmentations[i + 1];
                 }
             }
 
@@ -131,17 +134,17 @@ public class AugmentationsImpl implements Augmentations{
         }
 
         public Object putItem(Object key, Object item) {
-            for (int i = 0; i < fNumEntries*2; i = i + 2) {
+            for (int i = 0; i < fNumEntries * 2; i = i + 2) {
                 if (fAugmentations[i].equals(key)) {
-                    Object oldValue = fAugmentations[i+1];
-                    fAugmentations[i+1] = item;
+                    Object oldValue = fAugmentations[i + 1];
+                    fAugmentations[i + 1] = item;
 
                     return oldValue;
                 }
             }
 
-            fAugmentations[fNumEntries*2] = key;
-            fAugmentations[fNumEntries*2+1] = item;
+            fAugmentations[fNumEntries * 2] = key;
+            fAugmentations[fNumEntries * 2 + 1] = item;
             fNumEntries++;
 
             return null;
@@ -149,17 +152,17 @@ public class AugmentationsImpl implements Augmentations{
 
 
         public Object removeItem(Object key) {
-            for (int i = 0; i < fNumEntries*2; i = i + 2) {
+            for (int i = 0; i < fNumEntries * 2; i = i + 2) {
                 if (fAugmentations[i].equals(key)) {
-                    Object oldValue = fAugmentations[i+1];
+                    Object oldValue = fAugmentations[i + 1];
 
-                    for (int j = i; j < fNumEntries*2 - 2; j = j + 2) {
-                        fAugmentations[j] = fAugmentations[j+2];
-                        fAugmentations[j+1] = fAugmentations[j+3];
+                    for (int j = i; j < fNumEntries * 2 - 2; j = j + 2) {
+                        fAugmentations[j] = fAugmentations[j + 2];
+                        fAugmentations[j + 1] = fAugmentations[j + 3];
                     }
 
-                    fAugmentations[fNumEntries*2-2] = null;
-                    fAugmentations[fNumEntries*2-1] = null;
+                    fAugmentations[fNumEntries * 2 - 2] = null;
+                    fAugmentations[fNumEntries * 2 - 1] = null;
                     fNumEntries--;
 
                     return oldValue;
@@ -170,9 +173,9 @@ public class AugmentationsImpl implements Augmentations{
         }
 
         public void clear() {
-            for (int i = 0; i < fNumEntries*2; i = i + 2) {
+            for (int i = 0; i < fNumEntries * 2; i = i + 2) {
                 fAugmentations[i] = null;
-                fAugmentations[i+1] = null;
+                fAugmentations[i + 1] = null;
             }
 
             fNumEntries = 0;
@@ -185,9 +188,9 @@ public class AugmentationsImpl implements Augmentations{
         public AugmentationsItemsContainer expand() {
             LargeContainer expandedContainer = new LargeContainer();
 
-            for (int i = 0; i < fNumEntries*2; i = i + 2) {
+            for (int i = 0; i < fNumEntries * 2; i = i + 2) {
                 expandedContainer.putItem(fAugmentations[i],
-                                          fAugmentations[i+1]);
+                        fAugmentations[i + 1]);
             }
 
             return expandedContainer;
@@ -197,27 +200,27 @@ public class AugmentationsImpl implements Augmentations{
             StringBuffer buff = new StringBuffer();
             buff.append("SmallContainer - fNumEntries == " + fNumEntries);
 
-            for (int i = 0; i < SIZE_LIMIT*2; i=i+2) {
+            for (int i = 0; i < SIZE_LIMIT * 2; i = i + 2) {
                 buff.append("\nfAugmentations[");
                 buff.append(i);
                 buff.append("] == ");
                 buff.append(fAugmentations[i]);
                 buff.append("; fAugmentations[");
-                buff.append(i+1);
+                buff.append(i + 1);
                 buff.append("] == ");
-                buff.append(fAugmentations[i+1]);
+                buff.append(fAugmentations[i + 1]);
             }
 
             return buff.toString();
         }
 
         class SmallContainerKeyEnumeration implements Enumeration {
-            Object [] enumArray = new Object[fNumEntries];
+            Object[] enumArray = new Object[fNumEntries];
             int next = 0;
 
             SmallContainerKeyEnumeration() {
                 for (int i = 0; i < fNumEntries; i++) {
-                    enumArray[i] = fAugmentations[i*2];
+                    enumArray[i] = fAugmentations[i * 2];
                 }
             }
 

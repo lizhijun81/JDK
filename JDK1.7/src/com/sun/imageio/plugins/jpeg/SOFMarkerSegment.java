@@ -26,6 +26,7 @@
 package com.sun.imageio.plugins.jpeg;
 
 //import javax.imageio.IIOException;
+
 import javax.imageio.metadata.IIOInvalidTreeException;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageOutputStream;
@@ -43,7 +44,7 @@ class SOFMarkerSegment extends MarkerSegment {
     int samplePrecision;
     int numLines;
     int samplesPerLine;
-    ComponentSpec [] componentSpecs;  // Array size is num components
+    ComponentSpec[] componentSpecs;  // Array size is num components
 
     SOFMarkerSegment(boolean wantProg,
                      boolean wantExtended,
@@ -51,13 +52,13 @@ class SOFMarkerSegment extends MarkerSegment {
                      byte[] componentIDs,
                      int numComponents) {
         super(wantProg ? JPEG.SOF2
-              : wantExtended ? JPEG.SOF1
-              : JPEG.SOF0);
+                : wantExtended ? JPEG.SOF1
+                : JPEG.SOF0);
         samplePrecision = 8;
         numLines = 0;
         samplesPerLine = 0;
         componentSpecs = new ComponentSpec[numComponents];
-        for(int i = 0; i < numComponents; i++) {
+        for (int i = 0; i < numComponents; i++) {
             int factor = 1;
             int qsel = 0;
             if (willSubsample) {
@@ -71,7 +72,7 @@ class SOFMarkerSegment extends MarkerSegment {
         }
     }
 
-    SOFMarkerSegment(JPEGBuffer buffer) throws IOException{
+    SOFMarkerSegment(JPEGBuffer buffer) throws IOException {
         super(buffer);
         samplePrecision = buffer.buf[buffer.bufPtr++];
         numLines = (buffer.buf[buffer.bufPtr++] & 0xff) << 8;
@@ -79,7 +80,7 @@ class SOFMarkerSegment extends MarkerSegment {
         samplesPerLine = (buffer.buf[buffer.bufPtr++] & 0xff) << 8;
         samplesPerLine |= buffer.buf[buffer.bufPtr++] & 0xff;
         int numComponents = buffer.buf[buffer.bufPtr++];
-        componentSpecs = new ComponentSpec [numComponents];
+        componentSpecs = new ComponentSpec[numComponents];
         for (int i = 0; i < numComponents; i++) {
             componentSpecs[i] = new ComponentSpec(buffer);
         }
@@ -98,10 +99,10 @@ class SOFMarkerSegment extends MarkerSegment {
     protected Object clone() {
         SOFMarkerSegment newGuy = (SOFMarkerSegment) super.clone();
         if (componentSpecs != null) {
-            newGuy.componentSpecs = (ComponentSpec []) componentSpecs.clone();
+            newGuy.componentSpecs = (ComponentSpec[]) componentSpecs.clone();
             for (int i = 0; i < componentSpecs.length; i++) {
                 newGuy.componentSpecs[i] =
-                    (ComponentSpec) componentSpecs[i].clone();
+                        (ComponentSpec) componentSpecs[i].clone();
             }
         }
         return newGuy;
@@ -109,15 +110,15 @@ class SOFMarkerSegment extends MarkerSegment {
 
     IIOMetadataNode getNativeNode() {
         IIOMetadataNode node = new IIOMetadataNode("sof");
-        node.setAttribute("process", Integer.toString(tag-JPEG.SOF0));
+        node.setAttribute("process", Integer.toString(tag - JPEG.SOF0));
         node.setAttribute("samplePrecision",
-                          Integer.toString(samplePrecision));
+                Integer.toString(samplePrecision));
         node.setAttribute("numLines",
-                          Integer.toString(numLines));
+                Integer.toString(numLines));
         node.setAttribute("samplesPerLine",
-                          Integer.toString(samplesPerLine));
+                Integer.toString(samplesPerLine));
         node.setAttribute("numFrameComponents",
-                          Integer.toString(componentSpecs.length));
+                Integer.toString(componentSpecs.length));
         for (int i = 0; i < componentSpecs.length; i++) {
             node.appendChild(componentSpecs[i].getNativeNode());
         }
@@ -126,10 +127,10 @@ class SOFMarkerSegment extends MarkerSegment {
     }
 
     void updateFromNativeNode(Node node, boolean fromScratch)
-        throws IIOInvalidTreeException {
+            throws IIOInvalidTreeException {
         NamedNodeMap attrs = node.getAttributes();
         int value = getAttributeValue(node, attrs, "process", 0, 2, false);
-        tag = (value != -1) ? value+JPEG.SOF0 : tag;
+        tag = (value != -1) ? value + JPEG.SOF0 : tag;
         // If samplePrecision is present, it must be 8.
         // This just checks.  We don't bother to assign the value.
         value = getAttributeValue(node, attrs, "samplePrecision", 8, 8, false);
@@ -138,13 +139,13 @@ class SOFMarkerSegment extends MarkerSegment {
         value = getAttributeValue(node, attrs, "samplesPerLine", 0, 65535, false);
         samplesPerLine = (value != -1) ? value : samplesPerLine;
         int numComponents = getAttributeValue(node, attrs, "numFrameComponents",
-                                              1, 4, false);
+                1, 4, false);
         NodeList children = node.getChildNodes();
         if (children.getLength() != numComponents) {
             throw new IIOInvalidTreeException
-                ("numFrameComponents must match number of children", node);
+                    ("numFrameComponents must match number of children", node);
         }
-        componentSpecs = new ComponentSpec [numComponents];
+        componentSpecs = new ComponentSpec[numComponents];
         for (int i = 0; i < numComponents; i++) {
             componentSpecs[i] = new ComponentSpec(children.item(i));
         }
@@ -158,7 +159,7 @@ class SOFMarkerSegment extends MarkerSegment {
         // We don't write SOF segments; the IJG library does.
     }
 
-    void print () {
+    void print() {
         printTag("SOF");
         System.out.print("Sample precision: ");
         System.out.println(samplePrecision);
@@ -168,43 +169,43 @@ class SOFMarkerSegment extends MarkerSegment {
         System.out.println(samplesPerLine);
         System.out.print("Number of components: ");
         System.out.println(componentSpecs.length);
-        for(int i = 0; i<componentSpecs.length; i++) {
+        for (int i = 0; i < componentSpecs.length; i++) {
             componentSpecs[i].print();
         }
     }
 
-    int getIDencodedCSType () {
+    int getIDencodedCSType() {
         for (int i = 0; i < componentSpecs.length; i++) {
             if (componentSpecs[i].componentId < 'A') {
                 return JPEG.JCS_UNKNOWN;
             }
         }
-        switch(componentSpecs.length) {
-        case 3:
-            if ((componentSpecs[0].componentId == 'R')
-                &&(componentSpecs[0].componentId == 'G')
-                &&(componentSpecs[0].componentId == 'B')) {
-                return JPEG.JCS_RGB;
-            }
-            if ((componentSpecs[0].componentId == 'Y')
-                &&(componentSpecs[0].componentId == 'C')
-                &&(componentSpecs[0].componentId == 'c')) {
-                return JPEG.JCS_YCC;
-            }
-            break;
-        case 4:
-            if ((componentSpecs[0].componentId == 'R')
-                &&(componentSpecs[0].componentId == 'G')
-                &&(componentSpecs[0].componentId == 'B')
-                &&(componentSpecs[0].componentId == 'A')) {
-                return JPEG.JCS_RGBA;
-            }
-            if ((componentSpecs[0].componentId == 'Y')
-                &&(componentSpecs[0].componentId == 'C')
-                &&(componentSpecs[0].componentId == 'c')
-                &&(componentSpecs[0].componentId == 'A')) {
-                return JPEG.JCS_YCCA;
-            }
+        switch (componentSpecs.length) {
+            case 3:
+                if ((componentSpecs[0].componentId == 'R')
+                        && (componentSpecs[0].componentId == 'G')
+                        && (componentSpecs[0].componentId == 'B')) {
+                    return JPEG.JCS_RGB;
+                }
+                if ((componentSpecs[0].componentId == 'Y')
+                        && (componentSpecs[0].componentId == 'C')
+                        && (componentSpecs[0].componentId == 'c')) {
+                    return JPEG.JCS_YCC;
+                }
+                break;
+            case 4:
+                if ((componentSpecs[0].componentId == 'R')
+                        && (componentSpecs[0].componentId == 'G')
+                        && (componentSpecs[0].componentId == 'B')
+                        && (componentSpecs[0].componentId == 'A')) {
+                    return JPEG.JCS_RGBA;
+                }
+                if ((componentSpecs[0].componentId == 'Y')
+                        && (componentSpecs[0].componentId == 'C')
+                        && (componentSpecs[0].componentId == 'c')
+                        && (componentSpecs[0].componentId == 'A')) {
+                    return JPEG.JCS_YCCA;
+                }
         }
 
         return JPEG.JCS_UNKNOWN;
@@ -242,34 +243,35 @@ class SOFMarkerSegment extends MarkerSegment {
             NamedNodeMap attrs = node.getAttributes();
             componentId = getAttributeValue(node, attrs, "componentId", 0, 255, true);
             HsamplingFactor = getAttributeValue(node, attrs, "HsamplingFactor",
-                                                1, 255, true);
+                    1, 255, true);
             VsamplingFactor = getAttributeValue(node, attrs, "VsamplingFactor",
-                                                1, 255, true);
+                    1, 255, true);
             QtableSelector = getAttributeValue(node, attrs, "QtableSelector",
-                                               0, 3, true);
+                    0, 3, true);
         }
 
         protected Object clone() {
             try {
                 return super.clone();
-            } catch (CloneNotSupportedException e) {} // won't happen
+            } catch (CloneNotSupportedException e) {
+            } // won't happen
             return null;
         }
 
         IIOMetadataNode getNativeNode() {
             IIOMetadataNode node = new IIOMetadataNode("componentSpec");
             node.setAttribute("componentId",
-                              Integer.toString(componentId));
+                    Integer.toString(componentId));
             node.setAttribute("HsamplingFactor",
-                              Integer.toString(HsamplingFactor));
+                    Integer.toString(HsamplingFactor));
             node.setAttribute("VsamplingFactor",
-                              Integer.toString(VsamplingFactor));
+                    Integer.toString(VsamplingFactor));
             node.setAttribute("QtableSelector",
-                              Integer.toString(QtableSelector));
+                    Integer.toString(QtableSelector));
             return node;
         }
 
-        void print () {
+        void print() {
             System.out.print("Component ID: ");
             System.out.println(componentId);
             System.out.print("H sampling factor: ");

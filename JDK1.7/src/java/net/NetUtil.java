@@ -41,7 +41,7 @@ class NetUtil {
      */
     static boolean doRevealLocalAddress() {
         return propRevealLocalAddr ? revealLocalAddress
-                                     : readRevealLocalAddr();
+                : readRevealLocalAddr();
 
     }
 
@@ -50,14 +50,14 @@ class NetUtil {
         if (sm != null) {
             try {
                 revealLocalAddress = Boolean.parseBoolean(
-                      AccessController.doPrivileged(
-                          new PrivilegedExceptionAction<String>() {
-                              @Override
-                              public String run() {
-                                  return System.getProperty(
-                                      "jdk.net.revealLocalAddress");
-                              }
-                          }));
+                        AccessController.doPrivileged(
+                                new PrivilegedExceptionAction<String>() {
+                                    @Override
+                                    public String run() {
+                                        return System.getProperty(
+                                                "jdk.net.revealLocalAddress");
+                                    }
+                                }));
 
             } catch (Exception e) {
                 //revealLocalAddress is false

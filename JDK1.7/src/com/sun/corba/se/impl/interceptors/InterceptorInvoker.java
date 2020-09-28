@@ -79,9 +79,8 @@ public class InterceptorInvoker {
      * only the ORB can create it.  The invoker is initially disabled, and
      * must be explicitly enabled using setEnabled().
      */
-    InterceptorInvoker( ORB orb, InterceptorList interceptorList,
-                        PICurrent piCurrent )
-    {
+    InterceptorInvoker(ORB orb, InterceptorList interceptorList,
+                       PICurrent piCurrent) {
         this.orb = orb;
         this.interceptorList = interceptorList;
         this.enabled = false;
@@ -91,7 +90,7 @@ public class InterceptorInvoker {
     /**
      * Enables or disables the interceptor invoker
      */
-    void setEnabled( boolean enabled ) {
+    void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }
 
@@ -105,16 +104,16 @@ public class InterceptorInvoker {
      *
      * @param oa The Object Adapter associated with the IOR interceptor.
      */
-    void objectAdapterCreated( ObjectAdapter oa ) {
+    void objectAdapterCreated(ObjectAdapter oa) {
         // If invocation is not yet enabled, don't do anything.
-        if( enabled ) {
+        if (enabled) {
             // Create IORInfo object to pass to IORInterceptors:
-            IORInfoImpl info = new IORInfoImpl( oa );
+            IORInfoImpl info = new IORInfoImpl(oa);
 
             // Call each IORInterceptor:
             IORInterceptor[] iorInterceptors =
-                (IORInterceptor[])interceptorList.getInterceptors(
-                InterceptorList.INTERCEPTOR_TYPE_IOR );
+                    (IORInterceptor[]) interceptorList.getInterceptors(
+                            InterceptorList.INTERCEPTOR_TYPE_IOR);
             int size = iorInterceptors.length;
 
             // Implementation note:
@@ -124,27 +123,26 @@ public class InterceptorInvoker {
             // faster than a subtract and compare to zero.  In this case,
             // it doesn't really matter much, but it's simply a force of habit.
 
-            for( int i = (size - 1); i >= 0; i-- ) {
+            for (int i = (size - 1); i >= 0; i--) {
                 IORInterceptor interceptor = iorInterceptors[i];
                 try {
-                    interceptor.establish_components( info );
-                }
-                catch( Exception e ) {
+                    interceptor.establish_components(info);
+                } catch (Exception e) {
                     // as per PI spec (orbos/99-12-02 sec 7.2.1), if
                     // establish_components throws an exception, ignore it.
                 }
             }
 
             // Change the state so that only template operations are valid
-            info.makeStateEstablished() ;
+            info.makeStateEstablished();
 
-            for( int i = (size - 1); i >= 0; i-- ) {
+            for (int i = (size - 1); i >= 0; i--) {
                 IORInterceptor interceptor = iorInterceptors[i];
                 if (interceptor instanceof IORInterceptor_3_0) {
-                    IORInterceptor_3_0 interceptor30 = (IORInterceptor_3_0)interceptor ;
+                    IORInterceptor_3_0 interceptor30 = (IORInterceptor_3_0) interceptor;
                     // Note that exceptions here are NOT ignored, as per the
                     // ORT spec (orbos/01-01-04)
-                    interceptor30.components_established( info );
+                    interceptor30.components_established(info);
                 }
             }
 
@@ -152,25 +150,24 @@ public class InterceptorInvoker {
             // in case a reference to info escapes this scope.
             // This also completes the actions associated with the
             // template interceptors on this POA.
-            info.makeStateDone() ;
+            info.makeStateDone();
         }
     }
 
-    void adapterManagerStateChanged( int managerId, short newState )
-    {
+    void adapterManagerStateChanged(int managerId, short newState) {
         if (enabled) {
             IORInterceptor[] interceptors =
-                (IORInterceptor[])interceptorList.getInterceptors(
-                InterceptorList.INTERCEPTOR_TYPE_IOR );
+                    (IORInterceptor[]) interceptorList.getInterceptors(
+                            InterceptorList.INTERCEPTOR_TYPE_IOR);
             int size = interceptors.length;
 
-            for( int i = (size - 1); i >= 0; i-- ) {
+            for (int i = (size - 1); i >= 0; i--) {
                 try {
                     IORInterceptor interceptor = interceptors[i];
                     if (interceptor instanceof IORInterceptor_3_0) {
-                        IORInterceptor_3_0 interceptor30 = (IORInterceptor_3_0)interceptor ;
-                        interceptor30.adapter_manager_state_changed( managerId,
-                            newState );
+                        IORInterceptor_3_0 interceptor30 = (IORInterceptor_3_0) interceptor;
+                        interceptor30.adapter_manager_state_changed(managerId,
+                                newState);
                     }
                 } catch (Exception exc) {
                     // No-op: ignore exception in this case
@@ -179,21 +176,20 @@ public class InterceptorInvoker {
         }
     }
 
-    void adapterStateChanged( ObjectReferenceTemplate[] templates,
-        short newState )
-    {
+    void adapterStateChanged(ObjectReferenceTemplate[] templates,
+                             short newState) {
         if (enabled) {
             IORInterceptor[] interceptors =
-                (IORInterceptor[])interceptorList.getInterceptors(
-                InterceptorList.INTERCEPTOR_TYPE_IOR );
+                    (IORInterceptor[]) interceptorList.getInterceptors(
+                            InterceptorList.INTERCEPTOR_TYPE_IOR);
             int size = interceptors.length;
 
-            for( int i = (size - 1); i >= 0; i-- ) {
+            for (int i = (size - 1); i >= 0; i--) {
                 try {
                     IORInterceptor interceptor = interceptors[i];
                     if (interceptor instanceof IORInterceptor_3_0) {
-                        IORInterceptor_3_0 interceptor30 = (IORInterceptor_3_0)interceptor ;
-                        interceptor30.adapter_state_changed( templates, newState );
+                        IORInterceptor_3_0 interceptor30 = (IORInterceptor_3_0) interceptor;
+                        interceptor30.adapter_state_changed(templates, newState);
                     }
                 } catch (Exception exc) {
                     // No-op: ignore exception in this case
@@ -211,21 +207,21 @@ public class InterceptorInvoker {
      * Invokes either send_request, or send_poll, depending on the value
      * of info.getStartingPointCall()
      */
-    void invokeClientInterceptorStartingPoint( ClientRequestInfoImpl info ) {
+    void invokeClientInterceptorStartingPoint(ClientRequestInfoImpl info) {
         // If invocation is not yet enabled, don't do anything.
-        if( enabled ) {
+        if (enabled) {
             try {
                 // Make a a fresh slot table available to TSC in case
                 // interceptors need to make out calls.
                 // Client's TSC is now RSC via RequestInfo.
-                current.pushSlotTable( );
-                info.setPICurrentPushed( true );
-                info.setCurrentExecutionPoint( info.EXECUTION_POINT_STARTING );
+                current.pushSlotTable();
+                info.setPICurrentPushed(true);
+                info.setCurrentExecutionPoint(info.EXECUTION_POINT_STARTING);
 
                 // Get all ClientRequestInterceptors:
                 ClientRequestInterceptor[] clientInterceptors =
-                    (ClientRequestInterceptor[])interceptorList.
-                    getInterceptors( InterceptorList.INTERCEPTOR_TYPE_CLIENT );
+                        (ClientRequestInterceptor[]) interceptorList.
+                                getInterceptors(InterceptorList.INTERCEPTOR_TYPE_CLIENT);
                 int size = clientInterceptors.length;
 
                 // We will assume that all interceptors returned successfully,
@@ -240,9 +236,9 @@ public class InterceptorInvoker {
                 // never occur.  Once we have implemented messaging, this may
                 // be uncommented.)
                 // int startingPointCall = info.getStartingPointCall();
-                for( int i = 0; continueProcessing && (i < size); i++ ) {
+                for (int i = 0; continueProcessing && (i < size); i++) {
                     try {
-                        clientInterceptors[i].send_request( info );
+                        clientInterceptors[i].send_request(info);
 
                         // Again, it is not necessary for a switch here, since
                         // there is only one starting point call type (see
@@ -250,26 +246,25 @@ public class InterceptorInvoker {
 
                         //switch( startingPointCall ) {
                         //case ClientRequestInfoImpl.CALL_SEND_REQUEST:
-                            //clientInterceptors[i].send_request( info );
-                            //break;
+                        //clientInterceptors[i].send_request( info );
+                        //break;
                         //case ClientRequestInfoImpl.CALL_SEND_POLL:
-                            //clientInterceptors[i].send_poll( info );
-                            //break;
+                        //clientInterceptors[i].send_poll( info );
+                        //break;
                         //}
 
-                    }
-                    catch( ForwardRequest e ) {
+                    } catch (ForwardRequest e) {
                         // as per PI spec (orbos/99-12-02 sec 5.2.1.), if
                         // interception point throws a ForwardRequest,
                         // no other Interceptors' send_request operations are
                         // called.
                         flowStackIndex = i;
-                        info.setForwardRequest( e );
+                        info.setForwardRequest(e);
                         info.setEndingPointCall(
-                            ClientRequestInfoImpl.CALL_RECEIVE_OTHER );
-                        info.setReplyStatus( LOCATION_FORWARD.value );
+                                ClientRequestInfoImpl.CALL_RECEIVE_OTHER);
+                        info.setReplyStatus(LOCATION_FORWARD.value);
 
-                        updateClientRequestDispatcherForward( info );
+                        updateClientRequestDispatcherForward(info);
 
                         // For some reason, using break here causes the VM on
                         // NT to lose track of the value of flowStackIndex
@@ -277,17 +272,16 @@ public class InterceptorInvoker {
                         // check a boolean value instead and it seems to work
                         // fine.
                         continueProcessing = false;
-                    }
-                    catch( SystemException e ) {
+                    } catch (SystemException e) {
                         // as per PI spec (orbos/99-12-02 sec 5.2.1.), if
                         // interception point throws a SystemException,
                         // no other Interceptors' send_request operations are
                         // called.
                         flowStackIndex = i;
                         info.setEndingPointCall(
-                            ClientRequestInfoImpl.CALL_RECEIVE_EXCEPTION );
-                        info.setReplyStatus( SYSTEM_EXCEPTION.value );
-                        info.setException( e );
+                                ClientRequestInfoImpl.CALL_RECEIVE_EXCEPTION);
+                        info.setReplyStatus(SYSTEM_EXCEPTION.value);
+                        info.setException(e);
 
                         // For some reason, using break here causes the VM on
                         // NT to lose track of the value of flowStackIndex
@@ -299,11 +293,10 @@ public class InterceptorInvoker {
                 }
 
                 // Remember where we left off in the flow stack:
-                info.setFlowStackIndex( flowStackIndex );
-            }
-            finally {
+                info.setFlowStackIndex(flowStackIndex);
+            } finally {
                 // Make the SlotTable fresh for the next interception point.
-                current.resetSlotTable( );
+                current.resetSlotTable();
             }
         } // end enabled check
     }
@@ -312,19 +305,19 @@ public class InterceptorInvoker {
      * Invokes either receive_reply, receive_exception, or receive_other,
      * depending on the value of info.getEndingPointCall()
      */
-    void invokeClientInterceptorEndingPoint( ClientRequestInfoImpl info ) {
+    void invokeClientInterceptorEndingPoint(ClientRequestInfoImpl info) {
         // If invocation is not yet enabled, don't do anything.
-        if( enabled ) {
+        if (enabled) {
             try {
                 // NOTE: It is assumed someplace else prepared a
                 // fresh TSC slot table.
 
-                info.setCurrentExecutionPoint( info.EXECUTION_POINT_ENDING );
+                info.setCurrentExecutionPoint(info.EXECUTION_POINT_ENDING);
 
                 // Get all ClientRequestInterceptors:
                 ClientRequestInterceptor[] clientInterceptors =
-                    (ClientRequestInterceptor[])interceptorList.
-                    getInterceptors( InterceptorList.INTERCEPTOR_TYPE_CLIENT );
+                        (ClientRequestInterceptor[]) interceptorList.
+                                getInterceptors(InterceptorList.INTERCEPTOR_TYPE_CLIENT);
                 int flowStackIndex = info.getFlowStackIndex();
 
                 // Determine whether we are calling receive_reply,
@@ -333,12 +326,11 @@ public class InterceptorInvoker {
 
                 // If we would be calling RECEIVE_REPLY, but this is a
                 // one-way call, override this and call receive_other:
-                if( ( endingPointCall ==
-                      ClientRequestInfoImpl.CALL_RECEIVE_REPLY ) &&
-                    info.getIsOneWay() )
-                {
+                if ((endingPointCall ==
+                        ClientRequestInfoImpl.CALL_RECEIVE_REPLY) &&
+                        info.getIsOneWay()) {
                     endingPointCall = ClientRequestInfoImpl.CALL_RECEIVE_OTHER;
-                    info.setEndingPointCall( endingPointCall );
+                    info.setEndingPointCall(endingPointCall);
                 }
 
                 // Only step through the interceptors whose starting points
@@ -346,51 +338,48 @@ public class InterceptorInvoker {
                 // Unlike the previous loop, this one counts backwards for a
                 // reason - we must execute these in the reverse order of the
                 // starting points.
-                for( int i = (flowStackIndex - 1); i >= 0; i-- ) {
+                for (int i = (flowStackIndex - 1); i >= 0; i--) {
 
                     try {
-                        switch( endingPointCall ) {
-                        case ClientRequestInfoImpl.CALL_RECEIVE_REPLY:
-                            clientInterceptors[i].receive_reply( info );
-                            break;
-                        case ClientRequestInfoImpl.CALL_RECEIVE_EXCEPTION:
-                            clientInterceptors[i].receive_exception( info );
-                            break;
-                        case ClientRequestInfoImpl.CALL_RECEIVE_OTHER:
-                            clientInterceptors[i].receive_other( info );
-                            break;
+                        switch (endingPointCall) {
+                            case ClientRequestInfoImpl.CALL_RECEIVE_REPLY:
+                                clientInterceptors[i].receive_reply(info);
+                                break;
+                            case ClientRequestInfoImpl.CALL_RECEIVE_EXCEPTION:
+                                clientInterceptors[i].receive_exception(info);
+                                break;
+                            case ClientRequestInfoImpl.CALL_RECEIVE_OTHER:
+                                clientInterceptors[i].receive_other(info);
+                                break;
                         }
-                    }
-                    catch( ForwardRequest e ) {
+                    } catch (ForwardRequest e) {
 
                         // as per PI spec (orbos/99-12-02 sec 5.2.1.), if
                         // interception point throws a ForwardException,
                         // ending point call changes to receive_other.
                         endingPointCall =
-                            ClientRequestInfoImpl.CALL_RECEIVE_OTHER;
-                        info.setEndingPointCall( endingPointCall );
-                        info.setReplyStatus( LOCATION_FORWARD.value );
-                        info.setForwardRequest( e );
-                        updateClientRequestDispatcherForward( info );
-                    }
-                    catch( SystemException e ) {
+                                ClientRequestInfoImpl.CALL_RECEIVE_OTHER;
+                        info.setEndingPointCall(endingPointCall);
+                        info.setReplyStatus(LOCATION_FORWARD.value);
+                        info.setForwardRequest(e);
+                        updateClientRequestDispatcherForward(info);
+                    } catch (SystemException e) {
 
                         // as per PI spec (orbos/99-12-02 sec 5.2.1.), if
                         // interception point throws a SystemException,
                         // ending point call changes to receive_exception.
                         endingPointCall =
-                            ClientRequestInfoImpl.CALL_RECEIVE_EXCEPTION;
-                        info.setEndingPointCall( endingPointCall );
-                        info.setReplyStatus( SYSTEM_EXCEPTION.value );
-                        info.setException( e );
+                                ClientRequestInfoImpl.CALL_RECEIVE_EXCEPTION;
+                        info.setEndingPointCall(endingPointCall);
+                        info.setReplyStatus(SYSTEM_EXCEPTION.value);
+                        info.setException(e);
                     }
                 }
-            }
-            finally {
+            } finally {
                 // See doc for setPICurrentPushed as to why this is necessary.
                 // Check info for null in case errors happen before initiate.
                 if (info != null && info.isPICurrentPushed()) {
-                    current.popSlotTable( );
+                    current.popSlotTable();
                     // After the pop, original client's TSC slot table
                     // remains avaiable via PICurrent.
                 }
@@ -406,9 +395,9 @@ public class InterceptorInvoker {
     /**
      * Invokes receive_request_service_context interception points.
      */
-    void invokeServerInterceptorStartingPoint( ServerRequestInfoImpl info ) {
+    void invokeServerInterceptorStartingPoint(ServerRequestInfoImpl info) {
         // If invocation is not yet enabled, don't do anything.
-        if( enabled ) {
+        if (enabled) {
             try {
                 // Make a fresh slot table for RSC.
                 current.pushSlotTable();
@@ -416,14 +405,14 @@ public class InterceptorInvoker {
 
                 // Make a fresh slot table for TSC in case
                 // interceptors need to make out calls.
-                current.pushSlotTable( );
+                current.pushSlotTable();
 
-                info.setCurrentExecutionPoint( info.EXECUTION_POINT_STARTING );
+                info.setCurrentExecutionPoint(info.EXECUTION_POINT_STARTING);
 
                 // Get all ServerRequestInterceptors:
                 ServerRequestInterceptor[] serverInterceptors =
-                    (ServerRequestInterceptor[])interceptorList.
-                    getInterceptors( InterceptorList.INTERCEPTOR_TYPE_SERVER );
+                        (ServerRequestInterceptor[]) interceptorList.
+                                getInterceptors(InterceptorList.INTERCEPTOR_TYPE_SERVER);
                 int size = serverInterceptors.length;
 
                 // We will assume that all interceptors returned successfully,
@@ -434,24 +423,23 @@ public class InterceptorInvoker {
 
                 // Currently, there is only one server-side starting point
                 // interceptor called receive_request_service_contexts.
-                for( int i = 0; continueProcessing && (i < size); i++ ) {
+                for (int i = 0; continueProcessing && (i < size); i++) {
 
                     try {
                         serverInterceptors[i].
-                            receive_request_service_contexts( info );
-                    }
-                    catch( ForwardRequest e ) {
+                                receive_request_service_contexts(info);
+                    } catch (ForwardRequest e) {
                         // as per PI spec (orbos/99-12-02 sec 5.3.1.), if
                         // interception point throws a ForwardRequest,
                         // no other Interceptors' starting points are
                         // called and send_other is called.
                         flowStackIndex = i;
-                        info.setForwardRequest( e );
+                        info.setForwardRequest(e);
                         info.setIntermediatePointCall(
-                            ServerRequestInfoImpl.CALL_INTERMEDIATE_NONE );
+                                ServerRequestInfoImpl.CALL_INTERMEDIATE_NONE);
                         info.setEndingPointCall(
-                            ServerRequestInfoImpl.CALL_SEND_OTHER );
-                        info.setReplyStatus( LOCATION_FORWARD.value );
+                                ServerRequestInfoImpl.CALL_SEND_OTHER);
+                        info.setReplyStatus(LOCATION_FORWARD.value);
 
                         // For some reason, using break here causes the VM on
                         // NT to lose track of the value of flowStackIndex
@@ -459,20 +447,19 @@ public class InterceptorInvoker {
                         // check a boolean value instead and it seems to work
                         // fine.
                         continueProcessing = false;
-                    }
-                    catch( SystemException e ) {
+                    } catch (SystemException e) {
 
                         // as per PI spec (orbos/99-12-02 sec 5.3.1.), if
                         // interception point throws a SystemException,
                         // no other Interceptors' starting points are
                         // called.
                         flowStackIndex = i;
-                        info.setException( e );
+                        info.setException(e);
                         info.setIntermediatePointCall(
-                            ServerRequestInfoImpl.CALL_INTERMEDIATE_NONE );
+                                ServerRequestInfoImpl.CALL_INTERMEDIATE_NONE);
                         info.setEndingPointCall(
-                            ServerRequestInfoImpl.CALL_SEND_EXCEPTION );
-                        info.setReplyStatus( SYSTEM_EXCEPTION.value );
+                                ServerRequestInfoImpl.CALL_SEND_EXCEPTION);
+                        info.setReplyStatus(SYSTEM_EXCEPTION.value);
 
                         // For some reason, using break here causes the VM on
                         // NT to lose track of the value of flowStackIndex
@@ -485,12 +472,11 @@ public class InterceptorInvoker {
                 }
 
                 // Remember where we left off in the flow stack:
-                info.setFlowStackIndex( flowStackIndex );
-            }
-            finally {
+                info.setFlowStackIndex(flowStackIndex);
+            } finally {
                 // The remaining points, ServantManager and Servant
                 // all run in the same logical thread.
-                current.popSlotTable( );
+                current.popSlotTable();
                 // Now TSC and RSC are equivalent.
             }
         } // end enabled check
@@ -500,54 +486,50 @@ public class InterceptorInvoker {
      * Invokes receive_request interception points
      */
     void invokeServerInterceptorIntermediatePoint(
-        ServerRequestInfoImpl info )
-    {
+            ServerRequestInfoImpl info) {
         int intermediatePointCall = info.getIntermediatePointCall();
         // If invocation is not yet enabled, don't do anything.
-        if( enabled && ( intermediatePointCall !=
-                         ServerRequestInfoImpl.CALL_INTERMEDIATE_NONE ) )
-        {
+        if (enabled && (intermediatePointCall !=
+                ServerRequestInfoImpl.CALL_INTERMEDIATE_NONE)) {
             // NOTE: do not touch the slotStack.  The RSC and TSC are
             // equivalent at this point.
 
-            info.setCurrentExecutionPoint( info.EXECUTION_POINT_INTERMEDIATE );
+            info.setCurrentExecutionPoint(info.EXECUTION_POINT_INTERMEDIATE);
 
             // Get all ServerRequestInterceptors:
             ServerRequestInterceptor[] serverInterceptors =
-                (ServerRequestInterceptor[])
-                interceptorList.getInterceptors(
-                InterceptorList.INTERCEPTOR_TYPE_SERVER );
+                    (ServerRequestInterceptor[])
+                            interceptorList.getInterceptors(
+                                    InterceptorList.INTERCEPTOR_TYPE_SERVER);
             int size = serverInterceptors.length;
 
             // Currently, there is only one server-side intermediate point
             // interceptor called receive_request.
-            for( int i = 0; i < size; i++ ) {
+            for (int i = 0; i < size; i++) {
 
                 try {
-                    serverInterceptors[i].receive_request( info );
-                }
-                catch( ForwardRequest e ) {
+                    serverInterceptors[i].receive_request(info);
+                } catch (ForwardRequest e) {
 
                     // as per PI spec (orbos/99-12-02 sec 5.3.1.), if
                     // interception point throws a ForwardRequest,
                     // no other Interceptors' intermediate points are
                     // called and send_other is called.
-                    info.setForwardRequest( e );
+                    info.setForwardRequest(e);
                     info.setEndingPointCall(
-                        ServerRequestInfoImpl.CALL_SEND_OTHER );
-                    info.setReplyStatus( LOCATION_FORWARD.value );
+                            ServerRequestInfoImpl.CALL_SEND_OTHER);
+                    info.setReplyStatus(LOCATION_FORWARD.value);
                     break;
-                }
-                catch( SystemException e ) {
+                } catch (SystemException e) {
 
                     // as per PI spec (orbos/99-12-02 sec 5.3.1.), if
                     // interception point throws a SystemException,
                     // no other Interceptors' starting points are
                     // called.
-                    info.setException( e );
+                    info.setException(e);
                     info.setEndingPointCall(
-                        ServerRequestInfoImpl.CALL_SEND_EXCEPTION );
-                    info.setReplyStatus( SYSTEM_EXCEPTION.value );
+                            ServerRequestInfoImpl.CALL_SEND_EXCEPTION);
+                    info.setReplyStatus(SYSTEM_EXCEPTION.value);
                     break;
                 }
             }
@@ -558,9 +540,9 @@ public class InterceptorInvoker {
      * Invokes either send_reply, send_exception, or send_other,
      * depending on the value of info.getEndingPointCall()
      */
-    void invokeServerInterceptorEndingPoint( ServerRequestInfoImpl info ) {
+    void invokeServerInterceptorEndingPoint(ServerRequestInfoImpl info) {
         // If invocation is not yet enabled, don't do anything.
-        if( enabled ) {
+        if (enabled) {
             try {
                 // NOTE: do not touch the slotStack.  The RSC and TSC are
                 // equivalent at this point.
@@ -574,8 +556,8 @@ public class InterceptorInvoker {
 
                 // Get all ServerRequestInterceptors:
                 ServerRequestInterceptor[] serverInterceptors =
-                    (ServerRequestInterceptor[])interceptorList.
-                    getInterceptors( InterceptorList.INTERCEPTOR_TYPE_SERVER );
+                        (ServerRequestInterceptor[]) interceptorList.
+                                getInterceptors(InterceptorList.INTERCEPTOR_TYPE_SERVER);
                 int flowStackIndex = info.getFlowStackIndex();
 
                 // Determine whether we are calling
@@ -584,48 +566,45 @@ public class InterceptorInvoker {
 
                 // Only step through the interceptors whose starting points
                 // have successfully returned.
-                for( int i = (flowStackIndex - 1); i >= 0; i-- ) {
+                for (int i = (flowStackIndex - 1); i >= 0; i--) {
                     try {
-                        switch( endingPointCall ) {
-                        case ServerRequestInfoImpl.CALL_SEND_REPLY:
-                            serverInterceptors[i].send_reply( info );
-                            break;
-                        case ServerRequestInfoImpl.CALL_SEND_EXCEPTION:
-                            serverInterceptors[i].send_exception( info );
-                            break;
-                        case ServerRequestInfoImpl.CALL_SEND_OTHER:
-                            serverInterceptors[i].send_other( info );
-                            break;
+                        switch (endingPointCall) {
+                            case ServerRequestInfoImpl.CALL_SEND_REPLY:
+                                serverInterceptors[i].send_reply(info);
+                                break;
+                            case ServerRequestInfoImpl.CALL_SEND_EXCEPTION:
+                                serverInterceptors[i].send_exception(info);
+                                break;
+                            case ServerRequestInfoImpl.CALL_SEND_OTHER:
+                                serverInterceptors[i].send_other(info);
+                                break;
                         }
-                    }
-                    catch( ForwardRequest e ) {
+                    } catch (ForwardRequest e) {
                         // as per PI spec (orbos/99-12-02 sec 5.3.1.), if
                         // interception point throws a ForwardException,
                         // ending point call changes to receive_other.
                         endingPointCall =
-                            ServerRequestInfoImpl.CALL_SEND_OTHER;
-                        info.setEndingPointCall( endingPointCall );
-                        info.setForwardRequest( e );
-                        info.setReplyStatus( LOCATION_FORWARD.value );
+                                ServerRequestInfoImpl.CALL_SEND_OTHER;
+                        info.setEndingPointCall(endingPointCall);
+                        info.setForwardRequest(e);
+                        info.setReplyStatus(LOCATION_FORWARD.value);
                         info.setForwardRequestRaisedInEnding();
-                    }
-                    catch( SystemException e ) {
+                    } catch (SystemException e) {
                         // as per PI spec (orbos/99-12-02 sec 5.3.1.), if
                         // interception point throws a SystemException,
                         // ending point call changes to send_exception.
                         endingPointCall =
-                            ServerRequestInfoImpl.CALL_SEND_EXCEPTION;
-                        info.setEndingPointCall( endingPointCall );
-                        info.setException( e );
-                        info.setReplyStatus( SYSTEM_EXCEPTION.value );
+                                ServerRequestInfoImpl.CALL_SEND_EXCEPTION;
+                        info.setEndingPointCall(endingPointCall);
+                        info.setException(e);
+                        info.setReplyStatus(SYSTEM_EXCEPTION.value);
                     }
                 }
 
                 // Remember that all interceptors' starting and ending points
                 // have already been executed so we need not do anything.
-                info.setAlreadyExecuted( true );
-            }
-            finally {
+                info.setAlreadyExecuted(true);
+            } finally {
                 // Get rid of the Server side RSC.
                 current.popSlotTable();
             }
@@ -642,20 +621,19 @@ public class InterceptorInvoker {
      * information in the passed-in info object.
      */
     private void updateClientRequestDispatcherForward(
-        ClientRequestInfoImpl info )
-    {
+            ClientRequestInfoImpl info) {
         ForwardRequest forwardRequest = info.getForwardRequestException();
 
         // ForwardRequest may be null if the forwarded IOR is set internal
         // to the ClientRequestDispatcher rather than explicitly through Portable
         // Interceptors.  In this case, we need not update the client
         // delegate ForwardRequest object.
-        if( forwardRequest != null ) {
+        if (forwardRequest != null) {
             org.omg.CORBA.Object object = forwardRequest.forward;
 
             // Convert the forward object into an IOR:
-            IOR ior = ORBUtility.getIOR( object ) ;
-            info.setLocatedIOR( ior );
+            IOR ior = ORBUtility.getIOR(object);
+            info.setLocatedIOR(ior);
         }
     }
 

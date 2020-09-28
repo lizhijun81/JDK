@@ -22,7 +22,7 @@ package com.sun.org.apache.xerces.internal.util;
 
 /**
  * Synchronized symbol table.
- *
+ * <p>
  * This class moved into the util package since it's needed by multiple
  * other classes (CachingParserPool, XMLGrammarCachingConfiguration).
  *
@@ -30,20 +30,24 @@ package com.sun.org.apache.xerces.internal.util;
  */
 
 public final class SynchronizedSymbolTable
-    extends SymbolTable {
+        extends SymbolTable {
 
     //
     // Data
     //
 
-    /** Main symbol table. */
+    /**
+     * Main symbol table.
+     */
     protected SymbolTable fSymbolTable;
 
     //
     // Constructors
     //
 
-    /** Constructs a synchronized symbol table. */
+    /**
+     * Constructs a synchronized symbol table.
+     */
     public SynchronizedSymbolTable(SymbolTable symbolTable) {
         fSymbolTable = symbolTable;
     } // <init>(SymbolTable)

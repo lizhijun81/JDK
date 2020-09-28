@@ -33,11 +33,11 @@ package java.io;
  * indicates how many bytes were successfully transferred before
  * the interruption occurred.
  *
- * @author  unascribed
- * @see     java.io.InputStream
- * @see     java.io.OutputStream
- * @see     java.lang.Thread#interrupt()
- * @since   JDK1.0
+ * @author unascribed
+ * @see java.io.InputStream
+ * @see java.io.OutputStream
+ * @see java.lang.Thread#interrupt()
+ * @since JDK1.0
  */
 public
 class InterruptedIOException extends IOException {
@@ -58,7 +58,7 @@ class InterruptedIOException extends IOException {
      * <code>{@link java.lang.Throwable#getMessage}</code>
      * method of class <code>java.lang.Throwable</code>.
      *
-     * @param   s   the detail message.
+     * @param s the detail message.
      */
     public InterruptedIOException(String s) {
         super(s);

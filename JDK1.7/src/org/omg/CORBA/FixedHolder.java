@@ -43,7 +43,6 @@ import org.omg.CORBA.portable.OutputStream;
  * must also fill the "in" value to be sent to the server.
  * Before the method invocation returns, the ORB will fill in the contained
  * value corresponding to the "out" value returned from the server.
- *
  */
 public final class FixedHolder implements Streamable {
     /**
@@ -59,6 +58,7 @@ public final class FixedHolder implements Streamable {
 
     /**
      * Construct the FixedHolder and initialize it with the given value.
+     *
      * @param initial the value used to initialize the FixedHolder
      */
     public FixedHolder(java.math.BigDecimal initial) {

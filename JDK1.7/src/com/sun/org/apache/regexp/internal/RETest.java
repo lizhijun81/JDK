@@ -41,13 +41,12 @@ import java.io.IOException;
  * @author <a href="mailto:jon@latchkey.com">Jon S. Stevens</a>
  * @author <a href="mailto:gholam@xtra.co.nz">Michael McCallum</a>
  */
-public class RETest
-{
+public class RETest {
     // True if we want to see output from success cases
     static final boolean showSuccesses = false;
 
     // A new line character.
-    static final String NEW_LINE = System.getProperty( "line.separator" );
+    static final String NEW_LINE = System.getProperty("line.separator");
 
     // Construct a debug compiler
     REDebugCompiler compiler = new REDebugCompiler();
@@ -56,18 +55,15 @@ public class RETest
      * Main program entrypoint.  If an argument is given, it will be compiled
      * and interactive matching will ensue.  If no argument is given, the
      * file RETest.txt will be used as automated testing input.
+     *
      * @param args Command line arguments (optional regular expression)
      */
-    public static void main(String[] args)
-    {
-        try
-        {
-            if (!test( args )) {
+    public static void main(String[] args) {
+        try {
+            if (!test(args)) {
                 System.exit(1);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             System.exit(1);
         }
@@ -75,26 +71,21 @@ public class RETest
 
     /**
      * Testing entrypoint.
+     *
      * @param args Command line arguments
-     * @exception Exception thrown in case of error
+     * @throws Exception thrown in case of error
      */
-    public static boolean test( String[] args ) throws Exception
-    {
+    public static boolean test(String[] args) throws Exception {
         RETest test = new RETest();
         // Run interactive tests against a single regexp
-        if (args.length == 2)
-        {
+        if (args.length == 2) {
             test.runInteractiveTests(args[1]);
-        }
-        else if (args.length == 1)
-        {
+        } else if (args.length == 1) {
             // Run automated tests
             test.runAutomatedTests(args[0]);
-        }
-        else
-        {
-            System.out.println( "Usage: RETest ([-i] [regex]) ([/path/to/testfile.txt])" );
-            System.out.println( "By Default will run automated tests from file 'docs/RETest.txt' ..." );
+        } else {
+            System.out.println("Usage: RETest ([-i] [regex]) ([/path/to/testfile.txt])");
+            System.out.println("By Default will run automated tests from file 'docs/RETest.txt' ...");
             System.out.println();
             test.runAutomatedTests("docs/RETest.txt");
         }
@@ -104,19 +95,17 @@ public class RETest
     /**
      * Constructor
      */
-    public RETest()
-    {
+    public RETest() {
     }
 
     /**
      * Compile and test matching against a single expression
+     *
      * @param expr Expression to compile and test
      */
-    void runInteractiveTests(String expr)
-    {
+    void runInteractiveTests(String expr) {
         RE r = new RE();
-        try
-        {
+        try {
             // Compile expression
             r.setProgram(compiler.compile(expr));
 
@@ -124,44 +113,35 @@ public class RETest
             say("" + NEW_LINE + "" + expr + "" + NEW_LINE + "");
 
             // Show program for compiled expression
-            PrintWriter writer = new PrintWriter( System.out );
-            compiler.dumpProgram( writer );
+            PrintWriter writer = new PrintWriter(System.out);
+            compiler.dumpProgram(writer);
             writer.flush();
 
             boolean running = true;
             // Test matching against compiled expression
-            while ( running )
-            {
+            while (running) {
                 // Read from keyboard
                 BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
                 System.out.print("> ");
                 System.out.flush();
                 String match = br.readLine();
 
-                if ( match != null )
-                {
+                if (match != null) {
                     // Try a match against the keyboard input
-                    if (r.match(match))
-                    {
+                    if (r.match(match)) {
                         say("Match successful.");
-                    }
-                    else
-                    {
+                    } else {
                         say("Match failed.");
                     }
 
                     // Show subparen registers
                     showParens(r);
-                }
-                else
-                {
+                } else {
                     running = false;
                     System.out.println();
                 }
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             say("Error: " + e.toString());
             e.printStackTrace();
         }
@@ -169,10 +149,10 @@ public class RETest
 
     /**
      * Exit with a fatal error.
+     *
      * @param s Last famous words before exiting
      */
-    void die(String s)
-    {
+    void die(String s) {
         say("FATAL ERROR: " + s);
         System.exit(-1);
     }
@@ -181,10 +161,9 @@ public class RETest
      * Fail with an error. Will print a big failure message to System.out.
      *
      * @param log Output before failure
-     * @param s Failure description
+     * @param s   Failure description
      */
-    void fail(StringBuffer log, String s)
-    {
+    void fail(StringBuffer log, String s) {
         System.out.print(log.toString());
         fail(s);
     }
@@ -194,8 +173,7 @@ public class RETest
      *
      * @param s Failure description
      */
-    void fail(String s)
-    {
+    void fail(String s) {
         failures++;
         say("" + NEW_LINE + "");
         say("*******************************************************");
@@ -206,8 +184,8 @@ public class RETest
         say("");
         // make sure the writer gets flushed.
         if (compiler != null) {
-            PrintWriter writer = new PrintWriter( System.out );
-            compiler.dumpProgram( writer );
+            PrintWriter writer = new PrintWriter(System.out);
+            compiler.dumpProgram(writer);
             writer.flush();
             say("" + NEW_LINE + "");
         }
@@ -215,22 +193,21 @@ public class RETest
 
     /**
      * Say something to standard out
+     *
      * @param s What to say
      */
-    void say(String s)
-    {
+    void say(String s) {
         System.out.println(s);
     }
 
     /**
      * Dump parenthesized subexpressions found by a regular expression matcher object
+     *
      * @param r Matcher object with results to show
      */
-    void showParens(RE r)
-    {
+    void showParens(RE r) {
         // Loop through each paren
-        for (int i = 0; i < r.getParenCount(); i++)
-        {
+        for (int i = 0; i < r.getParenCount(); i++) {
             // Show paren register
             say("$" + i + " = " + r.getParen(i));
         }
@@ -248,10 +225,10 @@ public class RETest
 
     /**
      * Run automated tests in RETest.txt file (from Perl 4.0 test battery)
-     * @exception Exception thrown in case of error
+     *
+     * @throws Exception thrown in case of error
      */
-    void runAutomatedTests(String testDocument) throws Exception
-    {
+    void runAutomatedTests(String testDocument) throws Exception {
         long ms = System.currentTimeMillis();
 
         // Some unit tests
@@ -262,24 +239,20 @@ public class RETest
 
         // Test from script file
         File testInput = new File(testDocument);
-        if (! testInput.exists()) {
-            throw new Exception ("Could not find: " + testDocument);
+        if (!testInput.exists()) {
+            throw new Exception("Could not find: " + testDocument);
         }
 
         BufferedReader br = new BufferedReader(new FileReader(testInput));
-        try
-        {
+        try {
             // While input is available, parse lines
-            while (br.ready())
-            {
+            while (br.ready()) {
                 RETestCase testcase = getNextTestCase(br);
                 if (testcase != null) {
                     testcase.runTest();
                 }
             }
-        }
-        finally
-        {
+        } finally {
             br.close();
         }
 
@@ -295,19 +268,18 @@ public class RETest
 
     /**
      * Run automated unit test
-     * @exception Exception thrown in case of error
+     *
+     * @throws Exception thrown in case of error
      */
-    void testOther() throws Exception
-    {
+    void testOther() throws Exception {
         // Serialization test 1: Compile regexp and serialize/deserialize it
         RE r = new RE("(a*)b");
         say("Serialized/deserialized (a*)b");
         ByteArrayOutputStream out = new ByteArrayOutputStream(128);
         new ObjectOutputStream(out).writeObject(r);
         ByteArrayInputStream in = new ByteArrayInputStream(out.toByteArray());
-        r = (RE)new ObjectInputStream(in).readObject();
-        if (!r.match("aaab"))
-        {
+        r = (RE) new ObjectInputStream(in).readObject();
+        if (!r.match("aaab")) {
             fail("Did not match 'aaab' with deserialized RE.");
         } else {
             say("aaaab = true");
@@ -319,13 +291,11 @@ public class RETest
         say("Deserialized (a*)b");
         new ObjectOutputStream(out).writeObject(r);
         in = new ByteArrayInputStream(out.toByteArray());
-        r = (RE)new ObjectInputStream(in).readObject();
-        if (r.getParenCount() != 0)
-        {
+        r = (RE) new ObjectInputStream(in).readObject();
+        if (r.getParenCount() != 0) {
             fail("Has parens after deserialization.");
         }
-        if (!r.match("aaab"))
-        {
+        if (!r.match("aaab")) {
             fail("Did not match 'aaab' with deserialized RE.");
         } else {
             say("aaaab = true");
@@ -337,24 +307,21 @@ public class RETest
         say("MATCH_CASEINDEPENDENT abc(\\w*)");
         r.setMatchFlags(RE.MATCH_CASEINDEPENDENT);
         say("abc(d*)");
-        if (!r.match("abcddd"))
-        {
+        if (!r.match("abcddd")) {
             fail("Did not match 'abcddd'.");
         } else {
             say("abcddd = true");
             showParens(r);
         }
 
-        if (!r.match("aBcDDdd"))
-        {
+        if (!r.match("aBcDDdd")) {
             fail("Did not match 'aBcDDdd'.");
         } else {
             say("aBcDDdd = true");
             showParens(r);
         }
 
-        if (!r.match("ABCDDDDD"))
-        {
+        if (!r.match("ABCDDDDD")) {
             fail("Did not match 'ABCDDDDD'.");
         } else {
             say("ABCDDDDD = true");
@@ -363,8 +330,7 @@ public class RETest
 
         r = new RE("(A*)b\\1");
         r.setMatchFlags(RE.MATCH_CASEINDEPENDENT);
-        if (!r.match("AaAaaaBAAAAAA"))
-        {
+        if (!r.match("AaAaaaBAAAAAA")) {
             fail("Did not match 'AaAaaaBAAAAAA'.");
         } else {
             say("AaAaaaBAAAAAA = true");
@@ -373,8 +339,7 @@ public class RETest
 
         r = new RE("[A-Z]*");
         r.setMatchFlags(RE.MATCH_CASEINDEPENDENT);
-        if (!r.match("CaBgDe12"))
-        {
+        if (!r.match("CaBgDe12")) {
             fail("Did not match 'CaBgDe12'.");
         } else {
             say("CaBgDe12 = true");
@@ -424,17 +389,16 @@ public class RETest
         }
     }
 
-    private void testPrecompiledRE()
-    {
+    private void testPrecompiledRE() {
         // Pre-compiled regular expression "a*b"
         char[] re1Instructions =
-        {
-            0x007c, 0x0000, 0x001a, 0x007c, 0x0000, 0x000d, 0x0041,
-            0x0001, 0x0004, 0x0061, 0x007c, 0x0000, 0x0003, 0x0047,
-            0x0000, 0xfff6, 0x007c, 0x0000, 0x0003, 0x004e, 0x0000,
-            0x0003, 0x0041, 0x0001, 0x0004, 0x0062, 0x0045, 0x0000,
-            0x0000,
-        };
+                {
+                        0x007c, 0x0000, 0x001a, 0x007c, 0x0000, 0x000d, 0x0041,
+                        0x0001, 0x0004, 0x0061, 0x007c, 0x0000, 0x0003, 0x0047,
+                        0x0000, 0xfff6, 0x007c, 0x0000, 0x0003, 0x004e, 0x0000,
+                        0x0003, 0x0041, 0x0001, 0x0004, 0x0062, 0x0045, 0x0000,
+                        0x0000,
+                };
 
         REProgram re1 = new REProgram(re1Instructions);
 
@@ -470,8 +434,7 @@ public class RETest
         }
     }
 
-    private void testSplitAndGrep()
-    {
+    private void testSplitAndGrep() {
         String[] expected = {"xxxx", "xxxx", "yyyy", "zzz"};
         RE r = new RE("a*b");
         String[] s = r.split("xxxxaabxxxxbyyyyaaabzzz");
@@ -479,22 +442,20 @@ public class RETest
             assertEquals("Wrong splitted part", expected[i], s[i]);
         }
         assertEquals("Wrong number of splitted parts", expected.length,
-                     s.length);
+                s.length);
 
         r = new RE("x+");
-        expected = new String[] {"xxxx", "xxxx"};
+        expected = new String[]{"xxxx", "xxxx"};
         s = r.grep(s);
-        for (int i = 0; i < s.length; i++)
-        {
+        for (int i = 0; i < s.length; i++) {
             say("s[" + i + "] = " + s[i]);
             assertEquals("Grep fails", expected[i], s[i]);
         }
         assertEquals("Wrong number of string found by grep", expected.length,
-                     s.length);
+                s.length);
     }
 
-    private void testSubst()
-    {
+    private void testSubst() {
         RE r = new RE("a*b");
         String expected = "-foo-garply-wacky-";
         String actual = r.subst("aaaabfooaaabgarplyaaabwackyb", "-");
@@ -503,65 +464,57 @@ public class RETest
         // Test subst() with backreferences
         r = new RE("http://[\\.\\w\\-\\?/~_@&=%]+");
         actual = r.subst("visit us: http://www.apache.org!",
-                         "1234<a href=\"$0\">$0</a>", RE.REPLACE_BACKREFERENCES);
+                "1234<a href=\"$0\">$0</a>", RE.REPLACE_BACKREFERENCES);
         assertEquals("Wrong subst() result", "visit us: 1234<a href=\"http://www.apache.org\">http://www.apache.org</a>!", actual);
 
         // Test subst() with backreferences without leading characters
         // before first backreference
         r = new RE("(.*?)=(.*)");
         actual = r.subst("variable=value",
-                         "$1_test_$212", RE.REPLACE_BACKREFERENCES);
+                "$1_test_$212", RE.REPLACE_BACKREFERENCES);
         assertEquals("Wrong subst() result", "variable_test_value12", actual);
 
         // Test subst() with NO backreferences
         r = new RE("^a$");
         actual = r.subst("a",
-                         "b", RE.REPLACE_BACKREFERENCES);
+                "b", RE.REPLACE_BACKREFERENCES);
         assertEquals("Wrong subst() result", "b", actual);
 
         // Test subst() with NO backreferences
         r = new RE("^a$", RE.MATCH_MULTILINE);
         actual = r.subst("\r\na\r\n",
-                         "b", RE.REPLACE_BACKREFERENCES);
+                "b", RE.REPLACE_BACKREFERENCES);
         assertEquals("Wrong subst() result", "\r\nb\r\n", actual);
     }
 
-    public void assertEquals(String message, String expected, String actual)
-    {
+    public void assertEquals(String message, String expected, String actual) {
         if (expected != null && !expected.equals(actual)
-            || actual != null && !actual.equals(expected))
-        {
+                || actual != null && !actual.equals(expected)) {
             fail(message + " (expected \"" + expected
-                 + "\", actual \"" + actual + "\")");
+                    + "\", actual \"" + actual + "\")");
         }
     }
 
-    public void assertEquals(String message, int expected, int actual)
-    {
+    public void assertEquals(String message, int expected, int actual) {
         if (expected != actual) {
             fail(message + " (expected \"" + expected
-                 + "\", actual \"" + actual + "\")");
+                    + "\", actual \"" + actual + "\")");
         }
     }
 
     /**
      * Converts yesno string to boolean.
+     *
      * @param yesno string representation of expected result
      * @return true if yesno is "YES", false if yesno is "NO"
-     *         stops program otherwise.
+     * stops program otherwise.
      */
-    private boolean getExpectedResult(String yesno)
-    {
-        if ("NO".equals(yesno))
-        {
+    private boolean getExpectedResult(String yesno) {
+        if ("NO".equals(yesno)) {
             return false;
-        }
-        else if ("YES".equals(yesno))
-        {
+        } else if ("YES".equals(yesno)) {
             return true;
-        }
-        else
-        {
+        } else {
             // Bad test script
             die("Test script error!");
             return false; //to please javac
@@ -570,28 +523,24 @@ public class RETest
 
     /**
      * Finds next test description in a given script.
+     *
      * @param br <code>BufferedReader</code> for a script file
      * @return strign tag for next test description
-     * @exception IOException if some io problems occured
+     * @throws IOException if some io problems occured
      */
-    private String findNextTest(BufferedReader br) throws IOException
-    {
+    private String findNextTest(BufferedReader br) throws IOException {
         String number = "";
 
-        while (br.ready())
-        {
+        while (br.ready()) {
             number = br.readLine();
-            if (number == null)
-            {
+            if (number == null) {
                 break;
             }
             number = number.trim();
-            if (number.startsWith("#"))
-            {
+            if (number.startsWith("#")) {
                 break;
             }
-            if (!number.equals(""))
-            {
+            if (!number.equals("")) {
                 say("Script error.  Line = " + number);
                 System.exit(-1);
             }
@@ -601,18 +550,17 @@ public class RETest
 
     /**
      * Creates testcase for the next test description in the script file.
+     *
      * @param br <code>BufferedReader</code> for script file.
      * @return a new tescase or null.
-     * @exception IOException if some io problems occured
+     * @throws IOException if some io problems occured
      */
-    private RETestCase getNextTestCase(BufferedReader br) throws IOException
-    {
+    private RETestCase getNextTestCase(BufferedReader br) throws IOException {
         // Find next re test case
         final String tag = findNextTest(br);
 
         // Are we done?
-        if (!br.ready())
-        {
+        if (!br.ready()) {
             return null;
         }
 
@@ -638,12 +586,11 @@ public class RETest
         }
 
         return new RETestCase(this, tag, expr, matchAgainst, badPattern,
-                              shouldMatch, expectedParens);
+                shouldMatch, expectedParens);
     }
 }
 
-final class RETestCase
-{
+final class RETestCase {
     final private StringBuffer log = new StringBuffer();
     final private int number;
     final private String tag; // number from script file
@@ -657,8 +604,7 @@ final class RETestCase
 
     public RETestCase(RETest test, String tag, String pattern,
                       String toMatch, boolean badPattern,
-                      boolean shouldMatch, String[] parens)
-    {
+                      boolean shouldMatch, String[] parens) {
         this.number = ++test.testCount;
         this.test = test;
         this.tag = tag;
@@ -676,24 +622,20 @@ final class RETestCase
         }
     }
 
-    public void runTest()
-    {
+    public void runTest() {
         test.say(tag + "(" + number + "): " + pattern);
         if (testCreation()) {
             testMatch();
         }
     }
 
-    boolean testCreation()
-    {
-        try
-        {
+    boolean testCreation() {
+        try {
             // Compile it
             regexp = new RE();
             regexp.setProgram(test.compiler.compile(pattern));
             // Expression didn't cause an expected error
-            if (badPattern)
-            {
+            if (badPattern) {
                 test.fail(log, "Was expected to be an error, but wasn't.");
                 return false;
             }
@@ -701,11 +643,9 @@ final class RETestCase
             return true;
         }
         // Some expressions *should* cause exceptions to be thrown
-        catch (Exception e)
-        {
+        catch (Exception e) {
             // If it was supposed to be an error, report success and continue
-            if (badPattern)
-            {
+            if (badPattern) {
                 log.append("   Match: ERR\n");
                 success("Produces an error (" + e.toString() + "), as expected.");
                 return false;
@@ -715,9 +655,7 @@ final class RETestCase
             String message = (e.getMessage() == null) ? e.toString() : e.getMessage();
             test.fail(log, "Produces an unexpected exception \"" + message + "\"");
             e.printStackTrace();
-        }
-        catch (Error e)
-        {
+        } catch (Error e) {
             // Internal error happened
             test.fail(log, "Compiler threw fatal error \"" + e.getMessage() + "\"");
             e.printStackTrace();
@@ -726,19 +664,16 @@ final class RETestCase
         return false;
     }
 
-    private void testMatch()
-    {
+    private void testMatch() {
         log.append("   Match against: '" + toMatch + "'\n");
         // Try regular matching
-        try
-        {
+        try {
             // Match against the string
             boolean result = regexp.match(toMatch);
             log.append("   Matched: " + (result ? "YES" : "NO") + "\n");
 
             // Check result, parens, and iterators
-            if (checkResult(result) && (!shouldMatch || checkParens()))
-            {
+            if (checkResult(result) && (!shouldMatch || checkParens())) {
                 // test match(CharacterIterator, int)
                 // for every CharacterIterator implementation.
                 log.append("   Match using StringCharacterIterator\n");
@@ -759,21 +694,18 @@ final class RETestCase
             }
         }
         // Matcher blew it
-        catch(Exception e)
-        {
+        catch (Exception e) {
             test.fail(log, "Matcher threw exception: " + e.toString());
             e.printStackTrace();
         }
         // Internal error
-        catch(Error e)
-        {
+        catch (Error e) {
             test.fail(log, "Matcher threw fatal error \"" + e.getMessage() + "\"");
             e.printStackTrace();
         }
     }
 
-    private boolean checkResult(boolean result)
-    {
+    private boolean checkResult(boolean result) {
         // Write status
         if (result == shouldMatch) {
             success((shouldMatch ? "Matched" : "Did not match")
@@ -789,33 +721,27 @@ final class RETestCase
         }
     }
 
-    private boolean checkParens()
-    {
+    private boolean checkParens() {
         // Show subexpression registers
-        if (RETest.showSuccesses)
-        {
+        if (RETest.showSuccesses) {
             test.showParens(regexp);
         }
 
         log.append("   Paren count: " + regexp.getParenCount() + "\n");
-        if (!assertEquals(log, "Wrong number of parens", parens.length, regexp.getParenCount()))
-        {
+        if (!assertEquals(log, "Wrong number of parens", parens.length, regexp.getParenCount())) {
             return false;
         }
 
         // Check registers against expected contents
-        for (int p = 0; p < regexp.getParenCount(); p++)
-        {
+        for (int p = 0; p < regexp.getParenCount(); p++) {
             log.append("   Paren " + p + ": " + regexp.getParen(p) + "\n");
 
             // Compare expected result with actual
-            if ("null".equals(parens[p]) && regexp.getParen(p) == null)
-            {
+            if ("null".equals(parens[p]) && regexp.getParen(p) == null) {
                 // Consider "null" in test file equal to null
                 continue;
             }
-            if (!assertEquals(log, "Wrong register " + p, parens[p], regexp.getParen(p)))
-            {
+            if (!assertEquals(log, "Wrong register " + p, parens[p], regexp.getParen(p))) {
                 return false;
             }
         }
@@ -823,45 +749,39 @@ final class RETestCase
         return true;
     }
 
-    boolean tryMatchUsingCI(CharacterIterator matchAgainst)
-    {
+    boolean tryMatchUsingCI(CharacterIterator matchAgainst) {
         try {
             boolean result = regexp.match(matchAgainst, 0);
             log.append("   Match: " + (result ? "YES" : "NO") + "\n");
             return checkResult(result) && (!shouldMatch || checkParens());
         }
         // Matcher blew it
-        catch(Exception e)
-        {
+        catch (Exception e) {
             test.fail(log, "Matcher threw exception: " + e.toString());
             e.printStackTrace();
         }
         // Internal error
-        catch(Error e)
-        {
+        catch (Error e) {
             test.fail(log, "Matcher threw fatal error \"" + e.getMessage() + "\"");
             e.printStackTrace();
         }
         return false;
     }
 
-    public boolean assertEquals(StringBuffer log, String message, String expected, String actual)
-    {
+    public boolean assertEquals(StringBuffer log, String message, String expected, String actual) {
         if (expected != null && !expected.equals(actual)
-            || actual != null && !actual.equals(expected))
-        {
+                || actual != null && !actual.equals(expected)) {
             test.fail(log, message + " (expected \"" + expected
-                      + "\", actual \"" + actual + "\")");
+                    + "\", actual \"" + actual + "\")");
             return false;
         }
         return true;
     }
 
-    public boolean assertEquals(StringBuffer log, String message, int expected, int actual)
-    {
+    public boolean assertEquals(StringBuffer log, String message, int expected, int actual) {
         if (expected != actual) {
             test.fail(log, message + " (expected \"" + expected
-                      + "\", actual \"" + actual + "\")");
+                    + "\", actual \"" + actual + "\")");
             return false;
         }
         return true;
@@ -869,12 +789,11 @@ final class RETestCase
 
     /**
      * Show a success
+     *
      * @param s Success story
      */
-    void success(String s)
-    {
-        if (RETest.showSuccesses)
-        {
+    void success(String s) {
+        if (RETest.showSuccesses) {
             test.say("" + RETest.NEW_LINE + "-----------------------" + RETest.NEW_LINE + "");
             test.say("Expression #" + (number) + " \"" + pattern + "\" ");
             test.say("Success: " + s);

@@ -71,17 +71,16 @@ import org.xml.sax.SAXException;
  *
  * <p>
  * It is a bug if this exception "leaks" to the application.
- *
+ * <p>
  * FIXME: use XNIException for this purpose. It's already doing this
  * kind of SAXException tunneling.
  *
- * @author
- *     Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
+ * @author Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
  */
 public class WrappedSAXException extends RuntimeException {
     public final SAXException exception;
 
-    WrappedSAXException( SAXException e ) {
+    WrappedSAXException(SAXException e) {
         this.exception = e;
     }
 }

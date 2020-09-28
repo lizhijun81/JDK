@@ -24,10 +24,9 @@ package com.sun.org.apache.xerces.internal.impl.xs.models;
 /**
  * A compound content model leaf node which carries occurence information.
  *
- * @xerces.internal
- *
  * @author Michael Glavassevich, IBM
  * @version $Id: XSCMRepeatingLeaf.java,v 1.1 2010/08/06 23:49:43 joehw Exp $
+ * @xerces.internal
  */
 public final class XSCMRepeatingLeaf extends XSCMLeaf {
 
@@ -35,7 +34,7 @@ public final class XSCMRepeatingLeaf extends XSCMLeaf {
     private final int fMaxOccurs;
 
     public XSCMRepeatingLeaf(int type, Object leaf,
-            int minOccurs, int maxOccurs, int id, int position) {
+                             int minOccurs, int maxOccurs, int id, int position) {
         super(type, leaf, id, position);
         fMinOccurs = minOccurs;
         fMaxOccurs = maxOccurs;

@@ -27,16 +27,14 @@ import com.sun.org.apache.xerces.internal.util.XMLChar;
 /**
  * Represent the schema type "IDREF"
  *
- * @xerces.internal
- *
  * @author Neeraj Bajaj, Sun Microsystems, inc.
  * @author Sandy Gao, IBM
- *
+ * @xerces.internal
  */
-public class IDREFDV extends TypeValidator{
+public class IDREFDV extends TypeValidator {
 
-    public short getAllowedFacets(){
-        return (XSSimpleTypeDecl.FACET_LENGTH | XSSimpleTypeDecl.FACET_MINLENGTH | XSSimpleTypeDecl.FACET_MAXLENGTH | XSSimpleTypeDecl.FACET_PATTERN | XSSimpleTypeDecl.FACET_ENUMERATION | XSSimpleTypeDecl.FACET_WHITESPACE );
+    public short getAllowedFacets() {
+        return (XSSimpleTypeDecl.FACET_LENGTH | XSSimpleTypeDecl.FACET_MINLENGTH | XSSimpleTypeDecl.FACET_MAXLENGTH | XSSimpleTypeDecl.FACET_PATTERN | XSSimpleTypeDecl.FACET_ENUMERATION | XSSimpleTypeDecl.FACET_WHITESPACE);
     }
 
     public Object getActualValue(String content, ValidationContext context) throws InvalidDatatypeValueException {
@@ -47,7 +45,7 @@ public class IDREFDV extends TypeValidator{
     }
 
     public void checkExtraRules(Object value, ValidationContext context) throws InvalidDatatypeValueException {
-        context.addIdRef((String)value);
+        context.addIdRef((String) value);
     }
 
 }//IDREF class

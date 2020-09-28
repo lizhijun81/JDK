@@ -32,8 +32,8 @@ package com.sun.javadoc;
  * Also represents the command line information -- the
  * packages, classes and options specified by the user.
  *
- * @since 1.2
  * @author Robert Field
+ * @since 1.2
  */
 public interface RootDoc extends Doc, DocErrorReporter {
 
@@ -43,7 +43,7 @@ public interface RootDoc extends Doc, DocErrorReporter {
      * For example, given:
      * <pre>
      *     javadoc -foo this that -bar other ...</pre>
-     *
+     * <p>
      * this method will return:
      * <pre>
      *      options()[0][0] = "-foo"
@@ -79,7 +79,7 @@ public interface RootDoc extends Doc, DocErrorReporter {
     /**
      * Return the
      * <a href="package-summary.html#included">included</a>
-      classes and interfaces in all packages.
+     * classes and interfaces in all packages.
      *
      * @return included classes and interfaces in all packages.
      */
@@ -89,7 +89,6 @@ public interface RootDoc extends Doc, DocErrorReporter {
      * Return a PackageDoc for the specified package name.
      *
      * @param name package name
-     *
      * @return a PackageDoc holding the specified package, null if
      * this package is not referenced.
      */
@@ -98,10 +97,8 @@ public interface RootDoc extends Doc, DocErrorReporter {
     /**
      * Return a ClassDoc for the specified class or interface name.
      *
-     * @param qualifiedName
-     * <a href="package-summary.html#qualified">qualified</a>
-     * class or package name
-     *
+     * @param qualifiedName <a href="package-summary.html#qualified">qualified</a>
+     *                      class or package name
      * @return a ClassDoc holding the specified class, null if
      * this class is not referenced.
      */

@@ -34,7 +34,7 @@ public class JPEGStreamMetadataFormat extends JPEGMetadataFormat {
 
     private JPEGStreamMetadataFormat() {
         super(JPEG.nativeStreamMetadataFormatName,
-              CHILD_POLICY_SEQUENCE);
+                CHILD_POLICY_SEQUENCE);
         addStreamElements(getRootName());
     }
 

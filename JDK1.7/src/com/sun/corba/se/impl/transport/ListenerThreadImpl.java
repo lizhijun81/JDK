@@ -38,18 +38,16 @@ import com.sun.corba.se.impl.orbutil.ORBUtility;
 
 
 public class ListenerThreadImpl
-    implements
+        implements
         ListenerThread,
-        Work
-{
+        Work {
     private ORB orb;
     private Acceptor acceptor;
     private Selector selector;
     private boolean keepRunning;
     private long enqueueTime;
 
-    public ListenerThreadImpl(ORB orb, Acceptor acceptor, Selector selector)
-    {
+    public ListenerThreadImpl(ORB orb, Acceptor acceptor, Selector selector) {
         this.orb = orb;
         this.acceptor = acceptor;
         this.selector = selector;
@@ -61,13 +59,11 @@ public class ListenerThreadImpl
     // ListenerThread methods.
     //
 
-    public Acceptor getAcceptor()
-    {
+    public Acceptor getAcceptor() {
         return acceptor;
     }
 
-    public void close()
-    {
+    public void close() {
         if (orb.transportDebugFlag) {
             dprint(".close: " + acceptor);
         }
@@ -82,8 +78,7 @@ public class ListenerThreadImpl
 
     // REVISIT - this needs alot more from previous ListenerThread
 
-    public void doWork()
-    {
+    public void doWork() {
         try {
             if (orb.transportDebugFlag) {
                 dprint(".doWork: Start ListenerThread: " + acceptor);
@@ -101,10 +96,10 @@ public class ListenerThreadImpl
                     }
                 } catch (Throwable t) {
                     if (orb.transportDebugFlag) {
-                        dprint(".doWork: Exception in accept: " + acceptor,t);
+                        dprint(".doWork: Exception in accept: " + acceptor, t);
                     }
                     orb.getTransportManager().getSelector(0)
-                        .unregisterForEvent(getAcceptor().getEventHandler());
+                            .unregisterForEvent(getAcceptor().getEventHandler());
                     getAcceptor().close();
                 }
             }
@@ -115,30 +110,28 @@ public class ListenerThreadImpl
         }
     }
 
-    public void setEnqueueTime(long timeInMillis)
-    {
+    public void setEnqueueTime(long timeInMillis) {
         enqueueTime = timeInMillis;
     }
 
-    public long getEnqueueTime()
-    {
+    public long getEnqueueTime() {
         return enqueueTime;
     }
 
-    public String getName() { return "ListenerThread"; }
+    public String getName() {
+        return "ListenerThread";
+    }
 
     ////////////////////////////////////////////////////
     //
     // Implementation.
     //
 
-    private void dprint(String msg)
-    {
+    private void dprint(String msg) {
         ORBUtility.dprint("ListenerThreadImpl", msg);
     }
 
-    private void dprint(String msg, Throwable t)
-    {
+    private void dprint(String msg, Throwable t) {
         dprint(msg);
         t.printStackTrace(System.out);
     }

@@ -30,22 +30,22 @@ public interface XSComplexTypeDefinition extends XSTypeDefinition {
      * value empty validates elements with no character or element
      * information item children.
      */
-    public static final short CONTENTTYPE_EMPTY         = 0;
+    public static final short CONTENTTYPE_EMPTY = 0;
     /**
      * Represents a simple content type. A content type which is simple
      * validates elements with character-only children.
      */
-    public static final short CONTENTTYPE_SIMPLE        = 1;
+    public static final short CONTENTTYPE_SIMPLE = 1;
     /**
      * Represents an element-only content type. An element-only content type
      * validates elements with children that conform to the supplied content
      * model.
      */
-    public static final short CONTENTTYPE_ELEMENT       = 2;
+    public static final short CONTENTTYPE_ELEMENT = 2;
     /**
      * Represents a mixed content type.
      */
-    public static final short CONTENTTYPE_MIXED         = 3;
+    public static final short CONTENTTYPE_MIXED = 3;
 
     /**
      * [derivation method]: either <code>DERIVATION_EXTENSION</code>,
@@ -62,7 +62,7 @@ public interface XSComplexTypeDefinition extends XSTypeDefinition {
     public boolean getAbstract();
 
     /**
-     *  A set of attribute uses if it exists, otherwise an empty
+     * A set of attribute uses if it exists, otherwise an empty
      * <code>XSObjectList</code>.
      */
     public XSObjectList getAttributeUses();
@@ -94,15 +94,16 @@ public interface XSComplexTypeDefinition extends XSTypeDefinition {
 
     /**
      * [prohibited substitutions]: a subset of {extension, restriction}
-     * @param restriction  Extension or restriction constants (see
-     *   <code>XSConstants</code>).
+     *
+     * @param restriction Extension or restriction constants (see
+     *                    <code>XSConstants</code>).
      * @return True if <code>restriction</code> is a prohibited substitution,
-     *   otherwise false.
+     * otherwise false.
      */
     public boolean isProhibitedSubstitution(short restriction);
 
     /**
-     *  [prohibited substitutions]: A subset of {extension, restriction} or
+     * [prohibited substitutions]: A subset of {extension, restriction} or
      * <code>DERIVATION_NONE</code> represented as a bit flag (see
      * <code>XSConstants</code>).
      */

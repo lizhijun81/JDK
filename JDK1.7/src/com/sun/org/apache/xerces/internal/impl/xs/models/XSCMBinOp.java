@@ -25,24 +25,21 @@ import com.sun.org.apache.xerces.internal.impl.dtd.models.CMStateSet;
 import com.sun.org.apache.xerces.internal.impl.xs.XSModelGroupImpl;
 
 /**
- *
  * Content model Bin-Op node.
  *
- * @xerces.internal
- *
  * @author Neil Graham, IBM
+ * @xerces.internal
  */
 public class XSCMBinOp extends CMNode {
     // -------------------------------------------------------------------
     //  Constructors
     // -------------------------------------------------------------------
-    public XSCMBinOp(int type, CMNode leftNode, CMNode rightNode)
-    {
+    public XSCMBinOp(int type, CMNode leftNode, CMNode rightNode) {
         super(type);
 
         // Insure that its one of the types we require
         if ((type() != XSModelGroupImpl.MODELGROUP_CHOICE)
-        &&  (type() != XSModelGroupImpl.MODELGROUP_SEQUENCE)) {
+                && (type() != XSModelGroupImpl.MODELGROUP_SEQUENCE)) {
             throw new RuntimeException("ImplementationMessages.VAL_BST");
         }
 
@@ -90,8 +87,7 @@ public class XSCMBinOp extends CMNode {
             // Its the the union of the first positions of our children.
             toSet.setTo(fLeftChild.firstPos());
             toSet.union(fRightChild.firstPos());
-        }
-         else if (type() == XSModelGroupImpl.MODELGROUP_SEQUENCE) {
+        } else if (type() == XSModelGroupImpl.MODELGROUP_SEQUENCE) {
             //
             //  If our left child is nullable, then its the union of our
             //  children's first positions. Else is our left child's first
@@ -100,8 +96,7 @@ public class XSCMBinOp extends CMNode {
             toSet.setTo(fLeftChild.firstPos());
             if (fLeftChild.isNullable())
                 toSet.union(fRightChild.firstPos());
-        }
-         else {
+        } else {
             throw new RuntimeException("ImplementationMessages.VAL_BST");
         }
     }
@@ -111,8 +106,7 @@ public class XSCMBinOp extends CMNode {
             // Its the the union of the first positions of our children.
             toSet.setTo(fLeftChild.lastPos());
             toSet.union(fRightChild.lastPos());
-        }
-        else if (type() == XSModelGroupImpl.MODELGROUP_SEQUENCE) {
+        } else if (type() == XSModelGroupImpl.MODELGROUP_SEQUENCE) {
             //
             //  If our right child is nullable, then its the union of our
             //  children's last positions. Else is our right child's last
@@ -121,8 +115,7 @@ public class XSCMBinOp extends CMNode {
             toSet.setTo(fRightChild.lastPos());
             if (fRightChild.isNullable())
                 toSet.union(fLeftChild.lastPos());
-        }
-        else {
+        } else {
             throw new RuntimeException("ImplementationMessages.VAL_BST");
         }
     }
@@ -136,6 +129,6 @@ public class XSCMBinOp extends CMNode {
     //      These are the references to the two nodes that are on either
     //      side of this binary operation.
     // -------------------------------------------------------------------
-    private CMNode  fLeftChild;
-    private CMNode  fRightChild;
+    private CMNode fLeftChild;
+    private CMNode fRightChild;
 } // XSCMBinOp

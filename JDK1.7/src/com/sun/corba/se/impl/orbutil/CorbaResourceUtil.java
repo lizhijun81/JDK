@@ -62,12 +62,11 @@ public class CorbaResourceUtil {
     }
 
     public static String getText(String key,
-                                 String arg0, String arg1, String arg2)
-    {
+                                 String arg0, String arg1, String arg2) {
         String format = getString(key);
         if (format == null) {
             format = "no text found: key = \"" + key + "\", " +
-                "arguments = \"{0}\", \"{1}\", \"{2}\"";
+                    "arguments = \"{0}\", \"{1}\", \"{2}\"";
         }
 
         String[] args = new String[3];
@@ -84,11 +83,11 @@ public class CorbaResourceUtil {
     private static void initResources() {
         try {
             resources =
-                ResourceBundle.getBundle("com.sun.corba.se.impl.orbutil.resources.sunorb");
+                    ResourceBundle.getBundle("com.sun.corba.se.impl.orbutil.resources.sunorb");
             resourcesInitialized = true;
         } catch (MissingResourceException e) {
             throw new Error("fatal: missing resource bundle: " +
-                            e.getClassName());
+                    e.getClassName());
         }
     }
 

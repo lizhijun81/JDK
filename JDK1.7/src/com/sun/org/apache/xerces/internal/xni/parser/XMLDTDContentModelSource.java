@@ -73,7 +73,6 @@ import com.sun.org.apache.xerces.internal.xni.XMLDTDContentModelHandler;
  * are created, only that the implementor is able to emit them.
  *
  * @author Andy Clark, IBM
- *
  */
 public interface XMLDTDContentModelSource {
 
@@ -81,10 +80,14 @@ public interface XMLDTDContentModelSource {
     // XMLDTDContentModelSource methods
     //
 
-    /** Sets the DTD content model handler. */
+    /**
+     * Sets the DTD content model handler.
+     */
     public void setDTDContentModelHandler(XMLDTDContentModelHandler handler);
 
-    /** Returns the DTD content model handler. */
-    public XMLDTDContentModelHandler getDTDContentModelHandler( );
+    /**
+     * Returns the DTD content model handler.
+     */
+    public XMLDTDContentModelHandler getDTDContentModelHandler();
 
 } // interface XMLDTDContentModelSource

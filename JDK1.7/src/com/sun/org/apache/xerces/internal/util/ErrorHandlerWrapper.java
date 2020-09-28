@@ -31,29 +31,34 @@ import org.xml.sax.SAXParseException;
 /**
  * This class wraps a SAX error handler in an XNI error handler.
  *
- * @see ErrorHandler
- *
  * @author Andy Clark, IBM
- *
+ * @see ErrorHandler
  */
 public class ErrorHandlerWrapper
-    implements XMLErrorHandler {
+        implements XMLErrorHandler {
 
     //
     // Data
     //
 
-    /** The SAX error handler. */
+    /**
+     * The SAX error handler.
+     */
     protected ErrorHandler fErrorHandler;
 
     //
     // Constructors
     //
 
-    /** Default constructor. */
-    public ErrorHandlerWrapper() {}
+    /**
+     * Default constructor.
+     */
+    public ErrorHandlerWrapper() {
+    }
 
-    /** Wraps the specified SAX error handler. */
+    /**
+     * Wraps the specified SAX error handler.
+     */
     public ErrorHandlerWrapper(ErrorHandler errorHandler) {
         setErrorHandler(errorHandler);
     } // <init>(ErrorHandler)
@@ -62,12 +67,16 @@ public class ErrorHandlerWrapper
     // Public methods
     //
 
-    /** Sets the SAX error handler. */
+    /**
+     * Sets the SAX error handler.
+     */
     public void setErrorHandler(ErrorHandler errorHandler) {
         fErrorHandler = errorHandler;
     } // setErrorHandler(ErrorHandler)
 
-    /** Returns the SAX error handler. */
+    /**
+     * Returns the SAX error handler.
+     */
     public ErrorHandler getErrorHandler() {
         return fErrorHandler;
     } // getErrorHandler():ErrorHandler
@@ -88,7 +97,6 @@ public class ErrorHandlerWrapper
      * @param key       The warning key. This key can be any string and
      *                  is implementation dependent.
      * @param exception Exception.
-     *
      * @throws XNIException Thrown to signal that the parser should stop
      *                      parsing the document.
      */
@@ -96,17 +104,15 @@ public class ErrorHandlerWrapper
                         XMLParseException exception) throws XNIException {
 
         if (fErrorHandler != null) {
-                SAXParseException saxException = createSAXParseException(exception);
+            SAXParseException saxException = createSAXParseException(exception);
 
-                try {
-                        fErrorHandler.warning(saxException);
-                }
-                catch (SAXParseException e) {
-                        throw createXMLParseException(e);
-                }
-                catch (SAXException e) {
-                        throw createXNIException(e);
-                }
+            try {
+                fErrorHandler.warning(saxException);
+            } catch (SAXParseException e) {
+                throw createXMLParseException(e);
+            } catch (SAXException e) {
+                throw createXNIException(e);
+            }
         }
 
     } // warning(String,String,XMLParseException)
@@ -123,7 +129,6 @@ public class ErrorHandlerWrapper
      * @param key       The error key. This key can be any string and
      *                  is implementation dependent.
      * @param exception Exception.
-     *
      * @throws XNIException Thrown to signal that the parser should stop
      *                      parsing the document.
      */
@@ -131,17 +136,15 @@ public class ErrorHandlerWrapper
                       XMLParseException exception) throws XNIException {
 
         if (fErrorHandler != null) {
-                SAXParseException saxException = createSAXParseException(exception);
+            SAXParseException saxException = createSAXParseException(exception);
 
-                try {
-                        fErrorHandler.error(saxException);
-                }
-                catch (SAXParseException e) {
-                        throw createXMLParseException(e);
-                }
-                catch (SAXException e) {
-                        throw createXNIException(e);
-                }
+            try {
+                fErrorHandler.error(saxException);
+            } catch (SAXParseException e) {
+                throw createXMLParseException(e);
+            } catch (SAXException e) {
+                throw createXNIException(e);
+            }
         }
 
     } // error(String,String,XMLParseException)
@@ -166,7 +169,6 @@ public class ErrorHandlerWrapper
      * @param key       The fatal error key. This key can be any string
      *                  and is implementation dependent.
      * @param exception Exception.
-     *
      * @throws XNIException Thrown to signal that the parser should stop
      *                      parsing the document.
      */
@@ -174,17 +176,15 @@ public class ErrorHandlerWrapper
                            XMLParseException exception) throws XNIException {
 
         if (fErrorHandler != null) {
-                SAXParseException saxException = createSAXParseException(exception);
+            SAXParseException saxException = createSAXParseException(exception);
 
-                try {
-                        fErrorHandler.fatalError(saxException);
-                }
-                catch (SAXParseException e) {
-                        throw createXMLParseException(e);
-                }
-                catch (SAXException e) {
-                        throw createXNIException(e);
-                }
+            try {
+                fErrorHandler.fatalError(saxException);
+            } catch (SAXParseException e) {
+                throw createXMLParseException(e);
+            } catch (SAXException e) {
+                throw createXNIException(e);
+            }
         }
 
     } // fatalError(String,String,XMLParseException)
@@ -193,40 +193,72 @@ public class ErrorHandlerWrapper
     // Protected methods
     //
 
-    /** Creates a SAXParseException from an XMLParseException. */
+    /**
+     * Creates a SAXParseException from an XMLParseException.
+     */
     protected static SAXParseException createSAXParseException(XMLParseException exception) {
         return new SAXParseException(exception.getMessage(),
-                                     exception.getPublicId(),
-                                     exception.getExpandedSystemId(),
-                                     exception.getLineNumber(),
-                                     exception.getColumnNumber(),
-                                     exception.getException());
+                exception.getPublicId(),
+                exception.getExpandedSystemId(),
+                exception.getLineNumber(),
+                exception.getColumnNumber(),
+                exception.getException());
     } // createSAXParseException(XMLParseException):SAXParseException
 
-    /** Creates an XMLParseException from a SAXParseException. */
+    /**
+     * Creates an XMLParseException from a SAXParseException.
+     */
     protected static XMLParseException createXMLParseException(SAXParseException exception) {
         final String fPublicId = exception.getPublicId();
         final String fExpandedSystemId = exception.getSystemId();
         final int fLineNumber = exception.getLineNumber();
         final int fColumnNumber = exception.getColumnNumber();
         XMLLocator location = new XMLLocator() {
-            public String getPublicId() { return fPublicId; }
-            public String getExpandedSystemId() { return fExpandedSystemId; }
-            public String getBaseSystemId() { return null; }
-            public String getLiteralSystemId() { return null; }
-            public int getColumnNumber() { return fColumnNumber; }
-            public int getLineNumber() { return fLineNumber; }
-            public int getCharacterOffset() { return -1; }
-            public String getEncoding() { return null; }
-            public String getXMLVersion() { return null; }
+            public String getPublicId() {
+                return fPublicId;
+            }
+
+            public String getExpandedSystemId() {
+                return fExpandedSystemId;
+            }
+
+            public String getBaseSystemId() {
+                return null;
+            }
+
+            public String getLiteralSystemId() {
+                return null;
+            }
+
+            public int getColumnNumber() {
+                return fColumnNumber;
+            }
+
+            public int getLineNumber() {
+                return fLineNumber;
+            }
+
+            public int getCharacterOffset() {
+                return -1;
+            }
+
+            public String getEncoding() {
+                return null;
+            }
+
+            public String getXMLVersion() {
+                return null;
+            }
         };
-        return new XMLParseException(location, exception.getMessage(),exception);
+        return new XMLParseException(location, exception.getMessage(), exception);
     } // createXMLParseException(SAXParseException):XMLParseException
 
-    /** Creates an XNIException from a SAXException.
-        NOTE:  care should be taken *not* to call this with a SAXParseException; this will
-        lose information!!! */
+    /**
+     * Creates an XNIException from a SAXException.
+     * NOTE:  care should be taken *not* to call this with a SAXParseException; this will
+     * lose information!!!
+     */
     protected static XNIException createXNIException(SAXException exception) {
-        return new XNIException(exception.getMessage(),exception);
+        return new XNIException(exception.getMessage(), exception);
     } // createXNIException(SAXException):XMLParseException
 } // class ErrorHandlerWrapper

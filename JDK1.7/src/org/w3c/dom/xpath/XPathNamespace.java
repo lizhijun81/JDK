@@ -81,7 +81,7 @@ public interface XPathNamespace extends Node {
     /**
      * The node is a <code>Namespace</code>.
      */
-    public static final short XPATH_NAMESPACE_NODE      = 13;
+    public static final short XPATH_NAMESPACE_NODE = 13;
 
     /**
      * The <code>Element</code> on which the namespace was in scope when it

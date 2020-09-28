@@ -80,8 +80,7 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLDocumentSource;
  * Can be used as a base implementation of other more sophisticated
  * {@link XMLDocumentFilter}s.
  *
- * @author
- *     Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
+ * @author Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
  */
 public class XMLDocumentFilterImpl implements XMLDocumentFilter {
     private XMLDocumentHandler next;
@@ -105,10 +104,6 @@ public class XMLDocumentFilterImpl implements XMLDocumentFilter {
     }
 
 
-
-
-
-
     public void characters(XMLString text, Augmentations augs) throws XNIException {
         next.characters(text, augs);
     }
@@ -118,7 +113,7 @@ public class XMLDocumentFilterImpl implements XMLDocumentFilter {
     }
 
     public void doctypeDecl(String rootElement, String publicId, String systemId, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
         next.doctypeDecl(rootElement, publicId, systemId, augs);
     }
 
@@ -155,11 +150,11 @@ public class XMLDocumentFilterImpl implements XMLDocumentFilter {
     }
 
     public void startDocument(
-        XMLLocator locator,
-        String encoding,
-        NamespaceContext namespaceContext,
-        Augmentations augs)
-        throws XNIException {
+            XMLLocator locator,
+            String encoding,
+            NamespaceContext namespaceContext,
+            Augmentations augs)
+            throws XNIException {
         next.startDocument(locator, encoding, namespaceContext, augs);
     }
 
@@ -168,7 +163,7 @@ public class XMLDocumentFilterImpl implements XMLDocumentFilter {
     }
 
     public void startGeneralEntity(String name, XMLResourceIdentifier identifier, String encoding, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
         next.startGeneralEntity(name, identifier, encoding, augs);
     }
 

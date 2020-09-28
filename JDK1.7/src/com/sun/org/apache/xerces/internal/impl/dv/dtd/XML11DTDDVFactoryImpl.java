@@ -28,10 +28,8 @@ import com.sun.org.apache.xerces.internal.impl.dv.DatatypeValidator;
 /**
  * the factory to create/return built-in XML 1.1 DVs and create user-defined DVs
  *
- * @xerces.internal
- *
  * @author Neil Graham, IBM
- *
+ * @xerces.internal
  */
 public class XML11DTDDVFactoryImpl extends DTDDVFactoryImpl {
 
@@ -42,24 +40,24 @@ public class XML11DTDDVFactoryImpl extends DTDDVFactoryImpl {
      * This will call the super class if and only if it does not
      * recognize the passed-in name.
      *
-     * @param name  the name of the datatype
-     * @return      the datatype validator of the given name
+     * @param name the name of the datatype
+     * @return the datatype validator of the given name
      */
     public DatatypeValidator getBuiltInDV(String name) {
-        if(fXML11BuiltInTypes.get(name) != null) {
-            return (DatatypeValidator)fXML11BuiltInTypes.get(name);
+        if (fXML11BuiltInTypes.get(name) != null) {
+            return (DatatypeValidator) fXML11BuiltInTypes.get(name);
         }
-        return (DatatypeValidator)fBuiltInTypes.get(name);
+        return (DatatypeValidator) fBuiltInTypes.get(name);
     }
 
     /**
      * get all built-in DVs, which are stored in a hashtable keyed by the name
      * New XML 1.1 datatypes are inserted.
      *
-     * @return      a hashtable which contains all datatypes
+     * @return a hashtable which contains all datatypes
      */
     public Hashtable getBuiltInTypes() {
-        Hashtable toReturn = (Hashtable)fBuiltInTypes.clone();
+        Hashtable toReturn = (Hashtable) fBuiltInTypes.clone();
         Enumeration xml11Keys = fXML11BuiltInTypes.keys();
         while (xml11Keys.hasMoreElements()) {
             Object key = xml11Keys.nextElement();

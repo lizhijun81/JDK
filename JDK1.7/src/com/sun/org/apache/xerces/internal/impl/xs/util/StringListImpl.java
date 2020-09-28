@@ -29,11 +29,9 @@ import com.sun.org.apache.xerces.internal.xs.StringList;
 /**
  * Containts a list of Object's.
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
- *
  * @version $Id: StringListImpl.java,v 1.7 2010-11-01 04:40:06 joehw Exp $
+ * @xerces.internal
  */
 public final class StringListImpl extends AbstractList implements StringList {
 
@@ -60,8 +58,8 @@ public final class StringListImpl extends AbstractList implements StringList {
     /**
      * Construct an XSObjectList implementation
      *
-     * @param array     the data array
-     * @param length    the number of elements
+     * @param array  the data array
+     * @param length the number of elements
      */
     public StringListImpl(String[] array, int length) {
         fArray = array;
@@ -78,12 +76,13 @@ public final class StringListImpl extends AbstractList implements StringList {
     }
 
     /**
-     *  Checks if the <code>GenericString</code> <code>item</code> is a member
+     * Checks if the <code>GenericString</code> <code>item</code> is a member
      * of this list.
-     * @param item  <code>GenericString</code> whose presence in this list is
-     *   to be tested.
-     * @return  True if this list contains the <code>GenericString</code>
-     *   <code>item</code>.
+     *
+     * @param item <code>GenericString</code> whose presence in this list is
+     *             to be tested.
+     * @return True if this list contains the <code>GenericString</code>
+     * <code>item</code>.
      */
     public boolean contains(String item) {
         if (fVector != null) {
@@ -94,8 +93,7 @@ public final class StringListImpl extends AbstractList implements StringList {
                 if (fArray[i] == null)
                     return true;
             }
-        }
-        else {
+        } else {
             for (int i = 0; i < fLength; i++) {
                 if (item.equals(fArray[i]))
                     return true;
@@ -109,7 +107,7 @@ public final class StringListImpl extends AbstractList implements StringList {
             return null;
         }
         if (fVector != null) {
-            return (String)fVector.elementAt(index);
+            return (String) fVector.elementAt(index);
         }
         return fArray[index];
     }

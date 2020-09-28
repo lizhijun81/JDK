@@ -25,14 +25,13 @@ import java.text.CharacterIterator;
 /**
  * An instance of this class has ranges captured in matching.
  *
+ * @author TAMURA Kent &lt;kent@trl.ibm.co.jp&gt;
  * @xerces.internal
- *
  * @see RegularExpression#matches(char[], int, int, Match)
  * @see RegularExpression#matches(char[], Match)
  * @see RegularExpression#matches(java.text.CharacterIterator, Match)
  * @see RegularExpression#matches(java.lang.String, int, int, Match)
  * @see RegularExpression#matches(java.lang.String, Match)
- * @author TAMURA Kent &lt;kent@trl.ibm.co.jp&gt;
  */
 public class Match implements Cloneable {
     int[] beginpos = null;
@@ -56,9 +55,9 @@ public class Match implements Cloneable {
         Match ma = new Match();
         if (this.nofgroups > 0) {
             ma.setNumberOfGroups(this.nofgroups);
-            if (this.ciSource != null)  ma.setSource(this.ciSource);
-            if (this.strSource != null)  ma.setSource(this.strSource);
-            for (int i = 0;  i < this.nofgroups;  i ++) {
+            if (this.ciSource != null) ma.setSource(this.ciSource);
+            if (this.strSource != null) ma.setSource(this.strSource);
+            for (int i = 0; i < this.nofgroups; i++) {
                 ma.setBeginning(i, this.getBeginning(i));
                 ma.setEnd(i, this.getEnd(i));
             }
@@ -73,11 +72,11 @@ public class Match implements Cloneable {
         int oldn = this.nofgroups;
         this.nofgroups = n;
         if (oldn <= 0
-            || oldn < n || n*2 < oldn) {
+                || oldn < n || n * 2 < oldn) {
             this.beginpos = new int[n];
             this.endpos = new int[n];
         }
-        for (int i = 0;  i < n;  i ++) {
+        for (int i = 0; i < n; i++) {
             this.beginpos[i] = -1;
             this.endpos[i] = -1;
         }
@@ -91,6 +90,7 @@ public class Match implements Cloneable {
         this.strSource = null;
         this.charSource = null;
     }
+
     /**
      *
      */
@@ -99,6 +99,7 @@ public class Match implements Cloneable {
         this.strSource = str;
         this.charSource = null;
     }
+
     /**
      *
      */
@@ -142,7 +143,7 @@ public class Match implements Cloneable {
             throw new IllegalStateException("A result is not set.");
         if (index < 0 || this.nofgroups <= index)
             throw new IllegalArgumentException("The parameter must be less than "
-                                               +this.nofgroups+": "+index);
+                    + this.nofgroups + ": " + index);
         return this.beginpos[index];
     }
 
@@ -156,7 +157,7 @@ public class Match implements Cloneable {
             throw new IllegalStateException("A result is not set.");
         if (index < 0 || this.nofgroups <= index)
             throw new IllegalArgumentException("The parameter must be less than "
-                                               +this.nofgroups+": "+index);
+                    + this.nofgroups + ": " + index);
         return this.endpos[index];
     }
 
@@ -170,16 +171,16 @@ public class Match implements Cloneable {
             throw new IllegalStateException("match() has never been called.");
         if (index < 0 || this.nofgroups <= index)
             throw new IllegalArgumentException("The parameter must be less than "
-                                               +this.nofgroups+": "+index);
+                    + this.nofgroups + ": " + index);
         String ret;
         int begin = this.beginpos[index], end = this.endpos[index];
-        if (begin < 0 || end < 0)  return null;
+        if (begin < 0 || end < 0) return null;
         if (this.ciSource != null) {
             ret = REUtil.substring(this.ciSource, begin, end);
         } else if (this.strSource != null) {
             ret = this.strSource.substring(begin, end);
         } else {
-            ret = new String(this.charSource, begin, end-begin);
+            ret = new String(this.charSource, begin, end - begin);
         }
         return ret;
     }

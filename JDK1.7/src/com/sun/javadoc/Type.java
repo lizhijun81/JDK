@@ -31,10 +31,10 @@ package com.sun.javadoc;
  * a type variable, a wildcard type ("<code>?</code>"),
  * or a primitive data type (like <code>char</code>).
  *
- * @since 1.2
  * @author Kaiyang Liu (original)
  * @author Robert Field (rewrite)
  * @author Scott Seligman (generics)
+ * @since 1.2
  */
 public interface Type {
 
@@ -48,7 +48,7 @@ public interface Type {
 
     /**
      * Return qualified name of type excluding any dimension information.
-     *<p>
+     * <p>
      * For example, a two dimensional array of String
      * returns "<code>java.lang.String</code>".
      */
@@ -106,7 +106,7 @@ public interface Type {
      * If this is a primitive type, return null.
      *
      * @return the <code>ClassDoc</code> of this type,
-     *         or null if it is a primitive type.
+     * or null if it is a primitive type.
      */
     ClassDoc asClassDoc();
 
@@ -116,7 +116,7 @@ public interface Type {
      * are ignored.
      *
      * @return a <code>ParameterizedType</code> if the type is an
-     *         invocation of a generic type, or null if it is not.
+     * invocation of a generic type, or null if it is not.
      * @since 1.5
      */
     ParameterizedType asParameterizedType();
@@ -126,7 +126,7 @@ public interface Type {
      * a type variable.  Array dimensions are ignored.
      *
      * @return a <code>TypeVariable</code> if the type is a type variable,
-     *         or null if it is not.
+     * or null if it is not.
      * @since 1.5
      */
     TypeVariable asTypeVariable();
@@ -136,7 +136,7 @@ public interface Type {
      * a wildcard type.
      *
      * @return a <code>WildcardType</code> if the type is a wildcard type,
-     *         or null if it is not.
+     * or null if it is not.
      * @since 1.5
      */
     WildcardType asWildcardType();
@@ -146,7 +146,7 @@ public interface Type {
      * an annotation type.  Array dimensions are ignored.
      *
      * @return an <code>AnnotationTypeDoc</code> if the type is an annotation
-     *         type, or null if it is not.
+     * type, or null if it is not.
      * @since 1.5
      */
     AnnotationTypeDoc asAnnotationTypeDoc();

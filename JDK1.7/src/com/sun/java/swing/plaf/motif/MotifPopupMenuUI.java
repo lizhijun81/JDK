@@ -26,6 +26,7 @@
 package com.sun.java.swing.plaf.motif;
 
 import sun.swing.SwingUtilities2;
+
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.border.*;
@@ -73,22 +74,22 @@ public class MotifPopupMenuUI extends BasicPopupMenuUI {
     public Dimension getPreferredSize(JComponent c) {
         LayoutManager layout = c.getLayout();
         Dimension d = layout.preferredLayoutSize(c);
-        String title = ((JPopupMenu)c).getLabel();
+        String title = ((JPopupMenu) c).getLabel();
         if (titleFont == null) {
             UIDefaults table = UIManager.getLookAndFeelDefaults();
             titleFont = table.getFont("PopupMenu.font");
         }
         FontMetrics fm = c.getFontMetrics(titleFont);
-        int         stringWidth = 0;
+        int stringWidth = 0;
 
-        if (title!=null) {
+        if (title != null) {
             stringWidth += SwingUtilities2.stringWidth(c, fm, title);
         }
 
         if (d.width < stringWidth) {
             d.width = stringWidth + 8;
             Insets i = c.getInsets();
-            if (i!=null) {
+            if (i != null) {
                 d.width += i.left + i.right;
             }
             if (border != null) {
@@ -103,12 +104,13 @@ public class MotifPopupMenuUI extends BasicPopupMenuUI {
 
     protected ChangeListener createChangeListener(JPopupMenu m) {
         return new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {}
+            public void stateChanged(ChangeEvent e) {
+            }
         };
     }
 
     public boolean isPopupTrigger(MouseEvent e) {
-        return ((e.getID()==MouseEvent.MOUSE_PRESSED)
-                && ((e.getModifiers() & MouseEvent.BUTTON3_MASK)!=0));
+        return ((e.getID() == MouseEvent.MOUSE_PRESSED)
+                && ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0));
     }
 }

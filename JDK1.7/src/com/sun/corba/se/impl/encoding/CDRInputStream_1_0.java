@@ -135,8 +135,7 @@ import com.sun.org.omg.CORBA.portable.ValueHelper;
 import com.sun.org.omg.SendingContext.CodeBase;
 
 public class CDRInputStream_1_0 extends CDRInputStreamBase
-    implements RestorableInputStream
-{
+        implements RestorableInputStream {
     private static final String kReadMethod = "read";
     private static final int maxBlockLength = 0x7fffff00;
 
@@ -149,8 +148,8 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
     protected boolean littleEndian;
     protected ORB orb;
-    protected ORBUtilSystemException wrapper ;
-    protected OMGSystemException omgWrapper ;
+    protected ORBUtilSystemException wrapper;
+    protected OMGSystemException omgWrapper;
     protected ValueHandler valueHandler = null;
 
     // Value cache
@@ -216,24 +215,23 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
     private boolean specialNoOptionalDataState = false;
 
     // Template method
-    public CDRInputStreamBase dup()
-    {
-        CDRInputStreamBase result = null ;
+    public CDRInputStreamBase dup() {
+        CDRInputStreamBase result = null;
 
         try {
-            result = (CDRInputStreamBase)this.getClass().newInstance();
+            result = (CDRInputStreamBase) this.getClass().newInstance();
         } catch (Exception e) {
-            throw wrapper.couldNotDuplicateCdrInputStream( e ) ;
+            throw wrapper.couldNotDuplicateCdrInputStream(e);
         }
         result.init(this.orb,
-                    this.bbwi.byteBuffer,
-                    this.bbwi.buflen,
-                    this.littleEndian,
-                    this.bufferManagerRead);
+                this.bbwi.byteBuffer,
+                this.bbwi.buflen,
+                this.littleEndian,
+                this.bufferManagerRead);
 
-        ((CDRInputStream_1_0)result).bbwi.position(this.bbwi.position());
+        ((CDRInputStream_1_0) result).bbwi.position(this.bbwi.position());
         // To ensure we keep bbwi.byteBuffer.limit in sync with bbwi.buflen.
-        ((CDRInputStream_1_0)result).bbwi.byteBuffer.limit(this.bbwi.buflen);
+        ((CDRInputStream_1_0) result).bbwi.byteBuffer.limit(this.bbwi.buflen);
 
         return result;
     }
@@ -245,21 +243,20 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
                      ByteBuffer byteBuffer,
                      int size,
                      boolean littleEndian,
-                     BufferManagerRead bufferManager)
-    {
-        this.orb = (ORB)orb;
-        this.wrapper = ORBUtilSystemException.get( (ORB)orb,
-            CORBALogDomains.RPC_ENCODING ) ;
-        this.omgWrapper = OMGSystemException.get( (ORB)orb,
-            CORBALogDomains.RPC_ENCODING ) ;
+                     BufferManagerRead bufferManager) {
+        this.orb = (ORB) orb;
+        this.wrapper = ORBUtilSystemException.get((ORB) orb,
+                CORBALogDomains.RPC_ENCODING);
+        this.omgWrapper = OMGSystemException.get((ORB) orb,
+                CORBALogDomains.RPC_ENCODING);
         this.littleEndian = littleEndian;
         this.bufferManagerRead = bufferManager;
-        this.bbwi = new ByteBufferWithInfo(orb,byteBuffer,0);
+        this.bbwi = new ByteBufferWithInfo(orb, byteBuffer, 0);
         this.bbwi.buflen = size;
         this.bbwi.byteBuffer.limit(bbwi.buflen);
         this.markAndResetHandler = bufferManagerRead.getMarkAndResetHandler();
 
-        debug = ((ORB)orb).transportDebugFlag;
+        debug = ((ORB) orb).transportDebugFlag;
     }
 
     // See description in CDRInputStream
@@ -267,8 +264,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         createRepositoryIdHandlers();
     }
 
-    private final void createRepositoryIdHandlers()
-    {
+    private final void createRepositoryIdHandlers() {
         repIdUtil = RepositoryIdFactory.getRepIdUtility();
         repIdStrs = RepositoryIdFactory.getRepIdStringsFactory();
     }
@@ -293,8 +289,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         return 0;
     }
 
-    public int getSize()
-    {
+    public int getSize() {
         return bbwi.position();
     }
 
@@ -314,7 +309,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         // to readObject.  The state is cleared when the ValueHandler
         // calls end_value after the readObject method exits.
         if (specialNoOptionalDataState) {
-            throw omgWrapper.rmiiiopOptionalDataIncompatible1() ;
+            throw omgWrapper.rmiiiopOptionalDataIncompatible1();
         }
 
         boolean checkForEndTag = false;
@@ -340,11 +335,10 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             if (blockLength == maxBlockLength)
                 checkForEndTag = true;
 
-        } else
-        if (blockLength < get_offset()) {
+        } else if (blockLength < get_offset()) {
             // Are we already past the end of the current chunk?
             // This is always an error.
-            throw wrapper.chunkOverflow() ;
+            throw wrapper.chunkOverflow();
         }
 
         // If what's next on the wire isn't a chunk length or
@@ -354,11 +348,11 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         // Serializable's readObject method or a custom marshaled
         // IDL type is reading too much/in an incorrect order
         int requiredNumBytes =
-                            computeAlignment(bbwi.position(), align) + dataSize;
+                computeAlignment(bbwi.position(), align) + dataSize;
 
         if (blockLength != maxBlockLength &&
-            blockLength < get_offset() + requiredNumBytes) {
-            throw omgWrapper.rmiiiopOptionalDataIncompatible2() ;
+                blockLength < get_offset() + requiredNumBytes) {
+            throw omgWrapper.rmiiiopOptionalDataIncompatible2();
         }
 
         // REVISIT - We should look at using the built in advancement
@@ -374,7 +368,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             // left in the valuetype's encoding on the wire
             // to read what we wanted
             if (nextLong < 0)
-                throw omgWrapper.rmiiiopOptionalDataIncompatible3() ;
+                throw omgWrapper.rmiiiopOptionalDataIncompatible3();
         }
     }
 
@@ -412,7 +406,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
     // No such type in java
     public final double read_longdouble() {
-        throw wrapper.longDoubleNotImplemented( CompletionStatus.COMPLETED_MAYBE);
+        throw wrapper.longDoubleNotImplemented(CompletionStatus.COMPLETED_MAYBE);
     }
 
     public final boolean read_boolean() {
@@ -429,8 +423,8 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
         // Don't allow transmission of wchar/wstring data with
         // foreign ORBs since it's against the spec.
-        if (ORBUtility.isForeignORB((ORB)orb)) {
-            throw wrapper.wcharDataInGiop10( CompletionStatus.COMPLETED_MAYBE);
+        if (ORBUtility.isForeignORB((ORB) orb)) {
+            throw wrapper.wcharDataInGiop10(CompletionStatus.COMPLETED_MAYBE);
         }
 
         // If we're talking to one of our legacy ORBs, do what
@@ -451,7 +445,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             bbwi.position(bbwi.position() + 1);
         }
 
-        return (char)((b1 << 8) + (b2 << 0));
+        return (char) ((b1 << 8) + (b2 << 0));
     }
 
     public final byte read_octet() {
@@ -481,7 +475,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             bbwi.position(bbwi.position() + 1);
         }
 
-        return (short)(b1 | b2);
+        return (short) (b1 | b2);
     }
 
     public final short read_ushort() {
@@ -521,9 +515,9 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
         if (littleEndian) {
             i2 = read_long() & 0xFFFFFFFFL;
-            i1 = (long)read_long() << 32;
+            i1 = (long) read_long() << 32;
         } else {
-            i1 = (long)read_long() << 32;
+            i1 = (long) read_long() << 32;
             i2 = read_long() & 0xFFFFFFFFL;
         }
 
@@ -544,8 +538,8 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
     protected final void checkForNegativeLength(int length) {
         if (length < 0)
-            throw wrapper.negativeStringLength( CompletionStatus.COMPLETED_MAYBE,
-                new Integer(length) ) ;
+            throw wrapper.negativeStringLength(CompletionStatus.COMPLETED_MAYBE,
+                    new Integer(length));
     }
 
     protected final String readStringOrIndirection(boolean allowIndirection) {
@@ -592,8 +586,8 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
     public String read_wstring() {
         // Don't allow transmission of wchar/wstring data with
         // foreign ORBs since it's against the spec.
-        if (ORBUtility.isForeignORB((ORB)orb)) {
-            throw wrapper.wcharDataInGiop10( CompletionStatus.COMPLETED_MAYBE);
+        if (ORBUtility.isForeignORB((ORB) orb)) {
+            throw wrapper.wcharDataInGiop10(CompletionStatus.COMPLETED_MAYBE);
         }
 
         int len = read_long();
@@ -625,8 +619,8 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
     }
 
     public final void read_octet_array(byte[] b, int offset, int length) {
-        if ( b == null )
-            throw wrapper.nullParam() ;
+        if (b == null)
+            throw wrapper.nullParam();
 
         // Must call alignAndCheck at least once to ensure
         // we aren't at the end of a chunk.  Of course, we
@@ -639,7 +633,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         alignAndCheck(1, 1);
 
         int n = offset;
-        while (n < length+offset) {
+        while (n < length + offset) {
             int avail;
             int bytes;
             int wanted;
@@ -654,7 +648,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             // Microbenchmarks are showing a loop of ByteBuffer.get(int) being
             // faster than ByteBuffer.get(byte[], int, int).
             for (int i = 0; i < bytes; i++) {
-                b[n+i] = bbwi.byteBuffer.get(bbwi.position() + i);
+                b[n + i] = bbwi.byteBuffer.get(bbwi.position() + i);
             }
 
             bbwi.position(bbwi.position() + bytes);
@@ -666,7 +660,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
     public Principal read_Principal() {
         int len = read_long();
         byte[] pvalue = new byte[len];
-        read_octet_array(pvalue,0,len);
+        read_octet_array(pvalue, 0, len);
 
         Principal p = new PrincipalImpl();
         p.name(pvalue);
@@ -725,48 +719,47 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
     //    IDLEntity.class.isAssignableFrom( clz ).
     // 3. If clz is an interface, use it to create the appropriate
     //    stub factory.
-    public org.omg.CORBA.Object read_Object(Class clz)
-    {
+    public org.omg.CORBA.Object read_Object(Class clz) {
         // In any case, we must first read the IOR.
-        IOR ior = IORFactories.makeIOR(parent) ;
+        IOR ior = IORFactories.makeIOR(parent);
         if (ior.isNil())
-            return null ;
+            return null;
 
-        PresentationManager.StubFactoryFactory sff = ORB.getStubFactoryFactory() ;
-        String codeBase = ior.getProfile().getCodebase() ;
-        PresentationManager.StubFactory stubFactory = null ;
+        PresentationManager.StubFactoryFactory sff = ORB.getStubFactoryFactory();
+        String codeBase = ior.getProfile().getCodebase();
+        PresentationManager.StubFactory stubFactory = null;
 
         if (clz == null) {
-            RepositoryId rid = RepositoryId.cache.getId( ior.getTypeId() ) ;
-            String className = rid.getClassName() ;
-            boolean isIDLInterface = rid.isIDLType() ;
+            RepositoryId rid = RepositoryId.cache.getId(ior.getTypeId());
+            String className = rid.getClassName();
+            boolean isIDLInterface = rid.isIDLType();
 
-            if (className == null || className.equals( "" ))
-                stubFactory = null ;
+            if (className == null || className.equals(""))
+                stubFactory = null;
             else
                 try {
-                    stubFactory = sff.createStubFactory( className,
-                        isIDLInterface, codeBase, (Class)null,
-                        (ClassLoader)null );
+                    stubFactory = sff.createStubFactory(className,
+                            isIDLInterface, codeBase, (Class) null,
+                            (ClassLoader) null);
                 } catch (Exception exc) {
                     // Could not create stubFactory, so use null.
                     // XXX stubFactory handling is still too complex:
                     // Can we resolve the stubFactory question once in
                     // a single place?
-                    stubFactory = null ;
+                    stubFactory = null;
                 }
-        } else if (StubAdapter.isStubClass( clz )) {
+        } else if (StubAdapter.isStubClass(clz)) {
             stubFactory = PresentationDefaults.makeStaticStubFactory(
-                clz ) ;
+                    clz);
         } else {
             // clz is an interface class
-            boolean isIDL = IDLEntity.class.isAssignableFrom( clz ) ;
+            boolean isIDL = IDLEntity.class.isAssignableFrom(clz);
 
-            stubFactory = sff.createStubFactory( clz.getName(),
-                isIDL, codeBase, clz, clz.getClassLoader() ) ;
+            stubFactory = sff.createStubFactory(clz.getName(),
+                    isIDL, codeBase, clz, clz.getClassLoader());
         }
 
-        return internalIORToObject( ior, stubFactory, orb ) ;
+        return internalIORToObject(ior, stubFactory, orb);
     }
 
     /*
@@ -775,25 +768,24 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
      * IIOPProfile must support getServant.
      */
     public static org.omg.CORBA.Object internalIORToObject(
-        IOR ior, PresentationManager.StubFactory stubFactory, ORB orb)
-    {
+            IOR ior, PresentationManager.StubFactory stubFactory, ORB orb) {
         ORBUtilSystemException wrapper = ORBUtilSystemException.get(
-            (ORB)orb, CORBALogDomains.RPC_ENCODING ) ;
+                (ORB) orb, CORBALogDomains.RPC_ENCODING);
 
-        java.lang.Object servant = ior.getProfile().getServant() ;
-        if (servant != null ) {
+        java.lang.Object servant = ior.getProfile().getServant();
+        if (servant != null) {
             if (servant instanceof Tie) {
                 String codebase = ior.getProfile().getCodebase();
                 org.omg.CORBA.Object objref = (org.omg.CORBA.Object)
-                    Utility.loadStub( (Tie)servant, stubFactory, codebase,
-                        false);
+                        Utility.loadStub((Tie) servant, stubFactory, codebase,
+                                false);
 
                 // If we managed to load a stub, return it, otherwise we
                 // must fail...
                 if (objref != null) {
                     return objref;
                 } else {
-                    throw wrapper.readObjectException() ;
+                    throw wrapper.readObjectException();
                 }
             } else if (servant instanceof org.omg.CORBA.Object) {
                 if (!(servant instanceof
@@ -801,35 +793,33 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
                     return (org.omg.CORBA.Object) servant;
                 }
             } else
-                throw wrapper.badServantReadObject() ;
+                throw wrapper.badServantReadObject();
         }
 
-        CorbaClientDelegate del = ORBUtility.makeClientDelegate( ior ) ;
-        org.omg.CORBA.Object objref = null ;
+        CorbaClientDelegate del = ORBUtility.makeClientDelegate(ior);
+        org.omg.CORBA.Object objref = null;
         try {
-            objref = stubFactory.makeStub() ;
+            objref = stubFactory.makeStub();
         } catch (Throwable e) {
-            wrapper.stubCreateError( e ) ;
+            wrapper.stubCreateError(e);
 
             if (e instanceof ThreadDeath) {
                 throw (ThreadDeath) e;
             }
 
             // Return the "default" stub...
-            objref = new CORBAObjectImpl() ;
+            objref = new CORBAObjectImpl();
         }
 
-        StubAdapter.setDelegate( objref, del ) ;
+        StubAdapter.setDelegate(objref, del);
         return objref;
     }
 
-    public java.lang.Object read_abstract_interface()
-    {
+    public java.lang.Object read_abstract_interface() {
         return read_abstract_interface(null);
     }
 
-    public java.lang.Object read_abstract_interface(java.lang.Class clz)
-    {
+    public java.lang.Object read_abstract_interface(java.lang.Class clz) {
         boolean object = read_boolean();
 
         if (object) {
@@ -839,9 +829,8 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         }
     }
 
-    public Serializable read_value()
-    {
-        return read_value((Class)null);
+    public Serializable read_value() {
+        return read_value((Class) null);
     }
 
     private Serializable handleIndirection() {
@@ -849,7 +838,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         if (valueCache != null && valueCache.containsVal(indirection)) {
 
             java.io.Serializable cachedValue
-                = (java.io.Serializable)valueCache.getKey(indirection);
+                    = (java.io.Serializable) valueCache.getKey(indirection);
             return cachedValue;
         } else {
             // In RMI-IIOP the ValueHandler will recognize this
@@ -864,7 +853,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
                                      Class expectedType,
                                      String expectedTypeRepId) {
         return readRepositoryIds(valueTag, expectedType,
-                                 expectedTypeRepId, null);
+                expectedTypeRepId, null);
     }
 
     /**
@@ -879,8 +868,8 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
                                      Class expectedType,
                                      String expectedTypeRepId,
                                      BoxedValueHelper factory) {
-        switch(repIdUtil.getTypeInfo(valueTag)) {
-            case RepositoryIdUtility.NO_TYPE_INFO :
+        switch (repIdUtil.getTypeInfo(valueTag)) {
+            case RepositoryIdUtility.NO_TYPE_INFO:
                 // Throw an exception if we have no repository ID info and
                 // no expectedType to work with.  Otherwise, how would we
                 // know what to unmarshal?
@@ -891,17 +880,17 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
                         return factory.get_id();
                     } else {
                         throw wrapper.expectedTypeNullAndNoRepId(
-                            CompletionStatus.COMPLETED_MAYBE);
+                                CompletionStatus.COMPLETED_MAYBE);
                     }
                 }
                 return repIdStrs.createForAnyType(expectedType);
-            case RepositoryIdUtility.SINGLE_REP_TYPE_INFO :
+            case RepositoryIdUtility.SINGLE_REP_TYPE_INFO:
                 return read_repositoryId();
-            case RepositoryIdUtility.PARTIAL_LIST_TYPE_INFO :
+            case RepositoryIdUtility.PARTIAL_LIST_TYPE_INFO:
                 return read_repositoryIds();
             default:
-                throw wrapper.badValueTag( CompletionStatus.COMPLETED_MAYBE,
-                    Integer.toHexString(valueTag) ) ;
+                throw wrapper.badValueTag(CompletionStatus.COMPLETED_MAYBE,
+                        Integer.toHexString(valueTag));
         }
     }
 
@@ -939,7 +928,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
         // Read repository id(s)
         String repositoryIDString
-            = readRepositoryIds(vType, expectedType, null);
+                = readRepositoryIds(vType, expectedType, null);
 
         // If isChunked was determined to be true based
         // on the valuetag, this will read a chunk length
@@ -953,8 +942,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
         if (repositoryIDString.equals(repIdStrs.getWStringValueRepId())) {
             value = read_wstring();
-        } else
-        if (repositoryIDString.equals(repIdStrs.getClassDescValueRepId())) {
+        } else if (repositoryIDString.equals(repIdStrs.getClassDescValueRepId())) {
             // read in the class whether with the old ClassDesc or the
             // new one
             value = readClass();
@@ -965,28 +953,28 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             // By this point, either the expectedType or repositoryIDString
             // is guaranteed to be non-null.
             if (expectedType == null ||
-                !repositoryIDString.equals(repIdStrs.createForAnyType(expectedType))) {
+                    !repositoryIDString.equals(repIdStrs.createForAnyType(expectedType))) {
 
                 valueClass = getClassFromString(repositoryIDString,
-                                                codebase_URL,
-                                                expectedType);
+                        codebase_URL,
+                        expectedType);
             }
 
             if (valueClass == null) {
                 // No point attempting to use value handler below, since the
                 // class information is not available.
                 throw wrapper.couldNotFindClass(
-                    CompletionStatus.COMPLETED_MAYBE,
-                    new ClassNotFoundException());
+                        CompletionStatus.COMPLETED_MAYBE,
+                        new ClassNotFoundException());
             }
 
             if (valueClass != null &&
-                org.omg.CORBA.portable.IDLEntity.class.isAssignableFrom(valueClass)) {
+                    org.omg.CORBA.portable.IDLEntity.class.isAssignableFrom(valueClass)) {
 
-                value =  readIDLValue(indirection,
-                                      repositoryIDString,
-                                      valueClass,
-                                      codebase_URL);
+                value = readIDLValue(indirection,
+                        repositoryIDString,
+                        valueClass,
+                        codebase_URL);
 
             } else {
 
@@ -997,21 +985,21 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
                         valueHandler = ORBUtility.createValueHandler();
 
                     value = valueHandler.readValue(parent,
-                                                   indirection,
-                                                   valueClass,
-                                                   repositoryIDString,
-                                                   getCodeBase());
+                            indirection,
+                            valueClass,
+                            repositoryIDString,
+                            getCodeBase());
 
-                } catch(SystemException sysEx) {
+                } catch (SystemException sysEx) {
                     // Just rethrow any CORBA system exceptions
                     // that come out of the ValueHandler
                     throw sysEx;
-                } catch(Exception ex) {
+                } catch (Exception ex) {
                     throw wrapper.valuehandlerReadException(
-                        CompletionStatus.COMPLETED_MAYBE, ex ) ;
-                } catch(Error e) {
+                            CompletionStatus.COMPLETED_MAYBE, ex);
+                } catch (Error e) {
                     throw wrapper.valuehandlerReadError(
-                        CompletionStatus.COMPLETED_MAYBE, e ) ;
+                            CompletionStatus.COMPLETED_MAYBE, e);
                 }
             }
         }
@@ -1029,7 +1017,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
         // Cache the valuetype that we read
         if (valueCache == null)
-            valueCache = new CacheTable(orb,false);
+            valueCache = new CacheTable(orb, false);
         valueCache.put(value, indirection);
 
         // Allow for possible continuation chunk.
@@ -1040,7 +1028,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         isChunked = saveIsChunked;
         start_block();
 
-        return (java.io.Serializable)value;
+        return (java.io.Serializable) value;
     }
 
     public Serializable read_value(BoxedValueHelper factory) {
@@ -1052,17 +1040,14 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             return null; // value is null
         else if (vType == 0xffffffff) { // Indirection tag
             int indirection = read_long() + get_offset() - 4;
-            if (valueCache != null && valueCache.containsVal(indirection))
-                {
-                    java.io.Serializable cachedValue =
-                           (java.io.Serializable)valueCache.getKey(indirection);
-                    return cachedValue;
-                }
-            else {
+            if (valueCache != null && valueCache.containsVal(indirection)) {
+                java.io.Serializable cachedValue =
+                        (java.io.Serializable) valueCache.getKey(indirection);
+                return cachedValue;
+            } else {
                 throw new IndirectionException(indirection);
             }
-        }
-        else {
+        } else {
             int indirection = get_offset() - 4;
 
             // end_block();
@@ -1073,13 +1058,13 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             java.lang.Object value = null;
 
             String codebase_URL = null;
-            if (repIdUtil.isCodeBasePresent(vType)){
+            if (repIdUtil.isCodeBasePresent(vType)) {
                 codebase_URL = read_codebase_URL();
             }
 
             // Read repository id
             String repositoryIDString
-                = readRepositoryIds(vType, null, null, factory);
+                    = readRepositoryIds(vType, null, null, factory);
 
             // Compare rep. ids to see if we should use passed helper
             if (!repositoryIDString.equals(factory.get_id()))
@@ -1091,7 +1076,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
                 chunkedValueNestingLevel--;
 
             if (factory instanceof ValueHelper) {
-                value = readIDLValueWithHelper((ValueHelper)factory, indirection);
+                value = readIDLValueWithHelper((ValueHelper) factory, indirection);
             } else {
                 valueIndirection = indirection;  // for callback
                 value = factory.read_value(parent);
@@ -1102,26 +1087,26 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
             // Put into valueCache
             if (valueCache == null)
-                valueCache = new CacheTable(orb,false);
+                valueCache = new CacheTable(orb, false);
             valueCache.put(value, indirection);
 
             // allow for possible continuation chunk
             isChunked = saveIsChunked;
             start_block();
 
-            return (java.io.Serializable)value;
+            return (java.io.Serializable) value;
         }
     }
 
     private boolean isCustomType(ValueHelper helper) {
-        try{
+        try {
             TypeCode tc = helper.get_type();
             int kind = tc.kind().value();
             if (kind == TCKind._tk_value) {
                 return (tc.type_modifier() == org.omg.CORBA.VM_CUSTOM.value);
             }
-        } catch(BadKind ex) {
-            throw wrapper.badKind(ex) ;
+        } catch (BadKind ex) {
+            throw wrapper.badKind(ex);
         }
 
         return false;
@@ -1135,13 +1120,13 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
         // Put into valueCache using valueIndirection
         if (valueCache == null)
-            valueCache = new CacheTable(orb,false);
+            valueCache = new CacheTable(orb, false);
         valueCache.put(value, valueIndirection);
 
         if (value instanceof StreamableValue)
-            ((StreamableValue)value)._read(parent);
+            ((StreamableValue) value)._read(parent);
         else if (value instanceof CustomValue)
-            ((CustomValue)value).unmarshal(parent);
+            ((CustomValue) value).unmarshal(parent);
 
         return value;
     }
@@ -1158,17 +1143,14 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             return null; // value is null
         else if (vType == 0xffffffff) { // Indirection tag
             int indirection = read_long() + get_offset() - 4;
-            if (valueCache != null && valueCache.containsVal(indirection))
-                {
-                    java.io.Serializable cachedValue =
-                          (java.io.Serializable)valueCache.getKey(indirection);
-                    return cachedValue;
-                }
-            else {
+            if (valueCache != null && valueCache.containsVal(indirection)) {
+                java.io.Serializable cachedValue =
+                        (java.io.Serializable) valueCache.getKey(indirection);
+                return cachedValue;
+            } else {
                 throw new IndirectionException(indirection);
             }
-        }
-        else {
+        } else {
             int indirection = get_offset() - 4;
 
             // end_block();
@@ -1179,16 +1161,16 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             java.lang.Object value = null;
 
             String codebase_URL = null;
-            if (repIdUtil.isCodeBasePresent(vType)){
+            if (repIdUtil.isCodeBasePresent(vType)) {
                 codebase_URL = read_codebase_URL();
             }
 
             // Read repository id
             String repositoryIDString
-                = readRepositoryIds(vType, null, repositoryId);
+                    = readRepositoryIds(vType, null, repositoryId);
 
             ValueFactory factory =
-               Utility.getFactory(null, codebase_URL, orb, repositoryIDString);
+                    Utility.getFactory(null, codebase_URL, orb, repositoryIDString);
 
             start_block();
             end_flag--;
@@ -1203,14 +1185,14 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
             // Put into valueCache
             if (valueCache == null)
-                valueCache = new CacheTable(orb,false);
+                valueCache = new CacheTable(orb, false);
             valueCache.put(value, indirection);
 
             // allow for possible continuation chunk
             isChunked = saveIsChunked;
             start_block();
 
-            return (java.io.Serializable)value;
+            return (java.io.Serializable) value;
         }
     }
 
@@ -1219,52 +1201,50 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         String codebases = null, classRepId = null;
 
         if (orb == null ||
-            ORBVersionFactory.getFOREIGN().equals(orb.getORBVersion()) ||
-            ORBVersionFactory.getNEWER().compareTo(orb.getORBVersion()) <= 0) {
+                ORBVersionFactory.getFOREIGN().equals(orb.getORBVersion()) ||
+                ORBVersionFactory.getNEWER().compareTo(orb.getORBVersion()) <= 0) {
 
-            codebases = (String)read_value(java.lang.String.class);
-            classRepId = (String)read_value(java.lang.String.class);
+            codebases = (String) read_value(java.lang.String.class);
+            classRepId = (String) read_value(java.lang.String.class);
         } else {
             // Pre-Merlin/J2EE 1.3 ORBs wrote the repository ID
             // and codebase strings in the wrong order.
-            classRepId = (String)read_value(java.lang.String.class);
-            codebases = (String)read_value(java.lang.String.class);
+            classRepId = (String) read_value(java.lang.String.class);
+            codebases = (String) read_value(java.lang.String.class);
         }
 
         if (debug) {
             dprint("readClass codebases: "
-                   + codebases
-                   + " rep Id: "
-                   + classRepId);
+                    + codebases
+                    + " rep Id: "
+                    + classRepId);
         }
 
         Class cl = null;
 
         RepositoryIdInterface repositoryID
-            = repIdStrs.getFromString(classRepId);
+                = repIdStrs.getFromString(classRepId);
 
         try {
             cl = repositoryID.getClassFromType(codebases);
-        } catch(ClassNotFoundException cnfe) {
-            throw wrapper.cnfeReadClass( CompletionStatus.COMPLETED_MAYBE,
-                cnfe, repositoryID.getClassName() ) ;
-        } catch(MalformedURLException me) {
-            throw wrapper.malformedUrl( CompletionStatus.COMPLETED_MAYBE,
-                me, repositoryID.getClassName(), codebases ) ;
+        } catch (ClassNotFoundException cnfe) {
+            throw wrapper.cnfeReadClass(CompletionStatus.COMPLETED_MAYBE,
+                    cnfe, repositoryID.getClassName());
+        } catch (MalformedURLException me) {
+            throw wrapper.malformedUrl(CompletionStatus.COMPLETED_MAYBE,
+                    me, repositoryID.getClassName(), codebases);
         }
 
         return cl;
     }
 
-    private java.lang.Object readIDLValueWithHelper(ValueHelper helper, int indirection)
-    {
+    private java.lang.Object readIDLValueWithHelper(ValueHelper helper, int indirection) {
         // look for two-argument static read method
         Method readMethod;
         try {
             Class argTypes[] = {org.omg.CORBA.portable.InputStream.class, helper.get_class()};
             readMethod = helper.getClass().getDeclaredMethod(kReadMethod, argTypes);
-        }
-        catch(NoSuchMethodException nsme) { // must be boxed value helper
+        } catch (NoSuchMethodException nsme) { // must be boxed value helper
             java.lang.Object result = helper.read_value(parent);
             return result;
         }
@@ -1274,10 +1254,10 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         java.lang.Object val = null;
         try {
             val = helper.get_class().newInstance();
-        } catch(java.lang.InstantiationException ie) {
-            throw wrapper.couldNotInstantiateHelper( ie,
-                helper.get_class() ) ;
-        } catch(IllegalAccessException iae){
+        } catch (java.lang.InstantiationException ie) {
+            throw wrapper.couldNotInstantiateHelper(ie,
+                    helper.get_class());
+        } catch (IllegalAccessException iae) {
             // Value's constructor is protected or private
             //
             // So, use the helper to read the value.
@@ -1289,12 +1269,12 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
         // add blank instance to cache table
         if (valueCache == null)
-            valueCache = new CacheTable(orb,false);
+            valueCache = new CacheTable(orb, false);
         valueCache.put(val, indirection);
 
         // if custom type, call unmarshal method
         if (val instanceof CustomMarshal && isCustomType(helper)) {
-            ((CustomMarshal)val).unmarshal(parent);
+            ((CustomMarshal) val).unmarshal(parent);
             return val;
         }
 
@@ -1303,23 +1283,22 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             java.lang.Object args[] = {parent, val};
             readMethod.invoke(helper, args);
             return val;
-        } catch(IllegalAccessException iae2) {
-            throw wrapper.couldNotInvokeHelperReadMethod( iae2, helper.get_class() ) ;
-        } catch(InvocationTargetException ite){
-            throw wrapper.couldNotInvokeHelperReadMethod( ite, helper.get_class() ) ;
+        } catch (IllegalAccessException iae2) {
+            throw wrapper.couldNotInvokeHelperReadMethod(iae2, helper.get_class());
+        } catch (InvocationTargetException ite) {
+            throw wrapper.couldNotInvokeHelperReadMethod(ite, helper.get_class());
         }
     }
 
-    private java.lang.Object readBoxedIDLEntity(Class clazz, String codebase)
-    {
-        Class cls = null ;
+    private java.lang.Object readBoxedIDLEntity(Class clazz, String codebase) {
+        Class cls = null;
 
         try {
             ClassLoader clazzLoader = (clazz == null ? null : clazz.getClassLoader());
 
-            cls = Utility.loadClassForClass(clazz.getName()+"Helper", codebase,
-                                                   clazzLoader, clazz, clazzLoader);
-            final Class helperClass = cls ;
+            cls = Utility.loadClassForClass(clazz.getName() + "Helper", codebase,
+                    clazzLoader, clazz, clazzLoader);
+            final Class helperClass = cls;
 
             final Class argTypes[] = {org.omg.CORBA.portable.InputStream.class};
 
@@ -1327,36 +1306,35 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             // if a different class loader is used (even though the javadoc says otherwise)
             Method readMethod = null;
             try {
-                readMethod = (Method)AccessController.doPrivileged(
-                    new PrivilegedExceptionAction() {
-                        public java.lang.Object run() throws NoSuchMethodException {
-                            return helperClass.getDeclaredMethod(kReadMethod, argTypes);
+                readMethod = (Method) AccessController.doPrivileged(
+                        new PrivilegedExceptionAction() {
+                            public java.lang.Object run() throws NoSuchMethodException {
+                                return helperClass.getDeclaredMethod(kReadMethod, argTypes);
+                            }
                         }
-                    }
                 );
             } catch (PrivilegedActionException pae) {
                 // this gets caught below
-                throw (NoSuchMethodException)pae.getException();
+                throw (NoSuchMethodException) pae.getException();
             }
 
             java.lang.Object args[] = {parent};
             return readMethod.invoke(null, args);
 
         } catch (ClassNotFoundException cnfe) {
-            throw wrapper.couldNotInvokeHelperReadMethod( cnfe, cls ) ;
-        } catch(NoSuchMethodException nsme) {
-            throw wrapper.couldNotInvokeHelperReadMethod( nsme, cls ) ;
-        } catch(IllegalAccessException iae) {
-            throw wrapper.couldNotInvokeHelperReadMethod( iae, cls ) ;
-        } catch(InvocationTargetException ite) {
-            throw wrapper.couldNotInvokeHelperReadMethod( ite, cls ) ;
+            throw wrapper.couldNotInvokeHelperReadMethod(cnfe, cls);
+        } catch (NoSuchMethodException nsme) {
+            throw wrapper.couldNotInvokeHelperReadMethod(nsme, cls);
+        } catch (IllegalAccessException iae) {
+            throw wrapper.couldNotInvokeHelperReadMethod(iae, cls);
+        } catch (InvocationTargetException ite) {
+            throw wrapper.couldNotInvokeHelperReadMethod(ite, cls);
         }
     }
 
     private java.lang.Object readIDLValue(int indirection, String repId,
-                                          Class clazz, String codebase)
-    {
-        ValueFactory factory ;
+                                          Class clazz, String codebase) {
+        ValueFactory factory;
 
         // Always try to find a ValueFactory first, as required by the spec.
         // There are some complications here in the IDL 3.0 mapping (see 1.13.8),
@@ -1374,12 +1352,12 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
             // Could not get a factory, so try alternatives
             if (!StreamableValue.class.isAssignableFrom(clazz) &&
-                !CustomValue.class.isAssignableFrom(clazz) &&
-                ValueBase.class.isAssignableFrom(clazz)) {
+                    !CustomValue.class.isAssignableFrom(clazz) &&
+                    ValueBase.class.isAssignableFrom(clazz)) {
                 // use old-style OBV support (helper object)
                 BoxedValueHelper helper = Utility.getHelper(clazz, codebase, repId);
                 if (helper instanceof ValueHelper)
-                    return readIDLValueWithHelper((ValueHelper)helper, indirection);
+                    return readIDLValueWithHelper((ValueHelper) helper, indirection);
                 else
                     return helper.read_value(parent);
             } else {
@@ -1396,12 +1374,12 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
     /**
      * End tags are only written for chunked valuetypes.
-     *
+     * <p>
      * Before Merlin, our ORBs wrote end tags which took into account
      * all enclosing valuetypes.  This was changed by an interop resolution
      * (see details around chunkedValueNestingLevel) to only include
      * enclosing chunked types.
-     *
+     * <p>
      * ORB versioning and end tag compaction are handled here.
      */
     private void readEndTag() {
@@ -1416,8 +1394,8 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             // handleEndOfValue should have assured that we were
             // at the end tag position!
             if (anEndTag >= 0) {
-                throw wrapper.positiveEndTag( CompletionStatus.COMPLETED_MAYBE,
-                    new Integer(anEndTag), new Integer( get_offset() - 4 ) ) ;
+                throw wrapper.positiveEndTag(CompletionStatus.COMPLETED_MAYBE,
+                        new Integer(anEndTag), new Integer(get_offset() - 4));
             }
 
             // If the ORB is null, or if we're sure we're talking to
@@ -1425,16 +1403,16 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             // use the updated end tag computation, and are more strenuous
             // about the values.
             if (orb == null ||
-                ORBVersionFactory.getFOREIGN().equals(orb.getORBVersion()) ||
-                ORBVersionFactory.getNEWER().compareTo(orb.getORBVersion()) <= 0) {
+                    ORBVersionFactory.getFOREIGN().equals(orb.getORBVersion()) ||
+                    ORBVersionFactory.getNEWER().compareTo(orb.getORBVersion()) <= 0) {
 
                 // If the end tag we read was less than what we were expecting,
                 // then the sender must think it's sent more enclosing
                 // chunked valuetypes than we have.  Throw an exception.
                 if (anEndTag < chunkedValueNestingLevel)
                     throw wrapper.unexpectedEnclosingValuetype(
-                        CompletionStatus.COMPLETED_MAYBE, new Integer( anEndTag ),
-                        new Integer( chunkedValueNestingLevel ) ) ;
+                            CompletionStatus.COMPLETED_MAYBE, new Integer(anEndTag),
+                            new Integer(chunkedValueNestingLevel));
 
                 // If the end tag is bigger than what we expected, but
                 // still negative, then the sender has done some end tag
@@ -1444,7 +1422,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
                 // to do this.
                 if (anEndTag != chunkedValueNestingLevel) {
                     bbwi.position(bbwi.position() - 4);
-                 }
+                }
 
             } else {
 
@@ -1557,8 +1535,8 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             // an error, and ended up setting blockLength to something
             // other than maxBlockLength even though we weren't
             // starting a new chunk.
-            throw wrapper.couldNotSkipBytes( CompletionStatus.COMPLETED_MAYBE,
-                new Integer( nextLong ), new Integer( get_offset() ) ) ;
+            throw wrapper.couldNotSkipBytes(CompletionStatus.COMPLETED_MAYBE,
+                    new Integer(nextLong), new Integer(get_offset()));
         }
     }
 
@@ -1575,14 +1553,14 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
                 if (blockLength > get_offset()) {
                     skipToOffset(blockLength);
                 } else {
-                    throw wrapper.badChunkLength( new Integer( blockLength ),
-                        new Integer( get_offset() ) ) ;
+                    throw wrapper.badChunkLength(new Integer(blockLength),
+                            new Integer(get_offset()));
                 }
             }
         }
     }
 
-    private int readValueTag(){
+    private int readValueTag() {
         // outerValueDone = false;
         return read_long();
     }
@@ -1594,26 +1572,26 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
     // ------------ End RMI related methods --------------------------
 
     public final void read_boolean_array(boolean[] value, int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_boolean();
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_boolean();
         }
     }
 
     public final void read_char_array(char[] value, int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_char();
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_char();
         }
     }
 
     public final void read_wchar_array(char[] value, int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_wchar();
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_wchar();
         }
     }
 
     public final void read_short_array(short[] value, int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_short();
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_short();
         }
     }
 
@@ -1622,8 +1600,8 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
     }
 
     public final void read_long_array(int[] value, int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_long();
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_long();
         }
     }
 
@@ -1632,8 +1610,8 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
     }
 
     public final void read_longlong_array(long[] value, int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_longlong();
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_longlong();
         }
     }
 
@@ -1642,20 +1620,20 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
     }
 
     public final void read_float_array(float[] value, int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_float();
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_float();
         }
     }
 
     public final void read_double_array(double[] value, int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_double();
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_double();
         }
     }
 
     public final void read_any_array(org.omg.CORBA.Any[] value, int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_any();
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_any();
         }
     }
 
@@ -1673,7 +1651,6 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 //     public int available() throws IOException {
 //         return bbwi.buflen - bbwi.position();
 //     }
-
     private String read_repositoryIds() {
 
         // Read # of repository ids
@@ -1681,16 +1658,16 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         if (numRepIds == 0xffffffff) {
             int indirection = read_long() + get_offset() - 4;
             if (repositoryIdCache != null && repositoryIdCache.containsOrderedVal(indirection))
-                return (String)repositoryIdCache.getKey(indirection);
+                return (String) repositoryIdCache.getKey(indirection);
             else
-                throw wrapper.unableToLocateRepIdArray( new Integer( indirection ) ) ;
+                throw wrapper.unableToLocateRepIdArray(new Integer(indirection));
         } else {
 
             // read first array element and store it as an indirection to the whole array
             int indirection = get_offset();
             String repID = read_repositoryId();
             if (repositoryIdCache == null)
-                repositoryIdCache = new CacheTable(orb,false);
+                repositoryIdCache = new CacheTable(orb, false);
             repositoryIdCache.put(repID, indirection);
 
             // read and ignore the subsequent array elements, but put them in the
@@ -1703,43 +1680,41 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         }
     }
 
-    private final String read_repositoryId()
-    {
+    private final String read_repositoryId() {
         String result = readStringOrIndirection(true);
 
         if (result == null) { // Indirection
             int indirection = read_long() + get_offset() - 4;
 
             if (repositoryIdCache != null && repositoryIdCache.containsOrderedVal(indirection))
-                return (String)repositoryIdCache.getKey(indirection);
+                return (String) repositoryIdCache.getKey(indirection);
             else
-                throw wrapper.badRepIdIndirection( CompletionStatus.COMPLETED_MAYBE,
-                    new Integer(bbwi.position()) ) ;
+                throw wrapper.badRepIdIndirection(CompletionStatus.COMPLETED_MAYBE,
+                        new Integer(bbwi.position()));
         } else {
             if (repositoryIdCache == null)
-                repositoryIdCache = new CacheTable(orb,false);
+                repositoryIdCache = new CacheTable(orb, false);
             repositoryIdCache.put(result, stringIndirection);
         }
 
-        return result ;
+        return result;
     }
 
-    private final String read_codebase_URL()
-    {
+    private final String read_codebase_URL() {
         String result = readStringOrIndirection(true);
 
         if (result == null) { // Indirection
             int indirection = read_long() + get_offset() - 4;
 
             if (codebaseCache != null && codebaseCache.containsVal(indirection))
-                return (String)codebaseCache.getKey(indirection);
+                return (String) codebaseCache.getKey(indirection);
             else
                 throw wrapper.badCodebaseIndirection(
-                    CompletionStatus.COMPLETED_MAYBE,
-                    new Integer(bbwi.position()) ) ;
+                        CompletionStatus.COMPLETED_MAYBE,
+                        new Integer(bbwi.position()));
         } else {
             if (codebaseCache == null)
-                codebaseCache = new CacheTable(orb,false);
+                codebaseCache = new CacheTable(orb, false);
             codebaseCache.put(result, stringIndirection);
         }
 
@@ -1748,63 +1723,63 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
     /* DataInputStream methods */
 
-    public java.lang.Object read_Abstract () {
+    public java.lang.Object read_Abstract() {
         return read_abstract_interface();
     }
 
-    public java.io.Serializable read_Value () {
+    public java.io.Serializable read_Value() {
         return read_value();
     }
 
-    public void read_any_array (org.omg.CORBA.AnySeqHolder seq, int offset, int length) {
+    public void read_any_array(org.omg.CORBA.AnySeqHolder seq, int offset, int length) {
         read_any_array(seq.value, offset, length);
     }
 
-    public void read_boolean_array (org.omg.CORBA.BooleanSeqHolder seq, int offset, int length) {
+    public void read_boolean_array(org.omg.CORBA.BooleanSeqHolder seq, int offset, int length) {
         read_boolean_array(seq.value, offset, length);
     }
 
-    public void read_char_array (org.omg.CORBA.CharSeqHolder seq, int offset, int length) {
+    public void read_char_array(org.omg.CORBA.CharSeqHolder seq, int offset, int length) {
         read_char_array(seq.value, offset, length);
     }
 
-    public void read_wchar_array (org.omg.CORBA.WCharSeqHolder seq, int offset, int length) {
+    public void read_wchar_array(org.omg.CORBA.WCharSeqHolder seq, int offset, int length) {
         read_wchar_array(seq.value, offset, length);
     }
 
-    public void read_octet_array (org.omg.CORBA.OctetSeqHolder seq, int offset, int length) {
+    public void read_octet_array(org.omg.CORBA.OctetSeqHolder seq, int offset, int length) {
         read_octet_array(seq.value, offset, length);
     }
 
-    public void read_short_array (org.omg.CORBA.ShortSeqHolder seq, int offset, int length) {
+    public void read_short_array(org.omg.CORBA.ShortSeqHolder seq, int offset, int length) {
         read_short_array(seq.value, offset, length);
     }
 
-    public void read_ushort_array (org.omg.CORBA.UShortSeqHolder seq, int offset, int length) {
+    public void read_ushort_array(org.omg.CORBA.UShortSeqHolder seq, int offset, int length) {
         read_ushort_array(seq.value, offset, length);
     }
 
-    public void read_long_array (org.omg.CORBA.LongSeqHolder seq, int offset, int length) {
+    public void read_long_array(org.omg.CORBA.LongSeqHolder seq, int offset, int length) {
         read_long_array(seq.value, offset, length);
     }
 
-    public void read_ulong_array (org.omg.CORBA.ULongSeqHolder seq, int offset, int length) {
+    public void read_ulong_array(org.omg.CORBA.ULongSeqHolder seq, int offset, int length) {
         read_ulong_array(seq.value, offset, length);
     }
 
-    public void read_ulonglong_array (org.omg.CORBA.ULongLongSeqHolder seq, int offset, int length) {
+    public void read_ulonglong_array(org.omg.CORBA.ULongLongSeqHolder seq, int offset, int length) {
         read_ulonglong_array(seq.value, offset, length);
     }
 
-    public void read_longlong_array (org.omg.CORBA.LongLongSeqHolder seq, int offset, int length) {
+    public void read_longlong_array(org.omg.CORBA.LongLongSeqHolder seq, int offset, int length) {
         read_longlong_array(seq.value, offset, length);
     }
 
-    public void read_float_array (org.omg.CORBA.FloatSeqHolder seq, int offset, int length) {
+    public void read_float_array(org.omg.CORBA.FloatSeqHolder seq, int offset, int length) {
         read_float_array(seq.value, offset, length);
     }
 
-    public void read_double_array (org.omg.CORBA.DoubleSeqHolder seq, int offset, int length) {
+    public void read_double_array(org.omg.CORBA.DoubleSeqHolder seq, int offset, int length) {
         read_double_array(seq.value, offset, length);
     }
 
@@ -1812,8 +1787,8 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         // digits isn't really needed here
         StringBuffer buffer = read_fixed_buffer();
         if (digits != buffer.length())
-            throw wrapper.badFixed( new Integer(digits),
-                new Integer(buffer.length()) ) ;
+            throw wrapper.badFixed(new Integer(digits),
+                    new Integer(buffer.length()));
         buffer.insert(digits - scale, '.');
         return new BigDecimal(buffer.toString());
     }
@@ -1839,15 +1814,15 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         boolean more = true;
         while (more) {
             doubleDigit = this.read_octet();
-            firstDigit = (int)((doubleDigit & 0xf0) >> 4);
-            secondDigit = (int)(doubleDigit & 0x0f);
+            firstDigit = (int) ((doubleDigit & 0xf0) >> 4);
+            secondDigit = (int) (doubleDigit & 0x0f);
             if (wroteFirstDigit || firstDigit != 0) {
                 buffer.append(Character.forDigit(firstDigit, 10));
                 wroteFirstDigit = true;
             }
             if (secondDigit == 12) {
                 // positive number or zero
-                if ( ! wroteFirstDigit) {
+                if (!wroteFirstDigit) {
                     // zero
                     return new StringBuffer("0.0");
                 } else {
@@ -1868,13 +1843,13 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
     }
 
     private final static String _id = "IDL:omg.org/CORBA/DataInputStream:1.0";
-    private final static String[] _ids = { _id };
+    private final static String[] _ids = {_id};
 
     public String[] _truncatable_ids() {
         if (_ids == null)
             return null;
 
-        return (String[])_ids.clone();
+        return (String[]) _ids.clone();
     }
 
     /* for debugging */
@@ -1926,8 +1901,8 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
                 // characters are shown as periods.
                 int x = 0;
                 while (x < 16 && x + i < bbwi.buflen) {
-                    if (ORBUtility.isPrintable((char)bbwi.byteBuffer.get(i + x)))
-                        charBuf[x] = (char)bbwi.byteBuffer.get(i + x);
+                    if (ORBUtility.isPrintable((char) bbwi.byteBuffer.get(i + x)))
+                        charBuf[x] = (char) bbwi.byteBuffer.get(i + x);
                     else
                         charBuf[x] = '.';
                     x++;
@@ -1980,7 +1955,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
     }
 
     public void orb(org.omg.CORBA.ORB orb) {
-        this.orb = (ORB)orb;
+        this.orb = (ORB) orb;
     }
 
     public BufferManagerRead getBufferManager() {
@@ -2017,8 +1992,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
     protected MarkAndResetHandler markAndResetHandler = null;
 
-    protected class StreamMemento
-    {
+    protected class StreamMemento {
         // These are the fields that may change after marking
         // the stream position, so we need to save them.
         private int blockLength_;
@@ -2031,8 +2005,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         private ByteBufferWithInfo bbwi_;
         private boolean specialNoOptionalDataState_;
 
-        public StreamMemento()
-        {
+        public StreamMemento() {
             blockLength_ = blockLength;
             end_flag_ = end_flag;
             chunkedValueNestingLevel_ = chunkedValueNestingLevel;
@@ -2051,7 +2024,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
     public void restoreInternalState(java.lang.Object streamMemento) {
 
-        StreamMemento mem = (StreamMemento)streamMemento;
+        StreamMemento mem = (StreamMemento) streamMemento;
 
         blockLength = mem.blockLength_;
         end_flag = mem.end_flag_;
@@ -2095,17 +2068,16 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
      */
     private Class getClassFromString(String repositoryIDString,
                                      String codebaseURL,
-                                     Class expectedType)
-    {
+                                     Class expectedType) {
         RepositoryIdInterface repositoryID
-            = repIdStrs.getFromString(repositoryIDString);
+                = repIdStrs.getFromString(repositoryIDString);
 
         try {
             try {
                 // First try to load the class locally, then use
                 // the provided URL (if it isn't null)
                 return repositoryID.getClassFromType(expectedType,
-                                                     codebaseURL);
+                        codebaseURL);
             } catch (ClassNotFoundException cnfeOuter) {
 
                 try {
@@ -2123,7 +2095,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
                         return null;
 
                     return repositoryID.getClassFromType(expectedType,
-                                                         codebaseURL);
+                            codebaseURL);
                 } catch (ClassNotFoundException cnfeInner) {
                     dprintThrowable(cnfeInner);
                     // Failed to load the class
@@ -2132,8 +2104,8 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             }
         } catch (MalformedURLException mue) {
             // Always report a bad URL
-            throw wrapper.malformedUrl( CompletionStatus.COMPLETED_MAYBE,
-                mue, repositoryIDString, codebaseURL ) ;
+            throw wrapper.malformedUrl(CompletionStatus.COMPLETED_MAYBE,
+                    mue, repositoryIDString, codebaseURL);
         }
     }
 
@@ -2144,17 +2116,15 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
      * finally, via a URL from the remote CodeBase.
      */
     private Class getClassFromString(String repositoryIDString,
-                                     String codebaseURL)
-    {
+                                     String codebaseURL) {
         RepositoryIdInterface repositoryID
-            = repIdStrs.getFromString(repositoryIDString);
+                = repIdStrs.getFromString(repositoryIDString);
 
         for (int i = 0; i < 3; i++) {
 
             try {
 
-                switch (i)
-                {
+                switch (i) {
                     case 0:
                         // First try to load the class locally
                         return repositoryID.getClassFromType();
@@ -2175,20 +2145,20 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
                 return repositoryID.getClassFromType(codebaseURL);
 
-            } catch(ClassNotFoundException cnfe) {
+            } catch (ClassNotFoundException cnfe) {
                 // Will ultimately return null if all three
                 // attempts fail, but don't do anything here.
             } catch (MalformedURLException mue) {
-                throw wrapper.malformedUrl( CompletionStatus.COMPLETED_MAYBE,
-                    mue, repositoryIDString, codebaseURL ) ;
+                throw wrapper.malformedUrl(CompletionStatus.COMPLETED_MAYBE,
+                        mue, repositoryIDString, codebaseURL);
             }
         }
 
         // If we get here, we have failed to load the class
         dprint("getClassFromString failed with rep id "
-               + repositoryIDString
-               + " and codebase "
-               + codebaseURL);
+                + repositoryIDString
+                + " and codebase "
+                + codebaseURL);
 
         return null;
     }
@@ -2207,19 +2177,16 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
             // just convert directly from the bbwi rather than
             // allocating and copying.
             byte[] tmpBuf;
-            if (bbwi.byteBuffer.hasArray())
-            {
+            if (bbwi.byteBuffer.hasArray()) {
                 tmpBuf = bbwi.byteBuffer.array();
+            } else {
+                tmpBuf = new byte[bbwi.buflen];
+                // Microbenchmarks are showing a loop of ByteBuffer.get(int)
+                // being faster than ByteBuffer.get(byte[], int, int).
+                for (int i = 0; i < bbwi.buflen; i++)
+                    tmpBuf[i] = bbwi.byteBuffer.get(i);
             }
-            else
-            {
-                 tmpBuf = new byte[bbwi.buflen];
-                 // Microbenchmarks are showing a loop of ByteBuffer.get(int)
-                 // being faster than ByteBuffer.get(byte[], int, int).
-                 for (int i = 0; i < bbwi.buflen; i++)
-                     tmpBuf[i] = bbwi.byteBuffer.get(i);
-            }
-            char[] result = converter.getChars(tmpBuf,bbwi.position(),numBytes);
+            char[] result = converter.getChars(tmpBuf, bbwi.position(), numBytes);
 
             bbwi.position(bbwi.position() + numBytes);
             return result;
@@ -2269,8 +2236,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
     void alignOnBoundary(int octetBoundary) {
         int needed = computeAlignment(bbwi.position(), octetBoundary);
 
-        if (bbwi.position() + needed <= bbwi.buflen)
-        {
+        if (bbwi.position() + needed <= bbwi.buflen) {
             bbwi.position(bbwi.position() + needed);
         }
     }
@@ -2300,18 +2266,18 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         if (vType == 0xffffffff) {
             // One should never indirect to a custom wrapper
             throw wrapper.customWrapperIndirection(
-                CompletionStatus.COMPLETED_MAYBE);
+                    CompletionStatus.COMPLETED_MAYBE);
         }
 
         if (repIdUtil.isCodeBasePresent(vType)) {
             throw wrapper.customWrapperWithCodebase(
-                CompletionStatus.COMPLETED_MAYBE);
+                    CompletionStatus.COMPLETED_MAYBE);
         }
 
         if (repIdUtil.getTypeInfo(vType)
-            != RepositoryIdUtility.SINGLE_REP_TYPE_INFO) {
+                != RepositoryIdUtility.SINGLE_REP_TYPE_INFO) {
             throw wrapper.customWrapperNotSingleRepid(
-                CompletionStatus.COMPLETED_MAYBE);
+                    CompletionStatus.COMPLETED_MAYBE);
         }
 
 
@@ -2347,8 +2313,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         start_block();
     }
 
-    public void close() throws IOException
-    {
+    public void close() throws IOException {
 
         // tell BufferManagerRead to release any ByteBuffers
         getBufferManager().close(bbwi);
@@ -2359,17 +2324,13 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
         // If they sharing the same ByteBuffer we need to ensure only
         // one of those ByteBuffers are released to the ByteBufferPool.
 
-        if (bbwi != null && getByteBuffer() != null)
-        {
+        if (bbwi != null && getByteBuffer() != null) {
             MessageMediator messageMediator = parent.getMessageMediator();
-            if (messageMediator != null)
-            {
+            if (messageMediator != null) {
                 CDROutputObject outputObj =
-                             (CDROutputObject)messageMediator.getOutputObject();
-                if (outputObj != null)
-                {
-                    if (outputObj.isSharing(getByteBuffer()))
-                    {
+                        (CDROutputObject) messageMediator.getOutputObject();
+                if (outputObj != null) {
+                    if (outputObj.isSharing(getByteBuffer())) {
                         // Set OutputStream's ByteBuffer and bbwi to null
                         // so its ByteBuffer cannot be released to the pool
                         outputObj.setByteBuffer(null);
@@ -2380,8 +2341,7 @@ public class CDRInputStream_1_0 extends CDRInputStreamBase
 
             // release this stream's ByteBuffer to the pool
             ByteBufferPool byteBufferPool = orb.getByteBufferPool();
-            if (debug)
-            {
+            if (debug) {
                 // print address of ByteBuffer being released
                 int bbAddress = System.identityHashCode(bbwi.byteBuffer);
                 StringBuffer sb = new StringBuffer(80);

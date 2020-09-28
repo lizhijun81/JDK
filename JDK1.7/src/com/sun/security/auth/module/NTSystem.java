@@ -28,11 +28,11 @@ package com.sun.security.auth.module;
 /**
  * <p> This class implementation retrieves and makes available NT
  * security information for the current user.
- *
  */
 public class NTSystem {
 
     private native void getCurrent(boolean debug);
+
     private native long getImpersonationToken0();
 
     private String userName;
@@ -41,7 +41,7 @@ public class NTSystem {
     private String userSID;
     private String groupIDs[];
     private String primaryGroupID;
-    private long   impersonationToken;
+    private long impersonationToken;
 
     /**
      * Instantiate an <code>NTSystem</code> and load

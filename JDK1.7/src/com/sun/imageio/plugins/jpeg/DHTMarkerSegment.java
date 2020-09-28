@@ -104,7 +104,7 @@ class DHTMarkerSegment extends MarkerSegment {
 
     IIOMetadataNode getNativeNode() {
         IIOMetadataNode node = new IIOMetadataNode("dht");
-        for (int i= 0; i<tables.size(); i++) {
+        for (int i = 0; i < tables.size(); i++) {
             Htable table = (Htable) tables.get(i);
             node.appendChild(table.getNativeNode());
         }
@@ -122,8 +122,8 @@ class DHTMarkerSegment extends MarkerSegment {
     void print() {
         printTag("DHT");
         System.out.println("Num tables: "
-                           + Integer.toString(tables.size()));
-        for (int i= 0; i<tables.size(); i++) {
+                + Integer.toString(tables.size()));
+        for (int i = 0; i < tables.size(); i++) {
             Htable table = (Htable) tables.get(i);
             table.print();
         }
@@ -147,8 +147,8 @@ class DHTMarkerSegment extends MarkerSegment {
         int tableID; // 0 - 4
         private static final int NUM_LENGTHS = 16;
         // # of codes of each length
-        short [] numCodes = new short[NUM_LENGTHS];
-        short [] values;
+        short[] numCodes = new short[NUM_LENGTHS];
+        short[] values;
 
         Htable(JPEGBuffer buffer) {
             tableClass = buffer.buf[buffer.bufPtr] >>> 4;
@@ -180,27 +180,27 @@ class DHTMarkerSegment extends MarkerSegment {
                 int count = attrs.getLength();
                 if (count != 2) {
                     throw new IIOInvalidTreeException
-                        ("dhtable node must have 2 attributes", node);
+                            ("dhtable node must have 2 attributes", node);
                 }
                 tableClass = getAttributeValue(node, attrs, "class", 0, 1, true);
                 tableID = getAttributeValue(node, attrs, "htableId", 0, 3, true);
                 if (node instanceof IIOMetadataNode) {
                     IIOMetadataNode ourNode = (IIOMetadataNode) node;
                     JPEGHuffmanTable table =
-                        (JPEGHuffmanTable) ourNode.getUserObject();
+                            (JPEGHuffmanTable) ourNode.getUserObject();
                     if (table == null) {
                         throw new IIOInvalidTreeException
-                            ("dhtable node must have user object", node);
+                                ("dhtable node must have user object", node);
                     }
                     numCodes = table.getLengths();
                     values = table.getValues();
                 } else {
                     throw new IIOInvalidTreeException
-                        ("dhtable node must have user object", node);
+                            ("dhtable node must have user object", node);
                 }
             } else {
                 throw new IIOInvalidTreeException
-                    ("Invalid node, expected dqtable", node);
+                        ("Invalid node, expected dqtable", node);
             }
 
         }
@@ -209,12 +209,13 @@ class DHTMarkerSegment extends MarkerSegment {
             Htable newGuy = null;
             try {
                 newGuy = (Htable) super.clone();
-            } catch (CloneNotSupportedException e) {} // won't happen
+            } catch (CloneNotSupportedException e) {
+            } // won't happen
             if (numCodes != null) {
-                newGuy.numCodes = (short []) numCodes.clone();
+                newGuy.numCodes = (short[]) numCodes.clone();
             }
             if (values != null) {
-                newGuy.values = (short []) values.clone();
+                newGuy.values = (short[]) values.clone();
             }
             return newGuy;
         }
@@ -233,7 +234,7 @@ class DHTMarkerSegment extends MarkerSegment {
         void print() {
             System.out.println("Huffman Table");
             System.out.println("table class: "
-                               + ((tableClass == 0) ? "DC":"AC"));
+                    + ((tableClass == 0) ? "DC" : "AC"));
             System.out.println("table id: " + Integer.toString(tableID));
 
             (new JPEGHuffmanTable(numCodes, values)).toString();

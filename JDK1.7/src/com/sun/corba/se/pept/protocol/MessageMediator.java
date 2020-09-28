@@ -39,8 +39,7 @@ import java.io.IOException;
  *
  * @author Harold Carr
  */
-public interface MessageMediator
-{
+public interface MessageMediator {
     /**
      * The {@link com.sun.corba.se.pept.broker.Broker Broker} associated
      * with an invocation.
@@ -54,8 +53,7 @@ public interface MessageMediator
      * {@link com.sun.corba.se.pept.transport.ContactInfo ContactInfo}
      * which created this <code>MessageMediator</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.transport.ContactInfo ContactInfo}
+     * @return {@link com.sun.corba.se.pept.transport.ContactInfo ContactInfo}
      */
     public ContactInfo getContactInfo();
 
@@ -68,14 +66,14 @@ public interface MessageMediator
 
     /**
      * Used to initialize message headers.
-     *
+     * <p>
      * Note: this should be moved to a <code>RequestDispatcher</code>.
      */
     public void initializeMessage();
 
     /**
      * Used to send the message (or its last fragment).
-     *
+     * <p>
      * Note: this should be moved to a <code>RequestDispatcher</code>.
      */
     public void finishSendingRequest();
@@ -102,8 +100,7 @@ public interface MessageMediator
      * {@link com.sun.corba.se.pept.encoding.OutputObject OutputObject}
      * used for the message.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.encoding.OutputObject OutputObject}
+     * @return {@link com.sun.corba.se.pept.encoding.OutputObject OutputObject}
      */
     public OutputObject getOutputObject();
 
@@ -121,8 +118,7 @@ public interface MessageMediator
      * {@link com.sun.corba.se.pept.encoding.InputObject InputObject}
      * used for the message.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.encoding.InputObject InputObject}
+     * @return {@link com.sun.corba.se.pept.encoding.InputObject InputObject}
      */
     public InputObject getInputObject();
 }

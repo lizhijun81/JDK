@@ -26,6 +26,7 @@
 package com.sun.security.auth.callback;
 
 /* JAAS imports */
+
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.ConfirmationCallback;
@@ -51,6 +52,7 @@ import javax.swing.JTextField;
  * authentication questions.
  * This can be used by a JAAS application to instantiate a
  * CallbackHandler
+ *
  * @see javax.security.auth.callback
  */
 public class DialogCallbackHandler implements CallbackHandler {
@@ -59,21 +61,22 @@ public class DialogCallbackHandler implements CallbackHandler {
 
     /* The parent window, or null if using the default parent */
     private Component parentComponent;
-    private static final int JPasswordFieldLen = 8 ;
-    private static final int JTextFieldLen = 8 ;
+    private static final int JPasswordFieldLen = 8;
+    private static final int JTextFieldLen = 8;
 
     /* -- Methods -- */
 
     /**
      * Creates a callback dialog with the default parent window.
      */
-    public DialogCallbackHandler() { }
+    public DialogCallbackHandler() {
+    }
 
     /**
      * Creates a callback dialog and specify the parent window.
      *
      * @param parentComponent the parent window -- specify <code>null</code>
-     * for the default parent
+     *                        for the default parent
      */
     public DialogCallbackHandler(Component parentComponent) {
         this.parentComponent = parentComponent;
@@ -84,7 +87,7 @@ public class DialogCallbackHandler implements CallbackHandler {
      * clicks OK for the dialog.
      */
     private static interface Action {
-         void perform();
+        void perform();
     }
 
     /**
@@ -92,12 +95,11 @@ public class DialogCallbackHandler implements CallbackHandler {
      *
      * @param callbacks the callbacks to handle
      * @throws UnsupportedCallbackException if the callback is not an
-     * instance  of NameCallback or PasswordCallback
+     *                                      instance  of NameCallback or PasswordCallback
      */
 
     public void handle(Callback[] callbacks)
-        throws UnsupportedCallbackException
-    {
+            throws UnsupportedCallbackException {
         /* Collect messages to display in the dialog */
         final List<Object> messages = new ArrayList<>(3);
 
@@ -111,18 +113,18 @@ public class DialogCallbackHandler implements CallbackHandler {
                 TextOutputCallback tc = (TextOutputCallback) callbacks[i];
 
                 switch (tc.getMessageType()) {
-                case TextOutputCallback.INFORMATION:
-                    confirmation.messageType = JOptionPane.INFORMATION_MESSAGE;
-                    break;
-                case TextOutputCallback.WARNING:
-                    confirmation.messageType = JOptionPane.WARNING_MESSAGE;
-                    break;
-                case TextOutputCallback.ERROR:
-                    confirmation.messageType = JOptionPane.ERROR_MESSAGE;
-                    break;
-                default:
-                    throw new UnsupportedCallbackException(
-                        callbacks[i], "Unrecognized message type");
+                    case TextOutputCallback.INFORMATION:
+                        confirmation.messageType = JOptionPane.INFORMATION_MESSAGE;
+                        break;
+                    case TextOutputCallback.WARNING:
+                        confirmation.messageType = JOptionPane.WARNING_MESSAGE;
+                        break;
+                    case TextOutputCallback.ERROR:
+                        confirmation.messageType = JOptionPane.ERROR_MESSAGE;
+                        break;
+                    default:
+                        throw new UnsupportedCallbackException(
+                                callbacks[i], "Unrecognized message type");
                 }
 
                 messages.add(tc.getMessage());
@@ -160,7 +162,7 @@ public class DialogCallbackHandler implements CallbackHandler {
                 JLabel prompt = new JLabel(pc.getPrompt());
 
                 final JPasswordField password =
-                                        new JPasswordField(JPasswordFieldLen);
+                        new JPasswordField(JPasswordFieldLen);
                 if (!pc.isEchoOn()) {
                     password.setEchoChar('*');
                 }
@@ -177,7 +179,7 @@ public class DialogCallbackHandler implements CallbackHandler {
                 });
 
             } else if (callbacks[i] instanceof ConfirmationCallback) {
-                ConfirmationCallback cc = (ConfirmationCallback)callbacks[i];
+                ConfirmationCallback cc = (ConfirmationCallback) callbacks[i];
 
                 confirmation.setCallback(cc);
                 if (cc.getPrompt() != null) {
@@ -186,25 +188,24 @@ public class DialogCallbackHandler implements CallbackHandler {
 
             } else {
                 throw new UnsupportedCallbackException(
-                    callbacks[i], "Unrecognized Callback");
+                        callbacks[i], "Unrecognized Callback");
             }
         }
 
         /* Display the dialog */
         int result = JOptionPane.showOptionDialog(
-            parentComponent,
-            messages.toArray(),
-            "Confirmation",                     /* title */
-            confirmation.optionType,
-            confirmation.messageType,
-            null,                               /* icon */
-            confirmation.options,               /* options */
-            confirmation.initialValue);         /* initialValue */
+                parentComponent,
+                messages.toArray(),
+                "Confirmation",                     /* title */
+                confirmation.optionType,
+                confirmation.messageType,
+                null,                               /* icon */
+                confirmation.options,               /* options */
+                confirmation.initialValue);         /* initialValue */
 
         /* Perform the OK actions */
         if (result == JOptionPane.OK_OPTION
-            || result == JOptionPane.YES_OPTION)
-        {
+                || result == JOptionPane.YES_OPTION) {
             Iterator<Action> iterator = okActions.iterator();
             while (iterator.hasNext()) {
                 iterator.next().perform();
@@ -231,69 +232,68 @@ public class DialogCallbackHandler implements CallbackHandler {
 
         /* Set the confirmation callback handler */
         void setCallback(ConfirmationCallback callback)
-            throws UnsupportedCallbackException
-        {
+                throws UnsupportedCallbackException {
             this.callback = callback;
 
             int confirmationOptionType = callback.getOptionType();
             switch (confirmationOptionType) {
-            case ConfirmationCallback.YES_NO_OPTION:
-                optionType = JOptionPane.YES_NO_OPTION;
-                translations = new int[] {
-                    JOptionPane.YES_OPTION, ConfirmationCallback.YES,
-                    JOptionPane.NO_OPTION, ConfirmationCallback.NO,
-                    JOptionPane.CLOSED_OPTION, ConfirmationCallback.NO
-                };
-                break;
-            case ConfirmationCallback.YES_NO_CANCEL_OPTION:
-                optionType = JOptionPane.YES_NO_CANCEL_OPTION;
-                translations = new int[] {
-                    JOptionPane.YES_OPTION, ConfirmationCallback.YES,
-                    JOptionPane.NO_OPTION, ConfirmationCallback.NO,
-                    JOptionPane.CANCEL_OPTION, ConfirmationCallback.CANCEL,
-                    JOptionPane.CLOSED_OPTION, ConfirmationCallback.CANCEL
-                };
-                break;
-            case ConfirmationCallback.OK_CANCEL_OPTION:
-                optionType = JOptionPane.OK_CANCEL_OPTION;
-                translations = new int[] {
-                    JOptionPane.OK_OPTION, ConfirmationCallback.OK,
-                    JOptionPane.CANCEL_OPTION, ConfirmationCallback.CANCEL,
-                    JOptionPane.CLOSED_OPTION, ConfirmationCallback.CANCEL
-                };
-                break;
-            case ConfirmationCallback.UNSPECIFIED_OPTION:
-                options = callback.getOptions();
-                /*
-                 * There's no way to know if the default option means
-                 * to cancel the login, but there isn't a better way
-                 * to guess this.
-                 */
-                translations = new int[] {
-                    JOptionPane.CLOSED_OPTION, callback.getDefaultOption()
-                };
-                break;
-            default:
-                throw new UnsupportedCallbackException(
-                    callback,
-                    "Unrecognized option type: " + confirmationOptionType);
+                case ConfirmationCallback.YES_NO_OPTION:
+                    optionType = JOptionPane.YES_NO_OPTION;
+                    translations = new int[]{
+                            JOptionPane.YES_OPTION, ConfirmationCallback.YES,
+                            JOptionPane.NO_OPTION, ConfirmationCallback.NO,
+                            JOptionPane.CLOSED_OPTION, ConfirmationCallback.NO
+                    };
+                    break;
+                case ConfirmationCallback.YES_NO_CANCEL_OPTION:
+                    optionType = JOptionPane.YES_NO_CANCEL_OPTION;
+                    translations = new int[]{
+                            JOptionPane.YES_OPTION, ConfirmationCallback.YES,
+                            JOptionPane.NO_OPTION, ConfirmationCallback.NO,
+                            JOptionPane.CANCEL_OPTION, ConfirmationCallback.CANCEL,
+                            JOptionPane.CLOSED_OPTION, ConfirmationCallback.CANCEL
+                    };
+                    break;
+                case ConfirmationCallback.OK_CANCEL_OPTION:
+                    optionType = JOptionPane.OK_CANCEL_OPTION;
+                    translations = new int[]{
+                            JOptionPane.OK_OPTION, ConfirmationCallback.OK,
+                            JOptionPane.CANCEL_OPTION, ConfirmationCallback.CANCEL,
+                            JOptionPane.CLOSED_OPTION, ConfirmationCallback.CANCEL
+                    };
+                    break;
+                case ConfirmationCallback.UNSPECIFIED_OPTION:
+                    options = callback.getOptions();
+                    /*
+                     * There's no way to know if the default option means
+                     * to cancel the login, but there isn't a better way
+                     * to guess this.
+                     */
+                    translations = new int[]{
+                            JOptionPane.CLOSED_OPTION, callback.getDefaultOption()
+                    };
+                    break;
+                default:
+                    throw new UnsupportedCallbackException(
+                            callback,
+                            "Unrecognized option type: " + confirmationOptionType);
             }
 
             int confirmationMessageType = callback.getMessageType();
             switch (confirmationMessageType) {
-            case ConfirmationCallback.WARNING:
-                messageType = JOptionPane.WARNING_MESSAGE;
-                break;
-            case ConfirmationCallback.ERROR:
-                messageType = JOptionPane.ERROR_MESSAGE;
-                break;
-            case ConfirmationCallback.INFORMATION:
-                messageType = JOptionPane.INFORMATION_MESSAGE;
-                break;
-            default:
-                throw new UnsupportedCallbackException(
-                    callback,
-                    "Unrecognized message type: " + confirmationMessageType);
+                case ConfirmationCallback.WARNING:
+                    messageType = JOptionPane.WARNING_MESSAGE;
+                    break;
+                case ConfirmationCallback.ERROR:
+                    messageType = JOptionPane.ERROR_MESSAGE;
+                    break;
+                case ConfirmationCallback.INFORMATION:
+                    messageType = JOptionPane.INFORMATION_MESSAGE;
+                    break;
+                default:
+                    throw new UnsupportedCallbackException(
+                            callback,
+                            "Unrecognized message type: " + confirmationMessageType);
             }
         }
 

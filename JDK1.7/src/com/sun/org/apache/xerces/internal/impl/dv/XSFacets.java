@@ -29,10 +29,8 @@ import com.sun.org.apache.xerces.internal.impl.xs.util.XSObjectListImpl;
 /**
  * The class used to pass all facets to {@link XSSimpleType#applyFacets}.
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
- *
+ * @xerces.internal
  */
 public class XSFacets {
 
@@ -105,7 +103,6 @@ public class XSFacets {
     public String minExclusive;
 
 
-
     public XSAnnotation lengthAnnotation;
     public XSAnnotation minLengthAnnotation;
     public XSAnnotation maxLengthAnnotation;
@@ -119,7 +116,7 @@ public class XSFacets {
     public XSAnnotation minInclusiveAnnotation;
     public XSAnnotation minExclusiveAnnotation;
 
-    public void reset(){
+    public void reset() {
         lengthAnnotation = null;
         minLengthAnnotation = null;
         maxLengthAnnotation = null;

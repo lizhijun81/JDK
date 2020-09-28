@@ -22,23 +22,24 @@ package com.sun.org.apache.xerces.internal.xinclude;
 
 import com.sun.org.apache.xerces.internal.util.MessageFormatter;
 import com.sun.org.apache.xerces.internal.utils.SecuritySupport;
+
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 // TODO: fix error messages in XIncludeMessages.properties
+
 /**
  * XIncludeMessageFormatter provides error messages for the XInclude 1.0 Candidate Recommendation
  *
  * @author Peter McCracken, IBM
- *
  * @version $Id: XIncludeMessageFormatter.java,v 1.7 2010-11-01 04:40:18 joehw Exp $
  */
 public class XIncludeMessageFormatter implements MessageFormatter {
 
     public static final String XINCLUDE_DOMAIN = "http://www.w3.org/TR/xinclude";
 
-     // private objects to cache the locale and resource bundle
+    // private objects to cache the locale and resource bundle
     private Locale fLocale = null;
     private ResourceBundle fResourceBundle = null;
 
@@ -51,14 +52,12 @@ public class XIncludeMessageFormatter implements MessageFormatter {
      * @param arguments The message replacement text arguments. The order
      *                  of the arguments must match that of the placeholders
      *                  in the actual message.
-     *
      * @return Returns the formatted message.
-     *
      * @throws MissingResourceException Thrown if the message with the
      *                                  specified key cannot be found.
      */
-     public String formatMessage(Locale locale, String key, Object[] arguments)
-        throws MissingResourceException {
+    public String formatMessage(Locale locale, String key, Object[] arguments)
+            throws MissingResourceException {
 
         if (fResourceBundle == null || locale != fLocale) {
             if (locale != null) {

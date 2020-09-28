@@ -48,14 +48,13 @@ import com.sun.mirror.util.*;
  * provides a simple way to select just the items of interest
  * when a method returns a collection of declarations.
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this interface is {@link
  * javax.annotation.processing.ProcessingEnvironment}.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")
@@ -74,7 +73,7 @@ public interface AnnotationProcessorEnvironment {
      *
      * @return the options passed to the tool
      */
-    Map<String,String> getOptions();
+    Map<String, String> getOptions();
 
     /**
      * Returns the messager used to report errors, warnings, and other
@@ -105,7 +104,7 @@ public interface AnnotationProcessorEnvironment {
     /**
      * Returns the declaration of a package given its fully qualified name.
      *
-     * @param name  fully qualified package name, or "" for the unnamed package
+     * @param name fully qualified package name, or "" for the unnamed package
      * @return the declaration of the named package, or null if it cannot
      * be found
      */
@@ -114,7 +113,7 @@ public interface AnnotationProcessorEnvironment {
     /**
      * Returns the declaration of a type given its fully qualified name.
      *
-     * @param name  fully qualified type name
+     * @param name fully qualified type name
      * @return the declaration of the named type, or null if it cannot be
      * found
      */
@@ -138,12 +137,12 @@ public interface AnnotationProcessorEnvironment {
      * declarations of members, parameters, or type parameters
      * declared within those, are returned.
      *
-     * @param a  annotation type being requested
+     * @param a annotation type being requested
      * @return the declarations annotated with the given annotation type,
      * or an empty collection if there are none
      */
     Collection<Declaration> getDeclarationsAnnotatedWith(
-                                                AnnotationTypeDeclaration a);
+            AnnotationTypeDeclaration a);
 
     /**
      * Returns an implementation of some utility methods for

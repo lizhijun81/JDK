@@ -31,7 +31,7 @@ package org.omg.CORBA.ORBPackage;
  * for which there is no initial reference.
  *
  * @see org.omg.CORBA.ORB#resolve_initial_references(String)
- * @since   JDK1.2
+ * @since JDK1.2
  */
 
 final public class InvalidName extends org.omg.CORBA.UserException {
@@ -45,6 +45,7 @@ final public class InvalidName extends org.omg.CORBA.UserException {
     /**
      * Constructs an <code>InvalidName</code> exception with the specified
      * reason message.
+     *
      * @param reason the String containing a reason message
      */
     public InvalidName(String reason) {

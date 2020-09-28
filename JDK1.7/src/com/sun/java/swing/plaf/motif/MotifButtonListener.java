@@ -39,11 +39,11 @@ import javax.swing.event.*;
  * @author Rich Schiavi
  */
 public class MotifButtonListener extends BasicButtonListener {
-    public MotifButtonListener(AbstractButton b ) {
+    public MotifButtonListener(AbstractButton b) {
         super(b);
     }
 
     protected void checkOpacity(AbstractButton b) {
-        b.setOpaque( false );
+        b.setOpaque(false);
     }
 }

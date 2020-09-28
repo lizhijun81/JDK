@@ -46,10 +46,9 @@ import javax.swing.text.View;
  * @author Dave Kloba
  */
 
-public class MotifGraphicsUtils implements SwingConstants
-{
+public class MotifGraphicsUtils implements SwingConstants {
     /* Client Property keys for text and accelerator text widths */
-    private static final String MAX_ACC_WIDTH  =  "maxAccWidth";
+    private static final String MAX_ACC_WIDTH = "maxAccWidth";
 
     /**
      * Draws the point (<b>x</b>, <b>y</b>) in the current color.
@@ -63,44 +62,45 @@ public class MotifGraphicsUtils implements SwingConstants
      *
      */
     public static void drawGroove(Graphics g, int x, int y, int w, int h,
-                                  Color shadow, Color highlight)
-    {
+                                  Color shadow, Color highlight) {
         Color oldColor = g.getColor();  // Make no net change to g
         g.translate(x, y);
 
         g.setColor(shadow);
-        g.drawRect(0, 0, w-2, h-2);
+        g.drawRect(0, 0, w - 2, h - 2);
 
         g.setColor(highlight);
-        g.drawLine(1, h-3, 1, 1);
-        g.drawLine(1, 1, w-3, 1);
+        g.drawLine(1, h - 3, 1, 1);
+        g.drawLine(1, 1, w - 3, 1);
 
-        g.drawLine(0, h-1, w-1, h-1);
-        g.drawLine(w-1, h-1, w-1, 0);
+        g.drawLine(0, h - 1, w - 1, h - 1);
+        g.drawLine(w - 1, h - 1, w - 1, 0);
 
         g.translate(-x, -y);
         g.setColor(oldColor);
     }
 
-    /** Draws <b>aString</b> in the rectangle defined by
-      * (<b>x</b>, <b>y</b>, <b>width</b>, <b>height</b>).
-      * <b>justification</b> specifies the text's justification, one of
-      * LEFT, CENTER, or RIGHT.
-      * <b>drawStringInRect()</b> does not clip to the rectangle, but instead
-      * uses this rectangle and the desired justification to compute the point
-      * at which to begin drawing the text.
-      * @see #drawString
-      */
+    /**
+     * Draws <b>aString</b> in the rectangle defined by
+     * (<b>x</b>, <b>y</b>, <b>width</b>, <b>height</b>).
+     * <b>justification</b> specifies the text's justification, one of
+     * LEFT, CENTER, or RIGHT.
+     * <b>drawStringInRect()</b> does not clip to the rectangle, but instead
+     * uses this rectangle and the desired justification to compute the point
+     * at which to begin drawing the text.
+     *
+     * @see #drawString
+     */
     public static void drawStringInRect(Graphics g, String aString, int x, int y,
-                                 int width, int height, int justification) {
+                                        int width, int height, int justification) {
         drawStringInRect(null, g, aString, x, y, width, height, justification);
     }
 
     static void drawStringInRect(JComponent c, Graphics g, String aString,
                                  int x, int y, int width, int height,
                                  int justification) {
-        FontMetrics  fontMetrics;
-        int          drawWidth, startX, startY, delta;
+        FontMetrics fontMetrics;
+        int drawWidth, startX, startY, delta;
 
         if (g.getFont() == null) {
 //            throw new InconsistencyException("No font set");
@@ -138,16 +138,15 @@ public class MotifGraphicsUtils implements SwingConstants
         SwingUtilities2.drawString(c, g, aString, startX, startY);
     }
 
-  /**
-   * This method is not being used to paint menu item since
-   * 6.0 This code left for compatibility only. Do not use or
-   * override it, this will not cause any visible effect.
-   */
-  public static void paintMenuItem(Graphics g, JComponent c,
-                                   Icon checkIcon, Icon arrowIcon,
-                                   Color background, Color foreground,
-                                   int defaultTextIconGap)
-    {
+    /**
+     * This method is not being used to paint menu item since
+     * 6.0 This code left for compatibility only. Do not use or
+     * override it, this will not cause any visible effect.
+     */
+    public static void paintMenuItem(Graphics g, JComponent c,
+                                     Icon checkIcon, Icon arrowIcon,
+                                     Color background, Color foreground,
+                                     int defaultTextIconGap) {
 
         JMenuItem b = (JMenuItem) c;
         ButtonModel model = b.getModel();
@@ -173,19 +172,19 @@ public class MotifGraphicsUtils implements SwingConstants
         g.setFont(f);
         FontMetrics fm = SwingUtilities2.getFontMetrics(c, g, f);
         FontMetrics fmAccel = SwingUtilities2.getFontMetrics(
-            c, g, UIManager.getFont("MenuItem.acceleratorFont"));
+                c, g, UIManager.getFont("MenuItem.acceleratorFont"));
 
         if (c.isOpaque()) {
-            if (model.isArmed()|| (c instanceof JMenu && model.isSelected())) {
+            if (model.isArmed() || (c instanceof JMenu && model.isSelected())) {
                 g.setColor(background);
             } else {
                 g.setColor(c.getBackground());
             }
-            g.fillRect(0,0, size.width, size.height);
+            g.fillRect(0, 0, size.width, size.height);
         }
 
         // get Accelerator text
-        KeyStroke accelerator =  b.getAccelerator();
+        KeyStroke accelerator = b.getAccelerator();
         String acceleratorText = "";
         if (accelerator != null) {
             int modifiers = accelerator.getModifiers();
@@ -198,37 +197,37 @@ public class MotifGraphicsUtils implements SwingConstants
 
         // layout the text and icon
         String text = layoutMenuItem(c, fm, b.getText(), fmAccel,
-                                     acceleratorText, b.getIcon(),
-                                     checkIcon, arrowIcon,
-                                     b.getVerticalAlignment(),
-                                     b.getHorizontalAlignment(),
-                                     b.getVerticalTextPosition(),
-                                     b.getHorizontalTextPosition(),
-                                     viewRect, iconRect,
-                                     textRect, acceleratorRect,
-                                     checkRect, arrowRect,
-                                     b.getText() == null
-                                     ? 0 : defaultTextIconGap,
-                                     defaultTextIconGap
-                                     );
+                acceleratorText, b.getIcon(),
+                checkIcon, arrowIcon,
+                b.getVerticalAlignment(),
+                b.getHorizontalAlignment(),
+                b.getVerticalTextPosition(),
+                b.getHorizontalTextPosition(),
+                viewRect, iconRect,
+                textRect, acceleratorRect,
+                checkRect, arrowRect,
+                b.getText() == null
+                        ? 0 : defaultTextIconGap,
+                defaultTextIconGap
+        );
 
         // Paint the Check
         Color holdc = g.getColor();
         if (checkIcon != null) {
-            if(model.isArmed() || (c instanceof JMenu && model.isSelected()))
+            if (model.isArmed() || (c instanceof JMenu && model.isSelected()))
                 g.setColor(foreground);
             checkIcon.paintIcon(c, g, checkRect.x, checkRect.y);
             g.setColor(holdc);
         }
 
         // Paint the Icon
-        if(b.getIcon() != null) {
+        if (b.getIcon() != null) {
             Icon icon;
-            if(!model.isEnabled()) {
+            if (!model.isEnabled()) {
                 icon = b.getDisabledIcon();
-            } else if(model.isPressed() && model.isArmed()) {
+            } else if (model.isPressed() && model.isArmed()) {
                 icon = b.getPressedIcon();
-                if(icon == null) {
+                if (icon == null) {
                     // Use default icon
                     icon = b.getIcon();
                 }
@@ -236,13 +235,13 @@ public class MotifGraphicsUtils implements SwingConstants
                 icon = b.getIcon();
             }
 
-            if (icon!=null) {
+            if (icon != null) {
                 icon.paintIcon(c, g, iconRect.x, iconRect.y);
             }
         }
 
         // Draw the Text
-        if(text != null && !text.equals("")) {
+        if (text != null && !text.equals("")) {
             // Once BasicHTML becomes public, use BasicHTML.propertyKey
             // instead of the hardcoded string below!
             View v = (View) c.getClientProperty("html");
@@ -251,34 +250,34 @@ public class MotifGraphicsUtils implements SwingConstants
             } else {
                 int mnemIndex = b.getDisplayedMnemonicIndex();
 
-                if(!model.isEnabled()) {
+                if (!model.isEnabled()) {
                     // *** paint the text disabled
                     g.setColor(b.getBackground().brighter());
-                    SwingUtilities2.drawStringUnderlineCharAt(b, g,text,
-                        mnemIndex,
-                        textRect.x, textRect.y + fmAccel.getAscent());
+                    SwingUtilities2.drawStringUnderlineCharAt(b, g, text,
+                            mnemIndex,
+                            textRect.x, textRect.y + fmAccel.getAscent());
                     g.setColor(b.getBackground().darker());
-                    SwingUtilities2.drawStringUnderlineCharAt(b, g,text,
-                        mnemIndex,
-                        textRect.x - 1, textRect.y + fmAccel.getAscent() - 1);
+                    SwingUtilities2.drawStringUnderlineCharAt(b, g, text,
+                            mnemIndex,
+                            textRect.x - 1, textRect.y + fmAccel.getAscent() - 1);
 
                 } else {
                     // *** paint the text normally
-                    if (model.isArmed()|| (c instanceof JMenu && model.isSelected())) {
+                    if (model.isArmed() || (c instanceof JMenu && model.isSelected())) {
                         g.setColor(foreground);
                     } else {
                         g.setColor(b.getForeground());
                     }
-                    SwingUtilities2.drawStringUnderlineCharAt(b, g,text,
-                                                  mnemIndex,
-                                                  textRect.x,
-                                                  textRect.y + fm.getAscent());
+                    SwingUtilities2.drawStringUnderlineCharAt(b, g, text,
+                            mnemIndex,
+                            textRect.x,
+                            textRect.y + fm.getAscent());
                 }
             }
         }
 
         // Draw the Accelerator Text
-        if(acceleratorText != null && !acceleratorText.equals("")) {
+        if (acceleratorText != null && !acceleratorText.equals("")) {
 
             //Get the maxAccWidth from the parent to calculate the offset.
             int accOffset = 0;
@@ -287,40 +286,39 @@ public class MotifGraphicsUtils implements SwingConstants
                 JComponent p = (JComponent) parent;
                 Integer maxValueInt = (Integer) p.getClientProperty(MotifGraphicsUtils.MAX_ACC_WIDTH);
                 int maxValue = maxValueInt != null ?
-                    maxValueInt.intValue() : acceleratorRect.width;
+                        maxValueInt.intValue() : acceleratorRect.width;
 
                 //Calculate the offset, with which the accelerator texts will be drawn with.
                 accOffset = maxValue - acceleratorRect.width;
             }
 
-            g.setFont( UIManager.getFont("MenuItem.acceleratorFont") );
-            if(!model.isEnabled()) {
+            g.setFont(UIManager.getFont("MenuItem.acceleratorFont"));
+            if (!model.isEnabled()) {
                 // *** paint the acceleratorText disabled
                 g.setColor(b.getBackground().brighter());
-                SwingUtilities2.drawString(c, g,acceleratorText,
-                                              acceleratorRect.x - accOffset, acceleratorRect.y + fm.getAscent());
+                SwingUtilities2.drawString(c, g, acceleratorText,
+                        acceleratorRect.x - accOffset, acceleratorRect.y + fm.getAscent());
                 g.setColor(b.getBackground().darker());
-                SwingUtilities2.drawString(c, g,acceleratorText,
-                                              acceleratorRect.x - accOffset - 1, acceleratorRect.y + fm.getAscent() - 1);
+                SwingUtilities2.drawString(c, g, acceleratorText,
+                        acceleratorRect.x - accOffset - 1, acceleratorRect.y + fm.getAscent() - 1);
             } else {
                 // *** paint the acceleratorText normally
-                if (model.isArmed()|| (c instanceof JMenu && model.isSelected()))
-                    {
-                        g.setColor(foreground);
-                    } else {
-                        g.setColor(b.getForeground());
-                    }
-                SwingUtilities2.drawString(c, g,acceleratorText,
-                                              acceleratorRect.x - accOffset,
-                                              acceleratorRect.y + fmAccel.getAscent());
+                if (model.isArmed() || (c instanceof JMenu && model.isSelected())) {
+                    g.setColor(foreground);
+                } else {
+                    g.setColor(b.getForeground());
+                }
+                SwingUtilities2.drawString(c, g, acceleratorText,
+                        acceleratorRect.x - accOffset,
+                        acceleratorRect.y + fmAccel.getAscent());
             }
         }
 
         // Paint the Arrow
         if (arrowIcon != null) {
-            if(model.isArmed() || (c instanceof JMenu && model.isSelected()))
+            if (model.isArmed() || (c instanceof JMenu && model.isSelected()))
                 g.setColor(foreground);
-            if( !(b.getParent() instanceof JMenuBar) )
+            if (!(b.getParent() instanceof JMenuBar))
                 arrowIcon.paintIcon(c, g, arrowRect.x, arrowRect.y);
         }
 
@@ -337,53 +335,51 @@ public class MotifGraphicsUtils implements SwingConstants
      */
 
     private static String layoutMenuItem(
-        JComponent c,
-        FontMetrics fm,
-        String text,
-        FontMetrics fmAccel,
-        String acceleratorText,
-        Icon icon,
-        Icon checkIcon,
-        Icon arrowIcon,
-        int verticalAlignment,
-        int horizontalAlignment,
-        int verticalTextPosition,
-        int horizontalTextPosition,
-        Rectangle viewR,
-        Rectangle iconR,
-        Rectangle textR,
-        Rectangle acceleratorR,
-        Rectangle checkIconR,
-        Rectangle arrowIconR,
-        int textIconGap,
-        int menuItemGap
-        )
-    {
+            JComponent c,
+            FontMetrics fm,
+            String text,
+            FontMetrics fmAccel,
+            String acceleratorText,
+            Icon icon,
+            Icon checkIcon,
+            Icon arrowIcon,
+            int verticalAlignment,
+            int horizontalAlignment,
+            int verticalTextPosition,
+            int horizontalTextPosition,
+            Rectangle viewR,
+            Rectangle iconR,
+            Rectangle textR,
+            Rectangle acceleratorR,
+            Rectangle checkIconR,
+            Rectangle arrowIconR,
+            int textIconGap,
+            int menuItemGap
+    ) {
 
         SwingUtilities.layoutCompoundLabel(c,
-                                           fm,
-                                           text,
-                                           icon,
-                                           verticalAlignment,
-                                           horizontalAlignment,
-                                           verticalTextPosition,
-                                           horizontalTextPosition,
-                                           viewR,
-                                           iconR,
-                                           textR,
-                                           textIconGap);
+                fm,
+                text,
+                icon,
+                verticalAlignment,
+                horizontalAlignment,
+                verticalTextPosition,
+                horizontalTextPosition,
+                viewR,
+                iconR,
+                textR,
+                textIconGap);
 
         /* Initialize the acceelratorText bounds rectangle textR.  If a null
          * or and empty String was specified we substitute "" here
          * and use 0,0,0,0 for acceleratorTextR.
          */
-        if( (acceleratorText == null) || acceleratorText.equals("") ) {
+        if ((acceleratorText == null) || acceleratorText.equals("")) {
             acceleratorR.width = acceleratorR.height = 0;
             acceleratorText = "";
-        }
-        else {
+        } else {
             acceleratorR.width
-                = SwingUtilities2.stringWidth(c, fmAccel, acceleratorText);
+                    = SwingUtilities2.stringWidth(c, fmAccel, acceleratorText);
             acceleratorR.height = fmAccel.getHeight();
         }
 
@@ -393,8 +389,7 @@ public class MotifGraphicsUtils implements SwingConstants
         if (checkIcon != null) {
             checkIconR.width = checkIcon.getIconWidth();
             checkIconR.height = checkIcon.getIconHeight();
-        }
-        else {
+        } else {
             checkIconR.width = checkIconR.height = 0;
         }
 
@@ -404,25 +399,24 @@ public class MotifGraphicsUtils implements SwingConstants
         if (arrowIcon != null) {
             arrowIconR.width = arrowIcon.getIconWidth();
             arrowIconR.height = arrowIcon.getIconHeight();
-        }
-        else {
+        } else {
             arrowIconR.width = arrowIconR.height = 0;
         }
 
 
         Rectangle labelR = iconR.union(textR);
-        if( MotifGraphicsUtils.isLeftToRight(c) ) {
+        if (MotifGraphicsUtils.isLeftToRight(c)) {
             textR.x += checkIconR.width + menuItemGap;
             iconR.x += checkIconR.width + menuItemGap;
 
             // Position the Accelerator text rect
             acceleratorR.x = viewR.x + viewR.width - arrowIconR.width
-                             - menuItemGap - acceleratorR.width;
+                    - menuItemGap - acceleratorR.width;
 
             // Position the Check and Arrow Icons
             checkIconR.x = viewR.x;
             arrowIconR.x = viewR.x + viewR.width - menuItemGap
-                           - arrowIconR.width;
+                    - arrowIconR.width;
         } else {
             textR.x -= (checkIconR.width + menuItemGap);
             iconR.x -= (checkIconR.width + menuItemGap);
@@ -437,9 +431,9 @@ public class MotifGraphicsUtils implements SwingConstants
 
         // Align the accelertor text and the check and arrow icons vertically
         // with the center of the label rect.
-        acceleratorR.y = labelR.y + (labelR.height/2) - (acceleratorR.height/2);
-        arrowIconR.y = labelR.y + (labelR.height/2) - (arrowIconR.height/2);
-        checkIconR.y = labelR.y + (labelR.height/2) - (checkIconR.height/2);
+        acceleratorR.y = labelR.y + (labelR.height / 2) - (acceleratorR.height / 2);
+        arrowIconR.y = labelR.y + (labelR.height / 2) - (arrowIconR.height / 2);
+        checkIconR.y = labelR.y + (labelR.height / 2) - (checkIconR.height / 2);
 
         /*
           System.out.println("Layout: v=" +viewR+"  c="+checkIconR+" i="+
@@ -448,21 +442,20 @@ public class MotifGraphicsUtils implements SwingConstants
         return text;
     }
 
-  private static void drawMenuBezel(Graphics g, Color background,
-                                    int x, int y,
-                                    int width, int height)
-    {
-      // shadowed button region
-      g.setColor(background);
-      g.fillRect(x,y,width,height);
+    private static void drawMenuBezel(Graphics g, Color background,
+                                      int x, int y,
+                                      int width, int height) {
+        // shadowed button region
+        g.setColor(background);
+        g.fillRect(x, y, width, height);
 
-      g.setColor(background.brighter().brighter());
-      g.drawLine(x+1,       y+height-1,  x+width-1, y+height-1);
-      g.drawLine(x+width-1, y+height-2,  x+width-1, y+1);
+        g.setColor(background.brighter().brighter());
+        g.drawLine(x + 1, y + height - 1, x + width - 1, y + height - 1);
+        g.drawLine(x + width - 1, y + height - 2, x + width - 1, y + 1);
 
-      g.setColor(background.darker().darker());
-      g.drawLine(x,   y,   x+width-2, y);
-      g.drawLine(x,   y+1, x,         y+height-2);
+        g.setColor(background.darker().darker());
+        g.drawLine(x, y, x + width - 2, y);
+        g.drawLine(x, y + 1, x, y + height - 2);
 
     }
 
@@ -470,7 +463,7 @@ public class MotifGraphicsUtils implements SwingConstants
      * Convenience function for determining ComponentOrientation.  Helps us
      * avoid having Munge directives throughout the code.
      */
-    static boolean isLeftToRight( Component c ) {
+    static boolean isLeftToRight(Component c) {
         return c.getComponentOrientation().isLeftToRight();
     }
 }

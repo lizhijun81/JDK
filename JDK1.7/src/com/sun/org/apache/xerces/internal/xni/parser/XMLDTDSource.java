@@ -32,7 +32,6 @@ import com.sun.org.apache.xerces.internal.xni.XMLDTDHandler;
  * that the implementor is able to emit them.
  *
  * @author Andy Clark, IBM
- *
  */
 public interface XMLDTDSource {
 
@@ -40,10 +39,14 @@ public interface XMLDTDSource {
     // XMLDTDSource methods
     //
 
-    /** Sets the DTD handler. */
+    /**
+     * Sets the DTD handler.
+     */
     public void setDTDHandler(XMLDTDHandler handler);
 
-    /** Returns the DTD handler. */
+    /**
+     * Returns the DTD handler.
+     */
     public XMLDTDHandler getDTDHandler();
 
 } // interface XMLDTDSource

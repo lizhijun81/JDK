@@ -23,7 +23,7 @@
  *
  */
 
-package com.sun.corba.se.impl.orbutil ;
+package com.sun.corba.se.impl.orbutil;
 
 /**
  * A convenience class for retrieving the string value of a system
@@ -66,7 +66,7 @@ public class GetPropertyAction implements java.security.PrivilegedAction {
      * Constructor that takes the name of the system property and the default
      * value of that property.
      *
-     * @param theProp the name of the system property.
+     * @param theProp   the name of the system property.
      * @param defaulVal the default value.
      */
     public GetPropertyAction(String theProp, String defaultVal) {
@@ -79,7 +79,7 @@ public class GetPropertyAction implements java.security.PrivilegedAction {
      * name was specified in the constructor.
      *
      * @return the string value of the system property,
-     *         or the default value if there is no property with that key.
+     * or the default value if there is no property with that key.
      */
     public Object run() {
         String value = System.getProperty(theProp);

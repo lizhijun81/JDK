@@ -31,14 +31,14 @@ import com.sun.org.apache.xerces.internal.xs.*;
 /**
  * Attribute namespace implementation; stores PSVI attribute items.
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
- *
+ * @xerces.internal
  */
 public class PSVIAttrNSImpl extends AttrNSImpl implements AttributePSVI {
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = -3241738699421018889L;
 
     /**
@@ -57,41 +57,65 @@ public class PSVIAttrNSImpl extends AttrNSImpl implements AttributePSVI {
         super(ownerDocument, namespaceURI, qualifiedName);
     }
 
-    /** attribute declaration */
+    /**
+     * attribute declaration
+     */
     protected XSAttributeDeclaration fDeclaration = null;
 
-    /** type of attribute, simpleType */
+    /**
+     * type of attribute, simpleType
+     */
     protected XSTypeDefinition fTypeDecl = null;
 
-    /** If this attribute was explicitly given a
-     * value in the original document, this is true; otherwise, it is false  */
+    /**
+     * If this attribute was explicitly given a
+     * value in the original document, this is true; otherwise, it is false
+     */
     protected boolean fSpecified = true;
 
-    /** schema normalized value property */
+    /**
+     * schema normalized value property
+     */
     protected String fNormalizedValue = null;
 
-    /** schema actual value */
+    /**
+     * schema actual value
+     */
     protected Object fActualValue = null;
 
-    /** schema actual value type */
+    /**
+     * schema actual value type
+     */
     protected short fActualValueType = XSConstants.UNAVAILABLE_DT;
 
-    /** actual value types if the value is a list */
+    /**
+     * actual value types if the value is a list
+     */
     protected ShortList fItemValueTypes = null;
 
-    /** member type definition against which attribute was validated */
+    /**
+     * member type definition against which attribute was validated
+     */
     protected XSSimpleTypeDefinition fMemberType = null;
 
-    /** validation attempted: none, partial, full */
+    /**
+     * validation attempted: none, partial, full
+     */
     protected short fValidationAttempted = AttributePSVI.VALIDATION_NONE;
 
-    /** validity: valid, invalid, unknown */
+    /**
+     * validity: valid, invalid, unknown
+     */
     protected short fValidity = AttributePSVI.VALIDITY_NOTKNOWN;
 
-    /** error codes */
+    /**
+     * error codes
+     */
     protected StringList fErrorCodes = null;
 
-    /** validation context: could be QName or XPath expression*/
+    /**
+     * validation context: could be QName or XPath expression
+     */
     protected String fValidationContext = null;
 
     //
@@ -111,9 +135,8 @@ public class PSVIAttrNSImpl extends AttrNSImpl implements AttributePSVI {
     /**
      * [schema normalized value]
      *
-     *
-     * @see <a href="http://www.w3.org/TR/xmlschema-1/#e-schema_normalized_value>XML Schema Part 1: Structures [schema normalized value]</a>
      * @return the normalized value of this item after validation
+     * @see <a href="http://www.w3.org/TR/xmlschema-1/#e-schema_normalized_value>XML Schema Part 1: Structures [schema normalized value]</a>
      */
     public String getSchemaNormalizedValue() {
         return fNormalizedValue;
@@ -121,8 +144,9 @@ public class PSVIAttrNSImpl extends AttrNSImpl implements AttributePSVI {
 
     /**
      * [schema specified]
-     * @see <a href="http://www.w3.org/TR/xmlschema-1/#e-schema_specified">XML Schema Part 1: Structures [schema specified]</a>
+     *
      * @return false value was specified in schema, true value comes from the infoset
+     * @see <a href="http://www.w3.org/TR/xmlschema-1/#e-schema_specified">XML Schema Part 1: Structures [schema specified]</a>
      */
     public boolean getIsSchemaSpecified() {
         return fSpecified;
@@ -133,7 +157,7 @@ public class PSVIAttrNSImpl extends AttrNSImpl implements AttributePSVI {
      * Determines the extent to which the document has been validated
      *
      * @return return the [validation attempted] property. The possible values are
-     *         NO_VALIDATION, PARTIAL_VALIDATION and FULL_VALIDATION
+     * NO_VALIDATION, PARTIAL_VALIDATION and FULL_VALIDATION
      */
     public short getValidationAttempted() {
         return fValidationAttempted;
@@ -144,7 +168,7 @@ public class PSVIAttrNSImpl extends AttrNSImpl implements AttributePSVI {
      * to the validation being attempted
      *
      * @return return the [validity] property. Possible values are:
-     *         UNKNOWN_VALIDITY, INVALID_VALIDITY, VALID_VALIDITY
+     * UNKNOWN_VALIDITY, INVALID_VALIDITY, VALID_VALIDITY
      */
     public short getValidity() {
         return fValidity;
@@ -168,7 +192,7 @@ public class PSVIAttrNSImpl extends AttrNSImpl implements AttributePSVI {
     /**
      * An item isomorphic to the type definition used to validate this element.
      *
-     * @return  a type declaration
+     * @return a type declaration
      */
     public XSTypeDefinition getTypeDefinition() {
         return fTypeDecl;
@@ -181,7 +205,7 @@ public class PSVIAttrNSImpl extends AttrNSImpl implements AttributePSVI {
      * to that member of the union's {member type definitions} which actually
      * validated the element item's normalized value.
      *
-     * @return  a simple type declaration
+     * @return a simple type declaration
      */
     public XSSimpleTypeDefinition getMemberTypeDefinition() {
         return fMemberType;
@@ -191,7 +215,7 @@ public class PSVIAttrNSImpl extends AttrNSImpl implements AttributePSVI {
      * An item isomorphic to the attribute declaration used to validate
      * this attribute.
      *
-     * @return  an attribute declaration
+     * @return an attribute declaration
      */
     public XSAttributeDeclaration getAttributeDeclaration() {
         return fDeclaration;
@@ -200,7 +224,7 @@ public class PSVIAttrNSImpl extends AttrNSImpl implements AttributePSVI {
     /**
      * Copy PSVI properties from another psvi item.
      *
-     * @param attr  the source of attribute PSVI items
+     * @param attr the source of attribute PSVI items
      */
     public void setPSVI(AttributePSVI attr) {
         this.fDeclaration = attr.getAttributeDeclaration();
@@ -242,12 +266,12 @@ public class PSVIAttrNSImpl extends AttrNSImpl implements AttributePSVI {
     // we support object serialization of grammars -- mrglavas
 
     private void writeObject(ObjectOutputStream out)
-        throws IOException {
+            throws IOException {
         throw new NotSerializableException(getClass().getName());
     }
 
     private void readObject(ObjectInputStream in)
-        throws IOException, ClassNotFoundException {
+            throws IOException, ClassNotFoundException {
         throw new NotSerializableException(getClass().getName());
     }
 }

@@ -42,7 +42,7 @@
 package org.w3c.dom;
 
 /**
- *  The <code>DOMConfiguration</code> interface represents the configuration
+ * The <code>DOMConfiguration</code> interface represents the configuration
  * of a document and maintains a table of recognized parameters. Using the
  * configuration, it is possible to change
  * <code>Document.normalizeDocument()</code> behavior, such as replacing the
@@ -50,7 +50,7 @@ package org.w3c.dom;
  * specifying the type of the schema that must be used when the validation
  * of the <code>Document</code> is requested. <code>DOMConfiguration</code>
  * objects are also used in [<a href='http://www.w3.org/TR/2004/REC-DOM-Level-3-LS-20040407'>DOM Level 3 Load and Save</a>]
- *  in the <code>DOMParser</code> and <code>DOMSerializer</code> interfaces.
+ * in the <code>DOMParser</code> and <code>DOMSerializer</code> interfaces.
  * <p> The parameter names used by the <code>DOMConfiguration</code> object
  * are defined throughout the DOM Level 3 specifications. Names are
  * case-insensitive. To avoid possible conflicts, as a convention, names
@@ -383,56 +383,58 @@ package org.w3c.dom;
  * set, <code>Document.normalizeDocument()</code> will invoke the resource
  * resolver instead of using <code>Document.documentURI</code>.
  * <p>See also the <a href='http://www.w3.org/TR/2004/REC-DOM-Level-3-Core-20040407'>Document Object Model (DOM) Level 3 Core Specification</a>.
+ *
  * @since DOM Level 3
  */
 public interface DOMConfiguration {
     /**
      * Set the value of a parameter.
-     * @param name The name of the parameter to set.
-     * @param value  The new value or <code>null</code> if the user wishes to
-     *   unset the parameter. While the type of the value parameter is
-     *   defined as <code>DOMUserData</code>, the object type must match the
-     *   type defined by the definition of the parameter. For example, if
-     *   the parameter is "error-handler", the value must be of type
-     *   <code>DOMErrorHandler</code>.
-     * @exception DOMException
-     *    NOT_FOUND_ERR: Raised when the parameter name is not recognized.
-     *   <br> NOT_SUPPORTED_ERR: Raised when the parameter name is recognized
-     *   but the requested value cannot be set.
-     *   <br> TYPE_MISMATCH_ERR: Raised if the value type for this parameter
-     *   name is incompatible with the expected value type.
+     *
+     * @param name  The name of the parameter to set.
+     * @param value The new value or <code>null</code> if the user wishes to
+     *              unset the parameter. While the type of the value parameter is
+     *              defined as <code>DOMUserData</code>, the object type must match the
+     *              type defined by the definition of the parameter. For example, if
+     *              the parameter is "error-handler", the value must be of type
+     *              <code>DOMErrorHandler</code>.
+     * @throws DOMException NOT_FOUND_ERR: Raised when the parameter name is not recognized.
+     *                      <br> NOT_SUPPORTED_ERR: Raised when the parameter name is recognized
+     *                      but the requested value cannot be set.
+     *                      <br> TYPE_MISMATCH_ERR: Raised if the value type for this parameter
+     *                      name is incompatible with the expected value type.
      */
     public void setParameter(String name,
                              Object value)
-                             throws DOMException;
+            throws DOMException;
 
     /**
-     *  Return the value of a parameter if known.
-     * @param name  The name of the parameter.
-     * @return  The current object associated with the specified parameter or
-     *   <code>null</code> if no object has been associated or if the
-     *   parameter is not supported.
-     * @exception DOMException
-     *    NOT_FOUND_ERR: Raised when the parameter name is not recognized.
+     * Return the value of a parameter if known.
+     *
+     * @param name The name of the parameter.
+     * @return The current object associated with the specified parameter or
+     * <code>null</code> if no object has been associated or if the
+     * parameter is not supported.
+     * @throws DOMException NOT_FOUND_ERR: Raised when the parameter name is not recognized.
      */
     public Object getParameter(String name)
-                               throws DOMException;
+            throws DOMException;
 
     /**
      * Check if setting a parameter to a specific value is supported.
-     * @param name The name of the parameter to check.
-     * @param value  An object. if <code>null</code>, the returned value is
-     *   <code>true</code>.
-     * @return  <code>true</code> if the parameter could be successfully set
-     *   to the specified value, or <code>false</code> if the parameter is
-     *   not recognized or the requested value is not supported. This does
-     *   not change the current value of the parameter itself.
+     *
+     * @param name  The name of the parameter to check.
+     * @param value An object. if <code>null</code>, the returned value is
+     *              <code>true</code>.
+     * @return <code>true</code> if the parameter could be successfully set
+     * to the specified value, or <code>false</code> if the parameter is
+     * not recognized or the requested value is not supported. This does
+     * not change the current value of the parameter itself.
      */
     public boolean canSetParameter(String name,
                                    Object value);
 
     /**
-     *  The list of the parameters supported by this
+     * The list of the parameters supported by this
      * <code>DOMConfiguration</code> object and for which at least one value
      * can be set by the application. Note that this list can also contain
      * parameter names defined outside this specification.

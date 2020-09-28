@@ -41,14 +41,13 @@ import com.sun.corba.se.pept.transport.EventHandler;
  *
  * @author Harold Carr
  */
-public interface Acceptor
-{
+public interface Acceptor {
     /**
      * Used to initialize an <code>Acceptor</code>.
-     *
+     * <p>
      * For example, initialization may mean to create a
      * {@link java.nio.channels.ServerSocketChannel ServerSocketChannel}.
-     *
+     * <p>
      * Note: this must be prepared to be be called multiple times.
      *
      * @return <code>true</code> when it performs initializatin
@@ -76,7 +75,7 @@ public interface Acceptor
      * Set the
      * {@link com.sun.corba.se.pept.transport.Inbound.ConnectionCache InboundConnectionCache}
      * to be used by this <code>Acceptor</code>.
-     *
+     * <p>
      * PEPt uses separate caches for each type of <code>Acceptor</code>
      * as given by {@link #getConnectionCacheType}.
      * {@link #setConnectionCache} and {@link #getConnectionCache} support
@@ -90,14 +89,13 @@ public interface Acceptor
      * Get the
      * {@link com.sun.corba.se.pept.transport.Inbound.ConnectionCache InboundConnectionCache}
      * used by this <code>Acceptor</code>
-     *
+     * <p>
      * PEPt uses separate caches for each type of <code>Acceptor</code>
      * as given by {@link #getConnectionCacheType}.
      * {@link #setConnectionCache} and {@link #getConnectionCache} support
      * an optimzation to avoid hashing to find that cache.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.transport.ConnectionCache ConnectionCache}
+     * @return {@link com.sun.corba.se.pept.transport.ConnectionCache ConnectionCache}
      */
     public InboundConnectionCache getConnectionCache();
 
@@ -106,7 +104,7 @@ public interface Acceptor
      * with
      * {@link com.sun.corba.se.pept.transport.Selector Selector}
      * to handle accept events.
-     *
+     * <p>
      * For example, this may be <em>false</em> in the case of Solaris Doors
      * which do not actively listen.
      *
@@ -118,11 +116,11 @@ public interface Acceptor
 
     /**
      * Accept a connection request.
-     *
+     * <p>
      * This is called either when the selector gets an accept event
      * for this <code>Acceptor</code> or by a
      * {@link com.sun.corba.se.pept.transport.ListenerThread ListenerThread}.
-     *
+     * <p>
      * It results in a
      * {@link com.sun.corba.se.pept.transport.Connection Connection}
      * being created.
@@ -139,8 +137,7 @@ public interface Acceptor
      * {@link com.sun.corba.se.pept.transport.EventHandler EventHandler}
      * associated with this <code>Acceptor</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.transport.EventHandler EventHandler}
+     * @return {@link com.sun.corba.se.pept.transport.EventHandler EventHandler}
      */
     public EventHandler getEventHandler();
 
@@ -157,8 +154,7 @@ public interface Acceptor
      * encoding, protocol, transport combination represented by this
      * <code>Acceptor</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.protocol.MessageMeidator MessageMediator}
+     * @return {@link com.sun.corba.se.pept.protocol.MessageMeidator MessageMediator}
      */
     public MessageMediator createMessageMediator(Broker xbroker,
                                                  Connection xconnection);
@@ -172,8 +168,7 @@ public interface Acceptor
      * encoding, protocol, transport combination represented by this
      * <code>Acceptor</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.protocol.MessageMediator MessageMediator}
+     * @return {@link com.sun.corba.se.pept.protocol.MessageMediator MessageMediator}
      */
 
     public MessageMediator finishCreatingMessageMediator(Broker broker,
@@ -186,8 +181,7 @@ public interface Acceptor
      * for the specific <em>encoding</em> represented by this
      * <code>Acceptor</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.encoding.InputObject InputObject}
+     * @return {@link com.sun.corba.se.pept.encoding.InputObject InputObject}
      */
     public InputObject createInputObject(Broker broker,
                                          MessageMediator messageMediator);
@@ -198,8 +192,7 @@ public interface Acceptor
      * for the specific <em>encoding</em> represented by this
      * <code>Acceptor</code>.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.encoding.OutputObject OutputObject}
+     * @return {@link com.sun.corba.se.pept.encoding.OutputObject OutputObject}
      */
     public OutputObject createOutputObject(Broker broker,
                                            MessageMediator messageMediator);

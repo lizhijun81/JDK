@@ -72,16 +72,17 @@ import org.w3c.dom.TypeInfo;
  * This class represents a single attribute.
  *
  * @author Rahul Srivastava, Sun Microsystems Inc.
- *
  * @version $Id: AttrImpl.java,v 1.5 2010-11-01 04:40:01 joehw Exp $
  */
 public class AttrImpl extends NodeImpl
-                      implements Attr {
+        implements Attr {
 
     Element element;
     String value;
 
-    /** Default Constructor */
+    /**
+     * Default Constructor
+     */
     public AttrImpl() {
         nodeType = Node.ATTRIBUTE_NODE;
     }
@@ -89,12 +90,12 @@ public class AttrImpl extends NodeImpl
     /**
      * Constructs an attribute.
      *
-     * @param element Element which owns this attribute
-     * @param prefix The QName prefix.
+     * @param element   Element which owns this attribute
+     * @param prefix    The QName prefix.
      * @param localpart The QName localpart.
-     * @param rawname The QName rawname.
-     * @param uri The uri binding for the associated prefix.
-     * @param value The value of the attribute.
+     * @param rawname   The QName rawname.
+     * @param uri       The uri binding for the associated prefix.
+     * @param value     The value of the attribute.
      */
     public AttrImpl(Element element, String prefix, String localpart, String rawname, String uri, String value) {
         super(prefix, localpart, rawname, uri, Node.ATTRIBUTE_NODE);
@@ -133,19 +134,22 @@ public class AttrImpl extends NodeImpl
     /**
      * @since DOM Level 3
      */
-    public boolean isId(){
+    public boolean isId() {
         return false;
     }
 
     /**
      * Method getSchemaTypeInfo.
+     *
      * @return TypeInfo
      */
-    public TypeInfo getSchemaTypeInfo(){
-      return null;
+    public TypeInfo getSchemaTypeInfo() {
+        return null;
     }
 
-    /** NON-DOM method for debugging convenience */
+    /**
+     * NON-DOM method for debugging convenience
+     */
     public String toString() {
         return getName() + "=" + "\"" + getValue() + "\"";
     }

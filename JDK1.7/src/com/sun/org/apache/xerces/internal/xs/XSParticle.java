@@ -30,7 +30,7 @@ public interface XSParticle extends XSObject {
     public int getMinOccurs();
 
     /**
-     *  [max occurs]: determines the maximum number of terms that can occur.
+     * [max occurs]: determines the maximum number of terms that can occur.
      * To query for the value of unbounded use
      * <code>maxOccursUnbounded</code>. When the value of
      * <code>maxOccursUnbounded</code> is <code>true</code>, the value of

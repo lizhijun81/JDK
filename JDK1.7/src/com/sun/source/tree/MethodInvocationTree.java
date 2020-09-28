@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * A tree node for a method invocation expression.
- *
+ * <p>
  * For example:
  * <pre>
  *   <em>identifier</em> ( <em>arguments</em> )
@@ -37,14 +37,15 @@ import java.util.List;
  *   this . <em>typeArguments</em> <em>identifier</em> ( <em>arguments</em> )
  * </pre>
  *
- * @jls section 15.12
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls section 15.12
  * @since 1.6
  */
 public interface MethodInvocationTree extends ExpressionTree {
     List<? extends Tree> getTypeArguments();
+
     ExpressionTree getMethodSelect();
+
     List<? extends ExpressionTree> getArguments();
 }

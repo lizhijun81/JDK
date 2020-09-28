@@ -34,7 +34,6 @@ import com.sun.corba.se.spi.ior.ObjectKey;
  * itself) comes, it throws a ForwardException with the IOR pointing
  * to the active server.
  */
-public interface BadServerIdHandler
-{
-    void handle(ObjectKey objectKey) ;
+public interface BadServerIdHandler {
+    void handle(ObjectKey objectKey);
 }

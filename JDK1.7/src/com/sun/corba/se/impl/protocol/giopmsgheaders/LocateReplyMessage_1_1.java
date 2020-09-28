@@ -37,8 +37,8 @@ import com.sun.corba.se.spi.orb.ORB;
 import com.sun.corba.se.spi.ior.iiop.GIOPVersion;
 import com.sun.corba.se.impl.encoding.CDRInputStream;
 
-import com.sun.corba.se.spi.logging.CORBALogDomains ;
-import com.sun.corba.se.impl.logging.ORBUtilSystemException ;
+import com.sun.corba.se.spi.logging.CORBALogDomains;
+import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 
 /**
  * This implements the GIOP 1.1 LocateReply header.
@@ -63,9 +63,9 @@ public final class LocateReplyMessage_1_1 extends Message_1_1
     }
 
     LocateReplyMessage_1_1(ORB orb, int _request_id,
-            int _reply_status, IOR _ior) {
+                           int _reply_status, IOR _ior) {
         super(Message.GIOPBigMagic, GIOPVersion.V1_1, FLAG_NO_FRAG_BIG_ENDIAN,
-            Message.GIOPLocateReply, 0);
+                Message.GIOPLocateReply, 0);
         this.orb = orb;
         request_id = _request_id;
         reply_status = _reply_status;
@@ -105,7 +105,7 @@ public final class LocateReplyMessage_1_1 extends Message_1_1
         // The code below reads the reply body if status is OBJECT_FORWARD
         if (this.reply_status == OBJECT_FORWARD) {
             CDRInputStream cdr = (CDRInputStream) istream;
-            this.ior = IORFactories.makeIOR( cdr ) ;
+            this.ior = IORFactories.makeIOR(cdr);
         }
     }
 
@@ -121,20 +121,19 @@ public final class LocateReplyMessage_1_1 extends Message_1_1
 
     public static void isValidReplyStatus(int replyStatus) {
         switch (replyStatus) {
-        case UNKNOWN_OBJECT :
-        case OBJECT_HERE :
-        case OBJECT_FORWARD :
-            break;
-        default :
-            ORBUtilSystemException localWrapper = ORBUtilSystemException.get(
-                CORBALogDomains.RPC_PROTOCOL ) ;
-            throw localWrapper.illegalReplyStatus( CompletionStatus.COMPLETED_MAYBE);
+            case UNKNOWN_OBJECT:
+            case OBJECT_HERE:
+            case OBJECT_FORWARD:
+                break;
+            default:
+                ORBUtilSystemException localWrapper = ORBUtilSystemException.get(
+                        CORBALogDomains.RPC_PROTOCOL);
+                throw localWrapper.illegalReplyStatus(CompletionStatus.COMPLETED_MAYBE);
         }
     }
 
     public void callback(MessageHandler handler)
-        throws java.io.IOException
-    {
+            throws java.io.IOException {
         handler.handleInput(this);
     }
 } // class LocateReplyMessage_1_1

@@ -36,23 +36,20 @@ import com.sun.corba.se.pept.transport.ContactInfo;
  *
  * @author Harold Carr
  */
-public interface ClientRequestDispatcher
-{
+public interface ClientRequestDispatcher {
     /**
      * At the beginning of a request the presentation block uses this
      * to obtain an
      * {@link com.sun.corba.se.pept.encoding.OutputObject OutputObject}
      * to set data to be sent on a message.
      *
-     * @param self -
-     * @param methodName - the remote method name
-     * @param isOneWay - <code>true</code> if the message is asynchronous
+     * @param self        -
+     * @param methodName  - the remote method name
+     * @param isOneWay    - <code>true</code> if the message is asynchronous
      * @param contactInfo - the
-     * {@link com.sun.corba.se.pept.transport.ContactInfo ContactInfo}
-     * which which created/chose this <code>ClientRequestDispatcher</code>
-     *
-     * @return
-     * {@link com.sun.corba.se.pept.encoding.OutputObject OutputObject}
+     *                    {@link com.sun.corba.se.pept.transport.ContactInfo ContactInfo}
+     *                    which which created/chose this <code>ClientRequestDispatcher</code>
+     * @return {@link com.sun.corba.se.pept.encoding.OutputObject OutputObject}
      */
     public OutputObject beginRequest(Object self,
                                      String methodName,
@@ -65,36 +62,30 @@ public interface ClientRequestDispatcher
      * it signals the PEPt runtime to send the encoded data by calling this
      * method.
      *
-     * @param self -
+     * @param self         -
      * @param outputObject
-     *
-     * @return
-     * {@link com.sun.corba.se.pept.encoding.InputObject InputObject}
+     * @return {@link com.sun.corba.se.pept.encoding.InputObject InputObject}
      * if the message is synchronous.
-     *
-     * @throws
-     * {@link org.omg.CORBA.portable.ApplicationException ApplicationException}
-     * if the remote side raises an exception declared in the remote interface.
-     *
-     * @throws
-     * {@link org.omg.CORBA.portable.RemarshalException RemarshalException}
-     * if the PEPt runtime would like the presentation block to start over.
+     * @throws {@link org.omg.CORBA.portable.ApplicationException ApplicationException}
+     *                if the remote side raises an exception declared in the remote interface.
+     * @throws {@link org.omg.CORBA.portable.RemarshalException RemarshalException}
+     *                if the PEPt runtime would like the presentation block to start over.
      */
     public InputObject marshalingComplete(java.lang.Object self,
                                           OutputObject outputObject)
     // REVISIT EXCEPTIONS
-        throws
+            throws
             org.omg.CORBA.portable.ApplicationException,
             org.omg.CORBA.portable.RemarshalException;
 
     /**
      * After the presentation block completes a request it signals
      * the PEPt runtime by calling this method.
-     *
+     * <p>
      * This method may release resources.  In some cases it may cause
      * control or error messages to be sent.
      *
-     * @param broker -
+     * @param broker      -
      * @param inputObject -
      */
     public void endRequest(Broker broker,

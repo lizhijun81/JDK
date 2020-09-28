@@ -130,37 +130,43 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
     /* ---------------- Constants -------------- */
 
     /**
+     * 整个Map中元素的初始大小
      * The default initial capacity for this table,
      * used when not otherwise specified in a constructor.
      */
-    static final int DEFAULT_INITIAL_CAPACITY = 16;
+    static final int DEFAULT_INITIAL_CAPACITY = 16;//
 
     /**
+     * 因子
      * The default load factor for this table, used when not
      * otherwise specified in a constructor.
      */
-    static final float DEFAULT_LOAD_FACTOR = 0.75f;
+    static final float DEFAULT_LOAD_FACTOR = 0.75f;//
 
     /**
+     * 并发度、槽 的数量
      * The default concurrency level for this table, used when not
      * otherwise specified in a constructor.
      */
-    static final int DEFAULT_CONCURRENCY_LEVEL = 16;
+    static final int DEFAULT_CONCURRENCY_LEVEL = 16;//
 
     /**
+     * 整个Map的最大数量
      * The maximum capacity, used if a higher value is implicitly
      * specified by either of the constructors with arguments.  MUST
      * be a power of two <= 1<<30 to ensure that entries are indexable
      * using ints.
      */
-    static final int MAXIMUM_CAPACITY = 1 << 30;
+    static final int MAXIMUM_CAPACITY = 1 << 30;//
 
     /**
+     * 槽位中 最小容量
+     *
      * The minimum capacity for per-segment tables.  Must be a power
      * of two, at least two to avoid immediate resizing on next use
      * after lazy construction.
      */
-    static final int MIN_SEGMENT_TABLE_CAPACITY = 2;
+    static final int MIN_SEGMENT_TABLE_CAPACITY = 2;//
 
     /**
      * The maximum number of segments to allow; used to bound
@@ -805,17 +811,17 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
         if (concurrencyLevel > MAX_SEGMENTS)
             concurrencyLevel = MAX_SEGMENTS;
         // Find power-of-two sizes best matching arguments
-        int sshift = 0;
-        int ssize = 1;
+        int sshift = 0;// 槽位的数量的二进制占用的位数
+        int ssize = 1;// 槽位数量，重新计算槽位数量，使得槽位的数量是大于给定值的2次幂
         while (ssize < concurrencyLevel) {
             ++sshift;
             ssize <<= 1;
         }
         this.segmentShift = 32 - sshift;
-        this.segmentMask = ssize - 1;
+        this.segmentMask = ssize - 1;// 掩码
         if (initialCapacity > MAXIMUM_CAPACITY)
             initialCapacity = MAXIMUM_CAPACITY;
-        int c = initialCapacity / ssize;
+        int c = initialCapacity / ssize;// 槽 中
         if (c * ssize < initialCapacity)
             ++c;
         int cap = MIN_SEGMENT_TABLE_CAPACITY;

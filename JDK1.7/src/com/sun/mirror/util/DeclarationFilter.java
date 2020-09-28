@@ -69,14 +69,13 @@ import static com.sun.mirror.declaration.Modifier.*;
  *                  };
  *     result = nameFilter.filter(decls);               </pre></blockquote>
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this class is {@link
  * javax.lang.model.util.ElementFilter}.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")
@@ -124,18 +123,17 @@ public class DeclarationFilter {
     }
 
 
-
     // Methods to create a filter.
 
     /**
      * Returns a filter that selects declarations containing all of a
      * collection of modifiers.
      *
-     * @param mods  the modifiers to match (non-null)
+     * @param mods the modifiers to match (non-null)
      * @return a filter that matches declarations containing <tt>mods</tt>
      */
     public static DeclarationFilter getFilter(
-                                             final Collection<Modifier> mods) {
+            final Collection<Modifier> mods) {
         return new DeclarationFilter() {
             public boolean matches(Declaration d) {
                 return d.getModifiers().containsAll(mods);
@@ -151,11 +149,11 @@ public class DeclarationFilter {
      * and also any subtypes of that kind; for example, a field filter
      * will also select enum constants.
      *
-     * @param kind  the kind of declarations to select
+     * @param kind the kind of declarations to select
      * @return a filter that selects declarations of a particular kind
      */
     public static DeclarationFilter getFilter(
-                                     final Class<? extends Declaration> kind) {
+            final Class<? extends Declaration> kind) {
         return new DeclarationFilter() {
             public boolean matches(Declaration d) {
                 return kind.isInstance(d);
@@ -167,9 +165,9 @@ public class DeclarationFilter {
      * Returns a filter that selects those declarations selected
      * by both this filter and another.
      *
-     * @param f  filter to be composed with this one
+     * @param f filter to be composed with this one
      * @return a filter that selects those declarations selected by
-     *          both this filter and another
+     * both this filter and another
      */
     public DeclarationFilter and(DeclarationFilter f) {
         final DeclarationFilter f1 = this;
@@ -185,9 +183,9 @@ public class DeclarationFilter {
      * Returns a filter that selects those declarations selected
      * by either this filter or another.
      *
-     * @param f  filter to be composed with this one
+     * @param f filter to be composed with this one
      * @return a filter that selects those declarations selected by
-     *          either this filter or another
+     * either this filter or another
      */
     public DeclarationFilter or(DeclarationFilter f) {
         final DeclarationFilter f1 = this;
@@ -215,7 +213,6 @@ public class DeclarationFilter {
     }
 
 
-
     // Methods to apply a filter.
 
     /**
@@ -223,7 +220,7 @@ public class DeclarationFilter {
      * The default implementation always returns <tt>true</tt>;
      * subclasses should override this.
      *
-     * @param decl  the declaration to match
+     * @param decl the declaration to match
      * @return <tt>true</tt> if this filter matches the given declaration
      */
     public boolean matches(Declaration decl) {
@@ -236,8 +233,8 @@ public class DeclarationFilter {
      * the {@linkplain #filter(Collection, Class) two-parameter version}
      * of <tt>filter</tt> offers control over the result type.
      *
-     * @param <D>    type of the declarations being filtered
-     * @param decls  declarations being filtered
+     * @param <D>   type of the declarations being filtered
+     * @param decls declarations being filtered
      * @return the declarations matched by this filter
      */
     public <D extends Declaration> Collection<D> filter(Collection<D> decls) {
@@ -257,15 +254,15 @@ public class DeclarationFilter {
      * {@linkplain #filter(Collection) single-parameter version}
      * of <tt>filter</tt>, but the result type is specified explicitly.
      *
-     * @param <D>      type of the declarations being returned
-     * @param decls    declarations being filtered
-     * @param resType  type of the declarations being returned --
-     *                  the reflective view of <tt>D</tt>
+     * @param <D>     type of the declarations being returned
+     * @param decls   declarations being filtered
+     * @param resType type of the declarations being returned --
+     *                the reflective view of <tt>D</tt>
      * @return the declarations matched by this filter, restricted to those
-     *                  of the specified type
+     * of the specified type
      */
     public <D extends Declaration> Collection<D>
-            filter(Collection<? extends Declaration> decls, Class<D> resType) {
+    filter(Collection<? extends Declaration> decls, Class<D> resType) {
         ArrayList<D> res = new ArrayList<D>(decls.size());
         for (Declaration d : decls) {
             if (resType.isInstance(d) && matches(d)) {
@@ -274,7 +271,6 @@ public class DeclarationFilter {
         }
         return res;
     }
-
 
 
     /*
@@ -309,11 +305,11 @@ public class DeclarationFilter {
             Collection<Modifier> mods = d.getModifiers();
             if (mod1 == null) { // looking for package private
                 return !(mods.contains(PUBLIC) ||
-                         mods.contains(PROTECTED) ||
-                         mods.contains(PRIVATE));
+                        mods.contains(PROTECTED) ||
+                        mods.contains(PRIVATE));
             }
             return mods.contains(mod1) &&
-                   (mod2 == null || mods.contains(mod2));
+                    (mod2 == null || mods.contains(mod2));
         }
     }
 }

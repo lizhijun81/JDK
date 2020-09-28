@@ -64,7 +64,7 @@ package com.sun.org.apache.xerces.internal.impl.dtd;
 import com.sun.org.apache.xerces.internal.xni.QName;
 
 /**
-
+ *
  */
 public class XMLAttributeDecl {
 
@@ -72,13 +72,19 @@ public class XMLAttributeDecl {
     // Data
     //
 
-    /** name */
+    /**
+     * name
+     */
     public final QName name = new QName();
 
-    /** simpleType */
+    /**
+     * simpleType
+     */
     public final XMLSimpleType simpleType = new XMLSimpleType();
 
-    /** optional */
+    /**
+     * optional
+     */
     public boolean optional;
 
     //
@@ -95,7 +101,7 @@ public class XMLAttributeDecl {
     public void setValues(QName name, XMLSimpleType simpleType, boolean optional) {
         this.name.setValues(name);
         this.simpleType.setValues(simpleType);
-        this.optional   = optional;
+        this.optional = optional;
     } // setValues
 
     /**
@@ -104,7 +110,7 @@ public class XMLAttributeDecl {
     public void clear() {
         this.name.clear();
         this.simpleType.clear();
-        this.optional   = false;
+        this.optional = false;
     } // clear
 
 } // class XMLAttributeDecl

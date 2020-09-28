@@ -59,11 +59,11 @@ class PangoFonts {
     static {
         fontScale = 1.0d;
         GraphicsEnvironment ge =
-           GraphicsEnvironment.getLocalGraphicsEnvironment();
+                GraphicsEnvironment.getLocalGraphicsEnvironment();
 
         if (!ge.isHeadless()) {
             GraphicsConfiguration gc =
-                ge.getDefaultScreenDevice().getDefaultConfiguration();
+                    ge.getDefaultScreenDevice().getDefaultConfiguration();
             AffineTransform at = gc.getNormalizingTransform();
             fontScale = at.getScaleY();
         }
@@ -77,7 +77,7 @@ class PangoFonts {
      * @param pangoName a String describing a pango font
      *                  e.g. "Sans Italic 10"
      * @return a Font object as a FontUIResource
-     *         or null if no suitable font could be created.
+     * or null if no suitable font could be created.
      */
     static Font lookupFont(String pangoName) {
         String family = "";
@@ -162,11 +162,11 @@ class PangoFonts {
         double dsize = size;
         int dpi = 96;
         Object value =
-            Toolkit.getDefaultToolkit().getDesktopProperty("gnome.Xft/DPI");
+                Toolkit.getDefaultToolkit().getDesktopProperty("gnome.Xft/DPI");
         if (value instanceof Integer) {
-            dpi = ((Integer)value).intValue() / 1024;
+            dpi = ((Integer) value).intValue() / 1024;
             if (dpi == -1) {
-              dpi = 96;
+                dpi = 96;
             }
             if (dpi < 50) { /* 50 dpi is the minimum value gnome allows */
                 dpi = 50;
@@ -174,7 +174,7 @@ class PangoFonts {
             /* The Java rasteriser assumes pts are in a user space of
              * 72 dpi, so we need to adjust for that.
              */
-            dsize = ((double)(dpi * size)/ 72.0);
+            dsize = ((double) (dpi * size) / 72.0);
         } else {
             /* If there's no property, GTK scales for the resolution
              * reported by the Xserver using the formula listed above.
@@ -184,7 +184,7 @@ class PangoFonts {
         }
 
         /* Round size to nearest integer pt size */
-        size = (int)(dsize + 0.5);
+        size = (int) (dsize + 0.5);
         if (size < 1) {
             size = 1;
         }
@@ -192,14 +192,14 @@ class PangoFonts {
         String fcFamilyLC = family.toLowerCase();
         if (FontUtilities.mapFcName(fcFamilyLC) != null) {
             /* family is a Fc/Pango logical font which we need to expand. */
-            Font font =  FontUtilities.getFontConfigFUIR(fcFamilyLC, style, size);
-            font = font.deriveFont(style, (float)dsize);
+            Font font = FontUtilities.getFontConfigFUIR(fcFamilyLC, style, size);
+            font = font.deriveFont(style, (float) dsize);
             return new FontUIResource(font);
         } else {
             /* It's a physical font which we will create with a fallback */
             Font font = new Font(family, style, size);
             /* a roundabout way to set the font size in floating points */
-            font = font.deriveFont(style, (float)dsize);
+            font = font.deriveFont(style, (float) dsize);
             FontUIResource fuir = new FontUIResource(font);
             return FontUtilities.getCompositeFontUIResource(fuir);
         }
@@ -211,7 +211,7 @@ class PangoFonts {
      *
      * @param pangoName a String describing a pango font
      * @return the size of the font described by pangoName (e.g. if
-     *         pangoName is "Sans Italic 10", then this method returns 10)
+     * pangoName is "Sans Italic 10", then this method returns 10)
      */
     static int getFontSize(String pangoName) {
         int size = 10;

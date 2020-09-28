@@ -60,6 +60,7 @@ import org.w3c.dom.DOMException;
  * nodes will be siblings and appear as direct children of the root node, no
  * matter how deeply nested the structure of the original document.
  * <p>See also the <a href='http://www.w3.org/TR/2000/REC-DOM-Level-2-Traversal-Range-20001113'>Document Object Model (DOM) Level 2 Traversal and Range Specification</a>.
+ *
  * @since DOM Level 2
  */
 public interface TreeWalker {
@@ -114,6 +115,7 @@ public interface TreeWalker {
      * is possible, <code>currentNode</code> is not changed.
      */
     public Node getCurrentNode();
+
     /**
      * The node at which the <code>TreeWalker</code> is currently positioned.
      * <br>Alterations to the DOM tree may cause the current node to no longer
@@ -125,12 +127,12 @@ public interface TreeWalker {
      * <code>currentNode</code> even if it is not part of the current view,
      * by applying the filters in the requested direction; if no traversal
      * is possible, <code>currentNode</code> is not changed.
-     * @exception DOMException
-     *   NOT_SUPPORTED_ERR: Raised if an attempt is made to set
-     *   <code>currentNode</code> to <code>null</code>.
+     *
+     * @throws DOMException NOT_SUPPORTED_ERR: Raised if an attempt is made to set
+     *                      <code>currentNode</code> to <code>null</code>.
      */
     public void setCurrentNode(Node currentNode)
-                         throws DOMException;
+            throws DOMException;
 
     /**
      * Moves to and returns the closest visible ancestor node of the current
@@ -138,8 +140,9 @@ public interface TreeWalker {
      * upward from the <code>TreeWalker</code>'s <code>root</code> node, or
      * if it fails to find a visible ancestor node, this method retains the
      * current position and returns <code>null</code>.
+     *
      * @return The new parent node, or <code>null</code> if the current node
-     *   has no parent  in the <code>TreeWalker</code>'s logical view.
+     * has no parent  in the <code>TreeWalker</code>'s logical view.
      */
     public Node parentNode();
 
@@ -148,8 +151,9 @@ public interface TreeWalker {
      * current node, and returns the new node. If the current node has no
      * visible children, returns <code>null</code>, and retains the current
      * node.
+     *
      * @return The new node, or <code>null</code> if the current node has no
-     *   visible children  in the <code>TreeWalker</code>'s logical view.
+     * visible children  in the <code>TreeWalker</code>'s logical view.
      */
     public Node firstChild();
 
@@ -158,8 +162,9 @@ public interface TreeWalker {
      * current node, and returns the new node. If the current node has no
      * visible children, returns <code>null</code>, and retains the current
      * node.
+     *
      * @return The new node, or <code>null</code> if the current node has no
-     *   children  in the <code>TreeWalker</code>'s logical view.
+     * children  in the <code>TreeWalker</code>'s logical view.
      */
     public Node lastChild();
 
@@ -168,8 +173,9 @@ public interface TreeWalker {
      * current node, and returns the new node. If the current node has no
      * visible previous sibling, returns <code>null</code>, and retains the
      * current node.
+     *
      * @return The new node, or <code>null</code> if the current node has no
-     *   previous sibling.  in the <code>TreeWalker</code>'s logical view.
+     * previous sibling.  in the <code>TreeWalker</code>'s logical view.
      */
     public Node previousSibling();
 
@@ -177,8 +183,9 @@ public interface TreeWalker {
      * Moves the <code>TreeWalker</code> to the next sibling of the current
      * node, and returns the new node. If the current node has no visible
      * next sibling, returns <code>null</code>, and retains the current node.
+     *
      * @return The new node, or <code>null</code> if the current node has no
-     *   next sibling.  in the <code>TreeWalker</code>'s logical view.
+     * next sibling.  in the <code>TreeWalker</code>'s logical view.
      */
     public Node nextSibling();
 
@@ -189,8 +196,9 @@ public interface TreeWalker {
      * <code>previousNode</code> attempts to step upward from the
      * <code>TreeWalker</code>'s <code>root</code> node,  returns
      * <code>null</code>, and retains the current node.
+     *
      * @return The new node, or <code>null</code> if the current node has no
-     *   previous node  in the <code>TreeWalker</code>'s logical view.
+     * previous node  in the <code>TreeWalker</code>'s logical view.
      */
     public Node previousNode();
 
@@ -200,8 +208,9 @@ public interface TreeWalker {
      * current node has no next node, or if the search for nextNode attempts
      * to step upward from the <code>TreeWalker</code>'s <code>root</code>
      * node, returns <code>null</code>, and retains the current node.
+     *
      * @return The new node, or <code>null</code> if the current node has no
-     *   next node  in the <code>TreeWalker</code>'s logical view.
+     * next node  in the <code>TreeWalker</code>'s logical view.
      */
     public Node nextNode();
 

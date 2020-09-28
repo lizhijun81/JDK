@@ -52,8 +52,7 @@ import com.sun.java.swing.plaf.windows.XPStyle.*;
  * version of Swing.  A future release of Swing will provide support for
  * long term persistence.
  */
-public class WindowsMenuBarUI extends BasicMenuBarUI
-{
+public class WindowsMenuBarUI extends BasicMenuBarUI {
     /* to be accessed on the EDT only */
     private WindowListener windowListener = null;
     private HierarchyListener hierarchyListener = null;
@@ -72,6 +71,7 @@ public class WindowsMenuBarUI extends BasicMenuBarUI
         }
         super.uninstallListeners();
     }
+
     private void installWindowListener() {
         if (windowListener == null) {
             Component component = menuBar.getTopLevelAncestor();
@@ -82,6 +82,7 @@ public class WindowsMenuBarUI extends BasicMenuBarUI
                     public void windowActivated(WindowEvent e) {
                         menuBar.repaint();
                     }
+
                     @Override
                     public void windowDeactivated(WindowEvent e) {
                         menuBar.repaint();
@@ -91,6 +92,7 @@ public class WindowsMenuBarUI extends BasicMenuBarUI
             }
         }
     }
+
     private void uninstallWindowListener() {
         if (windowListener != null && window != null) {
             window.removeWindowListener(windowListener);
@@ -98,23 +100,24 @@ public class WindowsMenuBarUI extends BasicMenuBarUI
         window = null;
         windowListener = null;
     }
+
     @Override
     protected void installListeners() {
         if (WindowsLookAndFeel.isOnVista()) {
             installWindowListener();
             hierarchyListener =
-                new HierarchyListener() {
-                    public void hierarchyChanged(HierarchyEvent e) {
-                        if ((e.getChangeFlags()
-                                & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
-                            if (menuBar.isDisplayable()) {
-                                installWindowListener();
-                            } else {
-                                uninstallWindowListener();
+                    new HierarchyListener() {
+                        public void hierarchyChanged(HierarchyEvent e) {
+                            if ((e.getChangeFlags()
+                                    & HierarchyEvent.DISPLAYABILITY_CHANGED) != 0) {
+                                if (menuBar.isDisplayable()) {
+                                    installWindowListener();
+                                } else {
+                                    uninstallWindowListener();
+                                }
                             }
                         }
-                    }
-            };
+                    };
             menuBar.addHierarchyListener(hierarchyListener);
         }
         super.installListeners();
@@ -136,14 +139,14 @@ public class WindowsMenuBarUI extends BasicMenuBarUI
      */
     private static class TakeFocus extends AbstractAction {
         public void actionPerformed(ActionEvent e) {
-            JMenuBar menuBar = (JMenuBar)e.getSource();
+            JMenuBar menuBar = (JMenuBar) e.getSource();
             JMenu menu = menuBar.getMenu(0);
             if (menu != null) {
                 MenuSelectionManager msm =
-                    MenuSelectionManager.defaultManager();
+                        MenuSelectionManager.defaultManager();
                 MenuElement path[] = new MenuElement[2];
-                path[0] = (MenuElement)menuBar;
-                path[1] = (MenuElement)menu;
+                path[0] = (MenuElement) menuBar;
+                path[1] = (MenuElement) menu;
                 msm.setSelectedPath(path);
 
                 // show mnemonics
@@ -161,7 +164,7 @@ public class WindowsMenuBarUI extends BasicMenuBarUI
             skin = xp.getSkin(c, Part.MP_BARBACKGROUND);
             int width = c.getWidth();
             int height = c.getHeight();
-            State state =  isActive(c) ? State.ACTIVE : State.INACTIVE;
+            State state = isActive(c) ? State.ACTIVE : State.INACTIVE;
             skin.paintSkin(g, 0, 0, width, height, state);
         } else {
             super.paint(g, c);
@@ -170,6 +173,7 @@ public class WindowsMenuBarUI extends BasicMenuBarUI
 
     /**
      * Checks if component belongs to an active window.
+     *
      * @param c component to check
      * @return true if component belongs to an active window
      */

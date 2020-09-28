@@ -65,6 +65,7 @@ import com.sun.org.apache.xerces.internal.xni.QName;
 import com.sun.org.apache.xerces.internal.impl.dtd.models.ContentModelValidator;
 
 /**
+ *
  */
 public class XMLElementDecl {
 
@@ -72,38 +73,58 @@ public class XMLElementDecl {
     // Constants
     //
 
-    /** TYPE_ANY */
+    /**
+     * TYPE_ANY
+     */
     public static final short TYPE_ANY = 0;
 
-    /** TYPE_EMPTY */
+    /**
+     * TYPE_EMPTY
+     */
     public static final short TYPE_EMPTY = 1;
 
-    /** TYPE_MIXED */
+    /**
+     * TYPE_MIXED
+     */
     public static final short TYPE_MIXED = 2;
 
-    /** TYPE_CHILDREN */
+    /**
+     * TYPE_CHILDREN
+     */
     public static final short TYPE_CHILDREN = 3;
 
-    /** TYPE_SIMPLE */
+    /**
+     * TYPE_SIMPLE
+     */
     public static final short TYPE_SIMPLE = 4;
 
     //
     // Data
     //
 
-    /** name */
+    /**
+     * name
+     */
     public final QName name = new QName();
 
-    /** scope */
+    /**
+     * scope
+     */
     public int scope = -1;
 
-    /** type */
+    /**
+     * type
+     */
     public short type = -1;
 
-    /** contentModelValidator */
+    /**
+     * contentModelValidator
+     */
     public ContentModelValidator contentModelValidator;
 
-    /** simpleType */
+    /**
+     * simpleType
+     */
     public final XMLSimpleType simpleType = new XMLSimpleType();
 
     //
@@ -121,8 +142,8 @@ public class XMLElementDecl {
      */
     public void setValues(QName name, int scope, short type, ContentModelValidator contentModelValidator, XMLSimpleType simpleType) {
         this.name.setValues(name);
-        this.scope                 = scope;
-        this.type                  = type;
+        this.scope = scope;
+        this.type = type;
         this.contentModelValidator = contentModelValidator;
         this.simpleType.setValues(simpleType);
     } // setValues
@@ -132,8 +153,8 @@ public class XMLElementDecl {
      */
     public void clear() {
         this.name.clear();
-        this.type          = -1;
-        this.scope         = -1;
+        this.type = -1;
+        this.scope = -1;
         this.contentModelValidator = null;
         this.simpleType.clear();
     } // clear

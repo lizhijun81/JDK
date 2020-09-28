@@ -38,11 +38,11 @@ import java.security.Principal;
  * on how to achieve this.  Authorization decisions can then be based upon
  * the Principals associated with a <code>Subject</code>.
  *
- * @deprecated As of JDK&nbsp;1.4, replaced by
- *             {@link UnixPrincipal}.
- *             This class is entirely deprecated.
  * @see java.security.Principal
  * @see javax.security.auth.Subject
+ * @deprecated As of JDK&nbsp;1.4, replaced by
+ * {@link UnixPrincipal}.
+ * This class is entirely deprecated.
  */
 @Deprecated
 public class SolarisPrincipal implements Principal, java.io.Serializable {
@@ -50,13 +50,13 @@ public class SolarisPrincipal implements Principal, java.io.Serializable {
     private static final long serialVersionUID = -7840670002439379038L;
 
     private static final java.util.ResourceBundle rb =
-          java.security.AccessController.doPrivileged
-          (new java.security.PrivilegedAction<java.util.ResourceBundle>() {
-              public java.util.ResourceBundle run() {
-                  return (java.util.ResourceBundle.getBundle
-                                ("sun.security.util.AuthResources"));
-              }
-          });
+            java.security.AccessController.doPrivileged
+                    (new java.security.PrivilegedAction<java.util.ResourceBundle>() {
+                        public java.util.ResourceBundle run() {
+                            return (java.util.ResourceBundle.getBundle
+                                    ("sun.security.util.AuthResources"));
+                        }
+                    });
 
 
     /**
@@ -70,9 +70,8 @@ public class SolarisPrincipal implements Principal, java.io.Serializable {
      * <p>
      *
      * @param name the Unix username for this user.
-     *
-     * @exception NullPointerException if the <code>name</code>
-     *                  is <code>null</code>.
+     * @throws NullPointerException if the <code>name</code>
+     *                              is <code>null</code>.
      */
     public SolarisPrincipal(String name) {
         if (name == null)
@@ -100,7 +99,7 @@ public class SolarisPrincipal implements Principal, java.io.Serializable {
      * @return a string representation of this <code>SolarisPrincipal</code>.
      */
     public String toString() {
-        return(rb.getString("SolarisPrincipal.") + name);
+        return (rb.getString("SolarisPrincipal.") + name);
     }
 
     /**
@@ -113,9 +112,8 @@ public class SolarisPrincipal implements Principal, java.io.Serializable {
      *
      * @param o Object to be compared for equality with this
      *          <code>SolarisPrincipal</code>.
-     *
      * @return true if the specified Object is equal equal to this
-     *          <code>SolarisPrincipal</code>.
+     * <code>SolarisPrincipal</code>.
      */
     public boolean equals(Object o) {
         if (o == null)
@@ -126,7 +124,7 @@ public class SolarisPrincipal implements Principal, java.io.Serializable {
 
         if (!(o instanceof SolarisPrincipal))
             return false;
-        SolarisPrincipal that = (SolarisPrincipal)o;
+        SolarisPrincipal that = (SolarisPrincipal) o;
 
         if (this.getName().equals(that.getName()))
             return true;

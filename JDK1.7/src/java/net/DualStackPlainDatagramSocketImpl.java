@@ -26,6 +26,7 @@ package java.net;
 
 import java.io.IOException;
 import java.io.FileDescriptor;
+
 import sun.misc.SharedSecrets;
 import sun.misc.JavaIOFileDescriptorAccess;
 
@@ -42,8 +43,7 @@ import sun.misc.JavaIOFileDescriptorAccess;
  * @author Chris Hegarty
  */
 
-class DualStackPlainDatagramSocketImpl extends AbstractPlainDatagramSocketImpl
-{
+class DualStackPlainDatagramSocketImpl extends AbstractPlainDatagramSocketImpl {
     static JavaIOFileDescriptorAccess fdAccess = SharedSecrets.getJavaIOFileDescriptorAccess();
 
     // true if this socket is exclusively bound
@@ -72,7 +72,7 @@ class DualStackPlainDatagramSocketImpl extends AbstractPlainDatagramSocketImpl
     }
 
     protected synchronized void bind0(int lport, InetAddress laddr)
-        throws SocketException {
+            throws SocketException {
         int nativefd = checkAndReturnNativeFD();
 
         if (laddr == null)
@@ -127,11 +127,11 @@ class DualStackPlainDatagramSocketImpl extends AbstractPlainDatagramSocketImpl
         if (p == null)
             throw new NullPointerException("null packet");
 
-        if (p.getAddress() == null ||p.getData() ==null)
+        if (p.getAddress() == null || p.getData() == null)
             throw new NullPointerException("null address || null buffer");
 
         socketSend(nativefd, p.getData(), p.getOffset(), p.getLength(),
-                   p.getAddress(), p.getPort(), connected);
+                p.getAddress(), p.getPort(), connected);
     }
 
     protected void connect0(InetAddress address, int port) throws SocketException {
@@ -164,22 +164,22 @@ class DualStackPlainDatagramSocketImpl extends AbstractPlainDatagramSocketImpl
 
         int optionValue = 0;
 
-        switch(opt) {
-            case IP_TOS :
-            case SO_RCVBUF :
-            case SO_SNDBUF :
-                optionValue = ((Integer)val).intValue();
+        switch (opt) {
+            case IP_TOS:
+            case SO_RCVBUF:
+            case SO_SNDBUF:
+                optionValue = ((Integer) val).intValue();
                 break;
-            case SO_REUSEADDR :
-                if (exclusiveBind && localPort != 0)  {
+            case SO_REUSEADDR:
+                if (exclusiveBind && localPort != 0) {
                     // socket already bound, emulate SO_REUSEADDR
                     reuseAddressEmulated = true;
-                    isReuseAddress = (Boolean)val;
+                    isReuseAddress = (Boolean) val;
                     return;
                 }
                 //Intentional fallthrough
-            case SO_BROADCAST :
-                optionValue = ((Boolean)val).booleanValue() ? 1 : 0;
+            case SO_BROADCAST:
+                optionValue = ((Boolean) val).booleanValue() ? 1 : 0;
                 break;
             default: /* shouldn't get here */
                 throw new SocketException("Option not supported");
@@ -191,7 +191,7 @@ class DualStackPlainDatagramSocketImpl extends AbstractPlainDatagramSocketImpl
     protected Object socketGetOption(int opt) throws SocketException {
         int nativefd = checkAndReturnNativeFD();
 
-         // SO_BINDADDR is not a socket option.
+        // SO_BINDADDR is not a socket option.
         if (opt == SO_BINDADDR) {
             return socketLocalAddress(nativefd);
         }
@@ -202,13 +202,13 @@ class DualStackPlainDatagramSocketImpl extends AbstractPlainDatagramSocketImpl
         Object returnValue = null;
 
         switch (opt) {
-            case SO_REUSEADDR :
-            case SO_BROADCAST :
-                returnValue =  (value == 0) ? Boolean.FALSE : Boolean.TRUE;
+            case SO_REUSEADDR:
+            case SO_BROADCAST:
+                returnValue = (value == 0) ? Boolean.FALSE : Boolean.TRUE;
                 break;
-            case IP_TOS :
-            case SO_RCVBUF :
-            case SO_SNDBUF :
+            case IP_TOS:
+            case SO_RCVBUF:
+            case SO_SNDBUF:
                 returnValue = new Integer(value);
                 break;
             default: /* shouldn't get here */
@@ -224,12 +224,12 @@ class DualStackPlainDatagramSocketImpl extends AbstractPlainDatagramSocketImpl
      * of behavior defined for multicasting over a dual layer socket by the RFC.
      */
     protected void join(InetAddress inetaddr, NetworkInterface netIf)
-        throws IOException {
+            throws IOException {
         throw new IOException("Method not implemented!");
     }
 
     protected void leave(InetAddress inetaddr, NetworkInterface netIf)
-        throws IOException {
+            throws IOException {
         throw new IOException("Method not implemented!");
     }
 
@@ -265,10 +265,10 @@ class DualStackPlainDatagramSocketImpl extends AbstractPlainDatagramSocketImpl
     private static native int socketCreate(boolean v6Only);
 
     private static native void socketBind(int fd, InetAddress localAddress,
-            int localport, boolean exclBind) throws SocketException;
+                                          int localport, boolean exclBind) throws SocketException;
 
     private static native void socketConnect(int fd, InetAddress address, int port)
-        throws SocketException;
+            throws SocketException;
 
     private static native void socketDisconnect(int fd);
 
@@ -279,13 +279,13 @@ class DualStackPlainDatagramSocketImpl extends AbstractPlainDatagramSocketImpl
     private static native Object socketLocalAddress(int fd) throws SocketException;
 
     private static native int socketReceiveOrPeekData(int fd, DatagramPacket packet,
-        int timeout, boolean connected, boolean peek) throws IOException;
+                                                      int timeout, boolean connected, boolean peek) throws IOException;
 
     private static native void socketSend(int fd, byte[] data, int offset, int length,
-        InetAddress address, int port, boolean connected) throws IOException;
+                                          InetAddress address, int port, boolean connected) throws IOException;
 
     private static native void socketSetIntOption(int fd, int cmd,
-        int optionValue) throws SocketException;
+                                                  int optionValue) throws SocketException;
 
     private static native int socketGetIntOption(int fd, int cmd) throws SocketException;
 }

@@ -31,20 +31,23 @@ package com.sun.org.apache.xerces.internal.xni;
  * them, if so desired.
  *
  * @author Andy Clark, IBM
- *
  * @version $Id: XNIException.java,v 1.6 2010-11-01 04:40:19 joehw Exp $
  */
 public class XNIException
-    extends RuntimeException {
+        extends RuntimeException {
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = 9019819772686063775L;
 
     //
     // Data
     //
 
-    /** The wrapped exception. */
+    /**
+     * The wrapped exception.
+     */
     private Exception fException;
 
     //
@@ -73,7 +76,7 @@ public class XNIException
     /**
      * Constructs an XNI exception with a message and wrapped exception.
      *
-     * @param message The exception message.
+     * @param message   The exception message.
      * @param exception The wrapped exception.
      */
     public XNIException(String message, Exception exception) {
@@ -85,12 +88,14 @@ public class XNIException
     // Public methods
     //
 
-    /** Returns the wrapped exception. */
+    /**
+     * Returns the wrapped exception.
+     */
     public Exception getException() {
         return fException;
     } // getException():Exception
 
     public Throwable getCause() {
-       return fException;
+        return fException;
     }
 } // class QName

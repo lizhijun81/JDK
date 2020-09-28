@@ -44,22 +44,20 @@ public interface Augmentations {
     /**
      * Add additional information identified by a key to the Augmentations structure.
      *
-     * @param key    Identifier, can't be <code>null</code>
-     * @param item   Additional information
-     *
+     * @param key  Identifier, can't be <code>null</code>
+     * @param item Additional information
      * @return the previous value of the specified key in the Augmentations structure,
-     *         or <code>null</code> if it did not have one.
+     * or <code>null</code> if it did not have one.
      */
-    public Object putItem (String key, Object item);
+    public Object putItem(String key, Object item);
 
 
     /**
      * Get information identified by a key from the Augmentations structure
      *
-     * @param key    Identifier, can't be <code>null</code>
-     *
+     * @param key Identifier, can't be <code>null</code>
      * @return the value to which the key is mapped in the Augmentations structure;
-     *         <code>null</code> if the key is not mapped to any value.
+     * <code>null</code> if the key is not mapped to any value.
      */
     public Object getItem(String key);
 
@@ -67,23 +65,22 @@ public interface Augmentations {
     /**
      * Remove additional info from the Augmentations structure
      *
-     * @param key    Identifier, can't be <code>null</code>
+     * @param key Identifier, can't be <code>null</code>
      * @return the previous value of the specified key in the Augmentations structure,
-     *         or <code>null</code> if it did not have one.
+     * or <code>null</code> if it did not have one.
      */
-    public Object removeItem (String key);
+    public Object removeItem(String key);
 
 
     /**
      * Returns an enumeration of the keys in the Augmentations structure
-     *
      */
-    public Enumeration keys ();
+    public Enumeration keys();
 
 
     /**
      * Remove all objects from the Augmentations structure.
      */
-    public void removeAllItems ();
+    public void removeAllItems();
 
 }

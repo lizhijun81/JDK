@@ -21,10 +21,8 @@
 package com.sun.org.apache.xerces.internal.impl.xs.opti;
 
 /**
- * @xerces.internal
- *
  * @author Rahul Srivastava, Sun Microsystems Inc.
- *
+ * @xerces.internal
  */
 public class NodeImpl extends DefaultNode {
 

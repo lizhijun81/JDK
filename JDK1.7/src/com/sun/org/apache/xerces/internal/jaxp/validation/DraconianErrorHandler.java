@@ -35,26 +35,35 @@ final class DraconianErrorHandler implements ErrorHandler {
      * Singleton instance.
      */
     private static final DraconianErrorHandler ERROR_HANDLER_INSTANCE
-        = new DraconianErrorHandler();
+            = new DraconianErrorHandler();
 
-    private DraconianErrorHandler() {}
+    private DraconianErrorHandler() {
+    }
 
-    /** Returns the one and only instance of this error handler. */
+    /**
+     * Returns the one and only instance of this error handler.
+     */
     public static DraconianErrorHandler getInstance() {
         return ERROR_HANDLER_INSTANCE;
     }
 
-    /** Warning: Ignore. */
+    /**
+     * Warning: Ignore.
+     */
     public void warning(SAXParseException e) throws SAXException {
         // noop
     }
 
-    /** Error: Throws back SAXParseException. */
+    /**
+     * Error: Throws back SAXParseException.
+     */
     public void error(SAXParseException e) throws SAXException {
         throw e;
     }
 
-    /** Fatal Error: Throws back SAXParseException. */
+    /**
+     * Fatal Error: Throws back SAXParseException.
+     */
     public void fatalError(SAXParseException e) throws SAXException {
         throw e;
     }

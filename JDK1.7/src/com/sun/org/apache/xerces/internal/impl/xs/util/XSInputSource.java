@@ -27,9 +27,8 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLInputSource;
 import com.sun.org.apache.xerces.internal.xs.XSObject;
 
 /**
- * @xerces.internal
- *
  * @version $Id: XSInputSource.java,v 1.2 2010-10-26 23:01:05 joehw Exp $
+ * @xerces.internal
  */
 public final class XSInputSource extends XMLInputSource {
 

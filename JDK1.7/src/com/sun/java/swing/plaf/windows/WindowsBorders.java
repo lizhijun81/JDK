@@ -40,6 +40,7 @@ import static com.sun.java.swing.plaf.windows.XPStyle.Skin;
 
 /**
  * Factory object that can vend Borders appropriate for the Windows 95 L & F.
+ *
  * @author Rich Schiavi
  */
 
@@ -47,16 +48,17 @@ public class WindowsBorders {
 
     /**
      * Returns a  border instance for a Windows Progress Bar
+     *
      * @since 1.4
      */
     public static Border getProgressBarBorder() {
         UIDefaults table = UIManager.getLookAndFeelDefaults();
         Border progressBarBorder = new BorderUIResource.CompoundBorderUIResource(
-                                         new WindowsBorders.ProgressBarBorder(
-                                              table.getColor("ProgressBar.shadow"),
-                                              table.getColor("ProgressBar.highlight")),
-                                              new EmptyBorder(1,1,1,1)
-                                        );
+                new WindowsBorders.ProgressBarBorder(
+                        table.getColor("ProgressBar.shadow"),
+                        table.getColor("ProgressBar.highlight")),
+                new EmptyBorder(1, 1, 1, 1)
+        );
         return progressBarBorder;
     }
 
@@ -69,8 +71,8 @@ public class WindowsBorders {
     public static Border getToolBarBorder() {
         UIDefaults table = UIManager.getLookAndFeelDefaults();
         Border toolBarBorder = new WindowsBorders.ToolBarBorder(
-                                        table.getColor("ToolBar.shadow"),
-                                        table.getColor("ToolBar.highlight"));
+                table.getColor("ToolBar.shadow"),
+                table.getColor("ToolBar.highlight"));
         return toolBarBorder;
     }
 
@@ -88,28 +90,28 @@ public class WindowsBorders {
     public static Border getTableHeaderBorder() {
         UIDefaults table = UIManager.getLookAndFeelDefaults();
         Border tableHeaderBorder = new BorderUIResource.CompoundBorderUIResource(
-                           new BasicBorders.ButtonBorder(
-                                           table.getColor("Table.shadow"),
-                                           table.getColor("Table.darkShadow"),
-                                           table.getColor("Table.light"),
-                                           table.getColor("Table.highlight")),
-                                     new BasicBorders.MarginBorder());
+                new BasicBorders.ButtonBorder(
+                        table.getColor("Table.shadow"),
+                        table.getColor("Table.darkShadow"),
+                        table.getColor("Table.light"),
+                        table.getColor("Table.highlight")),
+                new BasicBorders.MarginBorder());
         return tableHeaderBorder;
     }
 
     public static Border getInternalFrameBorder() {
         UIDefaults table = UIManager.getLookAndFeelDefaults();
         Border internalFrameBorder = new
-            BorderUIResource.CompoundBorderUIResource(
+                BorderUIResource.CompoundBorderUIResource(
                 BorderFactory.createBevelBorder(BevelBorder.RAISED,
-                    table.getColor("InternalFrame.borderColor"),
-                    table.getColor("InternalFrame.borderHighlight"),
-                    table.getColor("InternalFrame.borderDarkShadow"),
-                    table.getColor("InternalFrame.borderShadow")),
+                        table.getColor("InternalFrame.borderColor"),
+                        table.getColor("InternalFrame.borderHighlight"),
+                        table.getColor("InternalFrame.borderDarkShadow"),
+                        table.getColor("InternalFrame.borderShadow")),
                 new WindowsBorders.InternalFrameLineBorder(
-                    table.getColor("InternalFrame.activeBorderColor"),
-                    table.getColor("InternalFrame.inactiveBorderColor"),
-                    table.getInt("InternalFrame.borderWidth")));
+                        table.getColor("InternalFrame.activeBorderColor"),
+                        table.getColor("InternalFrame.inactiveBorderColor"),
+                        table.getInt("InternalFrame.borderWidth")));
 
         return internalFrameBorder;
     }
@@ -126,15 +128,15 @@ public class WindowsBorders {
         public void paintBorder(Component c, Graphics g, int x, int y,
                                 int width, int height) {
             g.setColor(shadow);
-            g.drawLine(x,y, width-1,y); // draw top
-            g.drawLine(x,y, x,height-1); // draw left
+            g.drawLine(x, y, width - 1, y); // draw top
+            g.drawLine(x, y, x, height - 1); // draw left
             g.setColor(highlight);
-            g.drawLine(x,height-1, width-1,height-1); // draw bottom
-            g.drawLine(width-1,y, width-1,height-1); // draw right
+            g.drawLine(x, height - 1, width - 1, height - 1); // draw bottom
+            g.drawLine(width - 1, y, width - 1, height - 1); // draw right
         }
 
         public Insets getBorderInsets(Component c, Insets insets) {
-            insets.set(1,1,1,1);
+            insets.set(1, 1, 1, 1);
             return insets;
         }
     }
@@ -142,6 +144,7 @@ public class WindowsBorders {
     /**
      * A border for the ToolBar. If the ToolBar is floatable then the handle grip is drawn
      * <p>
+     *
      * @since 1.4
      */
     public static class ToolBarBorder extends AbstractBorder implements UIResource, SwingConstants {
@@ -167,8 +170,8 @@ public class WindowsBorders {
                     xpBorder.paintBorder(c, g, 0, 0, width, height);
                 }
             }
-            if (((JToolBar)c).isFloatable()) {
-                boolean vertical = ((JToolBar)c).getOrientation() == VERTICAL;
+            if (((JToolBar) c).isFloatable()) {
+                boolean vertical = ((JToolBar) c).getOrientation() == VERTICAL;
 
                 if (xp != null) {
                     Part part = vertical ? Part.RP_GRIPPERVERT : Part.RP_GRIPPER;
@@ -182,7 +185,7 @@ public class WindowsBorders {
                     } else {
                         dw = skin.getWidth();
                         dh = height - 1;
-                        dx = c.getComponentOrientation().isLeftToRight() ? 2 : (width-dw-2);
+                        dx = c.getComponentOrientation().isLeftToRight() ? 2 : (width - dw - 2);
                         dy = 0;
                     }
                     skin.paintSkin(g, dx, dy, dw, dh, State.NORMAL);
@@ -223,13 +226,13 @@ public class WindowsBorders {
         }
 
         public Insets getBorderInsets(Component c, Insets insets) {
-            insets.set(1,1,1,1);
+            insets.set(1, 1, 1, 1);
             if (!(c instanceof JToolBar)) {
                 return insets;
             }
-            if (((JToolBar)c).isFloatable()) {
+            if (((JToolBar) c).isFloatable()) {
                 int gripInset = (XPStyle.getXP() != null) ? 12 : 9;
-                if (((JToolBar)c).getOrientation() == HORIZONTAL) {
+                if (((JToolBar) c).getOrientation() == HORIZONTAL) {
                     if (c.getComponentOrientation().isLeftToRight()) {
                         insets.left = gripInset;
                     } else {
@@ -245,6 +248,7 @@ public class WindowsBorders {
 
     /**
      * This class is an implementation of a dashed border.
+     *
      * @since 1.4
      */
     public static class DashedBorder extends LineBorder implements UIResource {
@@ -252,7 +256,7 @@ public class WindowsBorders {
             super(color);
         }
 
-        public DashedBorder(Color color, int thickness)  {
+        public DashedBorder(Color color, int thickness) {
             super(color, thickness);
         }
 
@@ -261,8 +265,8 @@ public class WindowsBorders {
             int i;
 
             g.setColor(lineColor);
-            for(i = 0; i < thickness; i++)  {
-                BasicGraphicsUtils.drawDashedRect(g, x+i, y+i, width-i-i, height-i-i);
+            for (i = 0; i < thickness; i++) {
+                BasicGraphicsUtils.drawDashedRect(g, x + i, y + i, width - i - i, height - i - i);
             }
             g.setColor(oldColor);
         }
@@ -295,6 +299,7 @@ public class WindowsBorders {
 
     /**
      * This class is an implementation of the InternalFrameLine border.
+     *
      * @since 1.4
      */
     public static class InternalFrameLineBorder extends LineBorder implements
@@ -311,13 +316,13 @@ public class WindowsBorders {
         }
 
         public void paintBorder(Component c, Graphics g, int x, int y,
-                int width, int height) {
+                                int width, int height) {
 
             JInternalFrame jif = null;
             if (c instanceof JInternalFrame) {
-                jif = (JInternalFrame)c;
+                jif = (JInternalFrame) c;
             } else if (c instanceof JInternalFrame.JDesktopIcon) {
-                jif = ((JInternalFrame.JDesktopIcon)c).getInternalFrame();
+                jif = ((JInternalFrame.JDesktopIcon) c).getInternalFrame();
             } else {
                 return;
             }

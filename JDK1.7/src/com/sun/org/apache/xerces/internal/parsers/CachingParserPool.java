@@ -57,7 +57,6 @@ import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
  * that your application is thread-safe and avoids leaking memory.
  *
  * @author Andy Clark, IBM
- *
  */
 public class CachingParserPool {
 
@@ -65,10 +64,14 @@ public class CachingParserPool {
     // Constants
     //
 
-    /** Default shadow symbol table (false). */
+    /**
+     * Default shadow symbol table (false).
+     */
     public static final boolean DEFAULT_SHADOW_SYMBOL_TABLE = false;
 
-    /** Default shadow grammar pool (false). */
+    /**
+     * Default shadow grammar pool (false).
+     */
     public static final boolean DEFAULT_SHADOW_GRAMMAR_POOL = false;
 
     //
@@ -111,7 +114,9 @@ public class CachingParserPool {
     // Constructors
     //
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public CachingParserPool() {
         this(new SymbolTable(), new XMLGrammarPoolImpl());
     } // <init>()
@@ -132,12 +137,16 @@ public class CachingParserPool {
     // Public methods
     //
 
-    /** Returns the symbol table. */
+    /**
+     * Returns the symbol table.
+     */
     public SymbolTable getSymbolTable() {
         return fSynchronizedSymbolTable;
     } // getSymbolTable():SymbolTable
 
-    /** Returns the grammar pool. */
+    /**
+     * Returns the grammar pool.
+     */
     public XMLGrammarPool getXMLGrammarPool() {
         return fSynchronizedGrammarPool;
     } // getXMLGrammarPool():XMLGrammarPool
@@ -162,25 +171,29 @@ public class CachingParserPool {
 
     // factory methods
 
-    /** Creates a new DOM parser. */
+    /**
+     * Creates a new DOM parser.
+     */
     public DOMParser createDOMParser() {
         SymbolTable symbolTable = fShadowSymbolTable
-                                ? new ShadowedSymbolTable(fSynchronizedSymbolTable)
-                                : fSynchronizedSymbolTable;
+                ? new ShadowedSymbolTable(fSynchronizedSymbolTable)
+                : fSynchronizedSymbolTable;
         XMLGrammarPool grammarPool = fShadowGrammarPool
-                                ? new ShadowedGrammarPool(fSynchronizedGrammarPool)
-                                : fSynchronizedGrammarPool;
+                ? new ShadowedGrammarPool(fSynchronizedGrammarPool)
+                : fSynchronizedGrammarPool;
         return new DOMParser(symbolTable, grammarPool);
     } // createDOMParser():DOMParser
 
-    /** Creates a new SAX parser. */
+    /**
+     * Creates a new SAX parser.
+     */
     public SAXParser createSAXParser() {
         SymbolTable symbolTable = fShadowSymbolTable
-                                ? new ShadowedSymbolTable(fSynchronizedSymbolTable)
-                                : fSynchronizedSymbolTable;
+                ? new ShadowedSymbolTable(fSynchronizedSymbolTable)
+                : fSynchronizedSymbolTable;
         XMLGrammarPool grammarPool = fShadowGrammarPool
-                                ? new ShadowedGrammarPool(fSynchronizedGrammarPool)
-                                : fSynchronizedGrammarPool;
+                ? new ShadowedGrammarPool(fSynchronizedGrammarPool)
+                : fSynchronizedGrammarPool;
         return new SAXParser(symbolTable, grammarPool);
     } // createSAXParser():SAXParser
 
@@ -194,20 +207,24 @@ public class CachingParserPool {
      * @author Andy Clark, IBM
      */
     public static final class SynchronizedGrammarPool
-        implements XMLGrammarPool {
+            implements XMLGrammarPool {
 
         //
         // Data
         //
 
-        /** Main grammar pool. */
+        /**
+         * Main grammar pool.
+         */
         private XMLGrammarPool fGrammarPool;
 
         //
         // Constructors
         //
 
-        /** Constructs a synchronized grammar pool. */
+        /**
+         * Constructs a synchronized grammar pool.
+         */
         public SynchronizedGrammarPool(XMLGrammarPool grammarPool) {
             fGrammarPool = grammarPool;
         } // <init>(XMLGrammarPool)
@@ -221,7 +238,7 @@ public class CachingParserPool {
         // REVISIT:  does this need to be synchronized since it's just reading?
         // @param grammarType type of the grammars to be retrieved.
         // @return the initial grammar set the validator may place in its "bucket"
-        public Grammar [] retrieveInitialGrammarSet(String grammarType ) {
+        public Grammar[] retrieveInitialGrammarSet(String grammarType) {
             synchronized (fGrammarPool) {
                 return fGrammarPool.retrieveInitialGrammarSet(grammarType);
             }
@@ -248,21 +265,27 @@ public class CachingParserPool {
             }
         } // cacheGrammars(String, Grammar[]);
 
-        /** lock the grammar pool */
+        /**
+         * lock the grammar pool
+         */
         public void lockPool() {
             synchronized (fGrammarPool) {
                 fGrammarPool.lockPool();
             }
         } // lockPool()
 
-        /** clear the grammar pool */
+        /**
+         * clear the grammar pool
+         */
         public void clear() {
             synchronized (fGrammarPool) {
                 fGrammarPool.clear();
             }
         } // lockPool()
 
-        /** unlock the grammar pool */
+        /**
+         * unlock the grammar pool
+         */
         public void unlockPool() {
             synchronized (fGrammarPool) {
                 fGrammarPool.unlockPool();
@@ -280,12 +303,12 @@ public class CachingParserPool {
          * @param grammar Grammar object.
          */
         /******
-        public void putGrammar(String key, Grammar grammar) {
-            synchronized (fGrammarPool) {
-                fGrammarPool.putGrammar(key, grammar);
-            }
-        } // putGrammar(String,Grammar)
-        *******/
+         public void putGrammar(String key, Grammar grammar) {
+         synchronized (fGrammarPool) {
+         fGrammarPool.putGrammar(key, grammar);
+         }
+         } // putGrammar(String,Grammar)
+         *******/
 
         /**
          * Returns the grammar associated to the specified key.
@@ -293,12 +316,12 @@ public class CachingParserPool {
          * @param key The key of the grammar.
          */
         /**********
-        public Grammar getGrammar(String key) {
-            synchronized (fGrammarPool) {
-                return fGrammarPool.getGrammar(key);
-            }
-        } // getGrammar(String):Grammar
-        ***********/
+         public Grammar getGrammar(String key) {
+         synchronized (fGrammarPool) {
+         return fGrammarPool.getGrammar(key);
+         }
+         } // getGrammar(String):Grammar
+         ***********/
 
         /**
          * Removes the grammar associated to the specified key from the
@@ -307,12 +330,12 @@ public class CachingParserPool {
          * @param key The key of the grammar.
          */
         /**********
-        public Grammar removeGrammar(String key) {
-            synchronized (fGrammarPool) {
-                return fGrammarPool.removeGrammar(key);
-            }
-        } // removeGrammar(String):Grammar
-        ******/
+         public Grammar removeGrammar(String key) {
+         synchronized (fGrammarPool) {
+         return fGrammarPool.removeGrammar(key);
+         }
+         } // removeGrammar(String):Grammar
+         ******/
 
         /**
          * Returns true if the grammar pool contains a grammar associated
@@ -321,12 +344,12 @@ public class CachingParserPool {
          * @param key The key of the grammar.
          */
         /**********
-        public boolean containsGrammar(String key) {
-            synchronized (fGrammarPool) {
-                return fGrammarPool.containsGrammar(key);
-            }
-        } // containsGrammar(String):boolean
-        ********/
+         public boolean containsGrammar(String key) {
+         synchronized (fGrammarPool) {
+         return fGrammarPool.containsGrammar(key);
+         }
+         } // containsGrammar(String):boolean
+         ********/
 
     } // class SynchronizedGrammarPool
 
@@ -339,20 +362,24 @@ public class CachingParserPool {
      * @author Neil Graham, IBM
      */
     public static final class ShadowedGrammarPool
-        extends XMLGrammarPoolImpl {
+            extends XMLGrammarPoolImpl {
 
         //
         // Data
         //
 
-        /** Main grammar pool. */
+        /**
+         * Main grammar pool.
+         */
         private XMLGrammarPool fGrammarPool;
 
         //
         // Constructors
         //
 
-        /** Constructs a shadowed grammar pool. */
+        /**
+         * Constructs a shadowed grammar pool.
+         */
         public ShadowedGrammarPool(XMLGrammarPool grammarPool) {
             fGrammarPool = grammarPool;
         } // <init>(GrammarPool)
@@ -366,10 +393,10 @@ public class CachingParserPool {
          * REVISIT:  does this need to be synchronized since it's just reading?
          *
          * @param grammarType Type of the grammars to be retrieved.
-         * @return            The initial grammar set the validator may place in its "bucket"
+         * @return The initial grammar set the validator may place in its "bucket"
          */
-        public Grammar [] retrieveInitialGrammarSet(String grammarType ) {
-            Grammar [] grammars = super.retrieveInitialGrammarSet(grammarType);
+        public Grammar[] retrieveInitialGrammarSet(String grammarType) {
+            Grammar[] grammars = super.retrieveInitialGrammarSet(grammarType);
             if (grammars != null) return grammars;
             return fGrammarPool.retrieveInitialGrammarSet(grammarType);
         } // retrieveInitialGrammarSet(String):  Grammar[]
@@ -379,11 +406,11 @@ public class CachingParserPool {
          * REVISIT:  does this need to be synchronized since it's just reading?
          *
          * @param gDesc Description of the grammar to be retrieved
-         * @return      Grammar corresponding to gDesc, or null if none exists.
+         * @return Grammar corresponding to gDesc, or null if none exists.
          */
         public Grammar retrieveGrammar(XMLGrammarDescription gDesc) {
             Grammar g = super.retrieveGrammar(gDesc);
-            if(g != null) return g;
+            if (g != null) return g;
             return fGrammarPool.retrieveGrammar(gDesc);
         } // retrieveGrammar(XMLGrammarDesc):  Grammar
 
@@ -396,9 +423,9 @@ public class CachingParserPool {
          *                    given to the validator may be included).
          */
         public void cacheGrammars(String grammarType, Grammar[] grammars) {
-           // better give both grammars a shot...
-           super.cacheGrammars(grammarType, grammars);
-           fGrammarPool.cacheGrammars(grammarType, grammars);
+            // better give both grammars a shot...
+            super.cacheGrammars(grammarType, grammars);
+            fGrammarPool.cacheGrammars(grammarType, grammars);
         } // cacheGrammars(grammarType, Grammar[]);
 
         /**

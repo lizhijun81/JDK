@@ -33,43 +33,41 @@ import org.w3c.dom.Element;
 
 /**
  * The wildcard schema component traverser.
- *
+ * <p>
  * &lt;any
- *   id = ID
- *   maxOccurs = (nonNegativeInteger | unbounded)  : 1
- *   minOccurs = nonNegativeInteger : 1
- *   namespace = ((##any | ##other) | List of (anyURI | (##targetNamespace | ##local)) )  : ##any
- *   processContents = (lax | skip | strict) : strict
- *   {any attributes with non-schema namespace . . .}&gt;
- *   Content: (annotation?)
+ * id = ID
+ * maxOccurs = (nonNegativeInteger | unbounded)  : 1
+ * minOccurs = nonNegativeInteger : 1
+ * namespace = ((##any | ##other) | List of (anyURI | (##targetNamespace | ##local)) )  : ##any
+ * processContents = (lax | skip | strict) : strict
+ * {any attributes with non-schema namespace . . .}&gt;
+ * Content: (annotation?)
  * &lt;/any&gt;
- *
+ * <p>
  * &lt;anyAttribute
- *   id = ID
- *   namespace = ((##any | ##other) | List of (anyURI | (##targetNamespace | ##local)) )  : ##any
- *   processContents = (lax | skip | strict) : strict
- *   {any attributes with non-schema namespace . . .}&gt;
- *   Content: (annotation?)
+ * id = ID
+ * namespace = ((##any | ##other) | List of (anyURI | (##targetNamespace | ##local)) )  : ##any
+ * processContents = (lax | skip | strict) : strict
+ * {any attributes with non-schema namespace . . .}&gt;
+ * Content: (annotation?)
  * &lt;/anyAttribute&gt;
- *
- * @xerces.internal
  *
  * @author Rahul Srivastava, Sun Microsystems Inc.
  * @author Sandy Gao, IBM
- *
  * @version $Id: XSDWildcardTraverser.java,v 1.7 2010-11-01 04:40:02 joehw Exp $
+ * @xerces.internal
  */
 class XSDWildcardTraverser extends XSDAbstractTraverser {
 
     /**
      * constructor
      *
-     * @param  handler
-     * @param  errorReporter
-     * @param  gAttrCheck
+     * @param handler
+     * @param errorReporter
+     * @param gAttrCheck
      */
-    XSDWildcardTraverser (XSDHandler handler,
-            XSAttributeChecker gAttrCheck) {
+    XSDWildcardTraverser(XSDHandler handler,
+                         XSAttributeChecker gAttrCheck) {
         super(handler, gAttrCheck);
     }
 
@@ -77,14 +75,14 @@ class XSDWildcardTraverser extends XSDAbstractTraverser {
     /**
      * Traverse &lt;any&gt;
      *
-     * @param  elmNode
-     * @param  schemaDoc
-     * @param  grammar
+     * @param elmNode
+     * @param schemaDoc
+     * @param grammar
      * @return the wildcard node index
      */
     XSParticleDecl traverseAny(Element elmNode,
-            XSDocumentInfo schemaDoc,
-            SchemaGrammar grammar) {
+                               XSDocumentInfo schemaDoc,
+                               SchemaGrammar grammar) {
 
         // General Attribute Checking for elmNode
         Object[] attrValues = fAttrChecker.checkAttributes(elmNode, false, schemaDoc);
@@ -93,10 +91,10 @@ class XSDWildcardTraverser extends XSDAbstractTraverser {
         // for <any>, need to create a new particle to reflect the min/max values
         XSParticleDecl particle = null;
         if (wildcard != null) {
-            int min = ((XInt)attrValues[XSAttributeChecker.ATTIDX_MINOCCURS]).intValue();
-            int max = ((XInt)attrValues[XSAttributeChecker.ATTIDX_MAXOCCURS]).intValue();
+            int min = ((XInt) attrValues[XSAttributeChecker.ATTIDX_MINOCCURS]).intValue();
+            int max = ((XInt) attrValues[XSAttributeChecker.ATTIDX_MAXOCCURS]).intValue();
             if (max != 0) {
-                if (fSchemaHandler.fDeclPool !=null) {
+                if (fSchemaHandler.fDeclPool != null) {
                     particle = fSchemaHandler.fDeclPool.getParticleDecl();
                 } else {
                     particle = new XSParticleDecl();
@@ -118,14 +116,14 @@ class XSDWildcardTraverser extends XSDAbstractTraverser {
     /**
      * Traverse &lt;anyAttribute&gt;
      *
-     * @param  elmNode
-     * @param  schemaDoc
-     * @param  grammar
+     * @param elmNode
+     * @param schemaDoc
+     * @param grammar
      * @return the wildcard node index
      */
     XSWildcardDecl traverseAnyAttribute(Element elmNode,
-            XSDocumentInfo schemaDoc,
-            SchemaGrammar grammar) {
+                                        XSDocumentInfo schemaDoc,
+                                        SchemaGrammar grammar) {
 
         // General Attribute Checking for elmNode
         Object[] attrValues = fAttrChecker.checkAttributes(elmNode, false, schemaDoc);
@@ -137,17 +135,16 @@ class XSDWildcardTraverser extends XSDAbstractTraverser {
 
 
     /**
-     *
-     * @param  elmNode
-     * @param  attrValues
-     * @param  schemaDoc
-     * @param  grammar
+     * @param elmNode
+     * @param attrValues
+     * @param schemaDoc
+     * @param grammar
      * @return the wildcard node index
      */
     XSWildcardDecl traverseWildcardDecl(Element elmNode,
-            Object[] attrValues,
-            XSDocumentInfo schemaDoc,
-            SchemaGrammar grammar) {
+                                        Object[] attrValues,
+                                        XSDocumentInfo schemaDoc,
+                                        SchemaGrammar grammar) {
 
         //get all attributes
         XSWildcardDecl wildcard = new XSWildcardDecl();
@@ -155,7 +152,7 @@ class XSDWildcardTraverser extends XSDAbstractTraverser {
         XInt namespaceTypeAttr = (XInt) attrValues[XSAttributeChecker.ATTIDX_NAMESPACE];
         wildcard.fType = namespaceTypeAttr.shortValue();
         // namespace list
-        wildcard.fNamespaceList = (String[])attrValues[XSAttributeChecker.ATTIDX_NAMESPACE_LIST];
+        wildcard.fNamespaceList = (String[]) attrValues[XSAttributeChecker.ATTIDX_NAMESPACE_LIST];
         // process contents
         XInt processContentsAttr = (XInt) attrValues[XSAttributeChecker.ATTIDX_PROCESSCONTENTS];
         wildcard.fProcessContents = processContentsAttr.shortValue();
@@ -163,13 +160,11 @@ class XSDWildcardTraverser extends XSDAbstractTraverser {
         //check content
         Element child = DOMUtil.getFirstChildElement(elmNode);
         XSAnnotationImpl annotation = null;
-        if (child != null)
-        {
+        if (child != null) {
             if (DOMUtil.getLocalName(child).equals(SchemaSymbols.ELT_ANNOTATION)) {
                 annotation = traverseAnnotationDecl(child, attrValues, false, schemaDoc);
                 child = DOMUtil.getNextSiblingElement(child);
-            }
-            else {
+            } else {
                 String text = DOMUtil.getSyntheticAnnotation(elmNode);
                 if (text != null) {
                     annotation = traverseSyntheticAnnotation(elmNode, text, attrValues, false, schemaDoc);
@@ -179,8 +174,7 @@ class XSDWildcardTraverser extends XSDAbstractTraverser {
             if (child != null) {
                 reportSchemaError("s4s-elt-must-match.1", new Object[]{"wildcard", "(annotation?)", DOMUtil.getLocalName(child)}, elmNode);
             }
-        }
-        else {
+        } else {
             String text = DOMUtil.getSyntheticAnnotation(elmNode);
             if (text != null) {
                 annotation = traverseSyntheticAnnotation(elmNode, text, attrValues, false, schemaDoc);

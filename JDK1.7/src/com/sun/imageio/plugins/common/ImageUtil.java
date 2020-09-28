@@ -131,14 +131,13 @@ public class ImageUtil {
      * entries ranging from zero to at most 255.</p>
      *
      * @return An instance of <code>ColorModel</code> that is suitable for
-     *         the supplied <code>SampleModel</code>, or <code>null</code>.
-     *
-     * @throws IllegalArgumentException  If <code>sampleModel</code> is
-     *         <code>null</code>.
+     * the supplied <code>SampleModel</code>, or <code>null</code>.
+     * @throws IllegalArgumentException If <code>sampleModel</code> is
+     *                                  <code>null</code>.
      */
     public static final ColorModel createColorModel(SampleModel sampleModel) {
         // Check the parameter.
-        if(sampleModel == null) {
+        if (sampleModel == null) {
             throw new IllegalArgumentException("sampleModel == null!");
         }
 
@@ -146,17 +145,17 @@ public class ImageUtil {
         int dataType = sampleModel.getDataType();
 
         // Check the data type
-        switch(dataType) {
-        case DataBuffer.TYPE_BYTE:
-        case DataBuffer.TYPE_USHORT:
-        case DataBuffer.TYPE_SHORT:
-        case DataBuffer.TYPE_INT:
-        case DataBuffer.TYPE_FLOAT:
-        case DataBuffer.TYPE_DOUBLE:
-            break;
-        default:
-            // Return null for other types.
-            return null;
+        switch (dataType) {
+            case DataBuffer.TYPE_BYTE:
+            case DataBuffer.TYPE_USHORT:
+            case DataBuffer.TYPE_SHORT:
+            case DataBuffer.TYPE_INT:
+            case DataBuffer.TYPE_FLOAT:
+            case DataBuffer.TYPE_DOUBLE:
+                break;
+            default:
+                // Return null for other types.
+                return null;
         }
 
         // The return variable.
@@ -166,15 +165,15 @@ public class ImageUtil {
         int[] sampleSize = sampleModel.getSampleSize();
 
         // Create a Component ColorModel.
-        if(sampleModel instanceof ComponentSampleModel) {
+        if (sampleModel instanceof ComponentSampleModel) {
             // Get the number of bands.
             int numBands = sampleModel.getNumBands();
 
             // Determine the color space.
             ColorSpace colorSpace = null;
-            if(numBands <= 2) {
+            if (numBands <= 2) {
                 colorSpace = ColorSpace.getInstance(ColorSpace.CS_GRAY);
-            } else if(numBands <= 4) {
+            } else if (numBands <= 4) {
                 colorSpace = ColorSpace.getInstance(ColorSpace.CS_sRGB);
             } else {
                 colorSpace = new BogusColorSpace(numBands);
@@ -183,18 +182,18 @@ public class ImageUtil {
             boolean hasAlpha = (numBands == 2) || (numBands == 4);
             boolean isAlphaPremultiplied = false;
             int transparency = hasAlpha ?
-                Transparency.TRANSLUCENT : Transparency.OPAQUE;
+                    Transparency.TRANSLUCENT : Transparency.OPAQUE;
 
             colorModel = new ComponentColorModel(colorSpace,
-                                                 sampleSize,
-                                                 hasAlpha,
-                                                 isAlphaPremultiplied,
-                                                 transparency,
-                                                 dataType);
+                    sampleSize,
+                    hasAlpha,
+                    isAlphaPremultiplied,
+                    transparency,
+                    dataType);
         } else if (sampleModel.getNumBands() <= 4 &&
-                   sampleModel instanceof SinglePixelPackedSampleModel) {
+                sampleModel instanceof SinglePixelPackedSampleModel) {
             SinglePixelPackedSampleModel sppsm =
-                (SinglePixelPackedSampleModel)sampleModel;
+                    (SinglePixelPackedSampleModel) sampleModel;
 
             int[] bitMasks = sppsm.getBitMasks();
             int rmask = 0;
@@ -224,17 +223,17 @@ public class ImageUtil {
 
             return new DirectColorModel(bits, rmask, gmask, bmask, amask);
 
-        } else if(sampleModel instanceof MultiPixelPackedSampleModel) {
+        } else if (sampleModel instanceof MultiPixelPackedSampleModel) {
             // Load the colormap with a ramp.
             int bitsPerSample = sampleSize[0];
             int numEntries = 1 << bitsPerSample;
             byte[] map = new byte[numEntries];
             for (int i = 0; i < numEntries; i++) {
-                map[i] = (byte)(i*255/(numEntries - 1));
+                map[i] = (byte) (i * 255 / (numEntries - 1));
             }
 
             colorModel = new IndexColorModel(bitsPerSample, numEntries,
-                                             map, map, map);
+                    map, map, map);
 
         }
 
@@ -253,13 +252,13 @@ public class ImageUtil {
      * @return the binary data as a packed array of bytes with zero offset
      * of <code>null</code> if the data are not binary.
      * @throws IllegalArgumentException if <code>isBinary()</code> returns
-     * <code>false</code> with the <code>SampleModel</code> of the
-     * supplied <code>Raster</code> as argument.
+     *                                  <code>false</code> with the <code>SampleModel</code> of the
+     *                                  supplied <code>Raster</code> as argument.
      */
     public static byte[] getPackedBinaryData(Raster raster,
                                              Rectangle rect) {
         SampleModel sm = raster.getSampleModel();
-        if(!isBinary(sm)) {
+        if (!isBinary(sm)) {
             throw new IllegalArgumentException(I18N.getString("ImageUtil0"));
         }
 
@@ -273,74 +272,74 @@ public class ImageUtil {
         int dx = rectX - raster.getSampleModelTranslateX();
         int dy = rectY - raster.getSampleModelTranslateY();
 
-        MultiPixelPackedSampleModel mpp = (MultiPixelPackedSampleModel)sm;
+        MultiPixelPackedSampleModel mpp = (MultiPixelPackedSampleModel) sm;
         int lineStride = mpp.getScanlineStride();
         int eltOffset = dataBuffer.getOffset() + mpp.getOffset(dx, dy);
         int bitOffset = mpp.getBitOffset(dx);
 
-        int numBytesPerRow = (rectWidth + 7)/8;
-        if(dataBuffer instanceof DataBufferByte &&
-           eltOffset == 0 && bitOffset == 0 &&
-           numBytesPerRow == lineStride &&
-           ((DataBufferByte)dataBuffer).getData().length ==
-           numBytesPerRow*rectHeight) {
-            return ((DataBufferByte)dataBuffer).getData();
+        int numBytesPerRow = (rectWidth + 7) / 8;
+        if (dataBuffer instanceof DataBufferByte &&
+                eltOffset == 0 && bitOffset == 0 &&
+                numBytesPerRow == lineStride &&
+                ((DataBufferByte) dataBuffer).getData().length ==
+                        numBytesPerRow * rectHeight) {
+            return ((DataBufferByte) dataBuffer).getData();
         }
 
-        byte[] binaryDataArray = new byte[numBytesPerRow*rectHeight];
+        byte[] binaryDataArray = new byte[numBytesPerRow * rectHeight];
 
         int b = 0;
 
-        if(bitOffset == 0) {
-            if(dataBuffer instanceof DataBufferByte) {
-                byte[] data = ((DataBufferByte)dataBuffer).getData();
+        if (bitOffset == 0) {
+            if (dataBuffer instanceof DataBufferByte) {
+                byte[] data = ((DataBufferByte) dataBuffer).getData();
                 int stride = numBytesPerRow;
                 int offset = 0;
-                for(int y = 0; y < rectHeight; y++) {
+                for (int y = 0; y < rectHeight; y++) {
                     System.arraycopy(data, eltOffset,
-                                     binaryDataArray, offset,
-                                     stride);
+                            binaryDataArray, offset,
+                            stride);
                     offset += stride;
                     eltOffset += lineStride;
                 }
-            } else if(dataBuffer instanceof DataBufferShort ||
-                      dataBuffer instanceof DataBufferUShort) {
+            } else if (dataBuffer instanceof DataBufferShort ||
+                    dataBuffer instanceof DataBufferUShort) {
                 short[] data = dataBuffer instanceof DataBufferShort ?
-                    ((DataBufferShort)dataBuffer).getData() :
-                    ((DataBufferUShort)dataBuffer).getData();
+                        ((DataBufferShort) dataBuffer).getData() :
+                        ((DataBufferUShort) dataBuffer).getData();
 
-                for(int y = 0; y < rectHeight; y++) {
+                for (int y = 0; y < rectHeight; y++) {
                     int xRemaining = rectWidth;
                     int i = eltOffset;
-                    while(xRemaining > 8) {
+                    while (xRemaining > 8) {
                         short datum = data[i++];
-                        binaryDataArray[b++] = (byte)((datum >>> 8) & 0xFF);
-                        binaryDataArray[b++] = (byte)(datum & 0xFF);
+                        binaryDataArray[b++] = (byte) ((datum >>> 8) & 0xFF);
+                        binaryDataArray[b++] = (byte) (datum & 0xFF);
                         xRemaining -= 16;
                     }
-                    if(xRemaining > 0) {
-                        binaryDataArray[b++] = (byte)((data[i] >>> 8) & 0XFF);
+                    if (xRemaining > 0) {
+                        binaryDataArray[b++] = (byte) ((data[i] >>> 8) & 0XFF);
                     }
                     eltOffset += lineStride;
                 }
-            } else if(dataBuffer instanceof DataBufferInt) {
-                int[] data = ((DataBufferInt)dataBuffer).getData();
+            } else if (dataBuffer instanceof DataBufferInt) {
+                int[] data = ((DataBufferInt) dataBuffer).getData();
 
-                for(int y = 0; y < rectHeight; y++) {
+                for (int y = 0; y < rectHeight; y++) {
                     int xRemaining = rectWidth;
                     int i = eltOffset;
-                    while(xRemaining > 24) {
+                    while (xRemaining > 24) {
                         int datum = data[i++];
-                        binaryDataArray[b++] = (byte)((datum >>> 24) & 0xFF);
-                        binaryDataArray[b++] = (byte)((datum >>> 16) & 0xFF);
-                        binaryDataArray[b++] = (byte)((datum >>> 8) & 0xFF);
-                        binaryDataArray[b++] = (byte)(datum & 0xFF);
+                        binaryDataArray[b++] = (byte) ((datum >>> 24) & 0xFF);
+                        binaryDataArray[b++] = (byte) ((datum >>> 16) & 0xFF);
+                        binaryDataArray[b++] = (byte) ((datum >>> 8) & 0xFF);
+                        binaryDataArray[b++] = (byte) (datum & 0xFF);
                         xRemaining -= 32;
                     }
                     int shift = 24;
-                    while(xRemaining > 0) {
+                    while (xRemaining > 0) {
                         binaryDataArray[b++] =
-                            (byte)((data[i] >>> shift) & 0xFF);
+                                (byte) ((data[i] >>> shift) & 0xFF);
                         shift -= 8;
                         xRemaining -= 8;
                     }
@@ -348,81 +347,81 @@ public class ImageUtil {
                 }
             }
         } else { // bitOffset != 0
-            if(dataBuffer instanceof DataBufferByte) {
-                byte[] data = ((DataBufferByte)dataBuffer).getData();
+            if (dataBuffer instanceof DataBufferByte) {
+                byte[] data = ((DataBufferByte) dataBuffer).getData();
 
-                if((bitOffset & 7) == 0) {
+                if ((bitOffset & 7) == 0) {
                     int stride = numBytesPerRow;
                     int offset = 0;
-                    for(int y = 0; y < rectHeight; y++) {
+                    for (int y = 0; y < rectHeight; y++) {
                         System.arraycopy(data, eltOffset,
-                                         binaryDataArray, offset,
-                                         stride);
+                                binaryDataArray, offset,
+                                stride);
                         offset += stride;
                         eltOffset += lineStride;
                     }
                 } else { // bitOffset % 8 != 0
                     int leftShift = bitOffset & 7;
                     int rightShift = 8 - leftShift;
-                    for(int y = 0; y < rectHeight; y++) {
+                    for (int y = 0; y < rectHeight; y++) {
                         int i = eltOffset;
                         int xRemaining = rectWidth;
-                        while(xRemaining > 0) {
-                            if(xRemaining > rightShift) {
+                        while (xRemaining > 0) {
+                            if (xRemaining > rightShift) {
                                 binaryDataArray[b++] =
-                                    (byte)(((data[i++]&0xFF) << leftShift) |
-                                           ((data[i]&0xFF) >>> rightShift));
+                                        (byte) (((data[i++] & 0xFF) << leftShift) |
+                                                ((data[i] & 0xFF) >>> rightShift));
                             } else {
                                 binaryDataArray[b++] =
-                                    (byte)((data[i]&0xFF) << leftShift);
+                                        (byte) ((data[i] & 0xFF) << leftShift);
                             }
                             xRemaining -= 8;
                         }
                         eltOffset += lineStride;
                     }
                 }
-            } else if(dataBuffer instanceof DataBufferShort ||
-                      dataBuffer instanceof DataBufferUShort) {
+            } else if (dataBuffer instanceof DataBufferShort ||
+                    dataBuffer instanceof DataBufferUShort) {
                 short[] data = dataBuffer instanceof DataBufferShort ?
-                    ((DataBufferShort)dataBuffer).getData() :
-                    ((DataBufferUShort)dataBuffer).getData();
+                        ((DataBufferShort) dataBuffer).getData() :
+                        ((DataBufferUShort) dataBuffer).getData();
 
-                for(int y = 0; y < rectHeight; y++) {
+                for (int y = 0; y < rectHeight; y++) {
                     int bOffset = bitOffset;
-                    for(int x = 0; x < rectWidth; x += 8, bOffset += 8) {
-                        int i = eltOffset + bOffset/16;
+                    for (int x = 0; x < rectWidth; x += 8, bOffset += 8) {
+                        int i = eltOffset + bOffset / 16;
                         int mod = bOffset % 16;
                         int left = data[i] & 0xFFFF;
-                        if(mod <= 8) {
-                            binaryDataArray[b++] = (byte)(left >>> (8 - mod));
+                        if (mod <= 8) {
+                            binaryDataArray[b++] = (byte) (left >>> (8 - mod));
                         } else {
                             int delta = mod - 8;
-                            int right = data[i+1] & 0xFFFF;
+                            int right = data[i + 1] & 0xFFFF;
                             binaryDataArray[b++] =
-                                (byte)((left << delta) |
-                                       (right >>> (16 - delta)));
+                                    (byte) ((left << delta) |
+                                            (right >>> (16 - delta)));
                         }
                     }
                     eltOffset += lineStride;
                 }
-            } else if(dataBuffer instanceof DataBufferInt) {
-                int[] data = ((DataBufferInt)dataBuffer).getData();
+            } else if (dataBuffer instanceof DataBufferInt) {
+                int[] data = ((DataBufferInt) dataBuffer).getData();
 
-                for(int y = 0; y < rectHeight; y++) {
+                for (int y = 0; y < rectHeight; y++) {
                     int bOffset = bitOffset;
-                    for(int x = 0; x < rectWidth; x += 8, bOffset += 8) {
-                        int i = eltOffset + bOffset/32;
+                    for (int x = 0; x < rectWidth; x += 8, bOffset += 8) {
+                        int i = eltOffset + bOffset / 32;
                         int mod = bOffset % 32;
                         int left = data[i];
-                        if(mod <= 24) {
+                        if (mod <= 24) {
                             binaryDataArray[b++] =
-                                (byte)(left >>> (24 - mod));
+                                    (byte) (left >>> (24 - mod));
                         } else {
                             int delta = mod - 24;
-                            int right = data[i+1];
+                            int right = data[i + 1];
                             binaryDataArray[b++] =
-                                (byte)((left << delta) |
-                                       (right >>> (32 - delta)));
+                                    (byte) ((left << delta) |
+                                            (right >>> (32 - delta)));
                         }
                     }
                     eltOffset += lineStride;
@@ -438,13 +437,13 @@ public class ImageUtil {
      * The line stride will be the width of the <code>Raster</code>.
      *
      * @throws IllegalArgumentException if <code>isBinary()</code> returns
-     * <code>false</code> with the <code>SampleModel</code> of the
-     * supplied <code>Raster</code> as argument.
+     *                                  <code>false</code> with the <code>SampleModel</code> of the
+     *                                  supplied <code>Raster</code> as argument.
      */
     public static byte[] getUnpackedBinaryData(Raster raster,
                                                Rectangle rect) {
         SampleModel sm = raster.getSampleModel();
-        if(!isBinary(sm)) {
+        if (!isBinary(sm)) {
             throw new IllegalArgumentException(I18N.getString("ImageUtil0"));
         }
 
@@ -458,53 +457,53 @@ public class ImageUtil {
         int dx = rectX - raster.getSampleModelTranslateX();
         int dy = rectY - raster.getSampleModelTranslateY();
 
-        MultiPixelPackedSampleModel mpp = (MultiPixelPackedSampleModel)sm;
+        MultiPixelPackedSampleModel mpp = (MultiPixelPackedSampleModel) sm;
         int lineStride = mpp.getScanlineStride();
         int eltOffset = dataBuffer.getOffset() + mpp.getOffset(dx, dy);
         int bitOffset = mpp.getBitOffset(dx);
 
-        byte[] bdata = new byte[rectWidth*rectHeight];
+        byte[] bdata = new byte[rectWidth * rectHeight];
         int maxY = rectY + rectHeight;
         int maxX = rectX + rectWidth;
         int k = 0;
 
-        if(dataBuffer instanceof DataBufferByte) {
-            byte[] data = ((DataBufferByte)dataBuffer).getData();
-            for(int y = rectY; y < maxY; y++) {
-                int bOffset = eltOffset*8 + bitOffset;
-                for(int x = rectX; x < maxX; x++) {
-                    byte b = data[bOffset/8];
+        if (dataBuffer instanceof DataBufferByte) {
+            byte[] data = ((DataBufferByte) dataBuffer).getData();
+            for (int y = rectY; y < maxY; y++) {
+                int bOffset = eltOffset * 8 + bitOffset;
+                for (int x = rectX; x < maxX; x++) {
+                    byte b = data[bOffset / 8];
                     bdata[k++] =
-                        (byte)((b >>> (7 - bOffset & 7)) & 0x0000001);
+                            (byte) ((b >>> (7 - bOffset & 7)) & 0x0000001);
                     bOffset++;
                 }
                 eltOffset += lineStride;
             }
-        } else if(dataBuffer instanceof DataBufferShort ||
-                  dataBuffer instanceof DataBufferUShort) {
+        } else if (dataBuffer instanceof DataBufferShort ||
+                dataBuffer instanceof DataBufferUShort) {
             short[] data = dataBuffer instanceof DataBufferShort ?
-                ((DataBufferShort)dataBuffer).getData() :
-                ((DataBufferUShort)dataBuffer).getData();
-            for(int y = rectY; y < maxY; y++) {
-                int bOffset = eltOffset*16 + bitOffset;
-                for(int x = rectX; x < maxX; x++) {
-                    short s = data[bOffset/16];
+                    ((DataBufferShort) dataBuffer).getData() :
+                    ((DataBufferUShort) dataBuffer).getData();
+            for (int y = rectY; y < maxY; y++) {
+                int bOffset = eltOffset * 16 + bitOffset;
+                for (int x = rectX; x < maxX; x++) {
+                    short s = data[bOffset / 16];
                     bdata[k++] =
-                        (byte)((s >>> (15 - bOffset % 16)) &
-                               0x0000001);
+                            (byte) ((s >>> (15 - bOffset % 16)) &
+                                    0x0000001);
                     bOffset++;
                 }
                 eltOffset += lineStride;
             }
-        } else if(dataBuffer instanceof DataBufferInt) {
-            int[] data = ((DataBufferInt)dataBuffer).getData();
-            for(int y = rectY; y < maxY; y++) {
-                int bOffset = eltOffset*32 + bitOffset;
-                for(int x = rectX; x < maxX; x++) {
-                    int i = data[bOffset/32];
+        } else if (dataBuffer instanceof DataBufferInt) {
+            int[] data = ((DataBufferInt) dataBuffer).getData();
+            for (int y = rectY; y < maxY; y++) {
+                int bOffset = eltOffset * 32 + bitOffset;
+                for (int x = rectX; x < maxX; x++) {
+                    int i = data[bOffset / 32];
                     bdata[k++] =
-                        (byte)((i >>> (31 - bOffset % 32)) &
-                               0x0000001);
+                            (byte) ((i >>> (31 - bOffset % 32)) &
+                                    0x0000001);
                     bOffset++;
                 }
                 eltOffset += lineStride;
@@ -520,14 +519,14 @@ public class ImageUtil {
      * <code>getPackedBinaryData()</code>.
      *
      * @throws IllegalArgumentException if <code>isBinary()</code> returns
-     * <code>false</code> with the <code>SampleModel</code> of the
-     * supplied <code>Raster</code> as argument.
+     *                                  <code>false</code> with the <code>SampleModel</code> of the
+     *                                  supplied <code>Raster</code> as argument.
      */
     public static void setPackedBinaryData(byte[] binaryDataArray,
                                            WritableRaster raster,
                                            Rectangle rect) {
         SampleModel sm = raster.getSampleModel();
-        if(!isBinary(sm)) {
+        if (!isBinary(sm)) {
             throw new IllegalArgumentException(I18N.getString("ImageUtil0"));
         }
 
@@ -541,68 +540,68 @@ public class ImageUtil {
         int dx = rectX - raster.getSampleModelTranslateX();
         int dy = rectY - raster.getSampleModelTranslateY();
 
-        MultiPixelPackedSampleModel mpp = (MultiPixelPackedSampleModel)sm;
+        MultiPixelPackedSampleModel mpp = (MultiPixelPackedSampleModel) sm;
         int lineStride = mpp.getScanlineStride();
         int eltOffset = dataBuffer.getOffset() + mpp.getOffset(dx, dy);
         int bitOffset = mpp.getBitOffset(dx);
 
         int b = 0;
 
-        if(bitOffset == 0) {
-            if(dataBuffer instanceof DataBufferByte) {
-                byte[] data = ((DataBufferByte)dataBuffer).getData();
-                if(data == binaryDataArray) {
+        if (bitOffset == 0) {
+            if (dataBuffer instanceof DataBufferByte) {
+                byte[] data = ((DataBufferByte) dataBuffer).getData();
+                if (data == binaryDataArray) {
                     // Optimal case: simply return.
                     return;
                 }
-                int stride = (rectWidth + 7)/8;
+                int stride = (rectWidth + 7) / 8;
                 int offset = 0;
-                for(int y = 0; y < rectHeight; y++) {
+                for (int y = 0; y < rectHeight; y++) {
                     System.arraycopy(binaryDataArray, offset,
-                                     data, eltOffset,
-                                     stride);
+                            data, eltOffset,
+                            stride);
                     offset += stride;
                     eltOffset += lineStride;
                 }
-            } else if(dataBuffer instanceof DataBufferShort ||
-                      dataBuffer instanceof DataBufferUShort) {
+            } else if (dataBuffer instanceof DataBufferShort ||
+                    dataBuffer instanceof DataBufferUShort) {
                 short[] data = dataBuffer instanceof DataBufferShort ?
-                    ((DataBufferShort)dataBuffer).getData() :
-                    ((DataBufferUShort)dataBuffer).getData();
+                        ((DataBufferShort) dataBuffer).getData() :
+                        ((DataBufferUShort) dataBuffer).getData();
 
-                for(int y = 0; y < rectHeight; y++) {
+                for (int y = 0; y < rectHeight; y++) {
                     int xRemaining = rectWidth;
                     int i = eltOffset;
-                    while(xRemaining > 8) {
+                    while (xRemaining > 8) {
                         data[i++] =
-                            (short)(((binaryDataArray[b++] & 0xFF) << 8) |
-                                    (binaryDataArray[b++] & 0xFF));
+                                (short) (((binaryDataArray[b++] & 0xFF) << 8) |
+                                        (binaryDataArray[b++] & 0xFF));
                         xRemaining -= 16;
                     }
-                    if(xRemaining > 0) {
+                    if (xRemaining > 0) {
                         data[i++] =
-                            (short)((binaryDataArray[b++] & 0xFF) << 8);
+                                (short) ((binaryDataArray[b++] & 0xFF) << 8);
                     }
                     eltOffset += lineStride;
                 }
-            } else if(dataBuffer instanceof DataBufferInt) {
-                int[] data = ((DataBufferInt)dataBuffer).getData();
+            } else if (dataBuffer instanceof DataBufferInt) {
+                int[] data = ((DataBufferInt) dataBuffer).getData();
 
-                for(int y = 0; y < rectHeight; y++) {
+                for (int y = 0; y < rectHeight; y++) {
                     int xRemaining = rectWidth;
                     int i = eltOffset;
-                    while(xRemaining > 24) {
+                    while (xRemaining > 24) {
                         data[i++] =
-                            (int)(((binaryDataArray[b++] & 0xFF) << 24) |
-                                  ((binaryDataArray[b++] & 0xFF) << 16) |
-                                  ((binaryDataArray[b++] & 0xFF) << 8) |
-                                  (binaryDataArray[b++] & 0xFF));
+                                (int) (((binaryDataArray[b++] & 0xFF) << 24) |
+                                        ((binaryDataArray[b++] & 0xFF) << 16) |
+                                        ((binaryDataArray[b++] & 0xFF) << 8) |
+                                        (binaryDataArray[b++] & 0xFF));
                         xRemaining -= 32;
                     }
                     int shift = 24;
-                    while(xRemaining > 0) {
+                    while (xRemaining > 0) {
                         data[i] |=
-                            (int)((binaryDataArray[b++] & 0xFF) << shift);
+                                (int) ((binaryDataArray[b++] & 0xFF) << shift);
                         shift -= 8;
                         xRemaining -= 8;
                     }
@@ -610,16 +609,16 @@ public class ImageUtil {
                 }
             }
         } else { // bitOffset != 0
-            int stride = (rectWidth + 7)/8;
+            int stride = (rectWidth + 7) / 8;
             int offset = 0;
-            if(dataBuffer instanceof DataBufferByte) {
-                byte[] data = ((DataBufferByte)dataBuffer).getData();
+            if (dataBuffer instanceof DataBufferByte) {
+                byte[] data = ((DataBufferByte) dataBuffer).getData();
 
-                if((bitOffset & 7) == 0) {
-                    for(int y = 0; y < rectHeight; y++) {
+                if ((bitOffset & 7) == 0) {
+                    for (int y = 0; y < rectHeight; y++) {
                         System.arraycopy(binaryDataArray, offset,
-                                         data, eltOffset,
-                                         stride);
+                                data, eltOffset,
+                                stride);
                         offset += stride;
                         eltOffset += lineStride;
                     }
@@ -627,110 +626,109 @@ public class ImageUtil {
                     int rightShift = bitOffset & 7;
                     int leftShift = 8 - rightShift;
                     int leftShift8 = 8 + leftShift;
-                    int mask = (byte)(255<<leftShift);
-                    int mask1 = (byte)~mask;
+                    int mask = (byte) (255 << leftShift);
+                    int mask1 = (byte) ~mask;
 
-                    for(int y = 0; y < rectHeight; y++) {
+                    for (int y = 0; y < rectHeight; y++) {
                         int i = eltOffset;
                         int xRemaining = rectWidth;
-                        while(xRemaining > 0) {
+                        while (xRemaining > 0) {
                             byte datum = binaryDataArray[b++];
 
                             if (xRemaining > leftShift8) {
                                 // when all the bits in this BYTE will be set
                                 // into the data buffer.
-                                data[i] = (byte)((data[i] & mask ) |
-                                    ((datum&0xFF) >>> rightShift));
-                                data[++i] = (byte)((datum & 0xFF) << leftShift);
+                                data[i] = (byte) ((data[i] & mask) |
+                                        ((datum & 0xFF) >>> rightShift));
+                                data[++i] = (byte) ((datum & 0xFF) << leftShift);
                             } else if (xRemaining > leftShift) {
                                 // All the "leftShift" high bits will be set
                                 // into the data buffer.  But not all the
                                 // "rightShift" low bits will be set.
-                                data[i] = (byte)((data[i] & mask ) |
-                                    ((datum&0xFF) >>> rightShift));
+                                data[i] = (byte) ((data[i] & mask) |
+                                        ((datum & 0xFF) >>> rightShift));
                                 i++;
                                 data[i] =
-                                    (byte)((data[i] & mask1) | ((datum & 0xFF) << leftShift));
-                            }
-                            else {
+                                        (byte) ((data[i] & mask1) | ((datum & 0xFF) << leftShift));
+                            } else {
                                 // Less than "leftShift" high bits will be set.
                                 int remainMask = (1 << leftShift - xRemaining) - 1;
                                 data[i] =
-                                    (byte)((data[i] & (mask | remainMask)) |
-                                    (datum&0xFF) >>> rightShift & ~remainMask);
+                                        (byte) ((data[i] & (mask | remainMask)) |
+                                                (datum & 0xFF) >>> rightShift & ~remainMask);
                             }
                             xRemaining -= 8;
                         }
                         eltOffset += lineStride;
                     }
                 }
-            } else if(dataBuffer instanceof DataBufferShort ||
-                      dataBuffer instanceof DataBufferUShort) {
+            } else if (dataBuffer instanceof DataBufferShort ||
+                    dataBuffer instanceof DataBufferUShort) {
                 short[] data = dataBuffer instanceof DataBufferShort ?
-                    ((DataBufferShort)dataBuffer).getData() :
-                    ((DataBufferUShort)dataBuffer).getData();
+                        ((DataBufferShort) dataBuffer).getData() :
+                        ((DataBufferUShort) dataBuffer).getData();
 
                 int rightShift = bitOffset & 7;
                 int leftShift = 8 - rightShift;
                 int leftShift16 = 16 + leftShift;
-                int mask = (short)(~(255 << leftShift));
-                int mask1 = (short)(65535 << leftShift);
-                int mask2 = (short)~mask1;
+                int mask = (short) (~(255 << leftShift));
+                int mask1 = (short) (65535 << leftShift);
+                int mask2 = (short) ~mask1;
 
-                for(int y = 0; y < rectHeight; y++) {
+                for (int y = 0; y < rectHeight; y++) {
                     int bOffset = bitOffset;
                     int xRemaining = rectWidth;
-                    for(int x = 0; x < rectWidth;
-                        x += 8, bOffset += 8, xRemaining -= 8) {
+                    for (int x = 0; x < rectWidth;
+                         x += 8, bOffset += 8, xRemaining -= 8) {
                         int i = eltOffset + (bOffset >> 4);
                         int mod = bOffset & 15;
                         int datum = binaryDataArray[b++] & 0xFF;
-                        if(mod <= 8) {
+                        if (mod <= 8) {
                             // This BYTE is set into one SHORT
                             if (xRemaining < 8) {
                                 // Mask the bits to be set.
                                 datum &= 255 << 8 - xRemaining;
                             }
-                            data[i] = (short)((data[i] & mask) | (datum << leftShift));
+                            data[i] = (short) ((data[i] & mask) | (datum << leftShift));
                         } else if (xRemaining > leftShift16) {
                             // This BYTE will be set into two SHORTs
-                            data[i] = (short)((data[i] & mask1) | ((datum >>> rightShift)&0xFFFF));
+                            data[i] = (short) ((data[i] & mask1) | ((datum >>> rightShift) & 0xFFFF));
                             data[++i] =
-                                (short)((datum << leftShift)&0xFFFF);
+                                    (short) ((datum << leftShift) & 0xFFFF);
                         } else if (xRemaining > leftShift) {
                             // This BYTE will be set into two SHORTs;
                             // But not all the low bits will be set into SHORT
-                            data[i] = (short)((data[i] & mask1) | ((datum >>> rightShift)&0xFFFF));
+                            data[i] = (short) ((data[i] & mask1) | ((datum >>> rightShift) & 0xFFFF));
                             i++;
                             data[i] =
-                                (short)((data[i] & mask2) | ((datum << leftShift)&0xFFFF));
+                                    (short) ((data[i] & mask2) | ((datum << leftShift) & 0xFFFF));
                         } else {
                             // Only some of the high bits will be set into
                             // SHORTs
                             int remainMask = (1 << leftShift - xRemaining) - 1;
-                            data[i] = (short)((data[i] & (mask1 | remainMask)) |
-                                      ((datum >>> rightShift)&0xFFFF & ~remainMask));
+                            data[i] = (short) ((data[i] & (mask1 | remainMask)) |
+                                    ((datum >>> rightShift) & 0xFFFF & ~remainMask));
                         }
                     }
                     eltOffset += lineStride;
                 }
-            } else if(dataBuffer instanceof DataBufferInt) {
-                int[] data = ((DataBufferInt)dataBuffer).getData();
+            } else if (dataBuffer instanceof DataBufferInt) {
+                int[] data = ((DataBufferInt) dataBuffer).getData();
                 int rightShift = bitOffset & 7;
                 int leftShift = 8 - rightShift;
                 int leftShift32 = 32 + leftShift;
                 int mask = 0xFFFFFFFF << leftShift;
                 int mask1 = ~mask;
 
-                for(int y = 0; y < rectHeight; y++) {
+                for (int y = 0; y < rectHeight; y++) {
                     int bOffset = bitOffset;
                     int xRemaining = rectWidth;
-                    for(int x = 0; x < rectWidth;
-                        x += 8, bOffset += 8, xRemaining -= 8) {
+                    for (int x = 0; x < rectWidth;
+                         x += 8, bOffset += 8, xRemaining -= 8) {
                         int i = eltOffset + (bOffset >> 5);
                         int mod = bOffset & 31;
                         int datum = binaryDataArray[b++] & 0xFF;
-                        if(mod <= 24) {
+                        if (mod <= 24) {
                             // This BYTE is set into one INT
                             int shift = 24 - mod;
                             if (xRemaining < 8) {
@@ -752,7 +750,7 @@ public class ImageUtil {
                             // Only some of the high bits will be set into INT
                             int remainMask = (1 << leftShift - xRemaining) - 1;
                             data[i] = (data[i] & (mask | remainMask)) |
-                                      (datum >>> rightShift & ~remainMask);
+                                    (datum >>> rightShift & ~remainMask);
                         }
                     }
                     eltOffset += lineStride;
@@ -770,14 +768,14 @@ public class ImageUtil {
      * and only if the corresponding byte is non-zero.
      *
      * @throws IllegalArgumentException if <code>isBinary()</code> returns
-     * <code>false</code> with the <code>SampleModel</code> of the
-     * supplied <code>Raster</code> as argument.
+     *                                  <code>false</code> with the <code>SampleModel</code> of the
+     *                                  supplied <code>Raster</code> as argument.
      */
     public static void setUnpackedBinaryData(byte[] bdata,
                                              WritableRaster raster,
                                              Rectangle rect) {
         SampleModel sm = raster.getSampleModel();
-        if(!isBinary(sm)) {
+        if (!isBinary(sm)) {
             throw new IllegalArgumentException(I18N.getString("ImageUtil0"));
         }
 
@@ -791,52 +789,52 @@ public class ImageUtil {
         int dx = rectX - raster.getSampleModelTranslateX();
         int dy = rectY - raster.getSampleModelTranslateY();
 
-        MultiPixelPackedSampleModel mpp = (MultiPixelPackedSampleModel)sm;
+        MultiPixelPackedSampleModel mpp = (MultiPixelPackedSampleModel) sm;
         int lineStride = mpp.getScanlineStride();
         int eltOffset = dataBuffer.getOffset() + mpp.getOffset(dx, dy);
         int bitOffset = mpp.getBitOffset(dx);
 
         int k = 0;
 
-        if(dataBuffer instanceof DataBufferByte) {
-            byte[] data = ((DataBufferByte)dataBuffer).getData();
-            for(int y = 0; y < rectHeight; y++) {
-                int bOffset = eltOffset*8 + bitOffset;
-                for(int x = 0; x < rectWidth; x++) {
-                    if(bdata[k++] != (byte)0) {
-                        data[bOffset/8] |=
-                            (byte)(0x00000001 << (7 - bOffset & 7));
+        if (dataBuffer instanceof DataBufferByte) {
+            byte[] data = ((DataBufferByte) dataBuffer).getData();
+            for (int y = 0; y < rectHeight; y++) {
+                int bOffset = eltOffset * 8 + bitOffset;
+                for (int x = 0; x < rectWidth; x++) {
+                    if (bdata[k++] != (byte) 0) {
+                        data[bOffset / 8] |=
+                                (byte) (0x00000001 << (7 - bOffset & 7));
                     }
                     bOffset++;
                 }
                 eltOffset += lineStride;
             }
-        } else if(dataBuffer instanceof DataBufferShort ||
-                  dataBuffer instanceof DataBufferUShort) {
+        } else if (dataBuffer instanceof DataBufferShort ||
+                dataBuffer instanceof DataBufferUShort) {
             short[] data = dataBuffer instanceof DataBufferShort ?
-                ((DataBufferShort)dataBuffer).getData() :
-                ((DataBufferUShort)dataBuffer).getData();
-            for(int y = 0; y < rectHeight; y++) {
-                int bOffset = eltOffset*16 + bitOffset;
-                for(int x = 0; x < rectWidth; x++) {
-                    if(bdata[k++] != (byte)0) {
-                        data[bOffset/16] |=
-                            (short)(0x00000001 <<
-                                    (15 - bOffset % 16));
+                    ((DataBufferShort) dataBuffer).getData() :
+                    ((DataBufferUShort) dataBuffer).getData();
+            for (int y = 0; y < rectHeight; y++) {
+                int bOffset = eltOffset * 16 + bitOffset;
+                for (int x = 0; x < rectWidth; x++) {
+                    if (bdata[k++] != (byte) 0) {
+                        data[bOffset / 16] |=
+                                (short) (0x00000001 <<
+                                        (15 - bOffset % 16));
                     }
                     bOffset++;
                 }
                 eltOffset += lineStride;
             }
-        } else if(dataBuffer instanceof DataBufferInt) {
-            int[] data = ((DataBufferInt)dataBuffer).getData();
-            for(int y = 0; y < rectHeight; y++) {
-                int bOffset = eltOffset*32 + bitOffset;
-                for(int x = 0; x < rectWidth; x++) {
-                    if(bdata[k++] != (byte)0) {
-                        data[bOffset/32] |=
-                            (int)(0x00000001 <<
-                                  (31 - bOffset % 32));
+        } else if (dataBuffer instanceof DataBufferInt) {
+            int[] data = ((DataBufferInt) dataBuffer).getData();
+            for (int y = 0; y < rectHeight; y++) {
+                int bOffset = eltOffset * 32 + bitOffset;
+                for (int x = 0; x < rectWidth; x++) {
+                    if (bdata[k++] != (byte) 0) {
+                        data[bOffset / 32] |=
+                                (int) (0x00000001 <<
+                                        (31 - bOffset % 32));
                     }
                     bOffset++;
                 }
@@ -847,15 +845,15 @@ public class ImageUtil {
 
     public static boolean isBinary(SampleModel sm) {
         return sm instanceof MultiPixelPackedSampleModel &&
-            ((MultiPixelPackedSampleModel)sm).getPixelBitStride() == 1 &&
-            sm.getNumBands() == 1;
+                ((MultiPixelPackedSampleModel) sm).getPixelBitStride() == 1 &&
+                sm.getNumBands() == 1;
     }
 
     public static ColorModel createColorModel(ColorSpace colorSpace,
                                               SampleModel sampleModel) {
         ColorModel colorModel = null;
 
-        if(sampleModel == null) {
+        if (sampleModel == null) {
             throw new IllegalArgumentException(I18N.getString("ImageUtil1"));
         }
 
@@ -867,20 +865,20 @@ public class ImageUtil {
         int dataType = sampleModel.getDataType();
         if (sampleModel instanceof ComponentSampleModel) {
             if (dataType < DataBuffer.TYPE_BYTE ||
-                //dataType == DataBuffer.TYPE_SHORT ||
-                dataType > DataBuffer.TYPE_DOUBLE) {
+                    //dataType == DataBuffer.TYPE_SHORT ||
+                    dataType > DataBuffer.TYPE_DOUBLE) {
                 return null;
             }
 
             if (colorSpace == null)
                 colorSpace =
-                    numBands <= 2 ?
-                    ColorSpace.getInstance(ColorSpace.CS_GRAY) :
-                    ColorSpace.getInstance(ColorSpace.CS_sRGB);
+                        numBands <= 2 ?
+                                ColorSpace.getInstance(ColorSpace.CS_GRAY) :
+                                ColorSpace.getInstance(ColorSpace.CS_sRGB);
 
             boolean useAlpha = (numBands == 2) || (numBands == 4);
             int transparency = useAlpha ?
-                               Transparency.TRANSLUCENT : Transparency.OPAQUE;
+                    Transparency.TRANSLUCENT : Transparency.OPAQUE;
 
             boolean premultiplied = false;
 
@@ -891,14 +889,14 @@ public class ImageUtil {
             }
 
             colorModel = new ComponentColorModel(colorSpace,
-                                                 bits,
-                                                 useAlpha,
-                                                 premultiplied,
-                                                 transparency,
-                                                 dataType);
+                    bits,
+                    useAlpha,
+                    premultiplied,
+                    transparency,
+                    dataType);
         } else if (sampleModel instanceof SinglePixelPackedSampleModel) {
             SinglePixelPackedSampleModel sppsm =
-                (SinglePixelPackedSampleModel)sampleModel;
+                    (SinglePixelPackedSampleModel) sampleModel;
 
             int[] bitMasks = sppsm.getBitMasks();
             int rmask = 0;
@@ -931,18 +929,18 @@ public class ImageUtil {
                 colorSpace = ColorSpace.getInstance(ColorSpace.CS_sRGB);
 
             colorModel =
-                new DirectColorModel(colorSpace,
-                                     bits, rmask, gmask, bmask, amask,
-                                     false,
-                                     sampleModel.getDataType());
+                    new DirectColorModel(colorSpace,
+                            bits, rmask, gmask, bmask, amask,
+                            false,
+                            sampleModel.getDataType());
         } else if (sampleModel instanceof MultiPixelPackedSampleModel) {
             int bits =
-                ((MultiPixelPackedSampleModel)sampleModel).getPixelBitStride();
+                    ((MultiPixelPackedSampleModel) sampleModel).getPixelBitStride();
             int size = 1 << bits;
             byte[] comp = new byte[size];
 
             for (int i = 0; i < size; i++)
-                comp[i] = (byte)(255 * i / (size - 1));
+                comp[i] = (byte) (255 * i / (size - 1));
 
             colorModel = new IndexColorModel(bits, size, comp, comp, comp);
         }
@@ -955,7 +953,7 @@ public class ImageUtil {
 
         if (sm instanceof MultiPixelPackedSampleModel) {
             MultiPixelPackedSampleModel mppsm =
-                (MultiPixelPackedSampleModel)sm;
+                    (MultiPixelPackedSampleModel) sm;
             return mppsm.getSampleSize(0) * mppsm.getNumBands();
         } else if (sm instanceof ComponentSampleModel) {
             return sm.getNumBands() * elementSize;
@@ -972,15 +970,15 @@ public class ImageUtil {
 
         if (sm instanceof MultiPixelPackedSampleModel) {
             MultiPixelPackedSampleModel mppsm =
-                (MultiPixelPackedSampleModel)sm;
+                    (MultiPixelPackedSampleModel) sm;
             return (mppsm.getScanlineStride() * mppsm.getHeight() +
-                   (mppsm.getDataBitOffset() + elementSize -1) / elementSize) *
-                   ((elementSize + 7) / 8);
+                    (mppsm.getDataBitOffset() + elementSize - 1) / elementSize) *
+                    ((elementSize + 7) / 8);
         } else if (sm instanceof ComponentSampleModel) {
-            ComponentSampleModel csm = (ComponentSampleModel)sm;
+            ComponentSampleModel csm = (ComponentSampleModel) sm;
             int[] bandOffsets = csm.getBandOffsets();
             int maxBandOff = bandOffsets[0];
-            for (int i=1; i<bandOffsets.length; i++)
+            for (int i = 1; i < bandOffsets.length; i++)
                 maxBandOff = Math.max(maxBandOff, bandOffsets[i]);
 
             long size = 0;
@@ -995,14 +993,14 @@ public class ImageUtil {
 
             int[] bankIndices = csm.getBankIndices();
             maxBandOff = bankIndices[0];
-            for (int i=1; i<bankIndices.length; i++)
+            for (int i = 1; i < bankIndices.length; i++)
                 maxBandOff = Math.max(maxBandOff, bankIndices[i]);
             return size * (maxBandOff + 1) * ((elementSize + 7) / 8);
         } else if (sm instanceof SinglePixelPackedSampleModel) {
             SinglePixelPackedSampleModel sppsm =
-                (SinglePixelPackedSampleModel)sm;
+                    (SinglePixelPackedSampleModel) sm;
             long size = sppsm.getScanlineStride() * (sppsm.getHeight() - 1) +
-                        sppsm.getWidth();
+                    sppsm.getWidth();
             return size * ((elementSize + 7) / 8);
         }
 
@@ -1013,7 +1011,7 @@ public class ImageUtil {
         int elementSize = DataBuffer.getDataTypeSize(sm.getDataType());
 
         if (sm instanceof ComponentSampleModel) {
-            ComponentSampleModel csm = (ComponentSampleModel)sm;
+            ComponentSampleModel csm = (ComponentSampleModel) sm;
             int pixelStride = csm.getPixelStride();
             int scanlineStride = csm.getScanlineStride();
             long size = Math.min(pixelStride, scanlineStride);
@@ -1026,6 +1024,7 @@ public class ImageUtil {
         } else
             return getTileSize(sm);
     }
+
     /**
      * Tests whether the color indices represent a gray-scale image.
      *
@@ -1033,7 +1032,7 @@ public class ImageUtil {
      * @param g The green channel color indices.
      * @param b The blue channel color indices.
      * @return If all the indices have 256 entries, and are identical mappings,
-     *         return <code>true</code>; otherwise, return <code>false</code>.
+     * return <code>true</code>; otherwise, return <code>false</code>.
      */
     public static boolean isIndicesForGrayscale(byte[] r, byte[] g, byte[] b) {
         if (r.length != g.length || r.length != b.length)
@@ -1054,30 +1053,32 @@ public class ImageUtil {
         return true;
     }
 
-    /** Converts the provided object to <code>String</code> */
+    /**
+     * Converts the provided object to <code>String</code>
+     */
     public static String convertObjectToString(Object obj) {
         if (obj == null)
             return "";
 
         String s = "";
         if (obj instanceof byte[]) {
-            byte[] bArray = (byte[])obj;
+            byte[] bArray = (byte[]) obj;
             for (int i = 0; i < bArray.length; i++)
                 s += bArray[i] + " ";
             return s;
         }
 
         if (obj instanceof int[]) {
-            int[] iArray = (int[])obj;
+            int[] iArray = (int[]) obj;
             for (int i = 0; i < iArray.length; i++)
-                s += iArray[i] + " " ;
+                s += iArray[i] + " ";
             return s;
         }
 
         if (obj instanceof short[]) {
-            short[] sArray = (short[])obj;
+            short[] sArray = (short[]) obj;
             for (int i = 0; i < sArray.length; i++)
-                s += sArray[i] + " " ;
+                s += sArray[i] + " ";
             return s;
         }
 
@@ -1085,36 +1086,40 @@ public class ImageUtil {
 
     }
 
-    /** Checks that the provided <code>ImageWriter</code> can encode
+    /**
+     * Checks that the provided <code>ImageWriter</code> can encode
      * the provided <code>ImageTypeSpecifier</code> or not.  If not, an
      * <code>IIOException</code> will be thrown.
+     *
      * @param writer The provided <code>ImageWriter</code>.
-     * @param type The image to be tested.
+     * @param type   The image to be tested.
      * @throws IIOException If the writer cannot encoded the provided image.
      */
     public static final void canEncodeImage(ImageWriter writer,
                                             ImageTypeSpecifier type)
-        throws IIOException {
+            throws IIOException {
         ImageWriterSpi spi = writer.getOriginatingProvider();
 
-        if(type != null && spi != null && !spi.canEncodeImage(type))  {
-            throw new IIOException(I18N.getString("ImageUtil2")+" "+
-                                   writer.getClass().getName());
+        if (type != null && spi != null && !spi.canEncodeImage(type)) {
+            throw new IIOException(I18N.getString("ImageUtil2") + " " +
+                    writer.getClass().getName());
         }
     }
 
-    /** Checks that the provided <code>ImageWriter</code> can encode
+    /**
+     * Checks that the provided <code>ImageWriter</code> can encode
      * the provided <code>ColorModel</code> and <code>SampleModel</code>.
      * If not, an <code>IIOException</code> will be thrown.
-     * @param writer The provided <code>ImageWriter</code>.
-     * @param colorModel The provided <code>ColorModel</code>.
+     *
+     * @param writer      The provided <code>ImageWriter</code>.
+     * @param colorModel  The provided <code>ColorModel</code>.
      * @param sampleModel The provided <code>SampleModel</code>.
      * @throws IIOException If the writer cannot encoded the provided image.
      */
     public static final void canEncodeImage(ImageWriter writer,
                                             ColorModel colorModel,
                                             SampleModel sampleModel)
-        throws IIOException {
+            throws IIOException {
         ImageTypeSpecifier type = null;
         if (colorModel != null && sampleModel != null)
             type = new ImageTypeSpecifier(colorModel, sampleModel);
@@ -1126,8 +1131,8 @@ public class ImageUtil {
      */
     public static final boolean imageIsContiguous(RenderedImage image) {
         SampleModel sm;
-        if(image instanceof BufferedImage) {
-            WritableRaster ras = ((BufferedImage)image).getRaster();
+        if (image instanceof BufferedImage) {
+            WritableRaster ras = ((BufferedImage) image).getRaster();
             sm = ras.getSampleModel();
         } else {
             sm = image.getSampleModel();
@@ -1136,7 +1141,7 @@ public class ImageUtil {
         if (sm instanceof ComponentSampleModel) {
             // Ensure image rows samples are stored contiguously
             // in a single bank.
-            ComponentSampleModel csm = (ComponentSampleModel)sm;
+            ComponentSampleModel csm = (ComponentSampleModel) sm;
 
             if (csm.getPixelStride() != csm.getNumBands()) {
                 return false;

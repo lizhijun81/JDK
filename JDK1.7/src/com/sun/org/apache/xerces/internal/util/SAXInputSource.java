@@ -29,7 +29,6 @@ import org.xml.sax.XMLReader;
 
 /**
  * <p>An <code>XMLInputSource</code> analogue to <code>javax.xml.transform.sax.SAXSource</code>.</p>
- *
  */
 public final class SAXInputSource extends XMLInputSource {
 
@@ -71,8 +70,7 @@ public final class SAXInputSource extends XMLInputSource {
             setByteStream(inputSource.getByteStream());
             setCharacterStream(inputSource.getCharacterStream());
             setEncoding(inputSource.getEncoding());
-        }
-        else {
+        } else {
             setPublicId(null);
             setSystemId(null);
             setByteStream(null);
@@ -137,7 +135,6 @@ public final class SAXInputSource extends XMLInputSource {
      * also be set on this object, if known.
      *
      * @param charStream The new character stream.
-     *
      * @see #setEncoding
      */
     public void setCharacterStream(Reader charStream) {

@@ -56,16 +56,15 @@ public class UnixPrincipal implements Principal, java.io.Serializable {
      * <p>
      *
      * @param name the Unix username for this user.
-     *
-     * @exception NullPointerException if the <code>name</code>
-     *                  is <code>null</code>.
+     * @throws NullPointerException if the <code>name</code>
+     *                              is <code>null</code>.
      */
     public UnixPrincipal(String name) {
         if (name == null) {
             java.text.MessageFormat form = new java.text.MessageFormat
-                (sun.security.util.ResourcesMgr.getString
-                        ("invalid.null.input.value",
-                        "sun.security.util.AuthResources"));
+                    (sun.security.util.ResourcesMgr.getString
+                            ("invalid.null.input.value",
+                                    "sun.security.util.AuthResources"));
             Object[] source = {"name"};
             throw new NullPointerException(form.format(source));
         }
@@ -95,7 +94,7 @@ public class UnixPrincipal implements Principal, java.io.Serializable {
         java.text.MessageFormat form = new java.text.MessageFormat
                 (sun.security.util.ResourcesMgr.getString
                         ("UnixPrincipal.name",
-                        "sun.security.util.AuthResources"));
+                                "sun.security.util.AuthResources"));
         Object[] source = {name};
         return form.format(source);
     }
@@ -110,9 +109,8 @@ public class UnixPrincipal implements Principal, java.io.Serializable {
      *
      * @param o Object to be compared for equality with this
      *          <code>UnixPrincipal</code>.
-     *
      * @return true if the specified Object is equal equal to this
-     *          <code>UnixPrincipal</code>.
+     * <code>UnixPrincipal</code>.
      */
     public boolean equals(Object o) {
         if (o == null)
@@ -123,7 +121,7 @@ public class UnixPrincipal implements Principal, java.io.Serializable {
 
         if (!(o instanceof UnixPrincipal))
             return false;
-        UnixPrincipal that = (UnixPrincipal)o;
+        UnixPrincipal that = (UnixPrincipal) o;
 
         if (this.getName().equals(that.getName()))
             return true;

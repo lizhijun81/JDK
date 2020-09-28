@@ -53,13 +53,13 @@ class ObjectStreamClassCorbaExt {
 
     /**
      * Return true, iff,
-     *
+     * <p>
      * 1. 'cl' is an interface, and
      * 2. 'cl' and all its ancestors do not implement java.rmi.Remote, and
      * 3. if 'cl' has no methods (including those of its ancestors), or,
-     *    if all the methods (including those of its ancestors) throw an
-     *    exception that is atleast java.rmi.RemoteException or one of
-     *    java.rmi.RemoteException's super classes.
+     * if all the methods (including those of its ancestors) throw an
+     * exception that is atleast java.rmi.RemoteException or one of
+     * java.rmi.RemoteException's super classes.
      */
     static final boolean isAbstractInterface(Class cl) {
         if (!cl.isInterface() || // #1
@@ -72,9 +72,9 @@ class ObjectStreamClassCorbaExt {
             boolean exceptionMatch = false;
             for (int j = 0; (j < exceptions.length) && !exceptionMatch; j++) {
                 if ((java.rmi.RemoteException.class == exceptions[j]) ||
-                    (java.lang.Throwable.class == exceptions[j]) ||
-                    (java.lang.Exception.class == exceptions[j]) ||
-                    (java.io.IOException.class == exceptions[j])) {
+                        (java.lang.Throwable.class == exceptions[j]) ||
+                        (java.lang.Exception.class == exceptions[j]) ||
+                        (java.io.IOException.class == exceptions[j])) {
                     exceptionMatch = true;
                 }
             }
@@ -92,13 +92,13 @@ class ObjectStreamClassCorbaExt {
 
         int isAny = 0;
 
-        if ( (typeString != null) &&
-            (typeString.equals("Ljava/lang/Object;") ||
-             typeString.equals("Ljava/io/Serializable;") ||
-             typeString.equals("Ljava/io/Externalizable;")) )
-                isAny = 1;
+        if ((typeString != null) &&
+                (typeString.equals("Ljava/lang/Object;") ||
+                        typeString.equals("Ljava/io/Serializable;") ||
+                        typeString.equals("Ljava/io/Externalizable;")))
+            isAny = 1;
 
-        return (isAny==1);
+        return (isAny == 1);
     }
 
     private static final Method[] getDeclaredMethods(final Class clz) {

@@ -57,8 +57,8 @@ public final class UserPrincipal implements Principal, java.io.Serializable {
      * Creates a principal.
      *
      * @param name The principal's string name.
-     * @exception NullPointerException If the <code>name</code> is
-     * <code>null</code>.
+     * @throws NullPointerException If the <code>name</code> is
+     *                              <code>null</code>.
      */
     public UserPrincipal(String name) {
         if (name == null) {
@@ -78,7 +78,7 @@ public final class UserPrincipal implements Principal, java.io.Serializable {
             return true;
         }
         if (object instanceof UserPrincipal) {
-            return name.equals(((UserPrincipal)object).getName());
+            return name.equals(((UserPrincipal) object).getName());
         }
         return false;
     }

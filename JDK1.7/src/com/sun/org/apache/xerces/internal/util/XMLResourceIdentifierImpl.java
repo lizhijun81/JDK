@@ -28,80 +28,96 @@ import com.sun.org.apache.xerces.internal.xni.XMLResourceIdentifier;
  * of a resource.
  *
  * @author Andy Clark
- *
  */
 public class XMLResourceIdentifierImpl
-    implements XMLResourceIdentifier {
+        implements XMLResourceIdentifier {
 
     //
     // Data
     //
 
-    /** The public identifier. */
+    /**
+     * The public identifier.
+     */
     protected String fPublicId;
 
-    /** The literal system identifier. */
+    /**
+     * The literal system identifier.
+     */
     protected String fLiteralSystemId;
 
-    /** The base system identifier. */
+    /**
+     * The base system identifier.
+     */
     protected String fBaseSystemId;
 
-    /** The expanded system identifier. */
+    /**
+     * The expanded system identifier.
+     */
     protected String fExpandedSystemId;
 
-    /** The namespace of the resource. */
+    /**
+     * The namespace of the resource.
+     */
     protected String fNamespace;
 
     //
     // Constructors
     //
 
-    /** Constructs an empty resource identifier. */
-    public XMLResourceIdentifierImpl() {} // <init>()
+    /**
+     * Constructs an empty resource identifier.
+     */
+    public XMLResourceIdentifierImpl() {
+    } // <init>()
 
     /**
      * Constructs a resource identifier.
      *
-     * @param publicId The public identifier.
-     * @param literalSystemId The literal system identifier.
-     * @param baseSystemId The base system identifier.
+     * @param publicId         The public identifier.
+     * @param literalSystemId  The literal system identifier.
+     * @param baseSystemId     The base system identifier.
      * @param expandedSystemId The expanded system identifier.
      */
     public XMLResourceIdentifierImpl(String publicId,
                                      String literalSystemId, String baseSystemId,
                                      String expandedSystemId) {
         setValues(publicId, literalSystemId, baseSystemId,
-                  expandedSystemId, null);
+                expandedSystemId, null);
     } // <init>(String,String,String,String)
 
     /**
      * Constructs a resource identifier.
      *
-     * @param publicId The public identifier.
-     * @param literalSystemId The literal system identifier.
-     * @param baseSystemId The base system identifier.
+     * @param publicId         The public identifier.
+     * @param literalSystemId  The literal system identifier.
+     * @param baseSystemId     The base system identifier.
      * @param expandedSystemId The expanded system identifier.
-     * @param namespace The namespace.
+     * @param namespace        The namespace.
      */
     public XMLResourceIdentifierImpl(String publicId, String literalSystemId,
                                      String baseSystemId, String expandedSystemId,
                                      String namespace) {
         setValues(publicId, literalSystemId, baseSystemId,
-                  expandedSystemId, namespace);
+                expandedSystemId, namespace);
     } // <init>(String,String,String,String,String)
 
     //
     // Public methods
     //
 
-    /** Sets the values of the resource identifier. */
+    /**
+     * Sets the values of the resource identifier.
+     */
     public void setValues(String publicId, String literalSystemId,
                           String baseSystemId, String expandedSystemId) {
         setValues(publicId, literalSystemId, baseSystemId,
-                  expandedSystemId, null);
+                expandedSystemId, null);
     } // setValues(String,String,String,String)
 
-    /** Sets the values of the resource identifier. */
+    /**
+     * Sets the values of the resource identifier.
+     */
     public void setValues(String publicId, String literalSystemId,
                           String baseSystemId, String expandedSystemId,
                           String namespace) {
@@ -112,7 +128,9 @@ public class XMLResourceIdentifierImpl
         fNamespace = namespace;
     } // setValues(String,String,String,String,String)
 
-    /** Clears the values. */
+    /**
+     * Clears the values.
+     */
     public void clear() {
         fPublicId = null;
         fLiteralSystemId = null;
@@ -121,27 +139,37 @@ public class XMLResourceIdentifierImpl
         fNamespace = null;
     } // clear()
 
-    /** Sets the public identifier. */
+    /**
+     * Sets the public identifier.
+     */
     public void setPublicId(String publicId) {
         fPublicId = publicId;
     } // setPublicId(String)
 
-    /** Sets the literal system identifier. */
+    /**
+     * Sets the literal system identifier.
+     */
     public void setLiteralSystemId(String literalSystemId) {
         fLiteralSystemId = literalSystemId;
     } // setLiteralSystemId(String)
 
-    /** Sets the base system identifier. */
+    /**
+     * Sets the base system identifier.
+     */
     public void setBaseSystemId(String baseSystemId) {
         fBaseSystemId = baseSystemId;
     } // setBaseSystemId(String)
 
-    /** Sets the expanded system identifier. */
+    /**
+     * Sets the expanded system identifier.
+     */
     public void setExpandedSystemId(String expandedSystemId) {
         fExpandedSystemId = expandedSystemId;
     } // setExpandedSystemId(String)
 
-    /** Sets the namespace of the resource. */
+    /**
+     * Sets the namespace of the resource.
+     */
     public void setNamespace(String namespace) {
         fNamespace = namespace;
     } // setNamespace(String)
@@ -150,12 +178,16 @@ public class XMLResourceIdentifierImpl
     // XMLResourceIdentifier methods
     //
 
-    /** Returns the public identifier. */
+    /**
+     * Returns the public identifier.
+     */
     public String getPublicId() {
         return fPublicId;
     } // getPublicId():String
 
-    /** Returns the literal system identifier. */
+    /**
+     * Returns the literal system identifier.
+     */
     public String getLiteralSystemId() {
         return fLiteralSystemId;
     } // getLiteralSystemId():String
@@ -167,12 +199,16 @@ public class XMLResourceIdentifierImpl
         return fBaseSystemId;
     } // getBaseSystemId():String
 
-    /** Returns the expanded system identifier. */
+    /**
+     * Returns the expanded system identifier.
+     */
     public String getExpandedSystemId() {
         return fExpandedSystemId;
     } // getExpandedSystemId():String
 
-    /** Returns the namespace of the resource. */
+    /**
+     * Returns the namespace of the resource.
+     */
     public String getNamespace() {
         return fNamespace;
     } // getNamespace():String
@@ -181,7 +217,9 @@ public class XMLResourceIdentifierImpl
     // Object methods
     //
 
-    /** Returns a hash code for this object. */
+    /**
+     * Returns a hash code for this object.
+     */
     public int hashCode() {
         int code = 0;
         if (fPublicId != null) {
@@ -202,7 +240,9 @@ public class XMLResourceIdentifierImpl
         return code;
     } // hashCode():int
 
-    /** Returns a string representation of this object. */
+    /**
+     * Returns a string representation of this object.
+     */
     public String toString() {
         StringBuffer str = new StringBuffer();
         if (fPublicId != null) {

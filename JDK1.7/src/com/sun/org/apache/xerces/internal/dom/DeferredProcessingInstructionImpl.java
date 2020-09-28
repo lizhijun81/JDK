@@ -26,25 +26,28 @@ package com.sun.org.apache.xerces.internal.dom;
  * are most common in XML, but they are supported in HTML as well.
  *
  * @xerces.internal
- *
- * @since  PR-DOM-Level-1-19980818.
+ * @since PR-DOM-Level-1-19980818.
  */
 public class DeferredProcessingInstructionImpl
-    extends ProcessingInstructionImpl
-    implements DeferredNode {
+        extends ProcessingInstructionImpl
+        implements DeferredNode {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = -4643577954293565388L;
 
     //
     // Data
     //
 
-    /** Node index. */
+    /**
+     * Node index.
+     */
     protected transient int fNodeIndex;
 
     //
@@ -68,7 +71,9 @@ public class DeferredProcessingInstructionImpl
     // DeferredNode methods
     //
 
-    /** Returns the node index. */
+    /**
+     * Returns the node index.
+     */
     public int getNodeIndex() {
         return fNodeIndex;
     }
@@ -77,7 +82,9 @@ public class DeferredProcessingInstructionImpl
     // Protected methods
     //
 
-    /** Synchronizes the data. */
+    /**
+     * Synchronizes the data.
+     */
     protected void synchronizeData() {
 
         // no need to sync in the future
@@ -85,8 +92,8 @@ public class DeferredProcessingInstructionImpl
 
         // fluff data
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl) this.ownerDocument();
-        target  = ownerDocument.getNodeName(fNodeIndex);
+                (DeferredDocumentImpl) this.ownerDocument();
+        target = ownerDocument.getNodeName(fNodeIndex);
         data = ownerDocument.getNodeValueString(fNodeIndex);
 
     } // synchronizeData()

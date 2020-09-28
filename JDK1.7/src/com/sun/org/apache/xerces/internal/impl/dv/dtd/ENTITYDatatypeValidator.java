@@ -36,11 +36,9 @@ import com.sun.org.apache.xerces.internal.impl.dv.*;
  * The value space of ENTITY is scoped to a specific
  * instance document.</P>
  *
- * @xerces.internal
- *
  * @author Jeffrey Rodriguez, IBM
  * @author Sandy Gao, IBM
- *
+ * @xerces.internal
  */
 public class ENTITYDatatypeValidator implements DatatypeValidator {
 
@@ -52,10 +50,10 @@ public class ENTITYDatatypeValidator implements DatatypeValidator {
      * Checks that "content" string is valid ID value.
      * If invalid a Datatype validation exception is thrown.
      *
-     * @param content       the string value that needs to be validated
-     * @param context       the validation context
+     * @param content the string value that needs to be validated
+     * @param context the validation context
      * @throws InvalidDatatypeException if the content is
-     *         invalid according to the rules for the validators
+     *                                  invalid according to the rules for the validators
      * @see InvalidDatatypeValueException
      */
     public void validate(String content, ValidationContext context) throws InvalidDatatypeValueException {

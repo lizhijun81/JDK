@@ -42,8 +42,7 @@ import java.awt.event.*;
  * @author Georges Saab
  * @author Rich Schiavi
  */
-public class MotifCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI
-{
+public class MotifCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI {
     protected ChangeListener changeListener;
 
     public static ComponentUI createUI(JComponent b) {
@@ -67,7 +66,7 @@ public class MotifCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI
 
     protected class ChangeHandler implements ChangeListener {
         public void stateChanged(ChangeEvent e) {
-            JMenuItem c = (JMenuItem)e.getSource();
+            JMenuItem c = (JMenuItem) e.getSource();
             LookAndFeel.installProperty(c, "borderPainted", c.isArmed());
         }
     }
@@ -78,30 +77,40 @@ public class MotifCheckBoxMenuItemUI extends BasicCheckBoxMenuItemUI
 
 
     protected class MouseInputHandler implements MouseInputListener {
-        public void mouseClicked(MouseEvent e) {}
+        public void mouseClicked(MouseEvent e) {
+        }
+
         public void mousePressed(MouseEvent e) {
             MenuSelectionManager manager = MenuSelectionManager.defaultManager();
             manager.setSelectedPath(getPath());
         }
+
         public void mouseReleased(MouseEvent e) {
             MenuSelectionManager manager =
-                MenuSelectionManager.defaultManager();
-            JMenuItem menuItem = (JMenuItem)e.getComponent();
+                    MenuSelectionManager.defaultManager();
+            JMenuItem menuItem = (JMenuItem) e.getComponent();
             Point p = e.getPoint();
-            if(p.x >= 0 && p.x < menuItem.getWidth() &&
-               p.y >= 0 && p.y < menuItem.getHeight()) {
+            if (p.x >= 0 && p.x < menuItem.getWidth() &&
+                    p.y >= 0 && p.y < menuItem.getHeight()) {
                 manager.clearSelectedPath();
                 menuItem.doClick(0);
             } else {
                 manager.processMouseEvent(e);
             }
         }
-        public void mouseEntered(MouseEvent e) {}
-        public void mouseExited(MouseEvent e) {}
+
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        public void mouseExited(MouseEvent e) {
+        }
+
         public void mouseDragged(MouseEvent e) {
             MenuSelectionManager.defaultManager().processMouseEvent(e);
         }
-        public void mouseMoved(MouseEvent e) { }
+
+        public void mouseMoved(MouseEvent e) {
+        }
     }
 
 }

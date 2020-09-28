@@ -36,19 +36,20 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.metadata.IIOMetadataFormat;
 import javax.imageio.metadata.IIOMetadataFormatImpl;
+
 import org.w3c.dom.Node;
 
 class GIFWritableImageMetadata extends GIFImageMetadata {
 
     // package scope
     static final String
-    NATIVE_FORMAT_NAME = "javax_imageio_gif_image_1.0";
+            NATIVE_FORMAT_NAME = "javax_imageio_gif_image_1.0";
 
     GIFWritableImageMetadata() {
         super(true,
-              NATIVE_FORMAT_NAME,
-              "com.sun.imageio.plugins.gif.GIFImageMetadataFormat",
-              null, null);
+                NATIVE_FORMAT_NAME,
+                "com.sun.imageio.plugins.gif.GIFImageMetadataFormat",
+                null, null);
     }
 
     public boolean isReadOnly() {
@@ -114,114 +115,114 @@ class GIFWritableImageMetadata extends GIFImageMetadata {
 
             if (name.equals("ImageDescriptor")) {
                 imageLeftPosition = getIntAttribute(node,
-                                                    "imageLeftPosition",
-                                                    -1, true,
-                                                    true, 0, 65535);
+                        "imageLeftPosition",
+                        -1, true,
+                        true, 0, 65535);
 
                 imageTopPosition = getIntAttribute(node,
-                                                   "imageTopPosition",
-                                                   -1, true,
-                                                   true, 0, 65535);
+                        "imageTopPosition",
+                        -1, true,
+                        true, 0, 65535);
 
                 imageWidth = getIntAttribute(node,
-                                             "imageWidth",
-                                             -1, true,
-                                             true, 1, 65535);
+                        "imageWidth",
+                        -1, true,
+                        true, 1, 65535);
 
                 imageHeight = getIntAttribute(node,
-                                              "imageHeight",
-                                              -1, true,
-                                              true, 1, 65535);
+                        "imageHeight",
+                        -1, true,
+                        true, 1, 65535);
 
                 interlaceFlag = getBooleanAttribute(node, "interlaceFlag",
-                                                    false, true);
+                        false, true);
             } else if (name.equals("LocalColorTable")) {
                 int sizeOfLocalColorTable =
-                    getIntAttribute(node, "sizeOfLocalColorTable",
-                                    true, 2, 256);
+                        getIntAttribute(node, "sizeOfLocalColorTable",
+                                true, 2, 256);
                 if (sizeOfLocalColorTable != 2 &&
-                    sizeOfLocalColorTable != 4 &&
-                    sizeOfLocalColorTable != 8 &&
-                    sizeOfLocalColorTable != 16 &&
-                    sizeOfLocalColorTable != 32 &&
-                    sizeOfLocalColorTable != 64 &&
-                    sizeOfLocalColorTable != 128 &&
-                    sizeOfLocalColorTable != 256) {
+                        sizeOfLocalColorTable != 4 &&
+                        sizeOfLocalColorTable != 8 &&
+                        sizeOfLocalColorTable != 16 &&
+                        sizeOfLocalColorTable != 32 &&
+                        sizeOfLocalColorTable != 64 &&
+                        sizeOfLocalColorTable != 128 &&
+                        sizeOfLocalColorTable != 256) {
                     fatal(node,
-                          "Bad value for LocalColorTable attribute sizeOfLocalColorTable!");
+                            "Bad value for LocalColorTable attribute sizeOfLocalColorTable!");
                 }
 
                 sortFlag = getBooleanAttribute(node, "sortFlag", false, true);
 
                 localColorTable = getColorTable(node, "ColorTableEntry",
-                                                true, sizeOfLocalColorTable);
+                        true, sizeOfLocalColorTable);
             } else if (name.equals("GraphicControlExtension")) {
                 String disposalMethodName =
-                    getStringAttribute(node, "disposalMethod", null,
-                                       true, disposalMethodNames);
+                        getStringAttribute(node, "disposalMethod", null,
+                                true, disposalMethodNames);
                 disposalMethod = 0;
-                while(!disposalMethodName.equals(disposalMethodNames[disposalMethod])) {
+                while (!disposalMethodName.equals(disposalMethodNames[disposalMethod])) {
                     disposalMethod++;
                 }
 
                 userInputFlag = getBooleanAttribute(node, "userInputFlag",
-                                                    false, true);
+                        false, true);
 
                 transparentColorFlag =
-                    getBooleanAttribute(node, "transparentColorFlag",
-                                        false, true);
+                        getBooleanAttribute(node, "transparentColorFlag",
+                                false, true);
 
                 delayTime = getIntAttribute(node,
-                                            "delayTime",
-                                            -1, true,
-                                            true, 0, 65535);
+                        "delayTime",
+                        -1, true,
+                        true, 0, 65535);
 
                 transparentColorIndex =
-                    getIntAttribute(node, "transparentColorIndex",
-                                    -1, true,
-                                    true, 0, 65535);
+                        getIntAttribute(node, "transparentColorIndex",
+                                -1, true,
+                                true, 0, 65535);
             } else if (name.equals("PlainTextExtension")) {
                 hasPlainTextExtension = true;
 
                 textGridLeft = getIntAttribute(node,
-                                               "textGridLeft",
-                                               -1, true,
-                                               true, 0, 65535);
+                        "textGridLeft",
+                        -1, true,
+                        true, 0, 65535);
 
                 textGridTop = getIntAttribute(node,
-                                              "textGridTop",
-                                              -1, true,
-                                              true, 0, 65535);
+                        "textGridTop",
+                        -1, true,
+                        true, 0, 65535);
 
                 textGridWidth = getIntAttribute(node,
-                                                "textGridWidth",
-                                                -1, true,
-                                                true, 1, 65535);
+                        "textGridWidth",
+                        -1, true,
+                        true, 1, 65535);
 
                 textGridHeight = getIntAttribute(node,
-                                                 "textGridHeight",
-                                                 -1, true,
-                                                 true, 1, 65535);
+                        "textGridHeight",
+                        -1, true,
+                        true, 1, 65535);
 
                 characterCellWidth = getIntAttribute(node,
-                                                     "characterCellWidth",
-                                                     -1, true,
-                                                     true, 1, 65535);
+                        "characterCellWidth",
+                        -1, true,
+                        true, 1, 65535);
 
                 characterCellHeight = getIntAttribute(node,
-                                                      "characterCellHeight",
-                                                      -1, true,
-                                                      true, 1, 65535);
+                        "characterCellHeight",
+                        -1, true,
+                        true, 1, 65535);
 
                 textForegroundColor = getIntAttribute(node,
-                                                      "textForegroundColor",
-                                                      -1, true,
-                                                      true, 0, 255);
+                        "textForegroundColor",
+                        -1, true,
+                        true, 0, 255);
 
                 textBackgroundColor = getIntAttribute(node,
-                                                      "textBackgroundColor",
-                                                      -1, true,
-                                                      true, 0, 255);
+                        "textBackgroundColor",
+                        -1, true,
+                        true, 0, 255);
 
                 // XXX The "text" attribute of the PlainTextExtension element
                 // is not defined in the GIF image metadata format but it is
@@ -230,31 +231,31 @@ class GIFWritableImageMetadata extends GIFImageMetadata {
                 // bug 5082763.
 
                 String textString =
-                    getStringAttribute(node, "text", "", false, null);
+                        getStringAttribute(node, "text", "", false, null);
                 text = fromISO8859(textString);
             } else if (name.equals("ApplicationExtensions")) {
                 IIOMetadataNode applicationExtension =
-                    (IIOMetadataNode)node.getFirstChild();
+                        (IIOMetadataNode) node.getFirstChild();
 
                 if (!applicationExtension.getNodeName().equals("ApplicationExtension")) {
                     fatal(node,
-                          "Only a ApplicationExtension may be a child of a ApplicationExtensions!");
+                            "Only a ApplicationExtension may be a child of a ApplicationExtensions!");
                 }
 
                 String applicationIDString =
-                    getStringAttribute(applicationExtension, "applicationID",
-                                       null, true, null);
+                        getStringAttribute(applicationExtension, "applicationID",
+                                null, true, null);
 
                 String authenticationCodeString =
-                    getStringAttribute(applicationExtension, "authenticationCode",
-                                       null, true, null);
+                        getStringAttribute(applicationExtension, "authenticationCode",
+                                null, true, null);
 
                 Object applicationExtensionData =
-                    applicationExtension.getUserObject();
+                        applicationExtension.getUserObject();
                 if (applicationExtensionData == null ||
-                    !(applicationExtensionData instanceof byte[])) {
+                        !(applicationExtensionData instanceof byte[])) {
                     fatal(applicationExtension,
-                          "Bad user object in ApplicationExtension!");
+                            "Bad user object in ApplicationExtension!");
                 }
 
                 if (applicationIDs == null) {
@@ -269,10 +270,10 @@ class GIFWritableImageMetadata extends GIFImageMetadata {
             } else if (name.equals("CommentExtensions")) {
                 Node commentExtension = node.getFirstChild();
                 if (commentExtension != null) {
-                    while(commentExtension != null) {
+                    while (commentExtension != null) {
                         if (!commentExtension.getNodeName().equals("CommentExtension")) {
                             fatal(node,
-                                  "Only a CommentExtension may be a child of a CommentExtensions!");
+                                    "Only a CommentExtension may be a child of a CommentExtensions!");
                         }
 
                         if (comments == null) {
@@ -280,8 +281,8 @@ class GIFWritableImageMetadata extends GIFImageMetadata {
                         }
 
                         String comment =
-                            getStringAttribute(commentExtension, "value", null,
-                                               true, null);
+                                getStringAttribute(commentExtension, "value", null,
+                                        true, null);
 
                         comments.add(fromISO8859(comment));
 
@@ -297,12 +298,12 @@ class GIFWritableImageMetadata extends GIFImageMetadata {
     }
 
     protected void mergeStandardTree(Node root)
-      throws IIOInvalidTreeException {
+            throws IIOInvalidTreeException {
         Node node = root;
         if (!node.getNodeName()
-            .equals(IIOMetadataFormatImpl.standardMetadataFormatName)) {
+                .equals(IIOMetadataFormatImpl.standardMetadataFormatName)) {
             fatal(node, "Root must be " +
-                  IIOMetadataFormatImpl.standardMetadataFormatName);
+                    IIOMetadataFormatImpl.standardMetadataFormatName);
         }
 
         node = node.getFirstChild();
@@ -311,24 +312,24 @@ class GIFWritableImageMetadata extends GIFImageMetadata {
 
             if (name.equals("Chroma")) {
                 Node childNode = node.getFirstChild();
-                while(childNode != null) {
+                while (childNode != null) {
                     String childName = childNode.getNodeName();
                     if (childName.equals("Palette")) {
                         localColorTable = getColorTable(childNode,
-                                                        "PaletteEntry",
-                                                        false, -1);
+                                "PaletteEntry",
+                                false, -1);
                         break;
                     }
                     childNode = childNode.getNextSibling();
                 }
             } else if (name.equals("Compression")) {
                 Node childNode = node.getFirstChild();
-                while(childNode != null) {
+                while (childNode != null) {
                     String childName = childNode.getNodeName();
                     if (childName.equals("NumProgressiveScans")) {
                         int numProgressiveScans =
-                            getIntAttribute(childNode, "value", 4, false,
-                                            true, 1, Integer.MAX_VALUE);
+                                getIntAttribute(childNode, "value", 4, false,
+                                        true, 1, Integer.MAX_VALUE);
                         if (numProgressiveScans > 1) {
                             interlaceFlag = true;
                         }
@@ -338,32 +339,32 @@ class GIFWritableImageMetadata extends GIFImageMetadata {
                 }
             } else if (name.equals("Dimension")) {
                 Node childNode = node.getFirstChild();
-                while(childNode != null) {
+                while (childNode != null) {
                     String childName = childNode.getNodeName();
                     if (childName.equals("HorizontalPixelOffset")) {
                         imageLeftPosition = getIntAttribute(childNode,
-                                                            "value",
-                                                            -1, true,
-                                                            true, 0, 65535);
+                                "value",
+                                -1, true,
+                                true, 0, 65535);
                     } else if (childName.equals("VerticalPixelOffset")) {
                         imageTopPosition = getIntAttribute(childNode,
-                                                           "value",
-                                                           -1, true,
-                                                           true, 0, 65535);
+                                "value",
+                                -1, true,
+                                true, 0, 65535);
                     }
                     childNode = childNode.getNextSibling();
                 }
             } else if (name.equals("Text")) {
                 Node childNode = node.getFirstChild();
-                while(childNode != null) {
+                while (childNode != null) {
                     String childName = childNode.getNodeName();
                     if (childName.equals("TextEntry") &&
-                        getAttribute(childNode, "compression",
-                                     "none", false).equals("none") &&
-                        Charset.isSupported(getAttribute(childNode,
-                                                         "encoding",
-                                                         "ISO-8859-1",
-                                                         false))) {
+                            getAttribute(childNode, "compression",
+                                    "none", false).equals("none") &&
+                            Charset.isSupported(getAttribute(childNode,
+                                    "encoding",
+                                    "ISO-8859-1",
+                                    false))) {
                         String value = getAttribute(childNode, "value");
                         byte[] comment = fromISO8859(value);
                         if (comments == null) {
@@ -375,13 +376,13 @@ class GIFWritableImageMetadata extends GIFImageMetadata {
                 }
             } else if (name.equals("Transparency")) {
                 Node childNode = node.getFirstChild();
-                while(childNode != null) {
+                while (childNode != null) {
                     String childName = childNode.getNodeName();
                     if (childName.equals("TransparentIndex")) {
                         transparentColorIndex = getIntAttribute(childNode,
-                                                                "value",
-                                                                -1, true,
-                                                                true, 0, 255);
+                                "value",
+                                -1, true,
+                                true, 0, 255);
                         transparentColorFlag = true;
                         break;
                     }
@@ -394,8 +395,7 @@ class GIFWritableImageMetadata extends GIFImageMetadata {
     }
 
     public void setFromTree(String formatName, Node root)
-        throws IIOInvalidTreeException
-    {
+            throws IIOInvalidTreeException {
         reset();
         mergeTree(formatName, root);
     }

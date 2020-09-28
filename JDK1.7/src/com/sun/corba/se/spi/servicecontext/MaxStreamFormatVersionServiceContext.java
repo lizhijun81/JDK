@@ -24,11 +24,14 @@
  */
 
 /**
+ *
  */
 package com.sun.corba.se.spi.servicecontext;
 
 import org.omg.IOP.RMICustomMaxStreamFormat;
+
 import javax.rmi.CORBA.*;
+
 import org.omg.CORBA.SystemException;
 import org.omg.CORBA_2_3.portable.InputStream;
 import org.omg.CORBA_2_3.portable.OutputStream;
@@ -44,7 +47,7 @@ public class MaxStreamFormatVersionServiceContext extends ServiceContext {
     // The singleton uses the maximum version indicated by our
     // ValueHandler.
     public static final MaxStreamFormatVersionServiceContext singleton
-        = new MaxStreamFormatVersionServiceContext();
+            = new MaxStreamFormatVersionServiceContext();
 
     public MaxStreamFormatVersionServiceContext() {
         maxStreamFormatVersion = ORBUtility.getMaxStreamFormatVersion();
@@ -56,27 +59,27 @@ public class MaxStreamFormatVersionServiceContext extends ServiceContext {
 
     public MaxStreamFormatVersionServiceContext(InputStream is,
                                                 GIOPVersion gv) {
-        super(is, gv) ;
+        super(is, gv);
 
         maxStreamFormatVersion = is.read_octet();
     }
 
     public static final int SERVICE_CONTEXT_ID = RMICustomMaxStreamFormat.value;
-    public int getId() { return SERVICE_CONTEXT_ID; }
 
-    public void writeData(OutputStream os) throws SystemException
-    {
+    public int getId() {
+        return SERVICE_CONTEXT_ID;
+    }
+
+    public void writeData(OutputStream os) throws SystemException {
         os.write_octet(maxStreamFormatVersion);
     }
 
-    public byte getMaximumStreamFormatVersion()
-    {
+    public byte getMaximumStreamFormatVersion() {
         return maxStreamFormatVersion;
     }
 
-    public String toString()
-    {
+    public String toString() {
         return "MaxStreamFormatVersionServiceContext["
-            + maxStreamFormatVersion + "]";
+                + maxStreamFormatVersion + "]";
     }
 }

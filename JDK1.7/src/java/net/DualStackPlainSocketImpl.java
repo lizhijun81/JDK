@@ -26,6 +26,7 @@ package java.net;
 
 import java.io.IOException;
 import java.io.FileDescriptor;
+
 import sun.misc.SharedSecrets;
 import sun.misc.JavaIOFileDescriptorAccess;
 
@@ -38,8 +39,7 @@ import sun.misc.JavaIOFileDescriptorAccess;
  * @author Chris Hegarty
  */
 
-class DualStackPlainSocketImpl extends AbstractPlainSocketImpl
-{
+class DualStackPlainSocketImpl extends AbstractPlainSocketImpl {
     static JavaIOFileDescriptorAccess fdAccess = SharedSecrets.getJavaIOFileDescriptorAccess();
 
 
@@ -68,7 +68,7 @@ class DualStackPlainSocketImpl extends AbstractPlainSocketImpl
     }
 
     void socketConnect(InetAddress address, int port, int timeout)
-        throws IOException {
+            throws IOException {
         int nativefd = checkAndReturnNativeFD();
 
         if (address == null)
@@ -174,7 +174,7 @@ class DualStackPlainSocketImpl extends AbstractPlainSocketImpl
     // Intentional fallthrough after SO_REUSEADDR
     @SuppressWarnings("fallthrough")
     void socketSetOption(int opt, boolean on, Object value)
-        throws SocketException {
+            throws SocketException {
         int nativefd = checkAndReturnNativeFD();
 
         if (opt == SO_TIMEOUT) {  // timeout implemented through select.
@@ -183,32 +183,32 @@ class DualStackPlainSocketImpl extends AbstractPlainSocketImpl
 
         int optionValue = 0;
 
-        switch(opt) {
-            case SO_REUSEADDR :
+        switch (opt) {
+            case SO_REUSEADDR:
                 if (exclusiveBind) {
                     // SO_REUSEADDR emulated when using exclusive bind
                     isReuseAddress = on;
                     return;
                 }
                 // intentional fallthrough
-            case TCP_NODELAY :
-            case SO_OOBINLINE :
-            case SO_KEEPALIVE :
+            case TCP_NODELAY:
+            case SO_OOBINLINE:
+            case SO_KEEPALIVE:
                 optionValue = on ? 1 : 0;
                 break;
-            case SO_SNDBUF :
-            case SO_RCVBUF :
-            case IP_TOS :
-                optionValue = ((Integer)value).intValue();
+            case SO_SNDBUF:
+            case SO_RCVBUF:
+            case IP_TOS:
+                optionValue = ((Integer) value).intValue();
                 break;
-            case SO_LINGER :
+            case SO_LINGER:
                 if (on) {
-                    optionValue =  ((Integer)value).intValue();
+                    optionValue = ((Integer) value).intValue();
                 } else {
                     optionValue = -1;
                 }
                 break;
-            default :/* shouldn't get here */
+            default:/* shouldn't get here */
                 throw new SocketException("Option not supported");
         }
 
@@ -220,21 +220,21 @@ class DualStackPlainSocketImpl extends AbstractPlainSocketImpl
 
         // SO_BINDADDR is not a socket option.
         if (opt == SO_BINDADDR) {
-            localAddress(nativefd, (InetAddressContainer)iaContainerObj);
+            localAddress(nativefd, (InetAddressContainer) iaContainerObj);
             return 0;  // return value doesn't matter.
         }
 
         // SO_REUSEADDR emulated when using exclusive bind
         if (opt == SO_REUSEADDR && exclusiveBind)
-            return isReuseAddress? 1 : -1;
+            return isReuseAddress ? 1 : -1;
 
         int value = getIntOption(nativefd, opt);
 
         switch (opt) {
-            case TCP_NODELAY :
-            case SO_OOBINLINE :
-            case SO_KEEPALIVE :
-            case SO_REUSEADDR :
+            case TCP_NODELAY:
+            case SO_OOBINLINE:
+            case SO_KEEPALIVE:
+            case SO_REUSEADDR:
                 return (value == 0) ? -1 : 1;
         }
         return value;
@@ -266,10 +266,10 @@ class DualStackPlainSocketImpl extends AbstractPlainSocketImpl
 
     static native void bind0(int fd, InetAddress localAddress, int localport,
                              boolean exclBind)
-        throws IOException;
+            throws IOException;
 
     static native int connect0(int fd, InetAddress remote, int remotePort)
-        throws IOException;
+            throws IOException;
 
     static native void waitForConnect(int fd, int timeout) throws IOException;
 

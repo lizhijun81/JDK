@@ -191,7 +191,7 @@ public interface Attr extends Node {
     public String getName();
 
     /**
-     *  <code>True</code> if this attribute was explicitly given a value in
+     * <code>True</code> if this attribute was explicitly given a value in
      * the instance document, <code>false</code> otherwise. If the
      * application changed the value of this attribute node (even if it ends
      * up having the same value as the default value) then it is set to
@@ -217,6 +217,7 @@ public interface Attr extends Node {
      * value on setting.
      */
     public String getValue();
+
     /**
      * On retrieval, the value of the attribute is returned as a string.
      * Character and general entity references are replaced with their
@@ -230,31 +231,33 @@ public interface Attr extends Node {
      * implementations, may do normalization automatically, even after
      * mutation; in such case, the value on retrieval may differ from the
      * value on setting.
-     * @exception DOMException
-     *   NO_MODIFICATION_ALLOWED_ERR: Raised when the node is readonly.
+     *
+     * @throws DOMException NO_MODIFICATION_ALLOWED_ERR: Raised when the node is readonly.
      */
     public void setValue(String value)
-                            throws DOMException;
+            throws DOMException;
 
     /**
      * The <code>Element</code> node this attribute is attached to or
      * <code>null</code> if this attribute is not in use.
+     *
      * @since DOM Level 2
      */
     public Element getOwnerElement();
 
     /**
-     *  The type information associated with this attribute. While the type
+     * The type information associated with this attribute. While the type
      * information contained in this attribute is guarantee to be correct
      * after loading the document or invoking
      * <code>Document.normalizeDocument()</code>, <code>schemaTypeInfo</code>
-     *  may not be reliable if the node was moved.
+     * may not be reliable if the node was moved.
+     *
      * @since DOM Level 3
      */
     public TypeInfo getSchemaTypeInfo();
 
     /**
-     *  Returns whether this attribute is known to be of type ID (i.e. to
+     * Returns whether this attribute is known to be of type ID (i.e. to
      * contain an identifier for its owner element) or not. When it is and
      * its value is unique, the <code>ownerElement</code> of this attribute
      * can be retrieved using the method <code>Document.getElementById</code>
@@ -297,6 +300,7 @@ public interface Attr extends Node {
      * reevaluated in accordance to the schema used. As a consequence, if
      * the <code>Attr.schemaTypeInfo</code> attribute contains an ID type,
      * <code>isId</code> will always return true.
+     *
      * @since DOM Level 3
      */
     public boolean isId();

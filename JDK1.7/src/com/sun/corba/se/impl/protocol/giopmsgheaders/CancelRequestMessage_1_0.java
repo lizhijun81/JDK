@@ -42,11 +42,12 @@ public final class CancelRequestMessage_1_0 extends Message_1_0
 
     // Constructors
 
-    CancelRequestMessage_1_0() {}
+    CancelRequestMessage_1_0() {
+    }
 
     CancelRequestMessage_1_0(int _request_id) {
         super(Message.GIOPBigMagic, false, Message.GIOPCancelRequest,
-              CANCEL_REQ_MSG_SIZE);
+                CANCEL_REQ_MSG_SIZE);
         request_id = _request_id;
     }
 
@@ -69,8 +70,7 @@ public final class CancelRequestMessage_1_0 extends Message_1_0
     }
 
     public void callback(MessageHandler handler)
-        throws java.io.IOException
-    {
+            throws java.io.IOException {
         handler.handleInput(this);
     }
 } // class CancelRequestMessage_1_0

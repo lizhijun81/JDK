@@ -29,7 +29,7 @@ import java.awt.GraphicsConfiguration;
 
 /**
  * The peer interface for {@link Canvas}.
- *
+ * <p>
  * The peer interfaces are intended only for use in porting
  * the AWT. They are not intended for use by application
  * developers, and developers should not implement peers

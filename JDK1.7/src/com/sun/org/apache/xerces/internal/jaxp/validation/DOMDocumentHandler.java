@@ -50,8 +50,7 @@ interface DOMDocumentHandler extends XMLDocumentHandler {
      * A document type declaration.
      *
      * @param node a DocumentType node
-     *
-     * @exception XNIException Thrown by handler to signal an error.
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void doctypeDecl(DocumentType node) throws XNIException;
 
@@ -63,8 +62,7 @@ interface DOMDocumentHandler extends XMLDocumentHandler {
      * A comment.
      *
      * @param node a Comment node
-     *
-     * @exception XNIException Thrown by application to signal an error.
+     * @throws XNIException Thrown by application to signal an error.
      */
     public void comment(Comment node) throws XNIException;
 
@@ -80,8 +78,7 @@ interface DOMDocumentHandler extends XMLDocumentHandler {
      * responsible for parsing the data.
      *
      * @param node a ProcessingInstruction node
-     *
-     * @exception XNIException Thrown by handler to signal an error.
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void processingInstruction(ProcessingInstruction node) throws XNIException;
 

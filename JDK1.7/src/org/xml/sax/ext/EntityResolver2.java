@@ -78,13 +78,11 @@ import org.xml.sax.SAXException;
  * if the original SAX 1.0 style entity resolution method is invoked.
  * </p>
  *
- * @see org.xml.sax.XMLReader#setEntityResolver
- *
- * @since SAX 2.0 (extensions 1.1 alpha)
  * @author David Brownell
+ * @see org.xml.sax.XMLReader#setEntityResolver
+ * @since SAX 2.0 (extensions 1.1 alpha)
  */
-public interface EntityResolver2 extends EntityResolver
-{
+public interface EntityResolver2 extends EntityResolver {
     /**
      * Allows applications to provide an external subset for documents
      * that don't explicitly define one.  Documents with DOCTYPE declarations
@@ -138,25 +136,23 @@ public interface EntityResolver2 extends EntityResolver
      * it can make a malformed document appear to be well formed.
      * </p>
      *
-     * @param name Identifies the document root element.  This name comes
-     *  from a DOCTYPE declaration (where available) or from the actual
-     *  root element.
+     * @param name    Identifies the document root element.  This name comes
+     *                from a DOCTYPE declaration (where available) or from the actual
+     *                root element.
      * @param baseURI The document's base URI, serving as an additional
-     *  hint for selecting the external subset.  This is always an absolute
-     *  URI, unless it is null because the XMLReader was given an InputSource
-     *  without one.
-     *
+     *                hint for selecting the external subset.  This is always an absolute
+     *                URI, unless it is null because the XMLReader was given an InputSource
+     *                without one.
      * @return An InputSource object describing the new external subset
-     *  to be used by the parser, or null to indicate that no external
-     *  subset is provided.
-     *
-     * @exception SAXException Any SAX exception, possibly wrapping
-     *  another exception.
-     * @exception IOException Probably indicating a failure to create
-     *  a new InputStream or Reader, or an illegal URL.
+     * to be used by the parser, or null to indicate that no external
+     * subset is provided.
+     * @throws SAXException Any SAX exception, possibly wrapping
+     *                      another exception.
+     * @throws IOException  Probably indicating a failure to create
+     *                      a new InputStream or Reader, or an illegal URL.
      */
-    public InputSource getExternalSubset (String name, String baseURI)
-    throws SAXException, IOException;
+    public InputSource getExternalSubset(String name, String baseURI)
+            throws SAXException, IOException;
 
     /**
      * Allows applications to map references to external entities into input
@@ -166,8 +162,8 @@ public interface EntityResolver2 extends EntityResolver
      * This method provides more flexibility than the {@link EntityResolver}
      * interface, supporting implementations of more complex catalogue
      * schemes such as the one defined by the <a href=
-        "http://www.oasis-open.org/committees/entity/spec-2001-08-06.html"
-        >OASIS XML Catalogs</a> specification.</p>
+     * "http://www.oasis-open.org/committees/entity/spec-2001-08-06.html"
+     * >OASIS XML Catalogs</a> specification.</p>
      *
      * <p>Parsers configured to use this resolver method will call it
      * to determine the input source to use for any external entity
@@ -180,39 +176,37 @@ public interface EntityResolver2 extends EntityResolver
      *
      * <p>Note that the entity naming scheme used here is the same one
      * used in the {@link LexicalHandler}, or in the {@link
-        org.xml.sax.ContentHandler#skippedEntity
-        ContentHandler.skippedEntity()}
+     * org.xml.sax.ContentHandler#skippedEntity
+     * ContentHandler.skippedEntity()}
      * method. </p>
      *
-     * @param name Identifies the external entity being resolved.
-     *  Either "[dtd]" for the external subset, or a name starting
-     *  with "%" to indicate a parameter entity, or else the name of
-     *  a general entity.  This is never null when invoked by a SAX2
-     *  parser.
+     * @param name     Identifies the external entity being resolved.
+     *                 Either "[dtd]" for the external subset, or a name starting
+     *                 with "%" to indicate a parameter entity, or else the name of
+     *                 a general entity.  This is never null when invoked by a SAX2
+     *                 parser.
      * @param publicId The public identifier of the external entity being
-     *  referenced (normalized as required by the XML specification), or
-     *  null if none was supplied.
-     * @param baseURI The URI with respect to which relative systemIDs
-     *  are interpreted.  This is always an absolute URI, unless it is
-     *  null (likely because the XMLReader was given an InputSource without
-     *  one).  This URI is defined by the XML specification to be the one
-     *  associated with the "&lt;" starting the relevant declaration.
+     *                 referenced (normalized as required by the XML specification), or
+     *                 null if none was supplied.
+     * @param baseURI  The URI with respect to which relative systemIDs
+     *                 are interpreted.  This is always an absolute URI, unless it is
+     *                 null (likely because the XMLReader was given an InputSource without
+     *                 one).  This URI is defined by the XML specification to be the one
+     *                 associated with the "&lt;" starting the relevant declaration.
      * @param systemId The system identifier of the external entity
-     *  being referenced; either a relative or absolute URI.
-     *  This is never null when invoked by a SAX2 parser; only declared
-     *  entities, and any external subset, are resolved by such parsers.
-     *
+     *                 being referenced; either a relative or absolute URI.
+     *                 This is never null when invoked by a SAX2 parser; only declared
+     *                 entities, and any external subset, are resolved by such parsers.
      * @return An InputSource object describing the new input source to
-     *  be used by the parser.  Returning null directs the parser to
-     *  resolve the system ID against the base URI and open a connection
-     *  to resulting URI.
-     *
-     * @exception SAXException Any SAX exception, possibly wrapping
-     *  another exception.
-     * @exception IOException Probably indicating a failure to create
-     *  a new InputStream or Reader, or an illegal URL.
+     * be used by the parser.  Returning null directs the parser to
+     * resolve the system ID against the base URI and open a connection
+     * to resulting URI.
+     * @throws SAXException Any SAX exception, possibly wrapping
+     *                      another exception.
+     * @throws IOException  Probably indicating a failure to create
+     *                      a new InputStream or Reader, or an illegal URL.
      */
-    public InputSource resolveEntity (
+    public InputSource resolveEntity(
             String name,
             String publicId,
             String baseURI,

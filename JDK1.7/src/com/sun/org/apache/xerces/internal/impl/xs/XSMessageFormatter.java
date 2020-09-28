@@ -22,6 +22,7 @@ package com.sun.org.apache.xerces.internal.impl.xs;
 
 import com.sun.org.apache.xerces.internal.util.MessageFormatter;
 import com.sun.org.apache.xerces.internal.utils.SecuritySupport;
+
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -31,10 +32,9 @@ import java.util.ResourceBundle;
  * SchemaMessageProvider implements an XMLMessageProvider that
  * provides localizable error messages for the W3C XML Schema Language
  *
- * @xerces.internal
- *
  * @author Elena Litani, IBM
  * @version $Id: XSMessageFormatter.java,v 1.6 2010-11-01 04:39:55 joehw Exp $
+ * @xerces.internal
  */
 public class XSMessageFormatter implements MessageFormatter {
     /**
@@ -56,14 +56,12 @@ public class XSMessageFormatter implements MessageFormatter {
      * @param arguments The message replacement text arguments. The order
      *                  of the arguments must match that of the placeholders
      *                  in the actual message.
-     *
      * @return Returns the formatted message.
-     *
      * @throws MissingResourceException Thrown if the message with the
      *                                  specified key cannot be found.
      */
-     public String formatMessage(Locale locale, String key, Object[] arguments)
-        throws MissingResourceException {
+    public String formatMessage(Locale locale, String key, Object[] arguments)
+            throws MissingResourceException {
 
         if (fResourceBundle == null || locale != fLocale) {
             if (locale != null) {

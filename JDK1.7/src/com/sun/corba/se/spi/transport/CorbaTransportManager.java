@@ -38,11 +38,10 @@ import com.sun.corba.se.impl.oa.poa.Policies;
  * @author Harold Carr
  */
 public interface CorbaTransportManager
-    extends
-        TransportManager
-{
+        extends
+        TransportManager {
     public static final String SOCKET_OR_CHANNEL_CONNECTION_CACHE =
-        "SocketOrChannelConnectionCache";
+            "SocketOrChannelConnectionCache";
 
     public Collection getAcceptors(String objectAdapterManagerId,
                                    ObjectAdapterId objectAdapterId);

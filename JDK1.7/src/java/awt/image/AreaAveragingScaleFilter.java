@@ -51,16 +51,15 @@ import java.awt.Rectangle;
  * implementation dependencies, there may be differences in pixel values
  * of an image filtered on different platforms.
  *
+ * @author Jim Graham
  * @see FilteredImageSource
  * @see ReplicateScaleFilter
  * @see ImageFilter
- *
- * @author      Jim Graham
  */
 public class AreaAveragingScaleFilter extends ReplicateScaleFilter {
     private static final ColorModel rgbmodel = ColorModel.getRGBdefault();
     private static final int neededHints = (TOPDOWNLEFTRIGHT
-                                            | COMPLETESCANLINES);
+            | COMPLETESCANLINES);
 
     private boolean passthrough;
     private float reds[], greens[], blues[], alphas[];
@@ -70,7 +69,8 @@ public class AreaAveragingScaleFilter extends ReplicateScaleFilter {
     /**
      * Constructs an AreaAveragingScaleFilter that scales the pixels from
      * its source Image as specified by the width and height parameters.
-     * @param width the target width to scale the image
+     *
+     * @param width  the target width to scale the image
      * @param height the target height to scale the image
      */
     public AreaAveragingScaleFilter(int width, int height) {
@@ -87,6 +87,7 @@ public class AreaAveragingScaleFilter extends ReplicateScaleFilter {
      * this class to filter pixels from an image should avoid calling
      * this method directly since that operation could interfere
      * with the filtering operation.
+     *
      * @see ImageConsumer#setHints
      */
     public void setHints(int hints) {
@@ -123,9 +124,21 @@ public class AreaAveragingScaleFilter extends ReplicateScaleFilter {
             int r = Math.round(reds[x] / mult);
             int g = Math.round(greens[x] / mult);
             int b = Math.round(blues[x] / mult);
-            if (r < 0) {r = 0;} else if (r > 255) {r = 255;}
-            if (g < 0) {g = 0;} else if (g > 255) {g = 255;}
-            if (b < 0) {b = 0;} else if (b > 255) {b = 255;}
+            if (r < 0) {
+                r = 0;
+            } else if (r > 255) {
+                r = 255;
+            }
+            if (g < 0) {
+                g = 0;
+            } else if (g > 255) {
+                g = 255;
+            }
+            if (b < 0) {
+                b = 0;
+            } else if (b > 255) {
+                b = 255;
+            }
             outpix[x] = (a << 24 | r << 16 | g << 8 | b);
         }
         return outpix;
@@ -178,7 +191,7 @@ public class AreaAveragingScaleFilter extends ReplicateScaleFilter {
                     rgb = model.getRGB(rgb);
                     a = rgb >>> 24;
                     r = (rgb >> 16) & 0xff;
-                    g = (rgb >>  8) & 0xff;
+                    g = (rgb >> 8) & 0xff;
                     b = rgb & 0xff;
                     // premultiply the components if necessary
                     if (a != 255.0f) {
@@ -211,7 +224,7 @@ public class AreaAveragingScaleFilter extends ReplicateScaleFilter {
                 int outpix[] = calcRow();
                 do {
                     consumer.setPixels(0, dy, destWidth, 1,
-                                       rgbmodel, outpix, 0, destWidth);
+                            rgbmodel, outpix, 0, destWidth);
                     dy++;
                 } while ((syrem -= amty) >= amty && amty == srcHeight);
             } else {
@@ -241,6 +254,7 @@ public class AreaAveragingScaleFilter extends ReplicateScaleFilter {
      * this class to filter pixels from an image should avoid calling
      * this method directly since that operation could interfere
      * with the filtering operation.
+     *
      * @see ReplicateScaleFilter
      */
     public void setPixels(int x, int y, int w, int h,
@@ -267,6 +281,7 @@ public class AreaAveragingScaleFilter extends ReplicateScaleFilter {
      * this class to filter pixels from an image should avoid calling
      * this method directly since that operation could interfere
      * with the filtering operation.
+     *
      * @see ReplicateScaleFilter
      */
     public void setPixels(int x, int y, int w, int h,

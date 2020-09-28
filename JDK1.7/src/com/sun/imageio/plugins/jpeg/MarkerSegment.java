@@ -46,7 +46,7 @@ class MarkerSegment implements Cloneable {
     int tag;      // See JPEG.java
     int length;    /* Sometimes needed by subclasses; doesn't include
                       itself.  Meaningful only if constructed from a stream */
-    byte [] data = null;  // Raw segment data, used for unrecognized segments
+    byte[] data = null;  // Raw segment data, used for unrecognized segments
     boolean unknown = false; // Set to true if the tag is not recognized
 
     /**
@@ -82,26 +82,26 @@ class MarkerSegment implements Cloneable {
         // The type of node should have been verified already.
         // get the attribute and assign it to the tag
         tag = getAttributeValue(node,
-                                null,
-                                "MarkerTag",
-                                0, 255,
-                                true);
+                null,
+                "MarkerTag",
+                0, 255,
+                true);
         length = 0;
         // get the user object and clone it to the data
         if (node instanceof IIOMetadataNode) {
             IIOMetadataNode iioNode = (IIOMetadataNode) node;
             try {
-                data = (byte []) iioNode.getUserObject();
+                data = (byte[]) iioNode.getUserObject();
             } catch (Exception e) {
                 IIOInvalidTreeException newGuy =
-                    new IIOInvalidTreeException
-                    ("Can't get User Object", node);
+                        new IIOInvalidTreeException
+                                ("Can't get User Object", node);
                 newGuy.initCause(e);
                 throw newGuy;
             }
         } else {
             throw new IIOInvalidTreeException
-                ("Node must have User Object", node);
+                    ("Node must have User Object", node);
         }
     }
 
@@ -112,7 +112,8 @@ class MarkerSegment implements Cloneable {
         MarkerSegment newGuy = null;
         try {
             newGuy = (MarkerSegment) super.clone();
-        } catch (CloneNotSupportedException e) {} // won't happen
+        } catch (CloneNotSupportedException e) {
+        } // won't happen
         if (this.data != null) {
             newGuy.data = (byte[]) data.clone();
         }
@@ -142,7 +143,7 @@ class MarkerSegment implements Cloneable {
                                  int min,
                                  int max,
                                  boolean required)
-        throws IIOInvalidTreeException {
+            throws IIOInvalidTreeException {
         if (attrs == null) {
             attrs = node.getAttributes();
         }
@@ -151,14 +152,14 @@ class MarkerSegment implements Cloneable {
         if (valueString == null) {
             if (required) {
                 throw new IIOInvalidTreeException
-                    (name + " attribute not found", node);
+                        (name + " attribute not found", node);
             }
         } else {
-              value = Integer.parseInt(valueString);
-              if ((value < min) || (value > max)) {
-                  throw new IIOInvalidTreeException
-                      (name + " attribute out of range", node);
-              }
+            value = Integer.parseInt(valueString);
+            if ((value < min) || (value > max)) {
+                throw new IIOInvalidTreeException
+                        (name + " attribute out of range", node);
+            }
         }
         return value;
     }
@@ -195,7 +196,7 @@ class MarkerSegment implements Cloneable {
 
     void printTag(String prefix) {
         System.out.println(prefix + " marker segment - marker = 0x"
-                           + Integer.toHexString(tag));
+                + Integer.toHexString(tag));
         System.out.println("length: " + length);
     }
 
@@ -203,20 +204,20 @@ class MarkerSegment implements Cloneable {
         printTag("Unknown");
         if (length > 10) {
             System.out.print("First 5 bytes:");
-            for (int i=0;i<5;i++) {
+            for (int i = 0; i < 5; i++) {
                 System.out.print(" Ox"
-                                 + Integer.toHexString((int)data[i]));
+                        + Integer.toHexString((int) data[i]));
             }
             System.out.print("\nLast 5 bytes:");
-            for (int i=data.length-5;i<data.length;i++) {
+            for (int i = data.length - 5; i < data.length; i++) {
                 System.out.print(" Ox"
-                                 + Integer.toHexString((int)data[i]));
+                        + Integer.toHexString((int) data[i]));
             }
         } else {
             System.out.print("Data:");
-            for (int i=0;i<data.length;i++) {
+            for (int i = 0; i < data.length; i++) {
                 System.out.print(" Ox"
-                                 + Integer.toHexString((int)data[i]));
+                        + Integer.toHexString((int) data[i]));
             }
         }
         System.out.println();

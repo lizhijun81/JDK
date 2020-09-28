@@ -44,8 +44,7 @@ import javax.swing.plaf.basic.BasicSplitPaneDivider;
  *
  * @author Jeff Dinkins
  */
-public class WindowsSplitPaneDivider extends BasicSplitPaneDivider
-{
+public class WindowsSplitPaneDivider extends BasicSplitPaneDivider {
 
     /**
      * Creates a new Windows SplitPaneDivider
@@ -55,15 +54,15 @@ public class WindowsSplitPaneDivider extends BasicSplitPaneDivider
     }
 
     /**
-      * Paints the divider.
-      */
+     * Paints the divider.
+     */
     public void paint(Graphics g) {
         Color bgColor = (splitPane.hasFocus()) ?
-                            UIManager.getColor("SplitPane.shadow") :
-                            getBackground();
+                UIManager.getColor("SplitPane.shadow") :
+                getBackground();
         Dimension size = getSize();
 
-        if(bgColor != null) {
+        if (bgColor != null) {
             g.setColor(bgColor);
             g.fillRect(0, 0, size.width, size.height);
         }

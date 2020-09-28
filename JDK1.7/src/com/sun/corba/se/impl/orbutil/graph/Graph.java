@@ -23,13 +23,13 @@
  *
  */
 
-package com.sun.corba.se.impl.orbutil.graph ;
+package com.sun.corba.se.impl.orbutil.graph;
 
-import java.util.Set ;
+import java.util.Set;
 
 public interface Graph extends Set // Set<Node>
 {
-    NodeData getNodeData( Node node ) ;
+    NodeData getNodeData(Node node);
 
-    Set /* Set<Node> */ getRoots() ;
+    Set /* Set<Node> */ getRoots();
 }

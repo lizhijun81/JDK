@@ -31,22 +31,21 @@ import java.util.WeakHashMap;
 
 /**
  * Thread local cache of sun.io code set converters for performance.
- *
+ * <p>
  * The thread local class contains a single reference to a Map[]
  * containing two WeakHashMaps.  One for CharsetEncoders and
  * one for CharsetDecoders.  Constants are defined for indexing.
- *
+ * <p>
  * This is used internally by CodeSetConversion.
  */
-class CodeSetCache
-{
+class CodeSetCache {
     /**
      * The ThreadLocal data is a 2 element Map array indexed
      * by BTC_CACHE_MAP and CTB_CACHE_MAP.
      */
     private ThreadLocal converterCaches = new ThreadLocal() {
         public java.lang.Object initialValue() {
-            return new Map[] { new WeakHashMap(), new WeakHashMap() };
+            return new Map[]{new WeakHashMap(), new WeakHashMap()};
         }
     };
 
@@ -68,18 +67,18 @@ class CodeSetCache
      * Retrieve a CharsetDecoder from the Map using the given key.
      */
     CharsetDecoder getByteToCharConverter(Object key) {
-        Map btcMap = ((Map[])converterCaches.get())[BTC_CACHE_MAP];
+        Map btcMap = ((Map[]) converterCaches.get())[BTC_CACHE_MAP];
 
-        return (CharsetDecoder)btcMap.get(key);
+        return (CharsetDecoder) btcMap.get(key);
     }
 
     /**
      * Retrieve a CharsetEncoder from the Map using the given key.
      */
     CharsetEncoder getCharToByteConverter(Object key) {
-        Map ctbMap = ((Map[])converterCaches.get())[CTB_CACHE_MAP];
+        Map ctbMap = ((Map[]) converterCaches.get())[CTB_CACHE_MAP];
 
-        return (CharsetEncoder)ctbMap.get(key);
+        return (CharsetEncoder) ctbMap.get(key);
     }
 
     /**
@@ -87,7 +86,7 @@ class CodeSetCache
      * and returns the same converter.
      */
     CharsetDecoder setConverter(Object key, CharsetDecoder converter) {
-        Map btcMap = ((Map[])converterCaches.get())[BTC_CACHE_MAP];
+        Map btcMap = ((Map[]) converterCaches.get())[BTC_CACHE_MAP];
 
         btcMap.put(key, converter);
 
@@ -100,7 +99,7 @@ class CodeSetCache
      */
     CharsetEncoder setConverter(Object key, CharsetEncoder converter) {
 
-        Map ctbMap = ((Map[])converterCaches.get())[CTB_CACHE_MAP];
+        Map ctbMap = ((Map[]) converterCaches.get())[CTB_CACHE_MAP];
 
         ctbMap.put(key, converter);
 

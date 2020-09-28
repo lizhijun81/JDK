@@ -21,13 +21,14 @@
 package com.sun.org.apache.xerces.internal.impl.xpath.regex;
 
 /**
- * @xerces.internal
- *
  * @author TAMURA Kent &lt;kent@trl.ibm.co.jp&gt;
+ * @xerces.internal
  */
 public class ParseException extends RuntimeException {
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = -7012400318097691370L;
 
     int location;
@@ -37,6 +38,7 @@ public class ParseException extends RuntimeException {
         this(mes, -1);
     }
     */
+
     /**
      *
      */
@@ -46,7 +48,6 @@ public class ParseException extends RuntimeException {
     }
 
     /**
-     *
      * @return -1 if location information is not available.
      */
     public int getLocation() {

@@ -42,14 +42,14 @@ import org.omg.CORBA.portable.OutputStream;
  * must also fill the "in" value to be sent to the server.
  * Before the method invocation returns, the ORB will fill in the
  * value corresponding to the "out" value returned from the server.
- * <P>
+ * <p>
  * If <code>myAnyHolder</code> is an instance of <code>AnyHolder</code>,
  * the value stored in its <code>value</code> field can be accessed with
  * <code>myAnyHolder.value</code>.
  *
- * @since       JDK1.2
+ * @since JDK1.2
  */
-public final class AnyHolder implements  Streamable {
+public final class AnyHolder implements Streamable {
     /**
      * The <code>Any</code> value held by this <code>AnyHolder</code> object.
      */
@@ -66,6 +66,7 @@ public final class AnyHolder implements  Streamable {
     /**
      * Constructs a new <code>AnyHolder</code> object for the given
      * <code>Any</code> object.
+     *
      * @param initial the <code>Any</code> object with which to initialize
      *                the <code>value</code> field of the new
      *                <code>AnyHolder</code> object
@@ -98,8 +99,8 @@ public final class AnyHolder implements  Streamable {
      * Returns the <code>TypeCode</code> object corresponding to the value
      * held in this <code>AnyHolder</code> object.
      *
-     * @return    the TypeCode of the value held in
-     *              this <code>AnyHolder</code> object
+     * @return the TypeCode of the value held in
+     * this <code>AnyHolder</code> object
      */
     public TypeCode _type() {
         return ORB.init().get_primitive_tc(TCKind.tk_any);

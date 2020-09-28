@@ -34,12 +34,10 @@ import com.sun.org.apache.xerces.internal.xs.XSWildcard;
  * The XML representation for an attribute group declaration
  * schema component is a global <attributeGroup> element information item
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
  * @author Rahul Srivastava, Sun Microsystems Inc.
- *
  * @version $Id: XSAttributeGroupDecl.java,v 1.7 2010-11-01 04:39:55 joehw Exp $
+ * @xerces.internal
  */
 public class XSAttributeGroupDecl implements XSAttributeGroupDefinition {
 
@@ -87,7 +85,7 @@ public class XSAttributeGroupDecl implements XSAttributeGroupDefinition {
         }
 
         if (fAttrUseNum == fAttributeUses.length) {
-            fAttributeUses = resize(fAttributeUses, fAttrUseNum*2);
+            fAttributeUses = resize(fAttributeUses, fAttrUseNum * 2);
         }
         fAttributeUses[fAttrUseNum++] = attrUse;
 
@@ -95,7 +93,7 @@ public class XSAttributeGroupDecl implements XSAttributeGroupDefinition {
     }
 
     public void replaceAttributeUse(XSAttributeUse oldUse, XSAttributeUseImpl newUse) {
-        for (int i=0; i<fAttrUseNum; i++) {
+        for (int i = 0; i < fAttrUseNum; i++) {
             if (fAttributeUses[i] == oldUse) {
                 fAttributeUses[i] = newUse;
             }
@@ -103,9 +101,9 @@ public class XSAttributeGroupDecl implements XSAttributeGroupDefinition {
     }
 
     public XSAttributeUse getAttributeUse(String namespace, String name) {
-        for (int i=0; i<fAttrUseNum; i++) {
-            if ( (fAttributeUses[i].fAttrDecl.fTargetNamespace == namespace) &&
-                 (fAttributeUses[i].fAttrDecl.fName == name) )
+        for (int i = 0; i < fAttrUseNum; i++) {
+            if ((fAttributeUses[i].fAttrDecl.fTargetNamespace == namespace) &&
+                    (fAttributeUses[i].fAttrDecl.fName == name))
                 return fAttributeUses[i];
         }
 
@@ -113,10 +111,10 @@ public class XSAttributeGroupDecl implements XSAttributeGroupDefinition {
     }
 
     public XSAttributeUse getAttributeUseNoProhibited(String namespace, String name) {
-        for (int i=0; i<fAttrUseNum; i++) {
-            if ( (fAttributeUses[i].fAttrDecl.fTargetNamespace == namespace) &&
-                 (fAttributeUses[i].fAttrDecl.fName == name) &&
-                 (fAttributeUses[i].fUse != SchemaSymbols.USE_PROHIBITED))
+        for (int i = 0; i < fAttrUseNum; i++) {
+            if ((fAttributeUses[i].fAttrDecl.fTargetNamespace == namespace) &&
+                    (fAttributeUses[i].fAttrDecl.fName == name) &&
+                    (fAttributeUses[i].fUse != SchemaSymbols.USE_PROHIBITED))
                 return fAttributeUses[i];
         }
 
@@ -163,10 +161,10 @@ public class XSAttributeGroupDecl implements XSAttributeGroupDefinition {
      * If an error is found, an Object[] is returned. This contains the arguments for the error message
      * describing the error. The last element in the array (at index arr.length - 1) is the the error code.
      * Returns null if there is no error.
-     *
+     * <p>
      * REVISIT: is there a better way of returning the appropriate information for the error?
      *
-     * @param typeName the name of the type containing this attribute group, used for error reporting purposes
+     * @param typeName  the name of the type containing this attribute group, used for error reporting purposes
      * @param baseGroup the XSAttributeGroupDecl that is the base we are checking against
      */
     public Object[] validRestrictionOf(String typeName, XSAttributeGroupDecl baseGroup) {
@@ -177,13 +175,13 @@ public class XSAttributeGroupDecl implements XSAttributeGroupDefinition {
         XSAttributeUseImpl baseAttrUse = null;
         XSAttributeDecl baseAttrDecl = null;
 
-        for (int i=0; i<fAttrUseNum; i++) {
+        for (int i = 0; i < fAttrUseNum; i++) {
 
             attrUse = fAttributeUses[i];
             attrDecl = attrUse.fAttrDecl;
 
             // Look for a match in the base
-            baseAttrUse = (XSAttributeUseImpl)baseGroup.getAttributeUse(attrDecl.fTargetNamespace,attrDecl.fName);
+            baseAttrUse = (XSAttributeUseImpl) baseGroup.getAttributeUse(attrDecl.fTargetNamespace, attrDecl.fName);
             if (baseAttrUse != null) {
                 //
                 // derivation-ok-restriction.  Constraint 2.1.1
@@ -191,8 +189,8 @@ public class XSAttributeGroupDecl implements XSAttributeGroupDefinition {
 
                 if (baseAttrUse.getRequired() && !attrUse.getRequired()) {
                     errorArgs = new Object[]{typeName, attrDecl.fName,
-                                             attrUse.fUse == SchemaSymbols.USE_OPTIONAL ? SchemaSymbols.ATTVAL_OPTIONAL : SchemaSymbols.ATTVAL_PROHIBITED,
-                                             "derivation-ok-restriction.2.1.1"};
+                            attrUse.fUse == SchemaSymbols.USE_OPTIONAL ? SchemaSymbols.ATTVAL_OPTIONAL : SchemaSymbols.ATTVAL_PROHIBITED,
+                            "derivation-ok-restriction.2.1.1"};
                     return errorArgs;
                 }
 
@@ -206,39 +204,39 @@ public class XSAttributeGroupDecl implements XSAttributeGroupDefinition {
                 //
                 // derivation-ok-restriction.  Constraint 2.1.1
                 //
-                if (! XSConstraints.checkSimpleDerivationOk(attrDecl.fType,
-                                                            baseAttrDecl.fType,
-                                                            baseAttrDecl.fType.getFinal()) ) {
-                                        errorArgs = new Object[]{typeName, attrDecl.fName, attrDecl.fType.getName(),
-                                                                     baseAttrDecl.fType.getName(), "derivation-ok-restriction.2.1.2"};
-                                        return errorArgs;
+                if (!XSConstraints.checkSimpleDerivationOk(attrDecl.fType,
+                        baseAttrDecl.fType,
+                        baseAttrDecl.fType.getFinal())) {
+                    errorArgs = new Object[]{typeName, attrDecl.fName, attrDecl.fType.getName(),
+                            baseAttrDecl.fType.getName(), "derivation-ok-restriction.2.1.2"};
+                    return errorArgs;
                 }
 
 
                 //
                 // derivation-ok-restriction.  Constraint 2.1.3
                 //
-                int baseConsType=baseAttrUse.fConstraintType!=XSConstants.VC_NONE?
-                                 baseAttrUse.fConstraintType:baseAttrDecl.getConstraintType();
-                int thisConstType = attrUse.fConstraintType!=XSConstants.VC_NONE?
-                                    attrUse.fConstraintType:attrDecl.getConstraintType();
+                int baseConsType = baseAttrUse.fConstraintType != XSConstants.VC_NONE ?
+                        baseAttrUse.fConstraintType : baseAttrDecl.getConstraintType();
+                int thisConstType = attrUse.fConstraintType != XSConstants.VC_NONE ?
+                        attrUse.fConstraintType : attrDecl.getConstraintType();
 
                 if (baseConsType == XSConstants.VC_FIXED) {
 
                     if (thisConstType != XSConstants.VC_FIXED) {
-                                                errorArgs = new Object[]{typeName, attrDecl.fName,
-                                                                                                 "derivation-ok-restriction.2.1.3.a"};
-                                                return errorArgs;
+                        errorArgs = new Object[]{typeName, attrDecl.fName,
+                                "derivation-ok-restriction.2.1.3.a"};
+                        return errorArgs;
                     } else {
                         // check the values are the same.
-                        ValidatedInfo baseFixedValue=(baseAttrUse.fDefault!=null ?
-                                                      baseAttrUse.fDefault: baseAttrDecl.fDefault);
-                        ValidatedInfo thisFixedValue=(attrUse.fDefault!=null ?
-                                                      attrUse.fDefault: attrDecl.fDefault);
+                        ValidatedInfo baseFixedValue = (baseAttrUse.fDefault != null ?
+                                baseAttrUse.fDefault : baseAttrDecl.fDefault);
+                        ValidatedInfo thisFixedValue = (attrUse.fDefault != null ?
+                                attrUse.fDefault : attrDecl.fDefault);
                         if (!baseFixedValue.actualValue.equals(thisFixedValue.actualValue)) {
-                                                        errorArgs = new Object[]{typeName, attrDecl.fName, thisFixedValue.stringValue(),
-                                                                                                         baseFixedValue.stringValue(), "derivation-ok-restriction.2.1.3.b"};
-                                                        return errorArgs;
+                            errorArgs = new Object[]{typeName, attrDecl.fName, thisFixedValue.stringValue(),
+                                    baseFixedValue.stringValue(), "derivation-ok-restriction.2.1.3.b"};
+                            return errorArgs;
                         }
 
                     }
@@ -251,15 +249,14 @@ public class XSAttributeGroupDecl implements XSAttributeGroupDefinition {
                 // derivation-ok-restriction.  Constraint 2.2
                 //
                 if (baseGroup.fAttributeWC == null) {
-                                        errorArgs = new Object[]{typeName, attrDecl.fName,
-                                                                                         "derivation-ok-restriction.2.2.a"};
-                                        return errorArgs;
-                }
-                else if (!baseGroup.fAttributeWC.allowNamespace(attrDecl.fTargetNamespace)) {
-                                        errorArgs = new Object[]{typeName, attrDecl.fName,
-                                             attrDecl.fTargetNamespace==null?"":attrDecl.fTargetNamespace,
-                                                                                         "derivation-ok-restriction.2.2.b"};
-                                        return errorArgs;
+                    errorArgs = new Object[]{typeName, attrDecl.fName,
+                            "derivation-ok-restriction.2.2.a"};
+                    return errorArgs;
+                } else if (!baseGroup.fAttributeWC.allowNamespace(attrDecl.fTargetNamespace)) {
+                    errorArgs = new Object[]{typeName, attrDecl.fName,
+                            attrDecl.fTargetNamespace == null ? "" : attrDecl.fTargetNamespace,
+                            "derivation-ok-restriction.2.2.b"};
+                    return errorArgs;
                 }
             }
         }
@@ -269,7 +266,7 @@ public class XSAttributeGroupDecl implements XSAttributeGroupDefinition {
         // in this group
         // derivation-ok-restriction.  Constraint 3
         //
-        for (int i=0; i<baseGroup.fAttrUseNum; i++) {
+        for (int i = 0; i < baseGroup.fAttrUseNum; i++) {
 
             baseAttrUse = baseGroup.fAttributeUses[i];
 
@@ -277,10 +274,10 @@ public class XSAttributeGroupDecl implements XSAttributeGroupDefinition {
 
                 baseAttrDecl = baseAttrUse.fAttrDecl;
                 // Look for a match in this group
-                if (getAttributeUse(baseAttrDecl.fTargetNamespace,baseAttrDecl.fName) == null) {
-                                        errorArgs = new Object[]{typeName, baseAttrUse.fAttrDecl.fName,
-                                                                                         "derivation-ok-restriction.3"};
-                                        return errorArgs;
+                if (getAttributeUse(baseAttrDecl.fTargetNamespace, baseAttrDecl.fName) == null) {
+                    errorArgs = new Object[]{typeName, baseAttrUse.fAttrDecl.fName,
+                            "derivation-ok-restriction.3"};
+                    return errorArgs;
                 }
             }
         }
@@ -292,19 +289,19 @@ public class XSAttributeGroupDecl implements XSAttributeGroupDefinition {
         //
         if (fAttributeWC != null) {
             if (baseGroup.fAttributeWC == null) {
-                                errorArgs = new Object[]{typeName, "derivation-ok-restriction.4.1"};
-                                return errorArgs;
+                errorArgs = new Object[]{typeName, "derivation-ok-restriction.4.1"};
+                return errorArgs;
             }
-            if (! fAttributeWC.isSubsetOf(baseGroup.fAttributeWC)) {
-                                errorArgs = new Object[]{typeName, "derivation-ok-restriction.4.2"};
-                                return errorArgs;
+            if (!fAttributeWC.isSubsetOf(baseGroup.fAttributeWC)) {
+                errorArgs = new Object[]{typeName, "derivation-ok-restriction.4.2"};
+                return errorArgs;
             }
             if (fAttributeWC.weakerProcessContents(baseGroup.fAttributeWC)) {
-                                errorArgs = new Object[]{typeName,
-                                                                                 fAttributeWC.getProcessContentsAsString(),
-                                                                                 baseGroup.fAttributeWC.getProcessContentsAsString(),
-                                                                                 "derivation-ok-restriction.4.3"};
-                                return errorArgs;
+                errorArgs = new Object[]{typeName,
+                        fAttributeWC.getProcessContentsAsString(),
+                        baseGroup.fAttributeWC.getProcessContentsAsString(),
+                        "derivation-ok-restriction.4.3"};
+                return errorArgs;
             }
         }
 
@@ -319,11 +316,11 @@ public class XSAttributeGroupDecl implements XSAttributeGroupDefinition {
     }
 
     // reset the attribute group declaration
-    public void reset(){
+    public void reset() {
         fName = null;
         fTargetNamespace = null;
         // reset attribute uses
-        for (int i=0;i<fAttrUseNum;i++) {
+        for (int i = 0; i < fAttrUseNum; i++) {
             fAttributeUses[i] = null;
         }
         fAttrUseNum = 0;
@@ -361,7 +358,7 @@ public class XSAttributeGroupDecl implements XSAttributeGroupDefinition {
      * {attribute uses} A set of attribute uses.
      */
     public XSObjectList getAttributeUses() {
-        if (fAttrUses == null){
+        if (fAttrUses == null) {
             fAttrUses = new XSObjectListImpl(fAttributeUses, fAttrUseNum);
         }
         return fAttrUses;

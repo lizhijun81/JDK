@@ -32,7 +32,7 @@ package org.omg.CORBA.DynAnyPackage;
  * sequence is invalid.
  */
 public final class InvalidSeq
-    extends org.omg.CORBA.UserException {
+        extends org.omg.CORBA.UserException {
 
     /**
      * Constructs an <code>InvalidSeq</code> object.
@@ -43,8 +43,9 @@ public final class InvalidSeq
 
     /**
      * Constructs an <code>InvalidSeq</code> object.
-     * @param reason  a <code>String</code> giving more information
-     * regarding the exception.
+     *
+     * @param reason a <code>String</code> giving more information
+     *               regarding the exception.
      */
     public InvalidSeq(String reason) {
         super(reason);

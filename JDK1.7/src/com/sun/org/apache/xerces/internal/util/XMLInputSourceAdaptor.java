@@ -79,8 +79,7 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLInputSource;
  * In a long run, we should make them consistent so that we can
  * get rid of this awkward adaptor class.
  *
- * @author
- *     Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
+ * @author Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
  */
 public final class XMLInputSourceAdaptor implements Source {
     /**
@@ -88,7 +87,7 @@ public final class XMLInputSourceAdaptor implements Source {
      */
     public final XMLInputSource fSource;
 
-    public XMLInputSourceAdaptor( XMLInputSource core ) {
+    public XMLInputSourceAdaptor(XMLInputSource core) {
         fSource = core;
     }
 

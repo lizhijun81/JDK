@@ -48,19 +48,18 @@ package java.io;
  * PrintWriter out
  *   = new PrintWriter(new BufferedWriter(new FileWriter("foo.out")));
  * </pre>
- *
+ * <p>
  * will buffer the PrintWriter's output to the file.  Without buffering, each
  * invocation of a print() method would cause characters to be converted into
  * bytes that would then be written immediately to the file, which can be very
  * inefficient.
  *
+ * @author Mark Reinhold
  * @see PrintWriter
  * @see FileWriter
  * @see OutputStreamWriter
  * @see java.nio.file.Files#newBufferedWriter
- *
- * @author      Mark Reinhold
- * @since       JDK1.1
+ * @since JDK1.1
  */
 
 public class BufferedWriter extends Writer {
@@ -82,7 +81,7 @@ public class BufferedWriter extends Writer {
      * Creates a buffered character-output stream that uses a default-sized
      * output buffer.
      *
-     * @param  out  A Writer
+     * @param out A Writer
      */
     public BufferedWriter(Writer out) {
         this(out, defaultCharBufferSize);
@@ -92,10 +91,9 @@ public class BufferedWriter extends Writer {
      * Creates a new buffered character-output stream that uses an output
      * buffer of the given size.
      *
-     * @param  out  A Writer
-     * @param  sz   Output-buffer size, a positive integer
-     *
-     * @exception  IllegalArgumentException  If sz is <= 0
+     * @param out A Writer
+     * @param sz  Output-buffer size, a positive integer
+     * @throws IllegalArgumentException If sz is <= 0
      */
     public BufferedWriter(Writer out, int sz) {
         super(out);
@@ -107,10 +105,12 @@ public class BufferedWriter extends Writer {
         nextChar = 0;
 
         lineSeparator = java.security.AccessController.doPrivileged(
-            new sun.security.action.GetPropertyAction("line.separator"));
+                new sun.security.action.GetPropertyAction("line.separator"));
     }
 
-    /** Checks to make sure that the stream has not been closed */
+    /**
+     * Checks to make sure that the stream has not been closed
+     */
     private void ensureOpen() throws IOException {
         if (out == null)
             throw new IOException("Stream closed");
@@ -134,7 +134,7 @@ public class BufferedWriter extends Writer {
     /**
      * Writes a single character.
      *
-     * @exception  IOException  If an I/O error occurs
+     * @throws IOException If an I/O error occurs
      */
     public void write(int c) throws IOException {
         synchronized (lock) {
@@ -164,17 +164,16 @@ public class BufferedWriter extends Writer {
      * directly to the underlying stream.  Thus redundant
      * <code>BufferedWriter</code>s will not copy data unnecessarily.
      *
-     * @param  cbuf  A character array
-     * @param  off   Offset from which to start reading characters
-     * @param  len   Number of characters to write
-     *
-     * @exception  IOException  If an I/O error occurs
+     * @param cbuf A character array
+     * @param off  Offset from which to start reading characters
+     * @param len  Number of characters to write
+     * @throws IOException If an I/O error occurs
      */
     public void write(char cbuf[], int off, int len) throws IOException {
         synchronized (lock) {
             ensureOpen();
             if ((off < 0) || (off > cbuf.length) || (len < 0) ||
-                ((off + len) > cbuf.length) || ((off + len) < 0)) {
+                    ((off + len) > cbuf.length) || ((off + len) < 0)) {
                 throw new IndexOutOfBoundsException();
             } else if (len == 0) {
                 return;
@@ -206,15 +205,14 @@ public class BufferedWriter extends Writer {
      *
      * <p> If the value of the <tt>len</tt> parameter is negative then no
      * characters are written.  This is contrary to the specification of this
-     * method in the {@linkplain java.io.Writer#write(java.lang.String,int,int)
+     * method in the {@linkplain java.io.Writer#write(java.lang.String, int, int)
      * superclass}, which requires that an {@link IndexOutOfBoundsException} be
      * thrown.
      *
-     * @param  s     String to be written
-     * @param  off   Offset from which to start reading characters
-     * @param  len   Number of characters to be written
-     *
-     * @exception  IOException  If an I/O error occurs
+     * @param s   String to be written
+     * @param off Offset from which to start reading characters
+     * @param len Number of characters to be written
+     * @throws IOException If an I/O error occurs
      */
     public void write(String s, int off, int len) throws IOException {
         synchronized (lock) {
@@ -237,7 +235,7 @@ public class BufferedWriter extends Writer {
      * system property <tt>line.separator</tt>, and is not necessarily a single
      * newline ('\n') character.
      *
-     * @exception  IOException  If an I/O error occurs
+     * @throws IOException If an I/O error occurs
      */
     public void newLine() throws IOException {
         write(lineSeparator);
@@ -246,7 +244,7 @@ public class BufferedWriter extends Writer {
     /**
      * Flushes the stream.
      *
-     * @exception  IOException  If an I/O error occurs
+     * @throws IOException If an I/O error occurs
      */
     public void flush() throws IOException {
         synchronized (lock) {

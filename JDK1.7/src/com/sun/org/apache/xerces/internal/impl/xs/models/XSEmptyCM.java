@@ -30,16 +30,15 @@ import java.util.ArrayList;
 /**
  * XSEmptyCM is a derivative of the abstract content model base class that
  * handles a content model with no chilren (elements).
- *
+ * <p>
  * This model validated on the way in.
- *
- * @xerces.internal
  *
  * @author Elena Litani, Lisa Martin
  * @author IBM
  * @version $Id: XSEmptyCM.java,v 1.7 2009/07/28 15:18:11 spericas Exp $
+ * @xerces.internal
  */
-public class XSEmptyCM  implements XSCMValidator {
+public class XSEmptyCM implements XSCMValidator {
 
     //
     // Constants
@@ -64,20 +63,20 @@ public class XSEmptyCM  implements XSCMValidator {
      *
      * @return Start state of the content model
      */
-    public int[] startContentModel(){
-        return (new int[] {STATE_START});
+    public int[] startContentModel() {
+        return (new int[]{STATE_START});
     }
 
 
     /**
      * The method corresponds to one transaction in the content model.
      *
-     * @param elementName the qualified name of the element
-     * @param currentState Current state
+     * @param elementName     the qualified name of the element
+     * @param currentState    Current state
      * @param subGroupHandler the substitution group handler
      * @return element index corresponding to the element from the Schema grammar
      */
-    public Object oneTransition (QName elementName, int[] currentState, SubstitutionGroupHandler subGroupHandler){
+    public Object oneTransition(QName elementName, int[] currentState, SubstitutionGroupHandler subGroupHandler) {
 
         // error state
         if (currentState[0] < 0) {
@@ -96,8 +95,8 @@ public class XSEmptyCM  implements XSCMValidator {
      * @param currentState Current state of the content model
      * @return true if the last state was a valid final state
      */
-    public boolean endContentModel (int[] currentState){
-        boolean isFinal =  false;
+    public boolean endContentModel(int[] currentState) {
+        boolean isFinal = false;
         int state = currentState[0];
 
         // restore content model state:
@@ -126,9 +125,9 @@ public class XSEmptyCM  implements XSCMValidator {
      * works if the state is in error, in which case it returns what should
      * have been seen.
      *
-     * @param state  the current state
-     * @return       a Vector whose entries are instances of
-     *               either XSWildcardDecl or XSElementDecl.
+     * @param state the current state
+     * @return a Vector whose entries are instances of
+     * either XSWildcardDecl or XSElementDecl.
      */
     public Vector whatCanGoHere(int[] state) {
         return EMPTY;

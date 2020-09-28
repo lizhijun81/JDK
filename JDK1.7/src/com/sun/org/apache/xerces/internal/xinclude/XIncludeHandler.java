@@ -99,7 +99,7 @@ import com.sun.org.apache.xerces.internal.utils.ObjectFactory;
  * <ul>
  *  <li>http://apache.org/xml/properties/input-buffer-size</li>
  * </ul>
- *
+ * <p>
  * Furthermore, the <code>NamespaceContext</code> used in the pipeline is required
  * to be an instance of <code>XIncludeNamespaceSupport</code>.
  * </p>
@@ -111,22 +111,20 @@ import com.sun.org.apache.xerces.internal.utils.ObjectFactory;
  *
  * @author Peter McCracken, IBM
  * @author Michael Glavassevich, IBM
- *
  * @version $Id: XIncludeHandler.java,v 1.7 2010-11-01 04:40:18 joehw Exp $
- *
  * @see XIncludeNamespaceSupport
  */
 public class XIncludeHandler
-    implements XMLComponent, XMLDocumentFilter, XMLDTDFilter {
+        implements XMLComponent, XMLDocumentFilter, XMLDTDFilter {
 
     public final static String XINCLUDE_DEFAULT_CONFIGURATION =
-        "com.sun.org.apache.xerces.internal.parsers.XIncludeParserConfiguration";
+            "com.sun.org.apache.xerces.internal.parsers.XIncludeParserConfiguration";
     public final static String HTTP_ACCEPT = "Accept";
     public final static String HTTP_ACCEPT_LANGUAGE = "Accept-Language";
     public final static String XPOINTER = "xpointer";
 
     public final static String XINCLUDE_NS_URI =
-        "http://www.w3.org/2001/XInclude".intern();
+            "http://www.w3.org/2001/XInclude".intern();
     public final static String XINCLUDE_INCLUDE = "include".intern();
     public final static String XINCLUDE_FALLBACK = "fallback".intern();
 
@@ -142,33 +140,35 @@ public class XIncludeHandler
     // Top Level Information Items have [included] property in infoset
     public final static String XINCLUDE_INCLUDED = "[included]".intern();
 
-    /** The identifier for the Augmentation that contains the current base URI */
+    /**
+     * The identifier for the Augmentation that contains the current base URI
+     */
     public final static String CURRENT_BASE_URI = "currentBaseURI";
 
     // used for adding [base URI] attributes
     public final static String XINCLUDE_BASE = "base".intern();
     public final static QName XML_BASE_QNAME =
-        new QName(
-            XMLSymbols.PREFIX_XML,
-            XINCLUDE_BASE,
-            (XMLSymbols.PREFIX_XML + ":" + XINCLUDE_BASE).intern(),
-            NamespaceContext.XML_URI);
+            new QName(
+                    XMLSymbols.PREFIX_XML,
+                    XINCLUDE_BASE,
+                    (XMLSymbols.PREFIX_XML + ":" + XINCLUDE_BASE).intern(),
+                    NamespaceContext.XML_URI);
 
     // used for adding [language] attributes
     public final static String XINCLUDE_LANG = "lang".intern();
     public final static QName XML_LANG_QNAME =
-        new QName(
-            XMLSymbols.PREFIX_XML,
-            XINCLUDE_LANG,
-            (XMLSymbols.PREFIX_XML + ":" + XINCLUDE_LANG).intern(),
-            NamespaceContext.XML_URI);
+            new QName(
+                    XMLSymbols.PREFIX_XML,
+                    XINCLUDE_LANG,
+                    (XMLSymbols.PREFIX_XML + ":" + XINCLUDE_LANG).intern(),
+                    NamespaceContext.XML_URI);
 
     public final static QName NEW_NS_ATTR_QNAME =
-        new QName(
-            XMLSymbols.PREFIX_XMLNS,
-            "",
-            XMLSymbols.PREFIX_XMLNS + ":",
-            NamespaceContext.XMLNS_URI);
+            new QName(
+                    XMLSymbols.PREFIX_XMLNS,
+                    "",
+                    XMLSymbols.PREFIX_XMLNS + ":",
+                    NamespaceContext.XMLNS_URI);
 
     // Processing States
     private final static int STATE_NORMAL_PROCESSING = 1;
@@ -181,67 +181,97 @@ public class XIncludeHandler
 
     // recognized features and properties
 
-    /** Feature identifier: validation. */
+    /**
+     * Feature identifier: validation.
+     */
     protected static final String VALIDATION =
-        Constants.SAX_FEATURE_PREFIX + Constants.VALIDATION_FEATURE;
+            Constants.SAX_FEATURE_PREFIX + Constants.VALIDATION_FEATURE;
 
-    /** Feature identifier: schema validation. */
+    /**
+     * Feature identifier: schema validation.
+     */
     protected static final String SCHEMA_VALIDATION =
-        Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_VALIDATION_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_VALIDATION_FEATURE;
 
-    /** Feature identifier: dynamic validation. */
+    /**
+     * Feature identifier: dynamic validation.
+     */
     protected static final String DYNAMIC_VALIDATION =
-        Constants.XERCES_FEATURE_PREFIX + Constants.DYNAMIC_VALIDATION_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.DYNAMIC_VALIDATION_FEATURE;
 
-    /** Feature identifier: allow notation and unparsed entity events to be sent out of order. */
+    /**
+     * Feature identifier: allow notation and unparsed entity events to be sent out of order.
+     */
     protected static final String ALLOW_UE_AND_NOTATION_EVENTS =
-        Constants.SAX_FEATURE_PREFIX
-            + Constants.ALLOW_DTD_EVENTS_AFTER_ENDDTD_FEATURE;
+            Constants.SAX_FEATURE_PREFIX
+                    + Constants.ALLOW_DTD_EVENTS_AFTER_ENDDTD_FEATURE;
 
-    /** Feature identifier: fixup base URIs. */
+    /**
+     * Feature identifier: fixup base URIs.
+     */
     protected static final String XINCLUDE_FIXUP_BASE_URIS =
-        Constants.XERCES_FEATURE_PREFIX + Constants.XINCLUDE_FIXUP_BASE_URIS_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.XINCLUDE_FIXUP_BASE_URIS_FEATURE;
 
-    /** Feature identifier: fixup language. */
+    /**
+     * Feature identifier: fixup language.
+     */
     protected static final String XINCLUDE_FIXUP_LANGUAGE =
-        Constants.XERCES_FEATURE_PREFIX + Constants.XINCLUDE_FIXUP_LANGUAGE_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.XINCLUDE_FIXUP_LANGUAGE_FEATURE;
 
-    /** Property identifier: symbol table. */
+    /**
+     * Property identifier: symbol table.
+     */
     protected static final String SYMBOL_TABLE =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY;
 
-    /** Property identifier: error reporter. */
+    /**
+     * Property identifier: error reporter.
+     */
     protected static final String ERROR_REPORTER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_REPORTER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_REPORTER_PROPERTY;
 
-    /** Property identifier: entity resolver. */
+    /**
+     * Property identifier: entity resolver.
+     */
     protected static final String ENTITY_RESOLVER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ENTITY_RESOLVER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ENTITY_RESOLVER_PROPERTY;
 
-    /** property identifier: security manager. */
+    /**
+     * property identifier: security manager.
+     */
     protected static final String SECURITY_MANAGER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.SECURITY_MANAGER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SECURITY_MANAGER_PROPERTY;
 
-    /** property identifier: buffer size. */
+    /**
+     * property identifier: buffer size.
+     */
     public static final String BUFFER_SIZE =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.BUFFER_SIZE_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.BUFFER_SIZE_PROPERTY;
 
     protected static final String PARSER_SETTINGS =
-        Constants.XERCES_FEATURE_PREFIX + Constants.PARSER_SETTINGS;
+            Constants.XERCES_FEATURE_PREFIX + Constants.PARSER_SETTINGS;
 
-    /** Recognized features. */
+    /**
+     * Recognized features.
+     */
     private static final String[] RECOGNIZED_FEATURES =
-        { ALLOW_UE_AND_NOTATION_EVENTS, XINCLUDE_FIXUP_BASE_URIS, XINCLUDE_FIXUP_LANGUAGE };
+            {ALLOW_UE_AND_NOTATION_EVENTS, XINCLUDE_FIXUP_BASE_URIS, XINCLUDE_FIXUP_LANGUAGE};
 
-    /** Feature defaults. */
-    private static final Boolean[] FEATURE_DEFAULTS = { Boolean.TRUE, Boolean.TRUE, Boolean.TRUE };
+    /**
+     * Feature defaults.
+     */
+    private static final Boolean[] FEATURE_DEFAULTS = {Boolean.TRUE, Boolean.TRUE, Boolean.TRUE};
 
-    /** Recognized properties. */
+    /**
+     * Recognized properties.
+     */
     private static final String[] RECOGNIZED_PROPERTIES =
-        { ERROR_REPORTER, ENTITY_RESOLVER, SECURITY_MANAGER, BUFFER_SIZE };
+            {ERROR_REPORTER, ENTITY_RESOLVER, SECURITY_MANAGER, BUFFER_SIZE};
 
-    /** Property defaults. */
-    private static final Object[] PROPERTY_DEFAULTS = { null, null, null, new Integer(XMLEntityManager.DEFAULT_BUFFER_SIZE) };
+    /**
+     * Property defaults.
+     */
+    private static final Object[] PROPERTY_DEFAULTS = {null, null, null, new Integer(XMLEntityManager.DEFAULT_BUFFER_SIZE)};
 
     // instance variables
 
@@ -376,7 +406,7 @@ public class XIncludeHandler
     // XMLComponent methods
 
     public void reset(XMLComponentManager componentManager)
-        throws XNIException {
+            throws XNIException {
         fNamespaceContext = null;
         fDepth = 0;
         fResultDepth = isRootDocument() ? 0 : fParentXIncludeHandler.getResultDepth();
@@ -415,85 +445,80 @@ public class XIncludeHandler
                 // if parser settings have not changed return.
                 return;
             }
+        } catch (XMLConfigurationException e) {
         }
-        catch (XMLConfigurationException e) {}
 
         // parser settings changed. Need to refresh features on child config.
         fNeedCopyFeatures = true;
 
         try {
             fSendUEAndNotationEvents =
-                componentManager.getFeature(ALLOW_UE_AND_NOTATION_EVENTS);
+                    componentManager.getFeature(ALLOW_UE_AND_NOTATION_EVENTS);
             if (fChildConfig != null) {
                 fChildConfig.setFeature(
-                    ALLOW_UE_AND_NOTATION_EVENTS,
-                    fSendUEAndNotationEvents);
+                        ALLOW_UE_AND_NOTATION_EVENTS,
+                        fSendUEAndNotationEvents);
             }
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
         }
 
         try {
             fFixupBaseURIs =
-                componentManager.getFeature(XINCLUDE_FIXUP_BASE_URIS);
+                    componentManager.getFeature(XINCLUDE_FIXUP_BASE_URIS);
             if (fChildConfig != null) {
                 fChildConfig.setFeature(
-                    XINCLUDE_FIXUP_BASE_URIS,
-                    fFixupBaseURIs);
+                        XINCLUDE_FIXUP_BASE_URIS,
+                        fFixupBaseURIs);
             }
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             fFixupBaseURIs = true;
         }
 
         try {
             fFixupLanguage =
-                componentManager.getFeature(XINCLUDE_FIXUP_LANGUAGE);
+                    componentManager.getFeature(XINCLUDE_FIXUP_LANGUAGE);
             if (fChildConfig != null) {
                 fChildConfig.setFeature(
-                    XINCLUDE_FIXUP_LANGUAGE,
-                    fFixupLanguage);
+                        XINCLUDE_FIXUP_LANGUAGE,
+                        fFixupLanguage);
             }
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             fFixupLanguage = true;
         }
 
         // Get symbol table.
         try {
             SymbolTable value =
-                (SymbolTable)componentManager.getProperty(SYMBOL_TABLE);
+                    (SymbolTable) componentManager.getProperty(SYMBOL_TABLE);
             if (value != null) {
                 fSymbolTable = value;
                 if (fChildConfig != null) {
                     fChildConfig.setProperty(SYMBOL_TABLE, value);
                 }
             }
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             fSymbolTable = null;
         }
 
         // Get error reporter.
         try {
             XMLErrorReporter value =
-                (XMLErrorReporter)componentManager.getProperty(ERROR_REPORTER);
+                    (XMLErrorReporter) componentManager.getProperty(ERROR_REPORTER);
             if (value != null) {
                 setErrorReporter(value);
                 if (fChildConfig != null) {
                     fChildConfig.setProperty(ERROR_REPORTER, value);
                 }
             }
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             fErrorReporter = null;
         }
 
         // Get entity resolver.
         try {
             XMLEntityResolver value =
-                (XMLEntityResolver)componentManager.getProperty(
-                    ENTITY_RESOLVER);
+                    (XMLEntityResolver) componentManager.getProperty(
+                            ENTITY_RESOLVER);
 
             if (value != null) {
                 fEntityResolver = value;
@@ -501,16 +526,15 @@ public class XIncludeHandler
                     fChildConfig.setProperty(ENTITY_RESOLVER, value);
                 }
             }
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             fEntityResolver = null;
         }
 
         // Get security manager.
         try {
             SecurityManager value =
-                (SecurityManager)componentManager.getProperty(
-                    SECURITY_MANAGER);
+                    (SecurityManager) componentManager.getProperty(
+                            SECURITY_MANAGER);
 
             if (value != null) {
                 fSecurityManager = value;
@@ -518,34 +542,31 @@ public class XIncludeHandler
                     fChildConfig.setProperty(SECURITY_MANAGER, value);
                 }
             }
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             fSecurityManager = null;
         }
 
         // Get buffer size.
         try {
             Integer value =
-                (Integer)componentManager.getProperty(
-                    BUFFER_SIZE);
+                    (Integer) componentManager.getProperty(
+                            BUFFER_SIZE);
 
             if (value != null && value.intValue() > 0) {
                 fBufferSize = value.intValue();
                 if (fChildConfig != null) {
                     fChildConfig.setProperty(BUFFER_SIZE, value);
                 }
+            } else {
+                fBufferSize = ((Integer) getPropertyDefault(BUFFER_SIZE)).intValue();
             }
-            else {
-                fBufferSize = ((Integer)getPropertyDefault(BUFFER_SIZE)).intValue();
-            }
-        }
-        catch (XMLConfigurationException e) {
-                fBufferSize = ((Integer)getPropertyDefault(BUFFER_SIZE)).intValue();
+        } catch (XMLConfigurationException e) {
+            fBufferSize = ((Integer) getPropertyDefault(BUFFER_SIZE)).intValue();
         }
 
         // Reset XML 1.0 text reader.
         if (fXInclude10TextReader != null) {
-                fXInclude10TextReader.setBufferSize(fBufferSize);
+            fXInclude10TextReader.setBufferSize(fBufferSize);
         }
         // Reset XML 1.1 text reader.
         if (fXInclude11TextReader != null) {
@@ -568,8 +589,8 @@ public class XIncludeHandler
                     fSettings.setFeature(DYNAMIC_VALIDATION, true);
                 }
             }
+        } catch (XMLConfigurationException e) {
         }
-        catch (XMLConfigurationException e) {}
 
         // Don't reset fChildConfig -- we don't want it to share the same components.
         // It will be reset when it is actually used to parse something.
@@ -581,7 +602,7 @@ public class XIncludeHandler
      * are recognized by this component.
      */
     public String[] getRecognizedFeatures() {
-        return (String[])(RECOGNIZED_FEATURES.clone());
+        return (String[]) (RECOGNIZED_FEATURES.clone());
     } // getRecognizedFeatures():String[]
 
     /**
@@ -593,14 +614,13 @@ public class XIncludeHandler
      *
      * @param featureId The feature identifier.
      * @param state     The state of the feature.
-     *
      * @throws SAXNotRecognizedException The component should not throw
      *                                   this exception.
-     * @throws SAXNotSupportedException The component should not throw
-     *                                  this exception.
+     * @throws SAXNotSupportedException  The component should not throw
+     *                                   this exception.
      */
     public void setFeature(String featureId, boolean state)
-        throws XMLConfigurationException {
+            throws XMLConfigurationException {
         if (featureId.equals(ALLOW_UE_AND_NOTATION_EVENTS)) {
             fSendUEAndNotationEvents = state;
         }
@@ -616,7 +636,7 @@ public class XIncludeHandler
      * are recognized by this component.
      */
     public String[] getRecognizedProperties() {
-        return (String[])(RECOGNIZED_PROPERTIES.clone());
+        return (String[]) (RECOGNIZED_PROPERTIES.clone());
     } // getRecognizedProperties():String[]
 
     /**
@@ -628,37 +648,36 @@ public class XIncludeHandler
      *
      * @param propertyId The property identifier.
      * @param value      The value of the property.
-     *
      * @throws SAXNotRecognizedException The component should not throw
      *                                   this exception.
-     * @throws SAXNotSupportedException The component should not throw
-     *                                  this exception.
+     * @throws SAXNotSupportedException  The component should not throw
+     *                                   this exception.
      */
     public void setProperty(String propertyId, Object value)
-        throws XMLConfigurationException {
+            throws XMLConfigurationException {
         if (propertyId.equals(SYMBOL_TABLE)) {
-            fSymbolTable = (SymbolTable)value;
+            fSymbolTable = (SymbolTable) value;
             if (fChildConfig != null) {
                 fChildConfig.setProperty(propertyId, value);
             }
             return;
         }
         if (propertyId.equals(ERROR_REPORTER)) {
-            setErrorReporter((XMLErrorReporter)value);
+            setErrorReporter((XMLErrorReporter) value);
             if (fChildConfig != null) {
                 fChildConfig.setProperty(propertyId, value);
             }
             return;
         }
         if (propertyId.equals(ENTITY_RESOLVER)) {
-            fEntityResolver = (XMLEntityResolver)value;
+            fEntityResolver = (XMLEntityResolver) value;
             if (fChildConfig != null) {
                 fChildConfig.setProperty(propertyId, value);
             }
             return;
         }
         if (propertyId.equals(SECURITY_MANAGER)) {
-            fSecurityManager = (SecurityManager)value;
+            fSecurityManager = (SecurityManager) value;
             if (fChildConfig != null) {
                 fChildConfig.setProperty(propertyId, value);
             }
@@ -691,7 +710,6 @@ public class XIncludeHandler
      * feature.
      *
      * @param featureId The feature identifier.
-     *
      * @since Xerces 2.2.0
      */
     public Boolean getFeatureDefault(String featureId) {
@@ -709,7 +727,6 @@ public class XIncludeHandler
      * property.
      *
      * @param propertyId The property identifier.
-     *
      * @since Xerces 2.2.0
      */
     public Object getPropertyDefault(String propertyId) {
@@ -733,34 +750,34 @@ public class XIncludeHandler
 
     /**
      * Event sent at the start of the document.
-     *
+     * <p>
      * A fatal error will occur here, if it is detected that this document has been processed
      * before.
-     *
+     * <p>
      * This event is only passed on to the document handler if this is the root document.
      */
     public void startDocument(
-        XMLLocator locator,
-        String encoding,
-        NamespaceContext namespaceContext,
-        Augmentations augs)
-        throws XNIException {
+            XMLLocator locator,
+            String encoding,
+            NamespaceContext namespaceContext,
+            Augmentations augs)
+            throws XNIException {
 
         // we do this to ensure that the proper location is reported in errors
         // otherwise, the locator from the root document would always be used
         fErrorReporter.setDocumentLocator(locator);
 
         if (!isRootDocument()
-            && fParentXIncludeHandler.searchForRecursiveIncludes(locator)) {
+                && fParentXIncludeHandler.searchForRecursiveIncludes(locator)) {
             reportFatalError(
-                "RecursiveInclude",
-                new Object[] { locator.getExpandedSystemId()});
+                    "RecursiveInclude",
+                    new Object[]{locator.getExpandedSystemId()});
         }
 
         if (!(namespaceContext instanceof XIncludeNamespaceSupport)) {
             reportFatalError("IncompatibleNamespaceContext");
         }
-        fNamespaceContext = (XIncludeNamespaceSupport)namespaceContext;
+        fNamespaceContext = (XIncludeNamespaceSupport) namespaceContext;
         fDocLocation = locator;
 
         // initialize the current base URI
@@ -779,19 +796,19 @@ public class XIncludeHandler
 
         if (isRootDocument() && fDocumentHandler != null) {
             fDocumentHandler.startDocument(
-                locator,
-                encoding,
-                namespaceContext,
-                augs);
+                    locator,
+                    encoding,
+                    namespaceContext,
+                    augs);
         }
     }
 
     public void xmlDecl(
-        String version,
-        String encoding,
-        String standalone,
-        Augmentations augs)
-        throws XNIException {
+            String version,
+            String encoding,
+            String standalone,
+            Augmentations augs)
+            throws XNIException {
         fIsXML11 = "1.1".equals(version);
         if (isRootDocument() && fDocumentHandler != null) {
             fDocumentHandler.xmlDecl(version, encoding, standalone, augs);
@@ -799,57 +816,55 @@ public class XIncludeHandler
     }
 
     public void doctypeDecl(
-        String rootElement,
-        String publicId,
-        String systemId,
-        Augmentations augs)
-        throws XNIException {
+            String rootElement,
+            String publicId,
+            String systemId,
+            Augmentations augs)
+            throws XNIException {
         if (isRootDocument() && fDocumentHandler != null) {
             fDocumentHandler.doctypeDecl(rootElement, publicId, systemId, augs);
         }
     }
 
     public void comment(XMLString text, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
         if (!fInDTD) {
             if (fDocumentHandler != null
-                && getState() == STATE_NORMAL_PROCESSING) {
+                    && getState() == STATE_NORMAL_PROCESSING) {
                 fDepth++;
                 augs = modifyAugmentations(augs);
                 fDocumentHandler.comment(text, augs);
                 fDepth--;
             }
-        }
-        else if (fDTDHandler != null) {
+        } else if (fDTDHandler != null) {
             fDTDHandler.comment(text, augs);
         }
     }
 
     public void processingInstruction(
-        String target,
-        XMLString data,
-        Augmentations augs)
-        throws XNIException {
+            String target,
+            XMLString data,
+            Augmentations augs)
+            throws XNIException {
         if (!fInDTD) {
             if (fDocumentHandler != null
-                && getState() == STATE_NORMAL_PROCESSING) {
+                    && getState() == STATE_NORMAL_PROCESSING) {
                 // we need to change the depth like this so that modifyAugmentations() works
                 fDepth++;
                 augs = modifyAugmentations(augs);
                 fDocumentHandler.processingInstruction(target, data, augs);
                 fDepth--;
             }
-        }
-        else if (fDTDHandler != null) {
+        } else if (fDTDHandler != null) {
             fDTDHandler.processingInstruction(target, data, augs);
         }
     }
 
     public void startElement(
-        QName element,
-        XMLAttributes attributes,
-        Augmentations augs)
-        throws XNIException {
+            QName element,
+            XMLAttributes attributes,
+            Augmentations augs)
+            throws XNIException {
         fDepth++;
         int lastState = getState(fDepth - 1);
         // If the last two states were fallback then this must be a descendant of an include
@@ -857,8 +872,7 @@ public class XIncludeHandler
         // and their children.
         if (lastState == STATE_EXPECT_FALLBACK && getState(fDepth - 2) == STATE_EXPECT_FALLBACK) {
             setState(STATE_IGNORE);
-        }
-        else {
+        } else {
             setState(lastState);
         }
 
@@ -873,24 +887,21 @@ public class XIncludeHandler
             boolean success = this.handleIncludeElement(attributes);
             if (success) {
                 setState(STATE_IGNORE);
-            }
-            else {
+            } else {
                 setState(STATE_EXPECT_FALLBACK);
             }
-        }
-        else if (isFallbackElement(element)) {
+        } else if (isFallbackElement(element)) {
             this.handleFallbackElement();
-        }
-        else if (hasXIncludeNamespace(element)) {
+        } else if (hasXIncludeNamespace(element)) {
             if (getSawInclude(fDepth - 1)) {
                 reportFatalError(
-                    "IncludeChild",
-                    new Object[] { element.rawname });
+                        "IncludeChild",
+                        new Object[]{element.rawname});
             }
             if (getSawFallback(fDepth - 1)) {
                 reportFatalError(
-                    "FallbackChild",
-                    new Object[] { element.rawname });
+                        "FallbackChild",
+                        new Object[]{element.rawname});
             }
             if (getState() == STATE_NORMAL_PROCESSING) {
                 if (fResultDepth++ == 0) {
@@ -902,8 +913,7 @@ public class XIncludeHandler
                     fDocumentHandler.startElement(element, attributes, augs);
                 }
             }
-        }
-        else if (getState() == STATE_NORMAL_PROCESSING) {
+        } else if (getState() == STATE_NORMAL_PROCESSING) {
             if (fResultDepth++ == 0) {
                 checkMultipleRootElements();
             }
@@ -916,10 +926,10 @@ public class XIncludeHandler
     }
 
     public void emptyElement(
-        QName element,
-        XMLAttributes attributes,
-        Augmentations augs)
-        throws XNIException {
+            QName element,
+            XMLAttributes attributes,
+            Augmentations augs)
+            throws XNIException {
         fDepth++;
         int lastState = getState(fDepth - 1);
         // If the last two states were fallback then this must be a descendant of an include
@@ -927,8 +937,7 @@ public class XIncludeHandler
         // and their children.
         if (lastState == STATE_EXPECT_FALLBACK && getState(fDepth - 2) == STATE_EXPECT_FALLBACK) {
             setState(STATE_IGNORE);
-        }
-        else {
+        } else {
             setState(lastState);
         }
 
@@ -943,25 +952,22 @@ public class XIncludeHandler
             boolean success = this.handleIncludeElement(attributes);
             if (success) {
                 setState(STATE_IGNORE);
-            }
-            else {
+            } else {
                 reportFatalError("NoFallback",
-                    new Object[] { attributes.getValue(null, "href") });
+                        new Object[]{attributes.getValue(null, "href")});
             }
-        }
-        else if (isFallbackElement(element)) {
+        } else if (isFallbackElement(element)) {
             this.handleFallbackElement();
-        }
-        else if (hasXIncludeNamespace(element)) {
+        } else if (hasXIncludeNamespace(element)) {
             if (getSawInclude(fDepth - 1)) {
                 reportFatalError(
-                    "IncludeChild",
-                    new Object[] { element.rawname });
+                        "IncludeChild",
+                        new Object[]{element.rawname});
             }
             if (getSawFallback(fDepth - 1)) {
                 reportFatalError(
-                    "FallbackChild",
-                    new Object[] { element.rawname });
+                        "FallbackChild",
+                        new Object[]{element.rawname});
             }
             if (getState() == STATE_NORMAL_PROCESSING) {
                 if (fResultDepth == 0) {
@@ -973,8 +979,7 @@ public class XIncludeHandler
                     fDocumentHandler.emptyElement(element, attributes, augs);
                 }
             }
-        }
-        else if (getState() == STATE_NORMAL_PROCESSING) {
+        } else if (getState() == STATE_NORMAL_PROCESSING) {
             if (fResultDepth == 0) {
                 checkMultipleRootElements();
             }
@@ -997,15 +1002,15 @@ public class XIncludeHandler
     }
 
     public void endElement(QName element, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
 
         if (isIncludeElement(element)) {
             // if we're ending an include element, and we were expecting a fallback
             // we check to see if the children of this include element contained a fallback
             if (getState() == STATE_EXPECT_FALLBACK
-                && !getSawFallback(fDepth + 1)) {
+                    && !getSawFallback(fDepth + 1)) {
                 reportFatalError("NoFallback",
-                    new Object[] { "unknown" });
+                        new Object[]{"unknown"});
             }
         }
         if (isFallbackElement(element)) {
@@ -1014,8 +1019,7 @@ public class XIncludeHandler
             if (getState() == STATE_NORMAL_PROCESSING) {
                 setState(STATE_IGNORE);
             }
-        }
-        else if (getState() == STATE_NORMAL_PROCESSING) {
+        } else if (getState() == STATE_NORMAL_PROCESSING) {
             --fResultDepth;
             if (fDocumentHandler != null) {
                 fDocumentHandler.endElement(element, augs);
@@ -1042,47 +1046,45 @@ public class XIncludeHandler
     }
 
     public void startGeneralEntity(
-        String name,
-        XMLResourceIdentifier resId,
-        String encoding,
-        Augmentations augs)
-        throws XNIException {
+            String name,
+            XMLResourceIdentifier resId,
+            String encoding,
+            Augmentations augs)
+            throws XNIException {
         if (getState() == STATE_NORMAL_PROCESSING) {
             if (fResultDepth == 0) {
                 if (augs != null && Boolean.TRUE.equals(augs.getItem(Constants.ENTITY_SKIPPED))) {
                     reportFatalError("UnexpandedEntityReferenceIllegal");
                 }
-            }
-            else if (fDocumentHandler != null) {
+            } else if (fDocumentHandler != null) {
                 fDocumentHandler.startGeneralEntity(name, resId, encoding, augs);
             }
         }
     }
 
     public void textDecl(String version, String encoding, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
         if (fDocumentHandler != null
-            && getState() == STATE_NORMAL_PROCESSING) {
+                && getState() == STATE_NORMAL_PROCESSING) {
             fDocumentHandler.textDecl(version, encoding, augs);
         }
     }
 
     public void endGeneralEntity(String name, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
         if (fDocumentHandler != null
-            && getState() == STATE_NORMAL_PROCESSING
-            && fResultDepth != 0) {
+                && getState() == STATE_NORMAL_PROCESSING
+                && fResultDepth != 0) {
             fDocumentHandler.endGeneralEntity(name, augs);
         }
     }
 
     public void characters(XMLString text, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
         if (getState() == STATE_NORMAL_PROCESSING) {
             if (fResultDepth == 0) {
                 checkWhitespace(text);
-            }
-            else if (fDocumentHandler != null) {
+            } else if (fDocumentHandler != null) {
                 // we need to change the depth like this so that modifyAugmentations() works
                 fDepth++;
                 augs = modifyAugmentations(augs);
@@ -1093,26 +1095,26 @@ public class XIncludeHandler
     }
 
     public void ignorableWhitespace(XMLString text, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
         if (fDocumentHandler != null
-            && getState() == STATE_NORMAL_PROCESSING
-            && fResultDepth != 0) {
+                && getState() == STATE_NORMAL_PROCESSING
+                && fResultDepth != 0) {
             fDocumentHandler.ignorableWhitespace(text, augs);
         }
     }
 
     public void startCDATA(Augmentations augs) throws XNIException {
         if (fDocumentHandler != null
-            && getState() == STATE_NORMAL_PROCESSING
-            && fResultDepth != 0) {
+                && getState() == STATE_NORMAL_PROCESSING
+                && fResultDepth != 0) {
             fDocumentHandler.startCDATA(augs);
         }
     }
 
     public void endCDATA(Augmentations augs) throws XNIException {
         if (fDocumentHandler != null
-            && getState() == STATE_NORMAL_PROCESSING
-            && fResultDepth != 0) {
+                && getState() == STATE_NORMAL_PROCESSING
+                && fResultDepth != 0) {
             fDocumentHandler.endCDATA(augs);
         }
     }
@@ -1144,25 +1146,25 @@ public class XIncludeHandler
      * @see com.sun.org.apache.xerces.internal.xni.XMLDTDHandler#attributeDecl(java.lang.String, java.lang.String, java.lang.String, java.lang.String[], java.lang.String, com.sun.org.apache.xerces.internal.xni.XMLString, com.sun.org.apache.xerces.internal.xni.XMLString, com.sun.org.apache.xerces.internal.xni.Augmentations)
      */
     public void attributeDecl(
-        String elementName,
-        String attributeName,
-        String type,
-        String[] enumeration,
-        String defaultType,
-        XMLString defaultValue,
-        XMLString nonNormalizedDefaultValue,
-        Augmentations augmentations)
-        throws XNIException {
+            String elementName,
+            String attributeName,
+            String type,
+            String[] enumeration,
+            String defaultType,
+            XMLString defaultValue,
+            XMLString nonNormalizedDefaultValue,
+            Augmentations augmentations)
+            throws XNIException {
         if (fDTDHandler != null) {
             fDTDHandler.attributeDecl(
-                elementName,
-                attributeName,
-                type,
-                enumeration,
-                defaultType,
-                defaultValue,
-                nonNormalizedDefaultValue,
-                augmentations);
+                    elementName,
+                    attributeName,
+                    type,
+                    enumeration,
+                    defaultType,
+                    defaultValue,
+                    nonNormalizedDefaultValue,
+                    augmentations);
         }
     }
 
@@ -1170,10 +1172,10 @@ public class XIncludeHandler
      * @see com.sun.org.apache.xerces.internal.xni.XMLDTDHandler#elementDecl(java.lang.String, java.lang.String, com.sun.org.apache.xerces.internal.xni.Augmentations)
      */
     public void elementDecl(
-        String name,
-        String contentModel,
-        Augmentations augmentations)
-        throws XNIException {
+            String name,
+            String contentModel,
+            Augmentations augmentations)
+            throws XNIException {
         if (fDTDHandler != null) {
             fDTDHandler.elementDecl(name, contentModel, augmentations);
         }
@@ -1192,7 +1194,7 @@ public class XIncludeHandler
      * @see com.sun.org.apache.xerces.internal.xni.XMLDTDHandler#endConditional(com.sun.org.apache.xerces.internal.xni.Augmentations)
      */
     public void endConditional(Augmentations augmentations)
-        throws XNIException {
+            throws XNIException {
         if (fDTDHandler != null) {
             fDTDHandler.endConditional(augmentations);
         }
@@ -1212,7 +1214,7 @@ public class XIncludeHandler
      * @see com.sun.org.apache.xerces.internal.xni.XMLDTDHandler#endExternalSubset(com.sun.org.apache.xerces.internal.xni.Augmentations)
      */
     public void endExternalSubset(Augmentations augmentations)
-        throws XNIException {
+            throws XNIException {
         if (fDTDHandler != null) {
             fDTDHandler.endExternalSubset(augmentations);
         }
@@ -1222,7 +1224,7 @@ public class XIncludeHandler
      * @see com.sun.org.apache.xerces.internal.xni.XMLDTDHandler#endParameterEntity(java.lang.String, com.sun.org.apache.xerces.internal.xni.Augmentations)
      */
     public void endParameterEntity(String name, Augmentations augmentations)
-        throws XNIException {
+            throws XNIException {
         if (fDTDHandler != null) {
             fDTDHandler.endParameterEntity(name, augmentations);
         }
@@ -1232,10 +1234,10 @@ public class XIncludeHandler
      * @see com.sun.org.apache.xerces.internal.xni.XMLDTDHandler#externalEntityDecl(java.lang.String, com.sun.org.apache.xerces.internal.xni.XMLResourceIdentifier, com.sun.org.apache.xerces.internal.xni.Augmentations)
      */
     public void externalEntityDecl(
-        String name,
-        XMLResourceIdentifier identifier,
-        Augmentations augmentations)
-        throws XNIException {
+            String name,
+            XMLResourceIdentifier identifier,
+            Augmentations augmentations)
+            throws XNIException {
         if (fDTDHandler != null) {
             fDTDHandler.externalEntityDecl(name, identifier, augmentations);
         }
@@ -1252,7 +1254,7 @@ public class XIncludeHandler
      * @see com.sun.org.apache.xerces.internal.xni.XMLDTDHandler#ignoredCharacters(com.sun.org.apache.xerces.internal.xni.XMLString, com.sun.org.apache.xerces.internal.xni.Augmentations)
      */
     public void ignoredCharacters(XMLString text, Augmentations augmentations)
-        throws XNIException {
+            throws XNIException {
         if (fDTDHandler != null) {
             fDTDHandler.ignoredCharacters(text, augmentations);
         }
@@ -1262,17 +1264,17 @@ public class XIncludeHandler
      * @see com.sun.org.apache.xerces.internal.xni.XMLDTDHandler#internalEntityDecl(java.lang.String, com.sun.org.apache.xerces.internal.xni.XMLString, com.sun.org.apache.xerces.internal.xni.XMLString, com.sun.org.apache.xerces.internal.xni.Augmentations)
      */
     public void internalEntityDecl(
-        String name,
-        XMLString text,
-        XMLString nonNormalizedText,
-        Augmentations augmentations)
-        throws XNIException {
+            String name,
+            XMLString text,
+            XMLString nonNormalizedText,
+            Augmentations augmentations)
+            throws XNIException {
         if (fDTDHandler != null) {
             fDTDHandler.internalEntityDecl(
-                name,
-                text,
-                nonNormalizedText,
-                augmentations);
+                    name,
+                    text,
+                    nonNormalizedText,
+                    augmentations);
         }
     }
 
@@ -1280,10 +1282,10 @@ public class XIncludeHandler
      * @see com.sun.org.apache.xerces.internal.xni.XMLDTDHandler#notationDecl(java.lang.String, com.sun.org.apache.xerces.internal.xni.XMLResourceIdentifier, com.sun.org.apache.xerces.internal.xni.Augmentations)
      */
     public void notationDecl(
-        String name,
-        XMLResourceIdentifier identifier,
-        Augmentations augmentations)
-        throws XNIException {
+            String name,
+            XMLResourceIdentifier identifier,
+            Augmentations augmentations)
+            throws XNIException {
         this.addNotation(name, identifier, augmentations);
         if (fDTDHandler != null) {
             fDTDHandler.notationDecl(name, identifier, augmentations);
@@ -1301,7 +1303,7 @@ public class XIncludeHandler
      * @see com.sun.org.apache.xerces.internal.xni.XMLDTDHandler#startAttlist(java.lang.String, com.sun.org.apache.xerces.internal.xni.Augmentations)
      */
     public void startAttlist(String elementName, Augmentations augmentations)
-        throws XNIException {
+            throws XNIException {
         if (fDTDHandler != null) {
             fDTDHandler.startAttlist(elementName, augmentations);
         }
@@ -1311,7 +1313,7 @@ public class XIncludeHandler
      * @see com.sun.org.apache.xerces.internal.xni.XMLDTDHandler#startConditional(short, com.sun.org.apache.xerces.internal.xni.Augmentations)
      */
     public void startConditional(short type, Augmentations augmentations)
-        throws XNIException {
+            throws XNIException {
         if (fDTDHandler != null) {
             fDTDHandler.startConditional(type, augmentations);
         }
@@ -1321,7 +1323,7 @@ public class XIncludeHandler
      * @see com.sun.org.apache.xerces.internal.xni.XMLDTDHandler#startDTD(com.sun.org.apache.xerces.internal.xni.XMLLocator, com.sun.org.apache.xerces.internal.xni.Augmentations)
      */
     public void startDTD(XMLLocator locator, Augmentations augmentations)
-        throws XNIException {
+            throws XNIException {
         fInDTD = true;
         if (fDTDHandler != null) {
             fDTDHandler.startDTD(locator, augmentations);
@@ -1332,9 +1334,9 @@ public class XIncludeHandler
      * @see com.sun.org.apache.xerces.internal.xni.XMLDTDHandler#startExternalSubset(com.sun.org.apache.xerces.internal.xni.XMLResourceIdentifier, com.sun.org.apache.xerces.internal.xni.Augmentations)
      */
     public void startExternalSubset(
-        XMLResourceIdentifier identifier,
-        Augmentations augmentations)
-        throws XNIException {
+            XMLResourceIdentifier identifier,
+            Augmentations augmentations)
+            throws XNIException {
         if (fDTDHandler != null) {
             fDTDHandler.startExternalSubset(identifier, augmentations);
         }
@@ -1344,17 +1346,17 @@ public class XIncludeHandler
      * @see com.sun.org.apache.xerces.internal.xni.XMLDTDHandler#startParameterEntity(java.lang.String, com.sun.org.apache.xerces.internal.xni.XMLResourceIdentifier, java.lang.String, com.sun.org.apache.xerces.internal.xni.Augmentations)
      */
     public void startParameterEntity(
-        String name,
-        XMLResourceIdentifier identifier,
-        String encoding,
-        Augmentations augmentations)
-        throws XNIException {
+            String name,
+            XMLResourceIdentifier identifier,
+            String encoding,
+            Augmentations augmentations)
+            throws XNIException {
         if (fDTDHandler != null) {
             fDTDHandler.startParameterEntity(
-                name,
-                identifier,
-                encoding,
-                augmentations);
+                    name,
+                    identifier,
+                    encoding,
+                    augmentations);
         }
     }
 
@@ -1362,18 +1364,18 @@ public class XIncludeHandler
      * @see com.sun.org.apache.xerces.internal.xni.XMLDTDHandler#unparsedEntityDecl(java.lang.String, com.sun.org.apache.xerces.internal.xni.XMLResourceIdentifier, java.lang.String, com.sun.org.apache.xerces.internal.xni.Augmentations)
      */
     public void unparsedEntityDecl(
-        String name,
-        XMLResourceIdentifier identifier,
-        String notation,
-        Augmentations augmentations)
-        throws XNIException {
+            String name,
+            XMLResourceIdentifier identifier,
+            String notation,
+            Augmentations augmentations)
+            throws XNIException {
         this.addUnparsedEntity(name, identifier, notation, augmentations);
         if (fDTDHandler != null) {
             fDTDHandler.unparsedEntityDecl(
-                name,
-                identifier,
-                notation,
-                augmentations);
+                    name,
+                    identifier,
+                    notation,
+                    augmentations);
         }
     }
 
@@ -1397,7 +1399,7 @@ public class XIncludeHandler
         fErrorReporter = reporter;
         if (fErrorReporter != null) {
             fErrorReporter.putMessageFormatter(
-                XIncludeMessageFormatter.XINCLUDE_DOMAIN, fXIncludeMessageFormatter);
+                    XIncludeMessageFormatter.XINCLUDE_DOMAIN, fXIncludeMessageFormatter);
             // this ensures the proper location is displayed in error messages
             if (fDocLocation != null) {
                 fErrorReporter.setDocumentLocator(fDocLocation);
@@ -1418,8 +1420,7 @@ public class XIncludeHandler
 
         if (getSawFallback(fDepth)) {
             reportFatalError("MultipleFallbacks");
-        }
-        else {
+        } else {
             setSawFallback(fDepth, true);
         }
 
@@ -1432,9 +1433,9 @@ public class XIncludeHandler
     }
 
     protected boolean handleIncludeElement(XMLAttributes attributes)
-        throws XNIException {
+            throws XNIException {
         if (getSawInclude(fDepth - 1)) {
-            reportFatalError("IncludeChild", new Object[] { XINCLUDE_INCLUDE });
+            reportFatalError("IncludeChild", new Object[]{XINCLUDE_INCLUDE});
         }
         if (getState() == STATE_IGNORE) {
             return true;
@@ -1450,7 +1451,7 @@ public class XIncludeHandler
 
         String href = attributes.getValue(XINCLUDE_ATTR_HREF);
         String parse = attributes.getValue(XINCLUDE_ATTR_PARSE);
-        String xpointer =  attributes.getValue(XPOINTER);
+        String xpointer = attributes.getValue(XPOINTER);
         String accept = attributes.getValue(XINCLUDE_ATTR_ACCEPT);
         String acceptLanguage = attributes.getValue(XINCLUDE_ATTR_ACCEPT_LANGUAGE);
 
@@ -1463,13 +1464,12 @@ public class XIncludeHandler
         if (href.length() == 0 && XINCLUDE_PARSE_XML.equals(parse)) {
             if (xpointer == null) {
                 reportFatalError("XpointerMissing");
-            }
-            else {
+            } else {
                 // When parse="xml" and an xpointer is specified treat
                 // all absences of the href attribute as a resource error.
                 Locale locale = (fErrorReporter != null) ? fErrorReporter.getLocale() : null;
                 String reason = fXIncludeMessageFormatter.formatMessage(locale, "XPointerStreamability", null);
-                reportResourceError("XMLResourceError", new Object[] { href, reason });
+                reportResourceError("XMLResourceError", new Object[]{href, reason});
                 return false;
             }
         }
@@ -1482,25 +1482,22 @@ public class XIncludeHandler
         try {
             hrefURI = new URI(href, true);
             if (hrefURI.getFragment() != null) {
-                reportFatalError("HrefFragmentIdentifierIllegal", new Object[] {href});
+                reportFatalError("HrefFragmentIdentifierIllegal", new Object[]{href});
             }
-        }
-        catch (URI.MalformedURIException exc) {
+        } catch (URI.MalformedURIException exc) {
             String newHref = escapeHref(href);
             if (href != newHref) {
                 href = newHref;
                 try {
                     hrefURI = new URI(href, true);
                     if (hrefURI.getFragment() != null) {
-                        reportFatalError("HrefFragmentIdentifierIllegal", new Object[] {href});
+                        reportFatalError("HrefFragmentIdentifierIllegal", new Object[]{href});
                     }
+                } catch (URI.MalformedURIException exc2) {
+                    reportFatalError("HrefSyntacticallyInvalid", new Object[]{href});
                 }
-                catch (URI.MalformedURIException exc2) {
-                    reportFatalError("HrefSyntacticallyInvalid", new Object[] {href});
-                }
-            }
-            else {
-                reportFatalError("HrefSyntacticallyInvalid", new Object[] {href});
+            } else {
+                reportFatalError("HrefSyntacticallyInvalid", new Object[]{href});
             }
         }
 
@@ -1519,32 +1516,31 @@ public class XIncludeHandler
         if (fEntityResolver != null) {
             try {
                 XMLResourceIdentifier resourceIdentifier =
-                    new XMLResourceIdentifierImpl(
-                        null,
-                        href,
-                        fCurrentBaseURI.getExpandedSystemId(),
-                        XMLEntityManager.expandSystemId(
-                            href,
-                            fCurrentBaseURI.getExpandedSystemId(),
-                            false));
+                        new XMLResourceIdentifierImpl(
+                                null,
+                                href,
+                                fCurrentBaseURI.getExpandedSystemId(),
+                                XMLEntityManager.expandSystemId(
+                                        href,
+                                        fCurrentBaseURI.getExpandedSystemId(),
+                                        false));
 
                 includedSource =
-                    fEntityResolver.resolveEntity(resourceIdentifier);
+                        fEntityResolver.resolveEntity(resourceIdentifier);
 
                 if (includedSource != null &&
-                    !(includedSource instanceof HTTPInputSource) &&
-                    (accept != null || acceptLanguage != null) &&
-                    includedSource.getCharacterStream() == null &&
-                    includedSource.getByteStream() == null) {
+                        !(includedSource instanceof HTTPInputSource) &&
+                        (accept != null || acceptLanguage != null) &&
+                        includedSource.getCharacterStream() == null &&
+                        includedSource.getByteStream() == null) {
 
                     includedSource = createInputSource(includedSource.getPublicId(), includedSource.getSystemId(),
-                        includedSource.getBaseSystemId(), accept, acceptLanguage);
+                            includedSource.getBaseSystemId(), accept, acceptLanguage);
                 }
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 reportResourceError(
-                    "XMLResourceError",
-                    new Object[] { href, e.getMessage()});
+                        "XMLResourceError",
+                        new Object[]{href, e.getMessage()});
                 return false;
             }
         }
@@ -1553,8 +1549,7 @@ public class XIncludeHandler
             // setup an HTTPInputSource if either of the content negotation attributes were specified.
             if (accept != null || acceptLanguage != null) {
                 includedSource = createInputSource(null, href, fCurrentBaseURI.getExpandedSystemId(), accept, acceptLanguage);
-            }
-            else {
+            } else {
                 includedSource = new XMLInputSource(null, href, fCurrentBaseURI.getExpandedSystemId());
             }
         }
@@ -1562,16 +1557,16 @@ public class XIncludeHandler
         if (parse.equals(XINCLUDE_PARSE_XML)) {
             // Instead of always creating a new configuration, the first one can be reused
             if ((xpointer != null && fXPointerChildConfig == null)
-                        || (xpointer == null && fXIncludeChildConfig == null) ) {
+                    || (xpointer == null && fXIncludeChildConfig == null)) {
 
                 String parserName = XINCLUDE_DEFAULT_CONFIGURATION;
                 if (xpointer != null)
-                        parserName = "com.sun.org.apache.xerces.internal.parsers.XPointerParserConfiguration";
+                    parserName = "com.sun.org.apache.xerces.internal.parsers.XPointerParserConfiguration";
 
                 fChildConfig =
-                    (XMLParserConfiguration)ObjectFactory.newInstance(
-                        parserName,
-                        true);
+                        (XMLParserConfiguration) ObjectFactory.newInstance(
+                                parserName,
+                                true);
 
                 // use the same symbol table, error reporter, entity resolver, security manager and buffer size.
                 if (fSymbolTable != null) fChildConfig.setProperty(SYMBOL_TABLE, fSymbolTable);
@@ -1585,75 +1580,75 @@ public class XIncludeHandler
 
                 // use the same namespace context
                 fChildConfig.setProperty(
-                    Constants.XERCES_PROPERTY_PREFIX
-                        + Constants.NAMESPACE_CONTEXT_PROPERTY,
-                    fNamespaceContext);
+                        Constants.XERCES_PROPERTY_PREFIX
+                                + Constants.NAMESPACE_CONTEXT_PROPERTY,
+                        fNamespaceContext);
 
                 fChildConfig.setFeature(
-                            XINCLUDE_FIXUP_BASE_URIS,
-                            fFixupBaseURIs);
+                        XINCLUDE_FIXUP_BASE_URIS,
+                        fFixupBaseURIs);
 
                 fChildConfig.setFeature(
-                            XINCLUDE_FIXUP_LANGUAGE,
-                            fFixupLanguage);
+                        XINCLUDE_FIXUP_LANGUAGE,
+                        fFixupLanguage);
 
 
                 // If the xpointer attribute is present
-                if (xpointer != null ) {
+                if (xpointer != null) {
 
                     XPointerHandler newHandler =
-                        (XPointerHandler)fChildConfig.getProperty(
+                            (XPointerHandler) fChildConfig.getProperty(
+                                    Constants.XERCES_PROPERTY_PREFIX
+                                            + Constants.XPOINTER_HANDLER_PROPERTY);
+
+                    fXPtrProcessor = newHandler;
+
+                    // ???
+                    ((XPointerHandler) fXPtrProcessor).setProperty(
                             Constants.XERCES_PROPERTY_PREFIX
-                                + Constants.XPOINTER_HANDLER_PROPERTY);
+                                    + Constants.NAMESPACE_CONTEXT_PROPERTY,
+                            fNamespaceContext);
 
-                        fXPtrProcessor = newHandler;
-
-                        // ???
-                        ((XPointerHandler)fXPtrProcessor).setProperty(
-                            Constants.XERCES_PROPERTY_PREFIX
-                            + Constants.NAMESPACE_CONTEXT_PROPERTY,
-                        fNamespaceContext);
-
-                    ((XPointerHandler)fXPtrProcessor).setProperty(XINCLUDE_FIXUP_BASE_URIS,
+                    ((XPointerHandler) fXPtrProcessor).setProperty(XINCLUDE_FIXUP_BASE_URIS,
                             new Boolean(fFixupBaseURIs));
 
-                    ((XPointerHandler)fXPtrProcessor).setProperty(
+                    ((XPointerHandler) fXPtrProcessor).setProperty(
                             XINCLUDE_FIXUP_LANGUAGE,
-                            new Boolean (fFixupLanguage));
+                            new Boolean(fFixupLanguage));
 
                     if (fErrorReporter != null)
-                        ((XPointerHandler)fXPtrProcessor).setProperty(ERROR_REPORTER, fErrorReporter);
-                        // ???
+                        ((XPointerHandler) fXPtrProcessor).setProperty(ERROR_REPORTER, fErrorReporter);
+                    // ???
 
                     newHandler.setParent(this);
                     newHandler.setDocumentHandler(this.getDocumentHandler());
                     fXPointerChildConfig = fChildConfig;
                 } else {
                     XIncludeHandler newHandler =
-                        (XIncludeHandler)fChildConfig.getProperty(
-                            Constants.XERCES_PROPERTY_PREFIX
-                                + Constants.XINCLUDE_HANDLER_PROPERTY);
+                            (XIncludeHandler) fChildConfig.getProperty(
+                                    Constants.XERCES_PROPERTY_PREFIX
+                                            + Constants.XINCLUDE_HANDLER_PROPERTY);
 
-                        newHandler.setParent(this);
+                    newHandler.setParent(this);
                     newHandler.setDocumentHandler(this.getDocumentHandler());
                     fXIncludeChildConfig = fChildConfig;
                 }
             }
 
             // If an xpointer attribute is present
-            if (xpointer != null ) {
-                fChildConfig = fXPointerChildConfig ;
+            if (xpointer != null) {
+                fChildConfig = fXPointerChildConfig;
 
                 // Parse the XPointer expression
                 try {
-                    ((XPointerProcessor)fXPtrProcessor).parseXPointer(xpointer);
+                    ((XPointerProcessor) fXPtrProcessor).parseXPointer(xpointer);
 
                 } catch (XNIException ex) {
                     // report the XPointer error as a resource error
                     reportResourceError(
                             "XMLResourceError",
-                            new Object[] { href, ex.getMessage()});
-                        return false;
+                            new Object[]{href, ex.getMessage()});
+                    return false;
                 }
             } else {
                 fChildConfig = fXIncludeChildConfig;
@@ -1675,25 +1670,23 @@ public class XIncludeHandler
                 }
 
                 // If the xpointer attribute is present
-                if (xpointer != null ) {
-                        // and it was not resolved
-                        if (!((XPointerProcessor)fXPtrProcessor).isXPointerResolved()) {
+                if (xpointer != null) {
+                    // and it was not resolved
+                    if (!((XPointerProcessor) fXPtrProcessor).isXPointerResolved()) {
                         Locale locale = (fErrorReporter != null) ? fErrorReporter.getLocale() : null;
                         String reason = fXIncludeMessageFormatter.formatMessage(locale, "XPointerResolutionUnsuccessful", null);
-                        reportResourceError("XMLResourceError", new Object[] {href, reason});
-                                // use the fallback
-                                return false;
-                        }
+                        reportResourceError("XMLResourceError", new Object[]{href, reason});
+                        // use the fallback
+                        return false;
+                    }
                 }
-            }
-            catch (XNIException e) {
+            } catch (XNIException e) {
                 // necessary to make sure proper location is reported in errors
                 if (fErrorReporter != null) {
                     fErrorReporter.setDocumentLocator(fDocLocation);
                 }
-                reportFatalError("XMLParseError", new Object[] { href });
-            }
-            catch (IOException e) {
+                reportFatalError("XMLParseError", new Object[]{href});
+            } catch (IOException e) {
                 // necessary to make sure proper location is reported in errors
                 if (fErrorReporter != null) {
                     fErrorReporter.setDocumentLocator(fDocLocation);
@@ -1702,15 +1695,13 @@ public class XIncludeHandler
                 // that it was an invalid XML file.  So we send a resource error, not a
                 // fatal error.
                 reportResourceError(
-                    "XMLResourceError",
-                    new Object[] { href, e.getMessage()});
+                        "XMLResourceError",
+                        new Object[]{href, e.getMessage()});
                 return false;
-            }
-            finally {
+            } finally {
                 fNamespaceContext.popScope();
             }
-        }
-        else if (parse.equals(XINCLUDE_PARSE_TEXT)) {
+        } else if (parse.equals(XINCLUDE_PARSE_TEXT)) {
             // we only care about encoding for parse="text"
             String encoding = attributes.getValue(XINCLUDE_ATTR_ENCODING);
             includedSource.setEncoding(encoding);
@@ -1721,17 +1712,14 @@ public class XIncludeHandler
                 if (!fIsXML11) {
                     if (fXInclude10TextReader == null) {
                         fXInclude10TextReader = new XIncludeTextReader(includedSource, this, fBufferSize);
-                    }
-                    else {
+                    } else {
                         fXInclude10TextReader.setInputSource(includedSource);
                     }
                     textReader = fXInclude10TextReader;
-                }
-                else {
+                } else {
                     if (fXInclude11TextReader == null) {
                         fXInclude11TextReader = new XInclude11TextReader(includedSource, this, fBufferSize);
-                    }
-                    else {
+                    } else {
                         fXInclude11TextReader.setInputSource(includedSource);
                     }
                     textReader = fXInclude11TextReader;
@@ -1742,40 +1730,36 @@ public class XIncludeHandler
             // encoding errors
             catch (MalformedByteSequenceException ex) {
                 fErrorReporter.reportError(ex.getDomain(), ex.getKey(),
-                    ex.getArguments(), XMLErrorReporter.SEVERITY_FATAL_ERROR);
-            }
-            catch (CharConversionException e) {
+                        ex.getArguments(), XMLErrorReporter.SEVERITY_FATAL_ERROR);
+            } catch (CharConversionException e) {
                 fErrorReporter.reportError(XMLMessageFormatter.XML_DOMAIN,
-                    "CharConversionFailure", null, XMLErrorReporter.SEVERITY_FATAL_ERROR);
-            }
-            catch (IOException e) {
+                        "CharConversionFailure", null, XMLErrorReporter.SEVERITY_FATAL_ERROR);
+            } catch (IOException e) {
                 reportResourceError(
-                    "TextResourceError",
-                    new Object[] { href, e.getMessage()});
+                        "TextResourceError",
+                        new Object[]{href, e.getMessage()});
                 return false;
-            }
-            finally {
+            } finally {
                 if (textReader != null) {
                     try {
                         textReader.close();
-                    }
-                    catch (IOException e) {
+                    } catch (IOException e) {
                         reportResourceError(
-                            "TextResourceError",
-                            new Object[] { href, e.getMessage()});
+                                "TextResourceError",
+                                new Object[]{href, e.getMessage()});
                         return false;
                     }
                 }
             }
-        }
-        else {
-            reportFatalError("InvalidParseValue", new Object[] { parse });
+        } else {
+            reportFatalError("InvalidParseValue", new Object[]{parse});
         }
         return true;
     }
 
     /**
      * Returns true if the element has the namespace "http://www.w3.org/2001/XInclude"
+     *
      * @param element the element to check
      * @return true if the element has the namespace "http://www.w3.org/2001/XInclude"
      */
@@ -1784,7 +1768,7 @@ public class XIncludeHandler
         // already. Why are we looking it up from the namespace
         // context? -- mrglavas
         return element.uri == XINCLUDE_NS_URI
-            || fNamespaceContext.getURI(element.prefix) == XINCLUDE_NS_URI;
+                || fNamespaceContext.getURI(element.prefix) == XINCLUDE_NS_URI;
     }
 
     /**
@@ -1797,7 +1781,7 @@ public class XIncludeHandler
      */
     protected boolean isIncludeElement(QName element) {
         return element.localpart.equals(XINCLUDE_INCLUDE) &&
-            hasXIncludeNamespace(element);
+                hasXIncludeNamespace(element);
     }
 
     /**
@@ -1810,7 +1794,7 @@ public class XIncludeHandler
      */
     protected boolean isFallbackElement(QName element) {
         return element.localpart.equals(XINCLUDE_FALLBACK) &&
-            hasXIncludeNamespace(element);
+                hasXIncludeNamespace(element);
     }
 
     /**
@@ -1820,6 +1804,7 @@ public class XIncludeHandler
      * of a fallback element, or the root elements in an included document.
      * The "include parent" is the element which, in the result infoset, will be the
      * direct parent of the current element.
+     *
      * @return true if the [base URIs] are the same string
      */
     protected boolean sameBaseURIAsIncludeParent() {
@@ -1856,6 +1841,7 @@ public class XIncludeHandler
     /**
      * Checks if the file indicated by the given XMLLocator has already been included
      * in the current stack.
+     *
      * @param includedSource the source to check for inclusion
      * @return true if the source has already been included
      */
@@ -1865,12 +1851,11 @@ public class XIncludeHandler
         if (includedSystemId == null) {
             try {
                 includedSystemId =
-                    XMLEntityManager.expandSystemId(
-                        includedSource.getLiteralSystemId(),
-                        includedSource.getBaseSystemId(),
-                        false);
-            }
-            catch (MalformedURIException e) {
+                        XMLEntityManager.expandSystemId(
+                                includedSource.getLiteralSystemId(),
+                                includedSource.getBaseSystemId(),
+                                false);
+            } catch (MalformedURIException e) {
                 reportFatalError("ExpandedSystemId");
             }
         }
@@ -1883,18 +1868,19 @@ public class XIncludeHandler
             return false;
         }
         return fParentXIncludeHandler.searchForRecursiveIncludes(
-            includedSource);
+                includedSource);
     }
 
     /**
      * Returns true if the current element is a top level included item.  This means
      * it's either the child of a fallback element, or the top level item in an
      * included document
+     *
      * @return true if the current element is a top level included item
      */
     protected boolean isTopLevelIncludedItem() {
         return isTopLevelIncludedItemViaInclude()
-            || isTopLevelIncludedItemViaFallback();
+                || isTopLevelIncludedItemViaFallback();
     }
 
     protected boolean isTopLevelIncludedItemViaInclude() {
@@ -1920,6 +1906,7 @@ public class XIncludeHandler
      * <li> For all attributes with a type of ENTITY, ENTITIES or NOTATIONS, the notations and
      * unparsed entities are processed as described in the spec, sections 4.5.1 and 4.5.2
      * </ul>
+     *
      * @param attributes
      * @return
      */
@@ -1938,17 +1925,16 @@ public class XIncludeHandler
                 String uri = null;
                 try {
                     uri = this.getRelativeBaseURI();
-                }
-                catch (MalformedURIException e) {
+                } catch (MalformedURIException e) {
                     // this shouldn't ever happen, since by definition, we had to traverse
                     // the same URIs to even get to this place
                     uri = fCurrentBaseURI.getExpandedSystemId();
                 }
                 int index =
-                    attributes.addAttribute(
-                        XML_BASE_QNAME,
-                        XMLSymbols.fCDATASymbol,
-                        uri);
+                        attributes.addAttribute(
+                                XML_BASE_QNAME,
+                                XMLSymbols.fCDATASymbol,
+                                uri);
                 attributes.setSpecified(index, true);
             }
 
@@ -1960,65 +1946,64 @@ public class XIncludeHandler
                     attributes = new XMLAttributesImpl();
                 }
                 int index =
-                    attributes.addAttribute(
-                        XML_LANG_QNAME,
-                        XMLSymbols.fCDATASymbol,
-                        fCurrentLanguage);
+                        attributes.addAttribute(
+                                XML_LANG_QNAME,
+                                XMLSymbols.fCDATASymbol,
+                                fCurrentLanguage);
                 attributes.setSpecified(index, true);
             }
 
             // Modify attributes of included items to do namespace-fixup. (spec 4.5.4)
             Enumeration inscopeNS = fNamespaceContext.getAllPrefixes();
             while (inscopeNS.hasMoreElements()) {
-                String prefix = (String)inscopeNS.nextElement();
+                String prefix = (String) inscopeNS.nextElement();
                 String parentURI =
-                    fNamespaceContext.getURIFromIncludeParent(prefix);
+                        fNamespaceContext.getURIFromIncludeParent(prefix);
                 String uri = fNamespaceContext.getURI(prefix);
                 if (parentURI != uri && attributes != null) {
                     if (prefix == XMLSymbols.EMPTY_STRING) {
                         if (attributes
-                            .getValue(
-                                NamespaceContext.XMLNS_URI,
-                                XMLSymbols.PREFIX_XMLNS)
-                            == null) {
+                                .getValue(
+                                        NamespaceContext.XMLNS_URI,
+                                        XMLSymbols.PREFIX_XMLNS)
+                                == null) {
                             if (attributes == null) {
                                 attributes = new XMLAttributesImpl();
                             }
 
-                            QName ns = (QName)NEW_NS_ATTR_QNAME.clone();
+                            QName ns = (QName) NEW_NS_ATTR_QNAME.clone();
                             ns.prefix = null;
                             ns.localpart = XMLSymbols.PREFIX_XMLNS;
                             ns.rawname = XMLSymbols.PREFIX_XMLNS;
                             int index =
-                                attributes.addAttribute(
-                                    ns,
-                                    XMLSymbols.fCDATASymbol,
-                                    uri != null ? uri : XMLSymbols.EMPTY_STRING);
+                                    attributes.addAttribute(
+                                            ns,
+                                            XMLSymbols.fCDATASymbol,
+                                            uri != null ? uri : XMLSymbols.EMPTY_STRING);
                             attributes.setSpecified(index, true);
                             // Need to re-declare this prefix in the current context
                             // in order for the SAX parser to report the appropriate
                             // start and end prefix mapping events. -- mrglavas
                             fNamespaceContext.declarePrefix(prefix, uri);
                         }
-                    }
-                    else if (
-                        attributes.getValue(NamespaceContext.XMLNS_URI, prefix)
-                            == null) {
+                    } else if (
+                            attributes.getValue(NamespaceContext.XMLNS_URI, prefix)
+                                    == null) {
                         if (attributes == null) {
                             attributes = new XMLAttributesImpl();
                         }
 
-                        QName ns = (QName)NEW_NS_ATTR_QNAME.clone();
+                        QName ns = (QName) NEW_NS_ATTR_QNAME.clone();
                         ns.localpart = prefix;
                         ns.rawname += prefix;
                         ns.rawname = (fSymbolTable != null) ?
-                            fSymbolTable.addSymbol(ns.rawname) :
-                            ns.rawname.intern();
+                                fSymbolTable.addSymbol(ns.rawname) :
+                                ns.rawname.intern();
                         int index =
-                            attributes.addAttribute(
-                                ns,
-                                XMLSymbols.fCDATASymbol,
-                                uri != null ? uri : XMLSymbols.EMPTY_STRING);
+                                attributes.addAttribute(
+                                        ns,
+                                        XMLSymbols.fCDATASymbol,
+                                        uri != null ? uri : XMLSymbols.EMPTY_STRING);
                         attributes.setSpecified(index, true);
                         // Need to re-declare this prefix in the current context
                         // in order for the SAX parser to report the appropriate
@@ -2044,8 +2029,7 @@ public class XIncludeHandler
                         String entName = st.nextToken();
                         this.checkUnparsedEntity(entName);
                     }
-                }
-                else if (type == XMLSymbols.fNOTATIONSymbol) {
+                } else if (type == XMLSymbols.fNOTATIONSymbol) {
                     // 4.5.2 - Notations
                     this.checkNotation(value);
                 }
@@ -2065,6 +2049,7 @@ public class XIncludeHandler
      * Returns a URI, relative to the include parent's base URI, of the current
      * [base URI].  For instance, if the current [base URI] was "dir1/dir2/file.xml"
      * and the include parent's [base URI] was "dir/", this would return "dir2/file.xml".
+     *
      * @return the relative URI
      */
     protected String getRelativeBaseURI() throws MalformedURIException {
@@ -2072,8 +2057,7 @@ public class XIncludeHandler
         String relativeURI = this.getRelativeURI(includeParentDepth);
         if (isRootDocument()) {
             return relativeURI;
-        }
-        else {
+        } else {
             if (relativeURI.equals("")) {
                 relativeURI = fCurrentBaseURI.getLiteralSystemId();
             }
@@ -2081,7 +2065,7 @@ public class XIncludeHandler
             if (includeParentDepth == 0) {
                 if (fParentRelativeURI == null) {
                     fParentRelativeURI =
-                        fParentXIncludeHandler.getRelativeBaseURI();
+                            fParentXIncludeHandler.getRelativeBaseURI();
                 }
                 if (fParentRelativeURI.equals("")) {
                     return relativeURI;
@@ -2128,8 +2112,7 @@ public class XIncludeHandler
                     return buffer.toString();
                 }
                 return literalPath;
-            }
-            else {
+            } else {
                 return relativeURI;
             }
         }
@@ -2137,14 +2120,14 @@ public class XIncludeHandler
 
     /**
      * Returns the [base URI] of the include parent.
+     *
      * @return the base URI of the include parent.
      */
     private String getIncludeParentBaseURI() {
         int depth = getIncludeParentDepth();
         if (!isRootDocument() && depth == 0) {
             return fParentXIncludeHandler.getIncludeParentBaseURI();
-        }
-        else {
+        } else {
             return this.getBaseURI(depth);
         }
     }
@@ -2158,8 +2141,7 @@ public class XIncludeHandler
         int depth = getIncludeParentDepth();
         if (!isRootDocument() && depth == 0) {
             return fParentXIncludeHandler.getIncludeParentLanguage();
-        }
-        else {
+        } else {
             return getLanguage(depth);
         }
     }
@@ -2170,6 +2152,7 @@ public class XIncludeHandler
      * this method is called when the current element is a top level included item.
      * Returning 0 indicates that the top level element in this document
      * was an include element.
+     *
      * @return the depth of the top level include element
      */
     private int getIncludeParentDepth() {
@@ -2201,6 +2184,7 @@ public class XIncludeHandler
     /**
      * Modify the augmentations.  Add an [included] infoset item, if the current
      * element is a top level included item.
+     *
      * @param augs the Augmentations to modify.
      * @return the modified Augmentations
      */
@@ -2211,13 +2195,14 @@ public class XIncludeHandler
     /**
      * Modify the augmentations.  Add an [included] infoset item, if <code>force</code>
      * is true, or if the current element is a top level included item.
-     * @param augs the Augmentations to modify.
+     *
+     * @param augs  the Augmentations to modify.
      * @param force whether to force modification
      * @return the modified Augmentations
      */
     protected Augmentations modifyAugmentations(
-        Augmentations augs,
-        boolean force) {
+            Augmentations augs,
+            boolean force) {
         if (force || isTopLevelIncludedItem()) {
             if (augs == null) {
                 augs = new AugmentationsImpl();
@@ -2324,10 +2309,10 @@ public class XIncludeHandler
     private void reportError(String key, Object[] args, short severity) {
         if (fErrorReporter != null) {
             fErrorReporter.reportError(
-                XIncludeMessageFormatter.XINCLUDE_DOMAIN,
-                key,
-                args,
-                severity);
+                    XIncludeMessageFormatter.XINCLUDE_DOMAIN,
+                    key,
+                    args,
+                    severity);
         }
         // we won't worry about when error reporter is null, since there should always be
         // at least the default error reporter
@@ -2335,6 +2320,7 @@ public class XIncludeHandler
 
     /**
      * Set the parent of this XIncludeHandler in the tree
+     *
      * @param parent
      */
     protected void setParent(XIncludeHandler parent) {
@@ -2348,15 +2334,16 @@ public class XIncludeHandler
 
     /**
      * Caches an unparsed entity.
-     * @param name the name of the unparsed entity
-     * @param identifier the location of the unparsed entity
+     *
+     * @param name          the name of the unparsed entity
+     * @param identifier    the location of the unparsed entity
      * @param augmentations any Augmentations that were on the original unparsed entity declaration
      */
     protected void addUnparsedEntity(
-        String name,
-        XMLResourceIdentifier identifier,
-        String notation,
-        Augmentations augmentations) {
+            String name,
+            XMLResourceIdentifier identifier,
+            String notation,
+            Augmentations augmentations) {
         UnparsedEntity ent = new UnparsedEntity();
         ent.name = name;
         ent.systemId = identifier.getLiteralSystemId();
@@ -2370,14 +2357,15 @@ public class XIncludeHandler
 
     /**
      * Caches a notation.
-     * @param name the name of the notation
-     * @param identifier the location of the notation
+     *
+     * @param name          the name of the notation
+     * @param identifier    the location of the notation
      * @param augmentations any Augmentations that were on the original notation declaration
      */
     protected void addNotation(
-        String name,
-        XMLResourceIdentifier identifier,
-        Augmentations augmentations) {
+            String name,
+            XMLResourceIdentifier identifier,
+            Augmentations augmentations) {
         Notation not = new Notation();
         not.name = name;
         not.systemId = identifier.getLiteralSystemId();
@@ -2401,7 +2389,7 @@ public class XIncludeHandler
         ent.name = entName;
         int index = fUnparsedEntities.indexOf(ent);
         if (index != -1) {
-            ent = (UnparsedEntity)fUnparsedEntities.get(index);
+            ent = (UnparsedEntity) fUnparsedEntities.get(index);
             // first check the notation of the unparsed entity
             checkNotation(ent.notation);
             checkAndSendUnparsedEntity(ent);
@@ -2420,7 +2408,7 @@ public class XIncludeHandler
         not.name = notName;
         int index = fNotations.indexOf(not);
         if (index != -1) {
-            not = (Notation)fNotations.get(index);
+            not = (Notation) fNotations.get(index);
             checkAndSendNotation(not);
         }
     }
@@ -2440,35 +2428,33 @@ public class XIncludeHandler
                 // Calling unparsedEntityDecl() will add the entity to our local store,
                 // and also send the unparsed entity to the DTDHandler
                 XMLResourceIdentifier id =
-                    new XMLResourceIdentifierImpl(
-                        ent.publicId,
-                        ent.systemId,
-                        ent.baseURI,
-                        ent.expandedSystemId);
+                        new XMLResourceIdentifierImpl(
+                                ent.publicId,
+                                ent.systemId,
+                                ent.baseURI,
+                                ent.expandedSystemId);
                 addUnparsedEntity(
-                    ent.name,
-                    id,
-                    ent.notation,
-                    ent.augmentations);
-                if (fSendUEAndNotationEvents && fDTDHandler != null) {
-                    fDTDHandler.unparsedEntityDecl(
                         ent.name,
                         id,
                         ent.notation,
                         ent.augmentations);
+                if (fSendUEAndNotationEvents && fDTDHandler != null) {
+                    fDTDHandler.unparsedEntityDecl(
+                            ent.name,
+                            id,
+                            ent.notation,
+                            ent.augmentations);
                 }
-            }
-            else {
+            } else {
                 UnparsedEntity localEntity =
-                    (UnparsedEntity)fUnparsedEntities.get(index);
+                        (UnparsedEntity) fUnparsedEntities.get(index);
                 if (!ent.isDuplicate(localEntity)) {
                     reportFatalError(
-                        "NonDuplicateUnparsedEntity",
-                        new Object[] { ent.name });
+                            "NonDuplicateUnparsedEntity",
+                            new Object[]{ent.name});
                 }
             }
-        }
-        else {
+        } else {
             fParentXIncludeHandler.checkAndSendUnparsedEntity(ent);
         }
     }
@@ -2486,26 +2472,24 @@ public class XIncludeHandler
             if (index == -1) {
                 // There is no notation with the same name that we have sent.
                 XMLResourceIdentifier id =
-                    new XMLResourceIdentifierImpl(
-                        not.publicId,
-                        not.systemId,
-                        not.baseURI,
-                        not.expandedSystemId);
+                        new XMLResourceIdentifierImpl(
+                                not.publicId,
+                                not.systemId,
+                                not.baseURI,
+                                not.expandedSystemId);
                 addNotation(not.name, id, not.augmentations);
                 if (fSendUEAndNotationEvents && fDTDHandler != null) {
                     fDTDHandler.notationDecl(not.name, id, not.augmentations);
                 }
-            }
-            else {
-                Notation localNotation = (Notation)fNotations.get(index);
+            } else {
+                Notation localNotation = (Notation) fNotations.get(index);
                 if (!not.isDuplicate(localNotation)) {
                     reportFatalError(
-                        "NonDuplicateNotation",
-                        new Object[] { not.name });
+                            "NonDuplicateNotation",
+                            new Object[]{not.name});
                 }
             }
-        }
-        else {
+        } else {
             fParentXIncludeHandler.checkAndSendNotation(not);
         }
     }
@@ -2556,8 +2540,8 @@ public class XIncludeHandler
     // It would be nice if we didn't have to repeat code like this, but there's no interface that has
     // setFeature() and addRecognizedFeatures() that the objects have in common.
     protected void copyFeatures(
-        XMLComponentManager from,
-        ParserConfigurationSettings to) {
+            XMLComponentManager from,
+            ParserConfigurationSettings to) {
         Enumeration features = Constants.getXercesFeatures();
         copyFeatures1(features, Constants.XERCES_FEATURE_PREFIX, from, to);
         features = Constants.getSAXFeatures();
@@ -2565,8 +2549,8 @@ public class XIncludeHandler
     }
 
     protected void copyFeatures(
-        XMLComponentManager from,
-        XMLParserConfiguration to) {
+            XMLComponentManager from,
+            XMLParserConfiguration to) {
         Enumeration features = Constants.getXercesFeatures();
         copyFeatures1(features, Constants.XERCES_FEATURE_PREFIX, from, to);
         features = Constants.getSAXFeatures();
@@ -2574,19 +2558,18 @@ public class XIncludeHandler
     }
 
     private void copyFeatures1(
-        Enumeration features,
-        String featurePrefix,
-        XMLComponentManager from,
-        ParserConfigurationSettings to) {
+            Enumeration features,
+            String featurePrefix,
+            XMLComponentManager from,
+            ParserConfigurationSettings to) {
         while (features.hasMoreElements()) {
-            String featureId = featurePrefix + (String)features.nextElement();
+            String featureId = featurePrefix + (String) features.nextElement();
 
-            to.addRecognizedFeatures(new String[] { featureId });
+            to.addRecognizedFeatures(new String[]{featureId});
 
             try {
                 to.setFeature(featureId, from.getFeature(featureId));
-            }
-            catch (XMLConfigurationException e) {
+            } catch (XMLConfigurationException e) {
                 // componentManager doesn't support this feature,
                 // so we won't worry about it
             }
@@ -2594,18 +2577,17 @@ public class XIncludeHandler
     }
 
     private void copyFeatures1(
-        Enumeration features,
-        String featurePrefix,
-        XMLComponentManager from,
-        XMLParserConfiguration to) {
+            Enumeration features,
+            String featurePrefix,
+            XMLComponentManager from,
+            XMLParserConfiguration to) {
         while (features.hasMoreElements()) {
-            String featureId = featurePrefix + (String)features.nextElement();
+            String featureId = featurePrefix + (String) features.nextElement();
             boolean value = from.getFeature(featureId);
 
             try {
                 to.setFeature(featureId, value);
-            }
-            catch (XMLConfigurationException e) {
+            } catch (XMLConfigurationException e) {
                 // componentManager doesn't support this feature,
                 // so we won't worry about it
             }
@@ -2629,7 +2611,7 @@ public class XIncludeHandler
                 return false;
             }
             if (obj instanceof Notation) {
-                Notation other = (Notation)obj;
+                Notation other = (Notation) obj;
                 return name.equals(other.name);
             }
             return false;
@@ -2644,10 +2626,10 @@ public class XIncludeHandler
         // base URI is the same.
         public boolean isDuplicate(Object obj) {
             if (obj != null && obj instanceof Notation) {
-                Notation other = (Notation)obj;
+                Notation other = (Notation) obj;
                 return name.equals(other.name)
-                && isEqual(publicId, other.publicId)
-                && isEqual(expandedSystemId, other.expandedSystemId);
+                        && isEqual(publicId, other.publicId)
+                        && isEqual(expandedSystemId, other.expandedSystemId);
             }
             return false;
         }
@@ -2675,7 +2657,7 @@ public class XIncludeHandler
                 return false;
             }
             if (obj instanceof UnparsedEntity) {
-                UnparsedEntity other = (UnparsedEntity)obj;
+                UnparsedEntity other = (UnparsedEntity) obj;
                 return name.equals(other.name);
             }
             return false;
@@ -2690,11 +2672,11 @@ public class XIncludeHandler
         // identifier and the declaration base URI is the same.
         public boolean isDuplicate(Object obj) {
             if (obj != null && obj instanceof UnparsedEntity) {
-                UnparsedEntity other = (UnparsedEntity)obj;
+                UnparsedEntity other = (UnparsedEntity) obj;
                 return name.equals(other.name)
-                && isEqual(publicId, other.publicId)
-                && isEqual(expandedSystemId, other.expandedSystemId)
-                && isEqual(notation, other.notation);
+                        && isEqual(publicId, other.publicId)
+                        && isEqual(expandedSystemId, other.expandedSystemId)
+                        && isEqual(notation, other.notation);
             }
             return false;
         }
@@ -2724,9 +2706,9 @@ public class XIncludeHandler
         fLiteralSystemID.pop();
         fExpandedSystemID.pop();
         fBaseURIScope.pop();
-        fCurrentBaseURI.setBaseSystemId((String)fBaseURI.peek());
-        fCurrentBaseURI.setLiteralSystemId((String)fLiteralSystemID.peek());
-        fCurrentBaseURI.setExpandedSystemId((String)fExpandedSystemID.peek());
+        fCurrentBaseURI.setBaseSystemId((String) fBaseURI.peek());
+        fCurrentBaseURI.setLiteralSystemId((String) fLiteralSystemID.peek());
+        fCurrentBaseURI.setExpandedSystemId((String) fExpandedSystemID.peek());
     }
 
     // The following methods are used for language processing
@@ -2752,31 +2734,34 @@ public class XIncludeHandler
 
     /**
      * Gets the base URI that was in use at that depth
+     *
      * @param depth
      * @return the base URI
      */
     public String getBaseURI(int depth) {
         int scope = scopeOfBaseURI(depth);
-        return (String)fExpandedSystemID.elementAt(scope);
+        return (String) fExpandedSystemID.elementAt(scope);
     }
 
     /**
      * Gets the language that was in use at that depth.
+     *
      * @param depth
      * @return the language
      */
     public String getLanguage(int depth) {
         int scope = scopeOfLanguage(depth);
-        return (String)fLanguageStack.elementAt(scope);
+        return (String) fLanguageStack.elementAt(scope);
     }
 
     /**
      * Returns a relative URI, which when resolved against the base URI at the
      * specified depth, will create the current base URI.
      * This is accomplished by merged the literal system IDs.
+     *
      * @param depth the depth at which to start creating the relative URI
      * @return a relative URI to convert the base URI at the given depth to the current
-     *         base URI
+     * base URI
      */
     public String getRelativeURI(int depth) throws MalformedURIException {
         // The literal system id at the location given by "start" is *in focus* at
@@ -2787,9 +2772,9 @@ public class XIncludeHandler
             // If that is the last system id, then we don't need a relative URI
             return "";
         }
-        URI uri = new URI("file", (String)fLiteralSystemID.elementAt(start));
+        URI uri = new URI("file", (String) fLiteralSystemID.elementAt(start));
         for (int i = start + 1; i < fBaseURIScope.size(); i++) {
-            uri = new URI(uri, (String)fLiteralSystemID.elementAt(i));
+            uri = new URI(uri, (String) fLiteralSystemID.elementAt(i));
         }
         return uri.getPath();
     }
@@ -2821,23 +2806,22 @@ public class XIncludeHandler
      */
     protected void processXMLBaseAttributes(XMLAttributes attributes) {
         String baseURIValue =
-            attributes.getValue(NamespaceContext.XML_URI, "base");
+                attributes.getValue(NamespaceContext.XML_URI, "base");
         if (baseURIValue != null) {
             try {
                 String expandedValue =
-                    XMLEntityManager.expandSystemId(
-                        baseURIValue,
-                        fCurrentBaseURI.getExpandedSystemId(),
-                        false);
+                        XMLEntityManager.expandSystemId(
+                                baseURIValue,
+                                fCurrentBaseURI.getExpandedSystemId(),
+                                false);
                 fCurrentBaseURI.setLiteralSystemId(baseURIValue);
                 fCurrentBaseURI.setBaseSystemId(
-                    fCurrentBaseURI.getExpandedSystemId());
+                        fCurrentBaseURI.getExpandedSystemId());
                 fCurrentBaseURI.setExpandedSystemId(expandedValue);
 
                 // push the new values on the stack
                 saveBaseURI();
-            }
-            catch (MalformedURIException e) {
+            } catch (MalformedURIException e) {
                 // REVISIT: throw error here
             }
         }
@@ -2863,7 +2847,7 @@ public class XIncludeHandler
      * @return <code>true</code> if the given string
      * would be valid in an HTTP header
      */
-    private boolean isValidInHTTPHeader (String value) {
+    private boolean isValidInHTTPHeader(String value) {
         char ch;
         for (int i = value.length() - 1; i >= 0; --i) {
             ch = value.charAt(i);
@@ -2878,8 +2862,8 @@ public class XIncludeHandler
      * Returns a new <code>XMLInputSource</code> from the given parameters.
      */
     private XMLInputSource createInputSource(String publicId,
-            String systemId, String baseSystemId,
-            String accept, String acceptLanguage) {
+                                             String systemId, String baseSystemId,
+                                             String accept, String acceptLanguage) {
 
         HTTPInputSource httpSource = new HTTPInputSource(publicId, systemId, baseSystemId);
         if (accept != null && accept.length() > 0) {
@@ -2902,7 +2886,8 @@ public class XIncludeHandler
     // the second hex character if a character needs to be escaped
     private static char gAfterEscaping2[] = new char[128];
     private static char[] gHexChs = {'0', '1', '2', '3', '4', '5', '6', '7',
-                                     '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+            '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+
     // initialize the above 3 arrays
     static {
         char[] escChs = {' ', '<', '>', '"', '{', '}', '|', '\\', '^', '`'};
@@ -2931,7 +2916,7 @@ public class XIncludeHandler
     private String escapeHref(String href) {
         int len = href.length();
         int ch;
-        StringBuffer buffer = new StringBuffer(len*3);
+        StringBuffer buffer = new StringBuffer(len * 3);
 
         // for each character in the href
         int i = 0;
@@ -2949,9 +2934,8 @@ public class XIncludeHandler
                 buffer.append('%');
                 buffer.append(gAfterEscaping1[ch]);
                 buffer.append(gAfterEscaping2[ch]);
-            }
-            else {
-                buffer.append((char)ch);
+            } else {
+                buffer.append((char) ch);
             }
         }
 
@@ -2961,15 +2945,15 @@ public class XIncludeHandler
             for (int j = i; j < len; ++j) {
                 ch = href.charAt(j);
                 if ((ch >= 0x20 && ch <= 0x7E) ||
-                    (ch >= 0xA0 && ch <= 0xD7FF) ||
-                    (ch >= 0xF900 && ch <= 0xFDCF) ||
-                    (ch >= 0xFDF0 && ch <= 0xFFEF)) {
+                        (ch >= 0xA0 && ch <= 0xD7FF) ||
+                        (ch >= 0xF900 && ch <= 0xFDCF) ||
+                        (ch >= 0xFDF0 && ch <= 0xFFEF)) {
                     continue;
                 }
                 if (XMLChar.isHighSurrogate(ch) && ++j < len) {
                     int ch2 = href.charAt(j);
                     if (XMLChar.isLowSurrogate(ch2)) {
-                        ch2 = XMLChar.supplemental((char)ch, (char)ch2);
+                        ch2 = XMLChar.supplemental((char) ch, (char) ch2);
                         if (ch2 < 0xF0000 && (ch2 & 0xFFFF) <= 0xFFFD) {
                             continue;
                         }
@@ -2999,14 +2983,12 @@ public class XIncludeHandler
                     buffer.append('%');
                     buffer.append(gHexChs[ch >> 4]);
                     buffer.append(gHexChs[ch & 0xf]);
-                }
-                else if (gNeedEscaping[b]) {
+                } else if (gNeedEscaping[b]) {
                     buffer.append('%');
                     buffer.append(gAfterEscaping1[b]);
                     buffer.append(gAfterEscaping2[b]);
-                }
-                else {
-                    buffer.append((char)b);
+                } else {
+                    buffer.append((char) b);
                 }
             }
         }
@@ -3015,8 +2997,7 @@ public class XIncludeHandler
         // otherwise, return the orginal one.
         if (buffer.length() != len) {
             return buffer.toString();
-        }
-        else {
+        } else {
             return href;
         }
     }

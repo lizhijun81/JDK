@@ -28,8 +28,7 @@ package com.sun.corba.se.pept.transport;
 /**
  * @author Harold Carr
  */
-public interface ConnectionCache
-{
+public interface ConnectionCache {
     public String getCacheType();
 
     public void stampTime(Connection connection);
@@ -42,7 +41,8 @@ public interface ConnectionCache
 
     public boolean reclaim();
 
-    /** Close all connections in the connection cache.
+    /**
+     * Close all connections in the connection cache.
      * This is used as a final cleanup, and will result
      * in abrupt termination of any pending communications.
      */

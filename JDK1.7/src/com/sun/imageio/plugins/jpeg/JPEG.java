@@ -45,52 +45,86 @@ public class JPEG {
 
     // List of all the JPEG markers (pre-JPEG2000)
 
-    /** For temporary use in arithmetic coding */
+    /**
+     * For temporary use in arithmetic coding
+     */
     public static final int TEM = 0x01;
 
     // Codes 0x02 - 0xBF are reserved
 
     // SOF markers for Nondifferential Huffman coding
-    /** Baseline DCT */
+    /**
+     * Baseline DCT
+     */
     public static final int SOF0 = 0xC0;
-    /** Extended Sequential DCT */
+    /**
+     * Extended Sequential DCT
+     */
     public static final int SOF1 = 0xC1;
-    /** Progressive DCT */
+    /**
+     * Progressive DCT
+     */
     public static final int SOF2 = 0xC2;
-    /** Lossless Sequential */
+    /**
+     * Lossless Sequential
+     */
     public static final int SOF3 = 0xC3;
 
-    /** Define Huffman Tables */
+    /**
+     * Define Huffman Tables
+     */
     public static final int DHT = 0xC4;
 
     // SOF markers for Differential Huffman coding
-    /** Differential Sequential DCT */
+    /**
+     * Differential Sequential DCT
+     */
     public static final int SOF5 = 0xC5;
-    /** Differential Progressive DCT */
+    /**
+     * Differential Progressive DCT
+     */
     public static final int SOF6 = 0xC6;
-    /** Differential Lossless */
+    /**
+     * Differential Lossless
+     */
     public static final int SOF7 = 0xC7;
 
-    /** Reserved for JPEG extensions */
+    /**
+     * Reserved for JPEG extensions
+     */
     public static final int JPG = 0xC8;
 
     // SOF markers for Nondifferential arithmetic coding
-    /** Extended Sequential DCT, Arithmetic coding */
+    /**
+     * Extended Sequential DCT, Arithmetic coding
+     */
     public static final int SOF9 = 0xC9;
-    /** Progressive DCT, Arithmetic coding */
+    /**
+     * Progressive DCT, Arithmetic coding
+     */
     public static final int SOF10 = 0xCA;
-    /** Lossless Sequential, Arithmetic coding */
+    /**
+     * Lossless Sequential, Arithmetic coding
+     */
     public static final int SOF11 = 0xCB;
 
-    /** Define Arithmetic conditioning tables */
+    /**
+     * Define Arithmetic conditioning tables
+     */
     public static final int DAC = 0xCC;
 
     // SOF markers for Differential arithmetic coding
-    /** Differential Sequential DCT, Arithmetic coding */
+    /**
+     * Differential Sequential DCT, Arithmetic coding
+     */
     public static final int SOF13 = 0xCD;
-    /** Differential Progressive DCT, Arithmetic coding */
+    /**
+     * Differential Progressive DCT, Arithmetic coding
+     */
     public static final int SOF14 = 0xCE;
-    /** Differential Lossless, Arithmetic coding */
+    /**
+     * Differential Lossless, Arithmetic coding
+     */
     public static final int SOF15 = 0xCF;
 
     // Restart Markers
@@ -102,33 +136,53 @@ public class JPEG {
     public static final int RST5 = 0xD5;
     public static final int RST6 = 0xD6;
     public static final int RST7 = 0xD7;
-    /** Number of restart markers */
+    /**
+     * Number of restart markers
+     */
     public static final int RESTART_RANGE = 8;
 
-    /** Start of Image */
+    /**
+     * Start of Image
+     */
     public static final int SOI = 0xD8;
-    /** End of Image */
+    /**
+     * End of Image
+     */
     public static final int EOI = 0xD9;
-    /** Start of Scan */
+    /**
+     * Start of Scan
+     */
     public static final int SOS = 0xDA;
 
-    /** Define Quantisation Tables */
+    /**
+     * Define Quantisation Tables
+     */
     public static final int DQT = 0xDB;
 
-    /** Define Number of lines */
+    /**
+     * Define Number of lines
+     */
     public static final int DNL = 0xDC;
 
-    /** Define Restart Interval */
+    /**
+     * Define Restart Interval
+     */
     public static final int DRI = 0xDD;
 
-    /** Define Heirarchical progression */
+    /**
+     * Define Heirarchical progression
+     */
     public static final int DHP = 0xDE;
 
-    /** Expand reference image(s) */
+    /**
+     * Expand reference image(s)
+     */
     public static final int EXP = 0xDF;
 
     // Application markers
-    /** APP0 used by JFIF */
+    /**
+     * APP0 used by JFIF
+     */
     public static final int APP0 = 0xE0;
     public static final int APP1 = 0xE1;
     public static final int APP2 = 0xE2;
@@ -143,23 +197,35 @@ public class JPEG {
     public static final int APP11 = 0xEB;
     public static final int APP12 = 0xEC;
     public static final int APP13 = 0xED;
-    /** APP14 used by Adobe */
+    /**
+     * APP14 used by Adobe
+     */
     public static final int APP14 = 0xEE;
     public static final int APP15 = 0xEF;
 
     // codes 0xF0 to 0xFD are reserved
 
-    /** Comment marker */
+    /**
+     * Comment marker
+     */
     public static final int COM = 0xFE;
 
     // JFIF Resolution units
-    /** The X and Y units simply indicate the aspect ratio of the pixels. */
+    /**
+     * The X and Y units simply indicate the aspect ratio of the pixels.
+     */
     public static final int DENSITY_UNIT_ASPECT_RATIO = 0;
-    /** Pixel density is in pixels per inch. */
-    public static final int DENSITY_UNIT_DOTS_INCH    = 1;
-    /** Pixel density is in pixels per centemeter. */
-    public static final int DENSITY_UNIT_DOTS_CM      = 2;
-    /** The max known value for DENSITY_UNIT */
+    /**
+     * Pixel density is in pixels per inch.
+     */
+    public static final int DENSITY_UNIT_DOTS_INCH = 1;
+    /**
+     * Pixel density is in pixels per centemeter.
+     */
+    public static final int DENSITY_UNIT_DOTS_CM = 2;
+    /**
+     * The max known value for DENSITY_UNIT
+     */
     public static final int NUM_DENSITY_UNIT = 3;
 
     // Adobe transform values
@@ -172,17 +238,17 @@ public class JPEG {
     public static final String vendor = "Oracle Corporation";
     public static final String version = "0.5";
     // Names of the formats we can read or write
-    public static final String [] names = {"JPEG", "jpeg", "JPG", "jpg"};
-    public static final String [] suffixes = {"jpg", "jpeg"};
-    public static final String [] MIMETypes = {"image/jpeg"};
+    public static final String[] names = {"JPEG", "jpeg", "JPG", "jpg"};
+    public static final String[] suffixes = {"jpg", "jpeg"};
+    public static final String[] MIMETypes = {"image/jpeg"};
     public static final String nativeImageMetadataFormatName =
-        "javax_imageio_jpeg_image_1.0";
+            "javax_imageio_jpeg_image_1.0";
     public static final String nativeImageMetadataFormatClassName =
-        "com.sun.imageio.plugins.jpeg.JPEGImageMetadataFormat";
+            "com.sun.imageio.plugins.jpeg.JPEGImageMetadataFormat";
     public static final String nativeStreamMetadataFormatName =
-        "javax_imageio_jpeg_stream_1.0";
+            "javax_imageio_jpeg_stream_1.0";
     public static final String nativeStreamMetadataFormatClassName =
-        "com.sun.imageio.plugins.jpeg.JPEGStreamMetadataFormat";
+            "com.sun.imageio.plugins.jpeg.JPEGStreamMetadataFormat";
 
     // IJG Color codes.
     public static final int JCS_UNKNOWN = 0;       // error/unspecified
@@ -198,15 +264,17 @@ public class JPEG {
     public static final int JCS_YCCA = 10;         // PhotoYCC-Alpha
     public static final int JCS_YCCK = 11;         // Y/Cb/Cr/K
 
-    public static final int NUM_JCS_CODES = JCS_YCCK+1;
+    public static final int NUM_JCS_CODES = JCS_YCCK + 1;
 
-    /** IJG can handle up to 4-channel JPEGs */
-    public static final int [] [] bandOffsets = {{0},
-                                          {0, 1},
-                                          {0, 1, 2},
-                                          {0, 1, 2, 3}};
+    /**
+     * IJG can handle up to 4-channel JPEGs
+     */
+    public static final int[][] bandOffsets = {{0},
+            {0, 1},
+            {0, 1, 2},
+            {0, 1, 2, 3}};
 
-    public static final int [] bOffsRGB = { 2, 1, 0 };
+    public static final int[] bOffsRGB = {2, 1, 0};
 
     /* These are kept in the inner class to avoid static initialization
      * of the CMM class until someone actually needs it.
@@ -214,7 +282,7 @@ public class JPEG {
      */
     public static class JCS {
         public static final ColorSpace sRGB =
-            ColorSpace.getInstance(ColorSpace.CS_sRGB);
+                ColorSpace.getInstance(ColorSpace.CS_sRGB);
 
         private static ColorSpace YCC = null;
         private static boolean yccInited = false;
@@ -245,12 +313,12 @@ public class JPEG {
     static boolean isNonStandardICC(ColorSpace cs) {
         boolean retval = false;
         if ((cs instanceof ICC_ColorSpace)
-            && (!cs.isCS_sRGB())
-            && (!cs.equals(ColorSpace.getInstance(ColorSpace.CS_CIEXYZ)))
-            && (!cs.equals(ColorSpace.getInstance(ColorSpace.CS_GRAY)))
-            && (!cs.equals(ColorSpace.getInstance(ColorSpace.CS_LINEAR_RGB)))
-            && (!cs.equals(ColorSpace.getInstance(ColorSpace.CS_PYCC)))
-            ) {
+                && (!cs.isCS_sRGB())
+                && (!cs.equals(ColorSpace.getInstance(ColorSpace.CS_CIEXYZ)))
+                && (!cs.equals(ColorSpace.getInstance(ColorSpace.CS_GRAY)))
+                && (!cs.equals(ColorSpace.getInstance(ColorSpace.CS_LINEAR_RGB)))
+                && (!cs.equals(ColorSpace.getInstance(ColorSpace.CS_PYCC)))
+        ) {
             retval = true;
         }
         return retval;
@@ -305,17 +373,17 @@ public class JPEG {
         int retval = ADOBE_IMPOSSIBLE;
         ColorModel cm = imageType.getColorModel();
         switch (cm.getColorSpace().getType()) {
-        case ColorSpace.TYPE_GRAY:
-            retval = ADOBE_UNKNOWN;
-            break;
-        case ColorSpace.TYPE_RGB:
-            retval = input ? ADOBE_YCC : ADOBE_UNKNOWN;
-            break;
-        case ColorSpace.TYPE_YCbCr:
-            retval = ADOBE_YCC;
-            break;
-        case ColorSpace.TYPE_CMYK:
-            retval = input ? ADOBE_YCCK : ADOBE_IMPOSSIBLE;
+            case ColorSpace.TYPE_GRAY:
+                retval = ADOBE_UNKNOWN;
+                break;
+            case ColorSpace.TYPE_RGB:
+                retval = input ? ADOBE_YCC : ADOBE_UNKNOWN;
+                break;
+            case ColorSpace.TYPE_YCbCr:
+                retval = ADOBE_YCC;
+                break;
+            case ColorSpace.TYPE_CMYK:
+                retval = input ? ADOBE_YCCK : ADOBE_IMPOSSIBLE;
         }
         return retval;
     }
@@ -346,8 +414,8 @@ public class JPEG {
     /**
      * Return an array of default, visually lossless quantization tables.
      */
-    static JPEGQTable [] getDefaultQTables() {
-        JPEGQTable [] qTables = new JPEGQTable[2];
+    static JPEGQTable[] getDefaultQTables() {
+        JPEGQTable[] qTables = new JPEGQTable[2];
         qTables[0] = JPEGQTable.K1Div2Luminance;
         qTables[1] = JPEGQTable.K2Div2Chrominance;
         return qTables;
@@ -356,8 +424,8 @@ public class JPEG {
     /**
      * Return an array of default Huffman tables.
      */
-    static JPEGHuffmanTable [] getDefaultHuffmanTables(boolean wantDC) {
-        JPEGHuffmanTable [] tables = new JPEGHuffmanTable[2];
+    static JPEGHuffmanTable[] getDefaultHuffmanTables(boolean wantDC) {
+        JPEGHuffmanTable[] tables = new JPEGHuffmanTable[2];
         if (wantDC) {
             tables[0] = JPEGHuffmanTable.StdDCLuminance;
             tables[1] = JPEGHuffmanTable.StdDCChrominance;

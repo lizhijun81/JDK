@@ -67,8 +67,7 @@ import org.xml.sax.SAXParseException;
 /**
  * {@link ErrorHandler} that throws all errors and fatal errors.
  *
- * @author
- *     Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
+ * @author Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
  */
 public class DraconianErrorHandler implements ErrorHandler {
     /**
@@ -76,14 +75,17 @@ public class DraconianErrorHandler implements ErrorHandler {
      */
     public static final ErrorHandler theInstance = new DraconianErrorHandler();
 
-    private DraconianErrorHandler() {}
+    private DraconianErrorHandler() {
+    }
 
     public void error(SAXParseException e) throws SAXException {
         throw e;
     }
+
     public void fatalError(SAXParseException e) throws SAXException {
         throw e;
     }
+
     public void warning(SAXParseException e) throws SAXException {
         ; // noop
     }

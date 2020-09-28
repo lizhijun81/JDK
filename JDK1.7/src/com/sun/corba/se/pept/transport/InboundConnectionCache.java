@@ -29,8 +29,7 @@ package com.sun.corba.se.pept.transport;
  * @author Harold Carr
  */
 public interface InboundConnectionCache
-    extends ConnectionCache
-{
+        extends ConnectionCache {
     public Connection get(Acceptor acceptor); // REVISIT
 
     public void put(Acceptor acceptor, Connection connection);

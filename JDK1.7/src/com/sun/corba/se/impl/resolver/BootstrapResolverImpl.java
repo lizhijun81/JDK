@@ -23,52 +23,52 @@
  *
  */
 
-package com.sun.corba.se.impl.resolver ;
+package com.sun.corba.se.impl.resolver;
 
-import org.omg.CORBA.portable.InputStream ;
-import org.omg.CORBA.portable.OutputStream ;
-import org.omg.CORBA.portable.ApplicationException ;
-import org.omg.CORBA.portable.RemarshalException ;
+import org.omg.CORBA.portable.InputStream;
+import org.omg.CORBA.portable.OutputStream;
+import org.omg.CORBA.portable.ApplicationException;
+import org.omg.CORBA.portable.RemarshalException;
 
-import com.sun.corba.se.spi.ior.IOR ;
-import com.sun.corba.se.spi.ior.IORFactories ;
-import com.sun.corba.se.spi.ior.IORTemplate ;
-import com.sun.corba.se.spi.ior.ObjectKey ;
-import com.sun.corba.se.spi.ior.ObjectKeyFactory ;
-import com.sun.corba.se.spi.ior.iiop.IIOPAddress ;
-import com.sun.corba.se.spi.ior.iiop.IIOPProfileTemplate ;
-import com.sun.corba.se.spi.ior.iiop.IIOPFactories ;
-import com.sun.corba.se.spi.ior.iiop.GIOPVersion ;
-import com.sun.corba.se.spi.logging.CORBALogDomains ;
-import com.sun.corba.se.spi.orb.ORB ;
-import com.sun.corba.se.spi.resolver.Resolver ;
+import com.sun.corba.se.spi.ior.IOR;
+import com.sun.corba.se.spi.ior.IORFactories;
+import com.sun.corba.se.spi.ior.IORTemplate;
+import com.sun.corba.se.spi.ior.ObjectKey;
+import com.sun.corba.se.spi.ior.ObjectKeyFactory;
+import com.sun.corba.se.spi.ior.iiop.IIOPAddress;
+import com.sun.corba.se.spi.ior.iiop.IIOPProfileTemplate;
+import com.sun.corba.se.spi.ior.iiop.IIOPFactories;
+import com.sun.corba.se.spi.ior.iiop.GIOPVersion;
+import com.sun.corba.se.spi.logging.CORBALogDomains;
+import com.sun.corba.se.spi.orb.ORB;
+import com.sun.corba.se.spi.resolver.Resolver;
 
-import com.sun.corba.se.impl.logging.ORBUtilSystemException ;
-import com.sun.corba.se.impl.orbutil.ORBUtility ;
+import com.sun.corba.se.impl.logging.ORBUtilSystemException;
+import com.sun.corba.se.impl.orbutil.ORBUtility;
 
 public class BootstrapResolverImpl implements Resolver {
-    private org.omg.CORBA.portable.Delegate bootstrapDelegate ;
-    private ORBUtilSystemException wrapper ;
+    private org.omg.CORBA.portable.Delegate bootstrapDelegate;
+    private ORBUtilSystemException wrapper;
 
     public BootstrapResolverImpl(ORB orb, String host, int port) {
-        wrapper = ORBUtilSystemException.get( orb,
-            CORBALogDomains.ORB_RESOLVER ) ;
+        wrapper = ORBUtilSystemException.get(orb,
+                CORBALogDomains.ORB_RESOLVER);
 
         // Create a new IOR with the magic of INIT
-        byte[] initialKey = "INIT".getBytes() ;
-        ObjectKey okey = orb.getObjectKeyFactory().create(initialKey) ;
+        byte[] initialKey = "INIT".getBytes();
+        ObjectKey okey = orb.getObjectKeyFactory().create(initialKey);
 
-        IIOPAddress addr = IIOPFactories.makeIIOPAddress( orb, host, port ) ;
+        IIOPAddress addr = IIOPFactories.makeIIOPAddress(orb, host, port);
         IIOPProfileTemplate ptemp = IIOPFactories.makeIIOPProfileTemplate(
-            orb, GIOPVersion.V1_0, addr);
+                orb, GIOPVersion.V1_0, addr);
 
-        IORTemplate iortemp = IORFactories.makeIORTemplate( okey.getTemplate() ) ;
-        iortemp.add( ptemp ) ;
+        IORTemplate iortemp = IORFactories.makeIORTemplate(okey.getTemplate());
+        iortemp.add(ptemp);
 
-        IOR initialIOR = iortemp.makeIOR( (com.sun.corba.se.spi.orb.ORB)orb,
-            "", okey.getId() ) ;
+        IOR initialIOR = iortemp.makeIOR((com.sun.corba.se.spi.orb.ORB) orb,
+                "", okey.getId());
 
-        bootstrapDelegate = ORBUtility.makeClientDelegate( initialIOR ) ;
+        bootstrapDelegate = ORBUtility.makeClientDelegate(initialIOR);
     }
 
     /**
@@ -79,8 +79,7 @@ public class BootstrapResolverImpl implements Resolver {
      * @return InputStream which contains the response from the
      * BootStrapOperation.
      */
-    private InputStream invoke( String operationName, String parameter )
-    {
+    private InputStream invoke(String operationName, String parameter) {
         boolean remarshal = true;
 
         // Invoke.
@@ -93,14 +92,14 @@ public class BootstrapResolverImpl implements Resolver {
         // does not take the location forward info into account.
 
         while (remarshal) {
-            org.omg.CORBA.Object objref = null ;
+            org.omg.CORBA.Object objref = null;
             remarshal = false;
 
-            OutputStream os = (OutputStream) bootstrapDelegate.request( objref,
-                operationName, true);
+            OutputStream os = (OutputStream) bootstrapDelegate.request(objref,
+                    operationName, true);
 
-            if ( parameter != null ) {
-                os.write_string( parameter );
+            if (parameter != null) {
+                os.write_string(parameter);
             }
 
             try {
@@ -111,9 +110,9 @@ public class BootstrapResolverImpl implements Resolver {
                 // PortableInterceptor ending points.
                 // Note that the first parameter is ignored inside invoke.
 
-                inStream = bootstrapDelegate.invoke( objref, os);
+                inStream = bootstrapDelegate.invoke(objref, os);
             } catch (ApplicationException e) {
-                throw wrapper.bootstrapApplicationException( e ) ;
+                throw wrapper.bootstrapApplicationException(e);
             } catch (RemarshalException e) {
                 // XXX log this
                 remarshal = true;
@@ -123,43 +122,41 @@ public class BootstrapResolverImpl implements Resolver {
         return inStream;
     }
 
-    public org.omg.CORBA.Object resolve( String identifier )
-    {
-        InputStream inStream = null ;
-        org.omg.CORBA.Object result = null ;
+    public org.omg.CORBA.Object resolve(String identifier) {
+        InputStream inStream = null;
+        org.omg.CORBA.Object result = null;
 
         try {
-            inStream = invoke( "get", identifier ) ;
+            inStream = invoke("get", identifier);
 
             result = inStream.read_Object();
 
             // NOTE: do note trap and ignore errors.
             // Let them flow out.
         } finally {
-            bootstrapDelegate.releaseReply( null, inStream ) ;
+            bootstrapDelegate.releaseReply(null, inStream);
         }
 
-        return result ;
+        return result;
     }
 
-    public java.util.Set list()
-    {
-        InputStream inStream = null ;
-        java.util.Set result = new java.util.HashSet() ;
+    public java.util.Set list() {
+        InputStream inStream = null;
+        java.util.Set result = new java.util.HashSet();
 
         try {
-            inStream = invoke( "list", null ) ;
+            inStream = invoke("list", null);
 
             int count = inStream.read_long();
-            for (int i=0; i < count; i++)
-                result.add( inStream.read_string() ) ;
+            for (int i = 0; i < count; i++)
+                result.add(inStream.read_string());
 
             // NOTE: do note trap and ignore errors.
             // Let them flow out.
         } finally {
-            bootstrapDelegate.releaseReply( null, inStream ) ;
+            bootstrapDelegate.releaseReply(null, inStream);
         }
 
-        return result ;
+        return result;
     }
 }

@@ -36,7 +36,6 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 
 
-
 /**
  * A Windows toggle button.
  * <p>
@@ -49,8 +48,7 @@ import java.beans.PropertyChangeEvent;
  *
  * @author Jeff Dinkins
  */
-public class WindowsToggleButtonUI extends BasicToggleButtonUI
-{
+public class WindowsToggleButtonUI extends BasicToggleButtonUI {
     protected int dashedRectGapX;
     protected int dashedRectGapY;
     protected int dashedRectGapWidth;
@@ -79,12 +77,12 @@ public class WindowsToggleButtonUI extends BasicToggleButtonUI
     // ********************************
     protected void installDefaults(AbstractButton b) {
         super.installDefaults(b);
-        if(!defaults_initialized) {
+        if (!defaults_initialized) {
             String pp = getPropertyPrefix();
-            dashedRectGapX = ((Integer)UIManager.get("Button.dashedRectGapX")).intValue();
-            dashedRectGapY = ((Integer)UIManager.get("Button.dashedRectGapY")).intValue();
-            dashedRectGapWidth = ((Integer)UIManager.get("Button.dashedRectGapWidth")).intValue();
-            dashedRectGapHeight = ((Integer)UIManager.get("Button.dashedRectGapHeight")).intValue();
+            dashedRectGapX = ((Integer) UIManager.get("Button.dashedRectGapX")).intValue();
+            dashedRectGapY = ((Integer) UIManager.get("Button.dashedRectGapY")).intValue();
+            dashedRectGapWidth = ((Integer) UIManager.get("Button.dashedRectGapWidth")).intValue();
+            dashedRectGapHeight = ((Integer) UIManager.get("Button.dashedRectGapHeight")).intValue();
             focusColor = UIManager.getColor(pp + "focus");
             defaults_initialized = true;
         }
@@ -158,8 +156,8 @@ public class WindowsToggleButtonUI extends BasicToggleButtonUI
                               Rectangle viewRect, Rectangle textRect, Rectangle iconRect) {
         g.setColor(getFocusColor());
         BasicGraphicsUtils.drawDashedRect(g, dashedRectGapX, dashedRectGapY,
-                                          b.getWidth() - dashedRectGapWidth,
-                                          b.getHeight() - dashedRectGapHeight);
+                b.getWidth() - dashedRectGapWidth,
+                b.getHeight() - dashedRectGapHeight);
     }
 
     // ********************************
@@ -171,10 +169,14 @@ public class WindowsToggleButtonUI extends BasicToggleButtonUI
         /* Ensure that the width and height of the button is odd,
          * to allow for the focus line if focus is painted
          */
-        AbstractButton b = (AbstractButton)c;
+        AbstractButton b = (AbstractButton) c;
         if (d != null && b.isFocusPainted()) {
-            if(d.width % 2 == 0) { d.width += 1; }
-            if(d.height % 2 == 0) { d.height += 1; }
+            if (d.width % 2 == 0) {
+                d.width += 1;
+            }
+            if (d.height % 2 == 0) {
+                d.height += 1;
+            }
         }
         return d;
     }

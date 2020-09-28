@@ -33,16 +33,19 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLDTDScanner;
 import com.sun.org.apache.xerces.internal.xni.XMLResourceIdentifier;
 
 /**
+ *
  */
 public abstract class DTDParser
-    extends XMLGrammarParser
-    implements XMLDTDHandler, XMLDTDContentModelHandler {
+        extends XMLGrammarParser
+        implements XMLDTDHandler, XMLDTDContentModelHandler {
 
     //
     // Data
     //
 
-    /** fDTDScanner */
+    /**
+     * fDTDScanner
+     */
     protected XMLDTDScanner fDTDScanner;
 
     //
@@ -50,8 +53,6 @@ public abstract class DTDParser
     //
 
     /**
-     *
-     *
      * @param symbolTable
      */
     public DTDParser(SymbolTable symbolTable) {
@@ -93,7 +94,6 @@ public abstract class DTDParser
      *                 stream. This value will be null in those situations
      *                 where the entity encoding is not auto-detected (e.g.
      *                 internal parameter entities).
-     *
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void startEntity(String name, String publicId, String systemId,
@@ -109,7 +109,6 @@ public abstract class DTDParser
      *
      * @param version  The XML version, or null if not specified.
      * @param encoding The IANA encoding name of the entity.
-     *
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void textDecl(String version, String encoding) throws XNIException {
@@ -121,14 +120,13 @@ public abstract class DTDParser
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void startDTD(XMLLocator locator, Augmentations augmentations)
-                         throws XNIException {
+            throws XNIException {
     }
 
     /**
      * A comment.
      *
      * @param text The text in the comment.
-     *
      * @throws XNIException Thrown by application to signal an error.
      */
     public void comment(XMLString text, Augmentations augmentations) throws XNIException {
@@ -147,12 +145,11 @@ public abstract class DTDParser
      *
      * @param target The target.
      * @param data   The data or null if none specified.
-     *
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void processingInstruction(String target, XMLString data,
                                       Augmentations augmentations)
-        throws XNIException {
+            throws XNIException {
     } // processingInstruction
 
     /**
@@ -161,7 +158,7 @@ public abstract class DTDParser
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void startExternalSubset(XMLResourceIdentifier identifier,
-                                    Augmentations augmentations)  throws XNIException {
+                                    Augmentations augmentations) throws XNIException {
     } // startExternalSubset
 
     /**
@@ -177,12 +174,11 @@ public abstract class DTDParser
      *
      * @param name         The name of the element.
      * @param contentModel The element content model.
-     *
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void elementDecl(String name, String contentModel,
                             Augmentations augmentations)
-        throws XNIException {
+            throws XNIException {
     } // elementDecl
 
     /**
@@ -190,7 +186,6 @@ public abstract class DTDParser
      *
      * @param elementName The name of the element that this attribute
      *                    list is associated with.
-     *
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void startAttlist(String elementName,
@@ -215,14 +210,13 @@ public abstract class DTDParser
      *                      "#REQUIRED", or null.
      * @param defaultValue  The attribute default value, or null if no
      *                      default value is specified.
-     *
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void attributeDecl(String elementName, String attributeName,
                               String type, String[] enumeration,
                               String defaultType, XMLString defaultValue,
                               XMLString nonNormalizedDefaultValue, Augmentations augmentations)
-        throws XNIException {
+            throws XNIException {
     } // attributeDecl
 
     /**
@@ -236,75 +230,70 @@ public abstract class DTDParser
     /**
      * An internal entity declaration.
      *
-     * @param name The name of the entity. Parameter entity names start with
-     *             '%', whereas the name of a general entity is just the
-     *             entity name.
-     * @param text The value of the entity.
+     * @param name              The name of the entity. Parameter entity names start with
+     *                          '%', whereas the name of a general entity is just the
+     *                          entity name.
+     * @param text              The value of the entity.
      * @param nonNormalizedText The non-normalized value of the entity. This
-     *             value contains the same sequence of characters that was in
-     *             the internal entity declaration, without any entity
-     *             references expanded.
-     *
+     *                          value contains the same sequence of characters that was in
+     *                          the internal entity declaration, without any entity
+     *                          references expanded.
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void internalEntityDecl(String name, XMLString text,
                                    XMLString nonNormalizedText,
                                    Augmentations augmentations)
-        throws XNIException {
+            throws XNIException {
     } // internalEntityDecl(String,XMLString,XMLString)
 
     /**
      * An external entity declaration.
      *
-     * @param name     The name of the entity. Parameter entity names start
-     *                 with '%', whereas the name of a general entity is just
-     *                 the entity name.
+     * @param name          The name of the entity. Parameter entity names start
+     *                      with '%', whereas the name of a general entity is just
+     *                      the entity name.
      * @param identifier    An object containing all location information
      *                      pertinent to this entity.
      * @param augmentations Additional information that may include infoset
      *                      augmentations.
-     *
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void externalEntityDecl(String name,
                                    XMLResourceIdentifier identifier,
                                    Augmentations augmentations)
-        throws XNIException {
+            throws XNIException {
     } // externalEntityDecl
 
     /**
      * An unparsed entity declaration.
      *
-     * @param name     The name of the entity.
+     * @param name          The name of the entity.
      * @param identifier    An object containing all location information
      *                      pertinent to this entity.
-     * @param notation The name of the notation.
-     *
+     * @param notation      The name of the notation.
      * @param augmentations Additional information that may include infoset
      *                      augmentations.
-     *
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void unparsedEntityDecl(String name,
                                    XMLResourceIdentifier identifier,
                                    String notation, Augmentations augmentations)
-        throws XNIException {
+            throws XNIException {
     } // unparsedEntityDecl
 
     /**
      * A notation declaration
      *
-     * @param name     The name of the notation.
+     * @param name          The name of the notation.
      * @param identifier    An object containing all location information
      *                      pertinent to this notation.
      * @param augmentations Additional information that may include infoset
      *                      augmentations.
-     *
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void notationDecl(String name, XMLResourceIdentifier identifier,
                              Augmentations augmentations)
-        throws XNIException {
+            throws XNIException {
     } // notationDecl
 
     /**
@@ -312,9 +301,7 @@ public abstract class DTDParser
      *
      * @param type The type of the conditional section. This value will
      *             either be CONDITIONAL_INCLUDE or CONDITIONAL_IGNORE.
-     *
      * @throws XNIException Thrown by handler to signal an error.
-     *
      * @see XMLDTDHandler#CONDITIONAL_INCLUDE
      * @see XMLDTDHandler#CONDITIONAL_IGNORE
      */
@@ -347,7 +334,6 @@ public abstract class DTDParser
      * the endDTD method.
      *
      * @param name The name of the entity.
-     *
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void endEntity(String name, Augmentations augmentations) throws XNIException {
@@ -364,16 +350,14 @@ public abstract class DTDParser
      *
      * @param elementName The name of the element.
      * @param type        The content model type.
-     *
      * @throws XNIException Thrown by handler to signal an error.
-     *
      * @see com.sun.org.apache.xerces.internal.impl.dtd.XMLElementDecl#TYPE_EMPTY
      * @see com.sun.org.apache.xerces.internal.impl.dtd.XMLElementDecl#TYPE_ANY
      * @see com.sun.org.apache.xerces.internal.impl.dtd.XMLElementDecl#TYPE_MIXED
      * @see com.sun.org.apache.xerces.internal.impl.dtd.XMLElementDecl#TYPE_CHILDREN
      */
     public void startContentModel(String elementName, short type)
-        throws XNIException {
+            throws XNIException {
     } // startContentModel
 
     /**
@@ -386,9 +370,7 @@ public abstract class DTDParser
      * the startContentModel method where the type is TYPE_MIXED.
      *
      * @param elementName The name of the referenced element.
-     *
      * @throws XNIException Thrown by handler to signal an error.
-     *
      * @see com.sun.org.apache.xerces.internal.impl.dtd.XMLElementDecl#TYPE_MIXED
      */
     public void mixedElement(String elementName) throws XNIException {
@@ -404,7 +386,6 @@ public abstract class DTDParser
      * associated occurrence counts.
      *
      * @throws XNIException Thrown by handler to signal an error.
-     *
      * @see com.sun.org.apache.xerces.internal.impl.dtd.XMLElementDecl#TYPE_CHILDREN
      */
     public void childrenStartGroup() throws XNIException {
@@ -414,9 +395,7 @@ public abstract class DTDParser
      * A referenced element in a children content model.
      *
      * @param elementName The name of the referenced element.
-     *
      * @throws XNIException Thrown by handler to signal an error.
-     *
      * @see com.sun.org.apache.xerces.internal.impl.dtd.XMLElementDecl#TYPE_CHILDREN
      */
     public void childrenElement(String elementName) throws XNIException {
@@ -430,9 +409,7 @@ public abstract class DTDParser
      * the startContentModel method where the type is TYPE_CHILDREN.
      *
      * @param separator The type of children separator.
-     *
      * @throws XNIException Thrown by handler to signal an error.
-     *
      * @see XMLDTDContentModelHandler#SEPARATOR_CHOICE
      * @see XMLDTDContentModelHandler#SEPARATOR_SEQUENCE
      * @see com.sun.org.apache.xerces.internal.impl.dtd.XMLElementDecl#TYPE_CHILDREN
@@ -448,9 +425,7 @@ public abstract class DTDParser
      *
      * @param occurrence The occurrence count for the last children element
      *                   or children group.
-     *
      * @throws XNIException Thrown by handler to signal an error.
-     *
      * @see XMLDTDContentModelHandler#OCCURS_ZERO_OR_ONE
      * @see XMLDTDContentModelHandler#OCCURS_ZERO_OR_MORE
      * @see XMLDTDContentModelHandler#OCCURS_ONE_OR_MORE

@@ -64,10 +64,9 @@ package java.awt.dnd;
  * respective listener's method and all the necessary data should be retrieved
  * from the returned <code>Transferable</code> before that method returns.
  *
+ * @author David Mendenhall
  * @see DropTargetEvent
  * @see DropTargetListener
- *
- * @author David Mendenhall
  * @since 1.4
  */
 public abstract class DropTargetAdapter implements DropTargetListener {
@@ -79,7 +78,8 @@ public abstract class DropTargetAdapter implements DropTargetListener {
      *
      * @param dtde the <code>DropTargetDragEvent</code>
      */
-    public void dragEnter(DropTargetDragEvent dtde) {}
+    public void dragEnter(DropTargetDragEvent dtde) {
+    }
 
     /**
      * Called when a drag operation is ongoing, while the mouse pointer is still
@@ -88,7 +88,8 @@ public abstract class DropTargetAdapter implements DropTargetListener {
      *
      * @param dtde the <code>DropTargetDragEvent</code>
      */
-    public void dragOver(DropTargetDragEvent dtde) {}
+    public void dragOver(DropTargetDragEvent dtde) {
+    }
 
     /**
      * Called if the user has modified
@@ -96,7 +97,8 @@ public abstract class DropTargetAdapter implements DropTargetListener {
      *
      * @param dtde the <code>DropTargetDragEvent</code>
      */
-    public void dropActionChanged(DropTargetDragEvent dtde) {}
+    public void dropActionChanged(DropTargetDragEvent dtde) {
+    }
 
     /**
      * Called while a drag operation is ongoing, when the mouse pointer has
@@ -105,5 +107,6 @@ public abstract class DropTargetAdapter implements DropTargetListener {
      *
      * @param dte the <code>DropTargetEvent</code>
      */
-    public void dragExit(DropTargetEvent dte) {}
+    public void dragExit(DropTargetEvent dte) {
+    }
 }

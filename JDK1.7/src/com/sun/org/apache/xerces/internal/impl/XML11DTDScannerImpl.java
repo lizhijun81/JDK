@@ -86,27 +86,33 @@ import com.sun.org.apache.xerces.internal.xni.XNIException;
  *  <li>http://apache.org/xml/properties/internal/entity-manager</li>
  * </ul>
  *
- * @xerces.internal
- *
  * @author Arnaud  Le Hors, IBM
  * @author Andy Clark, IBM
  * @author Glenn Marcy, IBM
  * @author Eric Ye, IBM
- *
+ * @xerces.internal
  */
 public class XML11DTDScannerImpl
-    extends XMLDTDScannerImpl {
+        extends XMLDTDScannerImpl {
 
-    /** Array of 3 strings. */
+    /**
+     * Array of 3 strings.
+     */
     private String[] fStrings = new String[3];
 
-    /** String. */
+    /**
+     * String.
+     */
     private XMLString fString = new XMLString();
 
-    /** String buffer. */
+    /**
+     * String buffer.
+     */
     private XMLStringBuffer fStringBuffer = new XMLStringBuffer();
 
-    /** String buffer. */
+    /**
+     * String buffer.
+     */
     private XMLStringBuffer fStringBuffer2 = new XMLStringBuffer();
     private XMLStringBuffer fStringBuffer3 = new XMLStringBuffer();
 
@@ -114,12 +120,18 @@ public class XML11DTDScannerImpl
     // Constructors
     //
 
-    /** Default constructor. */
-    public XML11DTDScannerImpl() {super();} // <init>()
+    /**
+     * Default constructor.
+     */
+    public XML11DTDScannerImpl() {
+        super();
+    } // <init>()
 
-    /** Constructor for he use of non-XMLComponentManagers. */
+    /**
+     * Constructor for he use of non-XMLComponentManagers.
+     */
     public XML11DTDScannerImpl(SymbolTable symbolTable,
-                XMLErrorReporter errorReporter, XMLEntityManager entityManager) {
+                               XMLErrorReporter errorReporter, XMLEntityManager entityManager) {
         super(symbolTable, errorReporter, entityManager);
     }
 
@@ -134,15 +146,16 @@ public class XML11DTDScannerImpl
     // we need to override these methods in both places.  Ah for
     // multiple inheritance...
     // This needs to be refactored!!!  - NG
+
     /**
      * Scans public ID literal.
-     *
+     * <p>
      * [12] PubidLiteral ::= '"' PubidChar* '"' | "'" (PubidChar - "'")* "'"
      * [13] PubidChar::= #x20 | #xD | #xA | [a-zA-Z0-9] | [-'()+,./:=?;!*#@$_%]
-     *
+     * <p>
      * The returned string is normalized according to the following rule,
      * from http://www.w3.org/TR/REC-xml#dt-pubid:
-     *
+     * <p>
      * Before a match is attempted, all strings of white space in the public
      * identifier must be normalized to single space characters (#x20), and
      * leading and trailing white space must be removed.
@@ -154,8 +167,7 @@ public class XML11DTDScannerImpl
      * the time of calling is lost.
      */
     protected boolean scanPubidLiteral(XMLString literal)
-        throws IOException, XNIException
-    {
+            throws IOException, XNIException {
         int quote = fEntityScanner.scanChar();
         if (quote != '\'' && quote != '"') {
             reportFatalError("QuoteRequiredInPublicID", null);
@@ -175,31 +187,27 @@ public class XML11DTDScannerImpl
                     fStringBuffer.append(' ');
                     skipSpace = true;
                 }
-            }
-            else if (c == quote) {
+            } else if (c == quote) {
                 if (skipSpace) {
                     // if we finished on a space let's trim it
                     fStringBuffer.length--;
                 }
                 literal.setValues(fStringBuffer);
                 break;
-            }
-            else if (XMLChar.isPubid(c)) {
-                fStringBuffer.append((char)c);
+            } else if (XMLChar.isPubid(c)) {
+                fStringBuffer.append((char) c);
                 skipSpace = false;
-            }
-            else if (c == -1) {
+            } else if (c == -1) {
                 reportFatalError("PublicIDUnterminated", null);
                 return false;
-            }
-            else {
+            } else {
                 dataok = false;
                 reportFatalError("InvalidCharInPublicID",
-                                 new Object[]{Integer.toHexString(c)});
+                        new Object[]{Integer.toHexString(c)});
             }
         }
         return dataok;
-   }
+    }
 
     /**
      * Normalize whitespace in an XMLString converting all whitespace
@@ -294,13 +302,13 @@ public class XML11DTDScannerImpl
     // documents may invoke 1.0 entities; thus either version decl (or none!)
     // is allowed to appear in this context
     protected boolean versionSupported(String version) {
-        return version.equals("1.1") || version.equals ("1.0");
+        return version.equals("1.1") || version.equals("1.0");
     } // versionSupported(String):  boolean
 
     // returns the error message key for unsupported
     // versions of XML with respect to the version of
     // XML understood by this scanner.
-    protected String getVersionNotSupportedKey () {
+    protected String getVersionNotSupportedKey() {
         return "VersionNotSupported11";
     } // getVersionNotSupportedKey: String
 

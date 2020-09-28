@@ -32,77 +32,75 @@ import java.security.*;
  * This class is duplicated for each JAXP subpackage so keep it in sync.
  * It is package private and therefore is not exposed as part of the JAXP
  * API.
- *
+ * <p>
  * Security related methods that only work on J2SE 1.2 and newer.
  */
-class SecuritySupport  {
+class SecuritySupport {
 
 
-    ClassLoader getContextClassLoader() throws SecurityException{
+    ClassLoader getContextClassLoader() throws SecurityException {
         return (ClassLoader)
                 AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
-                ClassLoader cl = null;
-                //try {
-                cl = Thread.currentThread().getContextClassLoader();
-                //} catch (SecurityException ex) { }
+                    public Object run() {
+                        ClassLoader cl = null;
+                        //try {
+                        cl = Thread.currentThread().getContextClassLoader();
+                        //} catch (SecurityException ex) { }
 
-                if (cl == null)
-                    cl = ClassLoader.getSystemClassLoader();
+                        if (cl == null)
+                            cl = ClassLoader.getSystemClassLoader();
 
-                return cl;
-            }
-        });
+                        return cl;
+                    }
+                });
     }
 
     String getSystemProperty(final String propName) {
         return (String)
-            AccessController.doPrivileged(new PrivilegedAction() {
-                public Object run() {
-                    return System.getProperty(propName);
-                }
-            });
+                AccessController.doPrivileged(new PrivilegedAction() {
+                    public Object run() {
+                        return System.getProperty(propName);
+                    }
+                });
     }
 
     FileInputStream getFileInputStream(final File file)
-        throws FileNotFoundException
-    {
+            throws FileNotFoundException {
         try {
             return (FileInputStream)
-                AccessController.doPrivileged(new PrivilegedExceptionAction() {
-                    public Object run() throws FileNotFoundException {
-                        return new FileInputStream(file);
-                    }
-                });
+                    AccessController.doPrivileged(new PrivilegedExceptionAction() {
+                        public Object run() throws FileNotFoundException {
+                            return new FileInputStream(file);
+                        }
+                    });
         } catch (PrivilegedActionException e) {
-            throw (FileNotFoundException)e.getException();
+            throw (FileNotFoundException) e.getException();
         }
     }
 
     InputStream getResourceAsStream(final ClassLoader cl,
-                                           final String name)
-    {
+                                    final String name) {
         return (InputStream)
-            AccessController.doPrivileged(new PrivilegedAction() {
-                public Object run() {
-                    InputStream ris;
-                    if (cl == null) {
-                        ris = Object.class.getResourceAsStream(name);
-                    } else {
-                        ris = cl.getResourceAsStream(name);
+                AccessController.doPrivileged(new PrivilegedAction() {
+                    public Object run() {
+                        InputStream ris;
+                        if (cl == null) {
+                            ris = Object.class.getResourceAsStream(name);
+                        } else {
+                            ris = cl.getResourceAsStream(name);
+                        }
+                        return ris;
                     }
-                    return ris;
-                }
-            });
+                });
     }
 
     boolean doesFileExist(final File f) {
-    return ((Boolean)
-            AccessController.doPrivileged(new PrivilegedAction() {
-                public Object run() {
-                    return new Boolean(f.exists());
-                }
-            })).booleanValue();
+        return ((Boolean)
+                AccessController.doPrivileged(new PrivilegedAction() {
+                    public Object run() {
+                        return new Boolean(f.exists());
+                    }
+                })).booleanValue();
     }
 
 }

@@ -31,14 +31,13 @@ package com.sun.mirror.declaration;
  * type.  This includes fields, constructors, methods, and (since they
  * may be nested) declared types themselves.
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this interface is {@link
  * javax.lang.model.element.Element}.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")

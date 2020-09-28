@@ -29,7 +29,7 @@ import javax.lang.model.element.Name;
 
 /**
  * A tree node for a 'break' statement.
- *
+ * <p>
  * For example:
  * <pre>
  *   break;
@@ -37,10 +37,9 @@ import javax.lang.model.element.Name;
  *   break <em>label</em> ;
  * </pre>
  *
- * @jls section 14.15
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls section 14.15
  * @since 1.6
  */
 public interface BreakTree extends StatementTree {

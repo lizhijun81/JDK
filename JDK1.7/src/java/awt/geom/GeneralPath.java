@@ -81,7 +81,7 @@ public final class GeneralPath extends Path2D.Float {
      * will be added to the path, but the storage is expanded as
      * needed to store whatever path segments are added.
      *
-     * @param rule the winding rule
+     * @param rule            the winding rule
      * @param initialCapacity the estimate for the number of path segments
      *                        in the path
      * @see #WIND_EVEN_ODD
@@ -109,8 +109,7 @@ public final class GeneralPath extends Path2D.Float {
                 byte[] pointTypes,
                 int numTypes,
                 float[] pointCoords,
-                int numCoords)
-    {
+                int numCoords) {
         // used to construct from native
 
         this.windingRule = windingRule;

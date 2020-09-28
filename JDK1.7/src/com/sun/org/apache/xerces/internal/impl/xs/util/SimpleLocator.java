@@ -25,9 +25,8 @@ import com.sun.org.apache.xerces.internal.xni.XMLLocator;
 /**
  * An XMLLocator implementation used for schema error reporting.
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
+ * @xerces.internal
  */
 public class SimpleLocator implements XMLLocator {
 
@@ -89,6 +88,7 @@ public class SimpleLocator implements XMLLocator {
     public String getBaseSystemId() {
         return null;
     }
+
     /**
      * @see com.sun.org.apache.xerces.internal.xni.XMLLocator#setColumnNumber(int)
      */
@@ -110,7 +110,8 @@ public class SimpleLocator implements XMLLocator {
     /**
      * @see com.sun.org.apache.xerces.internal.xni.XMLResourceIdentifier#setBaseSystemId(String)
      */
-    public void setBaseSystemId(String systemId) {}
+    public void setBaseSystemId(String systemId) {
+    }
 
     /**
      * @see com.sun.org.apache.xerces.internal.xni.XMLResourceIdentifier#setExpandedSystemId(String)
@@ -129,9 +130,11 @@ public class SimpleLocator implements XMLLocator {
     /**
      * @see com.sun.org.apache.xerces.internal.xni.XMLResourceIdentifier#setPublicId(String)
      */
-    public void setPublicId(String publicId) {}
+    public void setPublicId(String publicId) {
+    }
 
-    /** Returns the encoding of the current entity.
+    /**
+     * Returns the encoding of the current entity.
      * Since these locators are used in the construction of
      * XMLParseExceptions, which know nothing about encodings, there is
      * no point in having this object deal intelligently

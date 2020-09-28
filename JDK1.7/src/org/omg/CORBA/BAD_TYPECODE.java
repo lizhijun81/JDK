@@ -34,7 +34,7 @@ package org.omg.CORBA;
  *
  * @see <A href="../../../../technotes/guides/idl/jidlExceptions.html">documentation on
  * Java&nbsp;IDL exceptions</A>
- * @since       JDK1.2
+ * @since JDK1.2
  */
 
 public final class BAD_TYPECODE extends SystemException {
@@ -60,7 +60,8 @@ public final class BAD_TYPECODE extends SystemException {
     /**
      * Constructs a <code>BAD_TYPECODE</code> exception with the specified
      * minor code and completion status.
-     * @param minor the minor code
+     *
+     * @param minor     the minor code
      * @param completed an instance of <code>CompletionStatus</code> indicating
      *                  the completion status
      */
@@ -72,8 +73,9 @@ public final class BAD_TYPECODE extends SystemException {
      * Constructs a <code>BAD_TYPECODE</code> exception with the specified detail
      * message, minor code, and completion status.
      * A detail message is a String that describes this particular exception.
-     * @param s the String containing a detail message
-     * @param minor the minor code
+     *
+     * @param s         the String containing a detail message
+     * @param minor     the minor code
      * @param completed an instance of <code>CompletionStatus</code> indicating
      *                  the completion status
      */

@@ -85,17 +85,15 @@ public class GSSException extends Exception {
     /**
      * Expired credentials.
      */
-    public static final int CREDENTIALS_EXPIRED  = 8;
+    public static final int CREDENTIALS_EXPIRED = 8;
 
     /**
      * Defective credentials.
-     *
      */
     public static final int DEFECTIVE_CREDENTIAL = 9;
 
     /**
      * Defective token.
-     *
      */
     public static final int DEFECTIVE_TOKEN = 10;
 
@@ -176,67 +174,67 @@ public class GSSException extends Exception {
 
 
     private static String[] messages = {
-        "Channel binding mismatch", // BAD_BINDINGS
-        "Unsupported mechanism requested", // BAD_MECH
-        "Invalid name provided", // BAD_NAME
-        "Name of unsupported type provided", //BAD_NAMETYPE
-        "Invalid input status selector", // BAD_STATUS
-        "Token had invalid integrity check", // BAD_SIG
-        "Specified security context expired", // CONTEXT_EXPIRED
-        "Expired credentials detected", // CREDENTIALS_EXPIRED
-        "Defective credential detected", // DEFECTIVE_CREDENTIAL
-        "Defective token detected", // DEFECTIVE_TOKEN
-        "Failure unspecified at GSS-API level", // FAILURE
-        "Security context init/accept not yet called or context deleted",
-                                                // NO_CONTEXT
-        "No valid credentials provided", // NO_CRED
-        "Unsupported QOP value", // BAD_QOP
-        "Operation unauthorized", // UNAUTHORIZED
-        "Operation unavailable", // UNAVAILABLE
-        "Duplicate credential element requested", //DUPLICATE_ELEMENT
-        "Name contains multi-mechanism elements", // NAME_NOT_MN
-        "The token was a duplicate of an earlier token", //DUPLICATE_TOKEN
-        "The token's validity period has expired", //OLD_TOKEN
-        "A later token has already been processed", //UNSEQ_TOKEN
-        "An expected per-message token was not received", //GAP_TOKEN
+            "Channel binding mismatch", // BAD_BINDINGS
+            "Unsupported mechanism requested", // BAD_MECH
+            "Invalid name provided", // BAD_NAME
+            "Name of unsupported type provided", //BAD_NAMETYPE
+            "Invalid input status selector", // BAD_STATUS
+            "Token had invalid integrity check", // BAD_SIG
+            "Specified security context expired", // CONTEXT_EXPIRED
+            "Expired credentials detected", // CREDENTIALS_EXPIRED
+            "Defective credential detected", // DEFECTIVE_CREDENTIAL
+            "Defective token detected", // DEFECTIVE_TOKEN
+            "Failure unspecified at GSS-API level", // FAILURE
+            "Security context init/accept not yet called or context deleted",
+            // NO_CONTEXT
+            "No valid credentials provided", // NO_CRED
+            "Unsupported QOP value", // BAD_QOP
+            "Operation unauthorized", // UNAUTHORIZED
+            "Operation unavailable", // UNAVAILABLE
+            "Duplicate credential element requested", //DUPLICATE_ELEMENT
+            "Name contains multi-mechanism elements", // NAME_NOT_MN
+            "The token was a duplicate of an earlier token", //DUPLICATE_TOKEN
+            "The token's validity period has expired", //OLD_TOKEN
+            "A later token has already been processed", //UNSEQ_TOKEN
+            "An expected per-message token was not received", //GAP_TOKEN
     };
 
-   /**
-    * The major code for this exception
-    *
-    * @serial
-    */
+    /**
+     * The major code for this exception
+     *
+     * @serial
+     */
     private int major;
 
-   /**
-    * The minor code for this exception
-    *
-    * @serial
-    */
+    /**
+     * The minor code for this exception
+     *
+     * @serial
+     */
     private int minor = 0;
 
-   /**
-    * The text string for minor code
-    *
-    * @serial
-    */
+    /**
+     * The text string for minor code
+     *
+     * @serial
+     */
     private String minorMessage = null;
 
-   /**
-    * Alternate text string for major code
-    *
-    * @serial
-    */
+    /**
+     * Alternate text string for major code
+     *
+     * @serial
+     */
 
     private String majorString = null;
 
     /**
-     *  Creates a GSSException object with a specified major code.
+     * Creates a GSSException object with a specified major code.
      *
      * @param majorCode the The GSS error code for the problem causing this
-     * exception to be thrown.
+     *                  exception to be thrown.
      */
-    public GSSException (int majorCode) {
+    public GSSException(int majorCode) {
 
         if (validateMajor(majorCode))
             major = majorCode;
@@ -248,10 +246,10 @@ public class GSSException extends Exception {
      * Construct a GSSException object with a specified major code and a
      * specific major string for it.
      *
-     * @param majorCode the fatal error code causing this exception.
+     * @param majorCode   the fatal error code causing this exception.
      * @param majorString an expicit message to be included in this exception
      */
-    GSSException (int majorCode, String majorString) {
+    GSSException(int majorCode, String majorString) {
 
         if (validateMajor(majorCode))
             major = majorCode;
@@ -268,14 +266,14 @@ public class GSSException extends Exception {
      * level. It allows the setting of both the GSS code and the mechanism
      * code.
      *
-     * @param majorCode the GSS error code for the problem causing this
-     * exception to be thrown.
-     * @param minorCode the mechanism level error code for the problem
-     * causing this exception to be thrown.
+     * @param majorCode   the GSS error code for the problem causing this
+     *                    exception to be thrown.
+     * @param minorCode   the mechanism level error code for the problem
+     *                    causing this exception to be thrown.
      * @param minorString the textual explanation of the mechanism error
-     * code.
+     *                    code.
      */
-    public GSSException (int majorCode, int minorCode, String minorString) {
+    public GSSException(int majorCode, int minorCode, String minorString) {
 
         if (validateMajor(majorCode))
             major = majorCode;
@@ -312,7 +310,7 @@ public class GSSException extends Exception {
      * @see #getMinorString
      * @see #setMinor
      */
-    public int  getMinor(){
+    public int getMinor() {
         return minor;
     }
 
@@ -355,7 +353,7 @@ public class GSSException extends Exception {
      * mechanism providers to indicate error details.
      *
      * @param minorCode the mechanism specific error code
-     * @param message textual explanation of the mechanism error code
+     * @param message   textual explanation of the mechanism error code
      * @see #getMinor
      */
     public void setMinor(int minorCode, String message) {

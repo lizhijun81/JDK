@@ -58,6 +58,7 @@ import org.w3c.dom.views.AbstractView;
  * bubbling to obtain notification of mouse events which occur within its
  * descendent elements.
  * <p>See also the <a href='http://www.w3.org/TR/2000/REC-DOM-Level-2-Events-20001113'>Document Object Model (DOM) Level 2 Events Specification</a>.
+ *
  * @since DOM Level 2
  */
 public interface MouseEvent extends UIEvent {
@@ -139,32 +140,33 @@ public interface MouseEvent extends UIEvent {
      * <code>dispatchEvent</code> method, though it may be called multiple
      * times during that phase if necessary. If called multiple times, the
      * final invocation takes precedence.
-     * @param typeArg Specifies the event type.
-     * @param canBubbleArg Specifies whether or not the event can bubble.
-     * @param cancelableArg Specifies whether or not the event's default
-     *   action can be prevented.
-     * @param viewArg Specifies the <code>Event</code>'s
-     *   <code>AbstractView</code>.
-     * @param detailArg Specifies the <code>Event</code>'s mouse click count.
-     * @param screenXArg Specifies the <code>Event</code>'s screen x
-     *   coordinate
-     * @param screenYArg Specifies the <code>Event</code>'s screen y
-     *   coordinate
-     * @param clientXArg Specifies the <code>Event</code>'s client x
-     *   coordinate
-     * @param clientYArg Specifies the <code>Event</code>'s client y
-     *   coordinate
-     * @param ctrlKeyArg Specifies whether or not control key was depressed
-     *   during the <code>Event</code>.
-     * @param altKeyArg Specifies whether or not alt key was depressed during
-     *   the <code>Event</code>.
-     * @param shiftKeyArg Specifies whether or not shift key was depressed
-     *   during the <code>Event</code>.
-     * @param metaKeyArg Specifies whether or not meta key was depressed
-     *   during the <code>Event</code>.
-     * @param buttonArg Specifies the <code>Event</code>'s mouse button.
+     *
+     * @param typeArg          Specifies the event type.
+     * @param canBubbleArg     Specifies whether or not the event can bubble.
+     * @param cancelableArg    Specifies whether or not the event's default
+     *                         action can be prevented.
+     * @param viewArg          Specifies the <code>Event</code>'s
+     *                         <code>AbstractView</code>.
+     * @param detailArg        Specifies the <code>Event</code>'s mouse click count.
+     * @param screenXArg       Specifies the <code>Event</code>'s screen x
+     *                         coordinate
+     * @param screenYArg       Specifies the <code>Event</code>'s screen y
+     *                         coordinate
+     * @param clientXArg       Specifies the <code>Event</code>'s client x
+     *                         coordinate
+     * @param clientYArg       Specifies the <code>Event</code>'s client y
+     *                         coordinate
+     * @param ctrlKeyArg       Specifies whether or not control key was depressed
+     *                         during the <code>Event</code>.
+     * @param altKeyArg        Specifies whether or not alt key was depressed during
+     *                         the <code>Event</code>.
+     * @param shiftKeyArg      Specifies whether or not shift key was depressed
+     *                         during the <code>Event</code>.
+     * @param metaKeyArg       Specifies whether or not meta key was depressed
+     *                         during the <code>Event</code>.
+     * @param buttonArg        Specifies the <code>Event</code>'s mouse button.
      * @param relatedTargetArg Specifies the <code>Event</code>'s related
-     *   <code>EventTarget</code>.
+     *                         <code>EventTarget</code>.
      */
     public void initMouseEvent(String typeArg,
                                boolean canBubbleArg,

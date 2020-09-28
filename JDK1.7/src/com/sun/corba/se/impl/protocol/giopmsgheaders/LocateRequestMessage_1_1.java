@@ -55,7 +55,7 @@ public final class LocateRequestMessage_1_1 extends Message_1_1
 
     LocateRequestMessage_1_1(ORB orb, int _request_id, byte[] _object_key) {
         super(Message.GIOPBigMagic, GIOPVersion.V1_1, FLAG_NO_FRAG_BIG_ENDIAN,
-            Message.GIOPLocateRequest, 0);
+                Message.GIOPLocateRequest, 0);
         this.orb = orb;
         request_id = _request_id;
         object_key = _object_key;
@@ -95,8 +95,7 @@ public final class LocateRequestMessage_1_1 extends Message_1_1
     }
 
     public void callback(MessageHandler handler)
-        throws java.io.IOException
-    {
+            throws java.io.IOException {
         handler.handleInput(this);
     }
 } // class LocateRequestMessage_1_1

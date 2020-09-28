@@ -26,6 +26,7 @@
 package com.sun.java.swing.plaf.windows;
 
 import java.security.AccessController;
+
 import sun.security.action.GetBooleanAction;
 
 import java.util.*;
@@ -36,10 +37,11 @@ import java.awt.event.*;
 import javax.swing.*;
 
 
-
 import sun.swing.UIClientPropertyKey;
 import com.sun.java.swing.plaf.windows.TMSchema.State;
+
 import static com.sun.java.swing.plaf.windows.TMSchema.State.*;
+
 import com.sun.java.swing.plaf.windows.TMSchema.Part;
 import com.sun.java.swing.plaf.windows.TMSchema.Prop;
 import com.sun.java.swing.plaf.windows.XPStyle.Skin;
@@ -54,7 +56,7 @@ import sun.awt.AppContext;
  * According to
  * https://connect.microsoft.com/feedback/ViewFeedback.aspx?FeedbackID=86852&SiteID=4
  * The animations are all linear.
- *
+ * <p>
  * This class has a number of responsibilities.
  * <ul>
  *   <li> It trigger rapaint for the UI components involved in the animation
@@ -70,11 +72,11 @@ import sun.awt.AppContext;
 class AnimationController implements ActionListener, PropertyChangeListener {
 
     private final static boolean VISTA_ANIMATION_DISABLED =
-        AccessController.doPrivileged(new GetBooleanAction("swing.disablevistaanimation"));
+            AccessController.doPrivileged(new GetBooleanAction("swing.disablevistaanimation"));
 
 
     private final static Object ANIMATION_CONTROLLER_KEY =
-        new StringBuilder("ANIMATION_CONTROLLER_KEY");
+            new StringBuilder("ANIMATION_CONTROLLER_KEY");
 
     private final Map<JComponent, Map<Part, AnimationState>> animationStateMap =
             new WeakHashMap<JComponent, Map<Part, AnimationState>>();
@@ -82,7 +84,7 @@ class AnimationController implements ActionListener, PropertyChangeListener {
     //this timer is used to cause repaint on animated components
     //30 repaints per second should give smooth animation affect
     private final javax.swing.Timer timer =
-        new javax.swing.Timer(1000/30, this);
+            new javax.swing.Timer(1000 / 30, this);
 
     private static synchronized AnimationController getAnimationController() {
         AppContext appContext = AppContext.getAppContext();
@@ -102,9 +104,9 @@ class AnimationController implements ActionListener, PropertyChangeListener {
     }
 
     private static void triggerAnimation(JComponent c,
-                           Part part, State newState) {
+                                         Part part, State newState) {
         if (c instanceof javax.swing.JTabbedPane
-            || part == Part.TP_BUTTON) {
+                || part == Part.TP_BUTTON) {
             //idk: we can not handle tabs animation because
             //the same (component,part) is used to handle all the tabs
             //and we can not track the states
@@ -113,7 +115,7 @@ class AnimationController implements ActionListener, PropertyChangeListener {
             return;
         }
         AnimationController controller =
-            AnimationController.getAnimationController();
+                AnimationController.getAnimationController();
         State oldState = controller.getState(c, part);
         if (oldState != newState) {
             controller.putState(c, part, newState);
@@ -130,11 +132,11 @@ class AnimationController implements ActionListener, PropertyChangeListener {
                     //one second seems plausible value
                     duration = 1000;
                 } else {
-                     duration = XPStyle.getXP().getThemeTransitionDuration(
-                           c, part,
-                           normalizeState(oldState),
-                           normalizeState(newState),
-                           Prop.TRANSITIONDURATIONS);
+                    duration = XPStyle.getXP().getThemeTransitionDuration(
+                            c, part,
+                            normalizeState(oldState),
+                            normalizeState(newState),
+                            Prop.TRANSITIONDURATIONS);
                 }
                 controller.startAnimation(c, part, oldState, newState, duration);
             }
@@ -147,41 +149,41 @@ class AnimationController implements ActionListener, PropertyChangeListener {
     private static State normalizeState(State state) {
         State rv;
         switch (state) {
-        case DOWNPRESSED:
-            /* falls through */
-        case LEFTPRESSED:
-            /* falls through */
-        case RIGHTPRESSED:
-            rv = UPPRESSED;
-            break;
+            case DOWNPRESSED:
+                /* falls through */
+            case LEFTPRESSED:
+                /* falls through */
+            case RIGHTPRESSED:
+                rv = UPPRESSED;
+                break;
 
-        case DOWNDISABLED:
-            /* falls through */
-        case LEFTDISABLED:
-            /* falls through */
-        case RIGHTDISABLED:
-            rv = UPDISABLED;
-            break;
+            case DOWNDISABLED:
+                /* falls through */
+            case LEFTDISABLED:
+                /* falls through */
+            case RIGHTDISABLED:
+                rv = UPDISABLED;
+                break;
 
-        case DOWNHOT:
-            /* falls through */
-        case LEFTHOT:
-            /* falls through */
-        case RIGHTHOT:
-            rv = UPHOT;
-            break;
+            case DOWNHOT:
+                /* falls through */
+            case LEFTHOT:
+                /* falls through */
+            case RIGHTHOT:
+                rv = UPHOT;
+                break;
 
-        case DOWNNORMAL:
-            /* falls through */
-        case LEFTNORMAL:
-            /* falls through */
-        case RIGHTNORMAL:
-            rv = UPNORMAL;
-            break;
+            case DOWNNORMAL:
+                /* falls through */
+            case LEFTNORMAL:
+                /* falls through */
+            case RIGHTNORMAL:
+                rv = UPNORMAL;
+                break;
 
-        default :
-            rv = state;
-            break;
+            default:
+                rv = state;
+                break;
         }
         return rv;
     }
@@ -189,7 +191,7 @@ class AnimationController implements ActionListener, PropertyChangeListener {
     private synchronized State getState(JComponent component, Part part) {
         State rv = null;
         Object tmpObject =
-            component.getClientProperty(PartUIClientPropertyKey.getKey(part));
+                component.getClientProperty(PartUIClientPropertyKey.getKey(part));
         if (tmpObject instanceof State) {
             rv = (State) tmpObject;
         }
@@ -199,14 +201,14 @@ class AnimationController implements ActionListener, PropertyChangeListener {
     private synchronized void putState(JComponent component, Part part,
                                        State state) {
         component.putClientProperty(PartUIClientPropertyKey.getKey(part),
-                                    state);
+                state);
     }
 
     private synchronized void startAnimation(JComponent component,
-                                     Part part,
-                                     State startState,
-                                     State endState,
-                                     long millis) {
+                                             Part part,
+                                             State startState,
+                                             State endState,
+                                             long millis) {
         boolean isForwardAndReverse = false;
         if (endState == State.DEFAULTED) {
             isForwardAndReverse = true;
@@ -227,13 +229,13 @@ class AnimationController implements ActionListener, PropertyChangeListener {
         }
         map.put(part,
                 new AnimationState(startState, millis, isForwardAndReverse));
-        if (! timer.isRunning()) {
+        if (!timer.isRunning()) {
             timer.start();
         }
     }
 
     static void paintSkin(JComponent component, Skin skin,
-                      Graphics g, int dx, int dy, int dw, int dh, State state) {
+                          Graphics g, int dx, int dy, int dw, int dh, State state) {
         if (VISTA_ANIMATION_DISABLED) {
             skin.paintSkinRaw(g, dx, dy, dw, dh, state);
             return;
@@ -243,7 +245,7 @@ class AnimationController implements ActionListener, PropertyChangeListener {
         synchronized (controller) {
             AnimationState animationState = null;
             Map<Part, AnimationState> map =
-                controller.animationStateMap.get(component);
+                    controller.animationStateMap.get(component);
             if (map != null) {
                 animationState = map.get(skin.part);
             }
@@ -257,7 +259,7 @@ class AnimationController implements ActionListener, PropertyChangeListener {
 
     public synchronized void propertyChange(PropertyChangeEvent e) {
         if ("lookAndFeel" == e.getPropertyName()
-            && ! (e.getNewValue() instanceof WindowsLookAndFeel) ) {
+                && !(e.getNewValue() instanceof WindowsLookAndFeel)) {
             dispose();
         }
     }
@@ -271,9 +273,9 @@ class AnimationController implements ActionListener, PropertyChangeListener {
                 partsToRemove.clear();
             }
             Map<Part, AnimationState> map = animationStateMap.get(component);
-            if (! component.isShowing()
-                  || map == null
-                  || map.size() == 0) {
+            if (!component.isShowing()
+                    || map == null
+                    || map.size() == 0) {
                 if (componentsToRemove == null) {
                     componentsToRemove = new ArrayList<JComponent>();
                 }
@@ -317,7 +319,7 @@ class AnimationController implements ActionListener, PropertyChangeListener {
         UIManager.removePropertyChangeListener(this);
         synchronized (AnimationController.class) {
             AppContext.getAppContext()
-                .put(ANIMATION_CONTROLLER_KEY, null);
+                    .put(ANIMATION_CONTROLLER_KEY, null);
         }
     }
 
@@ -354,6 +356,7 @@ class AnimationController implements ActionListener, PropertyChangeListener {
             this.isForwardAndReverse = isForwardAndReverse;
             progress = 0f;
         }
+
         private void updateProgress() {
             assert SwingUtilities.isEventDispatchThread();
 
@@ -363,23 +366,24 @@ class AnimationController implements ActionListener, PropertyChangeListener {
             long currentTime = System.nanoTime();
 
             progress = ((float) (currentTime - startTime))
-                / duration;
+                    / duration;
             progress = Math.max(progress, 0); //in case time was reset
             if (progress >= 1) {
                 progress = 1;
                 if (isForwardAndReverse) {
                     startTime = currentTime;
                     progress = 0;
-                    isForward = ! isForward;
+                    isForward = !isForward;
                 }
             }
         }
+
         void paintSkin(Skin skin, Graphics _g,
                        int dx, int dy, int dw, int dh, State state) {
             assert SwingUtilities.isEventDispatchThread();
 
             updateProgress();
-            if (! isDone()) {
+            if (!isDone()) {
                 Graphics2D g = (Graphics2D) _g.create();
                 skin.paintSkinRaw(g, dx, dy, dw, dh, startState);
                 float alpha;
@@ -395,18 +399,19 @@ class AnimationController implements ActionListener, PropertyChangeListener {
                 skin.paintSkinRaw(_g, dx, dy, dw, dh, state);
             }
         }
+
         boolean isDone() {
             assert SwingUtilities.isEventDispatchThread();
 
-            return  progress >= 1;
+            return progress >= 1;
         }
     }
 
     private static class PartUIClientPropertyKey
-          implements UIClientPropertyKey {
+            implements UIClientPropertyKey {
 
         private static final Map<Part, PartUIClientPropertyKey> map =
-            new EnumMap<Part, PartUIClientPropertyKey>(Part.class);
+                new EnumMap<Part, PartUIClientPropertyKey>(Part.class);
 
         static synchronized PartUIClientPropertyKey getKey(Part part) {
             PartUIClientPropertyKey rv = map.get(part);
@@ -418,9 +423,11 @@ class AnimationController implements ActionListener, PropertyChangeListener {
         }
 
         private final Part part;
+
         private PartUIClientPropertyKey(Part part) {
-            this.part  = part;
+            this.part = part;
         }
+
         public String toString() {
             return part.toString();
         }

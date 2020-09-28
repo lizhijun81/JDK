@@ -34,8 +34,7 @@ import org.omg.CosNaming.NameComponent;
  * It computes the hashCode once and stores it, and also precomputes
  * the lengths of the id and kind strings for faster comparison.
  */
-public class InternalBindingKey
-{
+public class InternalBindingKey {
     // A key contains a name
     public NameComponent name;
     private int idLen;
@@ -43,11 +42,11 @@ public class InternalBindingKey
     private int hashVal;
 
     // Default Constructor
-    public InternalBindingKey() {}
+    public InternalBindingKey() {
+    }
 
     // Normal constructor
-    public InternalBindingKey(NameComponent n)
-    {
+    public InternalBindingKey(NameComponent n) {
         idLen = 0;
         kindLen = 0;
         setup(n);
@@ -57,10 +56,10 @@ public class InternalBindingKey
     protected void setup(NameComponent n) {
         this.name = n;
         // Precompute lengths and values since they will not change
-        if( this.name.id != null ) {
+        if (this.name.id != null) {
             idLen = this.name.id.length();
         }
-        if( this.name.kind != null ) {
+        if (this.name.kind != null) {
             kindLen = this.name.kind.length();
         }
         hashVal = 0;
@@ -75,7 +74,7 @@ public class InternalBindingKey
         if (o == null)
             return false;
         if (o instanceof InternalBindingKey) {
-            InternalBindingKey that = (InternalBindingKey)o;
+            InternalBindingKey that = (InternalBindingKey) o;
             // Both lengths must match
             if (this.idLen != that.idLen || this.kindLen != that.kindLen) {
                 return false;
@@ -94,6 +93,7 @@ public class InternalBindingKey
             return false;
         }
     }
+
     // Return precomputed value
     public int hashCode() {
         return this.hashVal;

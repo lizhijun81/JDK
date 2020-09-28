@@ -71,7 +71,7 @@ public class MotifButtonUI extends BasicButtonUI {
     // ********************************
     //         Create Listeners
     // ********************************
-    protected BasicButtonListener createButtonListener(AbstractButton b){
+    protected BasicButtonListener createButtonListener(AbstractButton b) {
         return new MotifButtonListener(b);
     }
 
@@ -80,7 +80,7 @@ public class MotifButtonUI extends BasicButtonUI {
     // ********************************
     public void installDefaults(AbstractButton b) {
         super.installDefaults(b);
-        if(!defaults_initialized) {
+        if (!defaults_initialized) {
             selectColor = UIManager.getColor(getPropertyPrefix() + "select");
             defaults_initialized = true;
         }
@@ -104,37 +104,37 @@ public class MotifButtonUI extends BasicButtonUI {
     //          Paint Methods
     // ********************************
     public void paint(Graphics g, JComponent c) {
-        fillContentArea( g, (AbstractButton)c , c.getBackground() );
-        super.paint(g,c);
+        fillContentArea(g, (AbstractButton) c, c.getBackground());
+        super.paint(g, c);
     }
 
     // Overridden to ensure we don't paint icon over button borders.
     protected void paintIcon(Graphics g, JComponent c, Rectangle iconRect) {
         Shape oldClip = g.getClip();
         Rectangle newClip =
-            AbstractBorder.getInteriorRectangle(c, c.getBorder(), 0, 0,
-                                                c.getWidth(), c.getHeight());
+                AbstractBorder.getInteriorRectangle(c, c.getBorder(), 0, 0,
+                        c.getWidth(), c.getHeight());
 
         Rectangle r = oldClip.getBounds();
         newClip =
-            SwingUtilities.computeIntersection(r.x, r.y, r.width, r.height,
-                                               newClip);
+                SwingUtilities.computeIntersection(r.x, r.y, r.width, r.height,
+                        newClip);
         g.setClip(newClip);
         super.paintIcon(g, c, iconRect);
         g.setClip(oldClip);
     }
 
-    protected void paintFocus(Graphics g, AbstractButton b, Rectangle viewRect, Rectangle textRect, Rectangle iconRect){
+    protected void paintFocus(Graphics g, AbstractButton b, Rectangle viewRect, Rectangle textRect, Rectangle iconRect) {
         // focus painting is handled by the border
     }
 
     protected void paintButtonPressed(Graphics g, AbstractButton b) {
 
-        fillContentArea( g, b , selectColor );
+        fillContentArea(g, b, selectColor);
 
     }
 
-    protected void fillContentArea( Graphics g, AbstractButton b, Color fillColor) {
+    protected void fillContentArea(Graphics g, AbstractButton b, Color fillColor) {
 
         if (b.isContentAreaFilled()) {
             Insets margin = b.getMargin();
@@ -142,9 +142,9 @@ public class MotifButtonUI extends BasicButtonUI {
             Dimension size = b.getSize();
             g.setColor(fillColor);
             g.fillRect(insets.left - margin.left,
-                       insets.top - margin.top,
-                       size.width - (insets.left-margin.left) - (insets.right - margin.right),
-                       size.height - (insets.top-margin.top) - (insets.bottom - margin.bottom));
+                    insets.top - margin.top,
+                    size.width - (insets.left - margin.left) - (insets.right - margin.right),
+                    size.height - (insets.top - margin.top) - (insets.bottom - margin.bottom));
         }
     }
 }

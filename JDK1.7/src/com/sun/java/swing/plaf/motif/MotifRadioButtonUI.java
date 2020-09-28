@@ -74,7 +74,7 @@ public class MotifRadioButtonUI extends BasicRadioButtonUI {
     // ********************************
     public void installDefaults(AbstractButton b) {
         super.installDefaults(b);
-        if(!defaults_initialized) {
+        if (!defaults_initialized) {
             focusColor = UIManager.getColor(getPropertyPrefix() + "focus");
             defaults_initialized = true;
         }
@@ -96,9 +96,9 @@ public class MotifRadioButtonUI extends BasicRadioButtonUI {
     // ********************************
     //         Paint Methods
     // ********************************
-    protected void paintFocus(Graphics g, Rectangle t, Dimension d){
+    protected void paintFocus(Graphics g, Rectangle t, Dimension d) {
         g.setColor(getFocusColor());
-        g.drawRect(0,0,d.width-1,d.height-1);
+        g.drawRect(0, 0, d.width - 1, d.height - 1);
     }
 
 }

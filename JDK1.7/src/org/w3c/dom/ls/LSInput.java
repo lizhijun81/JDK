@@ -42,7 +42,7 @@
 package org.w3c.dom.ls;
 
 /**
- *  This interface represents an input source for data.
+ * This interface represents an input source for data.
  * <p> This interface allows an application to encapsulate information about
  * an input source in a single object, which may include a public
  * identifier, a system identifier, a byte stream (possibly with a specified
@@ -81,19 +81,20 @@ package org.w3c.dom.ls;
  * implementation will never modify them (though it may make copies and
  * modify the copies, if necessary).
  * <p>See also the <a href='http://www.w3.org/TR/2004/REC-DOM-Level-3-LS-20040407'>Document Object Model (DOM) Level 3 Load
-and Save Specification</a>.
+ * and Save Specification</a>.
  */
 public interface LSInput {
     /**
-     *  An attribute of a language and binding dependent type that represents
+     * An attribute of a language and binding dependent type that represents
      * a stream of 16-bit units. The application must encode the stream
      * using UTF-16 (defined in [Unicode] and in [ISO/IEC 10646]). It is not a requirement to have an XML declaration when
      * using character streams. If an XML declaration is present, the value
      * of the encoding attribute will be ignored.
      */
     public java.io.Reader getCharacterStream();
+
     /**
-     *  An attribute of a language and binding dependent type that represents
+     * An attribute of a language and binding dependent type that represents
      * a stream of 16-bit units. The application must encode the stream
      * using UTF-16 (defined in [Unicode] and in [ISO/IEC 10646]). It is not a requirement to have an XML declaration when
      * using character streams. If an XML declaration is present, the value
@@ -102,7 +103,7 @@ public interface LSInput {
     public void setCharacterStream(java.io.Reader characterStream);
 
     /**
-     *  An attribute of a language and binding dependent type that represents
+     * An attribute of a language and binding dependent type that represents
      * a stream of bytes.
      * <br> If the application knows the character encoding of the byte
      * stream, it should set the encoding attribute. Setting the encoding in
@@ -110,8 +111,9 @@ public interface LSInput {
      * in the data.
      */
     public java.io.InputStream getByteStream();
+
     /**
-     *  An attribute of a language and binding dependent type that represents
+     * An attribute of a language and binding dependent type that represents
      * a stream of bytes.
      * <br> If the application knows the character encoding of the byte
      * stream, it should set the encoding attribute. Setting the encoding in
@@ -121,15 +123,16 @@ public interface LSInput {
     public void setByteStream(java.io.InputStream byteStream);
 
     /**
-     *  String data to parse. If provided, this will always be treated as a
+     * String data to parse. If provided, this will always be treated as a
      * sequence of 16-bit units (UTF-16 encoded characters). It is not a
      * requirement to have an XML declaration when using
      * <code>stringData</code>. If an XML declaration is present, the value
      * of the encoding attribute will be ignored.
      */
     public String getStringData();
+
     /**
-     *  String data to parse. If provided, this will always be treated as a
+     * String data to parse. If provided, this will always be treated as a
      * sequence of 16-bit units (UTF-16 encoded characters). It is not a
      * requirement to have an XML declaration when using
      * <code>stringData</code>. If an XML declaration is present, the value
@@ -138,7 +141,7 @@ public interface LSInput {
     public void setStringData(String stringData);
 
     /**
-     *  The system identifier, a URI reference [<a href='http://www.ietf.org/rfc/rfc2396.txt'>IETF RFC 2396</a>], for this
+     * The system identifier, a URI reference [<a href='http://www.ietf.org/rfc/rfc2396.txt'>IETF RFC 2396</a>], for this
      * input source. The system identifier is optional if there is a byte
      * stream, a character stream, or string data. It is still useful to
      * provide one, since the application will use it to resolve any
@@ -156,8 +159,9 @@ public interface LSInput {
      * implementation dependent.
      */
     public String getSystemId();
+
     /**
-     *  The system identifier, a URI reference [<a href='http://www.ietf.org/rfc/rfc2396.txt'>IETF RFC 2396</a>], for this
+     * The system identifier, a URI reference [<a href='http://www.ietf.org/rfc/rfc2396.txt'>IETF RFC 2396</a>], for this
      * input source. The system identifier is optional if there is a byte
      * stream, a character stream, or string data. It is still useful to
      * provide one, since the application will use it to resolve any
@@ -177,15 +181,16 @@ public interface LSInput {
     public void setSystemId(String systemId);
 
     /**
-     *  The public identifier for this input source. This may be mapped to an
+     * The public identifier for this input source. This may be mapped to an
      * input source using an implementation dependent mechanism (such as
      * catalogues or other mappings). The public identifier, if specified,
      * may also be reported as part of the location information when errors
      * are reported.
      */
     public String getPublicId();
+
     /**
-     *  The public identifier for this input source. This may be mapped to an
+     * The public identifier for this input source. This may be mapped to an
      * input source using an implementation dependent mechanism (such as
      * catalogues or other mappings). The public identifier, if specified,
      * may also be reported as part of the location information when errors
@@ -194,14 +199,15 @@ public interface LSInput {
     public void setPublicId(String publicId);
 
     /**
-     *  The base URI to be used (see section 5.1.4 in [<a href='http://www.ietf.org/rfc/rfc2396.txt'>IETF RFC 2396</a>]) for
+     * The base URI to be used (see section 5.1.4 in [<a href='http://www.ietf.org/rfc/rfc2396.txt'>IETF RFC 2396</a>]) for
      * resolving a relative <code>systemId</code> to an absolute URI.
      * <br> If, when used, the base URI is itself a relative URI, an empty
      * string, or null, the behavior is implementation dependent.
      */
     public String getBaseURI();
+
     /**
-     *  The base URI to be used (see section 5.1.4 in [<a href='http://www.ietf.org/rfc/rfc2396.txt'>IETF RFC 2396</a>]) for
+     * The base URI to be used (see section 5.1.4 in [<a href='http://www.ietf.org/rfc/rfc2396.txt'>IETF RFC 2396</a>]) for
      * resolving a relative <code>systemId</code> to an absolute URI.
      * <br> If, when used, the base URI is itself a relative URI, an empty
      * string, or null, the behavior is implementation dependent.
@@ -209,7 +215,7 @@ public interface LSInput {
     public void setBaseURI(String baseURI);
 
     /**
-     *  The character encoding, if known. The encoding must be a string
+     * The character encoding, if known. The encoding must be a string
      * acceptable for an XML encoding declaration ([<a href='http://www.w3.org/TR/2004/REC-xml-20040204'>XML 1.0</a>] section
      * 4.3.3 "Character Encoding in Entities").
      * <br> This attribute has no effect when the application provides a
@@ -219,8 +225,9 @@ public interface LSInput {
      * an encoding obtained from a higher level protocol, such as HTTP [<a href='http://www.ietf.org/rfc/rfc2616.txt'>IETF RFC 2616</a>].
      */
     public String getEncoding();
+
     /**
-     *  The character encoding, if known. The encoding must be a string
+     * The character encoding, if known. The encoding must be a string
      * acceptable for an XML encoding declaration ([<a href='http://www.w3.org/TR/2004/REC-xml-20040204'>XML 1.0</a>] section
      * 4.3.3 "Character Encoding in Entities").
      * <br> This attribute has no effect when the application provides a
@@ -232,13 +239,14 @@ public interface LSInput {
     public void setEncoding(String encoding);
 
     /**
-     *  If set to true, assume that the input is certified (see section 2.13
+     * If set to true, assume that the input is certified (see section 2.13
      * in [<a href='http://www.w3.org/TR/2004/REC-xml11-20040204/'>XML 1.1</a>]) when
      * parsing [<a href='http://www.w3.org/TR/2004/REC-xml11-20040204/'>XML 1.1</a>].
      */
     public boolean getCertifiedText();
+
     /**
-     *  If set to true, assume that the input is certified (see section 2.13
+     * If set to true, assume that the input is certified (see section 2.13
      * in [<a href='http://www.w3.org/TR/2004/REC-xml11-20040204/'>XML 1.1</a>]) when
      * parsing [<a href='http://www.w3.org/TR/2004/REC-xml11-20040204/'>XML 1.1</a>].
      */

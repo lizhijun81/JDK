@@ -39,7 +39,7 @@ import javax.swing.text.Caret;
  * version of Swing.  A future release of Swing will provide support for
  * long term persistence.
  *
- * @author  Timothy Prinzing
+ * @author Timothy Prinzing
  */
 public class MotifTextFieldUI extends BasicTextFieldUI {
 

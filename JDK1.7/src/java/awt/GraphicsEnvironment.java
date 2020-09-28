@@ -37,7 +37,6 @@ import sun.java2d.SunGraphicsEnvironment;
 import sun.security.action.GetPropertyAction;
 
 /**
- *
  * The <code>GraphicsEnvironment</code> class describes the collection
  * of {@link GraphicsDevice} objects and {@link java.awt.Font} objects
  * available to a Java(tm) application on a particular platform.
@@ -48,6 +47,7 @@ import sun.security.action.GetPropertyAction;
  * has a number of {@link GraphicsConfiguration} objects associated with
  * it.  These objects specify the different configurations in which the
  * <code>GraphicsDevice</code> can be used.
+ *
  * @see GraphicsDevice
  * @see GraphicsConfiguration
  */
@@ -74,6 +74,7 @@ public abstract class GraphicsEnvironment {
 
     /**
      * Returns the local <code>GraphicsEnvironment</code>.
+     *
      * @return the local <code>GraphicsEnvironment</code>
      */
     public static synchronized GraphicsEnvironment getLocalGraphicsEnvironment() {
@@ -113,13 +114,13 @@ public abstract class GraphicsEnvironment {
                 ge = new HeadlessGraphicsEnvironment(ge);
             }
         } catch (ClassNotFoundException e) {
-            throw new Error("Could not find class: "+nm);
+            throw new Error("Could not find class: " + nm);
         } catch (InstantiationException e) {
             throw new Error("Could not instantiate Graphics Environment: "
-                            + nm);
+                    + nm);
         } catch (IllegalAccessException e) {
-            throw new Error ("Could not access Graphics Environment: "
-                             + nm);
+            throw new Error("Could not access Graphics Environment: "
+                    + nm);
         }
         return ge;
     }
@@ -130,6 +131,7 @@ public abstract class GraphicsEnvironment {
      * a HeadlessException is thrown from areas of the Toolkit
      * and GraphicsEnvironment that are dependent on a display,
      * keyboard, or mouse.
+     *
      * @return <code>true</code> if this environment cannot support
      * a display, keyboard, and mouse; <code>false</code>
      * otherwise
@@ -150,8 +152,8 @@ public abstract class GraphicsEnvironment {
             getHeadlessProperty(); // initialize the values
         }
         return defaultHeadless != Boolean.TRUE ? null :
-            "\nNo X11 DISPLAY variable was set, " +
-            "but this program performed an operation which requires it.";
+                "\nNo X11 DISPLAY variable was set, " +
+                        "but this program performed an operation which requires it.";
     }
 
     /**
@@ -161,38 +163,37 @@ public abstract class GraphicsEnvironment {
     private static boolean getHeadlessProperty() {
         if (headless == null) {
             java.security.AccessController.doPrivileged(
-            new java.security.PrivilegedAction() {
-                public Object run() {
-                    String nm = System.getProperty("java.awt.headless");
+                    new java.security.PrivilegedAction() {
+                        public Object run() {
+                            String nm = System.getProperty("java.awt.headless");
 
-                    if (nm == null) {
-                        /* No need to ask for DISPLAY when run in a browser */
-                        if (System.getProperty("javaplugin.version") != null) {
-                            headless = defaultHeadless = Boolean.FALSE;
-                        } else {
-                            String osName = System.getProperty("os.name");
-                            if (osName.contains("OS X") && "sun.awt.HToolkit".equals(
-                                    System.getProperty("awt.toolkit")))
-                            {
-                                headless = defaultHeadless = Boolean.TRUE;
+                            if (nm == null) {
+                                /* No need to ask for DISPLAY when run in a browser */
+                                if (System.getProperty("javaplugin.version") != null) {
+                                    headless = defaultHeadless = Boolean.FALSE;
+                                } else {
+                                    String osName = System.getProperty("os.name");
+                                    if (osName.contains("OS X") && "sun.awt.HToolkit".equals(
+                                            System.getProperty("awt.toolkit"))) {
+                                        headless = defaultHeadless = Boolean.TRUE;
+                                    } else {
+                                        headless = defaultHeadless =
+                                                Boolean.valueOf(("Linux".equals(osName) ||
+                                                        "SunOS".equals(osName) ||
+                                                        "FreeBSD".equals(osName) ||
+                                                        "NetBSD".equals(osName) ||
+                                                        "OpenBSD".equals(osName)) &&
+                                                        (System.getenv("DISPLAY") == null));
+                                    }
+                                }
+                            } else if (nm.equals("true")) {
+                                headless = Boolean.TRUE;
                             } else {
-                                headless = defaultHeadless =
-                                    Boolean.valueOf(("Linux".equals(osName) ||
-                                                     "SunOS".equals(osName) ||
-                                                     "FreeBSD".equals(osName) ||
-                                                     "NetBSD".equals(osName) ||
-                                                     "OpenBSD".equals(osName)) &&
-                                                     (System.getenv("DISPLAY") == null));
+                                headless = Boolean.FALSE;
                             }
+                            return null;
                         }
-                    } else if (nm.equals("true")) {
-                        headless = Boolean.TRUE;
-                    } else {
-                        headless = Boolean.FALSE;
                     }
-                    return null;
-                }
-                }
             );
         }
         return headless.booleanValue();
@@ -200,6 +201,7 @@ public abstract class GraphicsEnvironment {
 
     /**
      * Check for headless state and throw HeadlessException if headless
+     *
      * @since 1.4
      */
     static void checkHeadless() throws HeadlessException {
@@ -214,6 +216,7 @@ public abstract class GraphicsEnvironment {
      * <code>HeadlessException</code> will be thrown from areas of the
      * graphics environment that are dependent on a display, keyboard, or
      * mouse.
+     *
      * @return <code>true</code> if a display, keyboard, and mouse
      * can be supported in this environment; <code>false</code>
      * otherwise
@@ -230,27 +233,30 @@ public abstract class GraphicsEnvironment {
     /**
      * Returns an array of all of the screen <code>GraphicsDevice</code>
      * objects.
+     *
      * @return an array containing all the <code>GraphicsDevice</code>
      * objects that represent screen devices
-     * @exception HeadlessException if isHeadless() returns true
+     * @throws HeadlessException if isHeadless() returns true
      * @see #isHeadless()
      */
     public abstract GraphicsDevice[] getScreenDevices()
-        throws HeadlessException;
+            throws HeadlessException;
 
     /**
      * Returns the default screen <code>GraphicsDevice</code>.
+     *
      * @return the <code>GraphicsDevice</code> that represents the
      * default screen device
-     * @exception HeadlessException if isHeadless() returns true
+     * @throws HeadlessException if isHeadless() returns true
      * @see #isHeadless()
      */
     public abstract GraphicsDevice getDefaultScreenDevice()
-        throws HeadlessException;
+            throws HeadlessException;
 
     /**
      * Returns a <code>Graphics2D</code> object for rendering into the
      * specified {@link BufferedImage}.
+     *
      * @param img the specified <code>BufferedImage</code>
      * @return a <code>Graphics2D</code> to be used for rendering into
      * the specified <code>BufferedImage</code>
@@ -318,9 +324,9 @@ public abstract class GraphicsEnvironment {
      * match among multiple fonts in the same font family.
      *
      * @param l a {@link Locale} object that represents a
-     * particular geographical, political, or cultural region.
-     * Specifying <code>null</code> is equivalent to
-     * specifying <code>Locale.getDefault()</code>.
+     *          particular geographical, political, or cultural region.
+     *          Specifying <code>null</code> is equivalent to
+     *          specifying <code>Locale.getDefault()</code>.
      * @return an array of <code>String</code> containing font family names
      * localized for the specified <code>Locale</code>, or a
      * suitable alternative name if no name exists for the specified locale.
@@ -357,6 +363,7 @@ public abstract class GraphicsEnvironment {
      * <p>Notice that an application can supersede the registration
      * of an earlier created font with a new one.
      * </ul>
+     *
      * @return true if the <code>font</code> is successfully
      * registered in this <code>GraphicsEnvironment</code>.
      * @throws NullPointerException if <code>font</code> is null
@@ -388,6 +395,7 @@ public abstract class GraphicsEnvironment {
      * different font, clients should expect different metrics, and may need
      * to recalculate window sizes and layout. Therefore this method should
      * be called before user interface initialisation.
+     *
      * @since 1.5
      */
     public void preferLocaleFonts() {
@@ -409,6 +417,7 @@ public abstract class GraphicsEnvironment {
      * different font, clients should expect different metrics, and may need
      * to recalculate window sizes and layout. Therefore this method should
      * be called before user interface initialisation.
+     *
      * @since 1.5
      */
     public void preferProportionalFonts() {
@@ -420,19 +429,19 @@ public abstract class GraphicsEnvironment {
      * Returns the Point where Windows should be centered.
      * It is recommended that centered Windows be checked to ensure they fit
      * within the available display area using getMaximumWindowBounds().
-     * @return the point where Windows should be centered
      *
-     * @exception HeadlessException if isHeadless() returns true
+     * @return the point where Windows should be centered
+     * @throws HeadlessException if isHeadless() returns true
      * @see #getMaximumWindowBounds
      * @since 1.4
      */
     public Point getCenterPoint() throws HeadlessException {
-    // Default implementation: return the center of the usable bounds of the
-    // default screen device.
+        // Default implementation: return the center of the usable bounds of the
+        // default screen device.
         Rectangle usableBounds =
-         SunGraphicsEnvironment.getUsableBounds(getDefaultScreenDevice());
+                SunGraphicsEnvironment.getUsableBounds(getDefaultScreenDevice());
         return new Point((usableBounds.width / 2) + usableBounds.x,
-                         (usableBounds.height / 2) + usableBounds.y);
+                (usableBounds.height / 2) + usableBounds.y);
     }
 
     /**
@@ -446,17 +455,17 @@ public abstract class GraphicsEnvironment {
      * To get the usable bounds of a single display, use
      * <code>GraphicsConfiguration.getBounds()</code> and
      * <code>Toolkit.getScreenInsets()</code>.
-     * @return  the maximum bounds for centered Windows
      *
-     * @exception HeadlessException if isHeadless() returns true
+     * @return the maximum bounds for centered Windows
+     * @throws HeadlessException if isHeadless() returns true
      * @see #getCenterPoint
      * @see GraphicsConfiguration#getBounds
      * @see Toolkit#getScreenInsets
      * @since 1.4
      */
     public Rectangle getMaximumWindowBounds() throws HeadlessException {
-    // Default implementation: return the usable bounds of the default screen
-    // device.  This is correct for Microsoft Windows and non-Xinerama X11.
+        // Default implementation: return the usable bounds of the default screen
+        // device.  This is correct for Microsoft Windows and non-Xinerama X11.
         return SunGraphicsEnvironment.getUsableBounds(getDefaultScreenDevice());
     }
 }

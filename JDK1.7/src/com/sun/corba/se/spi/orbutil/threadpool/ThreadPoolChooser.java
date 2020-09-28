@@ -26,8 +26,7 @@
 package com.sun.corba.se.spi.orbutil.threadpool;
 
 
-public interface ThreadPoolChooser
-{
+public interface ThreadPoolChooser {
     /**
      * This method is used to return an instance of ThreadPool based on the
      * strategy/policy implemented in the ThreadPoolChooser from the set of

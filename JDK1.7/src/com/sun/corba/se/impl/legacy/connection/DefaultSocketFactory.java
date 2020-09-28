@@ -37,8 +37,8 @@ import org.omg.CORBA.COMM_FAILURE;
 import org.omg.CORBA.CompletionStatus;
 
 import com.sun.corba.se.spi.ior.IOR;
-import com.sun.corba.se.spi.ior.iiop.IIOPProfileTemplate ;
-import com.sun.corba.se.spi.ior.iiop.IIOPAddress ;
+import com.sun.corba.se.spi.ior.iiop.IIOPProfileTemplate;
+import com.sun.corba.se.spi.ior.iiop.IIOPAddress;
 import com.sun.corba.se.spi.legacy.connection.GetEndPointInfoAgainException;
 import com.sun.corba.se.spi.legacy.connection.ORBSocketFactory;
 import com.sun.corba.se.spi.logging.CORBALogDomains;
@@ -49,35 +49,31 @@ import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 import com.sun.corba.se.impl.orbutil.ORBConstants;
 
 public class DefaultSocketFactory
-    implements
-        ORBSocketFactory
-{
+        implements
+        ORBSocketFactory {
     private com.sun.corba.se.spi.orb.ORB orb;
     private static ORBUtilSystemException wrapper = ORBUtilSystemException.get(
-        CORBALogDomains.RPC_TRANSPORT ) ;
+            CORBALogDomains.RPC_TRANSPORT);
 
-    public DefaultSocketFactory()
-    {
+    public DefaultSocketFactory() {
     }
 
-    public void setORB(com.sun.corba.se.spi.orb.ORB orb)
-    {
+    public void setORB(com.sun.corba.se.spi.orb.ORB orb) {
         this.orb = orb;
     }
 
     public ServerSocket createServerSocket(String type, int port)
-        throws
-            IOException
-    {
-        if (! type.equals(ORBSocketFactory.IIOP_CLEAR_TEXT)) {
-            throw wrapper.defaultCreateServerSocketGivenNonIiopClearText( type ) ;
+            throws
+            IOException {
+        if (!type.equals(ORBSocketFactory.IIOP_CLEAR_TEXT)) {
+            throw wrapper.defaultCreateServerSocketGivenNonIiopClearText(type);
         }
 
         ServerSocket serverSocket;
 
         if (orb.getORBData().acceptorSocketType().equals(ORBConstants.SOCKETCHANNEL)) {
             ServerSocketChannel serverSocketChannel =
-                ServerSocketChannel.open();
+                    ServerSocketChannel.open();
             serverSocket = serverSocketChannel.socket();
         } else {
             serverSocket = new ServerSocket();
@@ -87,34 +83,32 @@ public class DefaultSocketFactory
     }
 
     public SocketInfo getEndPointInfo(ORB orb,
-                                        IOR ior,
-                                        SocketInfo socketInfo)
-    {
+                                      IOR ior,
+                                      SocketInfo socketInfo) {
         IIOPProfileTemplate temp =
-            (IIOPProfileTemplate)ior.getProfile().getTaggedProfileTemplate() ;
-        IIOPAddress primary = temp.getPrimaryAddress() ;
+                (IIOPProfileTemplate) ior.getProfile().getTaggedProfileTemplate();
+        IIOPAddress primary = temp.getPrimaryAddress();
 
         return new EndPointInfoImpl(ORBSocketFactory.IIOP_CLEAR_TEXT,
-                                    primary.getPort(),
-                                    primary.getHost().toLowerCase());
+                primary.getPort(),
+                primary.getHost().toLowerCase());
     }
 
     public Socket createSocket(SocketInfo socketInfo)
-        throws
+            throws
             IOException,
-            GetEndPointInfoAgainException
-    {
+            GetEndPointInfoAgainException {
         Socket socket;
 
         if (orb.getORBData().acceptorSocketType().equals(ORBConstants.SOCKETCHANNEL)) {
             InetSocketAddress address =
-                new InetSocketAddress(socketInfo.getHost(),
-                                      socketInfo.getPort());
+                    new InetSocketAddress(socketInfo.getHost(),
+                            socketInfo.getPort());
             SocketChannel socketChannel = SocketChannel.open(address);
             socket = socketChannel.socket();
         } else {
             socket = new Socket(socketInfo.getHost(),
-                                socketInfo.getPort());
+                    socketInfo.getPort());
         }
 
         // REVISIT - this is done in SocketOrChannelConnectionImpl

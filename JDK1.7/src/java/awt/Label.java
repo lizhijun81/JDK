@@ -48,8 +48,8 @@ import javax.accessibility.*;
  * <img src="doc-files/Label-1.gif" alt="Two labels: 'Hi There!' and 'Another label'"
  * ALIGN=center HSPACE=10 VSPACE=7>
  *
- * @author      Sami Shaio
- * @since       JDK1.0
+ * @author Sami Shaio
+ * @since JDK1.0
  */
 public class Label extends Component implements Accessible {
 
@@ -64,18 +64,19 @@ public class Label extends Component implements Accessible {
     /**
      * Indicates that the label should be left justified.
      */
-    public static final int LEFT        = 0;
+    public static final int LEFT = 0;
 
     /**
      * Indicates that the label should be centered.
      */
-    public static final int CENTER      = 1;
+    public static final int CENTER = 1;
 
     /**
      * Indicates that the label should be right justified.
-     * @since   JDK1.0t.
+     *
+     * @since JDK1.0t.
      */
-    public static final int RIGHT       = 2;
+    public static final int RIGHT = 2;
 
     /**
      * The text of this label.
@@ -96,7 +97,7 @@ public class Label extends Component implements Accessible {
      * @see #getAlignment()
      * @see #setAlignment(int)
      */
-    int    alignment = LEFT;
+    int alignment = LEFT;
 
     private static final String base = "label";
     private static int nameCounter = 0;
@@ -104,13 +105,14 @@ public class Label extends Component implements Accessible {
     /*
      * JDK 1.1 serialVersionUID
      */
-     private static final long serialVersionUID = 3094126758329070636L;
+    private static final long serialVersionUID = 3094126758329070636L;
 
     /**
      * Constructs an empty label.
      * The text of the label is the empty string <code>""</code>.
-     * @exception HeadlessException if GraphicsEnvironment.isHeadless()
-     * returns true.
+     *
+     * @throws HeadlessException if GraphicsEnvironment.isHeadless()
+     *                           returns true.
      * @see java.awt.GraphicsEnvironment#isHeadless
      */
     public Label() throws HeadlessException {
@@ -120,12 +122,13 @@ public class Label extends Component implements Accessible {
     /**
      * Constructs a new label with the specified string of text,
      * left justified.
+     *
      * @param text the string that the label presents.
-     *        A <code>null</code> value
-     *        will be accepted without causing a NullPointerException
-     *        to be thrown.
-     * @exception HeadlessException if GraphicsEnvironment.isHeadless()
-     * returns true.
+     *             A <code>null</code> value
+     *             will be accepted without causing a NullPointerException
+     *             to be thrown.
+     * @throws HeadlessException if GraphicsEnvironment.isHeadless()
+     *                           returns true.
      * @see java.awt.GraphicsEnvironment#isHeadless
      */
     public Label(String text) throws HeadlessException {
@@ -137,13 +140,14 @@ public class Label extends Component implements Accessible {
      * text with the specified alignment.
      * Possible values for <code>alignment</code> are <code>Label.LEFT</code>,
      * <code>Label.RIGHT</code>, and <code>Label.CENTER</code>.
-     * @param text the string that the label presents.
-     *        A <code>null</code> value
-     *        will be accepted without causing a NullPointerException
-     *        to be thrown.
-     * @param     alignment   the alignment value.
-     * @exception HeadlessException if GraphicsEnvironment.isHeadless()
-     * returns true.
+     *
+     * @param text      the string that the label presents.
+     *                  A <code>null</code> value
+     *                  will be accepted without causing a NullPointerException
+     *                  to be thrown.
+     * @param alignment the alignment value.
+     * @throws HeadlessException if GraphicsEnvironment.isHeadless()
+     *                           returns true.
      * @see java.awt.GraphicsEnvironment#isHeadless
      */
     public Label(String text, int alignment) throws HeadlessException {
@@ -154,15 +158,16 @@ public class Label extends Component implements Accessible {
 
     /**
      * Read a label from an object input stream.
-     * @exception HeadlessException if
-     * <code>GraphicsEnvironment.isHeadless()</code> returns
-     * <code>true</code>
+     *
+     * @throws HeadlessException if
+     *                           <code>GraphicsEnvironment.isHeadless()</code> returns
+     *                           <code>true</code>
      * @serial
-     * @since 1.4
      * @see java.awt.GraphicsEnvironment#isHeadless
+     * @since 1.4
      */
     private void readObject(ObjectInputStream s)
-        throws ClassNotFoundException, IOException, HeadlessException {
+            throws ClassNotFoundException, IOException, HeadlessException {
         GraphicsEnvironment.checkHeadless();
         s.defaultReadObject();
     }
@@ -194,7 +199,8 @@ public class Label extends Component implements Accessible {
      * Gets the current alignment of this label. Possible values are
      * <code>Label.LEFT</code>, <code>Label.RIGHT</code>, and
      * <code>Label.CENTER</code>.
-     * @see        java.awt.Label#setAlignment
+     *
+     * @see java.awt.Label#setAlignment
      */
     public int getAlignment() {
         return alignment;
@@ -204,31 +210,33 @@ public class Label extends Component implements Accessible {
      * Sets the alignment for this label to the specified alignment.
      * Possible values are <code>Label.LEFT</code>,
      * <code>Label.RIGHT</code>, and <code>Label.CENTER</code>.
-     * @param      alignment    the alignment to be set.
-     * @exception  IllegalArgumentException if an improper value for
-     *                          <code>alignment</code> is given.
-     * @see        java.awt.Label#getAlignment
+     *
+     * @param alignment the alignment to be set.
+     * @throws IllegalArgumentException if an improper value for
+     *                                  <code>alignment</code> is given.
+     * @see java.awt.Label#getAlignment
      */
     public synchronized void setAlignment(int alignment) {
         switch (alignment) {
-          case LEFT:
-          case CENTER:
-          case RIGHT:
-            this.alignment = alignment;
-            LabelPeer peer = (LabelPeer)this.peer;
-            if (peer != null) {
-                peer.setAlignment(alignment);
-            }
-            return;
+            case LEFT:
+            case CENTER:
+            case RIGHT:
+                this.alignment = alignment;
+                LabelPeer peer = (LabelPeer) this.peer;
+                if (peer != null) {
+                    peer.setAlignment(alignment);
+                }
+                return;
         }
         throw new IllegalArgumentException("improper alignment: " + alignment);
     }
 
     /**
      * Gets the text of this label.
-     * @return     the text of this label, or <code>null</code> if
-     *             the text has been set to <code>null</code>.
-     * @see        java.awt.Label#setText
+     *
+     * @return the text of this label, or <code>null</code> if
+     * the text has been set to <code>null</code>.
+     * @see java.awt.Label#setText
      */
     public String getText() {
         return text;
@@ -236,19 +244,20 @@ public class Label extends Component implements Accessible {
 
     /**
      * Sets the text for this label to the specified text.
-     * @param      text the text that this label displays. If
+     *
+     * @param text the text that this label displays. If
      *             <code>text</code> is <code>null</code>, it is
      *             treated for display purposes like an empty
      *             string <code>""</code>.
-     * @see        java.awt.Label#getText
+     * @see java.awt.Label#getText
      */
     public void setText(String text) {
         boolean testvalid = false;
         synchronized (this) {
             if (text != this.text && (this.text == null ||
-                                      !this.text.equals(text))) {
+                    !this.text.equals(text))) {
                 this.text = text;
-                LabelPeer peer = (LabelPeer)this.peer;
+                LabelPeer peer = (LabelPeer) this.peer;
                 if (peer != null) {
                     peer.setText(text);
                 }
@@ -269,14 +278,20 @@ public class Label extends Component implements Accessible {
      * implementations. The returned string may be empty but may not be
      * <code>null</code>.
      *
-     * @return     the parameter string of this label
+     * @return the parameter string of this label
      */
     protected String paramString() {
         String str = ",align=";
         switch (alignment) {
-          case LEFT:   str += "left"; break;
-          case CENTER: str += "center"; break;
-          case RIGHT:  str += "right"; break;
+            case LEFT:
+                str += "left";
+                break;
+            case CENTER:
+                str += "center";
+                break;
+            case RIGHT:
+                str += "right";
+                break;
         }
         return super.paramString() + str + ",text=" + text;
     }
@@ -299,7 +314,7 @@ public class Label extends Component implements Accessible {
      * A new AccessibleAWTLabel instance is created if necessary.
      *
      * @return an AccessibleAWTLabel that serves as the
-     *         AccessibleContext of this Label
+     * AccessibleContext of this Label
      * @since 1.3
      */
     public AccessibleContext getAccessibleContext() {
@@ -313,10 +328,10 @@ public class Label extends Component implements Accessible {
      * This class implements accessibility support for the
      * <code>Label</code> class.  It provides an implementation of the
      * Java Accessibility API appropriate to label user-interface elements.
+     *
      * @since 1.3
      */
-    protected class AccessibleAWTLabel extends AccessibleAWTComponent
-    {
+    protected class AccessibleAWTLabel extends AccessibleAWTComponent {
         /*
          * JDK 1.3 serialVersionUID
          */

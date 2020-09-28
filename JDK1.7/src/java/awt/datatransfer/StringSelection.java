@@ -30,7 +30,7 @@ import java.io.*;
 /**
  * A <code>Transferable</code> which implements the capability required
  * to transfer a <code>String</code>.
- *
+ * <p>
  * This <code>Transferable</code> properly supports
  * <code>DataFlavor.stringFlavor</code>
  * and all equivalent flavors. Support for
@@ -47,8 +47,8 @@ public class StringSelection implements Transferable, ClipboardOwner {
     private static final int PLAIN_TEXT = 1;
 
     private static final DataFlavor[] flavors = {
-        DataFlavor.stringFlavor,
-        DataFlavor.plainTextFlavor // deprecated
+            DataFlavor.stringFlavor,
+            DataFlavor.plainTextFlavor // deprecated
     };
 
     private String data;
@@ -69,12 +69,12 @@ public class StringSelection implements Transferable, ClipboardOwner {
      * <b>deprecated</b>.
      *
      * @return an array of length two, whose elements are <code>DataFlavor.
-     *         stringFlavor</code> and <code>DataFlavor.plainTextFlavor</code>
+     * stringFlavor</code> and <code>DataFlavor.plainTextFlavor</code>
      */
     public DataFlavor[] getTransferDataFlavors() {
         // returning flavors itself would allow client code to modify
         // our internal behavior
-        return (DataFlavor[])flavors.clone();
+        return (DataFlavor[]) flavors.clone();
     }
 
     /**
@@ -83,9 +83,9 @@ public class StringSelection implements Transferable, ClipboardOwner {
      *
      * @param flavor the requested flavor for the data
      * @return true if <code>flavor</code> is equal to
-     *   <code>DataFlavor.stringFlavor</code> or
-     *   <code>DataFlavor.plainTextFlavor</code>; false if <code>flavor</code>
-     *   is not one of the above flavors
+     * <code>DataFlavor.stringFlavor</code> or
+     * <code>DataFlavor.plainTextFlavor</code>; false if <code>flavor</code>
+     * is not one of the above flavors
      * @throws NullPointerException if flavor is <code>null</code>
      */
     public boolean isDataFlavorSupported(DataFlavor flavor) {
@@ -114,20 +114,19 @@ public class StringSelection implements Transferable, ClipboardOwner {
      * @param flavor the requested flavor for the data
      * @return the data in the requested flavor, as outlined above
      * @throws UnsupportedFlavorException if the requested data flavor is
-     *         not equivalent to either <code>DataFlavor.stringFlavor</code>
-     *         or <code>DataFlavor.plainTextFlavor</code>
-     * @throws IOException if an IOException occurs while retrieving the data.
-     *         By default, StringSelection never throws this exception, but a
-     *         subclass may.
-     * @throws NullPointerException if flavor is <code>null</code>
+     *                                    not equivalent to either <code>DataFlavor.stringFlavor</code>
+     *                                    or <code>DataFlavor.plainTextFlavor</code>
+     * @throws IOException                if an IOException occurs while retrieving the data.
+     *                                    By default, StringSelection never throws this exception, but a
+     *                                    subclass may.
+     * @throws NullPointerException       if flavor is <code>null</code>
      * @see java.io.Reader
      */
     public Object getTransferData(DataFlavor flavor)
-        throws UnsupportedFlavorException, IOException
-    {
+            throws UnsupportedFlavorException, IOException {
         // JCK Test StringSelection0007: if 'flavor' is null, throw NPE
         if (flavor.equals(flavors[STRING])) {
-            return (Object)data;
+            return (Object) data;
         } else if (flavor.equals(flavors[PLAIN_TEXT])) {
             return new StringReader(data == null ? "" : data);
         } else {

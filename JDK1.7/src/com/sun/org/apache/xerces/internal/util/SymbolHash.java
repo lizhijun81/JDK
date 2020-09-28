@@ -36,24 +36,32 @@ public class SymbolHash {
     // Constants
     //
 
-    /** Default table size. */
+    /**
+     * Default table size.
+     */
     protected int fTableSize = 101;
 
     //
     // Data
     //
 
-    /** Buckets. */
+    /**
+     * Buckets.
+     */
     protected Entry[] fBuckets;
 
-    /** Number of elements. */
+    /**
+     * Number of elements.
+     */
     protected int fNum = 0;
 
     //
     // Constructors
     //
 
-    /** Constructs a key table with the default size. */
+    /**
+     * Constructs a key table with the default size.
+     */
     public SymbolHash() {
         fBuckets = new Entry[fTableSize];
     }
@@ -61,7 +69,7 @@ public class SymbolHash {
     /**
      * Constructs a key table with a given size.
      *
-     * @param size  the size of the key table.
+     * @param size the size of the key table.
      */
     public SymbolHash(int size) {
         fTableSize = size;
@@ -123,14 +131,14 @@ public class SymbolHash {
     /**
      * Add all values to the given array. The array must have enough entry.
      *
-     * @param elements  the array to store the elements
-     * @param from      where to start store element in the array
-     * @return          number of elements copied to the array
+     * @param elements the array to store the elements
+     * @param from     where to start store element in the array
+     * @return number of elements copied to the array
      */
     public int getValues(Object[] elements, int from) {
-        for (int i=0, j=0; i<fTableSize && j<fNum; i++) {
+        for (int i = 0, j = 0; i < fTableSize && j < fNum; i++) {
             for (Entry entry = fBuckets[i]; entry != null; entry = entry.next) {
-                elements[from+j] = entry.value;
+                elements[from + j] = entry.value;
                 j++;
             }
         }
@@ -142,7 +150,7 @@ public class SymbolHash {
      */
     public Object[] getEntries() {
         Object[] entries = new Object[fNum << 1];
-        for (int i=0, j=0; i<fTableSize && j<fNum << 1; i++) {
+        for (int i = 0, j = 0; i < fTableSize && j < fNum << 1; i++) {
             for (Entry entry = fBuckets[i]; entry != null; entry = entry.next) {
                 entries[j] = entry.key;
                 entries[++j] = entry.value;
@@ -170,7 +178,7 @@ public class SymbolHash {
      * by at least keeping the fBuckets array around.
      */
     public void clear() {
-        for (int i=0; i<fTableSize; i++) {
+        for (int i = 0; i < fTableSize; i++) {
             fBuckets[i] = null;
         }
         fNum = 0;
@@ -197,7 +205,9 @@ public class SymbolHash {
         // key/value
         public Object key;
         public Object value;
-        /** The next entry. */
+        /**
+         * The next entry.
+         */
         public Entry next;
 
         public Entry() {

@@ -42,13 +42,12 @@ import sun.util.logging.PlatformLogger;
  * The API methods of the class are thread-safe.
  *
  * @author Anton Tarasov, Artem Ananiev
- *
  * @since 1.7
  */
 class WaitDispatchSupport implements SecondaryLoop {
 
     private final static PlatformLogger log =
-        PlatformLogger.getLogger("java.awt.event.WaitDispatchSupport");
+            PlatformLogger.getLogger("java.awt.event.WaitDispatchSupport");
 
     private EventDispatchThread dispatchThread;
     private EventFilter filter;
@@ -77,8 +76,7 @@ class WaitDispatchSupport implements SecondaryLoop {
      * serve the given event dispatch thread.
      *
      * @param dispatchThread An event dispatch thread that
-     *        should not stop dispatching events while waiting
-     *
+     *                       should not stop dispatching events while waiting
      * @since 1.7
      */
     public WaitDispatchSupport(EventDispatchThread dispatchThread) {
@@ -90,15 +88,13 @@ class WaitDispatchSupport implements SecondaryLoop {
      * serve the given event dispatch thread.
      *
      * @param dispatchThread An event dispatch thread that
-     *        should not stop dispatching events while waiting
-     * @param extCondition A conditional object used to determine
-     *        if the loop should be terminated
-     *
+     *                       should not stop dispatching events while waiting
+     * @param extCondition   A conditional object used to determine
+     *                       if the loop should be terminated
      * @since 1.7
      */
     public WaitDispatchSupport(EventDispatchThread dispatchThread,
-                               Conditional extCond)
-    {
+                               Conditional extCond) {
         if (dispatchThread == null) {
             throw new IllegalArgumentException("The dispatchThread can not be null");
         }
@@ -110,10 +106,10 @@ class WaitDispatchSupport implements SecondaryLoop {
             public boolean evaluate() {
                 if (log.isLoggable(PlatformLogger.FINEST)) {
                     log.finest("evaluate(): blockingEDT=" + keepBlockingEDT.get() +
-                               ", blockingCT=" + keepBlockingCT.get());
+                            ", blockingCT=" + keepBlockingCT.get());
                 }
                 boolean extEvaluate =
-                    (extCondition != null) ? extCondition.evaluate() : true;
+                        (extCondition != null) ? extCondition.evaluate() : true;
                 if (!keepBlockingEDT.get() || !extEvaluate) {
                     if (timerTask != null) {
                         timerTask.cancel();
@@ -135,20 +131,17 @@ class WaitDispatchSupport implements SecondaryLoop {
      * waiting process.
      * <p>
      *
-     *
      * @param dispatchThread An event dispatch thread that
-     *        should not stop dispatching events while waiting
-     * @param filter {@code EventFilter} to be set
-     * @param interval A time interval to wait for. Note that
-     *        when the waiting process takes place on EDT
-     *        there is no guarantee to stop it in the given time
-     *
+     *                       should not stop dispatching events while waiting
+     * @param filter         {@code EventFilter} to be set
+     * @param interval       A time interval to wait for. Note that
+     *                       when the waiting process takes place on EDT
+     *                       there is no guarantee to stop it in the given time
      * @since 1.7
      */
     public WaitDispatchSupport(EventDispatchThread dispatchThread,
                                Conditional extCondition,
-                               EventFilter filter, long interval)
-    {
+                               EventFilter filter, long interval) {
         this(dispatchThread, extCondition);
         this.filter = filter;
         if (interval < 0) {
@@ -166,7 +159,7 @@ class WaitDispatchSupport implements SecondaryLoop {
     @Override
     public boolean enter() {
         log.fine("enter(): blockingEDT=" + keepBlockingEDT.get() +
-                 ", blockingCT=" + keepBlockingCT.get());
+                ", blockingCT=" + keepBlockingCT.get());
 
         if (!keepBlockingEDT.compareAndSet(false, true)) {
             log.fine("The secondary loop is already running, aborting");
@@ -205,7 +198,7 @@ class WaitDispatchSupport implements SecondaryLoop {
             // Dispose SequencedEvent we are dispatching on the the current
             // AppContext, to prevent us from hang - see 4531693 for details
             SequencedEvent currentSE = KeyboardFocusManager.
-                getCurrentKeyboardFocusManager().getCurrentSequencedEvent();
+                    getCurrentKeyboardFocusManager().getCurrentSequencedEvent();
             if (currentSE != null) {
                 log.fine("Dispose current SequencedEvent: " + currentSE);
                 currentSE.dispose();
@@ -235,15 +228,13 @@ class WaitDispatchSupport implements SecondaryLoop {
                     if (interval > 0) {
                         long currTime = System.currentTimeMillis();
                         while (keepBlockingCT.get() &&
-                               ((extCondition != null) ? extCondition.evaluate() : true) &&
-                               (currTime + interval > System.currentTimeMillis()))
-                        {
+                                ((extCondition != null) ? extCondition.evaluate() : true) &&
+                                (currTime + interval > System.currentTimeMillis())) {
                             getTreeLock().wait(interval);
                         }
                     } else {
                         while (keepBlockingCT.get() &&
-                               ((extCondition != null) ? extCondition.evaluate() : true))
-                        {
+                                ((extCondition != null) ? extCondition.evaluate() : true)) {
                             getTreeLock().wait();
                         }
                     }
@@ -271,7 +262,7 @@ class WaitDispatchSupport implements SecondaryLoop {
      */
     public boolean exit() {
         log.fine("exit(): blockingEDT=" + keepBlockingEDT.get() +
-                 ", blockingCT=" + keepBlockingCT.get());
+                ", blockingCT=" + keepBlockingCT.get());
         if (keepBlockingEDT.compareAndSet(true, false)) {
             wakeupEDT();
             return true;

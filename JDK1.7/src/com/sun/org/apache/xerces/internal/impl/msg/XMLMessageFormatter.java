@@ -22,6 +22,7 @@ package com.sun.org.apache.xerces.internal.impl.msg;
 
 import com.sun.org.apache.xerces.internal.util.MessageFormatter;
 import com.sun.org.apache.xerces.internal.utils.SecuritySupport;
+
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -30,11 +31,9 @@ import java.util.ResourceBundle;
  * XMLMessageFormatter provides error messages for the XML 1.0 Recommendation and for
  * the Namespaces Recommendation
  *
- * @xerces.internal
- *
  * @author Eric Ye, IBM
  * @version $Id: XMLMessageFormatter.java 3094 2012-03-21 05:50:01Z joehw $
- *
+ * @xerces.internal
  */
 public class XMLMessageFormatter implements MessageFormatter {
     /**
@@ -60,14 +59,12 @@ public class XMLMessageFormatter implements MessageFormatter {
      * @param arguments The message replacement text arguments. The order
      *                  of the arguments must match that of the placeholders
      *                  in the actual message.
-     *
      * @return Returns the formatted message.
-     *
      * @throws MissingResourceException Thrown if the message with the
      *                                  specified key cannot be found.
      */
     public String formatMessage(Locale locale, String key, Object[] arguments)
-        throws MissingResourceException {
+            throws MissingResourceException {
 
         if (fResourceBundle == null || locale != fLocale) {
             if (locale != null) {
@@ -86,8 +83,7 @@ public class XMLMessageFormatter implements MessageFormatter {
             if (arguments != null) {
                 try {
                     msg = java.text.MessageFormat.format(msg, arguments);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     msg = fResourceBundle.getString("FormatFailed");
                     msg += " " + fResourceBundle.getString(key);
                 }

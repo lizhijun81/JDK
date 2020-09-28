@@ -38,20 +38,20 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 
-import org.omg.CORBA.TypeCode ;
-import org.omg.CORBA.StructMember ;
-import org.omg.CORBA.UnionMember ;
-import org.omg.CORBA.ValueMember ;
-import org.omg.CORBA.TCKind ;
-import org.omg.CORBA.Any ;
-import org.omg.CORBA.Principal ;
-import org.omg.CORBA.BAD_TYPECODE ;
-import org.omg.CORBA.BAD_PARAM ;
-import org.omg.CORBA.BAD_OPERATION ;
-import org.omg.CORBA.INTERNAL ;
-import org.omg.CORBA.MARSHAL ;
+import org.omg.CORBA.TypeCode;
+import org.omg.CORBA.StructMember;
+import org.omg.CORBA.UnionMember;
+import org.omg.CORBA.ValueMember;
+import org.omg.CORBA.TCKind;
+import org.omg.CORBA.Any;
+import org.omg.CORBA.Principal;
+import org.omg.CORBA.BAD_TYPECODE;
+import org.omg.CORBA.BAD_PARAM;
+import org.omg.CORBA.BAD_OPERATION;
+import org.omg.CORBA.INTERNAL;
+import org.omg.CORBA.MARSHAL;
 
-import org.omg.CORBA.TypeCodePackage.BadKind ;
+import org.omg.CORBA.TypeCodePackage.BadKind;
 
 import org.omg.CORBA_2_3.portable.InputStream;
 import org.omg.CORBA_2_3.portable.OutputStream;
@@ -64,8 +64,7 @@ import com.sun.corba.se.impl.encoding.CDRInputStream;
 import com.sun.corba.se.impl.encoding.CDROutputStream;
 import com.sun.corba.se.impl.encoding.MarshalInputStream;
 
-public class TypeCodeInputStream extends EncapsInputStream implements TypeCodeReader
-{
+public class TypeCodeInputStream extends EncapsInputStream implements TypeCodeReader {
     private Map typeMap = null;
     private InputStream enclosure = null;
     private boolean isEncapsulation = false;
@@ -103,10 +102,10 @@ public class TypeCodeInputStream extends EncapsInputStream implements TypeCodeRe
         if (typeMap == null)
             return null;
         //if (TypeCodeImpl.debug) {
-            //System.out.println("Getting tc " + (TypeCode)typeMap.get(new Integer(position)) +
-                               //" at position " + position);
+        //System.out.println("Getting tc " + (TypeCode)typeMap.get(new Integer(position)) +
+        //" at position " + position);
         //}
-        return (TypeCodeImpl)typeMap.get(new Integer(position));
+        return (TypeCodeImpl) typeMap.get(new Integer(position));
     }
 
     public void setEnclosingInputStream(InputStream enclosure) {
@@ -117,7 +116,7 @@ public class TypeCodeInputStream extends EncapsInputStream implements TypeCodeRe
         if (enclosure == null)
             return this;
         if (enclosure instanceof TypeCodeReader)
-            return ((TypeCodeReader)enclosure).getTopLevelStream();
+            return ((TypeCodeReader) enclosure).getTopLevelStream();
         return this;
     }
 
@@ -126,21 +125,21 @@ public class TypeCodeInputStream extends EncapsInputStream implements TypeCodeRe
             // The enclosed stream has to consider if the enclosing stream
             // had to read the enclosed stream completely when creating it.
             // This is why the size of the enclosed stream needs to be substracted.
-            int topPos = ((TypeCodeReader)enclosure).getTopLevelPosition();
+            int topPos = ((TypeCodeReader) enclosure).getTopLevelPosition();
             // Substract getBufferLength from the parents pos because it read this stream
             // from its own when creating it
             int pos = topPos - getBufferLength() + getPosition();
             //if (TypeCodeImpl.debug) {
-                //System.out.println("TypeCodeInputStream.getTopLevelPosition using getTopLevelPosition " + topPos +
-                    //(isEncapsulation ? " - encaps length 4" : "") +
-                    //" - getBufferLength() " + getBufferLength() +
-                    //" + getPosition() " + getPosition() + " = " + pos);
+            //System.out.println("TypeCodeInputStream.getTopLevelPosition using getTopLevelPosition " + topPos +
+            //(isEncapsulation ? " - encaps length 4" : "") +
+            //" - getBufferLength() " + getBufferLength() +
+            //" + getPosition() " + getPosition() + " = " + pos);
             //}
             return pos;
         }
         //if (TypeCodeImpl.debug) {
-            //System.out.println("TypeCodeInputStream.getTopLevelPosition returning getPosition() = " +
-                               //getPosition() + " because enclosure is " + enclosure);
+        //System.out.println("TypeCodeInputStream.getTopLevelPosition returning getPosition() = " +
+        //getPosition() + " because enclosure is " + enclosure);
         //}
         return getPosition();
     }
@@ -157,17 +156,17 @@ public class TypeCodeInputStream extends EncapsInputStream implements TypeCodeRe
 
         // create an encapsulation using the marshal buffer
         if (is instanceof CDRInputStream) {
-            encap = new TypeCodeInputStream((ORB)_orb, encapBuffer, encapBuffer.length,
-                                            ((CDRInputStream)is).isLittleEndian(),
-                                            ((CDRInputStream)is).getGIOPVersion());
+            encap = new TypeCodeInputStream((ORB) _orb, encapBuffer, encapBuffer.length,
+                    ((CDRInputStream) is).isLittleEndian(),
+                    ((CDRInputStream) is).getGIOPVersion());
         } else {
-            encap = new TypeCodeInputStream((ORB)_orb, encapBuffer, encapBuffer.length);
+            encap = new TypeCodeInputStream((ORB) _orb, encapBuffer, encapBuffer.length);
         }
         encap.setEnclosingInputStream(is);
         encap.makeEncapsulation();
         //if (TypeCodeImpl.debug) {
-            //System.out.println("Created TypeCodeInputStream " + encap + " with parent " + is);
-            //encap.printBuffer();
+        //System.out.println("Created TypeCodeInputStream " + encap + " with parent " + is);
+        //encap.printBuffer();
         //}
         return encap;
     }
@@ -182,8 +181,8 @@ public class TypeCodeInputStream extends EncapsInputStream implements TypeCodeRe
         System.out.println("typeMap = {");
         Iterator i = typeMap.keySet().iterator();
         while (i.hasNext()) {
-            Integer pos = (Integer)i.next();
-            TypeCodeImpl tci = (TypeCodeImpl)typeMap.get(pos);
+            Integer pos = (Integer) i.next();
+            TypeCodeImpl tci = (TypeCodeImpl) typeMap.get(pos);
             System.out.println("  key = " + pos.intValue() + ", value = " + tci.description());
         }
         System.out.println("}");

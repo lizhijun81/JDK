@@ -43,12 +43,12 @@ import org.omg.CORBA.portable.OutputStream;
  * must also fill the "in" value to be sent to the server.
  * Before the method invocation returns, the ORB will fill in the
  * value corresponding to the "out" value returned from the server.
- * <P>
+ * <p>
  * If <code>myFloatHolder</code> is an instance of <code>FloatHolder</code>,
  * the value stored in its <code>value</code> field can be accessed with
  * <code>myFloatHolder.value</code>.
  *
- * @since       JDK1.2
+ * @since JDK1.2
  */
 public final class FloatHolder implements Streamable {
     /**
@@ -67,6 +67,7 @@ public final class FloatHolder implements Streamable {
     /**
      * Constructs a new <code>FloatHolder</code> object for the given
      * <code>float</code>.
+     *
      * @param initial the <code>float</code> with which to initialize
      *                the <code>value</code> field of the new
      *                <code>FloatHolder</code> object

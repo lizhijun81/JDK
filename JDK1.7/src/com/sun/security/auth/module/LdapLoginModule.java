@@ -113,7 +113,7 @@ import sun.security.util.AuthResources;
  *      followed by two hexadecimal digits (see {@link java.net.URI}).
  *      Query components must also be omitted from the URL.
  *
- *      <p>
+ * <p>
  *      Automatic discovery of the LDAP server via DNS
  *      (<a href="http://www.ietf.org/rfc/rfc2782.txt">RFC 2782</a>)
  *      is supported (once DNS has been configured to support such a service).
@@ -268,7 +268,7 @@ import sun.security.util.AuthResources;
  * <dd>When a {@link SecurityManager} is active then an application
  *     that creates a {@link LoginContext} and uses a {@link LoginModule}
  *     must be granted certain permissions.
- *     <p>
+ * <p>
  *     If the application creates a login context using an <em>installed</em>
  *     {@link Configuration} then the application must be granted the
  *     {@link AuthPermission} to create login contexts.
@@ -280,18 +280,18 @@ import sun.security.util.AuthResources;
  *         permission javax.security.auth.AuthPermission "createLoginContext.*";
  *     };
  *     </pre>
- *
+ * <p>
  *     Alternatively, if the application creates a login context using a
  *     <em>caller-specified</em> {@link Configuration} then the application
  *     must be granted the permissions required by the {@link LoginModule}.
  *     <em>This</em> module requires the following two permissions:
- *     <p>
+ * <p>
  *     <ul>
  *     <li> The {@link SocketPermission} to connect to an LDAP server.
  *     <li> The {@link AuthPermission} to modify the set of {@link Principal}s
  *          associated with a {@link Subject}.
  *     </ul>
- *     <p>
+ * <p>
  *     For example, the following security policy grants an application in the
  *     user's current directory all the permissions required by this module:
  *     <pre>
@@ -314,15 +314,15 @@ public class LdapLoginModule implements LoginModule {
             new PrivilegedAction<ResourceBundle>() {
                 public ResourceBundle run() {
                     return ResourceBundle.getBundle(
-                        "sun.security.util.AuthResources");
+                            "sun.security.util.AuthResources");
                 }
             }
-        );
+    );
 
     // Keys to retrieve the stored username and password
     private static final String USERNAME_KEY = "javax.security.auth.login.name";
     private static final String PASSWORD_KEY =
-        "javax.security.auth.login.password";
+            "javax.security.auth.login.password";
 
     // Option names
     private static final String USER_PROVIDER = "userProvider";
@@ -333,7 +333,7 @@ public class LdapLoginModule implements LoginModule {
     // Used for the username token replacement
     private static final String USERNAME_TOKEN = "{USERNAME}";
     private static final Pattern USERNAME_PATTERN =
-        Pattern.compile("\\{USERNAME\\}");
+            Pattern.compile("\\{USERNAME\\}");
 
     // Configurable options
     private String userProvider;
@@ -377,16 +377,16 @@ public class LdapLoginModule implements LoginModule {
     /**
      * Initialize this <code>LoginModule</code>.
      *
-     * @param subject the <code>Subject</code> to be authenticated.
+     * @param subject         the <code>Subject</code> to be authenticated.
      * @param callbackHandler a <code>CallbackHandler</code> to acquire the
-     *                  username and password.
-     * @param sharedState shared <code>LoginModule</code> state.
-     * @param options options specified in the login
-     *                  <code>Configuration</code> for this particular
-     *                  <code>LoginModule</code>.
+     *                        username and password.
+     * @param sharedState     shared <code>LoginModule</code> state.
+     * @param options         options specified in the login
+     *                        <code>Configuration</code> for this particular
+     *                        <code>LoginModule</code>.
      */
     public void initialize(Subject subject, CallbackHandler callbackHandler,
-                        Map<String, ?> sharedState, Map<String, ?> options) {
+                           Map<String, ?> sharedState, Map<String, ?> options) {
 
         this.subject = subject;
         this.callbackHandler = callbackHandler;
@@ -395,7 +395,7 @@ public class LdapLoginModule implements LoginModule {
 
         ldapEnvironment = new Hashtable(9);
         ldapEnvironment.put(Context.INITIAL_CONTEXT_FACTORY,
-            "com.sun.jndi.ldap.LdapCtxFactory");
+                "com.sun.jndi.ldap.LdapCtxFactory");
 
         // Add any JNDI properties to the environment
         for (String key : options.keySet()) {
@@ -406,18 +406,18 @@ public class LdapLoginModule implements LoginModule {
 
         // initialize any configured options
 
-        userProvider = (String)options.get(USER_PROVIDER);
+        userProvider = (String) options.get(USER_PROVIDER);
         if (userProvider != null) {
             ldapEnvironment.put(Context.PROVIDER_URL, userProvider);
         }
 
-        authcIdentity = (String)options.get(AUTHC_IDENTITY);
+        authcIdentity = (String) options.get(AUTHC_IDENTITY);
         if (authcIdentity != null &&
-            (authcIdentity.indexOf(USERNAME_TOKEN) != -1)) {
+                (authcIdentity.indexOf(USERNAME_TOKEN) != -1)) {
             identityMatcher = USERNAME_PATTERN.matcher(authcIdentity);
         }
 
-        userFilter = (String)options.get(USER_FILTER);
+        userFilter = (String) options.get(USER_FILTER);
         if (userFilter != null) {
             if (userFilter.indexOf(USERNAME_TOKEN) != -1) {
                 filterMatcher = USERNAME_PATTERN.matcher(userFilter);
@@ -428,14 +428,14 @@ public class LdapLoginModule implements LoginModule {
             constraints.setReturningObjFlag(true); // to get the full DN
         }
 
-        authzIdentity = (String)options.get(AUTHZ_IDENTITY);
+        authzIdentity = (String) options.get(AUTHZ_IDENTITY);
         if (authzIdentity != null &&
-            authzIdentity.startsWith("{") && authzIdentity.endsWith("}")) {
+                authzIdentity.startsWith("{") && authzIdentity.endsWith("}")) {
             if (constraints != null) {
                 authzIdentityAttr =
-                    authzIdentity.substring(1, authzIdentity.length() - 1);
+                        authzIdentity.substring(1, authzIdentity.length() - 1);
                 constraints.setReturningAttributes(
-                    new String[]{authzIdentityAttr});
+                        new String[]{authzIdentityAttr});
             }
             authzIdentity = null; // set later, from the specified attribute
         }
@@ -449,7 +449,7 @@ public class LdapLoginModule implements LoginModule {
             }
         }
 
-        if ("false".equalsIgnoreCase((String)options.get("useSSL"))) {
+        if ("false".equalsIgnoreCase((String) options.get("useSSL"))) {
             useSSL = false;
             ldapEnvironment.remove(Context.SECURITY_PROTOCOL);
         } else {
@@ -457,30 +457,30 @@ public class LdapLoginModule implements LoginModule {
         }
 
         tryFirstPass =
-                "true".equalsIgnoreCase((String)options.get("tryFirstPass"));
+                "true".equalsIgnoreCase((String) options.get("tryFirstPass"));
 
         useFirstPass =
-                "true".equalsIgnoreCase((String)options.get("useFirstPass"));
+                "true".equalsIgnoreCase((String) options.get("useFirstPass"));
 
-        storePass = "true".equalsIgnoreCase((String)options.get("storePass"));
+        storePass = "true".equalsIgnoreCase((String) options.get("storePass"));
 
-        clearPass = "true".equalsIgnoreCase((String)options.get("clearPass"));
+        clearPass = "true".equalsIgnoreCase((String) options.get("clearPass"));
 
-        debug = "true".equalsIgnoreCase((String)options.get("debug"));
+        debug = "true".equalsIgnoreCase((String) options.get("debug"));
 
         if (debug) {
             if (authFirst) {
                 System.out.println("\t\t[LdapLoginModule] " +
-                    "authentication-first mode; " +
-                    (useSSL ? "SSL enabled" : "SSL disabled"));
+                        "authentication-first mode; " +
+                        (useSSL ? "SSL enabled" : "SSL disabled"));
             } else if (authOnly) {
                 System.out.println("\t\t[LdapLoginModule] " +
-                    "authentication-only mode; " +
-                    (useSSL ? "SSL enabled" : "SSL disabled"));
+                        "authentication-only mode; " +
+                        (useSSL ? "SSL enabled" : "SSL disabled"));
             } else {
                 System.out.println("\t\t[LdapLoginModule] " +
-                    "search-first mode; " +
-                    (useSSL ? "SSL enabled" : "SSL disabled"));
+                        "search-first mode; " +
+                        (useSSL ? "SSL enabled" : "SSL disabled"));
             }
         }
     }
@@ -492,21 +492,21 @@ public class LdapLoginModule implements LoginModule {
      * specified LDAP directory.
      *
      * @return true always, since this <code>LoginModule</code>
-     *          should not be ignored.
-     * @exception FailedLoginException if the authentication fails.
-     * @exception LoginException if this <code>LoginModule</code>
-     *          is unable to perform the authentication.
+     * should not be ignored.
+     * @throws FailedLoginException if the authentication fails.
+     * @throws LoginException       if this <code>LoginModule</code>
+     *                              is unable to perform the authentication.
      */
     public boolean login() throws LoginException {
 
         if (userProvider == null) {
             throw new LoginException
-                ("Unable to locate the LDAP directory service");
+                    ("Unable to locate the LDAP directory service");
         }
 
         if (debug) {
             System.out.println("\t\t[LdapLoginModule] user provider: " +
-                userProvider);
+                    userProvider);
         }
 
         // attempt the authentication
@@ -521,7 +521,7 @@ public class LdapLoginModule implements LoginModule {
                 succeeded = true;
                 if (debug) {
                     System.out.println("\t\t[LdapLoginModule] " +
-                                "tryFirstPass succeeded");
+                            "tryFirstPass succeeded");
                 }
                 return true;
 
@@ -530,7 +530,7 @@ public class LdapLoginModule implements LoginModule {
                 cleanState();
                 if (debug) {
                     System.out.println("\t\t[LdapLoginModule] " +
-                                "tryFirstPass failed: " + le.toString());
+                            "tryFirstPass failed: " + le.toString());
                 }
             }
 
@@ -545,7 +545,7 @@ public class LdapLoginModule implements LoginModule {
                 succeeded = true;
                 if (debug) {
                     System.out.println("\t\t[LdapLoginModule] " +
-                                "useFirstPass succeeded");
+                            "useFirstPass succeeded");
                 }
                 return true;
 
@@ -554,7 +554,7 @@ public class LdapLoginModule implements LoginModule {
                 cleanState();
                 if (debug) {
                     System.out.println("\t\t[LdapLoginModule] " +
-                                "useFirstPass failed");
+                            "useFirstPass failed");
                 }
                 throw le;
             }
@@ -565,10 +565,10 @@ public class LdapLoginModule implements LoginModule {
             attemptAuthentication(false);
 
             // authentication succeeded
-           succeeded = true;
+            succeeded = true;
             if (debug) {
                 System.out.println("\t\t[LdapLoginModule] " +
-                                "authentication succeeded");
+                        "authentication succeeded");
             }
             return true;
 
@@ -576,7 +576,7 @@ public class LdapLoginModule implements LoginModule {
             cleanState();
             if (debug) {
                 System.out.println("\t\t[LdapLoginModule] " +
-                                "authentication failed");
+                        "authentication failed");
             }
             throw le;
         }
@@ -599,9 +599,9 @@ public class LdapLoginModule implements LoginModule {
      * authentication attempted failed, then this method removes
      * any state that was originally saved.
      *
-     * @exception LoginException if the commit fails
      * @return true if this LoginModule's own login and commit
-     *          attempts succeeded, or false otherwise.
+     * attempts succeeded, or false otherwise.
+     * @throws LoginException if the commit fails
      */
     public boolean commit() throws LoginException {
 
@@ -610,39 +610,39 @@ public class LdapLoginModule implements LoginModule {
         } else {
             if (subject.isReadOnly()) {
                 cleanState();
-                throw new LoginException ("Subject is read-only");
+                throw new LoginException("Subject is read-only");
             }
             // add Principals to the Subject
             Set<Principal> principals = subject.getPrincipals();
-            if (! principals.contains(ldapPrincipal)) {
+            if (!principals.contains(ldapPrincipal)) {
                 principals.add(ldapPrincipal);
             }
             if (debug) {
                 System.out.println("\t\t[LdapLoginModule] " +
-                                   "added LdapPrincipal \"" +
-                                   ldapPrincipal +
-                                   "\" to Subject");
+                        "added LdapPrincipal \"" +
+                        ldapPrincipal +
+                        "\" to Subject");
             }
 
-            if (! principals.contains(userPrincipal)) {
+            if (!principals.contains(userPrincipal)) {
                 principals.add(userPrincipal);
             }
             if (debug) {
                 System.out.println("\t\t[LdapLoginModule] " +
-                                   "added UserPrincipal \"" +
-                                   userPrincipal +
-                                   "\" to Subject");
+                        "added UserPrincipal \"" +
+                        userPrincipal +
+                        "\" to Subject");
             }
 
             if (authzPrincipal != null &&
-                (! principals.contains(authzPrincipal))) {
+                    (!principals.contains(authzPrincipal))) {
                 principals.add(authzPrincipal);
 
                 if (debug) {
                     System.out.println("\t\t[LdapLoginModule] " +
-                                   "added UserPrincipal \"" +
-                                   authzPrincipal +
-                                   "\" to Subject");
+                            "added UserPrincipal \"" +
+                            authzPrincipal +
+                            "\" to Subject");
                 }
             }
         }
@@ -664,14 +664,14 @@ public class LdapLoginModule implements LoginModule {
      * <code>login</code> and <code>commit</code> methods),
      * then this method cleans up any state that was originally saved.
      *
-     * @exception LoginException if the abort fails.
      * @return false if this LoginModule's own login and/or commit attempts
-     *          failed, and true otherwise.
+     * failed, and true otherwise.
+     * @throws LoginException if the abort fails.
      */
     public boolean abort() throws LoginException {
         if (debug)
             System.out.println("\t\t[LdapLoginModule] " +
-                "aborted authentication");
+                    "aborted authentication");
 
         if (succeeded == false) {
             return false;
@@ -698,14 +698,14 @@ public class LdapLoginModule implements LoginModule {
      * <p> This method removes the Principals
      * that were added by the <code>commit</code> method.
      *
-     * @exception LoginException if the logout fails.
      * @return true in all cases since this <code>LoginModule</code>
-     *          should not be ignored.
+     * should not be ignored.
+     * @throws LoginException if the logout fails.
      */
     public boolean logout() throws LoginException {
         if (subject.isReadOnly()) {
             cleanState();
-            throw new LoginException ("Subject is read-only");
+            throw new LoginException("Subject is read-only");
         }
         Set<Principal> principals = subject.getPrincipals();
         principals.remove(ldapPrincipal);
@@ -733,18 +733,18 @@ public class LdapLoginModule implements LoginModule {
      * Attempt authentication
      *
      * @param getPasswdFromSharedState boolean that tells this method whether
-     *          to retrieve the password from the sharedState.
-     * @exception LoginException if the authentication attempt fails.
+     *                                 to retrieve the password from the sharedState.
+     * @throws LoginException if the authentication attempt fails.
      */
     private void attemptAuthentication(boolean getPasswdFromSharedState)
-        throws LoginException {
+            throws LoginException {
 
         // first get the username and password
         getUsernamePassword(getPasswdFromSharedState);
 
         if (password == null || password.length == 0) {
             throw (LoginException)
-                new FailedLoginException("No password was supplied");
+                    new FailedLoginException("No password was supplied");
         }
 
         String dn = "";
@@ -759,7 +759,7 @@ public class LdapLoginModule implements LoginModule {
 
             if (debug) {
                 System.out.println("\t\t[LdapLoginModule] " +
-                    "attempting to authenticate user: " + username);
+                        "attempting to authenticate user: " + username);
             }
 
             try {
@@ -768,8 +768,8 @@ public class LdapLoginModule implements LoginModule {
 
             } catch (NamingException e) {
                 throw (LoginException)
-                    new FailedLoginException("Cannot bind to LDAP server")
-                        .initCause(e);
+                        new FailedLoginException("Cannot bind to LDAP server")
+                                .initCause(e);
             }
 
             // Authentication has succeeded
@@ -789,8 +789,8 @@ public class LdapLoginModule implements LoginModule {
 
             } catch (NamingException e) {
                 throw (LoginException)
-                    new FailedLoginException("Cannot connect to LDAP server")
-                        .initCause(e);
+                        new FailedLoginException("Cannot connect to LDAP server")
+                                .initCause(e);
             }
 
             // Locate the user's distinguished name
@@ -805,7 +805,7 @@ public class LdapLoginModule implements LoginModule {
 
                 if (debug) {
                     System.out.println("\t\t[LdapLoginModule] " +
-                        "attempting to authenticate user: " + username);
+                            "attempting to authenticate user: " + username);
                 }
                 // Connect to the LDAP server (using simple bind)
                 ctx.reconnect(null);
@@ -814,15 +814,15 @@ public class LdapLoginModule implements LoginModule {
 
             } catch (NamingException e) {
                 throw (LoginException)
-                    new FailedLoginException("Cannot bind to LDAP server")
-                        .initCause(e);
+                        new FailedLoginException("Cannot bind to LDAP server")
+                                .initCause(e);
             }
         }
 
         // Save input as shared state only if authentication succeeded
         if (storePass &&
-            !sharedState.containsKey(USERNAME_KEY) &&
-            !sharedState.containsKey(PASSWORD_KEY)) {
+                !sharedState.containsKey(USERNAME_KEY) &&
+                !sharedState.containsKey(PASSWORD_KEY)) {
             sharedState.put(USERNAME_KEY, username);
             sharedState.put(PASSWORD_KEY, password);
         }
@@ -840,11 +840,11 @@ public class LdapLoginModule implements LoginModule {
         } catch (InvalidNameException e) {
             if (debug) {
                 System.out.println("\t\t[LdapLoginModule] " +
-                                   "cannot create LdapPrincipal: bad DN");
+                        "cannot create LdapPrincipal: bad DN");
             }
             throw (LoginException)
-                new FailedLoginException("Cannot create LdapPrincipal")
-                    .initCause(e);
+                    new FailedLoginException("Cannot create LdapPrincipal")
+                            .initCause(e);
         }
     }
 
@@ -855,8 +855,8 @@ public class LdapLoginModule implements LoginModule {
      *
      * @param ctx an LDAP context to use for the search
      * @return the user's distinguished name or an empty string if none
-     *         was found.
-     * @exception LoginException if the user's entry cannot be found.
+     * was found.
+     * @throws LoginException if the user's entry cannot be found.
      */
     private String findUserDN(LdapContext ctx) throws LoginException {
 
@@ -866,20 +866,20 @@ public class LdapLoginModule implements LoginModule {
         if (userFilter != null) {
             if (debug) {
                 System.out.println("\t\t[LdapLoginModule] " +
-                    "searching for entry belonging to user: " + username);
+                        "searching for entry belonging to user: " + username);
             }
         } else {
             if (debug) {
                 System.out.println("\t\t[LdapLoginModule] " +
-                    "cannot search for entry belonging to user: " + username);
+                        "cannot search for entry belonging to user: " + username);
             }
             throw (LoginException)
-                new FailedLoginException("Cannot find user's LDAP entry");
+                    new FailedLoginException("Cannot find user's LDAP entry");
         }
 
         try {
             NamingEnumeration<SearchResult> results = ctx.search("",
-                replaceUsernameToken(filterMatcher, userFilter), constraints);
+                    replaceUsernameToken(filterMatcher, userFilter), constraints);
 
             // Extract the distinguished name of the user's entry
             // (Use the first entry if more than one is returned)
@@ -889,17 +889,17 @@ public class LdapLoginModule implements LoginModule {
                 // %%% - use the SearchResult.getNameInNamespace method
                 //        available in JDK 1.5 and later.
                 //        (can remove call to constraints.setReturningObjFlag)
-                userDN = ((Context)entry.getObject()).getNameInNamespace();
+                userDN = ((Context) entry.getObject()).getNameInNamespace();
 
                 if (debug) {
                     System.out.println("\t\t[LdapLoginModule] found entry: " +
-                        userDN);
+                            userDN);
                 }
 
                 // Extract a value from user's authorization identity attribute
                 if (authzIdentityAttr != null) {
                     Attribute attr =
-                        entry.getAttributes().get(authzIdentityAttr);
+                            entry.getAttributes().get(authzIdentityAttr);
                     if (attr != null) {
                         Object val = attr.get();
                         if (val instanceof String) {
@@ -914,7 +914,7 @@ public class LdapLoginModule implements LoginModule {
                 // Bad username
                 if (debug) {
                     System.out.println("\t\t[LdapLoginModule] user's entry " +
-                        "not found");
+                            "not found");
                 }
             }
 
@@ -924,7 +924,7 @@ public class LdapLoginModule implements LoginModule {
 
         if (userDN.equals("")) {
             throw (LoginException)
-                new FailedLoginException("Cannot find user's LDAP entry");
+                    new FailedLoginException("Cannot find user's LDAP entry");
         } else {
             return userDN;
         }
@@ -950,23 +950,23 @@ public class LdapLoginModule implements LoginModule {
      * want to use them via use/tryFirstPass.
      *
      * @param getPasswdFromSharedState boolean that tells this method whether
-     *          to retrieve the password from the sharedState.
-     * @exception LoginException if the username/password cannot be acquired.
+     *                                 to retrieve the password from the sharedState.
+     * @throws LoginException if the username/password cannot be acquired.
      */
     private void getUsernamePassword(boolean getPasswdFromSharedState)
-        throws LoginException {
+            throws LoginException {
 
         if (getPasswdFromSharedState) {
             // use the password saved by the first module in the stack
-            username = (String)sharedState.get(USERNAME_KEY);
-            password = (char[])sharedState.get(PASSWORD_KEY);
+            username = (String) sharedState.get(USERNAME_KEY);
+            password = (char[]) sharedState.get(PASSWORD_KEY);
             return;
         }
 
         // prompt for a username and password
         if (callbackHandler == null)
             throw new LoginException("No CallbackHandler available " +
-                "to acquire authentication information from the user");
+                    "to acquire authentication information from the user");
 
         Callback[] callbacks = new Callback[2];
         callbacks[0] = new NameCallback(rb.getString("username."));
@@ -974,20 +974,20 @@ public class LdapLoginModule implements LoginModule {
 
         try {
             callbackHandler.handle(callbacks);
-            username = ((NameCallback)callbacks[0]).getName();
-            char[] tmpPassword = ((PasswordCallback)callbacks[1]).getPassword();
+            username = ((NameCallback) callbacks[0]).getName();
+            char[] tmpPassword = ((PasswordCallback) callbacks[1]).getPassword();
             password = new char[tmpPassword.length];
             System.arraycopy(tmpPassword, 0,
-                                password, 0, tmpPassword.length);
-            ((PasswordCallback)callbacks[1]).clearPassword();
+                    password, 0, tmpPassword.length);
+            ((PasswordCallback) callbacks[1]).clearPassword();
 
         } catch (java.io.IOException ioe) {
             throw new LoginException(ioe.toString());
 
         } catch (UnsupportedCallbackException uce) {
             throw new LoginException("Error: " + uce.getCallback().toString() +
-                        " not available to acquire authentication information" +
-                        " from the user");
+                    " not available to acquire authentication information" +
+                    " from the user");
         }
     }
 

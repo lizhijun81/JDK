@@ -36,27 +36,27 @@ import javax.imageio.IIOException;
 
 public class JPEGImageReaderSpi extends ImageReaderSpi {
 
-    private static String [] writerSpiNames =
-        {"com.sun.imageio.plugins.jpeg.JPEGImageWriterSpi"};
+    private static String[] writerSpiNames =
+            {"com.sun.imageio.plugins.jpeg.JPEGImageWriterSpi"};
 
     public JPEGImageReaderSpi() {
         super(JPEG.vendor,
-              JPEG.version,
-              JPEG.names,
-              JPEG.suffixes,
-              JPEG.MIMETypes,
-              "com.sun.imageio.plugins.jpeg.JPEGImageReader",
-              new Class[] { ImageInputStream.class },
-              writerSpiNames,
-              true,
-              JPEG.nativeStreamMetadataFormatName,
-              JPEG.nativeStreamMetadataFormatClassName,
-              null, null,
-              true,
-              JPEG.nativeImageMetadataFormatName,
-              JPEG.nativeImageMetadataFormatClassName,
-              null, null
-              );
+                JPEG.version,
+                JPEG.names,
+                JPEG.suffixes,
+                JPEG.MIMETypes,
+                "com.sun.imageio.plugins.jpeg.JPEGImageReader",
+                new Class[]{ImageInputStream.class},
+                writerSpiNames,
+                true,
+                JPEG.nativeStreamMetadataFormatName,
+                JPEG.nativeStreamMetadataFormatClassName,
+                null, null,
+                true,
+                JPEG.nativeImageMetadataFormatName,
+                JPEG.nativeImageMetadataFormatClassName,
+                null, null
+        );
     }
 
     public String getDescription(Locale locale) {
@@ -81,7 +81,7 @@ public class JPEGImageReaderSpi extends ImageReaderSpi {
     }
 
     public ImageReader createReaderInstance(Object extension)
-        throws IIOException {
+            throws IIOException {
         return new JPEGImageReader(this);
     }
 

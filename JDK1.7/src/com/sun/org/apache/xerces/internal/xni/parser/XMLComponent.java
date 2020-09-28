@@ -26,10 +26,8 @@ package com.sun.org.apache.xerces.internal.xni.parser;
  * the component manager to initialize the component state and notify
  * the component when feature and property values change.
  *
- * @see XMLComponentManager
- *
  * @author Andy Clark, IBM
- *
+ * @see XMLComponentManager
  */
 public interface XMLComponent {
 
@@ -43,11 +41,10 @@ public interface XMLComponent {
      * component.
      *
      * @param componentManager The component manager.
-     *
      * @throws XNIException Thrown by component on initialization error.
      */
     public void reset(XMLComponentManager componentManager)
-        throws XMLConfigurationException;
+            throws XMLConfigurationException;
 
     /**
      * Returns a list of feature identifiers that are recognized by
@@ -65,7 +62,6 @@ public interface XMLComponent {
      *
      * @param featureId The feature identifier.
      * @param state     The state of the feature.
-     *
      * @throws XMLConfigurationException Thrown for configuration error.
      *                                   In general, components should
      *                                   only throw this exception if
@@ -73,7 +69,7 @@ public interface XMLComponent {
      *                                   a critical error.
      */
     public void setFeature(String featureId, boolean state)
-        throws XMLConfigurationException;
+            throws XMLConfigurationException;
 
     /**
      * Returns a list of property identifiers that are recognized by
@@ -91,7 +87,6 @@ public interface XMLComponent {
      *
      * @param propertyId The property identifier.
      * @param value      The value of the property.
-     *
      * @throws XMLConfigurationException Thrown for configuration error.
      *                                   In general, components should
      *                                   only throw this exception if
@@ -99,7 +94,7 @@ public interface XMLComponent {
      *                                   a critical error.
      */
     public void setProperty(String propertyId, Object value)
-       throws XMLConfigurationException;
+            throws XMLConfigurationException;
 
     /**
      * Returns the default state for a feature, or null if this
@@ -107,7 +102,6 @@ public interface XMLComponent {
      * feature.
      *
      * @param featureId The feature identifier.
-     *
      * @since Xerces 2.2.0
      */
     public Boolean getFeatureDefault(String featureId);
@@ -118,7 +112,6 @@ public interface XMLComponent {
      * property.
      *
      * @param propertyId The property identifier.
-     *
      * @since Xerces 2.2.0
      */
     public Object getPropertyDefault(String propertyId);

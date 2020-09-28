@@ -28,17 +28,15 @@ import com.sun.org.apache.xerces.internal.impl.dv.util.HexBin;
 /**
  * Represent the schema type "hexBinary"
  *
- * @xerces.internal
- *
  * @author Neeraj Bajaj, Sun Microsystems, inc.
  * @author Sandy Gao, IBM
- *
  * @version $Id: HexBinaryDV.java,v 1.7 2010-11-01 04:39:47 joehw Exp $
+ * @xerces.internal
  */
 public class HexBinaryDV extends TypeValidator {
 
-    public short getAllowedFacets(){
-        return (XSSimpleTypeDecl.FACET_LENGTH | XSSimpleTypeDecl.FACET_MINLENGTH | XSSimpleTypeDecl.FACET_MAXLENGTH | XSSimpleTypeDecl.FACET_PATTERN | XSSimpleTypeDecl.FACET_ENUMERATION | XSSimpleTypeDecl.FACET_WHITESPACE );
+    public short getAllowedFacets() {
+        return (XSSimpleTypeDecl.FACET_LENGTH | XSSimpleTypeDecl.FACET_MINLENGTH | XSSimpleTypeDecl.FACET_MAXLENGTH | XSSimpleTypeDecl.FACET_PATTERN | XSSimpleTypeDecl.FACET_ENUMERATION | XSSimpleTypeDecl.FACET_WHITESPACE);
     }
 
     public Object getActualValue(String content, ValidationContext context) throws InvalidDatatypeValueException {
@@ -51,7 +49,7 @@ public class HexBinaryDV extends TypeValidator {
 
     // length of a binary type is the number of bytes
     public int getDataLength(Object value) {
-        return ((XHex)value).getLength();
+        return ((XHex) value).getLength();
     }
 
     private static final class XHex extends ByteListImpl {
@@ -59,6 +57,7 @@ public class HexBinaryDV extends TypeValidator {
         public XHex(byte[] data) {
             super(data);
         }
+
         public synchronized String toString() {
             if (canonical == null) {
                 canonical = HexBin.encode(data);
@@ -69,7 +68,7 @@ public class HexBinaryDV extends TypeValidator {
         public boolean equals(Object obj) {
             if (!(obj instanceof XHex))
                 return false;
-            byte[] odata = ((XHex)obj).data;
+            byte[] odata = ((XHex) obj).data;
             int len = data.length;
             if (len != odata.length)
                 return false;

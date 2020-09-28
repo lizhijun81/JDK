@@ -57,22 +57,19 @@ import com.sun.corba.se.spi.logging.CORBALogDomains;
 import com.sun.corba.se.impl.logging.ActivationSystemException;
 
 /**
- *
- * @author      Rohit Garg
- * @since       JDK1.2
+ * @author Rohit Garg
+ * @since JDK1.2
  */
 public class RepositoryImpl extends _RepositoryImplBase
-    implements Serializable
-{
+        implements Serializable {
 
     // added serialver computed by the tool
     private static final long serialVersionUID = 8458417785209341858L;
 
-    RepositoryImpl(ORB orb, File dbDir, boolean debug)
-    {
-        this.debug = debug ;
+    RepositoryImpl(ORB orb, File dbDir, boolean debug) {
+        this.debug = debug;
         this.orb = orb;
-        wrapper = ActivationSystemException.get( orb, CORBALogDomains.ORBD_REPOSITORY ) ;
+        wrapper = ActivationSystemException.get(orb, CORBALogDomains.ORBD_REPOSITORY);
 
         // if databse does not exist, create it otherwise read it in
         File dbFile = new File(dbDir, "servers.db");
@@ -86,7 +83,7 @@ public class RepositoryImpl extends _RepositoryImplBase
                 db = (RepositoryDB) ois.readObject();
                 ois.close();
             } catch (Exception e) {
-                throw wrapper.cannotReadRepositoryDb( e ) ;
+                throw wrapper.cannotReadRepositoryDb(e);
             }
         }
 
@@ -94,20 +91,18 @@ public class RepositoryImpl extends _RepositoryImplBase
         orb.connect(this);
     }
 
-    private String printServerDef( ServerDef sd )
-    {
+    private String printServerDef(ServerDef sd) {
         return "ServerDef[applicationName=" + sd.applicationName +
-            " serverName=" + sd.serverName +
-            " serverClassPath=" + sd.serverClassPath +
-            " serverArgs=" + sd. serverArgs +
-            " serverVmArgs=" + sd.serverVmArgs +
-            "]" ;
+                " serverName=" + sd.serverName +
+                " serverClassPath=" + sd.serverClassPath +
+                " serverArgs=" + sd.serverArgs +
+                " serverVmArgs=" + sd.serverVmArgs +
+                "]";
     }
 
     public int registerServer(ServerDef serverDef, int theServerId)
-        throws ServerAlreadyRegistered
-    {
-        int         serverId;
+            throws ServerAlreadyRegistered {
+        int serverId;
         DBServerDef server = null;
 
         synchronized (db) {
@@ -119,12 +114,12 @@ public class RepositoryImpl extends _RepositoryImplBase
                 if (serverDef.applicationName.equals(server.applicationName)) {
                     if (debug)
                         System.out.println(
-                            "RepositoryImpl: registerServer called " +
-                            "to register ServerDef " +
-                            printServerDef( serverDef ) +
-                            " with " + ((theServerId==illegalServerId) ?
-                        "a new server Id" : ("server Id " + theServerId)) +
-                                           " FAILED because it is already registered." ) ;
+                                "RepositoryImpl: registerServer called " +
+                                        "to register ServerDef " +
+                                        printServerDef(serverDef) +
+                                        " with " + ((theServerId == illegalServerId) ?
+                                        "a new server Id" : ("server Id " + theServerId)) +
+                                        " FAILED because it is already registered.");
 
                     throw (new ServerAlreadyRegistered(server.id));
                 }
@@ -142,42 +137,41 @@ public class RepositoryImpl extends _RepositoryImplBase
             db.flush();
 
             if (debug)
-                if (theServerId==illegalServerId)
-                    System.out.println( "RepositoryImpl: registerServer called " +
-                                        "to register ServerDef " + printServerDef( serverDef ) +
-                                        " with new serverId " + serverId ) ;
+                if (theServerId == illegalServerId)
+                    System.out.println("RepositoryImpl: registerServer called " +
+                            "to register ServerDef " + printServerDef(serverDef) +
+                            " with new serverId " + serverId);
                 else
-                    System.out.println( "RepositoryImpl: registerServer called " +
-                                        "to register ServerDef " + printServerDef( serverDef ) +
-                                        " with assigned serverId " + serverId ) ;
+                    System.out.println("RepositoryImpl: registerServer called " +
+                            "to register ServerDef " + printServerDef(serverDef) +
+                            " with assigned serverId " + serverId);
 
             return serverId;
         }
     }
 
     public int registerServer(ServerDef serverDef)
-        throws ServerAlreadyRegistered, BadServerDefinition
-    {
+            throws ServerAlreadyRegistered, BadServerDefinition {
         // verify that the entry is valid
         LegacyServerSocketEndPointInfo endpoint =
-            orb.getLegacyServerSocketManager()
-                .legacyGetEndpoint(LegacyServerSocketEndPointInfo.BOOT_NAMING);
-        int initSvcPort = ((SocketOrChannelAcceptor)endpoint)
-            .getServerSocket().getLocalPort();
-        ServerTableEntry entry = new ServerTableEntry( wrapper,
-            illegalServerId, serverDef, (int) initSvcPort, "", true, debug );
+                orb.getLegacyServerSocketManager()
+                        .legacyGetEndpoint(LegacyServerSocketEndPointInfo.BOOT_NAMING);
+        int initSvcPort = ((SocketOrChannelAcceptor) endpoint)
+                .getServerSocket().getLocalPort();
+        ServerTableEntry entry = new ServerTableEntry(wrapper,
+                illegalServerId, serverDef, (int) initSvcPort, "", true, debug);
 
         switch (entry.verify()) {
-        case ServerMain.OK:
-            break;
-        case ServerMain.MAIN_CLASS_NOT_FOUND:
-            throw new BadServerDefinition("main class not found.");
-        case ServerMain.NO_MAIN_METHOD:
-            throw new BadServerDefinition("no main method found.");
-        case ServerMain.APPLICATION_ERROR:
-            throw new BadServerDefinition("server application error.");
-        default:
-            throw new BadServerDefinition("unknown Exception.");
+            case ServerMain.OK:
+                break;
+            case ServerMain.MAIN_CLASS_NOT_FOUND:
+                throw new BadServerDefinition("main class not found.");
+            case ServerMain.NO_MAIN_METHOD:
+                throw new BadServerDefinition("no main method found.");
+            case ServerMain.APPLICATION_ERROR:
+                throw new BadServerDefinition("server application error.");
+            default:
+                throw new BadServerDefinition("unknown Exception.");
         }
 
         return registerServer(serverDef, illegalServerId);
@@ -192,11 +186,11 @@ public class RepositoryImpl extends _RepositoryImplBase
 
             // check to see if the server is registered
             server = (DBServerDef) db.serverTable.get(id);
-            if (server == null)  {
+            if (server == null) {
                 if (debug)
                     System.out.println(
-                                       "RepositoryImpl: unregisterServer for serverId " +
-                                       serverId + " called: server not registered" ) ;
+                            "RepositoryImpl: unregisterServer for serverId " +
+                                    serverId + " called: server not registered");
 
                 throw (new ServerNotRegistered());
             }
@@ -208,70 +202,66 @@ public class RepositoryImpl extends _RepositoryImplBase
 
         if (debug)
             System.out.println(
-                               "RepositoryImpl: unregisterServer for serverId " + serverId +
-                               " called" ) ;
+                    "RepositoryImpl: unregisterServer for serverId " + serverId +
+                            " called");
     }
 
-    private DBServerDef getDBServerDef(int serverId) throws ServerNotRegistered
-    {
+    private DBServerDef getDBServerDef(int serverId) throws ServerNotRegistered {
         Integer id = new Integer(serverId);
         DBServerDef server = (DBServerDef) db.serverTable.get(id);
 
         if (server == null)
-            throw new ServerNotRegistered( serverId );
+            throw new ServerNotRegistered(serverId);
 
-        return server ;
+        return server;
     }
 
-    public ServerDef getServer(int serverId) throws ServerNotRegistered
-    {
-        DBServerDef server = getDBServerDef( serverId ) ;
+    public ServerDef getServer(int serverId) throws ServerNotRegistered {
+        DBServerDef server = getDBServerDef(serverId);
 
         ServerDef serverDef = new ServerDef(server.applicationName, server.name,
-                                            server.classPath, server.args, server.vmArgs);
+                server.classPath, server.args, server.vmArgs);
 
         if (debug)
             System.out.println(
-                               "RepositoryImpl: getServer for serverId " + serverId +
-                               " returns " + printServerDef( serverDef ) ) ;
+                    "RepositoryImpl: getServer for serverId " + serverId +
+                            " returns " + printServerDef(serverDef));
 
         return serverDef;
     }
 
     public boolean isInstalled(int serverId) throws ServerNotRegistered {
-        DBServerDef server = getDBServerDef( serverId ) ;
-        return server.isInstalled ;
+        DBServerDef server = getDBServerDef(serverId);
+        return server.isInstalled;
     }
 
-    public void install( int serverId )
-        throws ServerNotRegistered, ServerAlreadyInstalled
-    {
-        DBServerDef server = getDBServerDef( serverId ) ;
+    public void install(int serverId)
+            throws ServerNotRegistered, ServerAlreadyInstalled {
+        DBServerDef server = getDBServerDef(serverId);
 
         if (server.isInstalled)
-            throw new ServerAlreadyInstalled( serverId ) ;
+            throw new ServerAlreadyInstalled(serverId);
         else {
-            server.isInstalled = true ;
-            db.flush() ;
+            server.isInstalled = true;
+            db.flush();
         }
     }
 
-    public void uninstall( int serverId )
-        throws ServerNotRegistered, ServerAlreadyUninstalled
-    {
-        DBServerDef server = getDBServerDef( serverId ) ;
+    public void uninstall(int serverId)
+            throws ServerNotRegistered, ServerAlreadyUninstalled {
+        DBServerDef server = getDBServerDef(serverId);
 
         if (!server.isInstalled)
-            throw new ServerAlreadyUninstalled( serverId ) ;
+            throw new ServerAlreadyUninstalled(serverId);
         else {
-            server.isInstalled = false ;
-            db.flush() ;
+            server.isInstalled = false;
+            db.flush();
         }
     }
 
     public int[] listRegisteredServers() {
         synchronized (db) {
-            int i=0;
+            int i = 0;
 
             int servers[] = new int[db.serverTable.size()];
 
@@ -283,15 +273,15 @@ public class RepositoryImpl extends _RepositoryImplBase
             }
 
             if (debug) {
-                StringBuffer sb = new StringBuffer() ;
-                for (int ctr=0; ctr<servers.length; ctr++) {
-                    sb.append( ' ' ) ;
-                    sb.append( servers[ctr] ) ;
+                StringBuffer sb = new StringBuffer();
+                for (int ctr = 0; ctr < servers.length; ctr++) {
+                    sb.append(' ');
+                    sb.append(servers[ctr]);
                 }
 
                 System.out.println(
-                                   "RepositoryImpl: listRegisteredServers returns" +
-                                   sb.toString() ) ;
+                        "RepositoryImpl: listRegisteredServers returns" +
+                                sb.toString());
             }
 
             return servers;
@@ -300,29 +290,28 @@ public class RepositoryImpl extends _RepositoryImplBase
 
     public int getServerID(String applicationName) throws ServerNotRegistered {
         synchronized (db) {
-            int result = -1 ;
+            int result = -1;
 
             for (Enumeration serverIds = db.serverTable.keys();
-                 serverIds.hasMoreElements();)
-                {
-                    Integer nextServerId = (Integer) serverIds.nextElement();
-                    DBServerDef dbServerDef =
+                 serverIds.hasMoreElements(); ) {
+                Integer nextServerId = (Integer) serverIds.nextElement();
+                DBServerDef dbServerDef =
                         (DBServerDef) db.serverTable.get(nextServerId);
 
-                    if (dbServerDef.applicationName.equals(applicationName)) {
-                        result = nextServerId.intValue();
-                        break ;
-                    }
+                if (dbServerDef.applicationName.equals(applicationName)) {
+                    result = nextServerId.intValue();
+                    break;
                 }
+            }
 
             if (debug)
                 System.out.println("RepositoryImpl: getServerID for " +
-                                   applicationName + " is " + result ) ;
+                        applicationName + " is " + result);
 
             if (result == -1) {
                 throw (new ServerNotRegistered());
             } else {
-                return result ;
+                return result;
             }
         }
     }
@@ -331,59 +320,59 @@ public class RepositoryImpl extends _RepositoryImplBase
         synchronized (db) {
             Vector v = new Vector();
             for (Enumeration serverIds = db.serverTable.keys();
-                 serverIds.hasMoreElements();)
-                {
-                    Integer nextServerId = (Integer) serverIds.nextElement();
+                 serverIds.hasMoreElements(); ) {
+                Integer nextServerId = (Integer) serverIds.nextElement();
 
-                    DBServerDef dbServerDef = (DBServerDef)db.serverTable.get(
-                                                                              nextServerId);
+                DBServerDef dbServerDef = (DBServerDef) db.serverTable.get(
+                        nextServerId);
 
-                    if (!dbServerDef.applicationName.equals(""))
-                        v.addElement( dbServerDef.applicationName ) ;
-                }
+                if (!dbServerDef.applicationName.equals(""))
+                    v.addElement(dbServerDef.applicationName);
+            }
 
             String[] apps = new String[v.size()];
             for (int i = 0; i < v.size(); i++) {
-                apps[i] = (String)v.elementAt(i);
+                apps[i] = (String) v.elementAt(i);
             }
 
             if (debug) {
-                StringBuffer sb = new StringBuffer() ;
-                for (int ctr=0; ctr<apps.length; ctr++) {
-                    sb.append( ' ' ) ;
-                    sb.append( apps[ctr] ) ;
+                StringBuffer sb = new StringBuffer();
+                for (int ctr = 0; ctr < apps.length; ctr++) {
+                    sb.append(' ');
+                    sb.append(apps[ctr]);
                 }
 
-                System.out.println( "RepositoryImpl: getApplicationNames returns " +
-                                    sb.toString() ) ;
+                System.out.println("RepositoryImpl: getApplicationNames returns " +
+                        sb.toString());
             }
 
             return apps;
         }
     }
+
     /**
      * Typically the Repositoy is created within the ORBd VM but it can
      * be independently started as well.
      */
     public static void main(String args[]) {
-        boolean debug = false ;
-        for (int ctr=0; ctr<args.length; ctr++)
+        boolean debug = false;
+        for (int ctr = 0; ctr < args.length; ctr++)
             if (args[ctr].equals("-debug"))
-                debug = true ;
+                debug = true;
 
         try {
             // See Bug 4396928 for more information about why we are
             // initializing the ORBClass to PIORB (now ORBImpl, but see the bug).
             Properties props = new Properties();
             props.put("org.omg.CORBA.ORBClass",
-                "com.sun.corba.se.impl.orb.ORBImpl");
+                    "com.sun.corba.se.impl.orb.ORBImpl");
             ORB orb = (ORB) ORB.init(args, props);
 
             // create the repository object
-            String db = System.getProperty( ORBConstants.DB_PROPERTY,
-                    ORBConstants.DEFAULT_DB_NAME );
+            String db = System.getProperty(ORBConstants.DB_PROPERTY,
+                    ORBConstants.DEFAULT_DB_NAME);
             RepositoryImpl repository = new RepositoryImpl(orb, new File(db),
-                                                           debug);
+                    debug);
 
             // wait for shutdown
             orb.run();
@@ -400,13 +389,12 @@ public class RepositoryImpl extends _RepositoryImplBase
 
     transient ORB orb = null;
 
-    transient ActivationSystemException wrapper ;
+    transient ActivationSystemException wrapper;
 
-    class RepositoryDB implements Serializable
-    {
-        File            db;
-        Hashtable       serverTable;
-        Integer         serverIdCounter;
+    class RepositoryDB implements Serializable {
+        File db;
+        Hashtable serverTable;
+        Integer serverIdCounter;
 
         RepositoryDB(File dbFile) {
 
@@ -414,20 +402,18 @@ public class RepositoryImpl extends _RepositoryImplBase
 
             // initialize the Server Id counter and hashtable.
             // the lower id range is reserved for system servers
-            serverTable     = new Hashtable(255);
+            serverTable = new Hashtable(255);
             serverIdCounter = new Integer(256);
         }
 
-        int incrementServerIdCounter()
-        {
+        int incrementServerIdCounter() {
             int value = serverIdCounter.intValue();
             serverIdCounter = new Integer(++value);
 
             return value;
         }
 
-        void flush()
-        {
+        void flush() {
             try {
                 db.delete();
                 FileOutputStream fos = new FileOutputStream(db);
@@ -436,31 +422,30 @@ public class RepositoryImpl extends _RepositoryImplBase
                 oos.flush();
                 oos.close();
             } catch (Exception ex) {
-                throw wrapper.cannotWriteRepositoryDb( ex ) ;
+                throw wrapper.cannotWriteRepositoryDb(ex);
             }
         }
     }
 
-    class DBServerDef implements Serializable
-    {
+    class DBServerDef implements Serializable {
         public String toString() {
             return "DBServerDef(applicationName=" + applicationName +
-                ", name=" + name +
-                ", classPath=" + classPath +
-                ", args=" + args +
-                ", vmArgs=" + vmArgs +
-                ", id=" + id +
-                ", isInstalled=" + isInstalled + ")" ;
+                    ", name=" + name +
+                    ", classPath=" + classPath +
+                    ", args=" + args +
+                    ", vmArgs=" + vmArgs +
+                    ", id=" + id +
+                    ", isInstalled=" + isInstalled + ")";
         }
 
         DBServerDef(ServerDef server, int server_id) {
-            applicationName     = server.applicationName ;
-            name        = server.serverName;
-            classPath   = server.serverClassPath;
-            args        = server.serverArgs;
-            vmArgs      = server.serverVmArgs;
-            id          = server_id;
-            isInstalled = false ;
+            applicationName = server.applicationName;
+            name = server.serverName;
+            classPath = server.serverClassPath;
+            args = server.serverArgs;
+            vmArgs = server.serverVmArgs;
+            id = server_id;
+            isInstalled = false;
         }
 
         String applicationName;
@@ -468,7 +453,7 @@ public class RepositoryImpl extends _RepositoryImplBase
         String classPath;
         String args;
         String vmArgs;
-        boolean isInstalled ;
-        int    id;
+        boolean isInstalled;
+        int id;
     }
 }

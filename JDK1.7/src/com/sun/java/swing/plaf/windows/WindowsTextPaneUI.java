@@ -41,8 +41,7 @@ import javax.swing.text.Caret;
  * version of Swing.  A future release of Swing will provide support for
  * long term persistence.
  */
-public class WindowsTextPaneUI extends BasicTextPaneUI
-{
+public class WindowsTextPaneUI extends BasicTextPaneUI {
     /**
      * Creates a UI for a JTextPane.
      *

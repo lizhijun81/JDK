@@ -36,7 +36,7 @@ import com.sun.corba.se.spi.ior.TaggedComponentBase;
 /**
  * Tagged component that contains a value that indicates the Java
  * serialization version supported by the ORB.
- *
+ * <p>
  * ORB Java serialization uses IIOP as the transport protocol, but uses
  * Java serialization mechanism and its accompanying encodings, instead
  * of IIOP CDR serialization mechanism. Java serialization is generally
@@ -52,7 +52,7 @@ public class JavaSerializationComponent extends TaggedComponentBase {
         if (singleton == null) {
             synchronized (JavaSerializationComponent.class) {
                 singleton =
-                    new JavaSerializationComponent(Message.JAVA_ENC_VERSION);
+                        new JavaSerializationComponent(Message.JAVA_ENC_VERSION);
             }
         }
         return singleton;

@@ -25,6 +25,7 @@
 package com.sun.corba.se.impl.encoding;
 
 import java.util.Hashtable;
+
 import com.sun.org.omg.CORBA.ValueDefPackage.FullValueDescription;
 import com.sun.org.omg.SendingContext.CodeBase;
 import com.sun.org.omg.SendingContext.CodeBaseHelper;
@@ -33,34 +34,34 @@ import com.sun.org.omg.SendingContext._CodeBaseStub;
 import com.sun.corba.se.spi.transport.CorbaConnection;
 import com.sun.corba.se.spi.ior.IOR;
 import com.sun.corba.se.spi.orb.ORB;
+
 /**
  * Provides the reading side with a per connection cache of
  * info obtained via calls to the remote CodeBase.
- *
+ * <p>
  * Previously, most of this was in IIOPConnection.
- *
+ * <p>
  * Features:
- *    Delays cache creation unless used
- *    Postpones remote calls until necessary
- *    Handles creating obj ref from IOR
- *    Maintains caches for the following maps:
- *         CodeBase IOR to obj ref (global)
- *         RepId to implementation URL(s)
- *         RepId to remote FVD
- *         RepId to superclass type list
- *
+ * Delays cache creation unless used
+ * Postpones remote calls until necessary
+ * Handles creating obj ref from IOR
+ * Maintains caches for the following maps:
+ * CodeBase IOR to obj ref (global)
+ * RepId to implementation URL(s)
+ * RepId to remote FVD
+ * RepId to superclass type list
+ * <p>
  * Needs cache management.
  */
-public class CachedCodeBase extends _CodeBaseImplBase
-{
+public class CachedCodeBase extends _CodeBaseImplBase {
     private Hashtable implementations, fvds, bases;
     private volatile CodeBase delegate;
     private CorbaConnection conn;
 
     private static Object iorMapLock = new Object();
-    private static Hashtable<IOR,CodeBase> iorMap = new Hashtable<>();
+    private static Hashtable<IOR, CodeBase> iorMap = new Hashtable<>();
 
-    public static synchronized void cleanCache( ORB orb ) {
+    public static synchronized void cleanCache(ORB orb) {
         synchronized (iorMapLock) {
             for (IOR ior : iorMap.keySet()) {
                 if (ior.getORB() == orb) {
@@ -74,17 +75,17 @@ public class CachedCodeBase extends _CodeBaseImplBase
         conn = connection;
     }
 
-    public com.sun.org.omg.CORBA.Repository get_ir () {
+    public com.sun.org.omg.CORBA.Repository get_ir() {
         return null;
     }
 
-    public synchronized String implementation (String repId) {
+    public synchronized String implementation(String repId) {
         String urlResult = null;
 
         if (implementations == null)
             implementations = new Hashtable();
         else
-            urlResult = (String)implementations.get(repId);
+            urlResult = (String) implementations.get(repId);
 
         if (urlResult == null && connectedCodeBase()) {
             urlResult = delegate.implementation(repId);
@@ -96,7 +97,7 @@ public class CachedCodeBase extends _CodeBaseImplBase
         return urlResult;
     }
 
-    public synchronized String[] implementations (String[] repIds) {
+    public synchronized String[] implementations(String[] repIds) {
         String[] urlResults = new String[repIds.length];
 
         for (int i = 0; i < urlResults.length; i++)
@@ -105,13 +106,13 @@ public class CachedCodeBase extends _CodeBaseImplBase
         return urlResults;
     }
 
-    public synchronized FullValueDescription meta (String repId) {
+    public synchronized FullValueDescription meta(String repId) {
         FullValueDescription result = null;
 
         if (fvds == null)
             fvds = new Hashtable();
         else
-            result = (FullValueDescription)fvds.get(repId);
+            result = (FullValueDescription) fvds.get(repId);
 
         if (result == null && connectedCodeBase()) {
             result = delegate.meta(repId);
@@ -123,9 +124,9 @@ public class CachedCodeBase extends _CodeBaseImplBase
         return result;
     }
 
-    public synchronized FullValueDescription[] metas (String[] repIds) {
+    public synchronized FullValueDescription[] metas(String[] repIds) {
         FullValueDescription[] results
-            = new FullValueDescription[repIds.length];
+                = new FullValueDescription[repIds.length];
 
         for (int i = 0; i < results.length; i++)
             results[i] = meta(repIds[i]);
@@ -133,14 +134,14 @@ public class CachedCodeBase extends _CodeBaseImplBase
         return results;
     }
 
-    public synchronized String[] bases (String repId) {
+    public synchronized String[] bases(String repId) {
 
         String[] results = null;
 
         if (bases == null)
             bases = new Hashtable();
         else
-            results = (String[])bases.get(repId);
+            results = (String[]) bases.get(repId);
 
         if (results == null && connectedCodeBase()) {
             results = delegate.bases(repId);
@@ -175,7 +176,7 @@ public class CachedCodeBase extends _CodeBaseImplBase
             return false;
         }
 
-        synchronized(iorMapLock) {
+        synchronized (iorMapLock) {
 
             // Recheck the condition to make sure another
             // thread didn't already do this while we waited
@@ -201,7 +202,7 @@ public class CachedCodeBase extends _CodeBaseImplBase
 
     private final org.omg.CORBA.Object getObjectFromIOR() {
         return CDRInputStream_1_0.internalIORToObject(
-            conn.getCodeBaseIOR(), null /*stubFactory*/, conn.getBroker());
+                conn.getCodeBaseIOR(), null /*stubFactory*/, conn.getBroker());
     }
 }
 

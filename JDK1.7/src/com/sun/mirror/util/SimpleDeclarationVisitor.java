@@ -37,14 +37,13 @@ import com.sun.mirror.declaration.*;
  * methods that correspond to the kinds of declarations on which it
  * will operate.
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this class is {@link
  * javax.lang.model.util.SimpleElementVisitor6}.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")
@@ -53,11 +52,13 @@ public class SimpleDeclarationVisitor implements DeclarationVisitor {
     /**
      * Creates a new <tt>SimpleDeclarationVisitor</tt>.
      */
-    public SimpleDeclarationVisitor(){}
+    public SimpleDeclarationVisitor() {
+    }
 
     /**
      * Visits a declaration.
      * The implementation does nothing.
+     *
      * @param d the declaration to visit
      */
     public void visitDeclaration(Declaration d) {
@@ -67,6 +68,7 @@ public class SimpleDeclarationVisitor implements DeclarationVisitor {
      * Visits a package declaration.
      * The implementation simply invokes
      * {@link #visitDeclaration visitDeclaration}.
+     *
      * @param d the declaration to visit
      */
     public void visitPackageDeclaration(PackageDeclaration d) {
@@ -77,6 +79,7 @@ public class SimpleDeclarationVisitor implements DeclarationVisitor {
      * Visits a member or constructor declaration.
      * The implementation simply invokes
      * {@link #visitDeclaration visitDeclaration}.
+     *
      * @param d the declaration to visit
      */
     public void visitMemberDeclaration(MemberDeclaration d) {
@@ -87,6 +90,7 @@ public class SimpleDeclarationVisitor implements DeclarationVisitor {
      * Visits a type declaration.
      * The implementation simply invokes
      * {@link #visitMemberDeclaration visitMemberDeclaration}.
+     *
      * @param d the declaration to visit
      */
     public void visitTypeDeclaration(TypeDeclaration d) {
@@ -97,6 +101,7 @@ public class SimpleDeclarationVisitor implements DeclarationVisitor {
      * Visits a class declaration.
      * The implementation simply invokes
      * {@link #visitTypeDeclaration visitTypeDeclaration}.
+     *
      * @param d the declaration to visit
      */
     public void visitClassDeclaration(ClassDeclaration d) {
@@ -107,6 +112,7 @@ public class SimpleDeclarationVisitor implements DeclarationVisitor {
      * Visits an enum declaration.
      * The implementation simply invokes
      * {@link #visitClassDeclaration visitClassDeclaration}.
+     *
      * @param d the declaration to visit
      */
     public void visitEnumDeclaration(EnumDeclaration d) {
@@ -117,6 +123,7 @@ public class SimpleDeclarationVisitor implements DeclarationVisitor {
      * Visits an interface declaration.
      * The implementation simply invokes
      * {@link #visitTypeDeclaration visitTypeDeclaration}.
+     *
      * @param d the declaration to visit
      */
     public void visitInterfaceDeclaration(InterfaceDeclaration d) {
@@ -127,6 +134,7 @@ public class SimpleDeclarationVisitor implements DeclarationVisitor {
      * Visits an annotation type declaration.
      * The implementation simply invokes
      * {@link #visitInterfaceDeclaration visitInterfaceDeclaration}.
+     *
      * @param d the declaration to visit
      */
     public void visitAnnotationTypeDeclaration(AnnotationTypeDeclaration d) {
@@ -137,6 +145,7 @@ public class SimpleDeclarationVisitor implements DeclarationVisitor {
      * Visits a field declaration.
      * The implementation simply invokes
      * {@link #visitMemberDeclaration visitMemberDeclaration}.
+     *
      * @param d the declaration to visit
      */
     public void visitFieldDeclaration(FieldDeclaration d) {
@@ -147,6 +156,7 @@ public class SimpleDeclarationVisitor implements DeclarationVisitor {
      * Visits an enum constant declaration.
      * The implementation simply invokes
      * {@link #visitFieldDeclaration visitFieldDeclaration}.
+     *
      * @param d the declaration to visit
      */
     public void visitEnumConstantDeclaration(EnumConstantDeclaration d) {
@@ -157,6 +167,7 @@ public class SimpleDeclarationVisitor implements DeclarationVisitor {
      * Visits a method or constructor declaration.
      * The implementation simply invokes
      * {@link #visitMemberDeclaration visitMemberDeclaration}.
+     *
      * @param d the declaration to visit
      */
     public void visitExecutableDeclaration(ExecutableDeclaration d) {
@@ -167,6 +178,7 @@ public class SimpleDeclarationVisitor implements DeclarationVisitor {
      * Visits a constructor declaration.
      * The implementation simply invokes
      * {@link #visitExecutableDeclaration visitExecutableDeclaration}.
+     *
      * @param d the declaration to visit
      */
     public void visitConstructorDeclaration(ConstructorDeclaration d) {
@@ -177,6 +189,7 @@ public class SimpleDeclarationVisitor implements DeclarationVisitor {
      * Visits a method declaration.
      * The implementation simply invokes
      * {@link #visitExecutableDeclaration visitExecutableDeclaration}.
+     *
      * @param d the declaration to visit
      */
     public void visitMethodDeclaration(MethodDeclaration d) {
@@ -187,6 +200,7 @@ public class SimpleDeclarationVisitor implements DeclarationVisitor {
      * Visits an annotation type element declaration.
      * The implementation simply invokes
      * {@link #visitMethodDeclaration visitMethodDeclaration}.
+     *
      * @param d the declaration to visit
      */
     public void visitAnnotationTypeElementDeclaration(
@@ -198,6 +212,7 @@ public class SimpleDeclarationVisitor implements DeclarationVisitor {
      * Visits a parameter declaration.
      * The implementation simply invokes
      * {@link #visitDeclaration visitDeclaration}.
+     *
      * @param d the declaration to visit
      */
     public void visitParameterDeclaration(ParameterDeclaration d) {
@@ -208,6 +223,7 @@ public class SimpleDeclarationVisitor implements DeclarationVisitor {
      * Visits a type parameter declaration.
      * The implementation simply invokes
      * {@link #visitDeclaration visitDeclaration}.
+     *
      * @param d the declaration to visit
      */
     public void visitTypeParameterDeclaration(TypeParameterDeclaration d) {

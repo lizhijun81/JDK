@@ -85,13 +85,13 @@ package org.xml.sax;
  * }
  * </pre>
  *
- * @deprecated This interface has been replaced by the SAX2
- *             {@link org.xml.sax.Attributes Attributes}
- *             interface, which includes Namespace support.
- * @since SAX 1.0
  * @author David Megginson
  * @see org.xml.sax.DocumentHandler#startElement startElement
  * @see org.xml.sax.helpers.AttributeListImpl AttributeListImpl
+ * @since SAX 1.0
+ * @deprecated This interface has been replaced by the SAX2
+ * {@link org.xml.sax.Attributes Attributes}
+ * interface, which includes Namespace support.
  */
 public interface AttributeList {
 
@@ -111,7 +111,7 @@ public interface AttributeList {
      *
      * @return The number of attributes in the list.
      */
-    public abstract int getLength ();
+    public abstract int getLength();
 
 
     /**
@@ -127,10 +127,10 @@ public interface AttributeList {
      *
      * @param i The index of the attribute in the list (starting at 0).
      * @return The name of the indexed attribute, or null
-     *         if the index is out of range.
+     * if the index is out of range.
      * @see #getLength
      */
-    public abstract String getName (int i);
+    public abstract String getName(int i);
 
 
     /**
@@ -150,11 +150,11 @@ public interface AttributeList {
      *
      * @param i The index of the attribute in the list (starting at 0).
      * @return The attribute type as a string, or
-     *         null if the index is out of range.
+     * null if the index is out of range.
      * @see #getLength
      * @see #getType(java.lang.String)
      */
-    public abstract String getType (int i);
+    public abstract String getType(int i);
 
 
     /**
@@ -166,12 +166,11 @@ public interface AttributeList {
      *
      * @param i The index of the attribute in the list (starting at 0).
      * @return The attribute value as a string, or
-     *         null if the index is out of range.
+     * null if the index is out of range.
      * @see #getLength
      * @see #getValue(java.lang.String)
      */
-    public abstract String getValue (int i);
-
+    public abstract String getValue(int i);
 
 
     ////////////////////////////////////////////////////////////////////
@@ -190,10 +189,10 @@ public interface AttributeList {
      *
      * @param name The name of the attribute.
      * @return The attribute type as a string, or null if no
-     *         such attribute exists.
+     * such attribute exists.
      * @see #getType(int)
      */
-    public abstract String getType (String name);
+    public abstract String getType(String name);
 
 
     /**
@@ -207,10 +206,10 @@ public interface AttributeList {
      *
      * @param name the name of the attribute to return
      * @return The attribute value as a string, or null if
-     *         no such attribute exists.
+     * no such attribute exists.
      * @see #getValue(int)
      */
-    public abstract String getValue (String name);
+    public abstract String getValue(String name);
 
 }
 

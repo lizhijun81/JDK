@@ -48,7 +48,6 @@ import com.sun.org.apache.xerces.internal.utils.ObjectFactory;
  * user applications to do so.
  *
  * @author Neil Graham, IBM
- *
  * @version $Id: XMLGrammarPreparser.java,v 1.7 2010-11-01 04:40:10 joehw Exp $
  */
 public class XMLGrammarPreparser {
@@ -59,45 +58,57 @@ public class XMLGrammarPreparser {
 
     // feature:  continue-after-fatal-error
     private final static String CONTINUE_AFTER_FATAL_ERROR =
-        Constants.XERCES_FEATURE_PREFIX + Constants.CONTINUE_AFTER_FATAL_ERROR_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.CONTINUE_AFTER_FATAL_ERROR_FEATURE;
 
-    /** Property identifier: symbol table. */
+    /**
+     * Property identifier: symbol table.
+     */
     protected static final String SYMBOL_TABLE =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY;
 
-    /** Property identifier: error reporter. */
+    /**
+     * Property identifier: error reporter.
+     */
     protected static final String ERROR_REPORTER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_REPORTER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_REPORTER_PROPERTY;
 
-    /** Property identifier: error handler. */
+    /**
+     * Property identifier: error handler.
+     */
     protected static final String ERROR_HANDLER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_HANDLER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_HANDLER_PROPERTY;
 
-    /** Property identifier: entity resolver. */
+    /**
+     * Property identifier: entity resolver.
+     */
     protected static final String ENTITY_RESOLVER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ENTITY_RESOLVER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ENTITY_RESOLVER_PROPERTY;
 
-    /** Property identifier: grammar pool . */
+    /**
+     * Property identifier: grammar pool .
+     */
     protected static final String GRAMMAR_POOL =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.XMLGRAMMAR_POOL_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.XMLGRAMMAR_POOL_PROPERTY;
 
     // the "built-in" grammar loaders
     private static final Hashtable KNOWN_LOADERS = new Hashtable();
 
     static {
         KNOWN_LOADERS.put(XMLGrammarDescription.XML_SCHEMA,
-            "com.sun.org.apache.xerces.internal.impl.xs.XMLSchemaLoader");
+                "com.sun.org.apache.xerces.internal.impl.xs.XMLSchemaLoader");
         KNOWN_LOADERS.put(XMLGrammarDescription.XML_DTD,
-            "com.sun.org.apache.xerces.internal.impl.dtd.XMLDTDLoader");
+                "com.sun.org.apache.xerces.internal.impl.dtd.XMLDTDLoader");
     }
 
-    /** Recognized properties. */
+    /**
+     * Recognized properties.
+     */
     private static final String[] RECOGNIZED_PROPERTIES = {
-        SYMBOL_TABLE,
-        ERROR_REPORTER,
-        ERROR_HANDLER,
-        ENTITY_RESOLVER,
-        GRAMMAR_POOL,
+            SYMBOL_TABLE,
+            ERROR_REPORTER,
+            ERROR_HANDLER,
+            ENTITY_RESOLVER,
+            GRAMMAR_POOL,
     };
 
     // Data
@@ -115,7 +126,9 @@ public class XMLGrammarPreparser {
     // Constructors
     //
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public XMLGrammarPreparser() {
         this(new SymbolTable());
     } // <init>()
@@ -125,7 +138,7 @@ public class XMLGrammarPreparser {
      *
      * @param symbolTable The symbol table to use.
      */
-    public XMLGrammarPreparser (SymbolTable symbolTable) {
+    public XMLGrammarPreparser(SymbolTable symbolTable) {
         fSymbolTable = symbolTable;
 
         fLoaders = new Hashtable();
@@ -140,23 +153,23 @@ public class XMLGrammarPreparser {
     //
 
     /*
-    * Register a type of grammar to make it preparsable.   If
-    * the second parameter is null, the parser will use its  built-in
-    * facilities for that grammar type.
-    * This should be called by the application immediately
-    * after creating this object and before initializing any properties/features.
-    * @param type   URI identifying the type of the grammar
-    * @param loader an object capable of preparsing that type; null if the ppreparser should use built-in knowledge.
-    * @return true if successful; false if no built-in knowledge of
-    *       the type or if unable to instantiate the string we know about
-    */
+     * Register a type of grammar to make it preparsable.   If
+     * the second parameter is null, the parser will use its  built-in
+     * facilities for that grammar type.
+     * This should be called by the application immediately
+     * after creating this object and before initializing any properties/features.
+     * @param type   URI identifying the type of the grammar
+     * @param loader an object capable of preparsing that type; null if the ppreparser should use built-in knowledge.
+     * @return true if successful; false if no built-in knowledge of
+     *       the type or if unable to instantiate the string we know about
+     */
     public boolean registerPreparser(String grammarType, XMLGrammarLoader loader) {
-        if(loader == null) { // none specified!
-            if(KNOWN_LOADERS.containsKey(grammarType)) {
+        if (loader == null) { // none specified!
+            if (KNOWN_LOADERS.containsKey(grammarType)) {
                 // got one; just instantiate it...
-                String loaderName = (String)KNOWN_LOADERS.get(grammarType);
+                String loaderName = (String) KNOWN_LOADERS.get(grammarType);
                 try {
-                    XMLGrammarLoader gl = (XMLGrammarLoader)(ObjectFactory.newInstance(loaderName, true));
+                    XMLGrammarLoader gl = (XMLGrammarLoader) (ObjectFactory.newInstance(loaderName, true));
                     fLoaders.put(grammarType, gl);
                 } catch (Exception e) {
                     return false;
@@ -176,29 +189,29 @@ public class XMLGrammarPreparser {
      * This method also adds this grammar to the XMLGrammarPool
      *
      * @param type The type of the grammar to be constructed
-     * @param is The XMLInputSource containing this grammar's
-     * information
-     * <strong>If a URI is included in the systemId field, the parser will not expand this URI or make it
-     * available to the EntityResolver</strong>
+     * @param is   The XMLInputSource containing this grammar's
+     *             information
+     *             <strong>If a URI is included in the systemId field, the parser will not expand this URI or make it
+     *             available to the EntityResolver</strong>
      * @return The newly created <code>Grammar</code>.
-     * @exception XNIException thrown on an error in grammar
-     * construction
-     * @exception IOException thrown if an error is encountered
-     * in reading the file
+     * @throws XNIException thrown on an error in grammar
+     *                      construction
+     * @throws IOException  thrown if an error is encountered
+     *                      in reading the file
      */
     public Grammar preparseGrammar(String type, XMLInputSource
-                is) throws XNIException, IOException {
-        if(fLoaders.containsKey(type)) {
-            XMLGrammarLoader gl = (XMLGrammarLoader)fLoaders.get(type);
+            is) throws XNIException, IOException {
+        if (fLoaders.containsKey(type)) {
+            XMLGrammarLoader gl = (XMLGrammarLoader) fLoaders.get(type);
             // make sure gl's been set up with all the "basic" properties:
             gl.setProperty(SYMBOL_TABLE, fSymbolTable);
             gl.setProperty(ENTITY_RESOLVER, fEntityResolver);
             gl.setProperty(ERROR_REPORTER, fErrorReporter);
             // potentially, not all will support this one...
-            if(fGrammarPool != null) {
+            if (fGrammarPool != null) {
                 try {
                     gl.setProperty(GRAMMAR_POOL, fGrammarPool);
-                } catch(Exception e) {
+                } catch (Exception e) {
                     // too bad...
                 }
             }
@@ -211,16 +224,17 @@ public class XMLGrammarPreparser {
      * Set the locale to use for messages.
      *
      * @param locale The locale object to use for localization of messages.
-     *
-     * @exception XNIException Thrown if the parser does not support the
-     *                         specified locale.
+     * @throws XNIException Thrown if the parser does not support the
+     *                      specified locale.
      */
     public void setLocale(Locale locale) {
         fLocale = locale;
         fErrorReporter.setLocale(locale);
     } // setLocale(Locale)
 
-    /** Return the Locale the XMLGrammarLoader is using. */
+    /**
+     * Return the Locale the XMLGrammarLoader is using.
+     */
     public Locale getLocale() {
         return fLocale;
     } // getLocale():  Locale
@@ -235,7 +249,9 @@ public class XMLGrammarPreparser {
         fErrorReporter.setProperty(ERROR_HANDLER, errorHandler);
     } // setErrorHandler(XMLErrorHandler)
 
-    /** Returns the registered error handler.  */
+    /**
+     * Returns the registered error handler.
+     */
     public XMLErrorHandler getErrorHandler() {
         return fErrorReporter.getErrorHandler();
     } // getErrorHandler():  XMLErrorHandler
@@ -249,7 +265,9 @@ public class XMLGrammarPreparser {
         fEntityResolver = entityResolver;
     } // setEntityResolver(XMLEntityResolver)
 
-    /** Returns the registered entity resolver.  */
+    /**
+     * Returns the registered entity resolver.
+     */
     public XMLEntityResolver getEntityResolver() {
         return fEntityResolver;
     } // getEntityResolver():  XMLEntityResolver
@@ -263,7 +281,9 @@ public class XMLGrammarPreparser {
         fGrammarPool = grammarPool;
     } // setGrammarPool(XMLGrammarPool)
 
-    /** Returns the registered grammar pool.  */
+    /**
+     * Returns the registered grammar pool.
+     */
     public XMLGrammarPool getGrammarPool() {
         return fGrammarPool;
     } // getGrammarPool():  XMLGrammarPool
@@ -271,7 +291,7 @@ public class XMLGrammarPreparser {
     // it's possible the application may want access to a certain loader to do
     // some custom work.
     public XMLGrammarLoader getLoader(String type) {
-        return (XMLGrammarLoader)fLoaders.get(type);
+        return (XMLGrammarLoader) fLoaders.get(type);
     } // getLoader(String):  XMLGrammarLoader
 
     // set a feature.  This method tries to set it on all
@@ -281,17 +301,17 @@ public class XMLGrammarPreparser {
     // to retrieve that loader and use the loader's setFeature method.
     public void setFeature(String featureId, boolean value) {
         Enumeration loaders = fLoaders.elements();
-        while(loaders.hasMoreElements()){
-            XMLGrammarLoader gl = (XMLGrammarLoader)loaders.nextElement();
+        while (loaders.hasMoreElements()) {
+            XMLGrammarLoader gl = (XMLGrammarLoader) loaders.nextElement();
             try {
                 gl.setFeature(featureId, value);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 // eat it up...
             }
         }
         // since our error reporter is a property we set later,
         // make sure features it understands are also set.
-        if(featureId.equals(CONTINUE_AFTER_FATAL_ERROR)) {
+        if (featureId.equals(CONTINUE_AFTER_FATAL_ERROR)) {
             fErrorReporter.setFeature(CONTINUE_AFTER_FATAL_ERROR, value);
         }
     } //setFeature(String, boolean)
@@ -305,11 +325,11 @@ public class XMLGrammarPreparser {
     // in this class to set "standard" properties like error handler etc.</strong>
     public void setProperty(String propId, Object value) {
         Enumeration loaders = fLoaders.elements();
-        while(loaders.hasMoreElements()){
-            XMLGrammarLoader gl = (XMLGrammarLoader)loaders.nextElement();
+        while (loaders.hasMoreElements()) {
+            XMLGrammarLoader gl = (XMLGrammarLoader) loaders.nextElement();
             try {
                 gl.setProperty(propId, value);
-            } catch(Exception e) {
+            } catch (Exception e) {
                 // eat it up...
             }
         }
@@ -322,7 +342,7 @@ public class XMLGrammarPreparser {
     // @param featureId the feature string to query.
     // @return the value of the feature.
     public boolean getFeature(String type, String featureId) {
-        XMLGrammarLoader gl = (XMLGrammarLoader)fLoaders.get(type);
+        XMLGrammarLoader gl = (XMLGrammarLoader) fLoaders.get(type);
         return gl.getFeature(featureId);
     } // getFeature (String, String):  boolean
 
@@ -335,7 +355,7 @@ public class XMLGrammarPreparser {
     // @param propertyId the property string to query.
     // @return the value of the property.
     public Object getProperty(String type, String propertyId) {
-        XMLGrammarLoader gl = (XMLGrammarLoader)fLoaders.get(type);
+        XMLGrammarLoader gl = (XMLGrammarLoader) fLoaders.get(type);
         return gl.getProperty(propertyId);
     } // getProperty(String, String):  Object
 } // class XMLGrammarPreparser

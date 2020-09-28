@@ -31,7 +31,7 @@
 
 package com.sun.corba.se.impl.corba;
 
-import com.sun.corba.se.spi.orb.ORB ;
+import com.sun.corba.se.spi.orb.ORB;
 
 ///////////////////////////////////////////////////////////////////////////
 // helper class for deferred invocations
@@ -47,15 +47,16 @@ import com.sun.corba.se.spi.orb.ORB ;
 public class AsynchInvoke implements Runnable {
 
     private RequestImpl _req;
-    private ORB         _orb;
-    private boolean     _notifyORB;
+    private ORB _orb;
+    private boolean _notifyORB;
 
-    public AsynchInvoke (ORB o, RequestImpl reqToInvokeOn, boolean n)
-    {
+    public AsynchInvoke(ORB o, RequestImpl reqToInvokeOn, boolean n) {
         _orb = o;
         _req = reqToInvokeOn;
         _notifyORB = n;
-    };
+    }
+
+    ;
 
 
     /*
@@ -66,24 +67,22 @@ public class AsynchInvoke implements Runnable {
      *
      */
 
-    public void run()
-    {
+    public void run() {
         // do the actual invocation
         _req.doInvocation();
 
         // for the asynchronous case, note that the response has been
         // received.
-        synchronized (_req)
-            {
-                // update local boolean indicator
-                _req.gotResponse = true;
+        synchronized (_req) {
+            // update local boolean indicator
+            _req.gotResponse = true;
 
-                // notify any client waiting on a 'get_response'
-                _req.notify();
-            }
+            // notify any client waiting on a 'get_response'
+            _req.notify();
+        }
 
         if (_notifyORB == true) {
-            _orb.notifyORB() ;
+            _orb.notifyORB();
         }
     }
 

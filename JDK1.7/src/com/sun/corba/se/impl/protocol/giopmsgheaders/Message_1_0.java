@@ -26,12 +26,13 @@
 package com.sun.corba.se.impl.protocol.giopmsgheaders;
 
 import java.nio.ByteBuffer;
+
 import org.omg.CORBA.INTERNAL;
 import org.omg.CORBA.CompletionStatus;
 import com.sun.corba.se.spi.ior.iiop.GIOPVersion;
 
-import com.sun.corba.se.spi.logging.CORBALogDomains ;
-import com.sun.corba.se.impl.logging.ORBUtilSystemException ;
+import com.sun.corba.se.spi.logging.CORBALogDomains;
+import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 
 /*
  * This implements the GIOP 1.0 Message header.
@@ -43,7 +44,7 @@ public class Message_1_0
         extends com.sun.corba.se.impl.protocol.giopmsgheaders.MessageBase {
 
     private static ORBUtilSystemException wrapper =
-        ORBUtilSystemException.get( CORBALogDomains.RPC_PROTOCOL ) ;
+            ORBUtilSystemException.get(CORBALogDomains.RPC_PROTOCOL);
 
     // Instance variables
     int magic = (int) 0;
@@ -58,7 +59,7 @@ public class Message_1_0
     }
 
     Message_1_0(int _magic, boolean _byte_order, byte _message_type,
-            int _message_size) {
+                int _message_size) {
         magic = _magic;
         GIOP_version = GIOPVersion.V1_0;
         byte_order = _byte_order;
@@ -77,7 +78,7 @@ public class Message_1_0
     }
 
     public int getSize() {
-            return this.message_size;
+        return this.message_size;
     }
 
     public boolean isLittleEndian() {
@@ -91,28 +92,28 @@ public class Message_1_0
     // Mutator methods
 
     public void setSize(ByteBuffer byteBuffer, int size) {
-            this.message_size = size;
+        this.message_size = size;
 
         //
         // Patch the size field in the header.
         //
-            int patch = size - GIOPMessageHeaderLength;
+        int patch = size - GIOPMessageHeaderLength;
         if (!isLittleEndian()) {
-            byteBuffer.put(8,  (byte)((patch >>> 24) & 0xFF));
-            byteBuffer.put(9,  (byte)((patch >>> 16) & 0xFF));
-            byteBuffer.put(10, (byte)((patch >>> 8)  & 0xFF));
-            byteBuffer.put(11, (byte)((patch >>> 0)  & 0xFF));
+            byteBuffer.put(8, (byte) ((patch >>> 24) & 0xFF));
+            byteBuffer.put(9, (byte) ((patch >>> 16) & 0xFF));
+            byteBuffer.put(10, (byte) ((patch >>> 8) & 0xFF));
+            byteBuffer.put(11, (byte) ((patch >>> 0) & 0xFF));
         } else {
-            byteBuffer.put(8,  (byte)((patch >>> 0)  & 0xFF));
-            byteBuffer.put(9,  (byte)((patch >>> 8)  & 0xFF));
-            byteBuffer.put(10, (byte)((patch >>> 16) & 0xFF));
-            byteBuffer.put(11, (byte)((patch >>> 24) & 0xFF));
+            byteBuffer.put(8, (byte) ((patch >>> 0) & 0xFF));
+            byteBuffer.put(9, (byte) ((patch >>> 8) & 0xFF));
+            byteBuffer.put(10, (byte) ((patch >>> 16) & 0xFF));
+            byteBuffer.put(11, (byte) ((patch >>> 24) & 0xFF));
         }
     }
 
     public FragmentMessage createFragmentMessage() {
         throw wrapper.fragmentationDisallowed(
-            CompletionStatus.COMPLETED_MAYBE);
+                CompletionStatus.COMPLETED_MAYBE);
     }
 
     // IO methods

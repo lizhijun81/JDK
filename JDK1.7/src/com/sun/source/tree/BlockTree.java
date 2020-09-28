@@ -29,7 +29,7 @@ import java.util.List;
 
 /**
  * A tree node for a statement block.
- *
+ * <p>
  * For example:
  * <pre>
  *   { }
@@ -39,13 +39,13 @@ import java.util.List;
  *   static { <em>statements</em> }
  * </pre>
  *
- * @jls section 14.2
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls section 14.2
  * @since 1.6
  */
 public interface BlockTree extends StatementTree {
     boolean isStatic();
+
     List<? extends StatementTree> getStatements();
 }

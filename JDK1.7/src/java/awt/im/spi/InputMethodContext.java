@@ -41,9 +41,8 @@ import javax.swing.JFrame;
  * {@link java.awt.im.spi.InputMethod#setInputMethodContext}.
  * There should be no other implementors or callers.
  *
- * @since 1.3
- *
  * @author JavaSoft International
+ * @since 1.3
  */
 
 public interface InputMethodContext extends InputMethodRequests {
@@ -54,8 +53,8 @@ public interface InputMethodContext extends InputMethodRequests {
      * see {@link java.awt.event.InputMethodEvent#InputMethodEvent}.
      */
     public void dispatchInputMethodEvent(int id,
-                AttributedCharacterIterator text, int committedCharacterCount,
-                TextHitInfo caret, TextHitInfo visiblePosition);
+                                         AttributedCharacterIterator text, int committedCharacterCount,
+                                         TextHitInfo caret, TextHitInfo visiblePosition);
 
     /**
      * Creates a top-level window for use by the input method.
@@ -78,14 +77,15 @@ public interface InputMethodContext extends InputMethodRequests {
      * Input methods must call {@link java.awt.Window#dispose() Window.dispose} on the
      * returned input method window when it is no longer needed.
      * <p>
-     * @param title the title to be displayed in the window's title bar,
-     *              if there is such a title bar.
-     *              A <code>null</code> value is treated as an empty string, "".
+     *
+     * @param title                the title to be displayed in the window's title bar,
+     *                             if there is such a title bar.
+     *                             A <code>null</code> value is treated as an empty string, "".
      * @param attachToInputContext whether this window should share the input context
-     *              that corresponds to this input method context
+     *                             that corresponds to this input method context
      * @return a window with special characteristics for use by input methods
-     * @exception HeadlessException if <code>GraphicsEnvironment.isHeadless
-     *              </code> returns <code>true</code>
+     * @throws HeadlessException if <code>GraphicsEnvironment.isHeadless
+     *                           </code> returns <code>true</code>
      */
     public Window createInputMethodWindow(String title, boolean attachToInputContext);
 
@@ -110,15 +110,15 @@ public interface InputMethodContext extends InputMethodRequests {
      * Input methods must call {@link java.awt.Window#dispose() Window.dispose} on the
      * returned input method window when it is no longer needed.
      * <p>
-     * @param title the title to be displayed in the window's title bar,
-     *              if there is such a title bar.
-     *              A <code>null</code> value is treated as an empty string, "".
-     * @param attachToInputContext whether this window should share the input context
-     *              that corresponds to this input method context
-     * @return a JFrame with special characteristics for use by input methods
-     * @exception HeadlessException if <code>GraphicsEnvironment.isHeadless
-     *              </code> returns <code>true</code>
      *
+     * @param title                the title to be displayed in the window's title bar,
+     *                             if there is such a title bar.
+     *                             A <code>null</code> value is treated as an empty string, "".
+     * @param attachToInputContext whether this window should share the input context
+     *                             that corresponds to this input method context
+     * @return a JFrame with special characteristics for use by input methods
+     * @throws HeadlessException if <code>GraphicsEnvironment.isHeadless
+     *                           </code> returns <code>true</code>
      * @since 1.4
      */
     public JFrame createInputMethodJFrame(String title, boolean attachToInputContext);
@@ -133,8 +133,8 @@ public interface InputMethodContext extends InputMethodRequests {
      * when the input method is disposed.
      *
      * @param inputMethod the input method for which notifications are
-     * enabled or disabled
-     * @param enable true to enable, false to disable
+     *                    enabled or disabled
+     * @param enable      true to enable, false to disable
      */
     public void enableClientWindowNotification(InputMethod inputMethod, boolean enable);
 }

@@ -18,6 +18,7 @@ package com.sun.image.codec.jpeg;
 
 import java.awt.image.Raster;
 import java.awt.image.BufferedImage;
+
 /**
  * Signals that a truncated file was detected.  This object contains
  * the Raster/BufferedImage that has the partially decoded image data
@@ -32,52 +33,60 @@ import java.awt.image.BufferedImage;
  * be available in a core API or standard extension.
  * <p>
  *
- * @author  Thomas DeWeese
- * @see     JPEGImageDecoder
- * @since   1.2
+ * @author Thomas DeWeese
+ * @see JPEGImageDecoder
+ * @since 1.2
  */
 public
 class TruncatedFileException extends RuntimeException {
-        private Raster                  ras = null;
-        private BufferedImage   bi  = null;
+    private Raster ras = null;
+    private BufferedImage bi = null;
 
 
     /**
      * Constructs a <code>TruncatedFileException</code> with the
      * partially decoded BufferedImage.
      *
-     * @param   bi the partially decoded BufferedImage (may be null).
-     * @since   1.2
+     * @param bi the partially decoded BufferedImage (may be null).
+     * @since 1.2
      */
     public TruncatedFileException(BufferedImage bi) {
-                super("Premature end of input file");
-                this.bi  = bi;
-                this.ras = bi.getData();
+        super("Premature end of input file");
+        this.bi = bi;
+        this.ras = bi.getData();
     }
 
     /**
      * Constructs an <code>TruncatedFileException</code> with the
      * partially decoded Raster
      *
-     * @param   ras the partially decoded Raster (may be null).
-     * @since   1.2
+     * @param ras the partially decoded Raster (may be null).
+     * @since 1.2
      */
     public TruncatedFileException(Raster ras) {
-                super("Premature end of input file");
-                this.ras = ras;
+        super("Premature end of input file");
+        this.ras = ras;
     }
 
-        /** Allows access to the raster that was in the progress of being
-         * decoded may be null, it is likely to be only partially filled
-         * with image data.
-     * @since   1.2
-         */
-        public Raster getRaster() { return ras; }
+    /**
+     * Allows access to the raster that was in the progress of being
+     * decoded may be null, it is likely to be only partially filled
+     * with image data.
+     *
+     * @since 1.2
+     */
+    public Raster getRaster() {
+        return ras;
+    }
 
-        /** Allows access to the BufferedImage that was in the progress of
-         * being decoded, this may be null, it is likely to be only
-         * partially filled with image data.
-     * @since   1.2
-         */
-        public BufferedImage getBufferedImage() { return bi; }
+    /**
+     * Allows access to the BufferedImage that was in the progress of
+     * being decoded, this may be null, it is likely to be only
+     * partially filled with image data.
+     *
+     * @since 1.2
+     */
+    public BufferedImage getBufferedImage() {
+        return bi;
+    }
 }

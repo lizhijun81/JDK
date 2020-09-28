@@ -27,6 +27,7 @@ package com.sun.corba.se.impl.protocol.giopmsgheaders;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+
 import com.sun.corba.se.spi.ior.iiop.GIOPVersion;
 
 /**
@@ -42,7 +43,7 @@ public interface Message {
     int defaultBufferSize = 1024;
     int GIOPBigEndian = 0;
     int GIOPLittleEndian = 1;
-    int GIOPBigMagic =    0x47494F50;
+    int GIOPBigMagic = 0x47494F50;
     int GIOPLittleMagic = 0x504F4947;
     int GIOPMessageHeaderLength = 12;
 
@@ -73,17 +74,25 @@ public interface Message {
     // Accessor methods
 
     GIOPVersion getGIOPVersion();
+
     byte getEncodingVersion();
+
     boolean isLittleEndian();
+
     boolean moreFragmentsToFollow();
+
     int getType();
+
     int getSize();
+
     ByteBuffer getByteBuffer();
+
     int getThreadPoolToUse();
 
     // Mutator methods
 
     void read(org.omg.CORBA.portable.InputStream istream);
+
     void write(org.omg.CORBA.portable.OutputStream ostream);
 
     void setSize(ByteBuffer byteBuffer, int size);
@@ -93,5 +102,6 @@ public interface Message {
     void callback(MessageHandler handler) throws IOException;
 
     void setByteBuffer(ByteBuffer byteBuffer);
+
     void setEncodingVersion(byte version);
 }

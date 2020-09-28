@@ -38,13 +38,13 @@ package org.omg.CORBA;
  * must also fill the "in" value to be sent to the server.
  * Before the method invocation returns, the ORB will fill in the
  * value corresponding to the "out" value returned from the server.
- * <P>
+ * <p>
  * If <code>myServiceInformationHolder</code> is an instance of <code>ServiceInformationHolder</code>,
  * the value stored in its <code>value</code> field can be accessed with
  * <code>myServiceInformationHolder.value</code>.
  */
 public final class ServiceInformationHolder
-    implements org.omg.CORBA.portable.Streamable {
+        implements org.omg.CORBA.portable.Streamable {
 
     /**
      * The <code>ServiceInformation</code> value held by this
@@ -66,8 +66,8 @@ public final class ServiceInformationHolder
      * <code>ServiceInformation</code> object.
      *
      * @param arg the <code>ServiceInformation</code> object with which to initialize
-     *                the <code>value</code> field of the newly-created
-     *                <code>ServiceInformationHolder</code> object
+     *            the <code>value</code> field of the newly-created
+     *            <code>ServiceInformationHolder</code> object
      */
     public ServiceInformationHolder(org.omg.CORBA.ServiceInformation arg) {
         value = arg;
@@ -79,7 +79,7 @@ public final class ServiceInformationHolder
      * <code>value</code> field to the output stream <code>out</code>.
      *
      * @param out the <code>OutputStream</code> object that will contain
-     *               the CDR formatted data
+     *            the CDR formatted data
      */
     public void _write(org.omg.CORBA.portable.OutputStream out) {
         org.omg.CORBA.ServiceInformationHelper.write(out, value);
@@ -90,7 +90,7 @@ public final class ServiceInformationHolder
      * the <code>value</code> field in this <code>ServiceInformationHolder</code> object.
      *
      * @param in the <code>InputStream</code> object containing CDR
-     *              formatted data from the wire
+     *           formatted data from the wire
      */
     public void _read(org.omg.CORBA.portable.InputStream in) {
         value = org.omg.CORBA.ServiceInformationHelper.read(in);
@@ -101,8 +101,8 @@ public final class ServiceInformationHolder
      * to the value held in this <code>ServiceInformationHolder</code> object's
      * <code>value</code> field.
      *
-     * @return    the type code for the value held in this <code>ServiceInformationHolder</code>
-     *            object
+     * @return the type code for the value held in this <code>ServiceInformationHolder</code>
+     * object
      */
     public org.omg.CORBA.TypeCode _type() {
         return org.omg.CORBA.ServiceInformationHelper.type();

@@ -34,8 +34,8 @@ import java.io.IOException;
 import org.w3c.dom.Node;
 
 /**
-     * A DRI (Define Restart Interval) marker segment.
-     */
+ * A DRI (Define Restart Interval) marker segment.
+ */
 class DRIMarkerSegment extends MarkerSegment {
     /**
      * Restart interval, or 0 if none is specified.
@@ -43,7 +43,7 @@ class DRIMarkerSegment extends MarkerSegment {
     int restartInterval = 0;
 
     DRIMarkerSegment(JPEGBuffer buffer)
-        throws IOException {
+            throws IOException {
         super(buffer);
         restartInterval = (buffer.buf[buffer.bufPtr++] & 0xff) << 8;
         restartInterval |= buffer.buf[buffer.bufPtr++] & 0xff;
@@ -62,9 +62,9 @@ class DRIMarkerSegment extends MarkerSegment {
     }
 
     void updateFromNativeNode(Node node, boolean fromScratch)
-        throws IIOInvalidTreeException {
+            throws IIOInvalidTreeException {
         restartInterval = getAttributeValue(node, null, "interval",
-                                            0, 65535, true);
+                0, 65535, true);
     }
 
     /**
@@ -78,6 +78,6 @@ class DRIMarkerSegment extends MarkerSegment {
     void print() {
         printTag("DRI");
         System.out.println("Interval: "
-                           + Integer.toString(restartInterval));
+                + Integer.toString(restartInterval));
     }
 }

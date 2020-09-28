@@ -41,12 +41,10 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLParserConfiguration;
 import org.w3c.dom.Document;
 
 /**
- * @xerces.internal
- *
  * @author Rahul Srivastava, Sun Microsystems Inc.
  * @author Sandy Gao, IBM
- *
  * @version $Id: SchemaDOMParser.java,v 1.8 2010-11-01 04:40:01 joehw Exp $
+ * @xerces.internal
  */
 public class SchemaDOMParser extends DefaultXMLDocumentHandler {
 
@@ -54,16 +52,20 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
     // Data
     //
 
-    /** Property identifier: error reporter. */
+    /**
+     * Property identifier: error reporter.
+     */
     public static final String ERROR_REPORTER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_REPORTER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_REPORTER_PROPERTY;
 
-    /** Feature identifier: generate synthetic annotations. */
+    /**
+     * Feature identifier: generate synthetic annotations.
+     */
     public static final String GENERATE_SYNTHETIC_ANNOTATION =
-        Constants.XERCES_FEATURE_PREFIX + Constants.GENERATE_SYNTHETIC_ANNOTATIONS_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.GENERATE_SYNTHETIC_ANNOTATIONS_FEATURE;
 
     // the locator containing line/column information
-    protected XMLLocator   fLocator;
+    protected XMLLocator fLocator;
 
     // namespace context, needed for producing
     // representations of annotations
@@ -77,7 +79,9 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
     // Constructors
     //
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public SchemaDOMParser(XMLParserConfiguration config) {
         this.config = config;
         config.setDocumentHandler(this);
@@ -109,9 +113,9 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
     //
 
     public void startDocument(XMLLocator locator, String encoding,
-            NamespaceContext namespaceContext, Augmentations augs)
-    throws XNIException {
-        fErrorReporter = (XMLErrorReporter)config.getProperty(ERROR_REPORTER);
+                              NamespaceContext namespaceContext, Augmentations augs)
+            throws XNIException {
+        fErrorReporter = (XMLErrorReporter) config.getProperty(ERROR_REPORTER);
         fGenerateSyntheticAnnotation = config.getFeature(GENERATE_SYNTHETIC_ANNOTATION);
         fHasNonSchemaAttributes.clear();
         fSawAnnotation.clear();
@@ -127,8 +131,8 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
 
     /**
      * The end of the document.
-     * @param augs     Additional information that may include infoset augmentations
      *
+     * @param augs Additional information that may include infoset augmentations
      * @throws XNIException Thrown by handler to signal an error.
      */
     public void endDocument(Augmentations augs) throws XNIException {
@@ -140,14 +144,12 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
     /**
      * A comment.
      *
-     * @param text   The text in the comment.
-     * @param augs   Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by application to signal an error.
+     * @param text The text in the comment.
+     * @param augs Additional information that may include infoset augmentations
+     * @throws XNIException Thrown by application to signal an error.
      */
     public void comment(XMLString text, Augmentations augs) throws XNIException {
-        if(fAnnotationDepth > -1) {
+        if (fAnnotationDepth > -1) {
             schemaDOM.comment(text);
         }
     }
@@ -166,12 +168,10 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
      * @param target The target.
      * @param data   The data or null if none specified.
      * @param augs   Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by handler to signal an error.
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void processingInstruction(String target, XMLString data, Augmentations augs)
-    throws XNIException {
+            throws XNIException {
         if (fAnnotationDepth > -1) {
             schemaDOM.processingInstruction(target, data);
         }
@@ -180,20 +180,18 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
     /**
      * Character content.
      *
-     * @param text   The content.
-     * @param augs   Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by handler to signal an error.
+     * @param text The content.
+     * @param augs Additional information that may include infoset augmentations
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void characters(XMLString text, Augmentations augs) throws XNIException {
         // when it's not within xs:appinfo or xs:documentation
-        if (fInnerAnnotationDepth == -1 ) {
-            for (int i=text.offset; i<text.offset+text.length; i++) {
+        if (fInnerAnnotationDepth == -1) {
+            for (int i = text.offset; i < text.offset + text.length; i++) {
                 // and there is a non-whitespace character
                 if (!XMLChar.isSpace(text.ch[i])) {
                     // the string we saw: starting from the first non-whitespace character.
-                    String txt = new String(text.ch, i, text.length+text.offset-i);
+                    String txt = new String(text.ch, i, text.length + text.offset - i);
                     // report an error
                     fErrorReporter.reportError(fLocator,
                             XSMessageFormatter.SCHEMA_DOMAIN,
@@ -222,12 +220,10 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
      * @param element    The name of the element.
      * @param attributes The element attributes.
      * @param augs       Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by handler to signal an error.
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void startElement(QName element, XMLAttributes attributes, Augmentations augs)
-    throws XNIException {
+            throws XNIException {
 
         fDepth++;
         // while it is true that non-whitespace character data
@@ -251,17 +247,14 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
                         fLocator.getColumnNumber(),
                         fLocator.getCharacterOffset());
                 return;
-            }
-            else if (element.uri == SchemaSymbols.URI_SCHEMAFORSCHEMA && fGenerateSyntheticAnnotation) {
+            } else if (element.uri == SchemaSymbols.URI_SCHEMAFORSCHEMA && fGenerateSyntheticAnnotation) {
                 fSawAnnotation.push(false);
                 fHasNonSchemaAttributes.push(hasNonSchemaAttributes(element, attributes));
             }
-        }
-        else if (fDepth == fAnnotationDepth + 1) {
+        } else if (fDepth == fAnnotationDepth + 1) {
             fInnerAnnotationDepth = fDepth;
             schemaDOM.startAnnotationElement(element, attributes);
-        }
-        else {
+        } else {
             schemaDOM.startAnnotationElement(element, attributes);
             // avoid falling through; don't call startElement in this case
             return;
@@ -280,12 +273,10 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
      * @param element    The name of the element.
      * @param attributes The element attributes.
      * @param augs       Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by handler to signal an error.
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void emptyElement(QName element, XMLAttributes attributes, Augmentations augs)
-    throws XNIException {
+            throws XNIException {
 
         if (fGenerateSyntheticAnnotation && fAnnotationDepth == -1 &&
                 element.uri == SchemaSymbols.URI_SCHEMAFORSCHEMA && element.localpart != SchemaSymbols.ELT_ANNOTATION && hasNonSchemaAttributes(element, attributes)) {
@@ -326,8 +317,7 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
                     element.localpart == SchemaSymbols.ELT_ANNOTATION) {
                 schemaDOM.startAnnotation(element, attributes, fNamespaceContext);
             }
-        }
-        else {
+        } else {
             schemaDOM.startAnnotationElement(element, attributes);
         }
 
@@ -342,8 +332,7 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
                     element.localpart == SchemaSymbols.ELT_ANNOTATION) {
                 schemaDOM.endAnnotation(element, newElem);
             }
-        }
-        else {
+        } else {
             schemaDOM.endAnnotationElement(element);
         }
     }
@@ -354,15 +343,13 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
      *
      * @param element The name of the element.
      * @param augs    Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by handler to signal an error.
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void endElement(QName element, Augmentations augs) throws XNIException {
 
         // when we reach the endElement of xs:appinfo or xs:documentation,
         // change fInnerAnnotationDepth to -1
-        if(fAnnotationDepth > -1) {
+        if (fAnnotationDepth > -1) {
             if (fInnerAnnotationDepth == fDepth) {
                 fInnerAnnotationDepth = -1;
                 schemaDOM.endAnnotationElement(element);
@@ -375,7 +362,7 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
                 schemaDOM.endAnnotationElement(element);
             }
         } else { // not in an annotation at all
-            if(element.uri == SchemaSymbols.URI_SCHEMAFORSCHEMA && fGenerateSyntheticAnnotation) {
+            if (element.uri == SchemaSymbols.URI_SCHEMAFORSCHEMA && fGenerateSyntheticAnnotation) {
                 boolean value = fHasNonSchemaAttributes.pop();
                 boolean sawann = fSawAnnotation.pop();
                 if (value && !sawann) {
@@ -421,15 +408,13 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
      * characters in the document are ignorable based on the element
      * content model.
      *
-     * @param text   The ignorable whitespace.
-     * @param augs   Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by handler to signal an error.
+     * @param text The ignorable whitespace.
+     * @param augs Additional information that may include infoset augmentations
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void ignorableWhitespace(XMLString text, Augmentations augs) throws XNIException {
         // unlikely to be called, but you never know...
-        if (fAnnotationDepth != -1 ) {
+        if (fAnnotationDepth != -1) {
             schemaDOM.characters(text);
         }
     }
@@ -437,10 +422,8 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
     /**
      * The start of a CDATA section.
      *
-     * @param augs   Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by handler to signal an error.
+     * @param augs Additional information that may include infoset augmentations
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void startCDATA(Augmentations augs) throws XNIException {
         // only deal with CDATA boundaries within an annotation.
@@ -452,10 +435,8 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
     /**
      * The end of a CDATA section.
      *
-     * @param augs   Additional information that may include infoset augmentations
-     *
-     * @exception XNIException
-     *                   Thrown by handler to signal an error.
+     * @param augs Additional information that may include infoset augmentations
+     * @throws XNIException Thrown by handler to signal an error.
      */
     public void endCDATA(Augmentations augs) throws XNIException {
         // only deal with CDATA boundaries within an annotation.
@@ -478,42 +459,47 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
 
     /**
      * Delegates to SchemaParsingConfig.setFeature
+     *
      * @param featureId
      * @param state
      */
-    public void setFeature(String featureId, boolean state){
+    public void setFeature(String featureId, boolean state) {
         config.setFeature(featureId, state);
     }
 
     /**
      * Delegates to SchemaParsingConfig.getFeature
+     *
      * @param featureId
      * @return boolean
      */
-    public boolean getFeature(String featureId){
+    public boolean getFeature(String featureId) {
         return config.getFeature(featureId);
     }
 
     /**
      * Delegates to SchemaParsingConfig.setProperty.
+     *
      * @param propertyId
      * @param value
      */
-    public void setProperty(String propertyId, Object value){
+    public void setProperty(String propertyId, Object value) {
         config.setProperty(propertyId, value);
     }
 
     /**
      * Delegates to SchemaParsingConfig.getProperty.
+     *
      * @param propertyId
      * @return Object
      */
-    public Object getProperty(String propertyId){
+    public Object getProperty(String propertyId) {
         return config.getProperty(propertyId);
     }
 
     /**
      * Delegates to SchemaParsingConfig.setEntityResolver.
+     *
      * @param er XMLEntityResolver
      */
     public void setEntityResolver(XMLEntityResolver er) {
@@ -534,14 +520,14 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
      * Reset SchemaParsingConfig
      */
     public void reset() {
-        ((SchemaParsingConfig)config).reset();
+        ((SchemaParsingConfig) config).reset();
     }
 
     /**
      * ResetNodePool on SchemaParsingConfig
      */
     public void resetNodePool() {
-        ((SchemaParsingConfig)config).resetNodePool();
+        ((SchemaParsingConfig) config).resetNodePool();
     }
 
     /**
@@ -555,39 +541,52 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
         // Data
         //
 
-        /** Stack depth. */
+        /**
+         * Stack depth.
+         */
         private int fDepth;
 
-        /** Stack data. */
+        /**
+         * Stack data.
+         */
         private boolean[] fData;
 
         //
         // Constructor
         //
 
-        public BooleanStack () {}
+        public BooleanStack() {
+        }
 
         //
         // Public methods
         //
 
-        /** Returns the size of the stack. */
+        /**
+         * Returns the size of the stack.
+         */
         public int size() {
             return fDepth;
         }
 
-        /** Pushes a value onto the stack. */
+        /**
+         * Pushes a value onto the stack.
+         */
         public void push(boolean value) {
             ensureCapacity(fDepth + 1);
             fData[fDepth++] = value;
         }
 
-        /** Pops a value off of the stack. */
+        /**
+         * Pops a value off of the stack.
+         */
         public boolean pop() {
             return fData[--fDepth];
         }
 
-        /** Clears the stack. */
+        /**
+         * Clears the stack.
+         */
         public void clear() {
             fDepth = 0;
         }
@@ -596,12 +595,13 @@ public class SchemaDOMParser extends DefaultXMLDocumentHandler {
         // Private methods
         //
 
-        /** Ensures capacity. */
+        /**
+         * Ensures capacity.
+         */
         private void ensureCapacity(int size) {
             if (fData == null) {
                 fData = new boolean[32];
-            }
-            else if (fData.length <= size) {
+            } else if (fData.length <= size) {
                 boolean[] newdata = new boolean[fData.length * 2];
                 System.arraycopy(fData, 0, newdata, 0, fData.length);
                 fData = newdata;

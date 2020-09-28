@@ -47,9 +47,8 @@ import com.sun.corba.se.impl.protocol.CorbaMessageMediatorImpl;
 import com.sun.corba.se.impl.protocol.SharedCDRClientRequestDispatcherImpl;
 
 public class SharedCDRContactInfoImpl
-    extends
-        CorbaContactInfoBase
-{
+        extends
+        CorbaContactInfoBase {
     // This is only necessary for the pi.clientrequestinfo test.
     // It tests that request ids are different.
     // Rather than rewrite the test, just fake it.
@@ -58,11 +57,10 @@ public class SharedCDRContactInfoImpl
     protected ORBUtilSystemException wrapper;
 
     public SharedCDRContactInfoImpl(
-        ORB orb,
-        CorbaContactInfoList contactInfoList,
-        IOR effectiveTargetIOR,
-        short addressingDisposition)
-    {
+            ORB orb,
+            CorbaContactInfoList contactInfoList,
+            IOR effectiveTargetIOR,
+            short addressingDisposition) {
         this.orb = orb;
         this.contactInfoList = contactInfoList;
         this.effectiveTargetIOR = effectiveTargetIOR;
@@ -74,29 +72,24 @@ public class SharedCDRContactInfoImpl
     // pept.transport.ContactInfo
     //
 
-    public ClientRequestDispatcher getClientRequestDispatcher()
-    {
+    public ClientRequestDispatcher getClientRequestDispatcher() {
         // REVISIT - use registry
         return new SharedCDRClientRequestDispatcherImpl();
     }
 
-    public boolean isConnectionBased()
-    {
+    public boolean isConnectionBased() {
         return false;
     }
 
-    public boolean shouldCacheConnection()
-    {
+    public boolean shouldCacheConnection() {
         return false;
     }
 
-    public String getConnectionCacheType()
-    {
+    public String getConnectionCacheType() {
         throw getWrapper().methodShouldNotBeCalled();
     }
 
-    public Connection createConnection()
-    {
+    public Connection createConnection() {
         throw getWrapper().methodShouldNotBeCalled();
     }
 
@@ -105,39 +98,37 @@ public class SharedCDRContactInfoImpl
                                                  ContactInfo contactInfo,
                                                  Connection connection,
                                                  String methodName,
-                                                 boolean isOneWay)
-    {
+                                                 boolean isOneWay) {
         if (connection != null) {
             /// XXX LOGGING
             throw new RuntimeException("connection is not null");
         }
 
         CorbaMessageMediator messageMediator =
-            new CorbaMessageMediatorImpl(
-                (ORB) broker,
-                contactInfo,
-                null, // Connection;
-                GIOPVersion.chooseRequestVersion( (ORB)broker,
-                     effectiveTargetIOR),
-                effectiveTargetIOR,
-                requestId++, // Fake RequestId
-                getAddressingDisposition(),
-                methodName,
-                isOneWay);
+                new CorbaMessageMediatorImpl(
+                        (ORB) broker,
+                        contactInfo,
+                        null, // Connection;
+                        GIOPVersion.chooseRequestVersion((ORB) broker,
+                                effectiveTargetIOR),
+                        effectiveTargetIOR,
+                        requestId++, // Fake RequestId
+                        getAddressingDisposition(),
+                        methodName,
+                        isOneWay);
 
         return messageMediator;
     }
 
-    public OutputObject createOutputObject(MessageMediator messageMediator)
-    {
+    public OutputObject createOutputObject(MessageMediator messageMediator) {
         CorbaMessageMediator corbaMessageMediator = (CorbaMessageMediator)
-            messageMediator;
+                messageMediator;
         // NOTE: GROW.
         OutputObject outputObject =
-            sun.corba.OutputStreamFactory.newCDROutputObject(orb, messageMediator,
-                                corbaMessageMediator.getRequestHeader(),
-                                corbaMessageMediator.getStreamFormatVersion(),
-                                BufferManagerFactory.GROW);
+                sun.corba.OutputStreamFactory.newCDROutputObject(orb, messageMediator,
+                        corbaMessageMediator.getRequestHeader(),
+                        corbaMessageMediator.getStreamFormatVersion(),
+                        BufferManagerFactory.GROW);
         messageMediator.setOutputObject(outputObject);
         return outputObject;
     }
@@ -147,8 +138,7 @@ public class SharedCDRContactInfoImpl
     // spi.transport.CorbaContactInfo
     //
 
-    public String getMonitoringName()
-    {
+    public String getMonitoringName() {
         throw getWrapper().methodShouldNotBeCalled();
     }
 
@@ -162,11 +152,10 @@ public class SharedCDRContactInfoImpl
     // java.lang.Object
     //
 
-    public String toString()
-    {
+    public String toString() {
         return
-            "SharedCDRContactInfoImpl["
-            + "]";
+                "SharedCDRContactInfoImpl["
+                        + "]";
     }
 
     //////////////////////////////////////////////////
@@ -174,11 +163,10 @@ public class SharedCDRContactInfoImpl
     // Implementation
     //
 
-    protected ORBUtilSystemException getWrapper()
-    {
+    protected ORBUtilSystemException getWrapper() {
         if (wrapper == null) {
-            wrapper = ORBUtilSystemException.get( orb,
-                          CORBALogDomains.RPC_TRANSPORT ) ;
+            wrapper = ORBUtilSystemException.get(orb,
+                    CORBALogDomains.RPC_TRANSPORT);
         }
         return wrapper;
     }

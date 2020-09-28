@@ -98,6 +98,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
      * of the list if it is present, and any JFXX or APP2ICC marker
      * segments are subordinate to the JFIF marker segment.  This
      * list is package visible so that the writer can access it.
+     *
      * @see #MarkerSegment
      */
     List markerSequence = new ArrayList();
@@ -117,16 +118,16 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
      */
     JPEGMetadata(boolean isStream, boolean inThumb) {
         super(true,  // Supports standard format
-              JPEG.nativeImageMetadataFormatName,  // and a native format
-              JPEG.nativeImageMetadataFormatClassName,
-              null, null);  // No other formats
+                JPEG.nativeImageMetadataFormatName,  // and a native format
+                JPEG.nativeImageMetadataFormatClassName,
+                null, null);  // No other formats
         this.inThumb = inThumb;
         // But if we are stream metadata, adjust the variables
         this.isStream = isStream;
         if (isStream) {
             nativeMetadataFormatName = JPEG.nativeStreamMetadataFormatName;
             nativeMetadataFormatClassName =
-                JPEG.nativeStreamMetadataFormatClassName;
+                    JPEG.nativeStreamMetadataFormatClassName;
         }
     }
 
@@ -156,17 +157,17 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
         // The first three bytes should be FF, SOI, FF
         if (((buffer.buf[0] & 0xff) != 0xff)
-            || ((buffer.buf[1] & 0xff) != JPEG.SOI)
-            || ((buffer.buf[2] & 0xff) != 0xff)) {
-            throw new IIOException ("Image format error");
+                || ((buffer.buf[1] & 0xff) != JPEG.SOI)
+                || ((buffer.buf[2] & 0xff) != 0xff)) {
+            throw new IIOException("Image format error");
         }
 
         boolean done = false;
-        buffer.bufAvail -=2;  // Next byte should be the ff before a marker
+        buffer.bufAvail -= 2;  // Next byte should be the ff before a marker
         buffer.bufPtr = 2;
         MarkerSegment newGuy = null;
         while (!done) {
-            byte [] buf;
+            byte[] buf;
             int ptr;
             buffer.loadBuf(1);
             if (debug) {
@@ -175,172 +176,172 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
             }
             buffer.scanForFF(reader);
             switch (buffer.buf[buffer.bufPtr] & 0xff) {
-            case 0:
-                if (debug) {
-                    System.out.println("Skipping 0");
-                }
-                buffer.bufAvail--;
-                buffer.bufPtr++;
-                break;
-            case JPEG.SOF0:
-            case JPEG.SOF1:
-            case JPEG.SOF2:
-                if (isStream) {
-                    throw new IIOException
-                        ("SOF not permitted in stream metadata");
-                }
-                newGuy = new SOFMarkerSegment(buffer);
-                break;
-            case JPEG.DQT:
-                newGuy = new DQTMarkerSegment(buffer);
-                break;
-            case JPEG.DHT:
-                newGuy = new DHTMarkerSegment(buffer);
-                break;
-            case JPEG.DRI:
-                newGuy = new DRIMarkerSegment(buffer);
-                break;
-            case JPEG.APP0:
-                // Either JFIF, JFXX, or unknown APP0
-                buffer.loadBuf(8); // tag, length, id
-                buf = buffer.buf;
-                ptr = buffer.bufPtr;
-                if ((buf[ptr+3] == 'J')
-                    && (buf[ptr+4] == 'F')
-                    && (buf[ptr+5] == 'I')
-                    && (buf[ptr+6] == 'F')
-                    && (buf[ptr+7] == 0)) {
-                    if (inThumb) {
-                        reader.warningOccurred
-                            (JPEGImageReader.WARNING_NO_JFIF_IN_THUMB);
-                        // Leave newGuy null
-                        // Read a dummy to skip the segment
-                        JFIFMarkerSegment dummy =
-                            new JFIFMarkerSegment(buffer);
-                    } else if (isStream) {
+                case 0:
+                    if (debug) {
+                        System.out.println("Skipping 0");
+                    }
+                    buffer.bufAvail--;
+                    buffer.bufPtr++;
+                    break;
+                case JPEG.SOF0:
+                case JPEG.SOF1:
+                case JPEG.SOF2:
+                    if (isStream) {
                         throw new IIOException
-                            ("JFIF not permitted in stream metadata");
-                    } else if (markerSequence.isEmpty() == false) {
-                        throw new IIOException
-                            ("JFIF APP0 must be first marker after SOI");
+                                ("SOF not permitted in stream metadata");
+                    }
+                    newGuy = new SOFMarkerSegment(buffer);
+                    break;
+                case JPEG.DQT:
+                    newGuy = new DQTMarkerSegment(buffer);
+                    break;
+                case JPEG.DHT:
+                    newGuy = new DHTMarkerSegment(buffer);
+                    break;
+                case JPEG.DRI:
+                    newGuy = new DRIMarkerSegment(buffer);
+                    break;
+                case JPEG.APP0:
+                    // Either JFIF, JFXX, or unknown APP0
+                    buffer.loadBuf(8); // tag, length, id
+                    buf = buffer.buf;
+                    ptr = buffer.bufPtr;
+                    if ((buf[ptr + 3] == 'J')
+                            && (buf[ptr + 4] == 'F')
+                            && (buf[ptr + 5] == 'I')
+                            && (buf[ptr + 6] == 'F')
+                            && (buf[ptr + 7] == 0)) {
+                        if (inThumb) {
+                            reader.warningOccurred
+                                    (JPEGImageReader.WARNING_NO_JFIF_IN_THUMB);
+                            // Leave newGuy null
+                            // Read a dummy to skip the segment
+                            JFIFMarkerSegment dummy =
+                                    new JFIFMarkerSegment(buffer);
+                        } else if (isStream) {
+                            throw new IIOException
+                                    ("JFIF not permitted in stream metadata");
+                        } else if (markerSequence.isEmpty() == false) {
+                            throw new IIOException
+                                    ("JFIF APP0 must be first marker after SOI");
+                        } else {
+                            newGuy = new JFIFMarkerSegment(buffer);
+                        }
+                    } else if ((buf[ptr + 3] == 'J')
+                            && (buf[ptr + 4] == 'F')
+                            && (buf[ptr + 5] == 'X')
+                            && (buf[ptr + 6] == 'X')
+                            && (buf[ptr + 7] == 0)) {
+                        if (isStream) {
+                            throw new IIOException
+                                    ("JFXX not permitted in stream metadata");
+                        }
+                        if (inThumb) {
+                            throw new IIOException
+                                    ("JFXX markers not allowed in JFIF JPEG thumbnail");
+                        }
+                        JFIFMarkerSegment jfif =
+                                (JFIFMarkerSegment) findMarkerSegment
+                                        (JFIFMarkerSegment.class, true);
+                        if (jfif == null) {
+                            throw new IIOException
+                                    ("JFXX encountered without prior JFIF!");
+                        }
+                        jfif.addJFXX(buffer, reader);
+                        // newGuy remains null
                     } else {
-                        newGuy = new JFIFMarkerSegment(buffer);
+                        newGuy = new MarkerSegment(buffer);
+                        newGuy.loadData(buffer);
                     }
-                } else if ((buf[ptr+3] == 'J')
-                           && (buf[ptr+4] == 'F')
-                           && (buf[ptr+5] == 'X')
-                           && (buf[ptr+6] == 'X')
-                           && (buf[ptr+7] == 0)) {
-                    if (isStream) {
-                        throw new IIOException
-                            ("JFXX not permitted in stream metadata");
-                    }
-                    if (inThumb) {
-                        throw new IIOException
-                          ("JFXX markers not allowed in JFIF JPEG thumbnail");
-                    }
-                    JFIFMarkerSegment jfif =
-                        (JFIFMarkerSegment) findMarkerSegment
-                               (JFIFMarkerSegment.class, true);
-                    if (jfif == null) {
-                        throw new IIOException
-                            ("JFXX encountered without prior JFIF!");
-                    }
-                    jfif.addJFXX(buffer, reader);
-                    // newGuy remains null
-                } else {
-                    newGuy = new MarkerSegment(buffer);
-                    newGuy.loadData(buffer);
-                }
-                break;
-            case JPEG.APP2:
-                // Either an ICC profile or unknown APP2
-                buffer.loadBuf(15); // tag, length, id
-                if ((buffer.buf[buffer.bufPtr+3] == 'I')
-                    && (buffer.buf[buffer.bufPtr+4] == 'C')
-                    && (buffer.buf[buffer.bufPtr+5] == 'C')
-                    && (buffer.buf[buffer.bufPtr+6] == '_')
-                    && (buffer.buf[buffer.bufPtr+7] == 'P')
-                    && (buffer.buf[buffer.bufPtr+8] == 'R')
-                    && (buffer.buf[buffer.bufPtr+9] == 'O')
-                    && (buffer.buf[buffer.bufPtr+10] == 'F')
-                    && (buffer.buf[buffer.bufPtr+11] == 'I')
-                    && (buffer.buf[buffer.bufPtr+12] == 'L')
-                    && (buffer.buf[buffer.bufPtr+13] == 'E')
-                    && (buffer.buf[buffer.bufPtr+14] == 0)
+                    break;
+                case JPEG.APP2:
+                    // Either an ICC profile or unknown APP2
+                    buffer.loadBuf(15); // tag, length, id
+                    if ((buffer.buf[buffer.bufPtr + 3] == 'I')
+                            && (buffer.buf[buffer.bufPtr + 4] == 'C')
+                            && (buffer.buf[buffer.bufPtr + 5] == 'C')
+                            && (buffer.buf[buffer.bufPtr + 6] == '_')
+                            && (buffer.buf[buffer.bufPtr + 7] == 'P')
+                            && (buffer.buf[buffer.bufPtr + 8] == 'R')
+                            && (buffer.buf[buffer.bufPtr + 9] == 'O')
+                            && (buffer.buf[buffer.bufPtr + 10] == 'F')
+                            && (buffer.buf[buffer.bufPtr + 11] == 'I')
+                            && (buffer.buf[buffer.bufPtr + 12] == 'L')
+                            && (buffer.buf[buffer.bufPtr + 13] == 'E')
+                            && (buffer.buf[buffer.bufPtr + 14] == 0)
                     ) {
-                    if (isStream) {
-                        throw new IIOException
-                            ("ICC profiles not permitted in stream metadata");
+                        if (isStream) {
+                            throw new IIOException
+                                    ("ICC profiles not permitted in stream metadata");
+                        }
+
+                        JFIFMarkerSegment jfif =
+                                (JFIFMarkerSegment) findMarkerSegment
+                                        (JFIFMarkerSegment.class, true);
+                        if (jfif == null) {
+                            throw new IIOException
+                                    ("ICC APP2 encountered without prior JFIF!");
+                        }
+                        jfif.addICC(buffer);
+                        // newGuy remains null
+                    } else {
+                        newGuy = new MarkerSegment(buffer);
+                        newGuy.loadData(buffer);
+                    }
+                    break;
+                case JPEG.APP14:
+                    // Either Adobe or unknown APP14
+                    buffer.loadBuf(8); // tag, length, id
+                    if ((buffer.buf[buffer.bufPtr + 3] == 'A')
+                            && (buffer.buf[buffer.bufPtr + 4] == 'd')
+                            && (buffer.buf[buffer.bufPtr + 5] == 'o')
+                            && (buffer.buf[buffer.bufPtr + 6] == 'b')
+                            && (buffer.buf[buffer.bufPtr + 7] == 'e')) {
+                        if (isStream) {
+                            throw new IIOException
+                                    ("Adobe APP14 markers not permitted in stream metadata");
+                        }
+                        newGuy = new AdobeMarkerSegment(buffer);
+                    } else {
+                        newGuy = new MarkerSegment(buffer);
+                        newGuy.loadData(buffer);
                     }
 
-                    JFIFMarkerSegment jfif =
-                        (JFIFMarkerSegment) findMarkerSegment
-                        (JFIFMarkerSegment.class, true);
-                    if (jfif == null) {
-                        throw new IIOException
-                            ("ICC APP2 encountered without prior JFIF!");
-                    }
-                    jfif.addICC(buffer);
-                    // newGuy remains null
-                } else {
-                    newGuy = new MarkerSegment(buffer);
-                    newGuy.loadData(buffer);
-                }
-                break;
-            case JPEG.APP14:
-                // Either Adobe or unknown APP14
-                buffer.loadBuf(8); // tag, length, id
-                if ((buffer.buf[buffer.bufPtr+3] == 'A')
-                    && (buffer.buf[buffer.bufPtr+4] == 'd')
-                    && (buffer.buf[buffer.bufPtr+5] == 'o')
-                    && (buffer.buf[buffer.bufPtr+6] == 'b')
-                    && (buffer.buf[buffer.bufPtr+7] == 'e')) {
+                    break;
+                case JPEG.COM:
+                    newGuy = new COMMarkerSegment(buffer);
+                    break;
+                case JPEG.SOS:
                     if (isStream) {
                         throw new IIOException
-                      ("Adobe APP14 markers not permitted in stream metadata");
+                                ("SOS not permitted in stream metadata");
                     }
-                    newGuy = new AdobeMarkerSegment(buffer);
-                } else {
+                    newGuy = new SOSMarkerSegment(buffer);
+                    break;
+                case JPEG.RST0:
+                case JPEG.RST1:
+                case JPEG.RST2:
+                case JPEG.RST3:
+                case JPEG.RST4:
+                case JPEG.RST5:
+                case JPEG.RST6:
+                case JPEG.RST7:
+                    if (debug) {
+                        System.out.println("Restart Marker");
+                    }
+                    buffer.bufPtr++; // Just skip it
+                    buffer.bufAvail--;
+                    break;
+                case JPEG.EOI:
+                    done = true;
+                    buffer.bufPtr++;
+                    buffer.bufAvail--;
+                    break;
+                default:
                     newGuy = new MarkerSegment(buffer);
                     newGuy.loadData(buffer);
-                }
-
-                break;
-            case JPEG.COM:
-                newGuy = new COMMarkerSegment(buffer);
-                break;
-            case JPEG.SOS:
-                if (isStream) {
-                    throw new IIOException
-                        ("SOS not permitted in stream metadata");
-                }
-                newGuy = new SOSMarkerSegment(buffer);
-                break;
-            case JPEG.RST0:
-            case JPEG.RST1:
-            case JPEG.RST2:
-            case JPEG.RST3:
-            case JPEG.RST4:
-            case JPEG.RST5:
-            case JPEG.RST6:
-            case JPEG.RST7:
-                if (debug) {
-                    System.out.println("Restart Marker");
-                }
-                buffer.bufPtr++; // Just skip it
-                buffer.bufAvail--;
-                break;
-            case JPEG.EOI:
-                done = true;
-                buffer.bufPtr++;
-                buffer.bufAvail--;
-                break;
-            default:
-                newGuy = new MarkerSegment(buffer);
-                newGuy.loadData(buffer);
-                newGuy.unknown = true;
-                break;
+                    newGuy.unknown = true;
+                    break;
             }
             if (newGuy != null) {
                 markerSequence.add(newGuy);
@@ -380,13 +381,13 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         if (jparam != null) {
             markerSequence.add(new DQTMarkerSegment(jparam.getQTables()));
             markerSequence.add
-                (new DHTMarkerSegment(jparam.getDCHuffmanTables(),
-                                      jparam.getACHuffmanTables()));
+                    (new DHTMarkerSegment(jparam.getDCHuffmanTables(),
+                            jparam.getACHuffmanTables()));
         } else {
             // default tables.
             markerSequence.add(new DQTMarkerSegment(JPEG.getDefaultQTables()));
             markerSequence.add(new DHTMarkerSegment(JPEG.getDefaultHuffmanTables(true),
-                                                    JPEG.getDefaultHuffmanTables(false)));
+                    JPEG.getDefaultHuffmanTables(false)));
         }
 
         // Defensive programming
@@ -415,7 +416,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         boolean wantQTables = true;
         boolean wantHTables = true;
         float quality = JPEG.DEFAULT_QUALITY;
-        byte[] componentIDs = { 1, 2, 3, 4};
+        byte[] componentIDs = {1, 2, 3, 4};
         int numComponents = 0;
 
         ImageTypeSpecifier destType = null;
@@ -426,7 +427,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                 if (imageType != null) {
                     // Ignore the destination type.
                     writer.warningOccurred
-                        (JPEGImageWriter.WARNING_DEST_IGNORED);
+                            (JPEGImageWriter.WARNING_DEST_IGNORED);
                     destType = null;
                 }
             }
@@ -482,49 +483,49 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
             boolean hasAlpha = cm.hasAlpha();
             cs = cm.getColorSpace();
             int type = cs.getType();
-            switch(type) {
-            case ColorSpace.TYPE_GRAY:
-                willSubsample = false;
-                if (hasExtraComponents) {  // e.g. alpha
+            switch (type) {
+                case ColorSpace.TYPE_GRAY:
+                    willSubsample = false;
+                    if (hasExtraComponents) {  // e.g. alpha
+                        wantJFIF = false;
+                    }
+                    break;
+                case ColorSpace.TYPE_3CLR:
+                    if (cs == JPEG.JCS.getYCC()) {
+                        wantJFIF = false;
+                        componentIDs[0] = (byte) 'Y';
+                        componentIDs[1] = (byte) 'C';
+                        componentIDs[2] = (byte) 'c';
+                        if (hasAlpha) {
+                            componentIDs[3] = (byte) 'A';
+                        }
+                    }
+                    break;
+                case ColorSpace.TYPE_YCbCr:
+                    if (hasExtraComponents) { // e.g. K or alpha
+                        wantJFIF = false;
+                        if (!hasAlpha) { // Not alpha, so must be K
+                            wantAdobe = true;
+                            transform = JPEG.ADOBE_YCCK;
+                        }
+                    }
+                    break;
+                case ColorSpace.TYPE_RGB:  // with or without alpha
                     wantJFIF = false;
-                }
-                break;
-            case ColorSpace.TYPE_3CLR:
-                if (cs == JPEG.JCS.getYCC()) {
-                    wantJFIF = false;
-                    componentIDs[0] = (byte) 'Y';
-                    componentIDs[1] = (byte) 'C';
-                    componentIDs[2] = (byte) 'c';
+                    wantAdobe = true;
+                    willSubsample = false;
+                    componentIDs[0] = (byte) 'R';
+                    componentIDs[1] = (byte) 'G';
+                    componentIDs[2] = (byte) 'B';
                     if (hasAlpha) {
                         componentIDs[3] = (byte) 'A';
                     }
-                }
-                break;
-            case ColorSpace.TYPE_YCbCr:
-                if (hasExtraComponents) { // e.g. K or alpha
+                    break;
+                default:
+                    // Everything else is not subsampled, gets no special marker,
+                    // and component ids are 1 - N
                     wantJFIF = false;
-                    if (!hasAlpha) { // Not alpha, so must be K
-                        wantAdobe = true;
-                        transform = JPEG.ADOBE_YCCK;
-                    }
-                }
-                break;
-            case ColorSpace.TYPE_RGB:  // with or without alpha
-                wantJFIF = false;
-                wantAdobe = true;
-                willSubsample = false;
-                componentIDs[0] = (byte) 'R';
-                componentIDs[1] = (byte) 'G';
-                componentIDs[2] = (byte) 'B';
-                if (hasAlpha) {
-                    componentIDs[3] = (byte) 'A';
-                }
-                break;
-            default:
-                // Everything else is not subsampled, gets no special marker,
-                // and component ids are 1 - N
-                wantJFIF = false;
-                willSubsample = false;
+                    willSubsample = false;
             }
         } else if (imageType != null) {
             ColorModel cm = imageType.getColorModel();
@@ -533,53 +534,53 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
             boolean hasAlpha = cm.hasAlpha();
             cs = cm.getColorSpace();
             int type = cs.getType();
-            switch(type) {
-            case ColorSpace.TYPE_GRAY:
-                willSubsample = false;
-                if (hasExtraComponents) {  // e.g. alpha
-                    wantJFIF = false;
-                }
-                break;
-            case ColorSpace.TYPE_RGB:  // with or without alpha
-                // without alpha we just accept the JFIF defaults
-                if (hasAlpha) {
-                    wantJFIF = false;
-                }
-                break;
-            case ColorSpace.TYPE_3CLR:
-                wantJFIF = false;
-                willSubsample = false;
-                if (cs.equals(ColorSpace.getInstance(ColorSpace.CS_PYCC))) {
-                    willSubsample = true;
-                    wantAdobe = true;
-                    componentIDs[0] = (byte) 'Y';
-                    componentIDs[1] = (byte) 'C';
-                    componentIDs[2] = (byte) 'c';
+            switch (type) {
+                case ColorSpace.TYPE_GRAY:
+                    willSubsample = false;
+                    if (hasExtraComponents) {  // e.g. alpha
+                        wantJFIF = false;
+                    }
+                    break;
+                case ColorSpace.TYPE_RGB:  // with or without alpha
+                    // without alpha we just accept the JFIF defaults
                     if (hasAlpha) {
-                        componentIDs[3] = (byte) 'A';
+                        wantJFIF = false;
                     }
-                }
-                break;
-            case ColorSpace.TYPE_YCbCr:
-                if (hasExtraComponents) { // e.g. K or alpha
+                    break;
+                case ColorSpace.TYPE_3CLR:
                     wantJFIF = false;
-                    if (!hasAlpha) {  // then it must be K
+                    willSubsample = false;
+                    if (cs.equals(ColorSpace.getInstance(ColorSpace.CS_PYCC))) {
+                        willSubsample = true;
                         wantAdobe = true;
-                        transform = JPEG.ADOBE_YCCK;
+                        componentIDs[0] = (byte) 'Y';
+                        componentIDs[1] = (byte) 'C';
+                        componentIDs[2] = (byte) 'c';
+                        if (hasAlpha) {
+                            componentIDs[3] = (byte) 'A';
+                        }
                     }
-                }
-                break;
-            case ColorSpace.TYPE_CMYK:
-                wantJFIF = false;
-                wantAdobe = true;
-                transform = JPEG.ADOBE_YCCK;
-                break;
+                    break;
+                case ColorSpace.TYPE_YCbCr:
+                    if (hasExtraComponents) { // e.g. K or alpha
+                        wantJFIF = false;
+                        if (!hasAlpha) {  // then it must be K
+                            wantAdobe = true;
+                            transform = JPEG.ADOBE_YCCK;
+                        }
+                    }
+                    break;
+                case ColorSpace.TYPE_CMYK:
+                    wantJFIF = false;
+                    wantAdobe = true;
+                    transform = JPEG.ADOBE_YCCK;
+                    break;
 
-            default:
-                // Everything else is not subsampled, gets no special marker,
-                // and component ids are 0 - N
-                wantJFIF = false;
-                willSubsample = false;
+                default:
+                    // Everything else is not subsampled, gets no special marker,
+                    // and component ids are 0 - N
+                    wantJFIF = false;
+                    willSubsample = false;
             }
 
         }
@@ -595,8 +596,9 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
             markerSequence.add(jfif);
             if (wantICC) {
                 try {
-                    jfif.addICC((ICC_ColorSpace)cs);
-                } catch (IOException e) {} // Can't happen here
+                    jfif.addICC((ICC_ColorSpace) cs);
+                } catch (IOException e) {
+                } // Can't happen here
             }
         }
         // Adobe
@@ -616,16 +618,16 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
         // sof
         markerSequence.add(new SOFMarkerSegment(wantProg,
-                                                wantExtended,
-                                                willSubsample,
-                                                componentIDs,
-                                                numComponents));
+                wantExtended,
+                willSubsample,
+                componentIDs,
+                numComponents));
 
         // sos
         if (!wantProg) {  // Default progression scans are done in the writer
             markerSequence.add(new SOSMarkerSegment(willSubsample,
-                                                    componentIDs,
-                                                    numComponents));
+                    componentIDs,
+                    numComponents));
         }
 
         // Defensive programming
@@ -646,7 +648,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
     MarkerSegment findMarkerSegment(int tag) {
         Iterator iter = markerSequence.iterator();
         while (iter.hasNext()) {
-            MarkerSegment seg = (MarkerSegment)iter.next();
+            MarkerSegment seg = (MarkerSegment) iter.next();
             if (seg.tag == tag) {
                 return seg;
             }
@@ -662,7 +664,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         if (first) {
             Iterator iter = markerSequence.iterator();
             while (iter.hasNext()) {
-                MarkerSegment seg = (MarkerSegment)iter.next();
+                MarkerSegment seg = (MarkerSegment) iter.next();
                 if (cls.isInstance(seg)) {
                     return seg;
                 }
@@ -670,7 +672,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         } else {
             ListIterator iter = markerSequence.listIterator(markerSequence.size());
             while (iter.hasPrevious()) {
-                MarkerSegment seg = (MarkerSegment)iter.previous();
+                MarkerSegment seg = (MarkerSegment) iter.previous();
                 if (cls.isInstance(seg)) {
                     return seg;
                 }
@@ -687,15 +689,15 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         if (first) {
             ListIterator iter = markerSequence.listIterator();
             for (int i = 0; iter.hasNext(); i++) {
-                MarkerSegment seg = (MarkerSegment)iter.next();
+                MarkerSegment seg = (MarkerSegment) iter.next();
                 if (cls.isInstance(seg)) {
                     return i;
                 }
             }
         } else {
             ListIterator iter = markerSequence.listIterator(markerSequence.size());
-            for (int i = markerSequence.size()-1; iter.hasPrevious(); i--) {
-                MarkerSegment seg = (MarkerSegment)iter.previous();
+            for (int i = markerSequence.size() - 1; iter.hasPrevious(); i--) {
+                MarkerSegment seg = (MarkerSegment) iter.previous();
                 if (cls.isInstance(seg)) {
                     return i;
                 }
@@ -706,8 +708,8 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
     private int findLastUnknownMarkerSegmentPosition() {
         ListIterator iter = markerSequence.listIterator(markerSequence.size());
-        for (int i = markerSequence.size()-1; iter.hasPrevious(); i--) {
-            MarkerSegment seg = (MarkerSegment)iter.previous();
+        for (int i = markerSequence.size() - 1; iter.hasPrevious(); i--) {
+            MarkerSegment seg = (MarkerSegment) iter.previous();
             if (seg.unknown == true) {
                 return i;
             }
@@ -721,7 +723,8 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         JPEGMetadata newGuy = null;
         try {
             newGuy = (JPEGMetadata) super.clone();
-        } catch (CloneNotSupportedException e) {} // won't happen
+        } catch (CloneNotSupportedException e) {
+        } // won't happen
         if (markerSequence != null) {
             newGuy.markerSequence = (List) cloneSequence();
         }
@@ -738,8 +741,8 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         }
         List retval = new ArrayList(markerSequence.size());
         Iterator iter = markerSequence.iterator();
-        while(iter.hasNext()) {
-            MarkerSegment seg = (MarkerSegment)iter.next();
+        while (iter.hasNext()) {
+            MarkerSegment seg = (MarkerSegment) iter.next();
             retval.add(seg.clone());
         }
 
@@ -766,8 +769,8 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                 return getStandardTree();
             }
         }
-        throw  new IllegalArgumentException("Unsupported format name: "
-                                                + formatName);
+        throw new IllegalArgumentException("Unsupported format name: "
+                + formatName);
     }
 
     IIOMetadataNode getNativeTree() {
@@ -784,7 +787,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                 IIOMetadataNode header = new IIOMetadataNode("JPEGvariety");
                 root.appendChild(header);
                 JFIFMarkerSegment jfif = (JFIFMarkerSegment)
-                    findMarkerSegment(JFIFMarkerSegment.class, true);
+                        findMarkerSegment(JFIFMarkerSegment.class, true);
                 if (jfif != null) {
                     iter.next();  // JFIF must be first, so this skips it
                     header.appendChild(jfif.getNativeNode());
@@ -795,7 +798,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
             }
             top = sequence;
         }
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             MarkerSegment seg = (MarkerSegment) iter.next();
             top.appendChild(seg.getNativeNode());
         }
@@ -810,7 +813,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         // Colorspace type - follow the rules in the spec
         // First get the SOF marker segment, if there is one
         SOFMarkerSegment sof = (SOFMarkerSegment)
-            findMarkerSegment(SOFMarkerSegment.class, true);
+                findMarkerSegment(SOFMarkerSegment.class, true);
         if (sof == null) {
             // No image, so no chroma
             return null;
@@ -839,22 +842,22 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
         // How about an Adobe marker segment?
         AdobeMarkerSegment adobe =
-            (AdobeMarkerSegment) findMarkerSegment(AdobeMarkerSegment.class, true);
-        if (adobe != null){
+                (AdobeMarkerSegment) findMarkerSegment(AdobeMarkerSegment.class, true);
+        if (adobe != null) {
             switch (adobe.transform) {
-            case JPEG.ADOBE_YCCK:
-                csType.setAttribute("name", "YCCK");
-                break;
-            case JPEG.ADOBE_YCC:
-                csType.setAttribute("name", "YCbCr");
-                break;
-            case JPEG.ADOBE_UNKNOWN:
-                if (numChannels == 3) {
-                    csType.setAttribute("name", "RGB");
-                } else if (numChannels == 4) {
-                    csType.setAttribute("name", "CMYK");
-                }
-                break;
+                case JPEG.ADOBE_YCCK:
+                    csType.setAttribute("name", "YCCK");
+                    break;
+                case JPEG.ADOBE_YCC:
+                    csType.setAttribute("name", "YCbCr");
+                    break;
+                case JPEG.ADOBE_UNKNOWN:
+                    if (numChannels == 3) {
+                        csType.setAttribute("name", "RGB");
+                    } else if (numChannels == 4) {
+                        csType.setAttribute("name", "CMYK");
+                    }
+                    break;
             }
             return chroma;
         }
@@ -887,24 +890,24 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
         // Check against the letters
         if ((sof.componentSpecs[0].componentId == 'R')
-            && (sof.componentSpecs[1].componentId == 'G')
-            && (sof.componentSpecs[2].componentId == 'B')){
+                && (sof.componentSpecs[1].componentId == 'G')
+                && (sof.componentSpecs[2].componentId == 'B')) {
 
             csType.setAttribute("name", "RGB");
             if ((numChannels == 4)
-                && (sof.componentSpecs[3].componentId == 'A')) {
+                    && (sof.componentSpecs[3].componentId == 'A')) {
                 hasAlpha = true;
             }
             return chroma;
         }
 
         if ((sof.componentSpecs[0].componentId == 'Y')
-            && (sof.componentSpecs[1].componentId == 'C')
-            && (sof.componentSpecs[2].componentId == 'c')){
+                && (sof.componentSpecs[1].componentId == 'C')
+                && (sof.componentSpecs[2].componentId == 'c')) {
 
             csType.setAttribute("name", "PhotoYCC");
             if ((numChannels == 4)
-                && (sof.componentSpecs[3].componentId == 'A')) {
+                    && (sof.componentSpecs[3].componentId == 'A')) {
                 hasAlpha = true;
             }
             return chroma;
@@ -918,9 +921,9 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         int hfactor = sof.componentSpecs[0].HsamplingFactor;
         int vfactor = sof.componentSpecs[0].VsamplingFactor;
 
-        for (int i = 1; i<sof.componentSpecs.length; i++) {
+        for (int i = 1; i < sof.componentSpecs.length; i++) {
             if ((sof.componentSpecs[i].HsamplingFactor != hfactor)
-                || (sof.componentSpecs[i].VsamplingFactor != vfactor)){
+                    || (sof.componentSpecs[i].VsamplingFactor != vfactor)) {
                 subsampled = true;
                 break;
             }
@@ -985,17 +988,17 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         dim.appendChild(orient);
 
         JFIFMarkerSegment jfif =
-            (JFIFMarkerSegment) findMarkerSegment(JFIFMarkerSegment.class, true);
+                (JFIFMarkerSegment) findMarkerSegment(JFIFMarkerSegment.class, true);
         if (jfif != null) {
 
             // Aspect Ratio is width of pixel / height of pixel
             float aspectRatio;
             if (jfif.resUnits == 0) {
                 // In this case they just encode aspect ratio directly
-                aspectRatio = ((float) jfif.Xdensity)/jfif.Ydensity;
+                aspectRatio = ((float) jfif.Xdensity) / jfif.Ydensity;
             } else {
                 // They are true densities (e.g. dpi) and must be inverted
-                aspectRatio = ((float) jfif.Ydensity)/jfif.Xdensity;
+                aspectRatio = ((float) jfif.Ydensity) / jfif.Xdensity;
             }
             IIOMetadataNode aspect = new IIOMetadataNode("PixelAspectRatio");
             aspect.setAttribute("value", Float.toString(aspectRatio));
@@ -1007,15 +1010,15 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                 float scale = (jfif.resUnits == 1) ? 25.4F : 10.0F;
 
                 IIOMetadataNode horiz =
-                    new IIOMetadataNode("HorizontalPixelSize");
+                        new IIOMetadataNode("HorizontalPixelSize");
                 horiz.setAttribute("value",
-                                   Float.toString(scale/jfif.Xdensity));
+                        Float.toString(scale / jfif.Xdensity));
                 dim.appendChild(horiz);
 
                 IIOMetadataNode vert =
-                    new IIOMetadataNode("VerticalPixelSize");
+                        new IIOMetadataNode("VerticalPixelSize");
                 vert.setAttribute("value",
-                                  Float.toString(scale/jfif.Ydensity));
+                        Float.toString(scale / jfif.Ydensity));
                 dim.appendChild(vert);
             }
         }
@@ -1035,7 +1038,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                     IIOMetadataNode entry = new IIOMetadataNode("TextEntry");
                     entry.setAttribute("keyword", "comment");
                     entry.setAttribute("value", com.getComment());
-                text.appendChild(entry);
+                    text.appendChild(entry);
                 }
             }
         }
@@ -1060,7 +1063,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
     }
 
     public void mergeTree(String formatName, Node root)
-        throws IIOInvalidTreeException {
+            throws IIOInvalidTreeException {
         if (formatName == null) {
             throw new IllegalArgumentException("null formatName!");
         }
@@ -1075,36 +1078,36 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
             copy = cloneSequence();
         }
         if (isStream &&
-            (formatName.equals(JPEG.nativeStreamMetadataFormatName))) {
-                mergeNativeTree(root);
-        } else if (!isStream &&
-                   (formatName.equals(JPEG.nativeImageMetadataFormatName))) {
+                (formatName.equals(JPEG.nativeStreamMetadataFormatName))) {
             mergeNativeTree(root);
         } else if (!isStream &&
-                   (formatName.equals
-                    (IIOMetadataFormatImpl.standardMetadataFormatName))) {
+                (formatName.equals(JPEG.nativeImageMetadataFormatName))) {
+            mergeNativeTree(root);
+        } else if (!isStream &&
+                (formatName.equals
+                        (IIOMetadataFormatImpl.standardMetadataFormatName))) {
             mergeStandardTree(root);
         } else {
-            throw  new IllegalArgumentException("Unsupported format name: "
-                                                + formatName);
+            throw new IllegalArgumentException("Unsupported format name: "
+                    + formatName);
         }
         if (!isConsistent()) {
             markerSequence = copy;
             throw new IIOInvalidTreeException
-                ("Merged tree is invalid; original restored", root);
+                    ("Merged tree is invalid; original restored", root);
         }
     }
 
     private void mergeNativeTree(Node root) throws IIOInvalidTreeException {
         String name = root.getNodeName();
         if (name != ((isStream) ? JPEG.nativeStreamMetadataFormatName
-                                : JPEG.nativeImageMetadataFormatName)) {
+                : JPEG.nativeImageMetadataFormatName)) {
             throw new IIOInvalidTreeException("Invalid root node name: " + name,
-                                              root);
+                    root);
         }
         if (root.getChildNodes().getLength() != 2) { // JPEGvariety and markerSequence
             throw new IIOInvalidTreeException(
-                "JPEGvariety and markerSequence nodes must be present", root);
+                    "JPEGvariety and markerSequence nodes must be present", root);
         }
         mergeJFIFsubtree(root.getFirstChild());
         mergeSequenceSubtree(root.getLastChild());
@@ -1118,12 +1121,12 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
      * beginning of the marker sequence.
      */
     private void mergeJFIFsubtree(Node JPEGvariety)
-        throws IIOInvalidTreeException {
+            throws IIOInvalidTreeException {
         if (JPEGvariety.getChildNodes().getLength() != 0) {
             Node jfifNode = JPEGvariety.getFirstChild();
             // is there already a jfif marker segment?
             JFIFMarkerSegment jfifSeg =
-                (JFIFMarkerSegment) findMarkerSegment(JFIFMarkerSegment.class, true);
+                    (JFIFMarkerSegment) findMarkerSegment(JFIFMarkerSegment.class, true);
             if (jfifSeg != null) {
                 jfifSeg.updateFromNativeNode(jfifNode, false);
             } else {
@@ -1134,7 +1137,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
     }
 
     private void mergeSequenceSubtree(Node sequenceTree)
-        throws IIOInvalidTreeException {
+            throws IIOInvalidTreeException {
         NodeList children = sequenceTree.getChildNodes();
         for (int i = 0; i < children.getLength(); i++) {
             Node node = children.item(i);
@@ -1193,17 +1196,17 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
             for (int i = 0; i < children.getLength(); i++) {
                 Node child = children.item(i);
                 int childID = MarkerSegment.getAttributeValue(child,
-                                                              null,
-                                                              "qtableId",
-                                                              0, 3,
-                                                              true);
+                        null,
+                        "qtableId",
+                        0, 3,
+                        true);
                 DQTMarkerSegment dqt = null;
                 int tableIndex = -1;
                 for (int j = 0; j < oldDQTs.size(); j++) {
                     DQTMarkerSegment testDQT = (DQTMarkerSegment) oldDQTs.get(j);
                     for (int k = 0; k < testDQT.tables.size(); k++) {
                         DQTMarkerSegment.Qtable testTable =
-                            (DQTMarkerSegment.Qtable) testDQT.tables.get(k);
+                                (DQTMarkerSegment.Qtable) testDQT.tables.get(k);
                         if (childID == testTable.tableID) {
                             dqt = testDQT;
                             tableIndex = k;
@@ -1215,7 +1218,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                 if (dqt != null) {
                     dqt.tables.set(tableIndex, dqt.getQtableFromNode(child));
                 } else {
-                    dqt = (DQTMarkerSegment) oldDQTs.get(oldDQTs.size()-1);
+                    dqt = (DQTMarkerSegment) oldDQTs.get(oldDQTs.size() - 1);
                     dqt.tables.add(dqt.getQtableFromNode(child));
                 }
             }
@@ -1270,24 +1273,24 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                 Node child = children.item(i);
                 NamedNodeMap attrs = child.getAttributes();
                 int childID = MarkerSegment.getAttributeValue(child,
-                                                              attrs,
-                                                              "htableId",
-                                                              0, 3,
-                                                              true);
+                        attrs,
+                        "htableId",
+                        0, 3,
+                        true);
                 int childClass = MarkerSegment.getAttributeValue(child,
-                                                                 attrs,
-                                                                 "class",
-                                                                 0, 1,
-                                                                 true);
+                        attrs,
+                        "class",
+                        0, 1,
+                        true);
                 DHTMarkerSegment dht = null;
                 int tableIndex = -1;
                 for (int j = 0; j < oldDHTs.size(); j++) {
                     DHTMarkerSegment testDHT = (DHTMarkerSegment) oldDHTs.get(j);
                     for (int k = 0; k < testDHT.tables.size(); k++) {
                         DHTMarkerSegment.Htable testTable =
-                            (DHTMarkerSegment.Htable) testDHT.tables.get(k);
+                                (DHTMarkerSegment.Htable) testDHT.tables.get(k);
                         if ((childID == testTable.tableID) &&
-                            (childClass == testTable.tableClass)) {
+                                (childClass == testTable.tableClass)) {
                             dht = testDHT;
                             tableIndex = k;
                             break;
@@ -1298,7 +1301,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                 if (dht != null) {
                     dht.tables.set(tableIndex, dht.getHtableFromNode(child));
                 } else {
-                    dht = (DHTMarkerSegment) oldDHTs.get(oldDHTs.size()-1);
+                    dht = (DHTMarkerSegment) oldDHTs.get(oldDHTs.size() - 1);
                     dht.tables.add(dht.getHtableFromNode(child));
                 }
             }
@@ -1308,7 +1311,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
             int firstSOF = findMarkerSegmentPosition(SOFMarkerSegment.class, true);
             int firstSOS = findMarkerSegmentPosition(SOSMarkerSegment.class, true);
             if (lastDQT != -1) {
-                markerSequence.add(lastDQT+1, newGuy);
+                markerSequence.add(lastDQT + 1, newGuy);
             } else if (firstSOF != -1) {
                 markerSequence.add(firstSOF, newGuy);
             } else if (firstSOS != -1) {
@@ -1334,7 +1337,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
      */
     private void mergeDRINode(Node node) throws IIOInvalidTreeException {
         DRIMarkerSegment dri =
-            (DRIMarkerSegment) findMarkerSegment(DRIMarkerSegment.class, true);
+                (DRIMarkerSegment) findMarkerSegment(DRIMarkerSegment.class, true);
         if (dri != null) {
             dri.updateFromNativeNode(node, false);
         } else {
@@ -1361,28 +1364,28 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         insertCOMMarkerSegment(newGuy);
     }
 
-     /**
-      * Insert a new COM marker segment into an appropriate place in the
-      * marker sequence, as follows:
-      * If there already exist COM marker segments, the new one is inserted
-      * after the last one.
-      * If there are no COM segments, the new COM segment is inserted after the
-      * JFIF segment, if there is one.
-      * If there is no JFIF segment, the new COM segment is inserted after the
-      * Adobe marker segment, if there is one.
-      * If there is no Adobe segment, the new COM segment is inserted
-      * at the beginning of the sequence.
-      */
+    /**
+     * Insert a new COM marker segment into an appropriate place in the
+     * marker sequence, as follows:
+     * If there already exist COM marker segments, the new one is inserted
+     * after the last one.
+     * If there are no COM segments, the new COM segment is inserted after the
+     * JFIF segment, if there is one.
+     * If there is no JFIF segment, the new COM segment is inserted after the
+     * Adobe marker segment, if there is one.
+     * If there is no Adobe segment, the new COM segment is inserted
+     * at the beginning of the sequence.
+     */
     private void insertCOMMarkerSegment(COMMarkerSegment newGuy) {
         int lastCOM = findMarkerSegmentPosition(COMMarkerSegment.class, false);
         boolean hasJFIF = (findMarkerSegment(JFIFMarkerSegment.class, true) != null);
         int firstAdobe = findMarkerSegmentPosition(AdobeMarkerSegment.class, true);
         if (lastCOM != -1) {
-            markerSequence.add(lastCOM+1, newGuy);
+            markerSequence.add(lastCOM + 1, newGuy);
         } else if (hasJFIF) {
             markerSequence.add(1, newGuy);  // JFIF is always 0
         } else if (firstAdobe != -1) {
-            markerSequence.add(firstAdobe+1, newGuy);
+            markerSequence.add(firstAdobe + 1, newGuy);
         } else {
             markerSequence.add(0, newGuy);
         }
@@ -1397,7 +1400,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
      */
     private void mergeAdobeNode(Node node) throws IIOInvalidTreeException {
         AdobeMarkerSegment adobe =
-            (AdobeMarkerSegment) findMarkerSegment(AdobeMarkerSegment.class, true);
+                (AdobeMarkerSegment) findMarkerSegment(AdobeMarkerSegment.class, true);
         if (adobe != null) {
             adobe.updateFromNativeNode(node, false);
         } else {
@@ -1418,12 +1421,12 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
      */
     private void insertAdobeMarkerSegment(AdobeMarkerSegment newGuy) {
         boolean hasJFIF =
-            (findMarkerSegment(JFIFMarkerSegment.class, true) != null);
+                (findMarkerSegment(JFIFMarkerSegment.class, true) != null);
         int lastUnknown = findLastUnknownMarkerSegmentPosition();
         if (hasJFIF) {
             markerSequence.add(1, newGuy);  // JFIF is always 0
         } else if (lastUnknown != -1) {
-            markerSequence.add(lastUnknown+1, newGuy);
+            markerSequence.add(lastUnknown + 1, newGuy);
         } else {
             markerSequence.add(0, newGuy);
         }
@@ -1448,10 +1451,11 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         boolean hasJFIF = (findMarkerSegment(JFIFMarkerSegment.class, true) != null);
         int firstAdobe = findMarkerSegmentPosition(AdobeMarkerSegment.class, true);
         if (lastUnknown != -1) {
-            markerSequence.add(lastUnknown+1, newGuy);
+            markerSequence.add(lastUnknown + 1, newGuy);
         } else if (hasJFIF) {
             markerSequence.add(1, newGuy);  // JFIF is always 0
-        } if (firstAdobe != -1) {
+        }
+        if (firstAdobe != -1) {
             markerSequence.add(firstAdobe, newGuy);
         } else {
             markerSequence.add(0, newGuy);
@@ -1468,11 +1472,10 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
      * the first one.
      * If there is no SOS segment, the new SOF segment is added to the end
      * of the sequence.
-     *
      */
     private void mergeSOFNode(Node node) throws IIOInvalidTreeException {
         SOFMarkerSegment sof =
-            (SOFMarkerSegment) findMarkerSegment(SOFMarkerSegment.class, true);
+                (SOFMarkerSegment) findMarkerSegment(SOFMarkerSegment.class, true);
         if (sof != null) {
             sof.updateFromNativeNode(node, false);
         } else {
@@ -1498,13 +1501,13 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
      */
     private void mergeSOSNode(Node node) throws IIOInvalidTreeException {
         SOSMarkerSegment firstSOS =
-            (SOSMarkerSegment) findMarkerSegment(SOSMarkerSegment.class, true);
+                (SOSMarkerSegment) findMarkerSegment(SOSMarkerSegment.class, true);
         SOSMarkerSegment lastSOS =
-            (SOSMarkerSegment) findMarkerSegment(SOSMarkerSegment.class, false);
+                (SOSMarkerSegment) findMarkerSegment(SOSMarkerSegment.class, false);
         if (firstSOS != null) {
             if (firstSOS != lastSOS) {
                 throw new IIOInvalidTreeException
-                    ("Can't merge SOS node into a tree with > 1 SOS node", node);
+                        ("Can't merge SOS node into a tree with > 1 SOS node", node);
             }
             firstSOS.updateFromNativeNode(node, false);
         } else {
@@ -1550,7 +1553,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
      */
 
     private void mergeStandardChromaNode(Node node, NodeList siblings)
-        throws IIOInvalidTreeException {
+            throws IIOInvalidTreeException {
         // ColorSpaceType can change the target colorspace for compression
         // This must take any transparency node into account as well, as
         // that affects the number of channels (if alpha is present).  If
@@ -1561,7 +1564,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
         if (transparencyDone) {
             throw new IIOInvalidTreeException
-                ("Transparency node must follow Chroma node", node);
+                    ("Transparency node must follow Chroma node", node);
         }
 
         Node csType = node.getFirstChild();
@@ -1577,7 +1580,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         boolean wantAdobe = false;
         int transform = 0;
         boolean willSubsample = false;
-        byte [] ids = {1, 2, 3, 4};  // JFIF compatible
+        byte[] ids = {1, 2, 3, 4};  // JFIF compatible
         if (csName.equals("GRAY")) {
             numChannels = 1;
             wantJFIF = true;
@@ -1600,13 +1603,13 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
             ids[1] = (byte) 'G';
             ids[2] = (byte) 'B';
         } else if ((csName.equals("XYZ"))
-                   || (csName.equals("Lab"))
-                   || (csName.equals("Luv"))
-                   || (csName.equals("YxY"))
-                   || (csName.equals("HSV"))
-                   || (csName.equals("HLS"))
-                   || (csName.equals("CMY"))
-                   || (csName.equals("3CLR"))) {
+                || (csName.equals("Lab"))
+                || (csName.equals("Luv"))
+                || (csName.equals("YxY"))
+                || (csName.equals("HSV"))
+                || (csName.equals("HLS"))
+                || (csName.equals("CMY"))
+                || (csName.equals("3CLR"))) {
             numChannels = 3;
         } else if (csName.equals("YCCK")) {
             numChannels = 4;
@@ -1642,13 +1645,13 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         }
 
         JFIFMarkerSegment jfif =
-            (JFIFMarkerSegment) findMarkerSegment(JFIFMarkerSegment.class, true);
+                (JFIFMarkerSegment) findMarkerSegment(JFIFMarkerSegment.class, true);
         AdobeMarkerSegment adobe =
-            (AdobeMarkerSegment) findMarkerSegment(AdobeMarkerSegment.class, true);
+                (AdobeMarkerSegment) findMarkerSegment(AdobeMarkerSegment.class, true);
         SOFMarkerSegment sof =
-            (SOFMarkerSegment) findMarkerSegment(SOFMarkerSegment.class, true);
+                (SOFMarkerSegment) findMarkerSegment(SOFMarkerSegment.class, true);
         SOSMarkerSegment sos =
-            (SOSMarkerSegment) findMarkerSegment(SOSMarkerSegment.class, true);
+                (SOSMarkerSegment) findMarkerSegment(SOSMarkerSegment.class, true);
 
         // If the metadata specifies progressive, then the number of channels
         // must match, so that we can modify all the existing SOS marker segments.
@@ -1690,15 +1693,15 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
         boolean progressive = false;
 
-        int [] subsampledSelectors = {0, 1, 1, 0 } ;
-        int [] nonSubsampledSelectors = { 0, 0, 0, 0};
+        int[] subsampledSelectors = {0, 1, 1, 0};
+        int[] nonSubsampledSelectors = {0, 0, 0, 0};
 
-        int [] newTableSelectors = willSubsample
-                                   ? subsampledSelectors
-                                   : nonSubsampledSelectors;
+        int[] newTableSelectors = willSubsample
+                ? subsampledSelectors
+                : nonSubsampledSelectors;
 
         // Keep the old componentSpecs array
-        SOFMarkerSegment.ComponentSpec [] oldCompSpecs = null;
+        SOFMarkerSegment.ComponentSpec[] oldCompSpecs = null;
         // SOF might be modified
         if (sof != null) {
             oldCompSpecs = sof.componentSpecs;
@@ -1706,11 +1709,11 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
             // Now replace the SOF with a new one; it might be the same, but
             // this is easier.
             markerSequence.set(markerSequence.indexOf(sof),
-                               new SOFMarkerSegment(progressive,
-                                                    false, // we never need extended
-                                                    willSubsample,
-                                                    ids,
-                                                    numChannels));
+                    new SOFMarkerSegment(progressive,
+                            false, // we never need extended
+                            willSubsample,
+                            ids,
+                            numChannels));
 
             // Now suss out if subsampling changed and set the boolean for
             // updating the q tables
@@ -1734,13 +1737,13 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                 }
                 if (idsDiffer) {
                     // update the ids in each SOS marker segment
-                    for (Iterator iter = markerSequence.iterator(); iter.hasNext();) {
+                    for (Iterator iter = markerSequence.iterator(); iter.hasNext(); ) {
                         MarkerSegment seg = (MarkerSegment) iter.next();
                         if (seg instanceof SOSMarkerSegment) {
                             SOSMarkerSegment target = (SOSMarkerSegment) seg;
                             for (int i = 0; i < target.componentSpecs.length; i++) {
                                 int oldSelector =
-                                    target.componentSpecs[i].componentSelector;
+                                        target.componentSpecs[i].componentSelector;
                                 // Find the position in the old componentSpecs array
                                 // of the old component with the old selector
                                 // and replace the component selector with the
@@ -1750,7 +1753,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                                 for (int j = 0; j < oldCompSpecs.length; j++) {
                                     if (oldCompSpecs[j].componentId == oldSelector) {
                                         target.componentSpecs[i].componentSelector =
-                                            ids[j];
+                                                ids[j];
                                     }
                                 }
                             }
@@ -1763,8 +1766,8 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                     // update the tables.
                     for (int i = 0; i < sos.componentSpecs.length; i++) {
                         if ((sos.componentSpecs[i].dcHuffTable
-                             != newTableSelectors[i])
-                            || (sos.componentSpecs[i].acHuffTable
+                                != newTableSelectors[i])
+                                || (sos.componentSpecs[i].acHuffTable
                                 != newTableSelectors[i])) {
                             updateHtables = true;
                         }
@@ -1772,9 +1775,9 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
                     // Might be the same as the old one, but this is easier.
                     markerSequence.set(markerSequence.indexOf(sos),
-                               new SOSMarkerSegment(willSubsample,
-                                                    ids,
-                                                    numChannels));
+                            new SOSMarkerSegment(willSubsample,
+                                    ids,
+                                    numChannels));
                 }
             }
         } else {
@@ -1788,7 +1791,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
         if (updateQtables) {
             List tableSegments = new ArrayList();
-            for (Iterator iter = markerSequence.iterator(); iter.hasNext();) {
+            for (Iterator iter = markerSequence.iterator(); iter.hasNext(); ) {
                 MarkerSegment seg = (MarkerSegment) iter.next();
                 if (seg instanceof DQTMarkerSegment) {
                     tableSegments.add(seg);
@@ -1805,12 +1808,12 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
                 // Find the table with selector 1.
                 boolean found = false;
-                for (Iterator iter = tableSegments.iterator(); iter.hasNext();) {
+                for (Iterator iter = tableSegments.iterator(); iter.hasNext(); ) {
                     DQTMarkerSegment testdqt = (DQTMarkerSegment) iter.next();
                     for (Iterator tabiter = testdqt.tables.iterator();
-                         tabiter.hasNext();) {
+                         tabiter.hasNext(); ) {
                         DQTMarkerSegment.Qtable tab =
-                            (DQTMarkerSegment.Qtable) tabiter.next();
+                                (DQTMarkerSegment.Qtable) tabiter.next();
                         if (tab.tableID == 1) {
                             found = true;
                         }
@@ -1819,12 +1822,12 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                 if (!found) {
                     //    find the table with selector 0.  There should be one.
                     DQTMarkerSegment.Qtable table0 = null;
-                    for (Iterator iter = tableSegments.iterator(); iter.hasNext();) {
+                    for (Iterator iter = tableSegments.iterator(); iter.hasNext(); ) {
                         DQTMarkerSegment testdqt = (DQTMarkerSegment) iter.next();
                         for (Iterator tabiter = testdqt.tables.iterator();
-                             tabiter.hasNext();) {
+                             tabiter.hasNext(); ) {
                             DQTMarkerSegment.Qtable tab =
-                                (DQTMarkerSegment.Qtable) tabiter.next();
+                                    (DQTMarkerSegment.Qtable) tabiter.next();
                             if (tab.tableID == 0) {
                                 table0 = tab;
                             }
@@ -1835,7 +1838,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                     // compute a new chrominance table of the same quality and
                     // add it to the last DQT segment
                     DQTMarkerSegment dqt =
-                        (DQTMarkerSegment) tableSegments.get(tableSegments.size()-1);
+                            (DQTMarkerSegment) tableSegments.get(tableSegments.size() - 1);
                     dqt.tables.add(dqt.getChromaForLuma(table0));
                 }
             }
@@ -1843,7 +1846,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
         if (updateHtables) {
             List tableSegments = new ArrayList();
-            for (Iterator iter = markerSequence.iterator(); iter.hasNext();) {
+            for (Iterator iter = markerSequence.iterator(); iter.hasNext(); ) {
                 MarkerSegment seg = (MarkerSegment) iter.next();
                 if (seg instanceof DHTMarkerSegment) {
                     tableSegments.add(seg);
@@ -1859,12 +1862,12 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
                 // find a table with selector 1. AC/DC is irrelevant
                 boolean found = false;
-                for (Iterator iter = tableSegments.iterator(); iter.hasNext();) {
+                for (Iterator iter = tableSegments.iterator(); iter.hasNext(); ) {
                     DHTMarkerSegment testdht = (DHTMarkerSegment) iter.next();
                     for (Iterator tabiter = testdht.tables.iterator();
-                         tabiter.hasNext();) {
+                         tabiter.hasNext(); ) {
                         DHTMarkerSegment.Htable tab =
-                            (DHTMarkerSegment.Htable) tabiter.next();
+                                (DHTMarkerSegment.Htable) tabiter.next();
                         if (tab.tableID == 1) {
                             found = true;
                         }
@@ -1874,7 +1877,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                     // Create new standard dc and ac chrominance tables and add them
                     // to the last DHT segment
                     DHTMarkerSegment lastDHT =
-                        (DHTMarkerSegment) tableSegments.get(tableSegments.size()-1);
+                            (DHTMarkerSegment) tableSegments.get(tableSegments.size() - 1);
                     lastDHT.addHtable(JPEGHuffmanTable.StdDCLuminance, true, 1);
                     lastDHT.addHtable(JPEGHuffmanTable.StdACLuminance, true, 1);
                 }
@@ -1888,7 +1891,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         if (alpha.getNodeName().equals("Alpha")) {
             if (alpha.hasAttributes()) {
                 String value =
-                    alpha.getAttributes().getNamedItem("value").getNodeValue();
+                        alpha.getAttributes().getNamedItem("value").getNodeValue();
                 if (!value.equals("none")) {
                     returnValue = true;
                 }
@@ -1899,23 +1902,23 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
     }
 
     private void mergeStandardCompressionNode(Node node)
-        throws IIOInvalidTreeException {
+            throws IIOInvalidTreeException {
         // NumProgressiveScans is ignored.  Progression must be enabled on the
         // ImageWriteParam.
         // No-op
     }
 
     private void mergeStandardDataNode(Node node)
-        throws IIOInvalidTreeException {
+            throws IIOInvalidTreeException {
         // No-op
     }
 
     private void mergeStandardDimensionNode(Node node)
-        throws IIOInvalidTreeException {
+            throws IIOInvalidTreeException {
         // Pixel Aspect Ratio or pixel size can be incorporated if there is,
         // or can be, a JFIF segment
         JFIFMarkerSegment jfif =
-            (JFIFMarkerSegment) findMarkerSegment(JFIFMarkerSegment.class, true);
+                (JFIFMarkerSegment) findMarkerSegment(JFIFMarkerSegment.class, true);
         if (jfif == null) {
             // Can there be one?
             // Criteria:
@@ -1923,24 +1926,24 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
             //     Component ids must be JFIF compatible.
             boolean canHaveJFIF = false;
             SOFMarkerSegment sof =
-                (SOFMarkerSegment) findMarkerSegment(SOFMarkerSegment.class, true);
+                    (SOFMarkerSegment) findMarkerSegment(SOFMarkerSegment.class, true);
             if (sof != null) {
                 int numChannels = sof.componentSpecs.length;
                 if ((numChannels == 1) || (numChannels == 3)) {
                     canHaveJFIF = true; // remaining tests are negative
                     for (int i = 0; i < sof.componentSpecs.length; i++) {
-                        if (sof.componentSpecs[i].componentId != i+1)
+                        if (sof.componentSpecs[i].componentId != i + 1)
                             canHaveJFIF = false;
                     }
                     // if Adobe present, transform = ADOBE_UNKNOWN for 1-channel,
                     //     ADOBE_YCC for 3-channel.
                     AdobeMarkerSegment adobe =
-                        (AdobeMarkerSegment) findMarkerSegment(AdobeMarkerSegment.class,
-                                                               true);
+                            (AdobeMarkerSegment) findMarkerSegment(AdobeMarkerSegment.class,
+                                    true);
                     if (adobe != null) {
                         if (adobe.transform != ((numChannels == 1)
-                                                ? JPEG.ADOBE_UNKNOWN
-                                                : JPEG.ADOBE_YCC)) {
+                                ? JPEG.ADOBE_UNKNOWN
+                                : JPEG.ADOBE_YCC)) {
                             canHaveJFIF = false;
                         }
                     }
@@ -1970,14 +1973,14 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                     String valueString = attrs.getNamedItem("value").getNodeValue();
                     float value = Float.parseFloat(valueString);
                     // Convert from mm/dot to dots/cm
-                    int dpcm = (int) Math.round(1.0/(value*10.0));
+                    int dpcm = (int) Math.round(1.0 / (value * 10.0));
                     jfif.resUnits = JPEG.DENSITY_UNIT_DOTS_CM;
                     jfif.Xdensity = dpcm;
                 } else if (name.equals("VerticalPixelSize")) {
                     String valueString = attrs.getNamedItem("value").getNodeValue();
                     float value = Float.parseFloat(valueString);
                     // Convert from mm/dot to dots/cm
-                    int dpcm = (int) Math.round(1.0/(value*10.0));
+                    int dpcm = (int) Math.round(1.0 / (value * 10.0));
                     jfif.resUnits = JPEG.DENSITY_UNIT_DOTS_CM;
                     jfif.Ydensity = dpcm;
                 }
@@ -2009,7 +2012,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         // Remember if we invert
         boolean inverted = false;
         if (value < 1.0) {
-            value = 1.0F/value;
+            value = 1.0F / value;
             inverted = true;
         }
 
@@ -2022,20 +2025,20 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
         while (delta > epsilon) { // not close enough
             // Increment y and compute a new x
             y++;
-            x = (int) Math.round(y*value);
-            ratio = (float)x/(float)y;
+            x = (int) Math.round(y * value);
+            ratio = (float) x / (float) y;
             delta = Math.abs(value - ratio);
         }
         return inverted ? new Point(y, x) : new Point(x, y);
     }
 
     private void mergeStandardDocumentNode(Node node)
-        throws IIOInvalidTreeException {
+            throws IIOInvalidTreeException {
         // No-op
     }
 
     private void mergeStandardTextNode(Node node)
-        throws IIOInvalidTreeException {
+            throws IIOInvalidTreeException {
         // Convert to comments.  For the moment ignore the encoding issue.
         // Ignore keywords, language, and encoding (for the moment).
         // If compression tag is present, use only entries with "none".
@@ -2060,7 +2063,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
     }
 
     private void mergeStandardTransparencyNode(Node node)
-        throws IIOInvalidTreeException {
+            throws IIOInvalidTreeException {
         // This might indicate that an alpha channel is being added or removed.
         // The nodes must appear in order, and a Chroma node will process any
         // transparency, so process it here only if there was no Chroma node
@@ -2071,13 +2074,13 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
             // we do, as we don't support CMYK, nor can we add alpha to it
             // The number of channels can be determined from the SOF
             JFIFMarkerSegment jfif = (JFIFMarkerSegment) findMarkerSegment
-                (JFIFMarkerSegment.class, true);
+                    (JFIFMarkerSegment.class, true);
             AdobeMarkerSegment adobe = (AdobeMarkerSegment) findMarkerSegment
-                (AdobeMarkerSegment.class, true);
+                    (AdobeMarkerSegment.class, true);
             SOFMarkerSegment sof = (SOFMarkerSegment) findMarkerSegment
-                (SOFMarkerSegment.class, true);
+                    (SOFMarkerSegment.class, true);
             SOSMarkerSegment sos = (SOSMarkerSegment) findMarkerSegment
-                (SOSMarkerSegment.class, true);
+                    (SOSMarkerSegment.class, true);
 
             // We can do nothing for progressive, as we don't know how to
             // modify the scans.
@@ -2104,42 +2107,42 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                         }
 
                         // Add a component spec with appropriate parameters to SOF
-                        SOFMarkerSegment.ComponentSpec [] newSpecs =
-                            new SOFMarkerSegment.ComponentSpec[numChannels];
+                        SOFMarkerSegment.ComponentSpec[] newSpecs =
+                                new SOFMarkerSegment.ComponentSpec[numChannels];
                         for (int i = 0; i < sof.componentSpecs.length; i++) {
                             newSpecs[i] = sof.componentSpecs[i];
                         }
                         byte oldFirstID = (byte) sof.componentSpecs[0].componentId;
                         byte newID = (byte) ((oldFirstID > 1) ? 'A' : 4);
-                        newSpecs[numChannels-1] =
-                            sof.getComponentSpec(newID,
-                                sof.componentSpecs[0].HsamplingFactor,
-                                sof.componentSpecs[0].QtableSelector);
+                        newSpecs[numChannels - 1] =
+                                sof.getComponentSpec(newID,
+                                        sof.componentSpecs[0].HsamplingFactor,
+                                        sof.componentSpecs[0].QtableSelector);
 
                         sof.componentSpecs = newSpecs;
 
                         // Add a component spec with appropriate parameters to SOS
-                        SOSMarkerSegment.ScanComponentSpec [] newScanSpecs =
-                            new SOSMarkerSegment.ScanComponentSpec [numChannels];
+                        SOSMarkerSegment.ScanComponentSpec[] newScanSpecs =
+                                new SOSMarkerSegment.ScanComponentSpec[numChannels];
                         for (int i = 0; i < sos.componentSpecs.length; i++) {
                             newScanSpecs[i] = sos.componentSpecs[i];
                         }
-                        newScanSpecs[numChannels-1] =
-                            sos.getScanComponentSpec (newID, 0);
+                        newScanSpecs[numChannels - 1] =
+                                sos.getScanComponentSpec(newID, 0);
                         sos.componentSpecs = newScanSpecs;
                     } else {  // Removing alpha
                         numChannels--;
                         // Remove a component spec from SOF
-                        SOFMarkerSegment.ComponentSpec [] newSpecs =
-                            new SOFMarkerSegment.ComponentSpec[numChannels];
+                        SOFMarkerSegment.ComponentSpec[] newSpecs =
+                                new SOFMarkerSegment.ComponentSpec[numChannels];
                         for (int i = 0; i < numChannels; i++) {
                             newSpecs[i] = sof.componentSpecs[i];
                         }
                         sof.componentSpecs = newSpecs;
 
                         // Remove a component spec from SOS
-                        SOSMarkerSegment.ScanComponentSpec [] newScanSpecs =
-                            new SOSMarkerSegment.ScanComponentSpec [numChannels];
+                        SOSMarkerSegment.ScanComponentSpec[] newScanSpecs =
+                                new SOSMarkerSegment.ScanComponentSpec[numChannels];
                         for (int i = 0; i < numChannels; i++) {
                             newScanSpecs[i] = sos.componentSpecs[i];
                         }
@@ -2152,7 +2155,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
 
     public void setFromTree(String formatName, Node root)
-        throws IIOInvalidTreeException {
+            throws IIOInvalidTreeException {
         if (formatName == null) {
             throw new IllegalArgumentException("null formatName!");
         }
@@ -2160,19 +2163,19 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
             throw new IllegalArgumentException("null root!");
         }
         if (isStream &&
-            (formatName.equals(JPEG.nativeStreamMetadataFormatName))) {
+                (formatName.equals(JPEG.nativeStreamMetadataFormatName))) {
             setFromNativeTree(root);
         } else if (!isStream &&
-                   (formatName.equals(JPEG.nativeImageMetadataFormatName))) {
+                (formatName.equals(JPEG.nativeImageMetadataFormatName))) {
             setFromNativeTree(root);
         } else if (!isStream &&
-                   (formatName.equals
-                    (IIOMetadataFormatImpl.standardMetadataFormatName))) {
+                (formatName.equals
+                        (IIOMetadataFormatImpl.standardMetadataFormatName))) {
             // In this case a reset followed by a merge is correct
             super.setFromTree(formatName, root);
         } else {
-            throw  new IllegalArgumentException("Unsupported format name: "
-                                                + formatName);
+            throw new IllegalArgumentException("Unsupported format name: "
+                    + formatName);
         }
     }
 
@@ -2186,14 +2189,14 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
 
         String name = root.getNodeName();
         if (name != ((isStream) ? JPEG.nativeStreamMetadataFormatName
-                                : JPEG.nativeImageMetadataFormatName)) {
+                : JPEG.nativeImageMetadataFormatName)) {
             throw new IIOInvalidTreeException("Invalid root node name: " + name,
-                                              root);
+                    root);
         }
         if (!isStream) {
             if (root.getChildNodes().getLength() != 2) { // JPEGvariety and markerSequence
                 throw new IIOInvalidTreeException(
-                    "JPEGvariety and markerSequence nodes must be present", root);
+                        "JPEGvariety and markerSequence nodes must be present", root);
             }
 
             Node JPEGvariety = root.getFirstChild();
@@ -2209,7 +2212,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
     }
 
     void setFromMarkerSequenceNode(Node markerSequenceNode)
-        throws IIOInvalidTreeException{
+            throws IIOInvalidTreeException {
 
         NodeList children = markerSequenceNode.getChildNodes();
         // for all the children, add a marker segment
@@ -2234,8 +2237,8 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                 markerSequence.add(new SOSMarkerSegment(node));
             } else {
                 throw new IIOInvalidTreeException("Invalid "
-                    + (isStream ? "stream " : "image ") + "child: "
-                    + childName, node);
+                        + (isStream ? "stream " : "image ") + "child: "
+                        + childName, node);
             }
         }
     }
@@ -2249,14 +2252,14 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
      */
     private boolean isConsistent() {
         SOFMarkerSegment sof =
-            (SOFMarkerSegment) findMarkerSegment(SOFMarkerSegment.class,
-                                                 true);
+                (SOFMarkerSegment) findMarkerSegment(SOFMarkerSegment.class,
+                        true);
         JFIFMarkerSegment jfif =
-            (JFIFMarkerSegment) findMarkerSegment(JFIFMarkerSegment.class,
-                                                  true);
+                (JFIFMarkerSegment) findMarkerSegment(JFIFMarkerSegment.class,
+                        true);
         AdobeMarkerSegment adobe =
-            (AdobeMarkerSegment) findMarkerSegment(AdobeMarkerSegment.class,
-                                                   true);
+                (AdobeMarkerSegment) findMarkerSegment(AdobeMarkerSegment.class,
+                        true);
         boolean retval = true;
         if (!isStream) {
             if (sof != null) {
@@ -2274,7 +2277,7 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                         retval = false;
                     }
                     for (int i = 0; i < numSOFBands; i++) {
-                        if (sof.componentSpecs[i].componentId != i+1) {
+                        if (sof.componentSpecs[i].componentId != i + 1) {
                             retval = false;
                         }
                     }
@@ -2283,20 +2286,20 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                     // Adobe transform == unknown for gray,
                     // YCC for 3-chan.
                     if ((adobe != null)
-                        && (((numSOFBands == 1)
-                             && (adobe.transform != JPEG.ADOBE_UNKNOWN))
+                            && (((numSOFBands == 1)
+                            && (adobe.transform != JPEG.ADOBE_UNKNOWN))
                             || ((numSOFBands == 3)
-                                && (adobe.transform != JPEG.ADOBE_YCC)))) {
+                            && (adobe.transform != JPEG.ADOBE_YCC)))) {
                         retval = false;
                     }
                 }
             } else {
                 // stream can't have jfif, adobe, sof, or sos
                 SOSMarkerSegment sos =
-                    (SOSMarkerSegment) findMarkerSegment(SOSMarkerSegment.class,
-                                                         true);
+                        (SOSMarkerSegment) findMarkerSegment(SOSMarkerSegment.class,
+                                true);
                 if ((jfif != null) || (adobe != null)
-                    || (sof != null) || (sos != null)) {
+                        || (sof != null) || (sos != null)) {
                     retval = false;
                 }
             }
@@ -2311,11 +2314,11 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
     private int countScanBands() {
         List ids = new ArrayList();
         Iterator iter = markerSequence.iterator();
-        while(iter.hasNext()) {
-            MarkerSegment seg = (MarkerSegment)iter.next();
+        while (iter.hasNext()) {
+            MarkerSegment seg = (MarkerSegment) iter.next();
             if (seg instanceof SOSMarkerSegment) {
                 SOSMarkerSegment sos = (SOSMarkerSegment) seg;
-                SOSMarkerSegment.ScanComponentSpec [] specs = sos.componentSpecs;
+                SOSMarkerSegment.ScanComponentSpec[] specs = sos.componentSpecs;
                 for (int i = 0; i < specs.length; i++) {
                     Integer id = new Integer(specs[i].componentSelector);
                     if (!ids.contains(id)) {
@@ -2338,30 +2341,30 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                        boolean ignoreAdobe,
                        int newAdobeTransform,
                        JPEGImageWriter writer)
-        throws IOException {
+            throws IOException {
         if (forceJFIF) {
             // Write a default JFIF segment, including thumbnails
             // This won't be duplicated below because forceJFIF will be
             // set only if there is no JFIF present already.
             JFIFMarkerSegment.writeDefaultJFIF(ios,
-                                               thumbnails,
-                                               iccProfile,
-                                               writer);
+                    thumbnails,
+                    iccProfile,
+                    writer);
             if ((ignoreAdobe == false)
-                && (newAdobeTransform != JPEG.ADOBE_IMPOSSIBLE)) {
+                    && (newAdobeTransform != JPEG.ADOBE_IMPOSSIBLE)) {
                 if ((newAdobeTransform != JPEG.ADOBE_UNKNOWN)
-                    && (newAdobeTransform != JPEG.ADOBE_YCC)) {
+                        && (newAdobeTransform != JPEG.ADOBE_YCC)) {
                     // Not compatible, so ignore Adobe.
                     ignoreAdobe = true;
                     writer.warningOccurred
-                        (JPEGImageWriter.WARNING_METADATA_ADJUSTED_FOR_THUMB);
+                            (JPEGImageWriter.WARNING_METADATA_ADJUSTED_FOR_THUMB);
                 }
             }
         }
         // Iterate over each MarkerSegment
         Iterator iter = markerSequence.iterator();
-        while(iter.hasNext()) {
-            MarkerSegment seg = (MarkerSegment)iter.next();
+        while (iter.hasNext()) {
+            MarkerSegment seg = (MarkerSegment) iter.next();
             if (seg instanceof JFIFMarkerSegment) {
                 if (ignoreJFIF == false) {
                     JFIFMarkerSegment jfif = (JFIFMarkerSegment) seg;
@@ -2374,18 +2377,18 @@ public class JPEGMetadata extends IIOMetadata implements Cloneable {
                 if (ignoreAdobe == false) {
                     if (newAdobeTransform != JPEG.ADOBE_IMPOSSIBLE) {
                         AdobeMarkerSegment newAdobe =
-                            (AdobeMarkerSegment) seg.clone();
+                                (AdobeMarkerSegment) seg.clone();
                         newAdobe.transform = newAdobeTransform;
                         newAdobe.write(ios);
                     } else if (forceJFIF) {
                         // If adobe isn't JFIF compatible, ignore it
                         AdobeMarkerSegment adobe = (AdobeMarkerSegment) seg;
                         if ((adobe.transform == JPEG.ADOBE_UNKNOWN)
-                            || (adobe.transform == JPEG.ADOBE_YCC)) {
+                                || (adobe.transform == JPEG.ADOBE_YCC)) {
                             adobe.write(ios);
                         } else {
                             writer.warningOccurred
-                         (JPEGImageWriter.WARNING_METADATA_ADJUSTED_FOR_THUMB);
+                                    (JPEGImageWriter.WARNING_METADATA_ADJUSTED_FOR_THUMB);
                         }
                     } else {
                         seg.write(ios);

@@ -29,41 +29,39 @@ import org.omg.CORBA.SystemException;
 import org.omg.CORBA_2_3.portable.InputStream;
 import org.omg.CORBA_2_3.portable.OutputStream;
 import com.sun.corba.se.spi.ior.iiop.GIOPVersion;
-import com.sun.corba.se.impl.encoding.MarshalInputStream ;
-import com.sun.corba.se.impl.encoding.MarshalOutputStream ;
-import com.sun.corba.se.impl.encoding.CodeSetComponentInfo  ;
+import com.sun.corba.se.impl.encoding.MarshalInputStream;
+import com.sun.corba.se.impl.encoding.MarshalOutputStream;
+import com.sun.corba.se.impl.encoding.CodeSetComponentInfo;
 
 public class CodeSetServiceContext extends ServiceContext {
-    public CodeSetServiceContext( CodeSetComponentInfo.CodeSetContext csc )
-    {
-        this.csc = csc ;
+    public CodeSetServiceContext(CodeSetComponentInfo.CodeSetContext csc) {
+        this.csc = csc;
     }
 
-    public CodeSetServiceContext(InputStream is, GIOPVersion gv)
-    {
-        super(is, gv) ;
-        csc = new CodeSetComponentInfo.CodeSetContext() ;
-        csc.read( (MarshalInputStream)in ) ;
+    public CodeSetServiceContext(InputStream is, GIOPVersion gv) {
+        super(is, gv);
+        csc = new CodeSetComponentInfo.CodeSetContext();
+        csc.read((MarshalInputStream) in);
     }
 
     // Required SERVICE_CONTEXT_ID and getId definitions
-    public static final int SERVICE_CONTEXT_ID = 1 ;
-    public int getId() { return SERVICE_CONTEXT_ID ; }
+    public static final int SERVICE_CONTEXT_ID = 1;
 
-    public void writeData( OutputStream os ) throws SystemException
-    {
-        csc.write( (MarshalOutputStream)os ) ;
+    public int getId() {
+        return SERVICE_CONTEXT_ID;
     }
 
-    public CodeSetComponentInfo.CodeSetContext getCodeSetContext()
-    {
-        return csc ;
+    public void writeData(OutputStream os) throws SystemException {
+        csc.write((MarshalOutputStream) os);
     }
 
-    private CodeSetComponentInfo.CodeSetContext csc ;
+    public CodeSetComponentInfo.CodeSetContext getCodeSetContext() {
+        return csc;
+    }
 
-    public String toString()
-    {
-        return "CodeSetServiceContext[ csc=" + csc + " ]" ;
+    private CodeSetComponentInfo.CodeSetContext csc;
+
+    public String toString() {
+        return "CodeSetServiceContext[ csc=" + csc + " ]";
     }
 }

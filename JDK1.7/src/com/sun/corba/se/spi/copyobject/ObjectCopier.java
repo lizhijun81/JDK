@@ -23,9 +23,10 @@
  *
  */
 
-package com.sun.corba.se.spi.copyobject ;
+package com.sun.corba.se.spi.copyobject;
 
-/** Provides an interface for a variety of means to copy an arbitrary
+/**
+ * Provides an interface for a variety of means to copy an arbitrary
  * object.  Any implementation of this interface must return an exact
  * copy of obj, preserving all aliasing across all objects reachable
  * from obj.  ReflectiveCopyException must be thrown if the implementation
@@ -34,5 +35,5 @@ package com.sun.corba.se.spi.copyobject ;
  * not the desired implementation.
  */
 public interface ObjectCopier {
-    Object copy( Object obj ) throws ReflectiveCopyException ;
+    Object copy(Object obj) throws ReflectiveCopyException;
 }

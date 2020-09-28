@@ -43,36 +43,50 @@ import org.xml.sax.helpers.LocatorImpl;
  * <p>SchemaContentHandler converts SAX events into XNI
  * and passes them directly to the SchemaDOMParser.</p>
  *
- * @xerces.internal
- *
  * @author Michael Glavassevich, IBM
  * @author Jack Z. Wang, IBM
- *
+ * @xerces.internal
  */
 final class SchemaContentHandler implements ContentHandler {
 
-    /** Symbol table **/
+    /**
+     * Symbol table
+     **/
     private SymbolTable fSymbolTable;
 
-    /** SchemaDOMParser, events will be delegated to SchemaDOMParser to pass */
+    /**
+     * SchemaDOMParser, events will be delegated to SchemaDOMParser to pass
+     */
     private SchemaDOMParser fSchemaDOMParser;
 
-    /** XML Locator wrapper for SAX. **/
+    /**
+     * XML Locator wrapper for SAX.
+     **/
     private final SAXLocatorWrapper fSAXLocatorWrapper = new SAXLocatorWrapper();
 
-    /** The namespace context of this document: stores namespaces in scope */
+    /**
+     * The namespace context of this document: stores namespaces in scope
+     */
     private NamespaceSupport fNamespaceContext = new NamespaceSupport();
 
-    /** Indicate if push NamespaceContest is needed */
+    /**
+     * Indicate if push NamespaceContest is needed
+     */
     private boolean fNeedPushNSContext;
 
-    /** Flag used to track whether namespace declarations are reported as attributes. */
+    /**
+     * Flag used to track whether namespace declarations are reported as attributes.
+     */
     private boolean fNamespacePrefixes = false;
 
-    /** Flag used to track whether XML names and Namespace URIs have been internalized. */
+    /**
+     * Flag used to track whether XML names and Namespace URIs have been internalized.
+     */
     private boolean fStringsInternalized = false;
 
-    /** Fields for start element, end element and characters. */
+    /**
+     * Fields for start element, end element and characters.
+     */
     private final QName fElementQName = new QName();
     private final QName fAttributeQName = new QName();
     private final XMLAttributesImpl fAttributes = new XMLAttributesImpl();
@@ -81,7 +95,8 @@ final class SchemaContentHandler implements ContentHandler {
     /**
      * <p>Constructs an SchemaContentHandler.</p>
      */
-    public SchemaContentHandler() {}
+    public SchemaContentHandler() {
+    }
 
     /*
      * @see org.xml.sax.ContentHandler#setDocumentLocator(org.xml.sax.Locator)
@@ -104,11 +119,9 @@ final class SchemaContentHandler implements ContentHandler {
         fNeedPushNSContext = true;
         try {
             fSchemaDOMParser.startDocument(fSAXLocatorWrapper, null, fNamespaceContext, null);
-        }
-        catch (XMLParseException e) {
+        } catch (XMLParseException e) {
             convertToSAXParseException(e);
-        }
-        catch (XNIException e) {
+        } catch (XNIException e) {
             convertToSAXException(e);
         }
     }
@@ -120,11 +133,9 @@ final class SchemaContentHandler implements ContentHandler {
         fSAXLocatorWrapper.setLocator(null);
         try {
             fSchemaDOMParser.endDocument(null);
-        }
-        catch (XMLParseException e) {
+        } catch (XMLParseException e) {
             convertToSAXParseException(e);
-        }
-        catch (XNIException e) {
+        } catch (XNIException e) {
             convertToSAXException(e);
         }
     }
@@ -140,8 +151,7 @@ final class SchemaContentHandler implements ContentHandler {
         if (!fStringsInternalized) {
             prefix = (prefix != null) ? fSymbolTable.addSymbol(prefix) : XMLSymbols.EMPTY_STRING;
             uri = (uri != null && uri.length() > 0) ? fSymbolTable.addSymbol(uri) : null;
-        }
-        else {
+        } else {
             if (prefix == null) {
                 prefix = XMLSymbols.EMPTY_STRING;
             }
@@ -182,11 +192,9 @@ final class SchemaContentHandler implements ContentHandler {
 
         try {
             fSchemaDOMParser.startElement(fElementQName, fAttributes, null);
-        }
-        catch (XMLParseException e) {
+        } catch (XMLParseException e) {
             convertToSAXParseException(e);
-        }
-        catch (XNIException e) {
+        } catch (XNIException e) {
             convertToSAXException(e);
         }
     }
@@ -198,14 +206,11 @@ final class SchemaContentHandler implements ContentHandler {
         fillQName(fElementQName, uri, localName, qName);
         try {
             fSchemaDOMParser.endElement(fElementQName, null);
-        }
-        catch (XMLParseException e) {
+        } catch (XMLParseException e) {
             convertToSAXParseException(e);
-        }
-        catch (XNIException e) {
+        } catch (XNIException e) {
             convertToSAXException(e);
-        }
-        finally {
+        } finally {
             fNamespaceContext.popContext();
         }
     }
@@ -217,11 +222,9 @@ final class SchemaContentHandler implements ContentHandler {
         try {
             fTempString.setValues(ch, start, length);
             fSchemaDOMParser.characters(fTempString, null);
-        }
-        catch (XMLParseException e) {
+        } catch (XMLParseException e) {
             convertToSAXParseException(e);
-        }
-        catch (XNIException e) {
+        } catch (XNIException e) {
             convertToSAXException(e);
         }
     }
@@ -233,11 +236,9 @@ final class SchemaContentHandler implements ContentHandler {
         try {
             fTempString.setValues(ch, start, length);
             fSchemaDOMParser.ignorableWhitespace(fTempString, null);
-        }
-        catch (XMLParseException e) {
+        } catch (XMLParseException e) {
             convertToSAXParseException(e);
-        }
-        catch (XNIException e) {
+        } catch (XNIException e) {
             convertToSAXException(e);
         }
     }
@@ -249,11 +250,9 @@ final class SchemaContentHandler implements ContentHandler {
         try {
             fTempString.setValues(data.toCharArray(), 0, data.length());
             fSchemaDOMParser.processingInstruction(target, fTempString, null);
-        }
-        catch (XMLParseException e) {
+        } catch (XMLParseException e) {
             convertToSAXParseException(e);
-        }
-        catch (XNIException e) {
+        } catch (XNIException e) {
             convertToSAXException(e);
         }
     }
@@ -274,8 +273,7 @@ final class SchemaContentHandler implements ContentHandler {
             uri = (uri != null && uri.length() > 0) ? fSymbolTable.addSymbol(uri) : null;
             localpart = (localpart != null) ? fSymbolTable.addSymbol(localpart) : XMLSymbols.EMPTY_STRING;
             rawname = (rawname != null) ? fSymbolTable.addSymbol(rawname) : XMLSymbols.EMPTY_STRING;
-        }
-        else {
+        } else {
             if (uri != null && uri.length() == 0) {
                 uri = null;
             }
@@ -326,8 +324,7 @@ final class SchemaContentHandler implements ContentHandler {
                 prefix = XMLSymbols.PREFIX_XMLNS;
                 localpart = nsPrefix;
                 rawname = fSymbolTable.addSymbol(prefix + ":" + localpart);
-            }
-            else {
+            } else {
                 prefix = XMLSymbols.EMPTY_STRING;
                 localpart = XMLSymbols.PREFIX_XMLNS;
                 rawname = XMLSymbols.PREFIX_XMLNS;
@@ -338,7 +335,7 @@ final class SchemaContentHandler implements ContentHandler {
     }
 
     public void reset(SchemaDOMParser schemaDOMParser, SymbolTable symbolTable,
-            boolean namespacePrefixes, boolean stringsInternalized) {
+                      boolean namespacePrefixes, boolean stringsInternalized) {
         fSchemaDOMParser = schemaDOMParser;
         fSymbolTable = symbolTable;
         fNamespacePrefixes = namespacePrefixes;

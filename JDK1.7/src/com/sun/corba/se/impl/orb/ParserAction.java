@@ -23,26 +23,30 @@
  *
  */
 
-package com.sun.corba.se.impl.orb ;
+package com.sun.corba.se.impl.orb;
 
-import java.util.Properties ;
+import java.util.Properties;
 
 public interface ParserAction {
-    /** Return the property name or prefix for which this action
+    /**
+     * Return the property name or prefix for which this action
      * is applied.
      */
-    String getPropertyName() ;
+    String getPropertyName();
 
-    /** Return whether this action is for an exact match or a prefix
+    /**
+     * Return whether this action is for an exact match or a prefix
      * match (true).
      */
-    boolean isPrefix() ;
+    boolean isPrefix();
 
-    /** Return the field name in an object that is set with the result
+    /**
+     * Return the field name in an object that is set with the result
      */
-    String getFieldName() ;
+    String getFieldName();
 
-    /** Apply this action to props and return the result.
-    */
-    Object apply( Properties props ) ;
+    /**
+     * Apply this action to props and return the result.
+     */
+    Object apply(Properties props);
 }

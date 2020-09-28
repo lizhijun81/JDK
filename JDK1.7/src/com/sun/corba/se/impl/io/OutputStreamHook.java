@@ -39,79 +39,76 @@ import java.util.Hashtable;
 
 import org.omg.CORBA.INTERNAL;
 
-public abstract class OutputStreamHook extends ObjectOutputStream
-{
+public abstract class OutputStreamHook extends ObjectOutputStream {
     private HookPutFields putFields = null;
 
     /**
      * Since ObjectOutputStream.PutField methods specify no exceptions,
      * we are not checking for null parameters on put methods.
      */
-    private class HookPutFields extends ObjectOutputStream.PutField
-    {
+    private class HookPutFields extends ObjectOutputStream.PutField {
         private Hashtable fields = new Hashtable();
 
         /**
          * Put the value of the named boolean field into the persistent field.
          */
-        public void put(String name, boolean value){
+        public void put(String name, boolean value) {
             fields.put(name, new Boolean(value));
         }
 
         /**
          * Put the value of the named char field into the persistent fields.
          */
-        public void put(String name, char value){
+        public void put(String name, char value) {
             fields.put(name, new Character(value));
         }
 
         /**
          * Put the value of the named byte field into the persistent fields.
          */
-        public void put(String name, byte value){
+        public void put(String name, byte value) {
             fields.put(name, new Byte(value));
         }
 
         /**
          * Put the value of the named short field into the persistent fields.
          */
-        public void put(String name, short value){
+        public void put(String name, short value) {
             fields.put(name, new Short(value));
         }
 
         /**
          * Put the value of the named int field into the persistent fields.
          */
-        public void put(String name, int value){
+        public void put(String name, int value) {
             fields.put(name, new Integer(value));
         }
 
         /**
          * Put the value of the named long field into the persistent fields.
          */
-        public void put(String name, long value){
+        public void put(String name, long value) {
             fields.put(name, new Long(value));
         }
 
         /**
          * Put the value of the named float field into the persistent fields.
-         *
          */
-        public void put(String name, float value){
+        public void put(String name, float value) {
             fields.put(name, new Float(value));
         }
 
         /**
          * Put the value of the named double field into the persistent field.
          */
-        public void put(String name, double value){
+        public void put(String name, double value) {
             fields.put(name, new Double(value));
         }
 
         /**
          * Put the value of the named Object field into the persistent field.
          */
-        public void put(String name, Object value){
+        public void put(String name, Object value) {
             fields.put(name, value);
         }
 
@@ -119,7 +116,7 @@ public abstract class OutputStreamHook extends ObjectOutputStream
          * Write the data and fields to the specified ObjectOutput stream.
          */
         public void write(ObjectOutput out) throws IOException {
-            OutputStreamHook hook = (OutputStreamHook)out;
+            OutputStreamHook hook = (OutputStreamHook) out;
 
             ObjectStreamField[] osfields = hook.getFieldsNoCopy();
 
@@ -138,7 +135,7 @@ public abstract class OutputStreamHook extends ObjectOutputStream
     abstract void writeField(ObjectStreamField field, Object value) throws IOException;
 
     public OutputStreamHook()
-        throws java.io.IOException {
+            throws java.io.IOException {
         super();
 
     }
@@ -153,7 +150,7 @@ public abstract class OutputStreamHook extends ObjectOutputStream
     public abstract void defaultWriteObjectDelegate();
 
     public ObjectOutputStream.PutField putFields()
-        throws IOException {
+            throws IOException {
         putFields = new HookPutFields();
         return putFields;
     }
@@ -172,7 +169,7 @@ public abstract class OutputStreamHook extends ObjectOutputStream
     // User uses PutFields to simulate default data.
     // See java.io.ObjectOutputStream.PutFields
     public void writeFields()
-        throws IOException {
+            throws IOException {
 
         writeObjectState.defaultWriteObject(this);
 
@@ -198,10 +195,17 @@ public abstract class OutputStreamHook extends ObjectOutputStream
 
     // Description of possible actions
     protected static class WriteObjectState {
-        public void enterWriteObject(OutputStreamHook stream) throws IOException {}
-        public void exitWriteObject(OutputStreamHook stream) throws IOException {}
-        public void defaultWriteObject(OutputStreamHook stream) throws IOException {}
-        public void writeData(OutputStreamHook stream) throws IOException {}
+        public void enterWriteObject(OutputStreamHook stream) throws IOException {
+        }
+
+        public void exitWriteObject(OutputStreamHook stream) throws IOException {
+        }
+
+        public void defaultWriteObject(OutputStreamHook stream) throws IOException {
+        }
+
+        public void writeData(OutputStreamHook stream) throws IOException {
+        }
     }
 
     protected static class DefaultState extends WriteObjectState {
@@ -295,7 +299,7 @@ public abstract class OutputStreamHook extends ObjectOutputStream
             // In stream format version 2, we must tell the ORB
             // stream to close the fake custom valuetype.
             if (stream.getStreamFormatVersion() == 2)
-                ((org.omg.CORBA.portable.ValueOutputStream)stream.getOrbStream()).end_value();
+                ((org.omg.CORBA.portable.ValueOutputStream) stream.getOrbStream()).end_value();
 
             stream.setState(NOT_IN_WRITE_OBJECT);
         }
@@ -307,6 +311,7 @@ public abstract class OutputStreamHook extends ObjectOutputStream
 
         // We don't have to do anything special here, just let
         // the stream write the data.
-        public void writeData(OutputStreamHook stream) throws IOException {}
+        public void writeData(OutputStreamHook stream) throws IOException {
+        }
     }
 }

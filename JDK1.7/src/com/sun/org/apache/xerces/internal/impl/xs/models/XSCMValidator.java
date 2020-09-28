@@ -30,11 +30,10 @@ import java.util.ArrayList;
 /**
  * Note: State of the content model is stored in the validator
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
  * @author Elena Litani, IBM
  * @version $Id: XSCMValidator.java,v 1.6 2009/07/28 15:18:12 spericas Exp $
+ * @xerces.internal
  */
 public interface XSCMValidator {
 
@@ -59,20 +58,20 @@ public interface XSCMValidator {
      * The method corresponds to one transaction in the content model.
      *
      * @param elementName
-     * @param state  Current state
+     * @param state       Current state
      * @return element decl or wildcard decl that
-     *         corresponds to the element from the Schema grammar
+     * corresponds to the element from the Schema grammar
      */
-    public Object oneTransition (QName elementName, int[] state, SubstitutionGroupHandler subGroupHandler);
+    public Object oneTransition(QName elementName, int[] state, SubstitutionGroupHandler subGroupHandler);
 
 
     /**
      * The method indicates the end of list of children
      *
-     * @param state  Current state of the content model
+     * @param state Current state of the content model
      * @return true if the last state was a valid final state
      */
-    public boolean endContentModel (int[] state);
+    public boolean endContentModel(int[] state);
 
     /**
      * check whether this content violates UPA constraint.
@@ -87,9 +86,9 @@ public interface XSCMValidator {
      * works if the state is in error, in which case it returns what should
      * have been seen.
      *
-     * @param state  the current state
-     * @return       a Vector whose entries are instances of
-     *               either XSWildcardDecl or XSElementDecl.
+     * @param state the current state
+     * @return a Vector whose entries are instances of
+     * either XSWildcardDecl or XSElementDecl.
      */
     public Vector whatCanGoHere(int[] state);
 

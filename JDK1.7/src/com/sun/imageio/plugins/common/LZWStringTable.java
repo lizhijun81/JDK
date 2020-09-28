@@ -36,11 +36,13 @@ import java.io.PrintStream;
  * code for use by the <code>expandCode</code> method added by Robin.
  **/
 public class LZWStringTable {
-    /** codesize + Reserved Codes */
+    /**
+     * codesize + Reserved Codes
+     */
     private final static int RES_CODES = 2;
 
-    private final static short HASH_FREE = (short)0xFFFF;
-    private final static short NEXT_FIRST = (short)0xFFFF;
+    private final static short HASH_FREE = (short) 0xFFFF;
+    private final static short NEXT_FIRST = (short) 0xFFFF;
 
     private final static int MAXBITS = 12;
     private final static int MAXSTR = (1 << MAXBITS);
@@ -48,7 +50,7 @@ public class LZWStringTable {
     private final static short HASHSIZE = 9973;
     private final static short HASHSTEP = 2039;
 
-    byte[]  strChr;  // after predecessor character
+    byte[] strChr;  // after predecessor character
     short[] strNxt;  // predecessor string
     short[] strHsh;  // hash table to find  predecessor + char pairs
     short numStrings;  // next code if adding new prestring + char
@@ -111,18 +113,18 @@ public class LZWStringTable {
         int hshidx, nxtidx;
 
         if (index == HASH_FREE) {
-            return (short)(b & 0xFF);    // Rob fixed used to sign extend
+            return (short) (b & 0xFF);    // Rob fixed used to sign extend
         }
 
         hshidx = hash(index, b);
         while ((nxtidx = strHsh[hshidx]) != HASH_FREE) { // search
             if (strNxt[nxtidx] == index && strChr[nxtidx] == b) {
-                return (short)nxtidx;
+                return (short) nxtidx;
             }
             hshidx = (hshidx + HASHSTEP) % HASHSIZE;
         }
 
-        return (short)0xFFFF;
+        return (short) 0xFFFF;
     }
 
     /*
@@ -138,12 +140,12 @@ public class LZWStringTable {
 
         int w = (1 << codesize) + RES_CODES;
         for (int q = 0; q < w; q++) {
-            addCharString((short)0xFFFF, (byte)q); // init with no prefix
+            addCharString((short) 0xFFFF, (byte) q); // init with no prefix
         }
     }
 
     static public int hash(short index, byte lastbyte) {
-        return ((int)((short)(lastbyte << 8) ^ index) & 0xFFFF) % HASHSIZE;
+        return ((int) ((short) (lastbyte << 8) ^ index) & 0xFFFF) % HASHSIZE;
     }
 
     /*
@@ -172,8 +174,8 @@ public class LZWStringTable {
                 skipHead = 0;
             }
         }
-        if (code == (short)0xFFFF ||    // just in case
-            skipHead == strLen[code])  // DONE no more unpacked
+        if (code == (short) 0xFFFF ||    // just in case
+                skipHead == strLen[code])  // DONE no more unpacked
         {
             return 0;
         }
@@ -193,7 +195,7 @@ public class LZWStringTable {
 
         // NOTE: data unpacks in reverse direction and we are placing the
         // unpacked data directly into the array in the correct location.
-        while ((idx > offset) && (code != (short)0xFFFF)) {
+        while ((idx > offset) && (code != (short) 0xFFFF)) {
             if (--skipTail < 0) { // skip required of expanded data
                 buf[--idx] = strChr[code];
             }
@@ -211,8 +213,8 @@ public class LZWStringTable {
         int i;
         for (i = 258; i < numStrings; ++i) {
             out.println(" strNxt[" + i + "] = " + strNxt[i]
-                        + " strChr " + Integer.toHexString(strChr[i] & 0xFF)
-                        + " strLen " + Integer.toHexString(strLen[i]));
+                    + " strChr " + Integer.toHexString(strChr[i] & 0xFF)
+                    + " strLen " + Integer.toHexString(strLen[i]));
         }
     }
 }

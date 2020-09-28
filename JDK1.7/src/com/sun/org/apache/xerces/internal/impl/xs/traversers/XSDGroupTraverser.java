@@ -36,37 +36,36 @@ import org.w3c.dom.Element;
 
 /**
  * The model group schema component traverser.
- *
+ * <p>
  * <group
- *   name = NCName>
- *   Content: (annotation?, (all | choice | sequence))
+ * name = NCName>
+ * Content: (annotation?, (all | choice | sequence))
  * </group>
- *
- * @xerces.internal
  *
  * @author Rahul Srivastava, Sun Microsystems Inc.
  * @author Elena Litani, IBM
  * @author Lisa Martin,  IBM
  * @version $Id: XSDGroupTraverser.java,v 1.7 2010-11-01 04:40:02 joehw Exp $
+ * @xerces.internal
  */
-class  XSDGroupTraverser extends XSDAbstractParticleTraverser {
+class XSDGroupTraverser extends XSDAbstractParticleTraverser {
 
-    XSDGroupTraverser (XSDHandler handler,
-            XSAttributeChecker gAttrCheck) {
+    XSDGroupTraverser(XSDHandler handler,
+                      XSAttributeChecker gAttrCheck) {
 
         super(handler, gAttrCheck);
     }
 
     XSParticleDecl traverseLocal(Element elmNode,
-            XSDocumentInfo schemaDoc,
-            SchemaGrammar grammar) {
+                                 XSDocumentInfo schemaDoc,
+                                 SchemaGrammar grammar) {
 
         // General Attribute Checking for elmNode declared locally
         Object[] attrValues = fAttrChecker.checkAttributes(elmNode, false,
                 schemaDoc);
         QName refAttr = (QName) attrValues[XSAttributeChecker.ATTIDX_REF];
-        XInt  minAttr = (XInt)  attrValues[XSAttributeChecker.ATTIDX_MINOCCURS];
-        XInt  maxAttr = (XInt)  attrValues[XSAttributeChecker.ATTIDX_MAXOCCURS];
+        XInt minAttr = (XInt) attrValues[XSAttributeChecker.ATTIDX_MINOCCURS];
+        XInt maxAttr = (XInt) attrValues[XSAttributeChecker.ATTIDX_MAXOCCURS];
 
         XSGroupDecl group = null;
 
@@ -76,7 +75,7 @@ class  XSDGroupTraverser extends XSDAbstractParticleTraverser {
         } else {
             // get global decl
             // index is a particle index.
-            group = (XSGroupDecl)fSchemaHandler.getGlobalDecl(schemaDoc, XSDHandler.GROUP_TYPE, refAttr, elmNode);
+            group = (XSGroupDecl) fSchemaHandler.getGlobalDecl(schemaDoc, XSDHandler.GROUP_TYPE, refAttr, elmNode);
         }
 
         XSAnnotationImpl annotation = null;
@@ -85,8 +84,7 @@ class  XSDGroupTraverser extends XSDAbstractParticleTraverser {
         if (child != null && DOMUtil.getLocalName(child).equals(SchemaSymbols.ELT_ANNOTATION)) {
             annotation = traverseAnnotationDecl(child, attrValues, false, schemaDoc);
             child = DOMUtil.getNextSiblingElement(child);
-        }
-        else {
+        } else {
             String text = DOMUtil.getSyntheticAnnotation(elmNode);
             if (text != null) {
                 annotation = traverseSyntheticAnnotation(elmNode, text, attrValues, false, schemaDoc);
@@ -116,9 +114,9 @@ class  XSDGroupTraverser extends XSDAbstractParticleTraverser {
             particle.fMinOccurs = minOccurs;
             particle.fMaxOccurs = maxOccurs;
             if (group.fModelGroup.fCompositor == XSModelGroupImpl.MODELGROUP_ALL) {
-                Long defaultVals = (Long)attrValues[XSAttributeChecker.ATTIDX_FROMDEFAULT];
+                Long defaultVals = (Long) attrValues[XSAttributeChecker.ATTIDX_FROMDEFAULT];
                 particle = checkOccurrences(particle, SchemaSymbols.ELT_GROUP,
-                        (Element)elmNode.getParentNode(), GROUP_REF_WITH_ALL,
+                        (Element) elmNode.getParentNode(), GROUP_REF_WITH_ALL,
                         defaultVals.longValue());
             }
             if (refAttr != null) {
@@ -142,13 +140,13 @@ class  XSDGroupTraverser extends XSDAbstractParticleTraverser {
     } // traverseLocal
 
     XSGroupDecl traverseGlobal(Element elmNode,
-            XSDocumentInfo schemaDoc,
-            SchemaGrammar grammar) {
+                               XSDocumentInfo schemaDoc,
+                               SchemaGrammar grammar) {
 
         // General Attribute Checking for elmNode declared globally
         Object[] attrValues = fAttrChecker.checkAttributes(elmNode, true,
                 schemaDoc);
-        String  strNameAttr = (String)  attrValues[XSAttributeChecker.ATTIDX_NAME];
+        String strNameAttr = (String) attrValues[XSAttributeChecker.ATTIDX_NAME];
 
         // must have a name
         if (strNameAttr == null) {
@@ -174,8 +172,7 @@ class  XSDGroupTraverser extends XSDAbstractParticleTraverser {
                 l_elmChild = DOMUtil.getNextSiblingElement(l_elmChild);
                 if (l_elmChild != null)
                     childName = l_elmChild.getLocalName();
-            }
-            else {
+            } else {
                 String text = DOMUtil.getSyntheticAnnotation(elmNode);
                 if (text != null) {
                     annotation = traverseSyntheticAnnotation(elmNode, text, attrValues, false, schemaDoc);
@@ -202,7 +199,7 @@ class  XSDGroupTraverser extends XSDAbstractParticleTraverser {
                     DOMUtil.getNextSiblingElement(l_elmChild) != null) {
                 reportSchemaError("s4s-elt-must-match.1",
                         new Object[]{"group (global)", "(annotation?, (all | choice | sequence))",
-                        DOMUtil.getLocalName(DOMUtil.getNextSiblingElement(l_elmChild))},
+                                DOMUtil.getLocalName(DOMUtil.getNextSiblingElement(l_elmChild))},
                         DOMUtil.getNextSiblingElement(l_elmChild));
             }
         }
@@ -214,7 +211,7 @@ class  XSDGroupTraverser extends XSDAbstractParticleTraverser {
             if (particle == null) {
                 particle = XSConstraints.getEmptySequence();
             }
-            group.fModelGroup = (XSModelGroupImpl)particle.fValue;
+            group.fModelGroup = (XSModelGroupImpl) particle.fValue;
             XSObjectList annotations;
             if (annotation != null) {
                 annotations = new XSObjectListImpl();
@@ -242,8 +239,7 @@ class  XSDGroupTraverser extends XSDAbstractParticleTraverser {
                 }
                 fSchemaHandler.addGlobalGroupDecl(group);
             }
-        }
-        else {
+        } else {
             // name attribute is not there, don't return this group.
             group = null;
         }
@@ -256,7 +252,7 @@ class  XSDGroupTraverser extends XSDAbstractParticleTraverser {
                     schemaDoc, elmNode);
             if (redefinedGrp != null) {
                 // store in grammar
-                grammar.addRedefinedGroupDecl(group, (XSGroupDecl)redefinedGrp,
+                grammar.addRedefinedGroupDecl(group, (XSGroupDecl) redefinedGrp,
                         fSchemaHandler.element2Locator(elmNode));
             }
         }

@@ -31,7 +31,7 @@ package org.omg.CORBA;
  *
  * @author OMG
  * @see org.omg.CORBA.TypeCode
- * @since   JDK1.2
+ * @since JDK1.2
  */
 
 

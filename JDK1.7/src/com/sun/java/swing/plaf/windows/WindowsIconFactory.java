@@ -51,8 +51,7 @@ import sun.swing.MenuItemCheckIconFactory;
  * @author Georges Saab
  * @author Rich Schiavi
  */
-public class WindowsIconFactory implements Serializable
-{
+public class WindowsIconFactory implements Serializable {
     private static Icon frame_closeIcon;
     private static Icon frame_iconifyIcon;
     private static Icon frame_maxIcon;
@@ -120,7 +119,7 @@ public class WindowsIconFactory implements Serializable
     synchronized VistaMenuItemCheckIconFactory getMenuItemCheckIconFactory() {
         if (menuItemCheckIconFactory == null) {
             menuItemCheckIconFactory =
-                new VistaMenuItemCheckIconFactory();
+                    new VistaMenuItemCheckIconFactory();
         }
         return menuItemCheckIconFactory;
     }
@@ -154,7 +153,7 @@ public class WindowsIconFactory implements Serializable
     }
 
     public static Icon createFrameResizeIcon() {
-        if(frame_resizeIcon == null)
+        if (frame_resizeIcon == null)
             frame_resizeIcon = new ResizeIcon();
         return frame_resizeIcon;
     }
@@ -174,12 +173,12 @@ public class WindowsIconFactory implements Serializable
             XPStyle xp = XPStyle.getXP();
             if (xp != null) {
                 Skin skin = xp.getSkin(c, part);
-                JButton b = (JButton)c;
+                JButton b = (JButton) c;
                 ButtonModel model = b.getModel();
 
                 // Find out if frame is inactive
-                JInternalFrame jif = (JInternalFrame)SwingUtilities.
-                                        getAncestorOfClass(JInternalFrame.class, b);
+                JInternalFrame jif = (JInternalFrame) SwingUtilities.
+                        getAncestorOfClass(JInternalFrame.class, b);
                 boolean jifSelected = (jif != null && jif.isSelected());
 
                 State state;
@@ -210,60 +209,68 @@ public class WindowsIconFactory implements Serializable
                 int x = width / 12 + 2;
                 int y = height / 5;
                 int h = height - y * 2 - 1;
-                int w = width * 3/4 -3;
+                int w = width * 3 / 4 - 3;
                 int thickness2 = Math.max(height / 8, 2);
-                int thickness  = Math.max(width / 15, 1);
+                int thickness = Math.max(width / 15, 1);
                 if (part == Part.WP_CLOSEBUTTON) {
                     int lineWidth;
-                    if      (width > 47) lineWidth = 6;
+                    if (width > 47) lineWidth = 6;
                     else if (width > 37) lineWidth = 5;
                     else if (width > 26) lineWidth = 4;
                     else if (width > 16) lineWidth = 3;
                     else if (width > 12) lineWidth = 2;
-                    else                 lineWidth = 1;
+                    else lineWidth = 1;
                     y = height / 12 + 2;
                     if (lineWidth == 1) {
-                        if (w % 2 == 1) { x++; w++; }
-                        g.drawLine(x,     y, x+w-2, y+w-2);
-                        g.drawLine(x+w-2, y, x,     y+w-2);
+                        if (w % 2 == 1) {
+                            x++;
+                            w++;
+                        }
+                        g.drawLine(x, y, x + w - 2, y + w - 2);
+                        g.drawLine(x + w - 2, y, x, y + w - 2);
                     } else if (lineWidth == 2) {
-                        if (w > 6) { x++; w--; }
-                        g.drawLine(x,     y, x+w-2, y+w-2);
-                        g.drawLine(x+w-2, y, x,     y+w-2);
-                        g.drawLine(x+1,   y, x+w-1, y+w-2);
-                        g.drawLine(x+w-1, y, x+1,   y+w-2);
+                        if (w > 6) {
+                            x++;
+                            w--;
+                        }
+                        g.drawLine(x, y, x + w - 2, y + w - 2);
+                        g.drawLine(x + w - 2, y, x, y + w - 2);
+                        g.drawLine(x + 1, y, x + w - 1, y + w - 2);
+                        g.drawLine(x + w - 1, y, x + 1, y + w - 2);
                     } else {
-                        x += 2; y++; w -= 2;
-                        g.drawLine(x,     y,   x+w-1, y+w-1);
-                        g.drawLine(x+w-1, y,   x,     y+w-1);
-                        g.drawLine(x+1,   y,   x+w-1, y+w-2);
-                        g.drawLine(x+w-2, y,   x,     y+w-2);
-                        g.drawLine(x,     y+1, x+w-2, y+w-1);
-                        g.drawLine(x+w-1, y+1, x+1,   y+w-1);
+                        x += 2;
+                        y++;
+                        w -= 2;
+                        g.drawLine(x, y, x + w - 1, y + w - 1);
+                        g.drawLine(x + w - 1, y, x, y + w - 1);
+                        g.drawLine(x + 1, y, x + w - 1, y + w - 2);
+                        g.drawLine(x + w - 2, y, x, y + w - 2);
+                        g.drawLine(x, y + 1, x + w - 2, y + w - 1);
+                        g.drawLine(x + w - 1, y + 1, x + 1, y + w - 1);
                         for (int i = 4; i <= lineWidth; i++) {
-                            g.drawLine(x+i-2,   y,     x+w-1,   y+w-i+1);
-                            g.drawLine(x,       y+i-2, x+w-i+1, y+w-1);
-                            g.drawLine(x+w-i+1, y,     x,       y+w-i+1);
-                            g.drawLine(x+w-1,   y+i-2, x+i-2,   y+w-1);
+                            g.drawLine(x + i - 2, y, x + w - 1, y + w - i + 1);
+                            g.drawLine(x, y + i - 2, x + w - i + 1, y + w - 1);
+                            g.drawLine(x + w - i + 1, y, x, y + w - i + 1);
+                            g.drawLine(x + w - 1, y + i - 2, x + i - 2, y + w - 1);
                         }
                     }
                 } else if (part == Part.WP_MINBUTTON) {
-                    g.fillRect(x, y+h-thickness2, w-w/3, thickness2);
+                    g.fillRect(x, y + h - thickness2, w - w / 3, thickness2);
                 } else if (part == Part.WP_MAXBUTTON) {
                     g.fillRect(x, y, w, thickness2);
                     g.fillRect(x, y, thickness, h);
-                    g.fillRect(x+w-thickness, y, thickness, h);
-                    g.fillRect(x, y+h-thickness, w, thickness);
+                    g.fillRect(x + w - thickness, y, thickness, h);
+                    g.fillRect(x, y + h - thickness, w, thickness);
                 } else if (part == Part.WP_RESTOREBUTTON) {
-                    g.fillRect(x+w/3, y, w-w/3, thickness2);
-                    g.fillRect(x+w/3, y, thickness, h/3);
-                    g.fillRect(x+w-thickness, y, thickness, h-h/3);
-                    g.fillRect(x+w-w/3, y+h-h/3-thickness, w/3, thickness);
+                    g.fillRect(x + w / 3, y, w - w / 3, thickness2);
+                    g.fillRect(x + w / 3, y, thickness, h / 3);
+                    g.fillRect(x + w - thickness, y, thickness, h - h / 3);
+                    g.fillRect(x + w - w / 3, y + h - h / 3 - thickness, w / 3, thickness);
 
-                    g.fillRect(x, y+h/3, w-w/3, thickness2);
-                    g.fillRect(x, y+h/3, thickness, h-h/3);
-                    g.fillRect(x+w-w/3-thickness, y+h/3, thickness, h-h/3);
-                    g.fillRect(x, y+h-thickness, w-w/3, thickness);
+                    g.fillRect(x, y + h / 3, w - w / 3, thickness2);
+                    g.fillRect(x, y + h / 3, thickness, h - h / 3);
+                    g.fillRect(x + w - w / 3 - thickness, y + h / 3, thickness, h - h / 3);
+                    g.fillRect(x, y + h - thickness, w - w / 3, thickness);
                 }
             }
         }
@@ -274,13 +281,13 @@ public class WindowsIconFactory implements Serializable
                 // Fix for XP bug where sometimes these sizes aren't updated properly
                 // Assume for now that height is correct and derive width using the
                 // ratio from the uxtheme part
-                width = UIManager.getInt("InternalFrame.titleButtonHeight") -2;
+                width = UIManager.getInt("InternalFrame.titleButtonHeight") - 2;
                 Dimension d = XPStyle.getPartSize(Part.WP_CLOSEBUTTON, State.NORMAL);
                 if (d != null && d.width != 0 && d.height != 0) {
                     width = (int) ((float) width * d.width / d.height);
                 }
             } else {
-                width = UIManager.getInt("InternalFrame.titleButtonWidth") -2;
+                width = UIManager.getInt("InternalFrame.titleButtonWidth") - 2;
             }
             if (XPStyle.getXP() != null) {
                 width -= 2;
@@ -289,35 +296,42 @@ public class WindowsIconFactory implements Serializable
         }
 
         public int getIconHeight() {
-            int height = UIManager.getInt("InternalFrame.titleButtonHeight")-4;
+            int height = UIManager.getInt("InternalFrame.titleButtonHeight") - 4;
             return height;
         }
     }
 
 
+    private static class ResizeIcon implements Icon, Serializable {
+        public void paintIcon(Component c, Graphics g, int x, int y) {
+            g.setColor(UIManager.getColor("InternalFrame.resizeIconHighlight"));
+            g.drawLine(0, 11, 11, 0);
+            g.drawLine(4, 11, 11, 4);
+            g.drawLine(8, 11, 11, 8);
 
-        private static class ResizeIcon implements Icon, Serializable {
-            public void paintIcon(Component c, Graphics g, int x, int y) {
-                g.setColor(UIManager.getColor("InternalFrame.resizeIconHighlight"));
-                g.drawLine(0, 11, 11, 0);
-                g.drawLine(4, 11, 11, 4);
-                g.drawLine(8, 11, 11, 8);
+            g.setColor(UIManager.getColor("InternalFrame.resizeIconShadow"));
+            g.drawLine(1, 11, 11, 1);
+            g.drawLine(2, 11, 11, 2);
+            g.drawLine(5, 11, 11, 5);
+            g.drawLine(6, 11, 11, 6);
+            g.drawLine(9, 11, 11, 9);
+            g.drawLine(10, 11, 11, 10);
+        }
 
-                g.setColor(UIManager.getColor("InternalFrame.resizeIconShadow"));
-                g.drawLine(1, 11, 11, 1);
-                g.drawLine(2, 11, 11, 2);
-                g.drawLine(5, 11, 11, 5);
-                g.drawLine(6, 11, 11, 6);
-                g.drawLine(9, 11, 11, 9);
-                g.drawLine(10, 11, 11, 10);
-            }
-            public int getIconWidth() { return 13; }
-            public int getIconHeight() { return 13; }
-        };
+        public int getIconWidth() {
+            return 13;
+        }
 
-    private static class CheckBoxIcon implements Icon, Serializable
-    {
+        public int getIconHeight() {
+            return 13;
+        }
+    }
+
+    ;
+
+    private static class CheckBoxIcon implements Icon, Serializable {
         final static int csize = 13;
+
         public void paintIcon(Component c, Graphics g, int x, int y) {
             JCheckBox cb = (JCheckBox) c;
             ButtonModel model = cb.getModel();
@@ -348,47 +362,47 @@ public class WindowsIconFactory implements Serializable
                 xp.getSkin(c, part).paintSkin(g, x, y, state);
             } else {
                 // outer bevel
-                if(!cb.isBorderPaintedFlat()) {
+                if (!cb.isBorderPaintedFlat()) {
                     // Outer top/left
                     g.setColor(UIManager.getColor("CheckBox.shadow"));
-                    g.drawLine(x, y, x+11, y);
-                    g.drawLine(x, y+1, x, y+11);
+                    g.drawLine(x, y, x + 11, y);
+                    g.drawLine(x, y + 1, x, y + 11);
 
                     // Outer bottom/right
                     g.setColor(UIManager.getColor("CheckBox.highlight"));
-                    g.drawLine(x+12, y, x+12, y+12);
-                    g.drawLine(x, y+12, x+11, y+12);
+                    g.drawLine(x + 12, y, x + 12, y + 12);
+                    g.drawLine(x, y + 12, x + 11, y + 12);
 
                     // Inner top.left
                     g.setColor(UIManager.getColor("CheckBox.darkShadow"));
-                    g.drawLine(x+1, y+1, x+10, y+1);
-                    g.drawLine(x+1, y+2, x+1, y+10);
+                    g.drawLine(x + 1, y + 1, x + 10, y + 1);
+                    g.drawLine(x + 1, y + 2, x + 1, y + 10);
 
                     // Inner bottom/right
                     g.setColor(UIManager.getColor("CheckBox.light"));
-                    g.drawLine(x+1, y+11, x+11, y+11);
-                    g.drawLine(x+11, y+1, x+11, y+10);
+                    g.drawLine(x + 1, y + 11, x + 11, y + 11);
+                    g.drawLine(x + 11, y + 1, x + 11, y + 10);
 
                     // inside box
-                    if((model.isPressed() && model.isArmed()) || !model.isEnabled()) {
+                    if ((model.isPressed() && model.isArmed()) || !model.isEnabled()) {
                         g.setColor(UIManager.getColor("CheckBox.background"));
                     } else {
                         g.setColor(UIManager.getColor("CheckBox.interiorBackground"));
                     }
-                    g.fillRect(x+2, y+2, csize-4, csize-4);
+                    g.fillRect(x + 2, y + 2, csize - 4, csize - 4);
                 } else {
                     g.setColor(UIManager.getColor("CheckBox.shadow"));
-                    g.drawRect(x+1, y+1, csize-3, csize-3);
+                    g.drawRect(x + 1, y + 1, csize - 3, csize - 3);
 
-                    if((model.isPressed() && model.isArmed()) || !model.isEnabled()) {
+                    if ((model.isPressed() && model.isArmed()) || !model.isEnabled()) {
                         g.setColor(UIManager.getColor("CheckBox.background"));
                     } else {
                         g.setColor(UIManager.getColor("CheckBox.interiorBackground"));
                     }
-                    g.fillRect(x+2, y+2, csize-4, csize-4);
+                    g.fillRect(x + 2, y + 2, csize - 4, csize - 4);
                 }
 
-                if(model.isEnabled()) {
+                if (model.isEnabled()) {
                     g.setColor(UIManager.getColor("CheckBox.foreground"));
                 } else {
                     g.setColor(UIManager.getColor("CheckBox.shadow"));
@@ -396,15 +410,15 @@ public class WindowsIconFactory implements Serializable
 
                 // paint check
                 if (model.isSelected()) {
-                    g.drawLine(x+9, y+3, x+9, y+3);
-                    g.drawLine(x+8, y+4, x+9, y+4);
-                    g.drawLine(x+7, y+5, x+9, y+5);
-                    g.drawLine(x+6, y+6, x+8, y+6);
-                    g.drawLine(x+3, y+7, x+7, y+7);
-                    g.drawLine(x+4, y+8, x+6, y+8);
-                    g.drawLine(x+5, y+9, x+5, y+9);
-                    g.drawLine(x+3, y+5, x+3, y+5);
-                    g.drawLine(x+3, y+6, x+4, y+6);
+                    g.drawLine(x + 9, y + 3, x + 9, y + 3);
+                    g.drawLine(x + 8, y + 4, x + 9, y + 4);
+                    g.drawLine(x + 7, y + 5, x + 9, y + 5);
+                    g.drawLine(x + 6, y + 6, x + 8, y + 6);
+                    g.drawLine(x + 3, y + 7, x + 7, y + 7);
+                    g.drawLine(x + 4, y + 8, x + 6, y + 8);
+                    g.drawLine(x + 5, y + 9, x + 5, y + 9);
+                    g.drawLine(x + 3, y + 5, x + 3, y + 5);
+                    g.drawLine(x + 3, y + 6, x + 4, y + 6);
                 }
             }
         }
@@ -428,8 +442,7 @@ public class WindowsIconFactory implements Serializable
         }
     }
 
-    private static class RadioButtonIcon implements Icon, UIResource, Serializable
-    {
+    private static class RadioButtonIcon implements Icon, UIResource, Serializable {
         public void paintIcon(Component c, Graphics g, int x, int y) {
             AbstractButton b = (AbstractButton) c;
             ButtonModel model = b.getModel();
@@ -462,62 +475,62 @@ public class WindowsIconFactory implements Serializable
                 skin.paintSkin(g, x, y, state);
             } else {
                 // fill interior
-                if((model.isPressed() && model.isArmed()) || !model.isEnabled()) {
+                if ((model.isPressed() && model.isArmed()) || !model.isEnabled()) {
                     g.setColor(UIManager.getColor("RadioButton.background"));
                 } else {
                     g.setColor(UIManager.getColor("RadioButton.interiorBackground"));
                 }
-                g.fillRect(x+2, y+2, 8, 8);
+                g.fillRect(x + 2, y + 2, 8, 8);
 
 
-                    // outter left arc
+                // outter left arc
                 g.setColor(UIManager.getColor("RadioButton.shadow"));
-                g.drawLine(x+4, y+0, x+7, y+0);
-                g.drawLine(x+2, y+1, x+3, y+1);
-                g.drawLine(x+8, y+1, x+9, y+1);
-                g.drawLine(x+1, y+2, x+1, y+3);
-                g.drawLine(x+0, y+4, x+0, y+7);
-                g.drawLine(x+1, y+8, x+1, y+9);
+                g.drawLine(x + 4, y + 0, x + 7, y + 0);
+                g.drawLine(x + 2, y + 1, x + 3, y + 1);
+                g.drawLine(x + 8, y + 1, x + 9, y + 1);
+                g.drawLine(x + 1, y + 2, x + 1, y + 3);
+                g.drawLine(x + 0, y + 4, x + 0, y + 7);
+                g.drawLine(x + 1, y + 8, x + 1, y + 9);
 
                 // outter right arc
                 g.setColor(UIManager.getColor("RadioButton.highlight"));
-                g.drawLine(x+2, y+10, x+3, y+10);
-                g.drawLine(x+4, y+11, x+7, y+11);
-                g.drawLine(x+8, y+10, x+9, y+10);
-                g.drawLine(x+10, y+9, x+10, y+8);
-                g.drawLine(x+11, y+7, x+11, y+4);
-                g.drawLine(x+10, y+3, x+10, y+2);
+                g.drawLine(x + 2, y + 10, x + 3, y + 10);
+                g.drawLine(x + 4, y + 11, x + 7, y + 11);
+                g.drawLine(x + 8, y + 10, x + 9, y + 10);
+                g.drawLine(x + 10, y + 9, x + 10, y + 8);
+                g.drawLine(x + 11, y + 7, x + 11, y + 4);
+                g.drawLine(x + 10, y + 3, x + 10, y + 2);
 
 
                 // inner left arc
                 g.setColor(UIManager.getColor("RadioButton.darkShadow"));
-                g.drawLine(x+4, y+1, x+7, y+1);
-                g.drawLine(x+2, y+2, x+3, y+2);
-                g.drawLine(x+8, y+2, x+9, y+2);
-                g.drawLine(x+2, y+3, x+2, y+3);
-                g.drawLine(x+1, y+4, x+1, y+7);
-                g.drawLine(x+2, y+8, x+2, y+8);
+                g.drawLine(x + 4, y + 1, x + 7, y + 1);
+                g.drawLine(x + 2, y + 2, x + 3, y + 2);
+                g.drawLine(x + 8, y + 2, x + 9, y + 2);
+                g.drawLine(x + 2, y + 3, x + 2, y + 3);
+                g.drawLine(x + 1, y + 4, x + 1, y + 7);
+                g.drawLine(x + 2, y + 8, x + 2, y + 8);
 
 
                 // inner right arc
                 g.setColor(UIManager.getColor("RadioButton.light"));
-                g.drawLine(x+2,  y+9,  x+3,  y+9);
-                g.drawLine(x+4,  y+10, x+7,  y+10);
-                g.drawLine(x+8,  y+9,  x+9,  y+9);
-                g.drawLine(x+9,  y+8,  x+9,  y+8);
-                g.drawLine(x+10, y+7,  x+10, y+4);
-                g.drawLine(x+9,  y+3,  x+9,  y+3);
+                g.drawLine(x + 2, y + 9, x + 3, y + 9);
+                g.drawLine(x + 4, y + 10, x + 7, y + 10);
+                g.drawLine(x + 8, y + 9, x + 9, y + 9);
+                g.drawLine(x + 9, y + 8, x + 9, y + 8);
+                g.drawLine(x + 10, y + 7, x + 10, y + 4);
+                g.drawLine(x + 9, y + 3, x + 9, y + 3);
 
 
-                 // indicate whether selected or not
+                // indicate whether selected or not
                 if (model.isSelected()) {
                     if (model.isEnabled()) {
                         g.setColor(UIManager.getColor("RadioButton.foreground"));
                     } else {
                         g.setColor(UIManager.getColor("RadioButton.shadow"));
                     }
-                    g.fillRect(x+4, y+5, 4, 2);
-                    g.fillRect(x+5, y+4, 2, 4);
+                    g.fillRect(x + 4, y + 5, 4, 2);
+                    g.fillRect(x + 5, y + 4, 2, 4);
                 }
             }
         }
@@ -542,48 +555,58 @@ public class WindowsIconFactory implements Serializable
     } // end class RadioButtonIcon
 
 
-    private static class CheckBoxMenuItemIcon implements Icon, UIResource, Serializable
-    {
+    private static class CheckBoxMenuItemIcon implements Icon, UIResource, Serializable {
         public void paintIcon(Component c, Graphics g, int x, int y) {
             AbstractButton b = (AbstractButton) c;
             ButtonModel model = b.getModel();
             boolean isSelected = model.isSelected();
             if (isSelected) {
                 y = y - getIconHeight() / 2;
-                g.drawLine(x+9, y+3, x+9, y+3);
-                g.drawLine(x+8, y+4, x+9, y+4);
-                g.drawLine(x+7, y+5, x+9, y+5);
-                g.drawLine(x+6, y+6, x+8, y+6);
-                g.drawLine(x+3, y+7, x+7, y+7);
-                g.drawLine(x+4, y+8, x+6, y+8);
-                g.drawLine(x+5, y+9, x+5, y+9);
-                g.drawLine(x+3, y+5, x+3, y+5);
-                g.drawLine(x+3, y+6, x+4, y+6);
+                g.drawLine(x + 9, y + 3, x + 9, y + 3);
+                g.drawLine(x + 8, y + 4, x + 9, y + 4);
+                g.drawLine(x + 7, y + 5, x + 9, y + 5);
+                g.drawLine(x + 6, y + 6, x + 8, y + 6);
+                g.drawLine(x + 3, y + 7, x + 7, y + 7);
+                g.drawLine(x + 4, y + 8, x + 6, y + 8);
+                g.drawLine(x + 5, y + 9, x + 5, y + 9);
+                g.drawLine(x + 3, y + 5, x + 3, y + 5);
+                g.drawLine(x + 3, y + 6, x + 4, y + 6);
             }
         }
-        public int getIconWidth() { return 9; }
-        public int getIconHeight() { return 9; }
+
+        public int getIconWidth() {
+            return 9;
+        }
+
+        public int getIconHeight() {
+            return 9;
+        }
 
     } // End class CheckBoxMenuItemIcon
 
 
-    private static class RadioButtonMenuItemIcon implements Icon, UIResource, Serializable
-    {
+    private static class RadioButtonMenuItemIcon implements Icon, UIResource, Serializable {
         public void paintIcon(Component c, Graphics g, int x, int y) {
             AbstractButton b = (AbstractButton) c;
             ButtonModel model = b.getModel();
             if (b.isSelected() == true) {
-               g.fillRoundRect(x+3,y+3, getIconWidth()-6, getIconHeight()-6,
-                               4, 4);
+                g.fillRoundRect(x + 3, y + 3, getIconWidth() - 6, getIconHeight() - 6,
+                        4, 4);
             }
         }
-        public int getIconWidth() { return 12; }
-        public int getIconHeight() { return 12; }
+
+        public int getIconWidth() {
+            return 12;
+        }
+
+        public int getIconHeight() {
+            return 12;
+        }
 
     } // End class RadioButtonMenuItemIcon
 
 
-    private static class MenuItemCheckIcon implements Icon, UIResource, Serializable{
+    private static class MenuItemCheckIcon implements Icon, UIResource, Serializable {
         public void paintIcon(Component c, Graphics g, int x, int y) {
             /* For debugging:
                Color oldColor = g.getColor();
@@ -592,8 +615,14 @@ public class WindowsIconFactory implements Serializable
             g.setColor(oldColor);
             */
         }
-        public int getIconWidth() { return 9; }
-        public int getIconHeight() { return 9; }
+
+        public int getIconWidth() {
+            return 9;
+        }
+
+        public int getIconHeight() {
+            return 9;
+        }
 
     } // End class MenuItemCheckIcon
 
@@ -606,8 +635,14 @@ public class WindowsIconFactory implements Serializable
             g.setColor(oldColor);
             */
         }
-        public int getIconWidth() { return 4; }
-        public int getIconHeight() { return 8; }
+
+        public int getIconWidth() {
+            return 4;
+        }
+
+        public int getIconHeight() {
+            return 8;
+        }
 
     } // End class MenuItemArrowIcon
 
@@ -618,34 +653,35 @@ public class WindowsIconFactory implements Serializable
                 State state = State.NORMAL;
                 if (c instanceof JMenuItem) {
                     state = ((JMenuItem) c).getModel().isEnabled()
-                    ? State.NORMAL : State.DISABLED;
+                            ? State.NORMAL : State.DISABLED;
                 }
                 Skin skin = xp.getSkin(c, Part.MP_POPUPSUBMENU);
                 if (WindowsGraphicsUtils.isLeftToRight(c)) {
                     skin.paintSkin(g, x, y, state);
                 } else {
-                    Graphics2D g2d = (Graphics2D)g.create();
+                    Graphics2D g2d = (Graphics2D) g.create();
                     g2d.translate(x + skin.getWidth(), y);
                     g2d.scale(-1, 1);
                     skin.paintSkin(g2d, 0, 0, state);
                     g2d.dispose();
                 }
             } else {
-                g.translate(x,y);
-                if( WindowsGraphicsUtils.isLeftToRight(c) ) {
-                    g.drawLine( 0, 0, 0, 7 );
-                    g.drawLine( 1, 1, 1, 6 );
-                    g.drawLine( 2, 2, 2, 5 );
-                    g.drawLine( 3, 3, 3, 4 );
+                g.translate(x, y);
+                if (WindowsGraphicsUtils.isLeftToRight(c)) {
+                    g.drawLine(0, 0, 0, 7);
+                    g.drawLine(1, 1, 1, 6);
+                    g.drawLine(2, 2, 2, 5);
+                    g.drawLine(3, 3, 3, 4);
                 } else {
-                    g.drawLine( 4, 0, 4, 7 );
-                    g.drawLine( 3, 1, 3, 6 );
-                    g.drawLine( 2, 2, 2, 5 );
-                    g.drawLine( 1, 3, 1, 4 );
+                    g.drawLine(4, 0, 4, 7);
+                    g.drawLine(3, 1, 3, 6);
+                    g.drawLine(2, 2, 2, 5);
+                    g.drawLine(1, 3, 1, 4);
                 }
-                g.translate(-x,-y);
+                g.translate(-x, -y);
             }
         }
+
         public int getIconWidth() {
             if (WindowsMenuItemUI.isVistaPainting()) {
                 Skin skin = XPStyle.getXP().getSkin(null, Part.MP_POPUPSUBMENU);
@@ -654,6 +690,7 @@ public class WindowsIconFactory implements Serializable
                 return 4;
             }
         }
+
         public int getIconHeight() {
             if (WindowsMenuItemUI.isVistaPainting()) {
                 Skin skin = XPStyle.getXP().getSkin(null, Part.MP_POPUPSUBMENU);
@@ -665,7 +702,7 @@ public class WindowsIconFactory implements Serializable
     } // End class MenuArrowIcon
 
     static class VistaMenuItemCheckIconFactory
-           implements MenuItemCheckIconFactory {
+            implements MenuItemCheckIconFactory {
         private static final int OFFSET = 3;
 
         public Icon getIcon(JMenuItem component) {
@@ -674,7 +711,7 @@ public class WindowsIconFactory implements Serializable
 
         public boolean isCompatible(Object icon, String prefix) {
             return icon instanceof VistaMenuItemCheckIcon
-              && ((VistaMenuItemCheckIcon) icon).type == getType(prefix);
+                    && ((VistaMenuItemCheckIcon) icon).type == getType(prefix);
         }
 
         public Icon getIcon(String type) {
@@ -683,7 +720,7 @@ public class WindowsIconFactory implements Serializable
 
         static int getIconWidth() {
             return XPStyle.getXP().getSkin(null, Part.MP_POPUPCHECK).getWidth()
-                + 2 * OFFSET;
+                    + 2 * OFFSET;
         }
 
         private static Class<? extends JMenuItem> getType(Component c) {
@@ -723,7 +760,7 @@ public class WindowsIconFactory implements Serializable
          * Note: to be used on Vista only.
          */
         private static class VistaMenuItemCheckIcon
-              implements Icon, UIResource, Serializable {
+                implements Icon, UIResource, Serializable {
 
             private final JMenuItem menuItem;
             private final Class<? extends JMenuItem> type;
@@ -732,6 +769,7 @@ public class WindowsIconFactory implements Serializable
                 this.type = getType(menuItem);
                 this.menuItem = menuItem;
             }
+
             VistaMenuItemCheckIcon(String type) {
                 this.type = getType(type);
                 this.menuItem = null;
@@ -748,7 +786,7 @@ public class WindowsIconFactory implements Serializable
                     height = icon.getIconHeight() + 2 * OFFSET;
                 } else {
                     Skin skin =
-                        XPStyle.getXP().getSkin(null, Part.MP_POPUPCHECK);
+                            XPStyle.getXP().getSkin(null, Part.MP_POPUPCHECK);
                     height = skin.getHeight() + 2 * OFFSET;
                 }
                 return height;
@@ -778,7 +816,7 @@ public class WindowsIconFactory implements Serializable
                 assert menuItem == null || c == menuItem;
                 Icon icon = getIcon();
                 if (type == JCheckBoxMenuItem.class
-                      || type == JRadioButtonMenuItem.class) {
+                        || type == JRadioButtonMenuItem.class) {
                     AbstractButton b = (AbstractButton) c;
                     if (b.isSelected()) {
                         Part backgroundPart = Part.MP_POPUPCHECKBACKGROUND;
@@ -787,22 +825,22 @@ public class WindowsIconFactory implements Serializable
                         State state;
                         if (isEnabled(c, null)) {
                             backgroundState =
-                                (icon != null) ? State.BITMAP : State.NORMAL;
+                                    (icon != null) ? State.BITMAP : State.NORMAL;
                             state = (type == JRadioButtonMenuItem.class)
-                              ? State.BULLETNORMAL
-                              : State.CHECKMARKNORMAL;
+                                    ? State.BULLETNORMAL
+                                    : State.CHECKMARKNORMAL;
                         } else {
                             backgroundState = State.DISABLEDPUSHED;
                             state =
-                                (type == JRadioButtonMenuItem.class)
-                                  ? State.BULLETDISABLED
-                                  : State.CHECKMARKDISABLED;
+                                    (type == JRadioButtonMenuItem.class)
+                                            ? State.BULLETDISABLED
+                                            : State.CHECKMARKDISABLED;
                         }
                         Skin skin;
                         XPStyle xp = XPStyle.getXP();
-                        skin =  xp.getSkin(c, backgroundPart);
+                        skin = xp.getSkin(c, backgroundPart);
                         skin.paintSkin(g, x, y,
-                            getIconWidth(), getIconHeight(), backgroundState);
+                                getIconWidth(), getIconHeight(), backgroundState);
                         if (icon == null) {
                             skin = xp.getSkin(c, part);
                             skin.paintSkin(g, x + OFFSET, y + OFFSET, state);
@@ -813,6 +851,7 @@ public class WindowsIconFactory implements Serializable
                     icon.paintIcon(c, g, x + OFFSET, y + OFFSET);
                 }
             }
+
             private static WindowsMenuItemUIAccessor getAccessor(
                     JMenuItem menuItem) {
                 WindowsMenuItemUIAccessor rv = null;
@@ -830,10 +869,10 @@ public class WindowsIconFactory implements Serializable
                 return rv;
             }
 
-            private static boolean isEnabled(Component  c, State state) {
+            private static boolean isEnabled(Component c, State state) {
                 if (state == null && c instanceof JMenuItem) {
                     WindowsMenuItemUIAccessor accessor =
-                        getAccessor((JMenuItem) c);
+                            getAccessor((JMenuItem) c);
                     if (accessor != null) {
                         state = accessor.getState((JMenuItem) c);
                     }
@@ -846,17 +885,18 @@ public class WindowsIconFactory implements Serializable
                     }
                 } else {
                     return (state != State.DISABLED)
-                        && (state != State.DISABLEDHOT)
-                        && (state != State.DISABLEDPUSHED);
+                            && (state != State.DISABLEDHOT)
+                            && (state != State.DISABLEDPUSHED);
                 }
             }
+
             private Icon getIcon() {
                 Icon rv = null;
                 if (menuItem == null) {
                     return rv;
                 }
                 WindowsMenuItemUIAccessor accessor =
-                    getAccessor(menuItem);
+                        getAccessor(menuItem);
                 State state = (accessor != null) ? accessor.getState(menuItem)
                         : null;
                 if (isEnabled(menuItem, null)) {
@@ -870,6 +910,7 @@ public class WindowsIconFactory implements Serializable
                 }
                 return rv;
             }
+
             /**
              * Check if developer changed icon in the UI table.
              *
@@ -880,7 +921,7 @@ public class WindowsIconFactory implements Serializable
                 // use icon from the UI table if it does not match this one.
                 Icon rv = (Icon) UIManager.getDefaults().get(typeToString(type));
                 if (rv instanceof VistaMenuItemCheckIcon
-                      && ((VistaMenuItemCheckIcon) rv).type == type) {
+                        && ((VistaMenuItemCheckIcon) rv).type == type) {
                     rv = null;
                 }
                 return rv;
@@ -889,9 +930,9 @@ public class WindowsIconFactory implements Serializable
             private static String typeToString(
                     Class<? extends JMenuItem> type) {
                 assert type == JMenuItem.class
-                    || type == JMenu.class
-                    || type == JCheckBoxMenuItem.class
-                    || type == JRadioButtonMenuItem.class;
+                        || type == JMenu.class
+                        || type == JCheckBoxMenuItem.class
+                        || type == JRadioButtonMenuItem.class;
                 StringBuilder sb = new StringBuilder(type.getName());
                 // remove package name, dot and the first character
                 sb.delete(0, sb.lastIndexOf("J") + 1);

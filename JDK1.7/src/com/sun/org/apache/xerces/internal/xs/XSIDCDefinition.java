@@ -30,17 +30,17 @@ public interface XSIDCDefinition extends XSObject {
      * See the definition of <code>key</code> in the identity-constraint
      * category.
      */
-    public static final short IC_KEY                    = 1;
+    public static final short IC_KEY = 1;
     /**
      * See the definition of <code>keyref</code> in the identity-constraint
      * category.
      */
-    public static final short IC_KEYREF                 = 2;
+    public static final short IC_KEYREF = 2;
     /**
      * See the definition of <code>unique</code> in the identity-constraint
      * category.
      */
-    public static final short IC_UNIQUE                 = 3;
+    public static final short IC_UNIQUE = 3;
 
     /**
      * [identity-constraint category]: one of key, keyref or unique.

@@ -40,7 +40,6 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicLabelUI;
 
 
-
 /**
  * Windows rendition of the component.
  * <p>
@@ -79,7 +78,7 @@ public class WindowsLabelUI extends BasicLabelUI {
 
         g.setColor(l.getForeground());
         SwingUtilities2.drawStringUnderlineCharAt(l, g, s, mnemonicIndex,
-                                                     textX, textY);
+                textX, textY);
     }
 
     protected void paintDisabledText(JLabel l, Graphics g, String s,
@@ -89,24 +88,24 @@ public class WindowsLabelUI extends BasicLabelUI {
         if (WindowsLookAndFeel.isMnemonicHidden() == true) {
             mnemonicIndex = -1;
         }
-        if ( UIManager.getColor("Label.disabledForeground") instanceof Color &&
-             UIManager.getColor("Label.disabledShadow") instanceof Color) {
-            g.setColor( UIManager.getColor("Label.disabledShadow") );
+        if (UIManager.getColor("Label.disabledForeground") instanceof Color &&
+                UIManager.getColor("Label.disabledShadow") instanceof Color) {
+            g.setColor(UIManager.getColor("Label.disabledShadow"));
             SwingUtilities2.drawStringUnderlineCharAt(l, g, s,
-                                                         mnemonicIndex,
-                                                         textX + 1, textY + 1);
-            g.setColor( UIManager.getColor("Label.disabledForeground") );
+                    mnemonicIndex,
+                    textX + 1, textY + 1);
+            g.setColor(UIManager.getColor("Label.disabledForeground"));
             SwingUtilities2.drawStringUnderlineCharAt(l, g, s,
-                                                         mnemonicIndex,
-                                                         textX, textY);
+                    mnemonicIndex,
+                    textX, textY);
         } else {
             Color background = l.getBackground();
             g.setColor(background.brighter());
-            SwingUtilities2.drawStringUnderlineCharAt(l,g, s, mnemonicIndex,
-                                                         textX + 1, textY + 1);
+            SwingUtilities2.drawStringUnderlineCharAt(l, g, s, mnemonicIndex,
+                    textX + 1, textY + 1);
             g.setColor(background.darker());
-            SwingUtilities2.drawStringUnderlineCharAt(l,g, s, mnemonicIndex,
-                                                         textX, textY);
+            SwingUtilities2.drawStringUnderlineCharAt(l, g, s, mnemonicIndex,
+                    textX, textY);
         }
     }
 }

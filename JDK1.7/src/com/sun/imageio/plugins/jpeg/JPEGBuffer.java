@@ -47,7 +47,7 @@ class JPEGBuffer {
     /**
      * The actual buffer.
      */
-    byte [] buf;
+    byte[] buf;
 
     /**
      * The number of bytes available for reading from the buffer.
@@ -67,7 +67,7 @@ class JPEGBuffer {
      */
     ImageInputStream iis;
 
-    JPEGBuffer (ImageInputStream iis) {
+    JPEGBuffer(ImageInputStream iis) {
         buf = new byte[BUFFER_SIZE];
         bufAvail = 0;
         bufPtr = 0;
@@ -113,7 +113,7 @@ class JPEGBuffer {
         bufPtr = 0;
         int minimum = Math.min(BUFFER_SIZE, count);
         if (bufAvail < minimum) {
-            throw new IIOException ("Image Format Error");
+            throw new IIOException("Image Format Error");
         }
     }
 
@@ -125,7 +125,7 @@ class JPEGBuffer {
      * <code>IIOException</code> is thrown with the
      * message "Image Format Error".
      */
-    void readData(byte [] data) throws IOException {
+    void readData(byte[] data) throws IOException {
         int count = data.length;
         // First see what's left in the buffer.
         if (bufAvail >= count) {  // It's enough
@@ -144,7 +144,7 @@ class JPEGBuffer {
         }
         // Now read the rest directly from the stream
         if (iis.read(data, offset, count) != count) {
-            throw new IIOException ("Image format Error");
+            throw new IIOException("Image format Error");
         }
     }
 
@@ -168,7 +168,7 @@ class JPEGBuffer {
         }
         // Now read the rest directly from the stream
         if (iis.skipBytes(count) != count) {
-            throw new IIOException ("Image format Error");
+            throw new IIOException("Image format Error");
         }
     }
 
@@ -177,7 +177,7 @@ class JPEGBuffer {
      * repositioning the input stream.
      */
     void pushBack() throws IOException {
-        iis.seek(iis.getStreamPosition()-bufAvail);
+        iis.seek(iis.getStreamPosition() - bufAvail);
         bufAvail = 0;
         bufPtr = 0;
     }
@@ -187,7 +187,7 @@ class JPEGBuffer {
      * available byte in the buffer.
      */
     long getStreamPosition() throws IOException {
-        return (iis.getStreamPosition()-bufAvail);
+        return (iis.getStreamPosition() - bufAvail);
     }
 
     /**
@@ -223,7 +223,7 @@ class JPEGBuffer {
                 // send out a warning, but treat it as EOI
                 //reader.warningOccurred(JPEGImageReader.WARNING_NO_EOI);
                 retval = true;
-                buf[0] = (byte)JPEG.EOI;
+                buf[0] = (byte) JPEG.EOI;
                 bufAvail = 1;
                 bufPtr = 0;
                 foundFF = true;
@@ -234,8 +234,9 @@ class JPEGBuffer {
 
     /**
      * Prints the contents of the buffer, in hex.
+     *
      * @param count the number of bytes to print,
-     * starting at the current available byte.
+     *              starting at the current available byte.
      */
     void print(int count) {
         System.out.print("buffer has ");
@@ -245,7 +246,7 @@ class JPEGBuffer {
             count = bufAvail;
         }
         for (int ptr = bufPtr; count > 0; count--) {
-            int val = (int)buf[ptr++] & 0xff;
+            int val = (int) buf[ptr++] & 0xff;
             System.out.print(" " + Integer.toHexString(val));
         }
         System.out.println();

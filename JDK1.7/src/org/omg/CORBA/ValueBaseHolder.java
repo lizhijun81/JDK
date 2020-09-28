@@ -42,11 +42,10 @@ import org.omg.CORBA.portable.OutputStream;
  * must also fill the "in" value to be sent to the server.
  * Before the method invocation returns, the ORB will fill in the
  * value corresponding to the "out" value returned from the server.
- * <P>
+ * <p>
  * If <code>myValueBaseHolder</code> is an instance of <code>ValueBaseHolder</code>,
  * the value stored in its <code>value</code> field can be accessed with
  * <code>myValueBaseHolder.value</code>.
- *
  */
 public final class ValueBaseHolder implements Streamable {
 
@@ -67,6 +66,7 @@ public final class ValueBaseHolder implements Streamable {
      * Constructs a new <code>ValueBaseHolder</code> object with its
      * <code>value</code> field initialized to the given
      * <code>java.io.Serializable</code>.
+     *
      * @param initial the <code>java.io.Serializable</code> with which to initialize
      *                the <code>value</code> field of the newly-created
      *                <code>ValueBaseHolder</code> object
@@ -82,7 +82,7 @@ public final class ValueBaseHolder implements Streamable {
      * @param input the InputStream containing CDR formatted data from the wire
      */
     public void _read(InputStream input) {
-        value = ((org.omg.CORBA_2_3.portable.InputStream)input).read_value();
+        value = ((org.omg.CORBA_2_3.portable.InputStream) input).read_value();
     }
 
     /**
@@ -91,14 +91,14 @@ public final class ValueBaseHolder implements Streamable {
      * @param output the OutputStream which will contain the CDR formatted data
      */
     public void _write(OutputStream output) {
-        ((org.omg.CORBA_2_3.portable.OutputStream)output).write_value(value);
+        ((org.omg.CORBA_2_3.portable.OutputStream) output).write_value(value);
     }
 
     /**
      * Returns the <code>TypeCode</code> object
      * corresponding to the value held in the Holder.
      *
-     * @return    the TypeCode of the value held in the holder
+     * @return the TypeCode of the value held in the holder
      */
     public org.omg.CORBA.TypeCode _type() {
         return ORB.init().get_primitive_tc(TCKind.tk_value);

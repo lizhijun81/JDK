@@ -27,16 +27,17 @@ import org.w3c.dom.Node;
  * having references to its previous and next siblings.
  *
  * @xerces.internal
- *
  */
 public abstract class ChildNode
-    extends NodeImpl {
+        extends NodeImpl {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = -6112455738802414002L;
 
     transient StringBuffer fBufferStr = null;
@@ -45,10 +46,14 @@ public abstract class ChildNode
     // Data
     //
 
-    /** Previous sibling. */
+    /**
+     * Previous sibling.
+     */
     protected ChildNode previousSibling;
 
-    /** Next sibling. */
+    /**
+     * Next sibling.
+     */
     protected ChildNode nextSibling;
 
     //
@@ -65,8 +70,11 @@ public abstract class ChildNode
         super(ownerDocument);
     } // <init>(CoreDocumentImpl)
 
-    /** Constructor for serialization. */
-    public ChildNode() {}
+    /**
+     * Constructor for serialization.
+     */
+    public ChildNode() {
+    }
 
     //
     // Node methods
@@ -77,9 +85,10 @@ public abstract class ChildNode
      * generic "copy constructor" for nodes. The newly returned object should
      * be completely independent of the source object's subtree, so changes
      * in one after the clone has been made will not affect the other.
-     * <P>
+     * <p>
      * Note: since we never have any children deep is meaningless here,
      * ParentNode overrides this behavior.
+     *
      * @see ParentNode
      *
      * <p>
@@ -101,7 +110,7 @@ public abstract class ChildNode
 
         // Need to break the association w/ original kids
         newnode.previousSibling = null;
-        newnode.nextSibling     = null;
+        newnode.nextSibling = null;
         newnode.isFirstChild(false);
 
         return newnode;
@@ -126,12 +135,16 @@ public abstract class ChildNode
         return isOwned() ? ownerNode : null;
     }
 
-    /** The next child of this node's parent, or null if none */
+    /**
+     * The next child of this node's parent, or null if none
+     */
     public Node getNextSibling() {
         return nextSibling;
     }
 
-    /** The previous child of this node's parent, or null if none */
+    /**
+     * The previous child of this node's parent, or null if none
+     */
     public Node getPreviousSibling() {
         // if we are the firstChild, previousSibling actually refers to our
         // parent's lastChild, but we hide that

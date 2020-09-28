@@ -61,7 +61,7 @@ final class Include extends TopLevelElement {
         try {
             if (context.checkForLoop(docToLoad)) {
                 final ErrorMsg msg = new ErrorMsg(ErrorMsg.CIRCULAR_INCLUDE_ERR,
-                                                  docToLoad, this);
+                        docToLoad, this);
                 parser.reportError(Constants.FATAL, msg);
                 return;
             }
@@ -91,16 +91,15 @@ final class Include extends TopLevelElement {
             // Return if we could not resolve the URL
             if (input == null) {
                 final ErrorMsg msg =
-                    new ErrorMsg(ErrorMsg.FILE_NOT_FOUND_ERR, docToLoad, this);
+                        new ErrorMsg(ErrorMsg.FILE_NOT_FOUND_ERR, docToLoad, this);
                 parser.reportError(Constants.FATAL, msg);
                 return;
             }
 
             final SyntaxTreeNode root;
             if (reader != null) {
-                root = parser.parse(reader,input);
-            }
-            else {
+                root = parser.parse(reader, input);
+            } else {
                 root = parser.parse(input);
             }
 
@@ -128,20 +127,16 @@ final class Include extends TopLevelElement {
                 if (element instanceof TopLevelElement) {
                     if (element instanceof Variable) {
                         topStylesheet.addVariable((Variable) element);
-                    }
-                    else if (element instanceof Param) {
+                    } else if (element instanceof Param) {
                         topStylesheet.addParam((Param) element);
-                    }
-                    else {
+                    } else {
                         topStylesheet.addElement((TopLevelElement) element);
                     }
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             parser.setCurrentStylesheet(context);
         }
     }

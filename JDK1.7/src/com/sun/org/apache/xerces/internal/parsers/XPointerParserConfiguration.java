@@ -45,31 +45,45 @@ public class XPointerParserConfiguration extends XML11Configuration {
 
     private XIncludeHandler fXIncludeHandler;
 
-    /** Feature identifier: allow notation and unparsed entity events to be sent out of order. */
+    /**
+     * Feature identifier: allow notation and unparsed entity events to be sent out of order.
+     */
     protected static final String ALLOW_UE_AND_NOTATION_EVENTS =
-        Constants.SAX_FEATURE_PREFIX + Constants.ALLOW_DTD_EVENTS_AFTER_ENDDTD_FEATURE;
+            Constants.SAX_FEATURE_PREFIX + Constants.ALLOW_DTD_EVENTS_AFTER_ENDDTD_FEATURE;
 
-    /** Feature identifier: fixup base URIs. */
+    /**
+     * Feature identifier: fixup base URIs.
+     */
     protected static final String XINCLUDE_FIXUP_BASE_URIS =
-        Constants.XERCES_FEATURE_PREFIX + Constants.XINCLUDE_FIXUP_BASE_URIS_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.XINCLUDE_FIXUP_BASE_URIS_FEATURE;
 
-    /** Feature identifier: fixup language. */
+    /**
+     * Feature identifier: fixup language.
+     */
     protected static final String XINCLUDE_FIXUP_LANGUAGE =
-        Constants.XERCES_FEATURE_PREFIX + Constants.XINCLUDE_FIXUP_LANGUAGE_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.XINCLUDE_FIXUP_LANGUAGE_FEATURE;
 
-    /** Property identifier: error reporter. */
+    /**
+     * Property identifier: error reporter.
+     */
     protected static final String XPOINTER_HANDLER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.XPOINTER_HANDLER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.XPOINTER_HANDLER_PROPERTY;
 
-    /** Property identifier: error reporter. */
+    /**
+     * Property identifier: error reporter.
+     */
     protected static final String XINCLUDE_HANDLER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.XINCLUDE_HANDLER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.XINCLUDE_HANDLER_PROPERTY;
 
-    /** Property identifier: error reporter. */
+    /**
+     * Property identifier: error reporter.
+     */
     protected static final String NAMESPACE_CONTEXT =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.NAMESPACE_CONTEXT_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.NAMESPACE_CONTEXT_PROPERTY;
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public XPointerParserConfiguration() {
         this(null, null, null);
     } // <init>()
@@ -92,8 +106,8 @@ public class XPointerParserConfiguration extends XML11Configuration {
      * @param grammarPool The grammar pool to use.
      */
     public XPointerParserConfiguration(
-        SymbolTable symbolTable,
-        XMLGrammarPool grammarPool) {
+            SymbolTable symbolTable,
+            XMLGrammarPool grammarPool) {
         this(symbolTable, grammarPool, null);
     } // <init>(SymbolTable,XMLGrammarPool)
 
@@ -107,9 +121,9 @@ public class XPointerParserConfiguration extends XML11Configuration {
      * @param parentSettings The parent settings.
      */
     public XPointerParserConfiguration(
-        SymbolTable symbolTable,
-        XMLGrammarPool grammarPool,
-        XMLComponentManager parentSettings) {
+            SymbolTable symbolTable,
+            XMLGrammarPool grammarPool,
+            XMLComponentManager parentSettings) {
         super(symbolTable, grammarPool, parentSettings);
 
         fXIncludeHandler = new XIncludeHandler();
@@ -119,15 +133,15 @@ public class XPointerParserConfiguration extends XML11Configuration {
         addCommonComponent(fXPointerHandler);
 
         final String[] recognizedFeatures = {
-            ALLOW_UE_AND_NOTATION_EVENTS,
-            XINCLUDE_FIXUP_BASE_URIS,
-            XINCLUDE_FIXUP_LANGUAGE
+                ALLOW_UE_AND_NOTATION_EVENTS,
+                XINCLUDE_FIXUP_BASE_URIS,
+                XINCLUDE_FIXUP_LANGUAGE
         };
         addRecognizedFeatures(recognizedFeatures);
 
         // add default recognized properties
         final String[] recognizedProperties =
-            { XINCLUDE_HANDLER, XPOINTER_HANDLER, NAMESPACE_CONTEXT };
+                {XINCLUDE_HANDLER, XPOINTER_HANDLER, NAMESPACE_CONTEXT};
         addRecognizedProperties(recognizedProperties);
 
         setFeature(ALLOW_UE_AND_NOTATION_EVENTS, true);
@@ -142,7 +156,9 @@ public class XPointerParserConfiguration extends XML11Configuration {
     } // <init>(SymbolTable,XMLGrammarPool)}
 
 
-        /** Configures the pipeline. */
+    /**
+     * Configures the pipeline.
+     */
     protected void configurePipeline() {
         super.configurePipeline();
 
@@ -174,24 +190,24 @@ public class XPointerParserConfiguration extends XML11Configuration {
         }
 
         XMLDocumentHandler next = prev.getDocumentHandler();
-                prev.setDocumentHandler(fXIncludeHandler);
-                fXIncludeHandler.setDocumentSource(prev);
+        prev.setDocumentHandler(fXIncludeHandler);
+        fXIncludeHandler.setDocumentSource(prev);
 
-                if (next != null) {
-                        fXIncludeHandler.setDocumentHandler(next);
+        if (next != null) {
+            fXIncludeHandler.setDocumentHandler(next);
             next.setDocumentSource(fXIncludeHandler);
         }
 
-                fXIncludeHandler.setDocumentHandler(fXPointerHandler);
-                fXPointerHandler.setDocumentSource(fXIncludeHandler);
+        fXIncludeHandler.setDocumentHandler(fXPointerHandler);
+        fXPointerHandler.setDocumentSource(fXIncludeHandler);
     } // configurePipeline()
 
-        protected void configureXML11Pipeline() {
-                super.configureXML11Pipeline();
+    protected void configureXML11Pipeline() {
+        super.configureXML11Pipeline();
 
         // configure XML 1.1. DTD pipeline
-                fXML11DTDScanner.setDTDHandler(fXML11DTDProcessor);
-                fXML11DTDProcessor.setDTDSource(fXML11DTDScanner);
+        fXML11DTDScanner.setDTDHandler(fXML11DTDProcessor);
+        fXML11DTDProcessor.setDTDSource(fXML11DTDScanner);
 
         fDTDProcessor.setDTDHandler(fXIncludeHandler);
         fXIncludeHandler.setDTDSource(fXML11DTDProcessor);
@@ -203,37 +219,37 @@ public class XPointerParserConfiguration extends XML11Configuration {
         }
 
 
-                // configure XML document pipeline: insert after DTDValidator and
-                // before XML Schema validator
-                XMLDocumentSource prev = null;
-                if (fFeatures.get(XMLSCHEMA_VALIDATION) == Boolean.TRUE) {
-                        // we don't have to worry about fSchemaValidator being null, since
-                        // super.configurePipeline() instantiated it if the feature was set
-                        prev = fSchemaValidator.getDocumentSource();
-                }
-                // Otherwise, insert after the last component in the pipeline
-                else {
-                        prev = fLastComponent;
-                        fLastComponent = fXPointerHandler;
-                }
+        // configure XML document pipeline: insert after DTDValidator and
+        // before XML Schema validator
+        XMLDocumentSource prev = null;
+        if (fFeatures.get(XMLSCHEMA_VALIDATION) == Boolean.TRUE) {
+            // we don't have to worry about fSchemaValidator being null, since
+            // super.configurePipeline() instantiated it if the feature was set
+            prev = fSchemaValidator.getDocumentSource();
+        }
+        // Otherwise, insert after the last component in the pipeline
+        else {
+            prev = fLastComponent;
+            fLastComponent = fXPointerHandler;
+        }
 
         XMLDocumentHandler next = prev.getDocumentHandler();
-                prev.setDocumentHandler(fXIncludeHandler);
-                fXIncludeHandler.setDocumentSource(prev);
+        prev.setDocumentHandler(fXIncludeHandler);
+        fXIncludeHandler.setDocumentSource(prev);
 
-                if (next != null) {
-                        fXIncludeHandler.setDocumentHandler(next);
+        if (next != null) {
+            fXIncludeHandler.setDocumentHandler(next);
             next.setDocumentSource(fXIncludeHandler);
         }
 
-                fXIncludeHandler.setDocumentHandler(fXPointerHandler);
-                fXPointerHandler.setDocumentSource(fXIncludeHandler);
+        fXIncludeHandler.setDocumentHandler(fXPointerHandler);
+        fXPointerHandler.setDocumentSource(fXIncludeHandler);
 
 
-        } // configureXML11Pipeline()
+    } // configureXML11Pipeline()
 
     public void setProperty(String propertyId, Object value)
-        throws XMLConfigurationException {
+            throws XMLConfigurationException {
 
         //if (propertyId.equals(XINCLUDE_HANDLER)) {
         //}

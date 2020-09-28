@@ -38,9 +38,8 @@ import java.util.Hashtable;
 /**
  * This class handles DOM errors .
  *
- * @see DOMErrorHandler
- *
  * @author Gopal Sharma, SUN Microsystems Inc.
+ * @see DOMErrorHandler
  */
 
 // REVISIT: current implementations wraps error several times:
@@ -51,15 +50,14 @@ import java.util.Hashtable;
 //          I think we can avoid this indirection if we modify XMLErrorReporter. --el
 
 public class DOMErrorHandlerWrapper
-    implements XMLErrorHandler, DOMErrorHandler {
-
+        implements XMLErrorHandler, DOMErrorHandler {
 
 
     // It keeps the reference of DOMErrorHandler of application
     protected DOMErrorHandler fDomErrorHandler;
 
     // Error Status
-    boolean eStatus = true ;
+    boolean eStatus = true;
 
     // Print writer
     protected PrintWriter fOut;
@@ -68,11 +66,12 @@ public class DOMErrorHandlerWrapper
     // @see DOMNormalizer.
     public Node fCurrentNode;
 
-    /** Error code for comparisons. **/
+    /**
+     * Error code for comparisons.
+     **/
     protected final XMLErrorCode fErrorCode = new XMLErrorCode(null, null);
 
     protected final DOMErrorImpl fDOMError = new DOMErrorImpl();
-
 
 
     //
@@ -95,13 +94,15 @@ public class DOMErrorHandlerWrapper
     // Public methods
     //
 
-    /** Sets the DOM error handler. */
+    /**
+     * Sets the DOM error handler.
+     */
     public void setErrorHandler(DOMErrorHandler errorHandler) {
         fDomErrorHandler = errorHandler;
     } // setErrorHandler(ErrorHandler)
 
 
-    public DOMErrorHandler getErrorHandler(){
+    public DOMErrorHandler getErrorHandler() {
         return fDomErrorHandler;
     } //getErrorHandler()
 
@@ -121,7 +122,6 @@ public class DOMErrorHandlerWrapper
      * @param key       The warning key. This key can be any string and
      *                  is implementation dependent.
      * @param exception Exception.
-     *
      * @throws XNIException Thrown to signal that the parser should stop
      *                      parsing the document.
      */
@@ -158,7 +158,6 @@ public class DOMErrorHandlerWrapper
      * @param key       The error key. This key can be any string and
      *                  is implementation dependent.
      * @param exception Exception.
-     *
      * @throws XNIException Thrown to signal that the parser should stop
      *                      parsing the document.
      */
@@ -175,7 +174,7 @@ public class DOMErrorHandlerWrapper
             locator.fLineNumber = exception.getLineNumber();
             locator.fUtf16Offset = exception.getCharacterOffset();
             locator.fUri = exception.getExpandedSystemId();
-            locator.fRelatedNode= fCurrentNode;
+            locator.fRelatedNode = fCurrentNode;
         }
         if (fDomErrorHandler != null) {
             fDomErrorHandler.handleError(fDOMError);
@@ -202,7 +201,6 @@ public class DOMErrorHandlerWrapper
      * @param key       The fatal error key. This key can be any string
      *                  and is implementation dependent.
      * @param exception Exception.
-     *
      * @throws XNIException Thrown to signal that the parser should stop
      *                      parsing the document.
      */
@@ -233,18 +231,20 @@ public class DOMErrorHandlerWrapper
         return eStatus;
     }
 
-    /** Prints the error message. */
+    /**
+     * Prints the error message.
+     */
 
     private void printError(DOMError error) {
         int severity = error.getSeverity();
         fOut.print("[");
-        if ( severity == DOMError.SEVERITY_WARNING) {
+        if (severity == DOMError.SEVERITY_WARNING) {
             fOut.print("Warning");
-        } else if ( severity == DOMError.SEVERITY_ERROR) {
+        } else if (severity == DOMError.SEVERITY_ERROR) {
             fOut.print("Error");
         } else {
             fOut.print("FatalError");
-            eStatus = false ; //REVISIT: Abort processing if fatal error, do we need to??
+            eStatus = false; //REVISIT: Abort processing if fatal error, do we need to??
         }
         fOut.print("] ");
         DOMLocator locator = error.getLocation();
@@ -286,7 +286,9 @@ public class DOMErrorHandlerWrapper
      */
     private static class DOMErrorTypeMap {
 
-        /** Map for converting internal error codes to DOM error types. **/
+        /**
+         * Map for converting internal error codes to DOM error types.
+         **/
         private static Hashtable fgDOMErrorTypeTable;
 
         static {
@@ -410,11 +412,12 @@ public class DOMErrorHandlerWrapper
             fgDOMErrorTypeTable.put(new XMLErrorCode(XMLMessageFormatter.XML_DOMAIN, "PrefixDeclared"), "wf-invalid-character-in-node-name");
         }
 
-        public static String getDOMErrorType (XMLErrorCode error) {
+        public static String getDOMErrorType(XMLErrorCode error) {
             return (String) fgDOMErrorTypeTable.get(error);
         }
 
-        private DOMErrorTypeMap () {}
+        private DOMErrorTypeMap() {
+        }
     }
 
 } // class DOMErrorHandlerWrapper

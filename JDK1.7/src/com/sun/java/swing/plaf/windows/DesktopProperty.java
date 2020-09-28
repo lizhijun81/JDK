@@ -36,7 +36,6 @@ import javax.swing.plaf.*;
  * <code>createValue</code>. If the underlying desktop property changes this
  * will force the UIs to update all known Frames. You can invoke
  * <code>invalidate</code> to force the value to be fetched again.
- *
  */
 // NOTE: Don't rely on this class staying in this location. It is likely
 // to move to a different package in the future.
@@ -76,7 +75,7 @@ public class DesktopProperty implements UIDefaults.ActiveValue {
     static void flushUnreferencedProperties() {
         WeakPCL pcl;
 
-        while ((pcl = (WeakPCL)queue.poll()) != null) {
+        while ((pcl = (WeakPCL) queue.poll()) != null) {
             pcl.dispose();
         }
     }
@@ -127,7 +126,7 @@ public class DesktopProperty implements UIDefaults.ActiveValue {
     /**
      * Creates a DesktopProperty.
      *
-     * @param key Key used in looking up desktop value.
+     * @param key      Key used in looking up desktop value.
      * @param fallback Value used if desktop property is null.
      */
     public DesktopProperty(String key, Object fallback) {
@@ -224,16 +223,13 @@ public class DesktopProperty implements UIDefaults.ActiveValue {
     protected Object configureValue(Object value) {
         if (value != null) {
             if (value instanceof Color) {
-                return new ColorUIResource((Color)value);
-            }
-            else if (value instanceof Font) {
-                return new FontUIResource((Font)value);
-            }
-            else if (value instanceof UIDefaults.LazyValue) {
-                value = ((UIDefaults.LazyValue)value).createValue(null);
-            }
-            else if (value instanceof UIDefaults.ActiveValue) {
-                value = ((UIDefaults.ActiveValue)value).createValue(null);
+                return new ColorUIResource((Color) value);
+            } else if (value instanceof Font) {
+                return new FontUIResource((Font) value);
+            } else if (value instanceof UIDefaults.LazyValue) {
+                value = ((UIDefaults.LazyValue) value).createValue(null);
+            } else if (value instanceof UIDefaults.ActiveValue) {
+                value = ((UIDefaults.ActiveValue) value).createValue(null);
             }
         }
         return value;
@@ -247,14 +243,13 @@ public class DesktopProperty implements UIDefaults.ActiveValue {
     }
 
 
-
     /**
      * As there is typically only one Toolkit, the PropertyChangeListener
      * is handled via a WeakReference so as not to pin down the
      * DesktopProperty.
      */
     private static class WeakPCL extends WeakReference<DesktopProperty>
-                               implements PropertyChangeListener {
+            implements PropertyChangeListener {
         private String key;
         private LookAndFeel laf;
 
@@ -271,8 +266,7 @@ public class DesktopProperty implements UIDefaults.ActiveValue {
                 // The property was GC'ed, we're no longer interested in
                 // PropertyChanges, remove the listener.
                 dispose();
-            }
-            else {
+            } else {
                 property.invalidate(laf);
                 property.updateUI();
             }

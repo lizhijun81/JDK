@@ -30,14 +30,13 @@ import com.sun.mirror.util.SourcePosition;
 /**
  * Represents a value of an annotation type element.
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this interface is {@link
  * javax.lang.model.element.AnnotationValue}.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")
@@ -66,7 +65,7 @@ public interface AnnotationValue {
      * <p>This source position is intended for use in providing diagnostics,
      * and indicates only approximately where an annotation value begins.
      *
-     * @return  the source position of the beginning of this annotation value or
+     * @return the source position of the beginning of this annotation value or
      * null if the position is unknown or not applicable
      */
     SourcePosition getPosition();

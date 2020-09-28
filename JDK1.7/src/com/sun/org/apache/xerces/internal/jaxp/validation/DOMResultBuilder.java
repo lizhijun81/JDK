@@ -70,21 +70,23 @@ import org.w3c.dom.Text;
  */
 final class DOMResultBuilder implements DOMDocumentHandler {
 
-    /** Table for quick check of child insertion. */
+    /**
+     * Table for quick check of child insertion.
+     */
     private final static int[] kidOK;
 
     static {
         kidOK = new int[13];
         kidOK[Node.DOCUMENT_NODE] =
-            1 << Node.ELEMENT_NODE | 1 << Node.PROCESSING_INSTRUCTION_NODE |
-            1 << Node.COMMENT_NODE | 1 << Node.DOCUMENT_TYPE_NODE;
+                1 << Node.ELEMENT_NODE | 1 << Node.PROCESSING_INSTRUCTION_NODE |
+                        1 << Node.COMMENT_NODE | 1 << Node.DOCUMENT_TYPE_NODE;
         kidOK[Node.DOCUMENT_FRAGMENT_NODE] =
-        kidOK[Node.ENTITY_NODE] =
-        kidOK[Node.ENTITY_REFERENCE_NODE] =
-        kidOK[Node.ELEMENT_NODE] =
-            1 << Node.ELEMENT_NODE | 1 << Node.PROCESSING_INSTRUCTION_NODE |
-            1 << Node.COMMENT_NODE | 1 << Node.TEXT_NODE |
-            1 << Node.CDATA_SECTION_NODE | 1 << Node.ENTITY_REFERENCE_NODE ;
+                kidOK[Node.ENTITY_NODE] =
+                        kidOK[Node.ENTITY_REFERENCE_NODE] =
+                                kidOK[Node.ELEMENT_NODE] =
+                                        1 << Node.ELEMENT_NODE | 1 << Node.PROCESSING_INSTRUCTION_NODE |
+                                                1 << Node.COMMENT_NODE | 1 << Node.TEXT_NODE |
+                                                1 << Node.CDATA_SECTION_NODE | 1 << Node.ENTITY_REFERENCE_NODE;
         kidOK[Node.ATTRIBUTE_NODE] = 1 << Node.TEXT_NODE | 1 << Node.ENTITY_REFERENCE_NODE;
         kidOK[Node.DOCUMENT_TYPE_NODE] = 0;
         kidOK[Node.PROCESSING_INSTRUCTION_NODE] = 0;
@@ -114,7 +116,8 @@ final class DOMResultBuilder implements DOMDocumentHandler {
 
     private final QName fAttributeQName = new QName();
 
-    public DOMResultBuilder() {}
+    public DOMResultBuilder() {
+    }
 
     /*
      * DOMDocumentHandler methods
@@ -206,22 +209,27 @@ final class DOMResultBuilder implements DOMDocumentHandler {
      */
 
     public void startDocument(XMLLocator locator, String encoding,
-            NamespaceContext namespaceContext, Augmentations augs)
-            throws XNIException {}
+                              NamespaceContext namespaceContext, Augmentations augs)
+            throws XNIException {
+    }
 
     public void xmlDecl(String version, String encoding, String standalone,
-            Augmentations augs) throws XNIException {}
+                        Augmentations augs) throws XNIException {
+    }
 
     public void doctypeDecl(String rootElement, String publicId,
-            String systemId, Augmentations augs) throws XNIException {}
+                            String systemId, Augmentations augs) throws XNIException {
+    }
 
-    public void comment(XMLString text, Augmentations augs) throws XNIException {}
+    public void comment(XMLString text, Augmentations augs) throws XNIException {
+    }
 
     public void processingInstruction(String target, XMLString data,
-            Augmentations augs) throws XNIException {}
+                                      Augmentations augs) throws XNIException {
+    }
 
     public void startElement(QName element, XMLAttributes attributes,
-            Augmentations augs) throws XNIException {
+                             Augmentations augs) throws XNIException {
         Element elem;
         int attrCount = attributes.getLength();
         if (fDocumentImpl == null) {
@@ -241,7 +249,7 @@ final class DOMResultBuilder implements DOMDocumentHandler {
                 attr.setValue(attributes.getValue(i));
 
                 // write type information to this attribute
-                AttributePSVI attrPSVI = (AttributePSVI) attributes.getAugmentations(i).getItem (Constants.ATTRIBUTE_PSVI);
+                AttributePSVI attrPSVI = (AttributePSVI) attributes.getAugmentations(i).getItem(Constants.ATTRIBUTE_PSVI);
                 if (attrPSVI != null) {
                     if (fStorePSVI) {
                         ((PSVIAttrNSImpl) attr).setPSVI(attrPSVI);
@@ -250,16 +258,15 @@ final class DOMResultBuilder implements DOMDocumentHandler {
                     if (type == null) {
                         type = attrPSVI.getTypeDefinition();
                         if (type != null) {
-                            attr.setType (type);
+                            attr.setType(type);
                             if (((XSSimpleType) type).isIDType()) {
-                                ((ElementImpl) elem).setIdAttributeNode (attr, true);
+                                ((ElementImpl) elem).setIdAttributeNode(attr, true);
                             }
                         }
-                    }
-                    else {
-                        attr.setType (type);
+                    } else {
+                        attr.setType(type);
                         if (((XSSimpleType) type).isIDType()) {
-                            ((ElementImpl) elem).setIdAttributeNode (attr, true);
+                            ((ElementImpl) elem).setIdAttributeNode(attr, true);
                         }
                     }
                 }
@@ -275,20 +282,23 @@ final class DOMResultBuilder implements DOMDocumentHandler {
     }
 
     public void emptyElement(QName element, XMLAttributes attributes,
-            Augmentations augs) throws XNIException {
+                             Augmentations augs) throws XNIException {
         startElement(element, attributes, augs);
         endElement(element, augs);
     }
 
     public void startGeneralEntity(String name,
-            XMLResourceIdentifier identifier, String encoding,
-            Augmentations augs) throws XNIException {}
+                                   XMLResourceIdentifier identifier, String encoding,
+                                   Augmentations augs) throws XNIException {
+    }
 
     public void textDecl(String version, String encoding, Augmentations augs)
-            throws XNIException {}
+            throws XNIException {
+    }
 
     public void endGeneralEntity(String name, Augmentations augs)
-            throws XNIException {}
+            throws XNIException {
+    }
 
     public void characters(XMLString text, Augmentations augs)
             throws XNIException {
@@ -306,16 +316,16 @@ final class DOMResultBuilder implements DOMDocumentHandler {
             throws XNIException {
         // write type information to this element
         if (augs != null && fDocumentImpl != null) {
-            ElementPSVI elementPSVI = (ElementPSVI)augs.getItem(Constants.ELEMENT_PSVI);
+            ElementPSVI elementPSVI = (ElementPSVI) augs.getItem(Constants.ELEMENT_PSVI);
             if (elementPSVI != null) {
                 if (fStorePSVI) {
-                    ((PSVIElementNSImpl)fCurrentNode).setPSVI(elementPSVI);
+                    ((PSVIElementNSImpl) fCurrentNode).setPSVI(elementPSVI);
                 }
                 XSTypeDefinition type = elementPSVI.getMemberTypeDefinition();
                 if (type == null) {
                     type = elementPSVI.getTypeDefinition();
                 }
-                ((ElementNSImpl)fCurrentNode).setType(type);
+                ((ElementNSImpl) fCurrentNode).setType(type);
             }
         }
 
@@ -328,9 +338,11 @@ final class DOMResultBuilder implements DOMDocumentHandler {
         fCurrentNode = fCurrentNode.getParentNode();
     }
 
-    public void startCDATA(Augmentations augs) throws XNIException {}
+    public void startCDATA(Augmentations augs) throws XNIException {
+    }
 
-    public void endCDATA(Augmentations augs) throws XNIException {}
+    public void endCDATA(Augmentations augs) throws XNIException {
+    }
 
     public void endDocument(Augmentations augs) throws XNIException {
         final int length = fTargetChildren.size();
@@ -338,15 +350,15 @@ final class DOMResultBuilder implements DOMDocumentHandler {
             for (int i = 0; i < length; ++i) {
                 fTarget.appendChild((Node) fTargetChildren.get(i));
             }
-        }
-        else {
+        } else {
             for (int i = 0; i < length; ++i) {
                 fTarget.insertBefore((Node) fTargetChildren.get(i), fNextSibling);
             }
         }
     }
 
-    public void setDocumentSource(XMLDocumentSource source) {}
+    public void setDocumentSource(XMLDocumentSource source) {
+    }
 
     public XMLDocumentSource getDocumentSource() {
         return null;
@@ -359,8 +371,7 @@ final class DOMResultBuilder implements DOMDocumentHandler {
     private void append(Node node) throws XNIException {
         if (fCurrentNode != null) {
             fCurrentNode.appendChild(node);
-        }
-        else {
+        } else {
             /** Check if this node can be attached to the target. */
             if ((kidOK[fTarget.getNodeType()] & (1 << node.getNodeType())) == 0) {
                 String msg = DOMMessageFormatter.formatMessage(DOMMessageFormatter.DOM_DOMAIN, "HIERARCHY_REQUEST_ERR", null);

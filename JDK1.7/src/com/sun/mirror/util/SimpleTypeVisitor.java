@@ -37,14 +37,13 @@ import com.sun.mirror.type.*;
  * methods that correspond to the kinds of types on which it will
  * operate.
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this class is {@link
  * javax.lang.model.util.SimpleTypeVisitor6}.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")
@@ -53,11 +52,13 @@ public class SimpleTypeVisitor implements TypeVisitor {
     /**
      * Creates a new <tt>SimpleTypeVisitor</tt>.
      */
-    public SimpleTypeVisitor() {}
+    public SimpleTypeVisitor() {
+    }
 
     /**
      * Visits a type mirror.
      * The implementation does nothing.
+     *
      * @param t the type to visit
      */
     public void visitTypeMirror(TypeMirror t) {
@@ -67,6 +68,7 @@ public class SimpleTypeVisitor implements TypeVisitor {
      * Visits a primitive type.
      * The implementation simply invokes
      * {@link #visitTypeMirror visitTypeMirror}.
+     *
      * @param t the type to visit
      */
     public void visitPrimitiveType(PrimitiveType t) {
@@ -77,6 +79,7 @@ public class SimpleTypeVisitor implements TypeVisitor {
      * Visits a void type.
      * The implementation simply invokes
      * {@link #visitTypeMirror visitTypeMirror}.
+     *
      * @param t the type to visit
      */
     public void visitVoidType(VoidType t) {
@@ -87,6 +90,7 @@ public class SimpleTypeVisitor implements TypeVisitor {
      * Visits a reference type.
      * The implementation simply invokes
      * {@link #visitTypeMirror visitTypeMirror}.
+     *
      * @param t the type to visit
      */
     public void visitReferenceType(ReferenceType t) {
@@ -97,6 +101,7 @@ public class SimpleTypeVisitor implements TypeVisitor {
      * Visits a declared type.
      * The implementation simply invokes
      * {@link #visitReferenceType visitReferenceType}.
+     *
      * @param t the type to visit
      */
     public void visitDeclaredType(DeclaredType t) {
@@ -107,6 +112,7 @@ public class SimpleTypeVisitor implements TypeVisitor {
      * Visits a class type.
      * The implementation simply invokes
      * {@link #visitDeclaredType visitDeclaredType}.
+     *
      * @param t the type to visit
      */
     public void visitClassType(ClassType t) {
@@ -117,6 +123,7 @@ public class SimpleTypeVisitor implements TypeVisitor {
      * Visits an enum type.
      * The implementation simply invokes
      * {@link #visitClassType visitClassType}.
+     *
      * @param t the type to visit
      */
     public void visitEnumType(EnumType t) {
@@ -127,6 +134,7 @@ public class SimpleTypeVisitor implements TypeVisitor {
      * Visits an interface type.
      * The implementation simply invokes
      * {@link #visitDeclaredType visitDeclaredType}.
+     *
      * @param t the type to visit
      */
     public void visitInterfaceType(InterfaceType t) {
@@ -137,6 +145,7 @@ public class SimpleTypeVisitor implements TypeVisitor {
      * Visits an annotation type.
      * The implementation simply invokes
      * {@link #visitInterfaceType visitInterfaceType}.
+     *
      * @param t the type to visit
      */
     public void visitAnnotationType(AnnotationType t) {
@@ -147,6 +156,7 @@ public class SimpleTypeVisitor implements TypeVisitor {
      * Visits an array type.
      * The implementation simply invokes
      * {@link #visitReferenceType visitReferenceType}.
+     *
      * @param t the type to visit
      */
     public void visitArrayType(ArrayType t) {
@@ -157,6 +167,7 @@ public class SimpleTypeVisitor implements TypeVisitor {
      * Visits a type variable.
      * The implementation simply invokes
      * {@link #visitReferenceType visitReferenceType}.
+     *
      * @param t the type to visit
      */
     public void visitTypeVariable(TypeVariable t) {
@@ -167,6 +178,7 @@ public class SimpleTypeVisitor implements TypeVisitor {
      * Visits a wildcard.
      * The implementation simply invokes
      * {@link #visitTypeMirror visitTypeMirror}.
+     *
      * @param t the type to visit
      */
     public void visitWildcardType(WildcardType t) {

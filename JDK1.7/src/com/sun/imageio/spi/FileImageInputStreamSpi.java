@@ -52,7 +52,7 @@ public class FileImageInputStreamSpi extends ImageInputStreamSpi {
                                                       File cacheDir) {
         if (input instanceof File) {
             try {
-                return new FileImageInputStream((File)input);
+                return new FileImageInputStream((File) input);
             } catch (Exception e) {
                 return null;
             }

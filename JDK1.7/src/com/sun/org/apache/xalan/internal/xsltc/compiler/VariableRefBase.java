@@ -64,10 +64,10 @@ class VariableRefBase extends Expression {
      * another variable, param or key, add a dependency between
      * that top-level element and the referenced variable. For
      * example,
-     *
-     *   <xsl:variable name="x" .../>
-     *   <xsl:variable name="y" select="$x + 1"/>
-     *
+     * <p>
+     * <xsl:variable name="x" .../>
+     * <xsl:variable name="y" select="$x + 1"/>
+     * <p>
      * and assuming this class represents "$x", add a reference
      * between variable y and variable x.
      */
@@ -83,7 +83,7 @@ class VariableRefBase extends Expression {
             if (_variable._ignore) {
                 if (_variable instanceof Variable) {
                     var = parent.getSymbolTable()
-                                .lookupVariable(_variable._name);
+                            .lookupVariable(_variable._name);
                 } else if (_variable instanceof Param) {
                     var = parent.getSymbolTable().lookupParam(_variable._name);
                 }
@@ -100,8 +100,7 @@ class VariableRefBase extends Expression {
     public boolean equals(Object obj) {
         try {
             return (_variable == ((VariableRefBase) obj)._variable);
-        }
-        catch (ClassCastException e) {
+        } catch (ClassCastException e) {
             return false;
         }
     }
@@ -109,15 +108,15 @@ class VariableRefBase extends Expression {
     /**
      * Returns a string representation of this variable reference on the
      * format 'variable-ref(<var-name>)'.
+     *
      * @return Variable reference description
      */
     public String toString() {
-        return "variable-ref("+_variable.getName()+'/'+_variable.getType()+')';
+        return "variable-ref(" + _variable.getName() + '/' + _variable.getType() + ')';
     }
 
     public Type typeCheck(SymbolTable stable)
-        throws TypeCheckError
-    {
+            throws TypeCheckError {
         // Returned cached type if available
         if (_type != null) return _type;
 

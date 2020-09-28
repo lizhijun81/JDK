@@ -25,11 +25,12 @@ package com.sun.org.apache.xerces.internal.impl.dv;
  * tries to get a DV factory instance.
  *
  * @xerces.internal
- *
  */
 public class DVFactoryException extends RuntimeException {
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = -3738854697928682412L;
 
     public DVFactoryException() {

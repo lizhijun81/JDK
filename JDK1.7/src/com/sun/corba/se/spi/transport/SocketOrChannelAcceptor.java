@@ -30,8 +30,7 @@ import java.net.ServerSocket;
 /**
  * @author Harold Carr
  */
-public interface SocketOrChannelAcceptor
-{
+public interface SocketOrChannelAcceptor {
     public ServerSocket getServerSocket();
 }
 

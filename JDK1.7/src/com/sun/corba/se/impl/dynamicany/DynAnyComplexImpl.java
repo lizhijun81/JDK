@@ -36,12 +36,11 @@ import org.omg.DynamicAny.DynAnyPackage.TypeMismatch;
 import org.omg.DynamicAny.DynAnyPackage.InvalidValue;
 import org.omg.DynamicAny.DynAnyFactoryPackage.InconsistentTypeCode;
 
-import com.sun.corba.se.spi.orb.ORB ;
-import com.sun.corba.se.spi.logging.CORBALogDomains ;
-import com.sun.corba.se.impl.logging.ORBUtilSystemException ;
+import com.sun.corba.se.spi.orb.ORB;
+import com.sun.corba.se.spi.logging.CORBALogDomains;
+import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 
-abstract class DynAnyComplexImpl extends DynAnyConstructedImpl
-{
+abstract class DynAnyComplexImpl extends DynAnyConstructedImpl {
     //
     // Instance variables
     //
@@ -57,7 +56,7 @@ abstract class DynAnyComplexImpl extends DynAnyConstructedImpl
     //
 
     private DynAnyComplexImpl() {
-        this(null, (Any)null, false);
+        this(null, (Any) null, false);
     }
 
     protected DynAnyComplexImpl(ORB orb, Any any, boolean copyValue) {
@@ -102,39 +101,36 @@ abstract class DynAnyComplexImpl extends DynAnyConstructedImpl
     // Complex methods
     //
 
-    public String current_member_name ()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+    public String current_member_name()
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
-        if( ! checkInitComponents() || index < 0 || index >= names.length) {
+        if (!checkInitComponents() || index < 0 || index >= names.length) {
             throw new InvalidValue();
         }
         return names[index];
     }
 
-    public TCKind current_member_kind ()
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+    public TCKind current_member_kind()
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
-        if( ! checkInitComponents() || index < 0 || index >= components.length) {
+        if (!checkInitComponents() || index < 0 || index >= components.length) {
             throw new InvalidValue();
         }
         return components[index].type().kind();
     }
 
     // Creates references to the parameter instead of copying it.
-    public void set_members (org.omg.DynamicAny.NameValuePair[] value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+    public void set_members(org.omg.DynamicAny.NameValuePair[] value)
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (value == null || value.length == 0) {
             clearData();
@@ -159,7 +155,7 @@ abstract class DynAnyComplexImpl extends DynAnyConstructedImpl
 
         allocComponents(value);
 
-        for (int i=0; i<value.length; i++) {
+        for (int i = 0; i < value.length; i++) {
             if (value[i] != null) {
                 memberName = value[i].id;
                 String expectedMemberName = null;
@@ -168,7 +164,7 @@ abstract class DynAnyComplexImpl extends DynAnyConstructedImpl
                 } catch (BadKind badKind) { // impossible
                 } catch (Bounds bounds) { // impossible
                 }
-                if ( ! (expectedMemberName.equals(memberName) || memberName.equals(""))) {
+                if (!(expectedMemberName.equals(memberName) || memberName.equals(""))) {
                     clearData();
                     // _REVISIT_ More info
                     throw new TypeMismatch();
@@ -180,7 +176,7 @@ abstract class DynAnyComplexImpl extends DynAnyConstructedImpl
                 } catch (BadKind badKind) { // impossible
                 } catch (Bounds bounds) { // impossible
                 }
-                if (! expectedMemberType.equal(memberAny.type())) {
+                if (!expectedMemberType.equal(memberAny.type())) {
                     clearData();
                     // _REVISIT_ More info
                     throw new TypeMismatch();
@@ -203,12 +199,11 @@ abstract class DynAnyComplexImpl extends DynAnyConstructedImpl
     }
 
     // Creates references to the parameter instead of copying it.
-    public void set_members_as_dyn_any (org.omg.DynamicAny.NameDynAnyPair[] value)
-        throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
-               org.omg.DynamicAny.DynAnyPackage.InvalidValue
-    {
+    public void set_members_as_dyn_any(org.omg.DynamicAny.NameDynAnyPair[] value)
+            throws org.omg.DynamicAny.DynAnyPackage.TypeMismatch,
+            org.omg.DynamicAny.DynAnyPackage.InvalidValue {
         if (status == STATUS_DESTROYED) {
-            throw wrapper.dynAnyDestroyed() ;
+            throw wrapper.dynAnyDestroyed();
         }
         if (value == null || value.length == 0) {
             clearData();
@@ -233,7 +228,7 @@ abstract class DynAnyComplexImpl extends DynAnyConstructedImpl
 
         allocComponents(value);
 
-        for (int i=0; i<value.length; i++) {
+        for (int i = 0; i < value.length; i++) {
             if (value[i] != null) {
                 memberName = value[i].id;
                 String expectedMemberName = null;
@@ -242,7 +237,7 @@ abstract class DynAnyComplexImpl extends DynAnyConstructedImpl
                 } catch (BadKind badKind) { // impossible
                 } catch (Bounds bounds) { // impossible
                 }
-                if ( ! (expectedMemberName.equals(memberName) || memberName.equals(""))) {
+                if (!(expectedMemberName.equals(memberName) || memberName.equals(""))) {
                     clearData();
                     // _REVISIT_ More info
                     throw new TypeMismatch();
@@ -255,7 +250,7 @@ abstract class DynAnyComplexImpl extends DynAnyConstructedImpl
                 } catch (BadKind badKind) { // impossible
                 } catch (Bounds bounds) { // impossible
                 }
-                if (! expectedMemberType.equal(memberAny.type())) {
+                if (!expectedMemberType.equal(memberAny.type())) {
                     clearData();
                     // _REVISIT_ More info
                     throw new TypeMismatch();
@@ -281,7 +276,7 @@ abstract class DynAnyComplexImpl extends DynAnyConstructedImpl
         names = new String[length];
         nameValuePairs = new NameValuePair[length];
         nameDynAnyPairs = new NameDynAnyPair[length];
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             nameValuePairs[i] = new NameValuePair();
             nameDynAnyPairs[i] = new NameDynAnyPair();
         }
@@ -292,7 +287,7 @@ abstract class DynAnyComplexImpl extends DynAnyConstructedImpl
         names = new String[value.length];
         nameValuePairs = value;
         nameDynAnyPairs = new NameDynAnyPair[value.length];
-        for (int i=0; i<value.length; i++) {
+        for (int i = 0; i < value.length; i++) {
             nameDynAnyPairs[i] = new NameDynAnyPair();
         }
     }
@@ -301,7 +296,7 @@ abstract class DynAnyComplexImpl extends DynAnyConstructedImpl
         components = new DynAny[value.length];
         names = new String[value.length];
         nameValuePairs = new NameValuePair[value.length];
-        for (int i=0; i<value.length; i++) {
+        for (int i = 0; i < value.length; i++) {
             nameValuePairs[i] = new NameValuePair();
         }
         nameDynAnyPairs = value;
@@ -315,7 +310,7 @@ abstract class DynAnyComplexImpl extends DynAnyConstructedImpl
         nameDynAnyPairs[i].id = memberName;
         nameDynAnyPairs[i].value = memberDynAny;
         if (memberDynAny instanceof DynAnyImpl)
-            ((DynAnyImpl)memberDynAny).setStatus(STATUS_UNDESTROYABLE);
+            ((DynAnyImpl) memberDynAny).setStatus(STATUS_UNDESTROYABLE);
     }
 
     // Initializes components, names, nameValuePairs and nameDynAnyPairs representation
@@ -338,7 +333,7 @@ abstract class DynAnyComplexImpl extends DynAnyConstructedImpl
 
         allocComponents(length);
 
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             try {
                 memberName = typeCode.member_name(i);
                 memberType = typeCode.member_type(i);
@@ -379,7 +374,7 @@ abstract class DynAnyComplexImpl extends DynAnyConstructedImpl
 
         allocComponents(length);
 
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             memberName = null;
             try {
                 memberName = typeCode.member_name(i);

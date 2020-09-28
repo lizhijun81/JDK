@@ -36,8 +36,8 @@ import javax.imageio.IIOException;
 
 public class BMPImageReaderSpi extends ImageReaderSpi {
 
-    private static String [] writerSpiNames =
-        {"com.sun.imageio.plugins.bmp.BMPImageWriterSpi"};
+    private static String[] writerSpiNames =
+            {"com.sun.imageio.plugins.bmp.BMPImageWriterSpi"};
     private static String[] formatNames = {"bmp", "BMP"};
     private static String[] entensions = {"bmp"};
     private static String[] mimeType = {"image/bmp"};
@@ -46,19 +46,19 @@ public class BMPImageReaderSpi extends ImageReaderSpi {
 
     public BMPImageReaderSpi() {
         super("Oracle Corporation",
-              "1.0",
-              formatNames,
-              entensions,
-              mimeType,
-              "com.sun.imageio.plugins.bmp.BMPImageReader",
-              new Class[] { ImageInputStream.class },
-              writerSpiNames,
-              false,
-              null, null, null, null,
-              true,
-              BMPMetadata.nativeMetadataFormatName,
-              "com.sun.imageio.plugins.bmp.BMPMetadataFormat",
-              null, null);
+                "1.0",
+                formatNames,
+                entensions,
+                mimeType,
+                "com.sun.imageio.plugins.bmp.BMPImageReader",
+                new Class[]{ImageInputStream.class},
+                writerSpiNames,
+                false,
+                null, null, null, null,
+                true,
+                BMPMetadata.nativeMetadataFormatName,
+                "com.sun.imageio.plugins.bmp.BMPMetadataFormat",
+                null, null);
     }
 
     public void onRegistration(ServiceRegistry registry,
@@ -78,7 +78,7 @@ public class BMPImageReaderSpi extends ImageReaderSpi {
             return false;
         }
 
-        ImageInputStream stream = (ImageInputStream)source;
+        ImageInputStream stream = (ImageInputStream) source;
         byte[] b = new byte[2];
         stream.mark();
         stream.readFully(b);
@@ -88,7 +88,7 @@ public class BMPImageReaderSpi extends ImageReaderSpi {
     }
 
     public ImageReader createReaderInstance(Object extension)
-        throws IIOException {
+            throws IIOException {
         return new BMPImageReader(this);
     }
 }

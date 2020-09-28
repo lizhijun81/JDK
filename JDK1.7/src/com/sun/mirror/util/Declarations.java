@@ -32,14 +32,13 @@ import com.sun.mirror.declaration.*;
 /**
  * Utility methods for operating on declarations.
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this interface is {@link
  * javax.lang.model.util.Elements}.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")
@@ -51,7 +50,7 @@ public interface Declarations {
      * @param sub the first member
      * @param sup the second member
      * @return <tt>true</tt> if and only if the first member hides
-     *          the second
+     * the second
      */
     boolean hides(MemberDeclaration sub, MemberDeclaration sup);
 
@@ -63,7 +62,7 @@ public interface Declarations {
      * @param sub the first method
      * @param sup the second method
      * @return <tt>true</tt> if and only if the first method overrides
-     *          the second
+     * the second
      */
     boolean overrides(MethodDeclaration sub, MethodDeclaration sup);
 }

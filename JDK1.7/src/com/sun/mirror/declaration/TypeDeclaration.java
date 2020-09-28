@@ -54,16 +54,14 @@ import com.sun.mirror.type.*;
  * provides a simple way to select just the items of interest
  * when a method returns a collection of declarations.
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @see DeclaredType
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this interface is included in {@link
  * javax.lang.model.element.TypeElement}.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- *
- * @see DeclaredType
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")
@@ -103,7 +101,6 @@ public interface TypeDeclaration extends MemberDeclaration {
      *
      * @return the interface types directly implemented by this class
      * or extended by this interface, or an empty collection if there are none
-     *
      * @see com.sun.mirror.util.DeclarationFilter
      */
     Collection<InterfaceType> getSuperinterfaces();
@@ -114,7 +111,6 @@ public interface TypeDeclaration extends MemberDeclaration {
      *
      * @return the fields that are directly declared,
      * or an empty collection if there are none
-     *
      * @see com.sun.mirror.util.DeclarationFilter
      */
     Collection<FieldDeclaration> getFields();
@@ -128,7 +124,6 @@ public interface TypeDeclaration extends MemberDeclaration {
      *
      * @return the methods that are directly declared,
      * or an empty collection if there are none
-     *
      * @see com.sun.mirror.util.DeclarationFilter
      */
     Collection<? extends MethodDeclaration> getMethods();
@@ -139,7 +134,6 @@ public interface TypeDeclaration extends MemberDeclaration {
      *
      * @return the declarations of the nested classes and interfaces,
      * or an empty collection if there are none
-     *
      * @see com.sun.mirror.util.DeclarationFilter
      */
     Collection<TypeDeclaration> getNestedTypes();

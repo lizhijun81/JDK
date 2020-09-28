@@ -25,7 +25,6 @@ import org.w3c.dom.Node;
 
 /**
  * <p>An <code>XMLInputSource</code> analogue to <code>javax.xml.transform.dom.DOMSource</code>.</p>
- *
  */
 public final class DOMInputSource extends XMLInputSource {
 

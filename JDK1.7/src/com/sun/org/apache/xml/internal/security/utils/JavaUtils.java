@@ -29,13 +29,16 @@ import java.io.InputStream;
 
 /**
  * A collection of different, general-purpose methods for JAVA-specific things
+ *
  * @author Christian Geuer-Pollmann
  */
 public class JavaUtils {
 
-    /** {@link java.util.logging} logging facility */
+    /**
+     * {@link java.util.logging} logging facility
+     */
     static java.util.logging.Logger log =
-        java.util.logging.Logger.getLogger(JavaUtils.class.getName());
+            java.util.logging.Logger.getLogger(JavaUtils.class.getName());
 
     private JavaUtils() {
         // we don't allow instantiation
@@ -46,12 +49,11 @@ public class JavaUtils {
      *
      * @param fileName
      * @return the bytes readed from the file
-     *
      * @throws FileNotFoundException
      * @throws IOException
      */
     public static byte[] getBytesFromFile(String fileName)
-        throws FileNotFoundException, IOException {
+            throws FileNotFoundException, IOException {
 
         byte refBytes[] = null;
 
@@ -97,7 +99,8 @@ public class JavaUtils {
             if (fos != null) {
                 try {
                     fos.close();
-                } catch (IOException ioe) {}
+                } catch (IOException ioe) {
+                }
             }
         }
     }
@@ -108,12 +111,11 @@ public class JavaUtils {
      *
      * @param inputStream
      * @return the bytes readed from the stream
-     *
      * @throws FileNotFoundException
      * @throws IOException
      */
     public static byte[] getBytesFromStream(InputStream inputStream)
-        throws IOException {
+            throws IOException {
 
         byte refBytes[] = null;
 

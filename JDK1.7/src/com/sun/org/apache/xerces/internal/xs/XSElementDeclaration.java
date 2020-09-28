@@ -59,12 +59,12 @@ public interface XSElementDeclaration extends XSTerm {
      * Value Constraint: Binding specific actual constraint value or
      * <code>null</code> if the value is in error or there is no value
      * constraint.
-     * @exception XSException
-     *   NOT_SUPPORTED_ERR: Raised if the implementation does not support this
-     *   method.
+     *
+     * @throws XSException NOT_SUPPORTED_ERR: Raised if the implementation does not support this
+     *                     method.
      */
     public Object getActualVC()
-                                            throws XSException;
+            throws XSException;
 
     /**
      * The actual constraint value built-in datatype, e.g.
@@ -75,14 +75,14 @@ public interface XSElementDeclaration extends XSTerm {
      * method returns <code>LISTOFUNION_DT</code>. To query the actual
      * constraint value of the list or list of union type definitions use
      * <code>itemValueTypes</code>. If the <code>actualNormalizedValue</code>
-     *  is <code>null</code>, this method returns <code>UNAVAILABLE_DT</code>
+     * is <code>null</code>, this method returns <code>UNAVAILABLE_DT</code>
      * .
-     * @exception XSException
-     *   NOT_SUPPORTED_ERR: Raised if the implementation does not support this
-     *   method.
+     *
+     * @throws XSException NOT_SUPPORTED_ERR: Raised if the implementation does not support this
+     *                     method.
      */
     public short getActualVCType()
-                                            throws XSException;
+            throws XSException;
 
     /**
      * In the case the actual constraint value represents a list, i.e. the
@@ -93,15 +93,15 @@ public interface XSElementDeclaration extends XSTerm {
      * for each actual constraint value in the list the array contains the
      * corresponding memberType kind. For examples, see
      * <code>ItemPSVI.itemValueTypes</code>.
-     * @exception XSException
-     *   NOT_SUPPORTED_ERR: Raised if the implementation does not support this
-     *   method.
+     *
+     * @throws XSException NOT_SUPPORTED_ERR: Raised if the implementation does not support this
+     *                     method.
      */
     public ShortList getItemValueTypes()
-                                            throws XSException;
+            throws XSException;
 
     /**
-     *  If nillable is true, then an element may also be valid if it carries
+     * If nillable is true, then an element may also be valid if it carries
      * the namespace qualified attribute with local name <code>nil</code>
      * from namespace <code>http://www.w3.org/2001/XMLSchema-instance</code>
      * and value <code>true</code> (xsi:nil) even if it has no text or
@@ -125,16 +125,16 @@ public interface XSElementDeclaration extends XSTerm {
     /**
      * Convenience method that checks if <code>exclusion</code> is a
      * substitution group exclusion for this element declaration.
-     * @param exclusion
-     *   <code>DERIVATION_EXTENSION, DERIVATION_RESTRICTION</code> or
-     *   <code>DERIVATION_NONE</code>. Represents final set for the element.
+     *
+     * @param exclusion <code>DERIVATION_EXTENSION, DERIVATION_RESTRICTION</code> or
+     *                  <code>DERIVATION_NONE</code>. Represents final set for the element.
      * @return True if <code>exclusion</code> is a part of the substitution
-     *   group exclusion subset.
+     * group exclusion subset.
      */
     public boolean isSubstitutionGroupExclusion(short exclusion);
 
     /**
-     *  [substitution group exclusions]: the returned value is a bit
+     * [substitution group exclusions]: the returned value is a bit
      * combination of the subset of {
      * <code>DERIVATION_EXTENSION, DERIVATION_RESTRICTION</code>} or
      * <code>DERIVATION_NONE</code>.
@@ -144,17 +144,18 @@ public interface XSElementDeclaration extends XSTerm {
     /**
      * Convenience method that checks if <code>disallowed</code> is a
      * disallowed substitution for this element declaration.
+     *
      * @param disallowed {
-     *   <code>DERIVATION_SUBSTITUTION, DERIVATION_EXTENSION, DERIVATION_RESTRICTION</code>
-     *   } or <code>DERIVATION_NONE</code>. Represents a block set for the
-     *   element.
+     *                   <code>DERIVATION_SUBSTITUTION, DERIVATION_EXTENSION, DERIVATION_RESTRICTION</code>
+     *                   } or <code>DERIVATION_NONE</code>. Represents a block set for the
+     *                   element.
      * @return True if <code>disallowed</code> is a part of the substitution
-     *   group exclusion subset.
+     * group exclusion subset.
      */
     public boolean isDisallowedSubstitution(short disallowed);
 
     /**
-     *  [disallowed substitutions]: the returned value is a bit combination of
+     * [disallowed substitutions]: the returned value is a bit combination of
      * the subset of {
      * <code>DERIVATION_SUBSTITUTION, DERIVATION_EXTENSION, DERIVATION_RESTRICTION</code>
      * } corresponding to substitutions disallowed by this

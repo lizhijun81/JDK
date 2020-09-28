@@ -28,17 +28,15 @@ import com.sun.org.apache.xerces.internal.impl.dv.util.ByteListImpl;
 /**
  * Represent the schema type "base64Binary"
  *
- * @xerces.internal
- *
  * @author Neeraj Bajaj, Sun Microsystems, inc.
  * @author Sandy Gao, IBM
- *
  * @version $Id: Base64BinaryDV.java,v 1.7 2010-11-01 04:39:46 joehw Exp $
+ * @xerces.internal
  */
 public class Base64BinaryDV extends TypeValidator {
 
-    public short getAllowedFacets(){
-        return (XSSimpleTypeDecl.FACET_LENGTH | XSSimpleTypeDecl.FACET_MINLENGTH | XSSimpleTypeDecl.FACET_MAXLENGTH | XSSimpleTypeDecl.FACET_PATTERN | XSSimpleTypeDecl.FACET_ENUMERATION | XSSimpleTypeDecl.FACET_WHITESPACE );
+    public short getAllowedFacets() {
+        return (XSSimpleTypeDecl.FACET_LENGTH | XSSimpleTypeDecl.FACET_MINLENGTH | XSSimpleTypeDecl.FACET_MAXLENGTH | XSSimpleTypeDecl.FACET_PATTERN | XSSimpleTypeDecl.FACET_ENUMERATION | XSSimpleTypeDecl.FACET_WHITESPACE);
     }
 
     public Object getActualValue(String content, ValidationContext context) throws InvalidDatatypeValueException {
@@ -51,7 +49,7 @@ public class Base64BinaryDV extends TypeValidator {
 
     // length of a binary type is the number of bytes
     public int getDataLength(Object value) {
-        return ((XBase64)value).getLength();
+        return ((XBase64) value).getLength();
     }
 
     /**
@@ -62,6 +60,7 @@ public class Base64BinaryDV extends TypeValidator {
         public XBase64(byte[] data) {
             super(data);
         }
+
         public synchronized String toString() {
             if (canonical == null) {
                 canonical = Base64.encode(data);
@@ -72,7 +71,7 @@ public class Base64BinaryDV extends TypeValidator {
         public boolean equals(Object obj) {
             if (!(obj instanceof XBase64))
                 return false;
-            byte[] odata = ((XBase64)obj).data;
+            byte[] odata = ((XBase64) obj).data;
             int len = data.length;
             if (len != odata.length)
                 return false;

@@ -50,15 +50,13 @@ import com.sun.corba.se.impl.transport.SocketOrChannelConnectionImpl;
  * @author Harold Carr
  */
 public class SocketFactoryConnectionImpl
-    extends
-        SocketOrChannelConnectionImpl
-{
+        extends
+        SocketOrChannelConnectionImpl {
     // Socket-factory client constructor.
     public SocketFactoryConnectionImpl(ORB orb,
                                        CorbaContactInfo contactInfo,
                                        boolean useSelectThreadToWait,
-                                       boolean useWorkerThread)
-    {
+                                       boolean useWorkerThread) {
         super(orb, useSelectThreadToWait, useWorkerThread);
 
         // REVISIT - probably need a contact info for both
@@ -67,11 +65,11 @@ public class SocketFactoryConnectionImpl
 
         boolean isBlocking = !useSelectThreadToWait;
         SocketInfo socketInfo =
-            // REVISIT - case - needs interface method
-            ((SocketFactoryContactInfoImpl)contactInfo).socketInfo;
+                // REVISIT - case - needs interface method
+                ((SocketFactoryContactInfoImpl) contactInfo).socketInfo;
         try {
             socket =
-                orb.getORBData().getLegacySocketFactory().createSocket(socketInfo);
+                    orb.getORBData().getLegacySocketFactory().createSocket(socketInfo);
             socketChannel = socket.getChannel();
             if (socketChannel != null) {
                 socketChannel.configureBlocking(isBlocking);
@@ -85,33 +83,31 @@ public class SocketFactoryConnectionImpl
             }
         } catch (GetEndPointInfoAgainException ex) {
             throw wrapper.connectFailure(
-                ex, socketInfo.getType(), socketInfo.getHost(),
-                Integer.toString(socketInfo.getPort())) ;
+                    ex, socketInfo.getType(), socketInfo.getHost(),
+                    Integer.toString(socketInfo.getPort()));
         } catch (Exception ex) {
             throw wrapper.connectFailure(
-                ex, socketInfo.getType(), socketInfo.getHost(),
-                Integer.toString(socketInfo.getPort())) ;
+                    ex, socketInfo.getType(), socketInfo.getHost(),
+                    Integer.toString(socketInfo.getPort()));
         }
         state = OPENING;
     }
 
-    public String toString()
-    {
-        synchronized ( stateEvent ){
+    public String toString() {
+        synchronized (stateEvent) {
             return
-                "SocketFactoryConnectionImpl[" + " "
-                + (socketChannel == null ?
-                   socket.toString() : socketChannel.toString()) + " "
-                + getStateString( state ) + " "
-                + shouldUseSelectThreadToWait() + " "
-                + shouldUseWorkerThreadForEvent()
-                + "]" ;
+                    "SocketFactoryConnectionImpl[" + " "
+                            + (socketChannel == null ?
+                            socket.toString() : socketChannel.toString()) + " "
+                            + getStateString(state) + " "
+                            + shouldUseSelectThreadToWait() + " "
+                            + shouldUseWorkerThreadForEvent()
+                            + "]";
         }
     }
 
     // Note: public to override parent.
-    public void dprint(String msg)
-    {
+    public void dprint(String msg) {
         ORBUtility.dprint("SocketFactoryConnectionImpl", msg);
     }
 

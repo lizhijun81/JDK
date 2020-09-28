@@ -42,12 +42,10 @@ import com.sun.corba.se.impl.transport.SocketOrChannelAcceptorImpl;
  * @author Harold Carr
  */
 public class SocketFactoryAcceptorImpl
-    extends
-        SocketOrChannelAcceptorImpl
-{
+        extends
+        SocketOrChannelAcceptorImpl {
     public SocketFactoryAcceptorImpl(ORB orb, int port,
-                                     String name, String type)
-    {
+                                     String name, String type) {
         super(orb, port, name, type);
     }
 
@@ -56,8 +54,7 @@ public class SocketFactoryAcceptorImpl
     // pept Acceptor
     //
 
-    public boolean initialize()
-    {
+    public boolean initialize() {
         if (initialized) {
             return false;
         }
@@ -66,10 +63,10 @@ public class SocketFactoryAcceptorImpl
         }
         try {
             serverSocket = orb.getORBData()
-                .getLegacySocketFactory().createServerSocket(type, port);
+                    .getLegacySocketFactory().createServerSocket(type, port);
             internalInitialize();
         } catch (Throwable t) {
-            throw wrapper.createListenerFailed( t, Integer.toString(port) ) ;
+            throw wrapper.createListenerFailed(t, Integer.toString(port));
         }
         initialized = true;
         return true;
@@ -80,13 +77,11 @@ public class SocketFactoryAcceptorImpl
     // Implementation.
     //
 
-    protected String toStringName()
-    {
+    protected String toStringName() {
         return "SocketFactoryAcceptorImpl";
     }
 
-    protected void dprint(String msg)
-    {
+    protected void dprint(String msg) {
         ORBUtility.dprint(toStringName(), msg);
     }
 }

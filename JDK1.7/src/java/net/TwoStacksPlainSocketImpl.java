@@ -26,6 +26,7 @@ package java.net;
 
 import java.io.IOException;
 import java.io.FileDescriptor;
+
 import sun.net.ResourceManager;
 
 /*
@@ -40,8 +41,7 @@ import sun.net.ResourceManager;
  * @author Chris Hegarty
  */
 
-class TwoStacksPlainSocketImpl extends AbstractPlainSocketImpl
-{
+class TwoStacksPlainSocketImpl extends AbstractPlainSocketImpl {
     /* second fd, used for ipv6 on windows only.
      * fd1 is used for listeners and for client sockets at initialization
      * until the socket is connected. Up to this point fd always refers
@@ -99,14 +99,14 @@ class TwoStacksPlainSocketImpl extends AbstractPlainSocketImpl
         }
     }
 
-     /**
+    /**
      * Binds the socket to the specified address of the specified local port.
+     *
      * @param address the address
-     * @param port the port
+     * @param port    the port
      */
     protected synchronized void bind(InetAddress address, int lport)
-        throws IOException
-    {
+            throws IOException {
         super.bind(address, lport);
         if (address.isAnyLocalAddress()) {
             anyLocalBoundAddr = address;
@@ -118,7 +118,7 @@ class TwoStacksPlainSocketImpl extends AbstractPlainSocketImpl
             throw new SocketException("Socket Closed");
         }
         if (opt == SO_BINDADDR) {
-            if (fd != null && fd1 != null ) {
+            if (fd != null && fd1 != null) {
                 /* must be unbound or else bound to anyLocal */
                 return anyLocalBoundAddr;
             }
@@ -139,8 +139,7 @@ class TwoStacksPlainSocketImpl extends AbstractPlainSocketImpl
 
     @Override
     void socketSetOption(int opt, boolean on, Object value)
-        throws SocketException
-    {
+            throws SocketException {
         // SO_REUSEADDR emulated when using exclusive bind
         if (opt == SO_REUSEADDR && exclusiveBind)
             isReuseAddress = on;
@@ -153,7 +152,7 @@ class TwoStacksPlainSocketImpl extends AbstractPlainSocketImpl
      */
     @Override
     protected void close() throws IOException {
-        synchronized(fdLock) {
+        synchronized (fdLock) {
             if (fd != null || fd1 != null) {
                 if (!stream) {
                     ResourceManager.afterUdpClose();
@@ -219,10 +218,10 @@ class TwoStacksPlainSocketImpl extends AbstractPlainSocketImpl
     native void socketCreate(boolean isServer) throws IOException;
 
     native void socketConnect(InetAddress address, int port, int timeout)
-        throws IOException;
+            throws IOException;
 
     native void socketBind(InetAddress address, int port, boolean exclBind)
-        throws IOException;
+            throws IOException;
 
     native void socketListen(int count) throws IOException;
 
@@ -235,7 +234,7 @@ class TwoStacksPlainSocketImpl extends AbstractPlainSocketImpl
     native void socketShutdown(int howto) throws IOException;
 
     native void socketNativeSetOption(int cmd, boolean on, Object value)
-        throws SocketException;
+            throws SocketException;
 
     native int socketGetOption(int opt, Object iaContainerObj) throws SocketException;
 

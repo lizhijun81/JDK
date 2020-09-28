@@ -29,44 +29,61 @@ import com.sun.org.apache.xerces.internal.xni.XNIException;
  * its entities) where the exception occurred.
  *
  * @author Andy Clark, IBM
- *
  */
 public class XMLParseException
-    extends XNIException {
+        extends XNIException {
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = 1732959359448549967L;
 
     //
     // Data
     //
 
-    /** Public identifier. */
+    /**
+     * Public identifier.
+     */
     protected String fPublicId;
 
-    /** literal System identifier. */
+    /**
+     * literal System identifier.
+     */
     protected String fLiteralSystemId;
 
-    /** expanded System identifier. */
+    /**
+     * expanded System identifier.
+     */
     protected String fExpandedSystemId;
 
-    /** Base system identifier. */
+    /**
+     * Base system identifier.
+     */
     protected String fBaseSystemId;
 
-    /** Line number. */
+    /**
+     * Line number.
+     */
     protected int fLineNumber = -1;
 
-    /** Column number. */
+    /**
+     * Column number.
+     */
     protected int fColumnNumber = -1;
 
-    /** Character offset. */
+    /**
+     * Character offset.
+     */
     protected int fCharacterOffset = -1;
 
     //
     // Constructors
     //
 
-    /** Constructs a parse exception. */
+    /**
+     * Constructs a parse exception.
+     */
     public XMLParseException(XMLLocator locator, String message) {
         super(message);
         if (locator != null) {
@@ -80,7 +97,9 @@ public class XMLParseException
         }
     } // <init>(XMLLocator,String)
 
-    /** Constructs a parse exception. */
+    /**
+     * Constructs a parse exception.
+     */
     public XMLParseException(XMLLocator locator,
                              String message, Exception exception) {
         super(message, exception);
@@ -99,37 +118,51 @@ public class XMLParseException
     // Public methods
     //
 
-    /** Returns the public identifier. */
+    /**
+     * Returns the public identifier.
+     */
     public String getPublicId() {
         return fPublicId;
     } // getPublicId():String
 
-    /** Returns the expanded system identifier. */
+    /**
+     * Returns the expanded system identifier.
+     */
     public String getExpandedSystemId() {
         return fExpandedSystemId;
     } // getExpandedSystemId():String
 
-    /** Returns the literal system identifier. */
+    /**
+     * Returns the literal system identifier.
+     */
     public String getLiteralSystemId() {
         return fLiteralSystemId;
     } // getLiteralSystemId():String
 
-    /** Returns the base system identifier. */
+    /**
+     * Returns the base system identifier.
+     */
     public String getBaseSystemId() {
         return fBaseSystemId;
     } // getBaseSystemId():String
 
-    /** Returns the line number. */
+    /**
+     * Returns the line number.
+     */
     public int getLineNumber() {
         return fLineNumber;
     } // getLineNumber():int
 
-    /** Returns the row number. */
+    /**
+     * Returns the row number.
+     */
     public int getColumnNumber() {
         return fColumnNumber;
     } // getRowNumber():int
 
-    /** Returns the character offset. */
+    /**
+     * Returns the character offset.
+     */
     public int getCharacterOffset() {
         return fCharacterOffset;
     } // getCharacterOffset():int
@@ -138,7 +171,9 @@ public class XMLParseException
     // Object methods
     //
 
-    /** Returns a string representation of this object. */
+    /**
+     * Returns a string representation of this object.
+     */
     public String toString() {
 
         StringBuffer str = new StringBuffer();

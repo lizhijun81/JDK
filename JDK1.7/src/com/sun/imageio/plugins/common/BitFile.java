@@ -39,7 +39,9 @@ public class BitFile {
     int index;
     int bitsLeft; // bits left at current index that are avail.
 
-    /** note this also indicates gif format BITFile. **/
+    /**
+     * note this also indicates gif format BITFile.
+     **/
     boolean blocks = false;
 
     /*

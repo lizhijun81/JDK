@@ -39,14 +39,13 @@ import com.sun.mirror.declaration.*;
  * are scanned; the postprocessing visitor is called after the
  * contained declarations are scanned.
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this class is {@link
  * javax.lang.model.util.ElementScanner6}.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")
@@ -77,11 +76,11 @@ class DeclarationScanner implements DeclarationVisitor {
     public void visitPackageDeclaration(PackageDeclaration d) {
         d.accept(pre);
 
-        for(ClassDeclaration classDecl: d.getClasses()) {
+        for (ClassDeclaration classDecl : d.getClasses()) {
             classDecl.accept(this);
         }
 
-        for(InterfaceDeclaration interfaceDecl: d.getInterfaces()) {
+        for (InterfaceDeclaration interfaceDecl : d.getInterfaces()) {
             interfaceDecl.accept(this);
         }
 
@@ -105,19 +104,19 @@ class DeclarationScanner implements DeclarationVisitor {
     public void visitTypeDeclaration(TypeDeclaration d) {
         d.accept(pre);
 
-        for(TypeParameterDeclaration tpDecl: d.getFormalTypeParameters()) {
+        for (TypeParameterDeclaration tpDecl : d.getFormalTypeParameters()) {
             tpDecl.accept(this);
         }
 
-        for(FieldDeclaration fieldDecl: d.getFields()) {
+        for (FieldDeclaration fieldDecl : d.getFields()) {
             fieldDecl.accept(this);
         }
 
-        for(MethodDeclaration methodDecl: d.getMethods()) {
+        for (MethodDeclaration methodDecl : d.getMethods()) {
             methodDecl.accept(this);
         }
 
-        for(TypeDeclaration typeDecl: d.getNestedTypes()) {
+        for (TypeDeclaration typeDecl : d.getNestedTypes()) {
             typeDecl.accept(this);
         }
 
@@ -132,23 +131,23 @@ class DeclarationScanner implements DeclarationVisitor {
     public void visitClassDeclaration(ClassDeclaration d) {
         d.accept(pre);
 
-        for(TypeParameterDeclaration tpDecl: d.getFormalTypeParameters()) {
+        for (TypeParameterDeclaration tpDecl : d.getFormalTypeParameters()) {
             tpDecl.accept(this);
         }
 
-        for(FieldDeclaration fieldDecl: d.getFields()) {
+        for (FieldDeclaration fieldDecl : d.getFields()) {
             fieldDecl.accept(this);
         }
 
-        for(MethodDeclaration methodDecl: d.getMethods()) {
+        for (MethodDeclaration methodDecl : d.getMethods()) {
             methodDecl.accept(this);
         }
 
-        for(TypeDeclaration typeDecl: d.getNestedTypes()) {
+        for (TypeDeclaration typeDecl : d.getNestedTypes()) {
             typeDecl.accept(this);
         }
 
-        for(ConstructorDeclaration ctorDecl: d.getConstructors()) {
+        for (ConstructorDeclaration ctorDecl : d.getConstructors()) {
             ctorDecl.accept(this);
         }
 
@@ -208,11 +207,11 @@ class DeclarationScanner implements DeclarationVisitor {
     public void visitExecutableDeclaration(ExecutableDeclaration d) {
         d.accept(pre);
 
-        for(TypeParameterDeclaration tpDecl: d.getFormalTypeParameters()) {
+        for (TypeParameterDeclaration tpDecl : d.getFormalTypeParameters()) {
             tpDecl.accept(this);
         }
 
-        for(ParameterDeclaration pDecl: d.getParameters()) {
+        for (ParameterDeclaration pDecl : d.getParameters()) {
             pDecl.accept(this);
         }
 

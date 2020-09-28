@@ -33,6 +33,7 @@ import javax.imageio.spi.ServiceRegistry;
 import java.io.IOException;
 import javax.imageio.ImageReader;
 import javax.imageio.IIOException;
+
 import com.sun.imageio.plugins.common.ReaderUtil;
 
 public class WBMPImageReaderSpi extends ImageReaderSpi {
@@ -40,8 +41,8 @@ public class WBMPImageReaderSpi extends ImageReaderSpi {
     private static final int MAX_WBMP_WIDTH = 1024;
     private static final int MAX_WBMP_HEIGHT = 768;
 
-    private static String [] writerSpiNames =
-        {"com.sun.imageio.plugins.wbmp.WBMPImageWriterSpi"};
+    private static String[] writerSpiNames =
+            {"com.sun.imageio.plugins.wbmp.WBMPImageWriterSpi"};
     private static String[] formatNames = {"wbmp", "WBMP"};
     private static String[] entensions = {"wbmp"};
     private static String[] mimeType = {"image/vnd.wap.wbmp"};
@@ -50,19 +51,19 @@ public class WBMPImageReaderSpi extends ImageReaderSpi {
 
     public WBMPImageReaderSpi() {
         super("Oracle Corporation",
-              "1.0",
-              formatNames,
-              entensions,
-              mimeType,
-              "com.sun.imageio.plugins.wbmp.WBMPImageReader",
-              new Class[] { ImageInputStream.class },
-              writerSpiNames,
-              true,
-              null, null, null, null,
-              true,
-              WBMPMetadata.nativeMetadataFormatName,
-              "com.sun.imageio.plugins.wbmp.WBMPMetadataFormat",
-              null, null);
+                "1.0",
+                formatNames,
+                entensions,
+                mimeType,
+                "com.sun.imageio.plugins.wbmp.WBMPImageReader",
+                new Class[]{ImageInputStream.class},
+                writerSpiNames,
+                true,
+                null, null, null, null,
+                true,
+                WBMPMetadata.nativeMetadataFormatName,
+                "com.sun.imageio.plugins.wbmp.WBMPMetadataFormat",
+                null, null);
     }
 
     public void onRegistration(ServiceRegistry registry,
@@ -82,7 +83,7 @@ public class WBMPImageReaderSpi extends ImageReaderSpi {
             return false;
         }
 
-        ImageInputStream stream = (ImageInputStream)source;
+        ImageInputStream stream = (ImageInputStream) source;
 
         stream.mark();
         int type = stream.readByte();   // TypeField
@@ -124,7 +125,7 @@ public class WBMPImageReaderSpi extends ImageReaderSpi {
     }
 
     public ImageReader createReaderInstance(Object extension)
-        throws IIOException {
+            throws IIOException {
         return new WBMPImageReader(this);
     }
 }

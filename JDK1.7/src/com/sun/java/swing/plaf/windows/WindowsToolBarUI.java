@@ -78,7 +78,7 @@ public class WindowsToolBarUI extends BasicToolBarUI {
         XPStyle xp = XPStyle.getXP();
         if (xp != null) {
             xp.getSkin(c, Part.TP_TOOLBAR).paintSkin(g, 0, 0,
-                        c.getWidth(), c.getHeight(), null, true);
+                    c.getWidth(), c.getHeight(), null, true);
         } else {
             super.paint(g, c);
         }
@@ -86,6 +86,7 @@ public class WindowsToolBarUI extends BasicToolBarUI {
 
     /**
      * {@inheritDoc}
+     *
      * @since 1.6
      */
     protected Border getRolloverBorder(AbstractButton b) {

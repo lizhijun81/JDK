@@ -52,7 +52,7 @@ public class FileImageOutputStreamSpi extends ImageOutputStreamSpi {
                                                         File cacheDir) {
         if (output instanceof File) {
             try {
-                return new FileImageOutputStream((File)output);
+                return new FileImageOutputStream((File) output);
             } catch (Exception e) {
                 e.printStackTrace();
                 return null;

@@ -41,8 +41,8 @@ package com.sun.corba.se.impl.io;
  * primitive data is available.
  * The count field contains the number of bytes available to read.
  *
- * @author  unascribed
- * @since   JDK1.1
+ * @author unascribed
+ * @since JDK1.1
  */
 public class OptionalDataException extends java.io.IOException {
     /*

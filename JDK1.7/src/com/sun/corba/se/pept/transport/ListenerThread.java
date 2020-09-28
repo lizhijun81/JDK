@@ -28,9 +28,9 @@ package com.sun.corba.se.pept.transport;
 /**
  * @author Harold Carr
  */
-public interface ListenerThread
-{
+public interface ListenerThread {
     public Acceptor getAcceptor();
+
     public void close();
 }
 

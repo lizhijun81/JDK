@@ -43,12 +43,11 @@ import org.omg.CORBA.LocalObject;
  * in orbos/99-12-02.
  */
 public final class CodecFactoryImpl
-    extends org.omg.CORBA.LocalObject
-    implements CodecFactory
-{
+        extends org.omg.CORBA.LocalObject
+        implements CodecFactory {
     // The ORB that created this Codec Factory
     private ORB orb;
-    private ORBUtilSystemException wrapper ;
+    private ORBUtilSystemException wrapper;
 
     // The maximum minor version of GIOP supported by this codec factory.
     // Currently, this is 1.2.
@@ -62,19 +61,19 @@ public final class CodecFactoryImpl
      * Creates a new CodecFactory implementation.  Stores the ORB that
      * created this factory, for later use by the Codec.
      */
-    public CodecFactoryImpl( ORB orb ) {
+    public CodecFactoryImpl(ORB orb) {
         this.orb = orb;
         wrapper = ORBUtilSystemException.get(
-            (com.sun.corba.se.spi.orb.ORB)orb,
-            CORBALogDomains.RPC_PROTOCOL ) ;
+                (com.sun.corba.se.spi.orb.ORB) orb,
+                CORBALogDomains.RPC_PROTOCOL);
 
         // Precreate a codec for version 1.0 through
         // 1.(MAX_MINOR_VERSION_SUPPORTED).  This can be
         // done since Codecs are immutable in their current implementation.
         // This is an optimization that eliminates the overhead of creating
         // a new Codec each time create_codec is called.
-        for( int minor = 0; minor <= MAX_MINOR_VERSION_SUPPORTED; minor++ ) {
-            codecs[minor] = new CDREncapsCodec( orb, 1, minor );
+        for (int minor = 0; minor <= MAX_MINOR_VERSION_SUPPORTED; minor++) {
+            codecs[minor] = new CDREncapsCodec(orb, 1, minor);
         }
     }
 
@@ -83,28 +82,25 @@ public final class CodecFactoryImpl
      * by this factory is ENCODING_CDR_ENCAPS, versions 1.0 through
      * 1.(MAX_MINOR_VERSION_SUPPORTED).
      *
-     * @exception UnknownEncoding Thrown if this factory cannot create a
-     *   Codec of the given encoding.
+     * @throws UnknownEncoding Thrown if this factory cannot create a
+     *                         Codec of the given encoding.
      */
-    public Codec create_codec ( Encoding enc )
-        throws UnknownEncoding
-    {
-        if( enc == null ) nullParam();
+    public Codec create_codec(Encoding enc)
+            throws UnknownEncoding {
+        if (enc == null) nullParam();
 
         Codec result = null;
 
         // This is the only format we can currently create codecs for:
-        if( (enc.format == ENCODING_CDR_ENCAPS.value) &&
-            (enc.major_version == 1) )
-        {
-            if( (enc.minor_version >= 0) &&
-                (enc.minor_version <= MAX_MINOR_VERSION_SUPPORTED) )
-            {
+        if ((enc.format == ENCODING_CDR_ENCAPS.value) &&
+                (enc.major_version == 1)) {
+            if ((enc.minor_version >= 0) &&
+                    (enc.minor_version <= MAX_MINOR_VERSION_SUPPORTED)) {
                 result = codecs[enc.minor_version];
             }
         }
 
-        if( result == null ) {
+        if (result == null) {
             throw new UnknownEncoding();
         }
 
@@ -115,8 +111,7 @@ public final class CodecFactoryImpl
      * Called when an invalid null parameter was passed.  Throws a
      * BAD_PARAM with a minor code of 1
      */
-    private void nullParam()
-    {
-        throw wrapper.nullParam() ;
+    private void nullParam() {
+        throw wrapper.nullParam();
     }
 }

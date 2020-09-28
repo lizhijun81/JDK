@@ -47,6 +47,7 @@ public final class StructMember implements org.omg.CORBA.portable.IDLEntity {
     /**
      * The name of the struct member described by
      * this <code>StructMember</code> object.
+     *
      * @serial
      */
     public String name;
@@ -54,6 +55,7 @@ public final class StructMember implements org.omg.CORBA.portable.IDLEntity {
     /**
      * The type of the struct member described by
      * this <code>StructMember</code> object.
+     *
      * @serial
      */
     public org.omg.CORBA.TypeCode type;
@@ -61,6 +63,7 @@ public final class StructMember implements org.omg.CORBA.portable.IDLEntity {
     /**
      * The typedef that represents the IDL type of the struct member described by
      * this <code>StructMember</code> object.
+     *
      * @serial
      */
     public org.omg.CORBA.IDLType type_def;
@@ -69,17 +72,19 @@ public final class StructMember implements org.omg.CORBA.portable.IDLEntity {
     /**
      * Constructs a default <code>StructMember</code> object.
      */
-    public StructMember() { }
+    public StructMember() {
+    }
 
     /**
      * Constructs a <code>StructMember</code> object initialized with the
      * given values.
-     * @param __name a <code>String</code> object with the name of the struct
-     *        member
-     * @param __type a <code>TypeCode</code> object describing the type of the struct
-     *        member
+     *
+     * @param __name     a <code>String</code> object with the name of the struct
+     *                   member
+     * @param __type     a <code>TypeCode</code> object describing the type of the struct
+     *                   member
      * @param __type_def an <code>IDLType</code> object representing the IDL type
-     *        of the struct member
+     *                   of the struct member
      */
     public StructMember(String __name, org.omg.CORBA.TypeCode __type, org.omg.CORBA.IDLType __type_def) {
         name = __name;

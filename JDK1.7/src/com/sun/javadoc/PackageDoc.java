@@ -33,9 +33,9 @@ package com.sun.javadoc;
  * Each method whose return type is an array will return an empty
  * array (never null) when there are no objects in the result.
  *
- * @since 1.2
  * @author Kaiyang Liu (original)
  * @author Robert Field (rewrite)
+ * @since 1.2
  */
 public interface PackageDoc extends Doc {
 
@@ -44,11 +44,11 @@ public interface PackageDoc extends Doc {
      * <a href="{@docRoot}/com/sun/javadoc/package-summary.html#included">access
      * modifier option</a>.
      *
-     * @return       filtered classes and interfaces in this package
      * @param filter Specifying true filters according to the specified access
      *               modifier option.
      *               Specifying false includes all classes and interfaces
      *               regardless of access modifier option.
+     * @return filtered classes and interfaces in this package
      * @since 1.4
      */
     ClassDoc[] allClasses(boolean filter);

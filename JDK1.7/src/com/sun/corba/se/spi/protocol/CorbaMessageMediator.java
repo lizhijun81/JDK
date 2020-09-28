@@ -61,30 +61,49 @@ import com.sun.corba.se.impl.protocol.giopmsgheaders.RequestMessage_1_0;
  * @author Harold Carr
  */
 public interface CorbaMessageMediator
-    extends
+        extends
         MessageMediator,
-        ResponseHandler
-{
+        ResponseHandler {
     public void setReplyHeader(LocateReplyOrReplyMessage header);
+
     public LocateReplyMessage getLocateReplyHeader();
+
     public ReplyMessage getReplyHeader();
+
     public void setReplyExceptionDetailMessage(String message);
+
     public RequestMessage getRequestHeader();
+
     public GIOPVersion getGIOPVersion();
+
     public byte getEncodingVersion();
+
     public int getRequestId();
+
     public Integer getRequestIdInteger();
+
     public boolean isOneWay();
+
     public short getAddrDisposition();
+
     public String getOperationName();
+
     public ServiceContexts getRequestServiceContexts();
+
     public ServiceContexts getReplyServiceContexts();
+
     public Message getDispatchHeader();
+
     public void setDispatchHeader(Message msg);
+
     public ByteBuffer getDispatchBuffer();
+
     public void setDispatchBuffer(ByteBuffer byteBuffer);
+
     public int getThreadPoolToUse();
+
     public byte getStreamFormatVersion(); // REVIST name ForRequest?
+
     public byte getStreamFormatVersionForReply();
 
     // REVISIT - not sure if the final fragment and DII stuff should
@@ -93,19 +112,29 @@ public interface CorbaMessageMediator
     public void sendCancelRequestIfFinalFragmentNotSent();
 
     public void setDIIInfo(org.omg.CORBA.Request request);
+
     public boolean isDIIRequest();
+
     public Exception unmarshalDIIUserException(String repoId,
                                                InputStream inputStream);
+
     public void setDIIException(Exception exception);
+
     public void handleDIIReply(InputStream inputStream);
 
 
     public boolean isSystemExceptionReply();
+
     public boolean isUserExceptionReply();
+
     public boolean isLocationForwardReply();
+
     public boolean isDifferentAddrDispositionRequestedReply();
+
     public short getAddrDispositionReply();
+
     public IOR getForwardedIOR();
+
     public SystemException getSystemExceptionReply();
 
     ////////////////////////////////////////////////////
@@ -114,7 +143,9 @@ public interface CorbaMessageMediator
     //
 
     public ObjectKey getObjectKey();
+
     public void setProtocolHandler(CorbaProtocolHandler protocolHandler);
+
     public CorbaProtocolHandler getProtocolHandler();
 
     ////////////////////////////////////////////////////
@@ -123,6 +154,7 @@ public interface CorbaMessageMediator
     //
 
     public org.omg.CORBA.portable.OutputStream createReply();
+
     public org.omg.CORBA.portable.OutputStream createExceptionReply();
 
     ////////////////////////////////////////////////////
@@ -140,7 +172,7 @@ public interface CorbaMessageMediator
 
     public boolean executePIInResponseConstructor();
 
-    public void setExecutePIInResponseConstructor( boolean b );
+    public void setExecutePIInResponseConstructor(boolean b);
 }
 
 // End of file.

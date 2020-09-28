@@ -69,21 +69,28 @@ import org.xml.sax.SAXException;
  * Receives errors through Xerces {@link XMLErrorHandler}
  * and pass them down to SAX {@link ErrorHandler}.
  *
- * @author
- *     Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
+ * @author Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
  */
-public abstract class ErrorHandlerAdaptor implements XMLErrorHandler
-{
-    /** set to true if there was any error. */
+public abstract class ErrorHandlerAdaptor implements XMLErrorHandler {
+    /**
+     * set to true if there was any error.
+     */
     private boolean hadError = false;
 
     /**
      * returns if there was an error since the last invocation of
      * the resetError method.
      */
-    public boolean hadError() { return hadError; }
-    /** resets the error flag. */
-    public void reset() { hadError = false; }
+    public boolean hadError() {
+        return hadError;
+    }
+
+    /**
+     * resets the error flag.
+     */
+    public void reset() {
+        hadError = false;
+    }
 
     /**
      * Implemented by the derived class to return the actual
@@ -93,28 +100,28 @@ public abstract class ErrorHandlerAdaptor implements XMLErrorHandler
      */
     protected abstract ErrorHandler getErrorHandler();
 
-    public void fatalError( String domain, String key, XMLParseException e ) {
+    public void fatalError(String domain, String key, XMLParseException e) {
         try {
             hadError = true;
-            getErrorHandler().fatalError( Util.toSAXParseException(e) );
-        } catch( SAXException se ) {
+            getErrorHandler().fatalError(Util.toSAXParseException(e));
+        } catch (SAXException se) {
             throw new WrappedSAXException(se);
         }
     }
 
-    public void error( String domain, String key, XMLParseException e ) {
+    public void error(String domain, String key, XMLParseException e) {
         try {
             hadError = true;
-            getErrorHandler().error( Util.toSAXParseException(e) );
-        } catch( SAXException se ) {
+            getErrorHandler().error(Util.toSAXParseException(e));
+        } catch (SAXException se) {
             throw new WrappedSAXException(se);
         }
     }
 
-    public void warning( String domain, String key, XMLParseException e ) {
+    public void warning(String domain, String key, XMLParseException e) {
         try {
-            getErrorHandler().warning( Util.toSAXParseException(e) );
-        } catch( SAXException se ) {
+            getErrorHandler().warning(Util.toSAXParseException(e));
+        } catch (SAXException se) {
             throw new WrappedSAXException(se);
         }
     }

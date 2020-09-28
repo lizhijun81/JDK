@@ -36,8 +36,6 @@ import com.sun.org.apache.xerces.internal.xs.XSTypeDefinition;
  * resource's information set; specifically, the first one (if any)
  * in document order that has a matching NCName as an identifier.
  * </p>
- *
- *
  */
 class ShortHandPointer implements XPointerPart {
 
@@ -79,8 +77,9 @@ class ShortHandPointer implements XPointerPart {
      * @see com.sun.org.apache.xerces.internal.xpointer.XPointerPart#resolveXPointer(com.sun.org.apache.xerces.internal.xni.QName, com.sun.org.apache.xerces.internal.xni.XMLAttributes, com.sun.org.apache.xerces.internal.xni.Augmentations, int event)
      */
     int fMatchingChildCount = 0;
+
     public boolean resolveXPointer(QName element, XMLAttributes attributes,
-            Augmentations augs, int event) throws XNIException {
+                                   Augmentations augs, int event) throws XNIException {
 
         // reset fIsFragmentResolved
         if (fMatchingChildCount == 0) {
@@ -92,18 +91,17 @@ class ShortHandPointer implements XPointerPart {
         if (event == XPointerPart.EVENT_ELEMENT_START) {
             if (fMatchingChildCount == 0) {
                 fIsFragmentResolved = hasMatchingIdentifier(element, attributes, augs,
-                    event);
+                        event);
             }
             if (fIsFragmentResolved) {
-               fMatchingChildCount++;
+                fMatchingChildCount++;
             }
         } else if (event == XPointerPart.EVENT_ELEMENT_EMPTY) {
             if (fMatchingChildCount == 0) {
                 fIsFragmentResolved = hasMatchingIdentifier(element, attributes, augs,
-                    event);
+                        event);
             }
-        }
-        else {
+        } else {
             // On endElement, decrease the matching child count if the child or
             // its parent was resolved.
             if (fIsFragmentResolved) {
@@ -111,11 +109,10 @@ class ShortHandPointer implements XPointerPart {
             }
         }
 
-        return fIsFragmentResolved ;
+        return fIsFragmentResolved;
     }
 
     /**
-     *
      * @param element
      * @param attributes
      * @param augs
@@ -124,8 +121,8 @@ class ShortHandPointer implements XPointerPart {
      * @throws XNIException
      */
     private boolean hasMatchingIdentifier(QName element,
-            XMLAttributes attributes, Augmentations augs, int event)
-    throws XNIException {
+                                          XMLAttributes attributes, Augmentations augs, int event)
+            throws XNIException {
         String normalizedValue = null;
 
         // The identifiers of an element are determined by the
@@ -182,7 +179,7 @@ class ShortHandPointer implements XPointerPart {
      * @throws XNIException
      */
     public String getDTDDeterminedID(XMLAttributes attributes, int index)
-    throws XNIException {
+            throws XNIException {
 
         if (attributes.getType(index).equals("ID")) {
             return attributes.getValue(index);
@@ -193,17 +190,16 @@ class ShortHandPointer implements XPointerPart {
     /**
      * Returns the schema-determined-ID.
      *
-     *
      * @param attributes
      * @param index
      * @return A String containing the schema-determined ID.
      * @throws XNIException
      */
     public String getSchemaDeterminedID(XMLAttributes attributes, int index)
-    throws XNIException {
+            throws XNIException {
         Augmentations augs = attributes.getAugmentations(index);
         AttributePSVI attrPSVI = (AttributePSVI) augs
-        .getItem(Constants.ATTRIBUTE_PSVI);
+                .getItem(Constants.ATTRIBUTE_PSVI);
 
         if (attrPSVI != null) {
             // An element or attribute information item is a schema-determined
@@ -244,12 +240,11 @@ class ShortHandPointer implements XPointerPart {
      * @throws XNIException
      */
     public String getChildrenSchemaDeterminedID(XMLAttributes attributes,
-            int index) throws XNIException {
+                                                int index) throws XNIException {
         return null;
     }
 
     /**
-     *
      * @see com.sun.org.apache.xerces.internal.xpointer.XPointerPart#isFragmentResolved()
      */
     public boolean isFragmentResolved() {
@@ -257,11 +252,10 @@ class ShortHandPointer implements XPointerPart {
     }
 
     /**
-     *
      * @see com.sun.org.apache.xerces.internal.xpointer.XPointerPart#isChildFragmentResolved()
      */
     public boolean isChildFragmentResolved() {
-        return fIsFragmentResolved & ( fMatchingChildCount >  0);
+        return fIsFragmentResolved & (fMatchingChildCount > 0);
     }
 
     /**

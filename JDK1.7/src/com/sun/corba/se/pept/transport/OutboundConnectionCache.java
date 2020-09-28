@@ -29,8 +29,7 @@ package com.sun.corba.se.pept.transport;
  * @author Harold Carr
  */
 public interface OutboundConnectionCache
-    extends ConnectionCache
-{
+        extends ConnectionCache {
     public Connection get(ContactInfo contactInfo);
 
     public void put(ContactInfo contactInfo, Connection connection);

@@ -28,8 +28,8 @@ package com.sun.javadoc;
 /**
  * Represents a method of a java class.
  *
- * @since 1.2
  * @author Robert Field
+ * @since 1.2
  */
 public interface MethodDoc extends ExecutableMemberDoc {
 
@@ -54,8 +54,8 @@ public interface MethodDoc extends ExecutableMemberDoc {
      * <code>overriddenType</code> method should be used instead.</i>
      *
      * @return a ClassDoc representing the superclass
-     *         defining a method that this method overrides, or null if
-     *         this method does not override.
+     * defining a method that this method overrides, or null if
+     * this method does not override.
      */
     ClassDoc overriddenClass();
 
@@ -64,7 +64,7 @@ public interface MethodDoc extends ExecutableMemberDoc {
      * It may be a <code>ClassDoc</code> or a <code>ParameterizedType</code>.
      *
      * @return the supertype whose method is overridden, or null if this
-     *         method does not override another in a superclass
+     * method does not override another in a superclass
      * @since 1.5
      */
     Type overriddenType();
@@ -86,7 +86,7 @@ public interface MethodDoc extends ExecutableMemberDoc {
      * <p> When a non-abstract method overrides an abstract one, it is
      * also said to <i>implement</i> the other.
      *
-     * @param meth  the other method to examine
+     * @param meth the other method to examine
      * @return <tt>true</tt> if this method overrides the other
      * @since 1.5
      */

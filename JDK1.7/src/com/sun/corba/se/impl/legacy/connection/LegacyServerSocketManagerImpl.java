@@ -40,9 +40,9 @@ import com.sun.corba.se.pept.transport.ContactInfo;
 import com.sun.corba.se.pept.transport.Selector;
 
 import com.sun.corba.se.spi.ior.IOR;
-import com.sun.corba.se.spi.ior.iiop.IIOPProfile ;
+import com.sun.corba.se.spi.ior.iiop.IIOPProfile;
 import com.sun.corba.se.spi.ior.ObjectKeyTemplate;
-import com.sun.corba.se.spi.ior.ObjectId ;
+import com.sun.corba.se.spi.ior.ObjectId;
 import com.sun.corba.se.spi.orb.ORB;
 import com.sun.corba.se.spi.transport.CorbaTransportManager;
 import com.sun.corba.se.spi.legacy.connection.LegacyServerSocketEndPointInfo;
@@ -58,17 +58,15 @@ import com.sun.corba.se.impl.transport.SocketOrChannelAcceptorImpl;
 import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 
 public class LegacyServerSocketManagerImpl
-    implements
-        LegacyServerSocketManager
-{
+        implements
+        LegacyServerSocketManager {
     protected ORB orb;
-    private ORBUtilSystemException wrapper ;
+    private ORBUtilSystemException wrapper;
 
-    public LegacyServerSocketManagerImpl(ORB orb)
-    {
+    public LegacyServerSocketManagerImpl(ORB orb) {
         this.orb = orb;
-        wrapper = ORBUtilSystemException.get( orb,
-            CORBALogDomains.RPC_TRANSPORT ) ;
+        wrapper = ORBUtilSystemException.get(orb,
+                CORBALogDomains.RPC_TRANSPORT);
     }
 
     ////////////////////////////////////////////////////
@@ -77,14 +75,12 @@ public class LegacyServerSocketManagerImpl
     //
 
     // Only used in ServerManagerImpl.
-    public int legacyGetTransientServerPort(String type)
-    {
+    public int legacyGetTransientServerPort(String type) {
         return legacyGetServerPort(type, false);
     }
 
     // Only used by POAPolicyMediatorBase.
-    public synchronized int legacyGetPersistentServerPort(String socketType)
-    {
+    public synchronized int legacyGetPersistentServerPort(String socketType) {
         if (orb.getORBData().getServerIsORBActivated()) {
             // this server is activated by orbd
             return legacyGetServerPort(socketType, true);
@@ -93,25 +89,23 @@ public class LegacyServerSocketManagerImpl
             return orb.getORBData().getPersistentServerPort();
         } else {
             throw wrapper.persistentServerportNotSet(
-                CompletionStatus.COMPLETED_MAYBE);
+                    CompletionStatus.COMPLETED_MAYBE);
         }
     }
 
     // Only used by PI IORInfoImpl.
     public synchronized int legacyGetTransientOrPersistentServerPort(
-        String socketType)
-    {
-            return legacyGetServerPort(socketType,
-                                       orb.getORBData()
-                                       .getServerIsORBActivated());
+            String socketType) {
+        return legacyGetServerPort(socketType,
+                orb.getORBData()
+                        .getServerIsORBActivated());
     }
 
     // Used in RepositoryImpl, ServerManagerImpl, POAImpl,
     // POAPolicyMediatorBase, TOAImpl.
     // To get either default or bootnaming endpoint.
     public synchronized LegacyServerSocketEndPointInfo legacyGetEndpoint(
-        String name)
-    {
+            String name) {
         Iterator iterator = getAcceptorIterator();
         while (iterator.hasNext()) {
             LegacyServerSocketEndPointInfo endPoint = cast(iterator.next());
@@ -125,8 +119,7 @@ public class LegacyServerSocketManagerImpl
     // Check to see if the given port is equal to any of the ORB Server Ports.
     // XXX Does this need to change for the multi-homed case?
     // Used in IIOPProfileImpl, ORBImpl.
-    public boolean legacyIsLocalServerPort(int port)
-    {
+    public boolean legacyIsLocalServerPort(int port) {
         Iterator iterator = getAcceptorIterator();
         while (iterator.hasNext()) {
             LegacyServerSocketEndPointInfo endPoint = cast(iterator.next());
@@ -142,8 +135,7 @@ public class LegacyServerSocketManagerImpl
     // Implementation.
     //
 
-    private int legacyGetServerPort (String socketType, boolean isPersistent)
-    {
+    private int legacyGetServerPort(String socketType, boolean isPersistent) {
         Iterator endpoints = getAcceptorIterator();
         while (endpoints.hasNext()) {
             LegacyServerSocketEndPointInfo ep = cast(endpoints.next());
@@ -158,27 +150,24 @@ public class LegacyServerSocketManagerImpl
         return -1;
     }
 
-    private Iterator getAcceptorIterator()
-    {
+    private Iterator getAcceptorIterator() {
         Collection acceptors =
-            orb.getCorbaTransportManager().getAcceptors(null, null);
+                orb.getCorbaTransportManager().getAcceptors(null, null);
         if (acceptors != null) {
             return acceptors.iterator();
         }
 
-        throw wrapper.getServerPortCalledBeforeEndpointsInitialized() ;
+        throw wrapper.getServerPortCalledBeforeEndpointsInitialized();
     }
 
-    private LegacyServerSocketEndPointInfo cast(Object o)
-    {
+    private LegacyServerSocketEndPointInfo cast(Object o) {
         if (o instanceof LegacyServerSocketEndPointInfo) {
             return (LegacyServerSocketEndPointInfo) o;
         }
         return null;
     }
 
-    protected void dprint(String msg)
-    {
+    protected void dprint(String msg) {
         ORBUtility.dprint("LegacyServerSocketManagerImpl", msg);
     }
 }

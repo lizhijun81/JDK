@@ -42,8 +42,8 @@ import java.security.Principal;
  * @see javax.security.auth.Subject
  */
 public class UnixNumericGroupPrincipal implements
-                                        Principal,
-                                        java.io.Serializable {
+        Principal,
+        java.io.Serializable {
 
     private static final long serialVersionUID = 3941535899328403223L;
 
@@ -64,21 +64,19 @@ public class UnixNumericGroupPrincipal implements
      *
      * <p>
      *
-     * @param name the user's group identification number (GID)
-     *                  for this user. <p>
-     *
+     * @param name         the user's group identification number (GID)
+     *                     for this user. <p>
      * @param primaryGroup true if the specified GID represents the
-     *                  primary group to which this user belongs.
-     *
-     * @exception NullPointerException if the <code>name</code>
-     *                  is <code>null</code>.
+     *                     primary group to which this user belongs.
+     * @throws NullPointerException if the <code>name</code>
+     *                              is <code>null</code>.
      */
     public UnixNumericGroupPrincipal(String name, boolean primaryGroup) {
         if (name == null) {
             java.text.MessageFormat form = new java.text.MessageFormat
-                (sun.security.util.ResourcesMgr.getString
-                        ("invalid.null.input.value",
-                        "sun.security.util.AuthResources"));
+                    (sun.security.util.ResourcesMgr.getString
+                            ("invalid.null.input.value",
+                                    "sun.security.util.AuthResources"));
             Object[] source = {"name"};
             throw new NullPointerException(form.format(source));
         }
@@ -93,12 +91,10 @@ public class UnixNumericGroupPrincipal implements
      *
      * <p>
      *
-     * @param name the user's group identification number (GID) for this user
-     *                  represented as a long. <p>
-     *
+     * @param name         the user's group identification number (GID) for this user
+     *                     represented as a long. <p>
      * @param primaryGroup true if the specified GID represents the
-     *                  primary group to which this user belongs.
-     *
+     *                     primary group to which this user belongs.
      */
     public UnixNumericGroupPrincipal(long name, boolean primaryGroup) {
         this.name = (new Long(name)).toString();
@@ -112,7 +108,7 @@ public class UnixNumericGroupPrincipal implements
      * <p>
      *
      * @return the user's group identification number (GID) for this
-     *          <code>UnixNumericGroupPrincipal</code>
+     * <code>UnixNumericGroupPrincipal</code>
      */
     public String getName() {
         return name;
@@ -125,7 +121,7 @@ public class UnixNumericGroupPrincipal implements
      * <p>
      *
      * @return the user's group identification number (GID) for this
-     *          <code>UnixNumericGroupPrincipal</code> as a long.
+     * <code>UnixNumericGroupPrincipal</code> as a long.
      */
     public long longValue() {
         return ((new Long(name)).longValue());
@@ -138,8 +134,8 @@ public class UnixNumericGroupPrincipal implements
      * <p>
      *
      * @return true if this group identification number (GID) represents
-     *          the primary group to which this user belongs,
-     *          or false otherwise.
+     * the primary group to which this user belongs,
+     * or false otherwise.
      */
     public boolean isPrimaryGroup() {
         return primaryGroup;
@@ -152,22 +148,22 @@ public class UnixNumericGroupPrincipal implements
      * <p>
      *
      * @return a string representation of this
-     *          <code>UnixNumericGroupPrincipal</code>.
+     * <code>UnixNumericGroupPrincipal</code>.
      */
     public String toString() {
 
         if (primaryGroup) {
             java.text.MessageFormat form = new java.text.MessageFormat
-                (sun.security.util.ResourcesMgr.getString
-                        ("UnixNumericGroupPrincipal.Primary.Group.name",
-                        "sun.security.util.AuthResources"));
+                    (sun.security.util.ResourcesMgr.getString
+                            ("UnixNumericGroupPrincipal.Primary.Group.name",
+                                    "sun.security.util.AuthResources"));
             Object[] source = {name};
             return form.format(source);
         } else {
             java.text.MessageFormat form = new java.text.MessageFormat
-                (sun.security.util.ResourcesMgr.getString
-                    ("UnixNumericGroupPrincipal.Supplementary.Group.name",
-                    "sun.security.util.AuthResources"));
+                    (sun.security.util.ResourcesMgr.getString
+                            ("UnixNumericGroupPrincipal.Supplementary.Group.name",
+                                    "sun.security.util.AuthResources"));
             Object[] source = {name};
             return form.format(source);
         }
@@ -185,9 +181,8 @@ public class UnixNumericGroupPrincipal implements
      *
      * @param o Object to be compared for equality with this
      *          <code>UnixNumericGroupPrincipal</code>.
-     *
      * @return true if the specified Object is equal equal to this
-     *          <code>UnixNumericGroupPrincipal</code>.
+     * <code>UnixNumericGroupPrincipal</code>.
      */
     public boolean equals(Object o) {
         if (o == null)
@@ -198,10 +193,10 @@ public class UnixNumericGroupPrincipal implements
 
         if (!(o instanceof UnixNumericGroupPrincipal))
             return false;
-        UnixNumericGroupPrincipal that = (UnixNumericGroupPrincipal)o;
+        UnixNumericGroupPrincipal that = (UnixNumericGroupPrincipal) o;
 
         if (this.getName().equals(that.getName()) &&
-            this.isPrimaryGroup() == that.isPrimaryGroup())
+                this.isPrimaryGroup() == that.isPrimaryGroup())
             return true;
         return false;
     }

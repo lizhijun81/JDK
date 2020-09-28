@@ -41,7 +41,6 @@ package com.sun.org.apache.xerces.internal.xni;
  *
  * @author Eric Ye, IBM
  * @author Andy Clark, IBM
- *
  */
 public class XMLString {
 
@@ -49,20 +48,28 @@ public class XMLString {
     // Data
     //
 
-    /** The character array. */
+    /**
+     * The character array.
+     */
     public char[] ch;
 
-    /** The offset into the character array. */
+    /**
+     * The offset into the character array.
+     */
     public int offset;
 
-    /** The length of characters from the offset. */
+    /**
+     * The length of characters from the offset.
+     */
     public int length;
 
     //
     // Constructors
     //
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public XMLString() {
     } // <init>()
 
@@ -122,7 +129,9 @@ public class XMLString {
         setValues(s.ch, s.offset, s.length);
     } // setValues(XMLString)
 
-    /** Resets all of the values to their defaults. */
+    /**
+     * Resets all of the values to their defaults.
+     */
     public void clear() {
         this.ch = null;
         this.offset = 0;
@@ -145,8 +154,8 @@ public class XMLString {
             return false;
         }
 
-        for (int i=0; i<length; i++) {
-            if (this.ch[this.offset+i] != ch[offset+i] ) {
+        for (int i = 0; i < length; i++) {
+            if (this.ch[this.offset + i] != ch[offset + i]) {
                 return false;
             }
         }
@@ -163,15 +172,15 @@ public class XMLString {
         if (s == null) {
             return false;
         }
-        if ( length != s.length() ) {
+        if (length != s.length()) {
             return false;
         }
 
         // is this faster than call s.toCharArray first and compare the
         // two arrays directly, which will possibly involve creating a
         // new char array object.
-        for (int i=0; i<length; i++) {
-            if (ch[offset+i] != s.charAt(i)) {
+        for (int i = 0; i < length; i++) {
+            if (ch[offset + i] != s.charAt(i)) {
                 return false;
             }
         }
@@ -183,7 +192,9 @@ public class XMLString {
     // Object methods
     //
 
-    /** Returns a string representation of this object. */
+    /**
+     * Returns a string representation of this object.
+     */
     public String toString() {
         return length > 0 ? new String(ch, offset, length) : "";
     } // toString():String

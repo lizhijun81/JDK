@@ -51,14 +51,13 @@ import java.io.*;
  * be deleted.  Any subsequent attempt to create the same file during
  * a run will fail.
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this interface is {@link
  * javax.annotation.processing.Filer}.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")
@@ -77,8 +76,8 @@ public interface Filer {
      * flag or the like for specifying this.  It will typically use
      * the platform's default encoding if none is specified.
      *
-     * @param name  canonical (fully qualified) name of the principal type
-     *          being declared in this file
+     * @param name canonical (fully qualified) name of the principal type
+     *             being declared in this file
      * @return a writer for the new file
      * @throws IOException if the file cannot be created
      */
@@ -109,12 +108,12 @@ public interface Filer {
      * charset used to encode source files
      * (see {@link #createSourceFile(String)}) will be used.
      *
-     * @param loc location of the new file
-     * @param pkg package relative to which the file should be named,
-     *          or the empty string if none
-     * @param relPath final pathname components of the file
+     * @param loc         location of the new file
+     * @param pkg         package relative to which the file should be named,
+     *                    or the empty string if none
+     * @param relPath     final pathname components of the file
      * @param charsetName the name of the charset to use, or null if none
-     *          is being explicitly specified
+     *                    is being explicitly specified
      * @return a writer for the new file
      * @throws IOException if the file cannot be created
      */
@@ -132,9 +131,9 @@ public interface Filer {
      * pathname of the new file will be the concatenation of
      * <tt>loc</tt>, <tt>pkg</tt>, and <tt>relPath</tt>.
      *
-     * @param loc location of the new file
-     * @param pkg package relative to which the file should be named,
-     *          or the empty string if none
+     * @param loc     location of the new file
+     * @param pkg     package relative to which the file should be named,
+     *                or the empty string if none
      * @param relPath final pathname components of the file
      * @return a stream for writing to the new file
      * @throws IOException if the file cannot be created
@@ -154,9 +153,13 @@ public interface Filer {
      */
     @Deprecated
     enum Location {
-        /** The location of new source files. */
+        /**
+         * The location of new source files.
+         */
         SOURCE_TREE,
-        /** The location of new class files. */
+        /**
+         * The location of new class files.
+         */
         CLASS_TREE
     }
 }

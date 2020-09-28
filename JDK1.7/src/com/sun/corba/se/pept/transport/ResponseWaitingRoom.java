@@ -31,8 +31,7 @@ import com.sun.corba.se.pept.encoding.InputObject;
 /**
  * @author Harold Carr
  */
-public interface ResponseWaitingRoom
-{
+public interface ResponseWaitingRoom {
     public void registerWaiter(MessageMediator messageMediator);
 
     // REVISIT: maybe return void (or MessageMediator).

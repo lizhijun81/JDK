@@ -121,7 +121,7 @@ public final class SecuritySupport {
                 }
             });
         } catch (PrivilegedActionException e) {
-            throw (FileNotFoundException)e.getException();
+            throw (FileNotFoundException) e.getException();
         }
     }
 
@@ -130,7 +130,7 @@ public final class SecuritySupport {
      * default or bootclassloader when Security Manager is in place
      */
     public static InputStream getResourceAsStream(final String name) {
-        if (System.getSecurityManager()!=null) {
+        if (System.getSecurityManager() != null) {
             return getResourceAsStream(null, name);
         } else {
             return getResourceAsStream(ObjectFactory.findClassLoader(), name);
@@ -138,12 +138,12 @@ public final class SecuritySupport {
     }
 
     public static InputStream getResourceAsStream(final ClassLoader cl,
-            final String name) {
+                                                  final String name) {
         return (InputStream) AccessController.doPrivileged(new PrivilegedAction() {
             public Object run() {
                 InputStream ris;
                 if (cl == null) {
-                    ris = Object.class.getResourceAsStream("/"+name);
+                    ris = Object.class.getResourceAsStream("/" + name);
                 } else {
                     ris = cl.getResourceAsStream(name);
                 }
@@ -154,6 +154,7 @@ public final class SecuritySupport {
 
     /**
      * Gets a resource bundle using the specified base name, the default locale, and the caller's class loader.
+     *
      * @param bundle the base name of the resource bundle, a fully qualified class name
      * @return a resource bundle for the given base name and the default locale
      */
@@ -163,6 +164,7 @@ public final class SecuritySupport {
 
     /**
      * Gets a resource bundle using the specified base name and locale, and the caller's class loader.
+     *
      * @param bundle the base name of the resource bundle, a fully qualified class name
      * @param locale the locale for which a resource bundle is desired
      * @return a resource bundle for the given base name and locale
@@ -171,10 +173,10 @@ public final class SecuritySupport {
         return AccessController.doPrivileged(new PrivilegedAction<ListResourceBundle>() {
             public ListResourceBundle run() {
                 try {
-                    return (ListResourceBundle)ResourceBundle.getBundle(bundle, locale);
+                    return (ListResourceBundle) ResourceBundle.getBundle(bundle, locale);
                 } catch (MissingResourceException e) {
                     try {
-                        return (ListResourceBundle)ResourceBundle.getBundle(bundle, new Locale("en", "US"));
+                        return (ListResourceBundle) ResourceBundle.getBundle(bundle, new Locale("en", "US"));
                     } catch (MissingResourceException e2) {
                         throw new MissingResourceException(
                                 "Could not load any resource bundle by " + bundle, bundle, "");
@@ -186,18 +188,18 @@ public final class SecuritySupport {
 
     public static boolean getFileExists(final File f) {
         return ((Boolean) AccessController.doPrivileged(new PrivilegedAction() {
-                    public Object run() {
-                        return f.exists() ? Boolean.TRUE : Boolean.FALSE;
-                    }
-                })).booleanValue();
+            public Object run() {
+                return f.exists() ? Boolean.TRUE : Boolean.FALSE;
+            }
+        })).booleanValue();
     }
 
     static long getLastModified(final File f) {
         return ((Long) AccessController.doPrivileged(new PrivilegedAction() {
-                    public Object run() {
-                        return new Long(f.lastModified());
-                    }
-                })).longValue();
+            public Object run() {
+                return new Long(f.lastModified());
+            }
+        })).longValue();
     }
 
 

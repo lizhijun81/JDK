@@ -24,6 +24,7 @@
  */
 
 package org.omg.CORBA;
+
 /**
  * A <tt>PolicyErrorCode</tt> which would be filled in
  * the <tt>PolicyError</tt> exception.

@@ -23,57 +23,55 @@
  *
  */
 
-package com.sun.corba.se.impl.presentation.rmi ;
+package com.sun.corba.se.impl.presentation.rmi;
 
-import java.util.Map ;
-import java.util.HashMap ;
-import java.util.Set ;
-import java.util.HashSet ;
-import java.util.List ;
-import java.util.ArrayList ;
-import java.util.Iterator ;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Iterator;
 
-import java.lang.reflect.Method ;
+import java.lang.reflect.Method;
 
-import java.rmi.Remote ;
+import java.rmi.Remote;
 
-import javax.rmi.CORBA.Tie ;
+import javax.rmi.CORBA.Tie;
 
-import com.sun.corba.se.spi.orbutil.proxy.InvocationHandlerFactory ;
+import com.sun.corba.se.spi.orbutil.proxy.InvocationHandlerFactory;
 
-import com.sun.corba.se.spi.presentation.rmi.IDLNameTranslator ;
-import com.sun.corba.se.spi.presentation.rmi.DynamicMethodMarshaller ;
-import com.sun.corba.se.spi.presentation.rmi.PresentationManager ;
+import com.sun.corba.se.spi.presentation.rmi.IDLNameTranslator;
+import com.sun.corba.se.spi.presentation.rmi.DynamicMethodMarshaller;
+import com.sun.corba.se.spi.presentation.rmi.PresentationManager;
 
-import com.sun.corba.se.spi.logging.CORBALogDomains ;
+import com.sun.corba.se.spi.logging.CORBALogDomains;
 
-import com.sun.corba.se.impl.logging.ORBUtilSystemException ;
+import com.sun.corba.se.impl.logging.ORBUtilSystemException;
 
-import com.sun.corba.se.impl.presentation.rmi.IDLNameTranslatorImpl ;
-import com.sun.corba.se.impl.presentation.rmi.StubFactoryProxyImpl ;
+import com.sun.corba.se.impl.presentation.rmi.IDLNameTranslatorImpl;
+import com.sun.corba.se.impl.presentation.rmi.StubFactoryProxyImpl;
 
-import com.sun.corba.se.impl.orbutil.graph.Node ;
-import com.sun.corba.se.impl.orbutil.graph.Graph ;
-import com.sun.corba.se.impl.orbutil.graph.GraphImpl ;
+import com.sun.corba.se.impl.orbutil.graph.Node;
+import com.sun.corba.se.impl.orbutil.graph.Graph;
+import com.sun.corba.se.impl.orbutil.graph.GraphImpl;
 
-public final class PresentationManagerImpl implements PresentationManager
-{
-    private Map classToClassData ;
-    private Map methodToDMM ;
-    private PresentationManager.StubFactoryFactory staticStubFactoryFactory ;
-    private PresentationManager.StubFactoryFactory dynamicStubFactoryFactory ;
-    private ORBUtilSystemException wrapper = null ;
-    private boolean useDynamicStubs ;
+public final class PresentationManagerImpl implements PresentationManager {
+    private Map classToClassData;
+    private Map methodToDMM;
+    private PresentationManager.StubFactoryFactory staticStubFactoryFactory;
+    private PresentationManager.StubFactoryFactory dynamicStubFactoryFactory;
+    private ORBUtilSystemException wrapper = null;
+    private boolean useDynamicStubs;
 
-    public PresentationManagerImpl( boolean useDynamicStubs )
-    {
-        this.useDynamicStubs = useDynamicStubs ;
+    public PresentationManagerImpl(boolean useDynamicStubs) {
+        this.useDynamicStubs = useDynamicStubs;
         wrapper = ORBUtilSystemException.get(
-            CORBALogDomains.RPC_PRESENTATION ) ;
+                CORBALogDomains.RPC_PRESENTATION);
 
         // XXX these should probably be WeakHashMaps.
-        classToClassData = new HashMap() ;
-        methodToDMM = new HashMap() ;
+        classToClassData = new HashMap();
+        methodToDMM = new HashMap();
     }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -81,245 +79,220 @@ public final class PresentationManagerImpl implements PresentationManager
 ////////////////////////////////////////////////////////////////////////////////
 
     public synchronized DynamicMethodMarshaller getDynamicMethodMarshaller(
-        Method method )
-    {
+            Method method) {
         if (method == null)
-            return null ;
+            return null;
 
         DynamicMethodMarshaller result =
-            (DynamicMethodMarshaller)methodToDMM.get( method ) ;
+                (DynamicMethodMarshaller) methodToDMM.get(method);
         if (result == null) {
-            result = new DynamicMethodMarshallerImpl( method ) ;
-            methodToDMM.put( method, result ) ;
+            result = new DynamicMethodMarshallerImpl(method);
+            methodToDMM.put(method, result);
         }
 
-        return result ;
+        return result;
     }
 
-    public synchronized ClassData getClassData( Class cls )
-    {
-        ClassData result = (ClassData)classToClassData.get( cls ) ;
+    public synchronized ClassData getClassData(Class cls) {
+        ClassData result = (ClassData) classToClassData.get(cls);
         if (result == null) {
-            result = new ClassDataImpl( cls ) ;
-            classToClassData.put( cls, result ) ;
+            result = new ClassDataImpl(cls);
+            classToClassData.put(cls, result);
         }
 
-        return result ;
+        return result;
     }
 
-    private class ClassDataImpl implements PresentationManager.ClassData
-    {
-        private Class cls ;
-        private IDLNameTranslator nameTranslator ;
-        private String[] typeIds ;
-        private PresentationManager.StubFactory sfactory ;
-        private InvocationHandlerFactory ihfactory ;
-        private Map dictionary ;
+    private class ClassDataImpl implements PresentationManager.ClassData {
+        private Class cls;
+        private IDLNameTranslator nameTranslator;
+        private String[] typeIds;
+        private PresentationManager.StubFactory sfactory;
+        private InvocationHandlerFactory ihfactory;
+        private Map dictionary;
 
-        public ClassDataImpl( Class cls )
-        {
-            this.cls = cls ;
-            Graph gr = new GraphImpl() ;
-            NodeImpl root = new NodeImpl( cls ) ;
-            Set rootSet = getRootSet( cls, root, gr ) ;
+        public ClassDataImpl(Class cls) {
+            this.cls = cls;
+            Graph gr = new GraphImpl();
+            NodeImpl root = new NodeImpl(cls);
+            Set rootSet = getRootSet(cls, root, gr);
 
             // At this point, rootSet contains those remote interfaces
             // that are not related by inheritance, and gr contains
             // all reachable remote interfaces.
 
-            Class[] interfaces = getInterfaces( rootSet ) ;
-            nameTranslator = IDLNameTranslatorImpl.get( interfaces ) ;
-            typeIds = makeTypeIds( root, gr, rootSet ) ;
+            Class[] interfaces = getInterfaces(rootSet);
+            nameTranslator = IDLNameTranslatorImpl.get(interfaces);
+            typeIds = makeTypeIds(root, gr, rootSet);
             ihfactory = new InvocationHandlerFactoryImpl(
-                PresentationManagerImpl.this, this ) ;
-            dictionary = new HashMap() ;
+                    PresentationManagerImpl.this, this);
+            dictionary = new HashMap();
         }
 
-        public Class getMyClass()
-        {
-            return cls ;
+        public Class getMyClass() {
+            return cls;
         }
 
-        public IDLNameTranslator getIDLNameTranslator()
-        {
-            return nameTranslator ;
+        public IDLNameTranslator getIDLNameTranslator() {
+            return nameTranslator;
         }
 
-        public String[] getTypeIds()
-        {
-            return typeIds ;
+        public String[] getTypeIds() {
+            return typeIds;
         }
 
-        public InvocationHandlerFactory getInvocationHandlerFactory()
-        {
-            return ihfactory ;
+        public InvocationHandlerFactory getInvocationHandlerFactory() {
+            return ihfactory;
         }
 
-        public Map getDictionary()
-        {
-            return dictionary ;
+        public Map getDictionary() {
+            return dictionary;
         }
     }
 
     public PresentationManager.StubFactoryFactory getStubFactoryFactory(
-        boolean isDynamic )
-    {
+            boolean isDynamic) {
         if (isDynamic)
-            return dynamicStubFactoryFactory ;
+            return dynamicStubFactoryFactory;
         else
-            return staticStubFactoryFactory ;
+            return staticStubFactoryFactory;
     }
 
-    public void setStubFactoryFactory( boolean isDynamic,
-        PresentationManager.StubFactoryFactory sff )
-    {
+    public void setStubFactoryFactory(boolean isDynamic,
+                                      PresentationManager.StubFactoryFactory sff) {
         if (isDynamic)
-            dynamicStubFactoryFactory = sff ;
+            dynamicStubFactoryFactory = sff;
         else
-            staticStubFactoryFactory = sff ;
+            staticStubFactoryFactory = sff;
     }
 
-    public Tie getTie()
-    {
-        return dynamicStubFactoryFactory.getTie( null ) ;
+    public Tie getTie() {
+        return dynamicStubFactoryFactory.getTie(null);
     }
 
-    public boolean useDynamicStubs()
-    {
-        return useDynamicStubs ;
+    public boolean useDynamicStubs() {
+        return useDynamicStubs;
     }
 
 ////////////////////////////////////////////////////////////////////////////////
 // Graph computations
 ////////////////////////////////////////////////////////////////////////////////
 
-    private Set getRootSet( Class target, NodeImpl root, Graph gr )
-    {
-        Set rootSet = null ;
+    private Set getRootSet(Class target, NodeImpl root, Graph gr) {
+        Set rootSet = null;
 
         if (target.isInterface()) {
-            gr.add( root ) ;
-            rootSet = gr.getRoots() ; // rootSet just contains root here
+            gr.add(root);
+            rootSet = gr.getRoots(); // rootSet just contains root here
         } else {
             // Use this class and its superclasses (not Object) as initial roots
-            Class superclass = target ;
-            Set initialRootSet = new HashSet() ;
-            while ((superclass != null) && !superclass.equals( Object.class )) {
-                Node node = new NodeImpl( superclass ) ;
-                gr.add( node ) ;
-                initialRootSet.add( node ) ;
-                superclass = superclass.getSuperclass() ;
+            Class superclass = target;
+            Set initialRootSet = new HashSet();
+            while ((superclass != null) && !superclass.equals(Object.class)) {
+                Node node = new NodeImpl(superclass);
+                gr.add(node);
+                initialRootSet.add(node);
+                superclass = superclass.getSuperclass();
             }
 
             // Expand all nodes into the graph
-            gr.getRoots() ;
+            gr.getRoots();
 
             // remove the roots and find roots again
-            gr.removeAll( initialRootSet ) ;
-            rootSet = gr.getRoots() ;
+            gr.removeAll(initialRootSet);
+            rootSet = gr.getRoots();
         }
 
-        return rootSet ;
+        return rootSet;
     }
 
-    private Class[] getInterfaces( Set roots )
-    {
-        Class[] classes = new Class[ roots.size() ] ;
-        Iterator iter = roots.iterator() ;
-        int ctr = 0 ;
+    private Class[] getInterfaces(Set roots) {
+        Class[] classes = new Class[roots.size()];
+        Iterator iter = roots.iterator();
+        int ctr = 0;
         while (iter.hasNext()) {
-            NodeImpl node = (NodeImpl)iter.next() ;
-            classes[ctr++] = node.getInterface() ;
+            NodeImpl node = (NodeImpl) iter.next();
+            classes[ctr++] = node.getInterface();
         }
 
-        return classes ;
+        return classes;
     }
 
-    private String[] makeTypeIds( NodeImpl root, Graph gr, Set rootSet )
-    {
-        Set nonRootSet = new HashSet( gr ) ;
-        nonRootSet.removeAll( rootSet ) ;
+    private String[] makeTypeIds(NodeImpl root, Graph gr, Set rootSet) {
+        Set nonRootSet = new HashSet(gr);
+        nonRootSet.removeAll(rootSet);
 
         // List<String> for the typeids
-        List result = new ArrayList() ;
+        List result = new ArrayList();
 
         if (rootSet.size() > 1) {
             // If the rootSet has more than one element, we must
             // put the type id of the implementation class first.
             // Root represents the implementation class here.
-            result.add( root.getTypeId() ) ;
+            result.add(root.getTypeId());
         }
 
-        addNodes( result, rootSet ) ;
-        addNodes( result, nonRootSet ) ;
+        addNodes(result, rootSet);
+        addNodes(result, nonRootSet);
 
-        return (String[])result.toArray( new String[result.size()] ) ;
+        return (String[]) result.toArray(new String[result.size()]);
     }
 
-    private void addNodes( List resultList, Set nodeSet )
-    {
-        Iterator iter = nodeSet.iterator() ;
+    private void addNodes(List resultList, Set nodeSet) {
+        Iterator iter = nodeSet.iterator();
         while (iter.hasNext()) {
-            NodeImpl node = (NodeImpl)iter.next() ;
-            String typeId = node.getTypeId() ;
-            resultList.add( typeId ) ;
+            NodeImpl node = (NodeImpl) iter.next();
+            String typeId = node.getTypeId();
+            resultList.add(typeId);
         }
     }
 
-    private static class NodeImpl implements Node
-    {
-        private Class interf ;
+    private static class NodeImpl implements Node {
+        private Class interf;
 
-        public Class getInterface()
-        {
-            return interf ;
+        public Class getInterface() {
+            return interf;
         }
 
-        public NodeImpl( Class interf )
-        {
-            this.interf = interf ;
+        public NodeImpl(Class interf) {
+            this.interf = interf;
         }
 
-        public String getTypeId()
-        {
-            return "RMI:" + interf.getName() + ":0000000000000000" ;
+        public String getTypeId() {
+            return "RMI:" + interf.getName() + ":0000000000000000";
         }
 
-        public Set getChildren()
-        {
-            Set result = new HashSet() ;
-            Class[] interfaces = interf.getInterfaces() ;
-            for (int ctr=0; ctr<interfaces.length; ctr++) {
-                Class cls = interfaces[ctr] ;
+        public Set getChildren() {
+            Set result = new HashSet();
+            Class[] interfaces = interf.getInterfaces();
+            for (int ctr = 0; ctr < interfaces.length; ctr++) {
+                Class cls = interfaces[ctr];
                 if (Remote.class.isAssignableFrom(cls) &&
-                    !Remote.class.equals(cls))
-                    result.add( new NodeImpl( cls ) ) ;
+                        !Remote.class.equals(cls))
+                    result.add(new NodeImpl(cls));
             }
 
-            return result ;
+            return result;
         }
 
-        public String toString()
-        {
-            return "NodeImpl[" + interf + "]" ;
+        public String toString() {
+            return "NodeImpl[" + interf + "]";
         }
 
-        public int hashCode()
-        {
-            return interf.hashCode() ;
+        public int hashCode() {
+            return interf.hashCode();
         }
 
-        public boolean equals( Object obj )
-        {
+        public boolean equals(Object obj) {
             if (this == obj)
-                return true ;
+                return true;
 
             if (!(obj instanceof NodeImpl))
-                return false ;
+                return false;
 
-            NodeImpl other = (NodeImpl)obj ;
+            NodeImpl other = (NodeImpl) obj;
 
-            return other.interf.equals( interf ) ;
+            return other.interf.equals(interf);
         }
     }
 }

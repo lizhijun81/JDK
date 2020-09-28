@@ -68,20 +68,20 @@ public class MotifInternalFrameUI extends BasicInternalFrameUI {
     protected KeyStroke closeMenuKey;
 
 
-/////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////
 // ComponentUI Interface Implementation methods
 /////////////////////////////////////////////////////////////////////////////
-    public static ComponentUI createUI(JComponent w)    {
-        return new MotifInternalFrameUI((JInternalFrame)w);
+    public static ComponentUI createUI(JComponent w) {
+        return new MotifInternalFrameUI((JInternalFrame) w);
     }
 
-    public MotifInternalFrameUI(JInternalFrame w)   {
+    public MotifInternalFrameUI(JInternalFrame w) {
         super(w);
     }
 
-    public void installUI(JComponent c)   {
+    public void installUI(JComponent c) {
         super.installUI(c);
-        setColors((JInternalFrame)c);
+        setColors((JInternalFrame) c);
     }
 
     protected void installDefaults() {
@@ -93,11 +93,11 @@ public class MotifInternalFrameUI extends BasicInternalFrameUI {
     }
 
 
-    protected void installKeyboardActions(){
-      super.installKeyboardActions();
-      // We replace the
-      // we use JPopup in our TitlePane so need escape support
-      closeMenuKey = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
+    protected void installKeyboardActions() {
+        super.installKeyboardActions();
+        // We replace the
+        // we use JPopup in our TitlePane so need escape support
+        closeMenuKey = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0);
     }
 
 
@@ -107,8 +107,8 @@ public class MotifInternalFrameUI extends BasicInternalFrameUI {
         internalFrameLayout = null;
     }
 
-    private JInternalFrame getFrame(){
-      return frame;
+    private JInternalFrame getFrame() {
+        return frame;
     }
 
     public JComponent createNorthPane(JInternalFrame w) {
@@ -120,17 +120,17 @@ public class MotifInternalFrameUI extends BasicInternalFrameUI {
         return Toolkit.getDefaultToolkit().getScreenSize();
     }
 
-    protected void uninstallKeyboardActions(){
-      super.uninstallKeyboardActions();
-      if (isKeyBindingRegistered()){
-        JInternalFrame.JDesktopIcon di = frame.getDesktopIcon();
-        SwingUtilities.replaceUIActionMap(di, null);
-        SwingUtilities.replaceUIInputMap(di, JComponent.WHEN_IN_FOCUSED_WINDOW,
-                                         null);
-      }
+    protected void uninstallKeyboardActions() {
+        super.uninstallKeyboardActions();
+        if (isKeyBindingRegistered()) {
+            JInternalFrame.JDesktopIcon di = frame.getDesktopIcon();
+            SwingUtilities.replaceUIActionMap(di, null);
+            SwingUtilities.replaceUIInputMap(di, JComponent.WHEN_IN_FOCUSED_WINDOW,
+                    null);
+        }
     }
 
-    protected void setupMenuOpenKey(){
+    protected void setupMenuOpenKey() {
         super.setupMenuOpenKey();
         ActionMap map = SwingUtilities.getUIActionMap(frame);
         if (map != null) {
@@ -138,25 +138,27 @@ public class MotifInternalFrameUI extends BasicInternalFrameUI {
             // it as MotifInternalFrameTitlePane has a titlePane ivar that shadows the
             // titlePane ivar in BasicInternalFrameUI, making supers action throw
             // an NPE for us.
-            map.put("showSystemMenu", new AbstractAction(){
-                public void actionPerformed(ActionEvent e){
+            map.put("showSystemMenu", new AbstractAction() {
+                public void actionPerformed(ActionEvent e) {
                     titlePane.showSystemMenu();
                 }
-                public boolean isEnabled(){
+
+                public boolean isEnabled() {
                     return isKeyBindingActive();
                 }
             });
         }
     }
 
-    protected void setupMenuCloseKey(){
+    protected void setupMenuCloseKey() {
         ActionMap map = SwingUtilities.getUIActionMap(frame);
         if (map != null) {
-            map.put("hideSystemMenu", new AbstractAction(){
-                public void actionPerformed(ActionEvent e){
+            map.put("hideSystemMenu", new AbstractAction() {
+                public void actionPerformed(ActionEvent e) {
                     titlePane.hideSystemMenu();
                 }
-                public boolean isEnabled(){
+
+                public boolean isEnabled() {
                     return isKeyBindingActive();
                 }
             });
@@ -166,30 +168,31 @@ public class MotifInternalFrameUI extends BasicInternalFrameUI {
         // we install them, and not the desktop icon.
         JInternalFrame.JDesktopIcon di = frame.getDesktopIcon();
         InputMap diInputMap = SwingUtilities.getUIInputMap
-                          (di, JComponent.WHEN_IN_FOCUSED_WINDOW);
+                (di, JComponent.WHEN_IN_FOCUSED_WINDOW);
         if (diInputMap == null) {
-            Object[] bindings = (Object[])UIManager.get
-                                          ("DesktopIcon.windowBindings");
+            Object[] bindings = (Object[]) UIManager.get
+                    ("DesktopIcon.windowBindings");
             if (bindings != null) {
                 diInputMap = LookAndFeel.makeComponentInputMap(di, bindings);
 
                 SwingUtilities.replaceUIInputMap(di, JComponent.
-                                               WHEN_IN_FOCUSED_WINDOW,
-                                               diInputMap);
+                                WHEN_IN_FOCUSED_WINDOW,
+                        diInputMap);
             }
         }
         ActionMap diActionMap = SwingUtilities.getUIActionMap(di);
         if (diActionMap == null) {
             diActionMap = new ActionMapUIResource();
-            diActionMap.put("hideSystemMenu", new AbstractAction(){
-                public void actionPerformed(ActionEvent e){
+            diActionMap.put("hideSystemMenu", new AbstractAction() {
+                public void actionPerformed(ActionEvent e) {
                     JInternalFrame.JDesktopIcon icon = getFrame().
-                                     getDesktopIcon();
-                    MotifDesktopIconUI micon = (MotifDesktopIconUI)icon.
-                                               getUI();
+                            getDesktopIcon();
+                    MotifDesktopIconUI micon = (MotifDesktopIconUI) icon.
+                            getUI();
                     micon.hideSystemMenu();
                 }
-                public boolean isEnabled(){
+
+                public boolean isEnabled() {
                     return isKeyBindingActive();
                 }
             });
@@ -197,14 +200,17 @@ public class MotifInternalFrameUI extends BasicInternalFrameUI {
         }
     }
 
-    /** This method is called when the frame becomes selected.
-      */
+    /**
+     * This method is called when the frame becomes selected.
+     */
     protected void activateFrame(JInternalFrame f) {
         super.activateFrame(f);
         setColors(f);
     }
-    /** This method is called when the frame is no longer selected.
-      */
+
+    /**
+     * This method is called when the frame is no longer selected.
+     */
     protected void deactivateFrame(JInternalFrame f) {
         setColors(f);
         super.deactivateFrame(f);

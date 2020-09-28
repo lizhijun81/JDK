@@ -46,12 +46,11 @@ final class StringLengthCall extends FunctionCall {
         final InstructionList il = methodGen.getInstructionList();
         if (argumentCount() > 0) {
             argument().translate(classGen, methodGen);
-        }
-        else {
+        } else {
             il.append(methodGen.loadContextNode());
             Type.Node.translateTo(classGen, methodGen, Type.String);
         }
         il.append(new INVOKEVIRTUAL(cpg.addMethodref(STRING_CLASS,
-                                                     "length", "()I")));
+                "length", "()I")));
     }
 }

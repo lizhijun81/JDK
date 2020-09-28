@@ -25,6 +25,7 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
+ *
  */
 
 class DefaultValidationErrorHandler extends DefaultHandler {
@@ -41,7 +42,7 @@ class DefaultValidationErrorHandler extends DefaultHandler {
             System.err.println("Warning: validation was turned on but an org.xml.sax.ErrorHandler was not");
             System.err.println("set, which is probably not what is desired.  Parser will use a default");
             System.err.println("ErrorHandler to print the first " +
-                               ERROR_COUNT_LIMIT +               " errors.  Please call");
+                    ERROR_COUNT_LIMIT + " errors.  Please call");
             System.err.println("the 'setErrorHandler' method to fix this.");
         }
 
@@ -50,8 +51,8 @@ class DefaultValidationErrorHandler extends DefaultHandler {
             systemId = "null";
         }
         String message = "Error: URI=" + systemId +
-            " Line=" + e.getLineNumber() +
-            ": " + e.getMessage();
+                " Line=" + e.getLineNumber() +
+                ": " + e.getMessage();
         System.err.println(message);
         errorCount++;
     }

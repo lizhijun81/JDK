@@ -59,14 +59,14 @@ package org.xml.sax;
  * the location of any document event using the Locator interface
  * supplied by the Parser through the setDocumentLocator method.</p>
  *
- * @deprecated This interface has been replaced by the SAX2
- *             {@link org.xml.sax.ContentHandler ContentHandler}
- *             interface, which includes Namespace support.
- * @since SAX 1.0
  * @author David Megginson
  * @see org.xml.sax.Parser#setDocumentHandler
  * @see org.xml.sax.Locator
  * @see org.xml.sax.HandlerBase
+ * @since SAX 1.0
+ * @deprecated This interface has been replaced by the SAX2
+ * {@link org.xml.sax.ContentHandler ContentHandler}
+ * interface, which includes Namespace support.
  */
 public interface DocumentHandler {
 
@@ -96,7 +96,7 @@ public interface DocumentHandler {
      *                any SAX document event.
      * @see org.xml.sax.Locator
      */
-    public abstract void setDocumentLocator (Locator locator);
+    public abstract void setDocumentLocator(Locator locator);
 
 
     /**
@@ -106,11 +106,11 @@ public interface DocumentHandler {
      * other methods in this interface or in DTDHandler (except for
      * setDocumentLocator).</p>
      *
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
      */
-    public abstract void startDocument ()
-        throws SAXException;
+    public abstract void startDocument()
+            throws SAXException;
 
 
     /**
@@ -122,11 +122,11 @@ public interface DocumentHandler {
      * (because of an unrecoverable error) or reached the end of
      * input.</p>
      *
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
      */
-    public abstract void endDocument ()
-        throws SAXException;
+    public abstract void endDocument()
+            throws SAXException;
 
 
     /**
@@ -146,13 +146,13 @@ public interface DocumentHandler {
      *
      * @param name The element type name.
      * @param atts The attributes attached to the element, if any.
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
      * @see #endElement
      * @see org.xml.sax.AttributeList
      */
-    public abstract void startElement (String name, AttributeList atts)
-        throws SAXException;
+    public abstract void startElement(String name, AttributeList atts)
+            throws SAXException;
 
 
     /**
@@ -167,11 +167,11 @@ public interface DocumentHandler {
      * still be attached to the name.</p>
      *
      * @param name The element type name
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
      */
-    public abstract void endElement (String name)
-        throws SAXException;
+    public abstract void endElement(String name)
+            throws SAXException;
 
 
     /**
@@ -191,16 +191,16 @@ public interface DocumentHandler {
      * ignorableWhitespace() method rather than this one (validating
      * parsers must do so).</p>
      *
-     * @param ch The characters from the XML document.
-     * @param start The start position in the array.
+     * @param ch     The characters from the XML document.
+     * @param start  The start position in the array.
      * @param length The number of characters to read from the array.
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
      * @see #ignorableWhitespace
      * @see org.xml.sax.Locator
      */
-    public abstract void characters (char ch[], int start, int length)
-        throws SAXException;
+    public abstract void characters(char ch[], int start, int length)
+            throws SAXException;
 
 
     /**
@@ -220,15 +220,15 @@ public interface DocumentHandler {
      * <p>The application must not attempt to read from the array
      * outside of the specified range.</p>
      *
-     * @param ch The characters from the XML document.
-     * @param start The start position in the array.
+     * @param ch     The characters from the XML document.
+     * @param start  The start position in the array.
      * @param length The number of characters to read from the array.
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
      * @see #characters
      */
-    public abstract void ignorableWhitespace (char ch[], int start, int length)
-        throws SAXException;
+    public abstract void ignorableWhitespace(char ch[], int start, int length)
+            throws SAXException;
 
 
     /**
@@ -243,13 +243,13 @@ public interface DocumentHandler {
      * using this method.</p>
      *
      * @param target The processing instruction target.
-     * @param data The processing instruction data, or null if
-     *        none was supplied.
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
+     * @param data   The processing instruction data, or null if
+     *               none was supplied.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
      */
-    public abstract void processingInstruction (String target, String data)
-        throws SAXException;
+    public abstract void processingInstruction(String target, String data)
+            throws SAXException;
 
 }
 

@@ -67,7 +67,7 @@ public interface DocumentType extends Node {
      * ex SYSTEM "ex.dtd" [ &lt;!ENTITY foo "foo"&gt; &lt;!ENTITY bar
      * "bar"&gt; &lt;!ENTITY bar "bar2"&gt; &lt;!ENTITY % baz "baz"&gt;
      * ]&gt; &lt;ex/&gt;</pre>
-     *  the interface provides access to <code>foo</code>
+     * the interface provides access to <code>foo</code>
      * and the first declaration of <code>bar</code> but not the second
      * declaration of <code>bar</code> or <code>baz</code>. Every node in
      * this map also implements the <code>Entity</code> interface.
@@ -87,6 +87,7 @@ public interface DocumentType extends Node {
 
     /**
      * The public identifier of the external subset.
+     *
      * @since DOM Level 2
      */
     public String getPublicId();
@@ -94,6 +95,7 @@ public interface DocumentType extends Node {
     /**
      * The system identifier of the external subset. This may be an absolute
      * URI or not.
+     *
      * @since DOM Level 2
      */
     public String getSystemId();
@@ -105,6 +107,7 @@ public interface DocumentType extends Node {
      * information is available to the implementation. This may vary
      * depending on various parameters, including the XML processor used to
      * build the document.
+     *
      * @since DOM Level 2
      */
     public String getInternalSubset();

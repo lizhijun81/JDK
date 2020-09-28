@@ -30,6 +30,7 @@
  */
 
 package org.omg.CORBA.portable;
+
 /**
  * The generated Java classes corresponding to valuetype IDL types
  * implement this interface. In other words, the Java mapping of
@@ -44,6 +45,7 @@ package org.omg.CORBA.portable;
 public interface ValueBase extends IDLEntity {
     /**
      * Provides truncatable repository ids.
+     *
      * @return a String array--list of truncatable repository ids.
      */
     String[] _truncatable_ids();

@@ -34,13 +34,14 @@ import java.awt.image.IndexColorModel;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.lang.ref.WeakReference;
+
 import sun.awt.image.SunWritableRaster;
 import sun.awt.image.IntegerInterleavedRaster;
 import sun.awt.image.ByteInterleavedRaster;
 
 abstract class TexturePaintContext implements PaintContext {
     public static ColorModel xrgbmodel =
-        new DirectColorModel(24, 0xff0000, 0xff00, 0xff);
+            new DirectColorModel(24, 0xff0000, 0xff00, 0xff);
     public static ColorModel argbmodel = ColorModel.getRGBdefault();
 
     ColorModel colorModel;
@@ -75,12 +76,11 @@ abstract class TexturePaintContext implements PaintContext {
         int maxw = devBounds.width;
         Object val = hints.get(hints.KEY_INTERPOLATION);
         boolean filter =
-            (val == null
-             ? (hints.get(hints.KEY_RENDERING) == hints.VALUE_RENDER_QUALITY)
-             : (val != hints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR));
+                (val == null
+                        ? (hints.get(hints.KEY_RENDERING) == hints.VALUE_RENDER_QUALITY)
+                        : (val != hints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR));
         if (raster instanceof IntegerInterleavedRaster &&
-            (!filter || isFilterableDCM(cm)))
-        {
+                (!filter || isFilterableDCM(cm))) {
             IntegerInterleavedRaster iir = (IntegerInterleavedRaster) raster;
             if (iir.getNumDataElements() == 1 && iir.getPixelStride() == 1) {
                 return new Int(iir, cm, xform, maxw, filter);
@@ -208,14 +208,14 @@ abstract class TexturePaintContext implements PaintContext {
     /**
      * Return a Raster containing the colors generated for the graphics
      * operation.
+     *
      * @param x,y,w,h The area in device space for which colors are
-     * generated.
+     *                generated.
      */
     public Raster getRaster(int x, int y, int w, int h) {
         if (outRas == null ||
-            outRas.getWidth() < w ||
-            outRas.getHeight() < h)
-        {
+                outRas.getWidth() < w ||
+                outRas.getHeight() < h) {
             // If h==1, we will probably get lots of "scanline" rects
             outRas = makeRaster((h == 1 ? Math.max(w, maxWidth) : w), h);
         }
@@ -223,11 +223,11 @@ abstract class TexturePaintContext implements PaintContext {
         double Y = mod(yOrg + x * incYAcross + y * incYDown, bHeight);
 
         setRaster((int) X, (int) Y, fractAsInt(X), fractAsInt(Y),
-                  w, h, bWidth, bHeight,
-                  colincx, colincxerr,
-                  colincy, colincyerr,
-                  rowincx, rowincxerr,
-                  rowincy, rowincyerr);
+                w, h, bWidth, bHeight,
+                colincx, colincxerr,
+                colincy, colincyerr,
+                rowincx, rowincxerr,
+                rowincy, rowincyerr);
 
         SunWritableRaster.markDirty(outRas);
 
@@ -239,8 +239,7 @@ abstract class TexturePaintContext implements PaintContext {
 
     synchronized static WritableRaster makeRaster(ColorModel cm,
                                                   Raster srcRas,
-                                                  int w, int h)
-    {
+                                                  int w, int h) {
         if (xrgbmodel == cm) {
             if (xrgbRasRef != null) {
                 WritableRaster wr = (WritableRaster) xrgbRasRef.get();
@@ -287,8 +286,7 @@ abstract class TexturePaintContext implements PaintContext {
     private static WeakReference byteRasRef;
 
     synchronized static WritableRaster makeByteRaster(Raster srcRas,
-                                                      int w, int h)
-    {
+                                                      int w, int h) {
         if (byteRasRef != null) {
             WritableRaster wr = (WritableRaster) byteRasRef.get();
             if (wr != null && wr.getWidth() >= w && wr.getHeight() >= h) {
@@ -311,6 +309,7 @@ abstract class TexturePaintContext implements PaintContext {
     }
 
     public abstract WritableRaster makeRaster(int w, int h);
+
     public abstract void setRaster(int x, int y, int xerr, int yerr,
                                    int w, int h, int bWidth, int bHeight,
                                    int colincx, int colincxerr,
@@ -347,9 +346,9 @@ abstract class TexturePaintContext implements PaintContext {
             // The complement of the [xy]mul values (1-[xy]mul) can result
             // in new values in the range (1 => 2^12).  Thus for any given
             // loop iteration, the values could be anywhere in (0 => 2^12).
-            xmul = (1<<12) - xmul;
+            xmul = (1 << 12) - xmul;
             if ((i & 1) == 0) {
-                ymul = (1<<12) - ymul;
+                ymul = (1 << 12) - ymul;
             }
             // xmul and ymul are each 12 bits (0 => 2^12)
             // factor is thus 24 bits (0 => 2^24)
@@ -358,16 +357,16 @@ abstract class TexturePaintContext implements PaintContext {
                 // accum variables will accumulate 32 bits
                 // bytes extracted from rgb fit in 8 bits (0 => 255)
                 // byte * factor thus fits in 32 bits (0 => 255 * 2^24)
-                accumA += (((rgb >>> 24)       ) * factor);
+                accumA += (((rgb >>> 24)) * factor);
                 accumR += (((rgb >>> 16) & 0xff) * factor);
-                accumG += (((rgb >>>  8) & 0xff) * factor);
-                accumB += (((rgb       ) & 0xff) * factor);
+                accumG += (((rgb >>> 8) & 0xff) * factor);
+                accumB += (((rgb) & 0xff) * factor);
             }
         }
-        return ((((accumA + (1<<23)) >>> 24) << 24) |
-                (((accumR + (1<<23)) >>> 24) << 16) |
-                (((accumG + (1<<23)) >>> 24) <<  8) |
-                (((accumB + (1<<23)) >>> 24)      ));
+        return ((((accumA + (1 << 23)) >>> 24) << 24) |
+                (((accumR + (1 << 23)) >>> 24) << 16) |
+                (((accumG + (1 << 23)) >>> 24) << 8) |
+                (((accumB + (1 << 23)) >>> 24)));
     }
 
     static class Int extends TexturePaintContext {
@@ -381,8 +380,7 @@ abstract class TexturePaintContext implements PaintContext {
         boolean filter;
 
         public Int(IntegerInterleavedRaster srcRas, ColorModel cm,
-                   AffineTransform xform, int maxw, boolean filter)
-        {
+                   AffineTransform xform, int maxw, boolean filter) {
             super(cm, xform, srcRas.getWidth(), srcRas.getHeight(), maxw);
             this.srcRas = srcRas;
             this.inData = srcRas.getDataStorage();
@@ -414,7 +412,7 @@ abstract class TexturePaintContext implements PaintContext {
             int outSpan = this.outSpan;
             boolean filter = this.filter;
             boolean normalx = (colincx == 1 && colincxerr == 0 &&
-                               colincy == 0 && colincyerr == 0) && !filter;
+                    colincy == 0 && colincyerr == 0) && !filter;
             int rowx = x;
             int rowy = y;
             int rowxerr = xerr;
@@ -433,8 +431,8 @@ abstract class TexturePaintContext implements PaintContext {
                         while (i > 0) {
                             int copyw = (i < x) ? i : x;
                             System.arraycopy(inData, in - x,
-                                             outData, out - i,
-                                             copyw);
+                                    outData, out - i,
+                                    copyw);
                             i -= copyw;
                             if ((x -= copyw) == 0) {
                                 x = bWidth;
@@ -467,7 +465,7 @@ abstract class TexturePaintContext implements PaintContext {
                             rgbs[2] = inData[inOff + nexty * inSpan + x];
                             rgbs[3] = inData[inOff + nexty * inSpan + nextx];
                             outData[out + i] =
-                                TexturePaintContext.blend(rgbs, xerr, yerr);
+                                    TexturePaintContext.blend(rgbs, xerr, yerr);
                         } else {
                             outData[out + i] = inData[inOff + y * inSpan + x];
                         }
@@ -516,8 +514,7 @@ abstract class TexturePaintContext implements PaintContext {
         int outSpan;
 
         public Byte(ByteInterleavedRaster srcRas, ColorModel cm,
-                    AffineTransform xform, int maxw)
-        {
+                    AffineTransform xform, int maxw) {
             super(cm, xform, srcRas.getWidth(), srcRas.getHeight(), maxw);
             this.srcRas = srcRas;
             this.inData = srcRas.getDataStorage();
@@ -551,7 +548,7 @@ abstract class TexturePaintContext implements PaintContext {
             int inOff = this.inOff;
             int outSpan = this.outSpan;
             boolean normalx = (colincx == 1 && colincxerr == 0 &&
-                               colincy == 0 && colincyerr == 0);
+                    colincy == 0 && colincyerr == 0);
             int rowx = x;
             int rowy = y;
             int rowxerr = xerr;
@@ -569,8 +566,8 @@ abstract class TexturePaintContext implements PaintContext {
                         while (i > 0) {
                             int copyw = (i < x) ? i : x;
                             System.arraycopy(inData, in - x,
-                                             outData, out - i,
-                                             copyw);
+                                    outData, out - i,
+                                    copyw);
                             i -= copyw;
                             if ((x -= copyw) == 0) {
                                 x = bWidth;
@@ -637,11 +634,10 @@ abstract class TexturePaintContext implements PaintContext {
         int outSpan;
 
         public ByteFilter(ByteInterleavedRaster srcRas, ColorModel cm,
-                          AffineTransform xform, int maxw)
-        {
+                          AffineTransform xform, int maxw) {
             super((cm.getTransparency() == Transparency.OPAQUE
-                   ? xrgbmodel : argbmodel),
-                  xform, srcRas.getWidth(), srcRas.getHeight(), maxw);
+                            ? xrgbmodel : argbmodel),
+                    xform, srcRas.getWidth(), srcRas.getHeight(), maxw);
             this.inPalette = new int[256];
             ((IndexColorModel) cm).getRGBs(this.inPalette);
             this.srcRas = srcRas;
@@ -692,15 +688,15 @@ abstract class TexturePaintContext implements PaintContext {
                         nexty = 0;
                     }
                     rgbs[0] = inPalette[0xff & inData[inOff + x +
-                                                      inSpan * y]];
+                            inSpan * y]];
                     rgbs[1] = inPalette[0xff & inData[inOff + nextx +
-                                                      inSpan * y]];
+                            inSpan * y]];
                     rgbs[2] = inPalette[0xff & inData[inOff + x +
-                                                      inSpan * nexty]];
+                            inSpan * nexty]];
                     rgbs[3] = inPalette[0xff & inData[inOff + nextx +
-                                                      inSpan * nexty]];
+                            inSpan * nexty]];
                     outData[out + i] =
-                        TexturePaintContext.blend(rgbs, xerr, yerr);
+                            TexturePaintContext.blend(rgbs, xerr, yerr);
                     if ((xerr += colincxerr) < 0) {
                         xerr &= Integer.MAX_VALUE;
                         x++;
@@ -740,8 +736,7 @@ abstract class TexturePaintContext implements PaintContext {
         boolean filter;
 
         public Any(WritableRaster srcRas, ColorModel cm,
-                   AffineTransform xform, int maxw, boolean filter)
-        {
+                   AffineTransform xform, int maxw, boolean filter) {
             super(cm, xform, srcRas.getWidth(), srcRas.getHeight(), maxw);
             this.srcRas = srcRas;
             this.filter = filter;
@@ -788,7 +783,7 @@ abstract class TexturePaintContext implements PaintContext {
                         data = srcRas.getDataElements(nextx, nexty, data);
                         rgbs[3] = colorModel.getRGB(data);
                         int rgb =
-                            TexturePaintContext.blend(rgbs, xerr, yerr);
+                                TexturePaintContext.blend(rgbs, xerr, yerr);
                         data = colorModel.getDataElements(rgb, data);
                     }
                     outRas.setDataElements(i, j, data);

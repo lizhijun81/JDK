@@ -59,6 +59,7 @@ import org.w3c.dom.Node;
  * filter may be used with a number of different kinds of traversals,
  * encouraging code reuse.
  * <p>See also the <a href='http://www.w3.org/TR/2000/REC-DOM-Level-2-Traversal-Range-20001113'>Document Object Model (DOM) Level 2 Traversal and Range Specification</a>.
+ *
  * @since DOM Level 2
  */
 public interface NodeFilter {
@@ -68,7 +69,7 @@ public interface NodeFilter {
      * <code>NodeIterator</code> or <code>TreeWalker</code> will return this
      * node.
      */
-    public static final short FILTER_ACCEPT             = 1;
+    public static final short FILTER_ACCEPT = 1;
     /**
      * Reject the node. Navigation methods defined for
      * <code>NodeIterator</code> or <code>TreeWalker</code> will not return
@@ -76,7 +77,7 @@ public interface NodeFilter {
      * will also be rejected. <code>NodeIterators</code> treat this as a
      * synonym for <code>FILTER_SKIP</code>.
      */
-    public static final short FILTER_REJECT             = 2;
+    public static final short FILTER_REJECT = 2;
     /**
      * Skip this single node. Navigation methods defined for
      * <code>NodeIterator</code> or <code>TreeWalker</code> will not return
@@ -84,17 +85,17 @@ public interface NodeFilter {
      * <code>TreeWalker</code>, the children of this node will still be
      * considered.
      */
-    public static final short FILTER_SKIP               = 3;
+    public static final short FILTER_SKIP = 3;
 
     // Constants for whatToShow
     /**
      * Show all <code>Nodes</code>.
      */
-    public static final int SHOW_ALL                  = 0xFFFFFFFF;
+    public static final int SHOW_ALL = 0xFFFFFFFF;
     /**
      * Show <code>Element</code> nodes.
      */
-    public static final int SHOW_ELEMENT              = 0x00000001;
+    public static final int SHOW_ELEMENT = 0x00000001;
     /**
      * Show <code>Attr</code> nodes. This is meaningful only when creating an
      * <code>NodeIterator</code> or <code>TreeWalker</code> with an
@@ -103,19 +104,19 @@ public interface NodeFilter {
      * or traversal. Since attributes are never children of other nodes,
      * they do not appear when traversing over the document tree.
      */
-    public static final int SHOW_ATTRIBUTE            = 0x00000002;
+    public static final int SHOW_ATTRIBUTE = 0x00000002;
     /**
      * Show <code>Text</code> nodes.
      */
-    public static final int SHOW_TEXT                 = 0x00000004;
+    public static final int SHOW_TEXT = 0x00000004;
     /**
      * Show <code>CDATASection</code> nodes.
      */
-    public static final int SHOW_CDATA_SECTION        = 0x00000008;
+    public static final int SHOW_CDATA_SECTION = 0x00000008;
     /**
      * Show <code>EntityReference</code> nodes.
      */
-    public static final int SHOW_ENTITY_REFERENCE     = 0x00000010;
+    public static final int SHOW_ENTITY_REFERENCE = 0x00000010;
     /**
      * Show <code>Entity</code> nodes. This is meaningful only when creating
      * an <code>NodeIterator</code> or <code>TreeWalker</code> with an
@@ -125,7 +126,7 @@ public interface NodeFilter {
      * document tree, they do not appear when traversing over the document
      * tree.
      */
-    public static final int SHOW_ENTITY               = 0x00000020;
+    public static final int SHOW_ENTITY = 0x00000020;
     /**
      * Show <code>ProcessingInstruction</code> nodes.
      */
@@ -133,19 +134,19 @@ public interface NodeFilter {
     /**
      * Show <code>Comment</code> nodes.
      */
-    public static final int SHOW_COMMENT              = 0x00000080;
+    public static final int SHOW_COMMENT = 0x00000080;
     /**
      * Show <code>Document</code> nodes.
      */
-    public static final int SHOW_DOCUMENT             = 0x00000100;
+    public static final int SHOW_DOCUMENT = 0x00000100;
     /**
      * Show <code>DocumentType</code> nodes.
      */
-    public static final int SHOW_DOCUMENT_TYPE        = 0x00000200;
+    public static final int SHOW_DOCUMENT_TYPE = 0x00000200;
     /**
      * Show <code>DocumentFragment</code> nodes.
      */
-    public static final int SHOW_DOCUMENT_FRAGMENT    = 0x00000400;
+    public static final int SHOW_DOCUMENT_FRAGMENT = 0x00000400;
     /**
      * Show <code>Notation</code> nodes. This is meaningful only when creating
      * an <code>NodeIterator</code> or <code>TreeWalker</code> with a
@@ -155,7 +156,7 @@ public interface NodeFilter {
      * document tree, they do not appear when traversing over the document
      * tree.
      */
-    public static final int SHOW_NOTATION             = 0x00000800;
+    public static final int SHOW_NOTATION = 0x00000800;
 
     /**
      * Test whether a specified node is visible in the logical view of a
@@ -164,9 +165,10 @@ public interface NodeFilter {
      * <code>NodeIterator</code>; it is not normally called directly from
      * user code. (Though you could do so if you wanted to use the same
      * filter to guide your own application logic.)
+     *
      * @param n The node to check to see if it passes the filter or not.
      * @return A constant to determine whether the node is accepted,
-     *   rejected, or skipped, as defined above.
+     * rejected, or skipped, as defined above.
      */
     public short acceptNode(Node n);
 

@@ -52,48 +52,46 @@ import com.sun.corba.se.impl.logging.ORBUtilSystemException;
  * should be fixed in Tiger.
  */
 public class INSServerRequestDispatcher
-    implements CorbaServerRequestDispatcher
-{
+        implements CorbaServerRequestDispatcher {
 
     private ORB orb = null;
-    private ORBUtilSystemException wrapper ;
+    private ORBUtilSystemException wrapper;
 
-    public INSServerRequestDispatcher( ORB orb ) {
+    public INSServerRequestDispatcher(ORB orb) {
         this.orb = orb;
-        this.wrapper = ORBUtilSystemException.get( orb,
-            CORBALogDomains.RPC_PROTOCOL ) ;
+        this.wrapper = ORBUtilSystemException.get(orb,
+                CORBALogDomains.RPC_PROTOCOL);
     }
 
     // Need to signal one of OBJECT_HERE, OBJECT_FORWARD, OBJECT_NOT_EXIST.
     public IOR locate(ObjectKey okey) {
         // send a locate forward with the right IOR. If the insKey is not
         // registered then it will throw OBJECT_NOT_EXIST Exception
-        String insKey = new String( okey.getBytes(orb) );
-        return getINSReference( insKey );
+        String insKey = new String(okey.getBytes(orb));
+        return getINSReference(insKey);
     }
 
-    public void dispatch(MessageMediator mediator)
-    {
+    public void dispatch(MessageMediator mediator) {
         CorbaMessageMediator request = (CorbaMessageMediator) mediator;
         // send a locate forward with the right IOR. If the insKey is not
         // registered then it will throw OBJECT_NOT_EXIST Exception
-        String insKey = new String( request.getObjectKey().getBytes(orb) );
+        String insKey = new String(request.getObjectKey().getBytes(orb));
         request.getProtocolHandler()
-            .createLocationForward(request, getINSReference( insKey ), null);
+                .createLocationForward(request, getINSReference(insKey), null);
         return;
     }
 
     /**
      * getINSReference if it is registered in INSObjectKeyMap.
      */
-    private IOR getINSReference( String insKey ) {
-        IOR entry = ORBUtility.getIOR( orb.getLocalResolver().resolve( insKey ) ) ;
-        if( entry != null ) {
+    private IOR getINSReference(String insKey) {
+        IOR entry = ORBUtility.getIOR(orb.getLocalResolver().resolve(insKey));
+        if (entry != null) {
             // If entry is not null then the locate is with an INS Object key,
             // so send a location forward with the right IOR.
             return entry;
         }
 
-        throw wrapper.servantNotFound() ;
+        throw wrapper.servantNotFound();
     }
 }

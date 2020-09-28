@@ -76,16 +76,16 @@ public interface Text extends CharacterData {
      * node had a parent node, the new node is inserted as the next sibling
      * of the original node. When the <code>offset</code> is equal to the
      * length of this node, the new node has no data.
+     *
      * @param offset The 16-bit unit offset at which to split, starting from
-     *   <code>0</code>.
+     *               <code>0</code>.
      * @return The new node, of the same type as this node.
-     * @exception DOMException
-     *   INDEX_SIZE_ERR: Raised if the specified offset is negative or greater
-     *   than the number of 16-bit units in <code>data</code>.
-     *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.
+     * @throws DOMException INDEX_SIZE_ERR: Raised if the specified offset is negative or greater
+     *                      than the number of 16-bit units in <code>data</code>.
+     *                      <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.
      */
     public Text splitText(int offset)
-                          throws DOMException;
+            throws DOMException;
 
     /**
      * Returns whether this text node contains <a href='http://www.w3.org/TR/2004/REC-xml-infoset-20040204#infoitem.character'>
@@ -93,6 +93,7 @@ public interface Text extends CharacterData {
      * determined to contain whitespace in element content during the load
      * of the document or if validation occurs while using
      * <code>Document.normalizeDocument()</code>.
+     *
      * @since DOM Level 3
      */
     public boolean isElementContentWhitespace();
@@ -174,14 +175,14 @@ public interface Text extends CharacterData {
      * <code>replaceWholeText</code> on the <code>Text</code> node that
      * contains "bar" fails, because the <code>EntityReference</code> node
      * "ent" contains an <code>Element</code> node which cannot be removed.</p>
+     *
      * @param content The content of the replacing <code>Text</code> node.
      * @return The <code>Text</code> node created with the specified content.
-     * @exception DOMException
-     *   NO_MODIFICATION_ALLOWED_ERR: Raised if one of the <code>Text</code>
-     *   nodes being replaced is readonly.
+     * @throws DOMException NO_MODIFICATION_ALLOWED_ERR: Raised if one of the <code>Text</code>
+     *                      nodes being replaced is readonly.
      * @since DOM Level 3
      */
     public Text replaceWholeText(String content)
-                                 throws DOMException;
+            throws DOMException;
 
 }

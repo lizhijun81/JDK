@@ -33,10 +33,9 @@ import com.sun.org.apache.xerces.internal.xs.XSObjectList;
  * The XML representation for an attribute use
  * schema component is a local <attribute> element information item
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
  * @version $Id: XSAttributeUseImpl.java,v 1.7 2010-11-01 04:39:55 joehw Exp $
+ * @xerces.internal
  */
 public class XSAttributeUseImpl implements XSAttributeUse {
 
@@ -51,7 +50,7 @@ public class XSAttributeUseImpl implements XSAttributeUse {
     // optional annotation
     public XSObjectList fAnnotations = null;
 
-    public void reset(){
+    public void reset() {
         fDefault = null;
         fAttrDecl = null;
         fUse = SchemaSymbols.USE_OPTIONAL;
@@ -114,8 +113,8 @@ public class XSAttributeUseImpl implements XSAttributeUse {
     public String getConstraintValue() {
         // REVISIT: SCAPI: what's the proper representation
         return getConstraintType() == XSConstants.VC_NONE ?
-               null :
-               fDefault.stringValue();
+                null :
+                fDefault.stringValue();
     }
 
     /**
@@ -127,20 +126,20 @@ public class XSAttributeUseImpl implements XSAttributeUse {
 
     public Object getActualVC() {
         return getConstraintType() == XSConstants.VC_NONE ?
-               null :
-               fDefault.actualValue;
+                null :
+                fDefault.actualValue;
     }
 
     public short getActualVCType() {
         return getConstraintType() == XSConstants.VC_NONE ?
-               XSConstants.UNAVAILABLE_DT :
-               fDefault.actualValueType;
+                XSConstants.UNAVAILABLE_DT :
+                fDefault.actualValueType;
     }
 
     public ShortList getItemValueTypes() {
         return getConstraintType() == XSConstants.VC_NONE ?
-               null :
-               fDefault.itemValueTypes;
+                null :
+                fDefault.itemValueTypes;
     }
 
     /**

@@ -25,6 +25,6 @@ package com.sun.org.apache.xerces.internal.parsers;
  * in order to indicate that it provides support for XML 1.1.</p>
  *
  * @author Michael Glavassevich, IBM
- *
  */
-public interface XML11Configurable {}
+public interface XML11Configurable {
+}

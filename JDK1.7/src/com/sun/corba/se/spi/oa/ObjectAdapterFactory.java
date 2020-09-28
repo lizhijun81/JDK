@@ -23,28 +23,31 @@
  *
  */
 
-package com.sun.corba.se.spi.oa ;
+package com.sun.corba.se.spi.oa;
 
-import com.sun.corba.se.spi.oa.ObjectAdapter ;
+import com.sun.corba.se.spi.oa.ObjectAdapter;
 
-import com.sun.corba.se.spi.orb.ORB ;
+import com.sun.corba.se.spi.orb.ORB;
 
-import com.sun.corba.se.spi.ior.ObjectAdapterId ;
+import com.sun.corba.se.spi.ior.ObjectAdapterId;
 
 public interface ObjectAdapterFactory {
-    /** Initialize this object adapter factory instance.
-    */
-    void init( ORB orb ) ;
+    /**
+     * Initialize this object adapter factory instance.
+     */
+    void init(ORB orb);
 
-    /** Shutdown all object adapters and other state associated
+    /**
+     * Shutdown all object adapters and other state associated
      * with this factory.
      */
-    void shutdown( boolean waitForCompletion ) ;
+    void shutdown(boolean waitForCompletion);
 
-    /** Find the ObjectAdapter instance that corresponds to the
-    * given ObjectAdapterId.
-    */
-    ObjectAdapter find( ObjectAdapterId oaid ) ;
+    /**
+     * Find the ObjectAdapter instance that corresponds to the
+     * given ObjectAdapterId.
+     */
+    ObjectAdapter find(ObjectAdapterId oaid);
 
-    ORB getORB() ;
+    ORB getORB();
 }

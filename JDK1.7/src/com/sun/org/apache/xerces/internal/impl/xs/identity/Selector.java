@@ -32,10 +32,9 @@ import com.sun.org.apache.xerces.internal.xs.XSTypeDefinition;
 /**
  * Schema identity constraint selector.
  *
- * @xerces.internal
- *
  * @author Andy Clark, IBM
  * @version $Id: Selector.java,v 1.7 2010-11-01 04:39:57 joehw Exp $
+ * @xerces.internal
  */
 public class Selector {
 
@@ -43,10 +42,14 @@ public class Selector {
     // Data
     //
 
-    /** XPath. */
+    /**
+     * XPath.
+     */
     protected final Selector.XPath fXPath;
 
-    /** Identity constraint. */
+    /**
+     * Identity constraint.
+     */
     protected final IdentityConstraint fIdentityConstraint;
 
     // the Identity constraint we're the matcher for.  Only
@@ -57,7 +60,9 @@ public class Selector {
     // Constructors
     //
 
-    /** Constructs a selector. */
+    /**
+     * Constructs a selector.
+     */
     public Selector(Selector.XPath xpath,
                     IdentityConstraint identityConstraint) {
         fXPath = xpath;
@@ -68,22 +73,28 @@ public class Selector {
     // Public methods
     //
 
-    /** Returns the selector XPath. */
+    /**
+     * Returns the selector XPath.
+     */
     public com.sun.org.apache.xerces.internal.impl.xpath.XPath getXPath() {
         return fXPath;
     } // getXPath():com.sun.org.apache.xerces.internal.v1.schema.identity.XPath
 
-    /** Returns the identity constraint. */
+    /**
+     * Returns the identity constraint.
+     */
     public IdentityConstraint getIDConstraint() {
         return fIdentityConstraint;
     } // getIDConstraint():IdentityConstraint
 
     // factory method
 
-    /** Creates a selector matcher.
-     * @param activator     The activator for this selector's fields.
-     * @param initialDepth  The depth in the document at which this matcher began its life;
-     *                          used in correctly handling recursive elements.
+    /**
+     * Creates a selector matcher.
+     *
+     * @param activator    The activator for this selector's fields.
+     * @param initialDepth The depth in the document at which this matcher began its life;
+     *                     used in correctly handling recursive elements.
      */
     public XPathMatcher createMatcher(FieldActivator activator, int initialDepth) {
         return new Selector.Matcher(fXPath, activator, initialDepth);
@@ -93,7 +104,9 @@ public class Selector {
     // Object methods
     //
 
-    /** Returns a string representation of this object. */
+    /**
+     * Returns a string representation of this object.
+     */
     public String toString() {
         return fXPath.toString();
     } // toString():String
@@ -109,20 +122,22 @@ public class Selector {
      * @version $Id: Selector.java,v 1.7 2010-11-01 04:39:57 joehw Exp $
      */
     public static class XPath
-    extends com.sun.org.apache.xerces.internal.impl.xpath.XPath {
+            extends com.sun.org.apache.xerces.internal.impl.xpath.XPath {
 
         //
         // Constructors
         //
 
-        /** Constructs a selector XPath expression. */
+        /**
+         * Constructs a selector XPath expression.
+         */
         public XPath(String xpath, SymbolTable symbolTable,
                      NamespaceContext context) throws XPathException {
             super(normalize(xpath), symbolTable, context);
             // verify that an attribute is not selected
-            for (int i=0;i<fLocationPaths.length;i++) {
+            for (int i = 0; i < fLocationPaths.length; i++) {
                 com.sun.org.apache.xerces.internal.impl.xpath.XPath.Axis axis =
-                fLocationPaths[i].steps[fLocationPaths[i].steps.length-1].axis;
+                        fLocationPaths[i].steps[fLocationPaths[i].steps.length - 1].axis;
                 if (axis.type == XPath.Axis.ATTRIBUTE) {
                     throw new XPathException("c-selector-xpath");
                 }
@@ -138,20 +153,20 @@ public class Selector {
             //       Unless xpath starts with a descendant node -Achille Fokoue
             //      ... or a '.' or a '/' - NG
             //  And we also need to prefix exprs to the right of | with ./ - NG
-            StringBuffer modifiedXPath = new StringBuffer(xpath.length()+5);
+            StringBuffer modifiedXPath = new StringBuffer(xpath.length() + 5);
             int unionIndex = -1;
             do {
-                if(!(XMLChar.trim(xpath).startsWith("/") || XMLChar.trim(xpath).startsWith("."))) {
+                if (!(XMLChar.trim(xpath).startsWith("/") || XMLChar.trim(xpath).startsWith("."))) {
                     modifiedXPath.append("./");
                 }
                 unionIndex = xpath.indexOf('|');
-                if(unionIndex == -1) {
+                if (unionIndex == -1) {
                     modifiedXPath.append(xpath);
                     break;
                 }
-                modifiedXPath.append(xpath.substring(0,unionIndex+1));
-                xpath = xpath.substring(unionIndex+1, xpath.length());
-            } while(true);
+                modifiedXPath.append(xpath.substring(0, unionIndex + 1));
+                xpath = xpath.substring(unionIndex + 1, xpath.length());
+            } while (true);
             return modifiedXPath.toString();
         }
 
@@ -163,31 +178,41 @@ public class Selector {
      * @author Andy Clark, IBM
      */
     public class Matcher
-    extends XPathMatcher {
+            extends XPathMatcher {
 
         //
         // Data
         //
 
-        /** Field activator. */
+        /**
+         * Field activator.
+         */
         protected final FieldActivator fFieldActivator;
 
-        /** Initial depth in the document at which this matcher was created. */
+        /**
+         * Initial depth in the document at which this matcher was created.
+         */
         protected final int fInitialDepth;
 
-        /** Element depth. */
+        /**
+         * Element depth.
+         */
         protected int fElementDepth;
 
-        /** Depth at match. */
+        /**
+         * Depth at match.
+         */
         protected int fMatchedDepth;
 
         //
         // Constructors
         //
 
-        /** Constructs a selector matcher. */
+        /**
+         * Constructs a selector matcher.
+         */
         public Matcher(Selector.XPath xpath, FieldActivator activator,
-                int initialDepth) {
+                       int initialDepth) {
             super(xpath);
             fFieldActivator = activator;
             fInitialDepth = initialDepth;
@@ -197,7 +222,7 @@ public class Selector {
         // XMLDocumentFragmentHandler methods
         //
 
-        public void startDocumentFragment(){
+        public void startDocumentFragment() {
             super.startDocumentFragment();
             fElementDepth = 0;
             fMatchedDepth = -1;
@@ -210,7 +235,6 @@ public class Selector {
          *
          * @param element    The name of the element.
          * @param attributes The element attributes.
-         *
          */
         public void startElement(QName element, XMLAttributes attributes) {
             super.startElement(element, attributes);
@@ -241,12 +265,16 @@ public class Selector {
             }
         }
 
-        /** Returns the identity constraint. */
+        /**
+         * Returns the identity constraint.
+         */
         public IdentityConstraint getIdentityConstraint() {
             return fIdentityConstraint;
         } // getIdentityConstraint():IdentityConstraint
 
-        /** get the initial depth at which this selector matched. */
+        /**
+         * get the initial depth at which this selector matched.
+         */
         public int getInitialDepth() {
             return fInitialDepth;
         } // getInitialDepth():  int

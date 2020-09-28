@@ -38,55 +38,78 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLDocumentSource;
  * and provides support for XInclude. This is the default Xerces configuration.
  *
  * @author Michael Glavassevich, IBM
- *
  * @version $Id: XIncludeAwareParserConfiguration.java,v 1.5 2010-11-01 04:40:10 joehw Exp $
  */
 public class XIncludeAwareParserConfiguration extends XML11Configuration {
 
-    /** Feature identifier: allow notation and unparsed entity events to be sent out of order. */
+    /**
+     * Feature identifier: allow notation and unparsed entity events to be sent out of order.
+     */
     protected static final String ALLOW_UE_AND_NOTATION_EVENTS =
-        Constants.SAX_FEATURE_PREFIX + Constants.ALLOW_DTD_EVENTS_AFTER_ENDDTD_FEATURE;
+            Constants.SAX_FEATURE_PREFIX + Constants.ALLOW_DTD_EVENTS_AFTER_ENDDTD_FEATURE;
 
-    /** Feature identifier: fixup base URIs. */
+    /**
+     * Feature identifier: fixup base URIs.
+     */
     protected static final String XINCLUDE_FIXUP_BASE_URIS =
-        Constants.XERCES_FEATURE_PREFIX + Constants.XINCLUDE_FIXUP_BASE_URIS_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.XINCLUDE_FIXUP_BASE_URIS_FEATURE;
 
-    /** Feature identifier: fixup language. */
+    /**
+     * Feature identifier: fixup language.
+     */
     protected static final String XINCLUDE_FIXUP_LANGUAGE =
-        Constants.XERCES_FEATURE_PREFIX + Constants.XINCLUDE_FIXUP_LANGUAGE_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.XINCLUDE_FIXUP_LANGUAGE_FEATURE;
 
-    /** Feature identifier: XInclude processing */
+    /**
+     * Feature identifier: XInclude processing
+     */
     protected static final String XINCLUDE_FEATURE =
-        Constants.XERCES_FEATURE_PREFIX + Constants.XINCLUDE_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.XINCLUDE_FEATURE;
 
-    /** Property identifier: error reporter. */
+    /**
+     * Property identifier: error reporter.
+     */
     protected static final String XINCLUDE_HANDLER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.XINCLUDE_HANDLER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.XINCLUDE_HANDLER_PROPERTY;
 
-    /** Property identifier: error reporter. */
+    /**
+     * Property identifier: error reporter.
+     */
     protected static final String NAMESPACE_CONTEXT =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.NAMESPACE_CONTEXT_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.NAMESPACE_CONTEXT_PROPERTY;
 
     //
     // Components
     //
 
-    /** XInclude handler. */
+    /**
+     * XInclude handler.
+     */
     protected XIncludeHandler fXIncludeHandler;
 
-    /** Non-XInclude NamespaceContext. */
+    /**
+     * Non-XInclude NamespaceContext.
+     */
     protected NamespaceSupport fNonXIncludeNSContext;
 
-    /** XInclude NamespaceContext. */
+    /**
+     * XInclude NamespaceContext.
+     */
     protected XIncludeNamespaceSupport fXIncludeNSContext;
 
-    /** Current NamespaceContext. */
+    /**
+     * Current NamespaceContext.
+     */
     protected NamespaceContext fCurrentNSContext;
 
-    /** Flag indicating whether XInclude processsing is enabled. */
+    /**
+     * Flag indicating whether XInclude processsing is enabled.
+     */
     protected boolean fXIncludeEnabled = false;
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public XIncludeAwareParserConfiguration() {
         this(null, null, null);
     } // <init>()
@@ -138,7 +161,7 @@ public class XIncludeAwareParserConfiguration extends XML11Configuration {
 
         // add default recognized properties
         final String[] recognizedProperties =
-        { XINCLUDE_HANDLER, NAMESPACE_CONTEXT };
+                {XINCLUDE_HANDLER, NAMESPACE_CONTEXT};
         addRecognizedProperties(recognizedProperties);
 
         setFeature(ALLOW_UE_AND_NOTATION_EVENTS, true);
@@ -151,7 +174,9 @@ public class XIncludeAwareParserConfiguration extends XML11Configuration {
     }
 
 
-    /** Configures the pipeline. */
+    /**
+     * Configures the pipeline.
+     */
     protected void configurePipeline() {
         super.configurePipeline();
         if (fXIncludeEnabled) {
@@ -202,8 +227,7 @@ public class XIncludeAwareParserConfiguration extends XML11Configuration {
                 fXIncludeHandler.setDocumentHandler(next);
                 next.setDocumentSource(fXIncludeHandler);
             }
-        }
-        else {
+        } else {
             // Setup NamespaceContext
             if (fCurrentNSContext != fNonXIncludeNSContext) {
                 fCurrentNSContext = fNonXIncludeNSContext;
@@ -262,8 +286,7 @@ public class XIncludeAwareParserConfiguration extends XML11Configuration {
                 fXIncludeHandler.setDocumentHandler(next);
                 next.setDocumentSource(fXIncludeHandler);
             }
-        }
-        else {
+        } else {
             // Setup NamespaceContext
             if (fCurrentNSContext != fNonXIncludeNSContext) {
                 fCurrentNSContext = fNonXIncludeNSContext;
@@ -273,11 +296,10 @@ public class XIncludeAwareParserConfiguration extends XML11Configuration {
     } // configureXML11Pipeline()
 
     public FeatureState getFeatureState(String featureId)
-        throws XMLConfigurationException {
+            throws XMLConfigurationException {
         if (featureId.equals(PARSER_SETTINGS)) {
             return FeatureState.is(fConfigUpdated);
-        }
-        else if (featureId.equals(XINCLUDE_FEATURE)) {
+        } else if (featureId.equals(XINCLUDE_FEATURE)) {
             return FeatureState.is(fXIncludeEnabled);
         }
         return super.getFeatureState0(featureId);
@@ -285,13 +307,13 @@ public class XIncludeAwareParserConfiguration extends XML11Configuration {
     } // getFeature(String):boolean
 
     public void setFeature(String featureId, boolean state)
-        throws XMLConfigurationException {
+            throws XMLConfigurationException {
         if (featureId.equals(XINCLUDE_FEATURE)) {
             fXIncludeEnabled = state;
             fConfigUpdated = true;
             return;
         }
-        super.setFeature(featureId,state);
+        super.setFeature(featureId, state);
     }
 
 }

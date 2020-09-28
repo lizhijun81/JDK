@@ -51,12 +51,12 @@ public interface XSAttributeUse extends XSObject {
      * Value Constraint: Binding specific actual constraint value or
      * <code>null</code> if the value is in error or there is no value
      * constraint.
-     * @exception XSException
-     *   NOT_SUPPORTED_ERR: Raised if the implementation does not support this
-     *   method.
+     *
+     * @throws XSException NOT_SUPPORTED_ERR: Raised if the implementation does not support this
+     *                     method.
      */
     public Object getActualVC()
-                                       throws XSException;
+            throws XSException;
 
     /**
      * The actual constraint value built-in datatype, e.g.
@@ -67,14 +67,14 @@ public interface XSAttributeUse extends XSObject {
      * method returns <code>LISTOFUNION_DT</code>. To query the actual
      * constraint value of the list or list of union type definitions use
      * <code>itemValueTypes</code>. If the <code>actualNormalizedValue</code>
-     *  is <code>null</code>, this method returns <code>UNAVAILABLE_DT</code>
+     * is <code>null</code>, this method returns <code>UNAVAILABLE_DT</code>
      * .
-     * @exception XSException
-     *   NOT_SUPPORTED_ERR: Raised if the implementation does not support this
-     *   method.
+     *
+     * @throws XSException NOT_SUPPORTED_ERR: Raised if the implementation does not support this
+     *                     method.
      */
     public short getActualVCType()
-                                       throws XSException;
+            throws XSException;
 
     /**
      * In the case the actual constraint value represents a list, i.e. the
@@ -85,12 +85,12 @@ public interface XSAttributeUse extends XSObject {
      * for each actual constraint value in the list the array contains the
      * corresponding memberType kind. For examples, see
      * <code>ItemPSVI.itemValueTypes</code>.
-     * @exception XSException
-     *   NOT_SUPPORTED_ERR: Raised if the implementation does not support this
-     *   method.
+     *
+     * @throws XSException NOT_SUPPORTED_ERR: Raised if the implementation does not support this
+     *                     method.
      */
     public ShortList getItemValueTypes()
-                                       throws XSException;
+            throws XSException;
 
     /**
      * A sequence of [annotations] or an empty <code>XSObjectList</code>.

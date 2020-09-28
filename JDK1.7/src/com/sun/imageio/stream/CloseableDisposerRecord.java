@@ -27,6 +27,7 @@ package com.sun.imageio.stream;
 
 import java.io.Closeable;
 import java.io.IOException;
+
 import sun.java2d.DisposerRecord;
 
 /**

@@ -37,10 +37,9 @@ import com.sun.corba.se.spi.orbutil.threadpool.Work;
 import com.sun.corba.se.impl.orbutil.ORBUtility;
 
 public class ReaderThreadImpl
-    implements
+        implements
         ReaderThread,
-        Work
-{
+        Work {
     private ORB orb;
     private Connection connection;
     private Selector selector;
@@ -48,8 +47,7 @@ public class ReaderThreadImpl
     private long enqueueTime;
 
     public ReaderThreadImpl(ORB orb,
-                            Connection connection, Selector selector)
-    {
+                            Connection connection, Selector selector) {
         this.orb = orb;
         this.connection = connection;
         this.selector = selector;
@@ -61,13 +59,11 @@ public class ReaderThreadImpl
     // ReaderThread methods.
     //
 
-    public Connection getConnection()
-    {
+    public Connection getConnection() {
         return connection;
     }
 
-    public void close()
-    {
+    public void close() {
         if (orb.transportDebugFlag) {
             dprint(".close: " + connection);
         }
@@ -81,8 +77,7 @@ public class ReaderThreadImpl
     //
 
     // REVISIT - this needs alot more from previous ReaderThread.
-    public void doWork()
-    {
+    public void doWork() {
         try {
             if (orb.transportDebugFlag) {
                 dprint(".doWork: Start ReaderThread: " + connection);
@@ -92,7 +87,7 @@ public class ReaderThreadImpl
 
                     if (orb.transportDebugFlag) {
                         dprint(".doWork: Start ReaderThread cycle: "
-                               + connection);
+                                + connection);
                     }
 
                     if (connection.read()) {
@@ -102,15 +97,15 @@ public class ReaderThreadImpl
 
                     if (orb.transportDebugFlag) {
                         dprint(".doWork: End ReaderThread cycle: "
-                               + connection);
+                                + connection);
                     }
 
                 } catch (Throwable t) {
                     if (orb.transportDebugFlag) {
-                        dprint(".doWork: exception in read: " + connection,t);
+                        dprint(".doWork: exception in read: " + connection, t);
                     }
                     orb.getTransportManager().getSelector(0)
-                        .unregisterForEvent(getConnection().getEventHandler());
+                            .unregisterForEvent(getConnection().getEventHandler());
                     getConnection().close();
                 }
             }
@@ -121,30 +116,28 @@ public class ReaderThreadImpl
         }
     }
 
-    public void setEnqueueTime(long timeInMillis)
-    {
+    public void setEnqueueTime(long timeInMillis) {
         enqueueTime = timeInMillis;
     }
 
-    public long getEnqueueTime()
-    {
+    public long getEnqueueTime() {
         return enqueueTime;
     }
 
-    public String getName() { return "ReaderThread"; }
+    public String getName() {
+        return "ReaderThread";
+    }
 
     ////////////////////////////////////////////////////
     //
     // Implementation.
     //
 
-    private void dprint(String msg)
-    {
+    private void dprint(String msg) {
         ORBUtility.dprint("ReaderThreadImpl", msg);
     }
 
-    protected void dprint(String msg, Throwable t)
-    {
+    protected void dprint(String msg, Throwable t) {
         dprint(msg);
         t.printStackTrace(System.out);
     }

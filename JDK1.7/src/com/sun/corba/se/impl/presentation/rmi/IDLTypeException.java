@@ -23,7 +23,7 @@
  *
  */
 
-package com.sun.corba.se.impl.presentation.rmi ;
+package com.sun.corba.se.impl.presentation.rmi;
 
 /**
  * Checked exception containing information about an
@@ -31,7 +31,8 @@ package com.sun.corba.se.impl.presentation.rmi ;
  */
 public class IDLTypeException extends Exception {
 
-    public IDLTypeException() {}
+    public IDLTypeException() {
+    }
 
     public IDLTypeException(String message) {
         super(message);

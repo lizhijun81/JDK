@@ -42,6 +42,7 @@ import sun.swing.StringUIClientPropertyKey;
 import com.sun.java.swing.plaf.windows.TMSchema.Part;
 import com.sun.java.swing.plaf.windows.TMSchema.State;
 import com.sun.java.swing.plaf.windows.XPStyle.Skin;
+
 import static sun.swing.SwingUtilities2.BASICMENUITEMUI_MAX_TEXT_OFFSET;
 
 /**
@@ -60,7 +61,7 @@ public class WindowsPopupMenuUI extends BasicPopupMenuUI {
 
     static MnemonicListener mnemonicListener = null;
     static final Object GUTTER_OFFSET_KEY =
-        new StringUIClientPropertyKey("GUTTER_OFFSET_KEY");
+            new StringUIClientPropertyKey("GUTTER_OFFSET_KEY");
 
     public static ComponentUI createUI(JComponent c) {
         return new WindowsPopupMenuUI();
@@ -68,12 +69,12 @@ public class WindowsPopupMenuUI extends BasicPopupMenuUI {
 
     public void installListeners() {
         super.installListeners();
-        if (! UIManager.getBoolean("Button.showMnemonics") &&
-            mnemonicListener == null) {
+        if (!UIManager.getBoolean("Button.showMnemonics") &&
+                mnemonicListener == null) {
 
             mnemonicListener = new MnemonicListener();
             MenuSelectionManager.defaultManager().
-                addChangeListener(mnemonicListener);
+                    addChangeListener(mnemonicListener);
         }
     }
 
@@ -82,8 +83,8 @@ public class WindowsPopupMenuUI extends BasicPopupMenuUI {
      * displaying the <code>JPopupMenu</code>.
      *
      * @param popupMenu JPopupMenu requesting Popup
-     * @param x     Screen x location Popup is to be shown at
-     * @param y     Screen y location Popup is to be shown at.
+     * @param x         Screen x location Popup is to be shown at
+     * @param y         Screen y location Popup is to be shown at.
      * @return Popup that will show the JPopupMenu
      * @since 1.4
      */
@@ -96,21 +97,21 @@ public class WindowsPopupMenuUI extends BasicPopupMenuUI {
         JRootPane repaintRoot = null;
 
         public void stateChanged(ChangeEvent ev) {
-            MenuSelectionManager msm = (MenuSelectionManager)ev.getSource();
+            MenuSelectionManager msm = (MenuSelectionManager) ev.getSource();
             MenuElement[] path = msm.getSelectedPath();
             if (path.length == 0) {
-                if(!WindowsLookAndFeel.isMnemonicHidden()) {
+                if (!WindowsLookAndFeel.isMnemonicHidden()) {
                     // menu was canceled -- hide mnemonics
                     WindowsLookAndFeel.setMnemonicHidden(true);
                     if (repaintRoot != null) {
                         Window win =
-                            SwingUtilities.getWindowAncestor(repaintRoot);
+                                SwingUtilities.getWindowAncestor(repaintRoot);
                         WindowsGraphicsUtils.repaintMnemonicsInWindow(win);
                     }
                 }
             } else {
-                Component c = (Component)path[0];
-                if (c instanceof JPopupMenu) c = ((JPopupMenu)c).getInvoker();
+                Component c = (Component) path[0];
+                if (c instanceof JPopupMenu) c = ((JPopupMenu) c).getInvoker();
                 repaintRoot = SwingUtilities.getRootPane(c);
             }
         }
@@ -119,13 +120,14 @@ public class WindowsPopupMenuUI extends BasicPopupMenuUI {
     /**
      * Returns offset for the text.
      * BasicMenuItemUI sets max text offset on the JPopupMenuUI.
+     *
      * @param c PopupMenu to return text offset for.
      * @return text offset for the component
      */
     static int getTextOffset(JComponent c) {
         int rv = -1;
         Object maxTextOffset =
-            c.getClientProperty(BASICMENUITEMUI_MAX_TEXT_OFFSET);
+                c.getClientProperty(BASICMENUITEMUI_MAX_TEXT_OFFSET);
         if (maxTextOffset instanceof Integer) {
             /*
              * this is in JMenuItem coordinates.
@@ -145,6 +147,7 @@ public class WindowsPopupMenuUI extends BasicPopupMenuUI {
     /**
      * Returns span before gutter.
      * used only on Vista.
+     *
      * @return span before gutter
      */
     static int getSpanBeforeGutter() {
@@ -154,6 +157,7 @@ public class WindowsPopupMenuUI extends BasicPopupMenuUI {
     /**
      * Returns span after gutter.
      * used only on Vista.
+     *
      * @return span after gutter
      */
     static int getSpanAfterGutter() {
@@ -163,6 +167,7 @@ public class WindowsPopupMenuUI extends BasicPopupMenuUI {
     /**
      * Returns gutter width.
      * used only on Vista.
+     *
      * @return width of the gutter
      */
     static int getGutterWidth() {
@@ -185,9 +190,9 @@ public class WindowsPopupMenuUI extends BasicPopupMenuUI {
      */
     private static boolean isLeftToRight(JComponent c) {
         boolean leftToRight = true;
-        for (int i = c.getComponentCount() - 1; i >=0 && leftToRight; i-- ) {
+        for (int i = c.getComponentCount() - 1; i >= 0 && leftToRight; i--) {
             leftToRight =
-                c.getComponent(i).getComponentOrientation().isLeftToRight();
+                    c.getComponent(i).getComponentOrientation().isLeftToRight();
         }
         return leftToRight;
     }
@@ -197,7 +202,7 @@ public class WindowsPopupMenuUI extends BasicPopupMenuUI {
         if (WindowsMenuItemUI.isVistaPainting()) {
             XPStyle xp = XPStyle.getXP();
             Skin skin = xp.getSkin(c, Part.MP_POPUPBACKGROUND);
-            skin.paintSkin(g, 0, 0, c.getWidth(),c.getHeight(), State.NORMAL);
+            skin.paintSkin(g, 0, 0, c.getWidth(), c.getHeight(), State.NORMAL);
             int textOffset = getTextOffset(c);
             if (textOffset >= 0
                     /* paint gutter only for leftToRight case */
@@ -205,13 +210,13 @@ public class WindowsPopupMenuUI extends BasicPopupMenuUI {
                 skin = xp.getSkin(c, Part.MP_POPUPGUTTER);
                 int gutterWidth = getGutterWidth();
                 int gutterOffset =
-                    textOffset - getSpanAfterGutter() - gutterWidth;
+                        textOffset - getSpanAfterGutter() - gutterWidth;
                 c.putClientProperty(GUTTER_OFFSET_KEY,
-                    Integer.valueOf(gutterOffset));
+                        Integer.valueOf(gutterOffset));
                 Insets insets = c.getInsets();
                 skin.paintSkin(g, gutterOffset, insets.top,
-                    gutterWidth, c.getHeight() - insets.bottom - insets.top,
-                    State.NORMAL);
+                        gutterWidth, c.getHeight() - insets.bottom - insets.top,
+                        State.NORMAL);
             } else {
                 if (c.getClientProperty(GUTTER_OFFSET_KEY) != null) {
                     c.putClientProperty(GUTTER_OFFSET_KEY, null);

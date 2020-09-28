@@ -37,8 +37,7 @@ import com.sun.corba.se.pept.protocol.ClientRequestDispatcher;
 /**
  * @author Harold Carr
  */
-public class CorbaInvocationInfo implements ClientInvocationInfo
-{
+public class CorbaInvocationInfo implements ClientInvocationInfo {
     // REVISIT - these needs to be an interface-based impl.
 
     private boolean isRetryInvocation;
@@ -48,69 +47,56 @@ public class CorbaInvocationInfo implements ClientInvocationInfo
     private ClientRequestDispatcher clientRequestDispatcher;
     private MessageMediator messageMediator;
 
-    private CorbaInvocationInfo()
-    {
+    private CorbaInvocationInfo() {
     }
 
-    public CorbaInvocationInfo(ORB orb)
-    {
+    public CorbaInvocationInfo(ORB orb) {
         this.orb = orb;
         isRetryInvocation = false;
         entryCount = 0;
     }
 
-    public Iterator getContactInfoListIterator()
-    {
+    public Iterator getContactInfoListIterator() {
         return contactInfoListIterator;
     }
 
-    public void setContactInfoListIterator(Iterator contactInfoListIterator)
-    {
+    public void setContactInfoListIterator(Iterator contactInfoListIterator) {
         this.contactInfoListIterator = contactInfoListIterator;
     }
 
-    public boolean isRetryInvocation()
-    {
+    public boolean isRetryInvocation() {
         return isRetryInvocation;
     }
 
-    public void setIsRetryInvocation(boolean isRetryInvocation)
-    {
+    public void setIsRetryInvocation(boolean isRetryInvocation) {
         this.isRetryInvocation = isRetryInvocation;
     }
 
-    public int getEntryCount()
-    {
+    public int getEntryCount() {
         return entryCount;
     }
 
-    public void incrementEntryCount()
-    {
+    public void incrementEntryCount() {
         entryCount++;
     }
 
-    public void decrementEntryCount()
-    {
+    public void decrementEntryCount() {
         entryCount--;
     }
 
-    public void setClientRequestDispatcher(ClientRequestDispatcher clientRequestDispatcher)
-    {
+    public void setClientRequestDispatcher(ClientRequestDispatcher clientRequestDispatcher) {
         this.clientRequestDispatcher = clientRequestDispatcher;
     }
 
-    public ClientRequestDispatcher getClientRequestDispatcher()
-    {
+    public ClientRequestDispatcher getClientRequestDispatcher() {
         return clientRequestDispatcher;
     }
 
-    public void setMessageMediator(MessageMediator messageMediator)
-    {
+    public void setMessageMediator(MessageMediator messageMediator) {
         this.messageMediator = messageMediator;
     }
 
-    public MessageMediator getMessageMediator()
-    {
+    public MessageMediator getMessageMediator() {
         return messageMediator;
     }
 }

@@ -31,23 +31,23 @@ import org.w3c.dom.Node;
  * entities defined by the DOM. Entities hardcoded into XML, such as
  * character entities, should instead have been translated into text
  * by the code which generated the DOM tree.
- * <P>
+ * <p>
  * An XML processor has the alternative of fully expanding Entities
  * into the normal document tree. If it does so, no EntityReference nodes
  * will appear.
- * <P>
+ * <p>
  * Similarly, non-validating XML processors are not required to read
  * or process entity declarations made in the external subset or
  * declared in external parameter entities. Hence, some applications
  * may not make the replacement value available for Parsed Entities
  * of these types.
- * <P>
+ * <p>
  * EntityReference behaves as a read-only node, and the children of
  * the EntityReference (which reflect those of the Entity, and should
  * also be read-only) give its replacement value, if any. They are
  * supposed to automagically stay in synch if the DocumentType is
  * updated with new values for the Entity.
- * <P>
+ * <p>
  * The defined behavior makes efficient storage difficult for the DOM
  * implementor. We can't just look aside to the Entity's definition
  * in the DocumentType since those nodes have the wrong parent (unless
@@ -56,7 +56,7 @@ import org.w3c.dom.Node;
  * issue of keeping the reference synchronized with its parent.
  * This leads me back to the "cached image of centrally defined data"
  * solution, much as I dislike it.
- * <P>
+ * <p>
  * For now I have decided, since REC-DOM-Level-1-19980818 doesn't
  * cover this in much detail, that synchronization doesn't have to be
  * considered while the user is deep in the tree. That is, if you're
@@ -68,38 +68,43 @@ import org.w3c.dom.Node;
  * acceptable here. (If it really bothers folks, we could set things
  * up so deleted subtrees are walked and marked invalid, but that's
  * not part of the DOM's defined behavior.)
- * <P>
+ * <p>
  * As a result, only the EntityReference itself has to be aware of
  * changes in the Entity. And it can take advantage of the same
  * structure-change-monitoring code I implemented to support
  * DeepNodeList.
  *
- * @xerces.internal
- *
  * @author Arnaud  Le Hors, IBM
  * @author Joe Kesselman, IBM
  * @author Andy Clark, IBM
  * @author Ralf Pfeiffer, IBM
- * @since  PR-DOM-Level-1-19980818.
+ * @xerces.internal
+ * @since PR-DOM-Level-1-19980818.
  */
 public class EntityReferenceImpl
-extends ParentNode
-implements EntityReference {
+        extends ParentNode
+        implements EntityReference {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = -7381452955687102062L;
 
     //
     // Data
     //
 
-    /** Name of Entity referenced */
+    /**
+     * Name of Entity referenced
+     */
     protected String name;
-    /** Base URI*/
+    /**
+     * Base URI
+     */
     protected String baseURI;
 
 
@@ -113,7 +118,9 @@ implements EntityReference {
     // Constructors
     //
 
-    /** Factory constructor. */
+    /**
+     * Factory constructor.
+     */
     public EntityReferenceImpl(CoreDocumentImpl ownerDoc, String name) {
         super(ownerDoc);
         this.name = name;
@@ -143,9 +150,11 @@ implements EntityReference {
         return name;
     }
 
-    /** Clone node. */
+    /**
+     * Clone node.
+     */
     public Node cloneNode(boolean deep) {
-        EntityReferenceImpl er = (EntityReferenceImpl)super.cloneNode(deep);
+        EntityReferenceImpl er = (EntityReferenceImpl) super.cloneNode(deep);
         er.setReadOnly(true, deep);
         return er;
     }
@@ -167,18 +176,17 @@ implements EntityReference {
             NamedNodeMap entities;
             EntityImpl entDef;
             if (null != (doctype = getOwnerDocument().getDoctype()) &&
-                null != (entities = doctype.getEntities())) {
+                    null != (entities = doctype.getEntities())) {
 
-                entDef = (EntityImpl)entities.getNamedItem(getNodeName());
-                if (entDef !=null) {
+                entDef = (EntityImpl) entities.getNamedItem(getNodeName());
+                if (entDef != null) {
                     return entDef.getBaseURI();
                 }
             }
-        } else if (baseURI != null && baseURI.length() != 0 ) {// attribute value is always empty string
+        } else if (baseURI != null && baseURI.length() != 0) {// attribute value is always empty string
             try {
                 return new URI(baseURI).toString();
-            }
-            catch (com.sun.org.apache.xerces.internal.util.URI.MalformedURIException e){
+            } catch (com.sun.org.apache.xerces.internal.util.URI.MalformedURIException e) {
                 // REVISIT: what should happen in this case?
                 return null;
             }
@@ -187,63 +195,61 @@ implements EntityReference {
     }
 
 
-    /** NON-DOM: set base uri*/
-    public void setBaseURI(String uri){
+    /**
+     * NON-DOM: set base uri
+     */
+    public void setBaseURI(String uri) {
         if (needsSyncData()) {
             synchronizeData();
         }
         baseURI = uri;
     }
 
-        /**
-         * NON-DOM: compute string representation of the entity reference.
+    /**
+     * NON-DOM: compute string representation of the entity reference.
      * This method is used to retrieve a string value for an attribute node that has child nodes.
-         * @return String representing a value of this entity ref. or
-     *          null if any node other than EntityReference, Text is encountered
-     *          during computation
-         */
-    protected String getEntityRefValue (){
-        if (needsSyncChildren()){
+     *
+     * @return String representing a value of this entity ref. or
+     * null if any node other than EntityReference, Text is encountered
+     * during computation
+     */
+    protected String getEntityRefValue() {
+        if (needsSyncChildren()) {
             synchronizeChildren();
         }
 
         String value = "";
-        if (firstChild != null){
-          if (firstChild.getNodeType() == Node.ENTITY_REFERENCE_NODE){
-              value = ((EntityReferenceImpl)firstChild).getEntityRefValue();
-          }
-          else if (firstChild.getNodeType() == Node.TEXT_NODE){
-            value = firstChild.getNodeValue();
-          }
-          else {
-             // invalid to have other types of nodes in attr value
-            return null;
-          }
-
-          if (firstChild.nextSibling == null){
-            return value;
-          }
-          else {
-            StringBuffer buff = new StringBuffer(value);
-            ChildNode next = firstChild.nextSibling;
-            while (next != null){
-
-                if (next.getNodeType() == Node.ENTITY_REFERENCE_NODE){
-                   value = ((EntityReferenceImpl)next).getEntityRefValue();
-                }
-                else if (next.getNodeType() == Node.TEXT_NODE){
-                  value = next.getNodeValue();
-                }
-                else {
-                    // invalid to have other types of nodes in attr value
-                    return null;
-                }
-                buff.append(value);
-                next = next.nextSibling;
-
+        if (firstChild != null) {
+            if (firstChild.getNodeType() == Node.ENTITY_REFERENCE_NODE) {
+                value = ((EntityReferenceImpl) firstChild).getEntityRefValue();
+            } else if (firstChild.getNodeType() == Node.TEXT_NODE) {
+                value = firstChild.getNodeValue();
+            } else {
+                // invalid to have other types of nodes in attr value
+                return null;
             }
-            return buff.toString();
-          }
+
+            if (firstChild.nextSibling == null) {
+                return value;
+            } else {
+                StringBuffer buff = new StringBuffer(value);
+                ChildNode next = firstChild.nextSibling;
+                while (next != null) {
+
+                    if (next.getNodeType() == Node.ENTITY_REFERENCE_NODE) {
+                        value = ((EntityReferenceImpl) next).getEntityRefValue();
+                    } else if (next.getNodeType() == Node.TEXT_NODE) {
+                        value = next.getNodeValue();
+                    } else {
+                        // invalid to have other types of nodes in attr value
+                        return null;
+                    }
+                    buff.append(value);
+                    next = next.nextSibling;
+
+                }
+                return buff.toString();
+            }
         }
         return "";
     }
@@ -262,9 +268,9 @@ implements EntityReference {
         NamedNodeMap entities;
         EntityImpl entDef;
         if (null != (doctype = getOwnerDocument().getDoctype()) &&
-            null != (entities = doctype.getEntities())) {
+                null != (entities = doctype.getEntities())) {
 
-            entDef = (EntityImpl)entities.getNamedItem(getNodeName());
+            entDef = (EntityImpl) entities.getNamedItem(getNodeName());
 
             // No Entity by this name, stop here.
             if (entDef == null)
@@ -273,8 +279,8 @@ implements EntityReference {
             // If entity's definition exists, clone its kids
             isReadOnly(false);
             for (Node defkid = entDef.getFirstChild();
-                defkid != null;
-                defkid = defkid.getNextSibling()) {
+                 defkid != null;
+                 defkid = defkid.getNextSibling()) {
                 Node newkid = defkid.cloneNode(true);
                 insertBefore(newkid, null);
             }
@@ -285,7 +291,7 @@ implements EntityReference {
 
     /**
      * NON-DOM: sets the node and its children value.
-     * <P>
+     * <p>
      * Note: make sure that entity reference and its kids could be set readonly.
      */
     public void setReadOnly(boolean readOnly, boolean deep) {
@@ -303,7 +309,7 @@ implements EntityReference {
                  mykid != null;
                  mykid = mykid.nextSibling) {
 
-                mykid.setReadOnly(readOnly,true);
+                mykid.setReadOnly(readOnly, true);
 
             }
         }
@@ -314,12 +320,12 @@ implements EntityReference {
     /**
      * Enable the synchronize method which may do cloning. This method is enabled
      * when the parser is done with an EntityReference.
-    /***
-    // revisit: enable editing of Entity
-    public void enableSynchronize(boolean enableSynchronize) {
-        fEnableSynchronize= enableSynchronize;
-    }
-    /***/
+     /***
+     // revisit: enable editing of Entity
+     public void enableSynchronize(boolean enableSynchronize) {
+     fEnableSynchronize= enableSynchronize;
+     }
+     /***/
 
     /**
      * EntityReference's children are a reflection of those defined in the
@@ -352,50 +358,50 @@ implements EntityReference {
     // easier to create the nodes through the callbacks rather than
     // clone the Entity.
     /***
-    // revisit: enable editing of Entity
-    private void synchronize() {
-        if (!fEnableSynchronize) {
-            return;
-        }
-        DocumentType doctype;
-        NamedNodeMap entities;
-        EntityImpl entDef;
-        if (null != (doctype = getOwnerDocument().getDoctype()) &&
-            null != (entities = doctype.getEntities())) {
+     // revisit: enable editing of Entity
+     private void synchronize() {
+     if (!fEnableSynchronize) {
+     return;
+     }
+     DocumentType doctype;
+     NamedNodeMap entities;
+     EntityImpl entDef;
+     if (null != (doctype = getOwnerDocument().getDoctype()) &&
+     null != (entities = doctype.getEntities())) {
 
-            entDef = (EntityImpl)entities.getNamedItem(getNodeName());
+     entDef = (EntityImpl)entities.getNamedItem(getNodeName());
 
-            // No Entity by this name. If we had a change count, reset it.
-            if(null==entDef)
-                entityChanges=-1;
+     // No Entity by this name. If we had a change count, reset it.
+     if(null==entDef)
+     entityChanges=-1;
 
-            // If no kids availalble, wipe any pre-existing children.
-            // (See discussion above.)
-            // Note that we have to use the superclass to avoid recursion
-            // through Synchronize.
-            readOnly=false;
-            if(null==entDef || !entDef.hasChildNodes())
-                for(Node kid=super.getFirstChild();
-                    kid!=null;
-                    kid=super.getFirstChild())
-                    removeChild(kid);
+     // If no kids availalble, wipe any pre-existing children.
+     // (See discussion above.)
+     // Note that we have to use the superclass to avoid recursion
+     // through Synchronize.
+     readOnly=false;
+     if(null==entDef || !entDef.hasChildNodes())
+     for(Node kid=super.getFirstChild();
+     kid!=null;
+     kid=super.getFirstChild())
+     removeChild(kid);
 
-            // If entity's definition changed, clone its kids
-            // (See discussion above.)
-            if(null!=entDef && entDef.changes!=entityChanges) {
-                for(Node defkid=entDef.getFirstChild();
-                    defkid!=null;
-                    defkid=defkid.getNextSibling()) {
+     // If entity's definition changed, clone its kids
+     // (See discussion above.)
+     if(null!=entDef && entDef.changes!=entityChanges) {
+     for(Node defkid=entDef.getFirstChild();
+     defkid!=null;
+     defkid=defkid.getNextSibling()) {
 
-                    NodeImpl newkid=(NodeImpl) defkid.cloneNode(true);
-                    newkid.setReadOnly(true,true);
-                    insertBefore(newkid,null);
-                }
-                entityChanges=entDef.changes;
-            }
-            readOnly=true;
-        }
-    }
+     NodeImpl newkid=(NodeImpl) defkid.cloneNode(true);
+     newkid.setReadOnly(true,true);
+     insertBefore(newkid,null);
+     }
+     entityChanges=entDef.changes;
+     }
+     readOnly=true;
+     }
+     }
      /***/
 
 

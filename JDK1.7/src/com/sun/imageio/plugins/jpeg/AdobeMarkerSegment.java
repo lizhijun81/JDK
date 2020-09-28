@@ -82,18 +82,18 @@ class AdobeMarkerSegment extends MarkerSegment {
     }
 
     void updateFromNativeNode(Node node, boolean fromScratch)
-        throws IIOInvalidTreeException {
+            throws IIOInvalidTreeException {
         // Only the transform is required
         NamedNodeMap attrs = node.getAttributes();
         transform = getAttributeValue(node, attrs, "transform", 0, 2, true);
         int count = attrs.getLength();
         if (count > 4) {
             throw new IIOInvalidTreeException
-                ("Adobe APP14 node cannot have > 4 attributes", node);
+                    ("Adobe APP14 node cannot have > 4 attributes", node);
         }
         if (count > 1) {
             int value = getAttributeValue(node, attrs, "version",
-                                          100, 255, false);
+                    100, 255, false);
             version = (value != -1) ? value : version;
             value = getAttributeValue(node, attrs, "flags0", 0, 65535, false);
             flags0 = (value != -1) ? value : flags0;
@@ -109,7 +109,7 @@ class AdobeMarkerSegment extends MarkerSegment {
     void write(ImageOutputStream ios) throws IOException {
         length = 14;
         writeTag(ios);
-        byte [] id = {0x41, 0x64, 0x6F, 0x62, 0x65};
+        byte[] id = {0x41, 0x64, 0x6F, 0x62, 0x65};
         ios.write(id);
         write2bytes(ios, version);
         write2bytes(ios, flags0);
@@ -118,11 +118,11 @@ class AdobeMarkerSegment extends MarkerSegment {
     }
 
     static void writeAdobeSegment(ImageOutputStream ios, int transform)
-        throws IOException {
+            throws IOException {
         (new AdobeMarkerSegment(transform)).write(ios);
     }
 
-    void print () {
+    void print() {
         printTag("Adobe APP14");
         System.out.print("Version: ");
         System.out.println(version);

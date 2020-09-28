@@ -41,6 +41,8 @@ import com.sun.java.swing.plaf.windows.TMSchema.State;
  */
 interface WindowsMenuItemUIAccessor {
     JMenuItem getMenuItem();
+
     State getState(JMenuItem menuItem);
+
     Part getPart(JMenuItem menuItem);
 }

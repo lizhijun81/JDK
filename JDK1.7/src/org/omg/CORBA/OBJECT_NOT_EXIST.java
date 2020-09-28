@@ -34,17 +34,17 @@ package org.omg.CORBA;
  * clients, also destroying any records they may hold (for example,
  * proxy objects used in reference translation). The clients could
  * in turn purge any of their own data structures.
- * <P>
+ * <p>
  * It contains a minor code, which gives more detailed information about
  * what caused the exception, and a completion status. It may also contain
  * a string describing the exception.
- * <P>
+ * <p>
  * See the section <A href="../../../../technotes/guides/idl/jidlExceptions.html#minorcodemeanings">Minor
  * Code Meanings</A> to see the minor codes for this exception.
  *
  * @see <A href="../../../../technotes/guides/idl/jidlExceptions.html">documentation on
  * Java&nbsp;IDL exceptions</A>
- * @since       JDK1.2
+ * @since JDK1.2
  */
 
 public final class OBJECT_NOT_EXIST extends SystemException {
@@ -60,6 +60,7 @@ public final class OBJECT_NOT_EXIST extends SystemException {
     /**
      * Constructs an <code>OBJECT_NOT_EXIST</code> exception with the specified description,
      * a minor code of 0, and a completion state of COMPLETED_NO.
+     *
      * @param s the String containing a description message
      */
     public OBJECT_NOT_EXIST(String s) {
@@ -69,7 +70,8 @@ public final class OBJECT_NOT_EXIST extends SystemException {
     /**
      * Constructs an <code>OBJECT_NOT_EXIST</code> exception with the specified
      * minor code and completion status.
-     * @param minor the minor code
+     *
+     * @param minor     the minor code
      * @param completed the completion status
      */
     public OBJECT_NOT_EXIST(int minor, CompletionStatus completed) {
@@ -79,8 +81,9 @@ public final class OBJECT_NOT_EXIST extends SystemException {
     /**
      * Constructs an <code>OBJECT_NOT_EXIST</code> exception with the specified description
      * message, minor code, and completion status.
-     * @param s the String containing a description message
-     * @param minor the minor code
+     *
+     * @param s         the String containing a description message
+     * @param minor     the minor code
      * @param completed the completion status
      */
     public OBJECT_NOT_EXIST(String s, int minor, CompletionStatus completed) {

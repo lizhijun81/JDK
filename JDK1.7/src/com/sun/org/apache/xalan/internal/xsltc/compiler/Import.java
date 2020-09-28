@@ -60,7 +60,7 @@ final class Import extends TopLevelElement {
             String docToLoad = getAttribute("href");
             if (context.checkForLoop(docToLoad)) {
                 final ErrorMsg msg = new ErrorMsg(ErrorMsg.CIRCULAR_INCLUDE_ERR,
-                                                  docToLoad, this);
+                        docToLoad, this);
                 parser.reportError(Constants.FATAL, msg);
                 return;
             }
@@ -90,16 +90,15 @@ final class Import extends TopLevelElement {
             // Return if we could not resolve the URL
             if (input == null) {
                 final ErrorMsg msg =
-                    new ErrorMsg(ErrorMsg.FILE_NOT_FOUND_ERR, docToLoad, this);
+                        new ErrorMsg(ErrorMsg.FILE_NOT_FOUND_ERR, docToLoad, this);
                 parser.reportError(Constants.FATAL, msg);
                 return;
             }
 
             final SyntaxTreeNode root;
             if (reader != null) {
-                root = parser.parse(reader,input);
-            }
-            else {
+                root = parser.parse(reader, input);
+            } else {
                 root = parser.parse(input);
             }
 
@@ -111,7 +110,7 @@ final class Import extends TopLevelElement {
             _imported.setSystemId(docToLoad);
             _imported.setParentStylesheet(context);
             _imported.setImportingStylesheet(context);
-        _imported.setTemplateInlining(context.getTemplateInlining());
+            _imported.setTemplateInlining(context.getTemplateInlining());
 
             // precedence for the including stylesheet
             final int currPrecedence = parser.getCurrentImportPrecedence();
@@ -128,20 +127,16 @@ final class Import extends TopLevelElement {
                 if (element instanceof TopLevelElement) {
                     if (element instanceof Variable) {
                         topStylesheet.addVariable((Variable) element);
-                    }
-                    else if (element instanceof Param) {
+                    } else if (element instanceof Param) {
                         topStylesheet.addParam((Param) element);
-                    }
-                    else {
+                    } else {
                         topStylesheet.addElement((TopLevelElement) element);
                     }
                 }
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             parser.setCurrentStylesheet(context);
         }
     }

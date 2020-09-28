@@ -37,14 +37,13 @@ import java.util.Collection;
  * provides a simple way to select just the items of interest
  * when a method returns a collection of declarations.
  *
+ * @author Joseph D. Darcy
+ * @author Scott Seligman
+ * @since 1.5
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this interface is {@link
  * javax.lang.model.element.PackageElement}.
- *
- * @author Joseph D. Darcy
- * @author Scott Seligman
- * @since 1.5
  */
 @Deprecated
 @SuppressWarnings("deprecation")
@@ -64,7 +63,6 @@ public interface PackageDeclaration extends Declaration {
      * Interfaces are not included, but enum types are.
      *
      * @return the declarations of the top-level classes in this package
-     *
      * @see com.sun.mirror.util.DeclarationFilter
      */
     Collection<ClassDeclaration> getClasses();
@@ -73,7 +71,6 @@ public interface PackageDeclaration extends Declaration {
      * Returns the declarations of the top-level enum types in this package.
      *
      * @return the declarations of the top-level enum types in this package
-     *
      * @see com.sun.mirror.util.DeclarationFilter
      */
     Collection<EnumDeclaration> getEnums();
@@ -83,7 +80,6 @@ public interface PackageDeclaration extends Declaration {
      * Annotation types are included.
      *
      * @return the declarations of the top-level interfaces in this package
-     *
      * @see com.sun.mirror.util.DeclarationFilter
      */
     Collection<InterfaceDeclaration> getInterfaces();
@@ -94,7 +90,6 @@ public interface PackageDeclaration extends Declaration {
      *
      * @return the declarations of the top-level annotation types in this
      * package
-     *
      * @see com.sun.mirror.util.DeclarationFilter
      */
     Collection<AnnotationTypeDeclaration> getAnnotationTypes();

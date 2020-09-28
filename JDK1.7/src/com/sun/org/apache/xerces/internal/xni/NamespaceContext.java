@@ -30,11 +30,9 @@ import java.util.Vector;
  * each string should be internalized (@see String.intern())
  * or added to the <code>SymbolTable</code>
  *
+ * @author Andy Clark, IBM
  * @see <a href="../../../../../xerces2/com/sun/org/apache/xerces/internal/util/SymbolTable.html">
  * com.sun.org.apache.xerces.internal.util.SymbolTable</a>
- *
- * @author Andy Clark, IBM
- *
  */
 public interface NamespaceContext {
 
@@ -72,7 +70,7 @@ public interface NamespaceContext {
      */
     public void pushContext();
 
-   /**
+    /**
      * Revert to the previous Namespace context.
      * <p>
      * The context should be popped at the end of each
@@ -101,11 +99,9 @@ public interface NamespaceContext {
      * you've pushed and popped another Namespace.
      *
      * @param prefix The prefix to declare, or null for the empty
-     *        string.
-     * @param uri The Namespace URI to associate with the prefix.
-     *
+     *               string.
+     * @param uri    The Namespace URI to associate with the prefix.
      * @return true if the prefix was legal, false otherwise
-     *
      * @see #getURI
      * @see #getDeclaredPrefixAt
      */
@@ -120,9 +116,8 @@ public interface NamespaceContext {
      * Use the empty string ("") for the default Namespace.
      *
      * @param prefix The prefix to look up.
-     *
      * @return The associated Namespace URI, or null if the prefix
-     *         is undeclared in this context.
+     * is undeclared in this context.
      */
     public String getURI(String prefix);
 
@@ -136,10 +131,8 @@ public interface NamespaceContext {
      * parent context(s).
      *
      * @param uri The namespace URI to look up.
-     *
      * @return One of the associated prefixes, or null if the uri
-     *         does not map to any prefix.
-     *
+     * does not map to any prefix.
      * @see #getPrefix
      */
     public String getPrefix(String uri);
@@ -156,12 +149,13 @@ public interface NamespaceContext {
      */
     public String getDeclaredPrefixAt(int index);
 
-        /**
-         * Return an enumeration of all prefixes whose declarations are active
+    /**
+     * Return an enumeration of all prefixes whose declarations are active
      * in the current context. This includes declarations from parent contexts
      * that have not been overridden.
-         * @return Enumeration
-         */
+     *
+     * @return Enumeration
+     */
     public Enumeration getAllPrefixes();
 
     /**

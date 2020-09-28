@@ -36,7 +36,7 @@ package org.omg.CORBA;
  *
  * @see <A href="../../../../technotes/guides/idl/jidlExceptions.html">documentation on
  * Java&nbsp;IDL exceptions</A>
- * @since       JDK1.2
+ * @since JDK1.2
  */
 
 public final class INTF_REPOS extends SystemException {
@@ -50,6 +50,7 @@ public final class INTF_REPOS extends SystemException {
 
     /**
      * Constructs an <code>INTF_REPOS</code> exception with the specified detail.
+     *
      * @param s the String containing a detail message
      */
     public INTF_REPOS(String s) {
@@ -59,7 +60,8 @@ public final class INTF_REPOS extends SystemException {
     /**
      * Constructs an <code>INTF_REPOS</code> exception with the specified
      * minor code and completion status.
-     * @param minor the minor code
+     *
+     * @param minor     the minor code
      * @param completed the completion status
      */
     public INTF_REPOS(int minor, CompletionStatus completed) {
@@ -70,8 +72,9 @@ public final class INTF_REPOS extends SystemException {
      * Constructs an <code>INTF_REPOS</code> exception with the specified detail
      * message, minor code, and completion status.
      * A detail message is a String that describes this particular exception.
-     * @param s the String containing a detail message
-     * @param minor the minor code
+     *
+     * @param s         the String containing a detail message
+     * @param minor     the minor code
      * @param completed the completion status
      */
     public INTF_REPOS(String s, int minor, CompletionStatus completed) {

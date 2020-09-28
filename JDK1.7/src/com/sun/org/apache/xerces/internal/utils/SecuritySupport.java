@@ -53,75 +53,78 @@ public final class SecuritySupport {
 
     static ClassLoader getContextClassLoader() {
         return (ClassLoader)
-        AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
-                ClassLoader cl = null;
-                try {
-                    cl = Thread.currentThread().getContextClassLoader();
-                } catch (SecurityException ex) { }
-                return cl;
-            }
-        });
+                AccessController.doPrivileged(new PrivilegedAction() {
+                    public Object run() {
+                        ClassLoader cl = null;
+                        try {
+                            cl = Thread.currentThread().getContextClassLoader();
+                        } catch (SecurityException ex) {
+                        }
+                        return cl;
+                    }
+                });
     }
 
     static ClassLoader getSystemClassLoader() {
         return (ClassLoader)
-        AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
-                ClassLoader cl = null;
-                try {
-                    cl = ClassLoader.getSystemClassLoader();
-                } catch (SecurityException ex) {}
-                return cl;
-            }
-        });
+                AccessController.doPrivileged(new PrivilegedAction() {
+                    public Object run() {
+                        ClassLoader cl = null;
+                        try {
+                            cl = ClassLoader.getSystemClassLoader();
+                        } catch (SecurityException ex) {
+                        }
+                        return cl;
+                    }
+                });
     }
 
     static ClassLoader getParentClassLoader(final ClassLoader cl) {
         return (ClassLoader)
-        AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
-                ClassLoader parent = null;
-                try {
-                    parent = cl.getParent();
-                } catch (SecurityException ex) {}
+                AccessController.doPrivileged(new PrivilegedAction() {
+                    public Object run() {
+                        ClassLoader parent = null;
+                        try {
+                            parent = cl.getParent();
+                        } catch (SecurityException ex) {
+                        }
 
-                // eliminate loops in case of the boot
-                // ClassLoader returning itself as a parent
-                return (parent == cl) ? null : parent;
-            }
-        });
+                        // eliminate loops in case of the boot
+                        // ClassLoader returning itself as a parent
+                        return (parent == cl) ? null : parent;
+                    }
+                });
     }
 
     public static String getSystemProperty(final String propName) {
         return (String)
-        AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
-                return System.getProperty(propName);
-            }
-        });
+                AccessController.doPrivileged(new PrivilegedAction() {
+                    public Object run() {
+                        return System.getProperty(propName);
+                    }
+                });
     }
 
     static FileInputStream getFileInputStream(final File file)
-    throws FileNotFoundException
-    {
+            throws FileNotFoundException {
         try {
             return (FileInputStream)
-            AccessController.doPrivileged(new PrivilegedExceptionAction() {
-                public Object run() throws FileNotFoundException {
-                    return new FileInputStream(file);
-                }
-            });
+                    AccessController.doPrivileged(new PrivilegedExceptionAction() {
+                        public Object run() throws FileNotFoundException {
+                            return new FileInputStream(file);
+                        }
+                    });
         } catch (PrivilegedActionException e) {
-            throw (FileNotFoundException)e.getException();
+            throw (FileNotFoundException) e.getException();
         }
     }
+
     /**
      * Return resource using the same classloader for the ObjectFactory by default
      * or bootclassloader when Security Manager is in place
      */
     public static InputStream getResourceAsStream(final String name) {
-        if (System.getSecurityManager()!=null) {
+        if (System.getSecurityManager() != null) {
             return getResourceAsStream(null, name);
         } else {
             return getResourceAsStream(ObjectFactory.findClassLoader(), name);
@@ -129,24 +132,24 @@ public final class SecuritySupport {
     }
 
     public static InputStream getResourceAsStream(final ClassLoader cl,
-            final String name)
-    {
+                                                  final String name) {
         return (InputStream)
-        AccessController.doPrivileged(new PrivilegedAction() {
-            public Object run() {
-                InputStream ris;
-                if (cl == null) {
-                    ris = Object.class.getResourceAsStream("/"+name);
-                } else {
-                    ris = cl.getResourceAsStream(name);
-                }
-                return ris;
-            }
-        });
+                AccessController.doPrivileged(new PrivilegedAction() {
+                    public Object run() {
+                        InputStream ris;
+                        if (cl == null) {
+                            ris = Object.class.getResourceAsStream("/" + name);
+                        } else {
+                            ris = cl.getResourceAsStream(name);
+                        }
+                        return ris;
+                    }
+                });
     }
 
     /**
      * Gets a resource bundle using the specified base name, the default locale, and the caller's class loader.
+     *
      * @param bundle the base name of the resource bundle, a fully qualified class name
      * @return a resource bundle for the given base name and the default locale
      */
@@ -156,6 +159,7 @@ public final class SecuritySupport {
 
     /**
      * Gets a resource bundle using the specified base name and locale, and the caller's class loader.
+     *
      * @param bundle the base name of the resource bundle, a fully qualified class name
      * @param locale the locale for which a resource bundle is desired
      * @return a resource bundle for the given base name and locale
@@ -195,5 +199,6 @@ public final class SecuritySupport {
                 })).longValue();
     }
 
-    private SecuritySupport () {}
+    private SecuritySupport() {
+    }
 }

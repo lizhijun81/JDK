@@ -27,16 +27,14 @@ import com.sun.org.apache.xerces.internal.impl.dv.ValidationContext;
 /**
  * Represent the schema type "ID"
  *
- * @xerces.internal
- *
  * @author Neeraj Bajaj, Sun Microsystems, inc.
  * @author Sandy Gao, IBM
- *
+ * @xerces.internal
  */
-public class IDDV extends TypeValidator{
+public class IDDV extends TypeValidator {
 
-    public short getAllowedFacets(){
-        return (XSSimpleTypeDecl.FACET_LENGTH | XSSimpleTypeDecl.FACET_MINLENGTH | XSSimpleTypeDecl.FACET_MAXLENGTH | XSSimpleTypeDecl.FACET_PATTERN | XSSimpleTypeDecl.FACET_ENUMERATION | XSSimpleTypeDecl.FACET_WHITESPACE );
+    public short getAllowedFacets() {
+        return (XSSimpleTypeDecl.FACET_LENGTH | XSSimpleTypeDecl.FACET_MINLENGTH | XSSimpleTypeDecl.FACET_MAXLENGTH | XSSimpleTypeDecl.FACET_PATTERN | XSSimpleTypeDecl.FACET_ENUMERATION | XSSimpleTypeDecl.FACET_WHITESPACE);
     }
 
     public Object getActualValue(String content, ValidationContext context) throws InvalidDatatypeValueException {
@@ -47,7 +45,7 @@ public class IDDV extends TypeValidator{
     }
 
     public void checkExtraRules(Object value, ValidationContext context) throws InvalidDatatypeValueException {
-        String content = (String)value;
+        String content = (String) value;
         if (context.isIdDeclared(content))
             throw new InvalidDatatypeValueException("cvc-id.2", new Object[]{content});
         context.addId(content);

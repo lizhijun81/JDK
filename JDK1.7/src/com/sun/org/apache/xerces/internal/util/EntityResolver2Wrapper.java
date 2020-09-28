@@ -39,24 +39,28 @@ import org.xml.sax.SAXException;
  * <p>This class wraps a SAX entity resolver (EntityResolver2) in an XNI entity resolver.</p>
  *
  * @author Michael Glavassevich, IBM
- *
  */
 public class EntityResolver2Wrapper
-    implements ExternalSubsetResolver {
+        implements ExternalSubsetResolver {
 
     //
     // Data
     //
 
-    /** An instance of SAX2 Extensions 1.1's EntityResolver2. */
+    /**
+     * An instance of SAX2 Extensions 1.1's EntityResolver2.
+     */
     protected EntityResolver2 fEntityResolver;
 
     //
     // Constructors
     //
 
-    /** Default constructor. */
-    public EntityResolver2Wrapper() {}
+    /**
+     * Default constructor.
+     */
+    public EntityResolver2Wrapper() {
+    }
 
     /**
      * <p>Creates a new instance wrapping the given SAX entity resolver.</p>
@@ -99,7 +103,6 @@ public class EntityResolver2Wrapper
      * return <code>null</code>.</p>
      *
      * @param grammarDescription a description of the DTD
-     *
      * @throws XNIException Thrown on general error.
      * @throws IOException  Thrown if resolved entity stream cannot be
      *                      opened or some other i/o error occurs.
@@ -141,7 +144,6 @@ public class EntityResolver2Wrapper
      * resolved, this method should return null.
      *
      * @param resourceIdentifier contains the physical co-ordinates of the resource to be resolved
-     *
      * @throws XNIException Thrown on general error.
      * @throws IOException  Thrown if resolved entity stream cannot be
      *                      opened or some other i/o error occurs.
@@ -157,8 +159,7 @@ public class EntityResolver2Wrapper
             String name = null;
             if (resourceIdentifier instanceof XMLDTDDescription) {
                 name = "[dtd]";
-            }
-            else if (resourceIdentifier instanceof XMLEntityDescription) {
+            } else if (resourceIdentifier instanceof XMLEntityDescription) {
                 name = ((XMLEntityDescription) resourceIdentifier).getEntityName();
             }
 
@@ -174,7 +175,7 @@ public class EntityResolver2Wrapper
             // Resolve using EntityResolver2
             try {
                 InputSource inputSource =
-                    fEntityResolver.resolveEntity(name, pubId, baseURI, sysId);
+                        fEntityResolver.resolveEntity(name, pubId, baseURI, sysId);
                 return (inputSource != null) ? createXMLInputSource(inputSource, baseURI) : null;
             }
             // error resolving entity
@@ -204,7 +205,7 @@ public class EntityResolver2Wrapper
         Reader charStream = source.getCharacterStream();
         String encoding = source.getEncoding();
         XMLInputSource xmlInputSource =
-            new XMLInputSource(publicId, systemId, baseSystemId);
+                new XMLInputSource(publicId, systemId, baseSystemId);
         xmlInputSource.setByteStream(byteStream);
         xmlInputSource.setCharacterStream(charStream);
         xmlInputSource.setEncoding(encoding);

@@ -35,10 +35,13 @@ import com.sun.org.apache.xerces.internal.xni.grammars.XMLGrammarPool;
  */
 final class WeakReferenceXMLSchema extends AbstractXMLSchema {
 
-    /** Weak reference to grammar pool. */
+    /**
+     * Weak reference to grammar pool.
+     */
     private WeakReference fGrammarPool = new WeakReference(null);
 
-    public WeakReferenceXMLSchema() {}
+    public WeakReferenceXMLSchema() {
+    }
 
     /*
      * XSGrammarPoolContainer methods

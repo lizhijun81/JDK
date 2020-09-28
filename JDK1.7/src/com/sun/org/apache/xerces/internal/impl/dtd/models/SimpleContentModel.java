@@ -86,19 +86,22 @@ import com.sun.org.apache.xerces.internal.impl.dtd.XMLContentSpec;
  * DFA for such a simple check.
  *
  * @xerces.internal
- *
  */
 public class SimpleContentModel
-    implements ContentModelValidator {
+        implements ContentModelValidator {
 
     //
     // Constants
     //
 
-    /** CHOICE */
+    /**
+     * CHOICE
+     */
     public static final short CHOICE = -1;
 
-    /** SEQUENCE */
+    /**
+     * SEQUENCE
+     */
     public static final short SEQUENCE = -1;
 
     //
@@ -139,10 +142,9 @@ public class SimpleContentModel
     /**
      * Constructs a simple content model.
      *
-     * @param operator The content model operator.
-     * @param firstChild qualified name of the first child
+     * @param operator    The content model operator.
+     * @param firstChild  qualified name of the first child
      * @param secondChild qualified name of the second child
-     *
      */
     public SimpleContentModel(short operator, QName firstChild, QName secondChild) {
         //
@@ -154,8 +156,7 @@ public class SimpleContentModel
         fFirstChild.setValues(firstChild);
         if (secondChild != null) {
             fSecondChild.setValues(secondChild);
-        }
-        else {
+        } else {
             fSecondChild.clear();
         }
         fOperator = operator;
@@ -179,14 +180,12 @@ public class SimpleContentModel
      *                 the <code>StringPool</code> of the child element name.  An index
      *                 of -1 is used to indicate an occurrence of non-whitespace character
      *                 data.
-     * @param offset Offset into the array where the children starts.
-     * @param length The number of entries in the <code>children</code> array.
-     *
+     * @param offset   Offset into the array where the children starts.
+     * @param length   The number of entries in the <code>children</code> array.
      * @return The value -1 if fully valid, else the 0 based index of the child
-     *         that first failed. If the value returned is equal to the number
-     *         of children, then the specified children are valid but additional
-     *         content is required to reach a valid ending state.
-     *
+     * that first failed. If the value returned is equal to the number
+     * of children, then the specified children are valid but additional
+     * content is required to reach a valid ending state.
      */
     public int validate(QName[] children, int offset, int length) {
 
@@ -194,9 +193,8 @@ public class SimpleContentModel
         //  According to the type of operation, we do the correct type of
         //  content check.
         //
-        switch(fOperator)
-        {
-            case XMLContentSpec.CONTENTSPECNODE_LEAF :
+        switch (fOperator) {
+            case XMLContentSpec.CONTENTSPECNODE_LEAF:
                 // If there is not a child, then report an error at index 0
                 if (length == 0)
                     return 0;
@@ -211,7 +209,7 @@ public class SimpleContentModel
                     return 1;
                 break;
 
-            case XMLContentSpec.CONTENTSPECNODE_ZERO_OR_ONE :
+            case XMLContentSpec.CONTENTSPECNODE_ZERO_OR_ONE:
                 //
                 //  If there is one child, make sure its the right type. If not,
                 //  then its an error at index 0.
@@ -230,15 +228,14 @@ public class SimpleContentModel
                     return 1;
                 break;
 
-            case XMLContentSpec.CONTENTSPECNODE_ZERO_OR_MORE :
+            case XMLContentSpec.CONTENTSPECNODE_ZERO_OR_MORE:
                 //
                 //  If the child count is zero, that's fine. If its more than
                 //  zero, then make sure that all children are of the element
                 //  type that we stored. If not, report the index of the first
                 //  failed one.
                 //
-                if (length > 0)
-                {
+                if (length > 0) {
                     for (int index = 0; index < length; index++) {
                         if (children[offset + index].rawname != fFirstChild.rawname) {
                             return index;
@@ -247,7 +244,7 @@ public class SimpleContentModel
                 }
                 break;
 
-            case XMLContentSpec.CONTENTSPECNODE_ONE_OR_MORE :
+            case XMLContentSpec.CONTENTSPECNODE_ONE_OR_MORE:
                 //
                 //  If the child count is zero, that's an error so report
                 //  an error at index 0.
@@ -267,7 +264,7 @@ public class SimpleContentModel
                 }
                 break;
 
-            case XMLContentSpec.CONTENTSPECNODE_CHOICE :
+            case XMLContentSpec.CONTENTSPECNODE_CHOICE:
                 //
                 //  There must be one and only one child, so if the element count
                 //  is zero, return an error at index 0.
@@ -277,7 +274,7 @@ public class SimpleContentModel
 
                 // If the zeroth element isn't one of our choices, error at 0
                 if ((children[offset].rawname != fFirstChild.rawname) &&
-                    (children[offset].rawname != fSecondChild.rawname)) {
+                        (children[offset].rawname != fSecondChild.rawname)) {
                     return 0;
                 }
 
@@ -286,7 +283,7 @@ public class SimpleContentModel
                     return 1;
                 break;
 
-            case XMLContentSpec.CONTENTSPECNODE_SEQ :
+            case XMLContentSpec.CONTENTSPECNODE_SEQ:
                 //
                 //  There must be two children and they must be the two values
                 //  we stored, in the stored order.
@@ -298,8 +295,7 @@ public class SimpleContentModel
                     if (children[offset + 1].rawname != fSecondChild.rawname) {
                         return 1;
                     }
-                }
-                else {
+                } else {
                     if (length > 2) {
                         return 2;
                     }
@@ -309,7 +305,7 @@ public class SimpleContentModel
 
                 break;
 
-            default :
+            default:
                 throw new RuntimeException("ImplementationMessages.VAL_CST");
         }
 

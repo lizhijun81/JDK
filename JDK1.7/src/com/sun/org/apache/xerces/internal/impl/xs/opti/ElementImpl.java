@@ -26,12 +26,10 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
 /**
- * @xerces.internal
- *
  * @author Rahul Srivastava, Sun Microsystems Inc.
  * @author Sandy Gao, IBM
- *
  * @version $Id: ElementImpl.java,v 1.7 2010-11-01 04:40:01 joehw Exp $
+ * @xerces.internal
  */
 public class ElementImpl extends DefaultElement {
 
@@ -64,7 +62,7 @@ public class ElementImpl extends DefaultElement {
 
 
     public ElementImpl(String prefix, String localpart, String rawname,
-            String uri, int line, int column, int offset) {
+                       String uri, int line, int column, int offset) {
         super(prefix, localpart, rawname, uri, Node.ELEMENT_NODE);
         row = -1;
         col = -1;
@@ -76,7 +74,7 @@ public class ElementImpl extends DefaultElement {
     }
 
     public ElementImpl(String prefix, String localpart, String rawname,
-            String uri, int line, int column) {
+                       String uri, int line, int column) {
         this(prefix, localpart, rawname, uri, line, column, -1);
     }
 
@@ -98,8 +96,7 @@ public class ElementImpl extends DefaultElement {
     public boolean hasChildNodes() {
         if (parentRow == -1) {
             return false;
-        }
-        else {
+        } else {
             return true;
         }
     }
@@ -117,16 +114,16 @@ public class ElementImpl extends DefaultElement {
         if (parentRow == -1) {
             return null;
         }
-        int i=1;
-        for (; i<schemaDOM.relations[parentRow].length; i++) {
+        int i = 1;
+        for (; i < schemaDOM.relations[parentRow].length; i++) {
             if (schemaDOM.relations[parentRow][i] == null) {
-                return schemaDOM.relations[parentRow][i-1];
+                return schemaDOM.relations[parentRow][i - 1];
             }
         }
-        if (i ==1) {
+        if (i == 1) {
             i++;
         }
-        return schemaDOM.relations[parentRow][i-1];
+        return schemaDOM.relations[parentRow][i - 1];
     }
 
 
@@ -134,15 +131,15 @@ public class ElementImpl extends DefaultElement {
         if (col == 1) {
             return null;
         }
-        return schemaDOM.relations[row][col-1];
+        return schemaDOM.relations[row][col - 1];
     }
 
 
     public Node getNextSibling() {
-        if (col == schemaDOM.relations[row].length-1) {
+        if (col == schemaDOM.relations[row].length - 1) {
             return null;
         }
-        return schemaDOM.relations[row][col+1];
+        return schemaDOM.relations[row][col + 1];
     }
 
 
@@ -156,7 +153,6 @@ public class ElementImpl extends DefaultElement {
     }
 
 
-
     //
     // org.w3c.dom.Element methods
     //
@@ -168,7 +164,7 @@ public class ElementImpl extends DefaultElement {
 
     public String getAttribute(String name) {
 
-        for (int i=0; i<attrs.length; i++) {
+        for (int i = 0; i < attrs.length; i++) {
             if (attrs[i].getName().equals(name)) {
                 return attrs[i].getValue();
             }
@@ -178,7 +174,7 @@ public class ElementImpl extends DefaultElement {
 
 
     public Attr getAttributeNode(String name) {
-        for (int i=0; i<attrs.length; i++) {
+        for (int i = 0; i < attrs.length; i++) {
             if (attrs[i].getName().equals(name)) {
                 return attrs[i];
             }
@@ -188,7 +184,7 @@ public class ElementImpl extends DefaultElement {
 
 
     public String getAttributeNS(String namespaceURI, String localName) {
-        for (int i=0; i<attrs.length; i++) {
+        for (int i = 0; i < attrs.length; i++) {
             if (attrs[i].getLocalName().equals(localName) && nsEquals(attrs[i].getNamespaceURI(), namespaceURI)) {
                 return attrs[i].getValue();
             }
@@ -198,7 +194,7 @@ public class ElementImpl extends DefaultElement {
 
 
     public Attr getAttributeNodeNS(String namespaceURI, String localName) {
-        for (int i=0; i<attrs.length; i++) {
+        for (int i = 0; i < attrs.length; i++) {
             if (attrs[i].getName().equals(localName) && nsEquals(attrs[i].getNamespaceURI(), namespaceURI)) {
                 return attrs[i];
             }
@@ -208,7 +204,7 @@ public class ElementImpl extends DefaultElement {
 
 
     public boolean hasAttribute(String name) {
-        for (int i=0; i<attrs.length; i++) {
+        for (int i = 0; i < attrs.length; i++) {
             if (attrs[i].getName().equals(name)) {
                 return true;
             }
@@ -218,7 +214,7 @@ public class ElementImpl extends DefaultElement {
 
 
     public boolean hasAttributeNS(String namespaceURI, String localName) {
-        for (int i=0; i<attrs.length; i++) {
+        for (int i = 0; i < attrs.length; i++) {
             if (attrs[i].getName().equals(localName) && nsEquals(attrs[i].getNamespaceURI(), namespaceURI)) {
                 return true;
             }
@@ -228,7 +224,7 @@ public class ElementImpl extends DefaultElement {
 
 
     public void setAttribute(String name, String value) {
-        for (int i=0; i<attrs.length; i++) {
+        for (int i = 0; i < attrs.length; i++) {
             if (attrs[i].getName().equals(name)) {
                 attrs[i].setValue(value);
                 return;
@@ -236,17 +232,23 @@ public class ElementImpl extends DefaultElement {
         }
     }
 
-    /** Returns the line number. */
+    /**
+     * Returns the line number.
+     */
     public int getLineNumber() {
         return line;
     }
 
-    /** Returns the column number. */
+    /**
+     * Returns the column number.
+     */
     public int getColumnNumber() {
         return column;
     }
 
-    /** Returns the character offset. */
+    /**
+     * Returns the character offset.
+     */
     public int getCharacterOffset() {
         return charOffset;
     }
@@ -265,8 +267,7 @@ public class ElementImpl extends DefaultElement {
     private static boolean nsEquals(String nsURI_1, String nsURI_2) {
         if (nsURI_1 == null) {
             return (nsURI_2 == null);
-        }
-        else {
+        } else {
             return nsURI_1.equals(nsURI_2);
         }
     }

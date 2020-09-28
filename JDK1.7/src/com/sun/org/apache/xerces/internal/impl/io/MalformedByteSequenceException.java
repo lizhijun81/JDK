@@ -22,6 +22,7 @@ package com.sun.org.apache.xerces.internal.impl.io;
 
 import java.io.CharConversionException;
 import java.util.Locale;
+
 import com.sun.org.apache.xerces.internal.util.MessageFormatter;
 
 /**
@@ -29,36 +30,48 @@ import com.sun.org.apache.xerces.internal.util.MessageFormatter;
  * by a <code>java.io.Reader</code> that decodes bytes
  * of a given encoding into characters.</p>
  *
- * @xerces.internal
- *
  * @author Michael Glavassevich, IBM
- *
+ * @xerces.internal
  */
 public class MalformedByteSequenceException extends CharConversionException {
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = 8436382245048328739L;
 
     //
     // Data
     //
 
-    /** message formatter **/
+    /**
+     * message formatter
+     **/
     private MessageFormatter fFormatter;
 
-    /** locale for error message **/
+    /**
+     * locale for error message
+     **/
     private Locale fLocale;
 
-    /** error domain **/
+    /**
+     * error domain
+     **/
     private String fDomain;
 
-    /** key for the error message **/
+    /**
+     * key for the error message
+     **/
     private String fKey;
 
-    /** replacement arguements for the error message **/
+    /**
+     * replacement arguements for the error message
+     **/
     private Object[] fArguments;
 
-    /** message text for this message, initially null **/
+    /**
+     * message text for this message, initially null
+     **/
     private String fMessage;
 
     //
@@ -79,7 +92,7 @@ public class MalformedByteSequenceException extends CharConversionException {
      *                  if needed.
      */
     public MalformedByteSequenceException(MessageFormatter formatter,
-        Locale locale, String domain, String key, Object[] arguments) {
+                                          Locale locale, String domain, String key, Object[] arguments) {
         fFormatter = formatter;
         fLocale = locale;
         fDomain = domain;
@@ -96,7 +109,7 @@ public class MalformedByteSequenceException extends CharConversionException {
      *
      * @return the error domain
      */
-    public String getDomain () {
+    public String getDomain() {
         return fDomain;
     } // getDomain
 
@@ -105,7 +118,7 @@ public class MalformedByteSequenceException extends CharConversionException {
      *
      * @return the error key of the error message
      */
-    public String getKey () {
+    public String getKey() {
         return fKey;
     } // getKey()
 
@@ -116,7 +129,7 @@ public class MalformedByteSequenceException extends CharConversionException {
      * @return the replacement arguments for the error message
      * or <code>null</code> if none exist
      */
-    public Object[] getArguments () {
+    public Object[] getArguments() {
         return fArguments;
     } // getArguments();
 
@@ -134,6 +147,6 @@ public class MalformedByteSequenceException extends CharConversionException {
             fLocale = null;
         }
         return fMessage;
-     } // getMessage()
+    } // getMessage()
 
 } // MalformedByteSequenceException

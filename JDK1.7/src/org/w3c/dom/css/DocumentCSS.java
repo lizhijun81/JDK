@@ -62,16 +62,18 @@ import org.w3c.dom.stylesheets.DocumentStyle;
  * interface can be obtained by using binding-specific casting methods on an
  * instance of the <code>Document</code> interface.
  * <p>See also the <a href='http://www.w3.org/TR/2000/REC-DOM-Level-2-Style-20001113'>Document Object Model (DOM) Level 2 Style Specification</a>.
+ *
  * @since DOM Level 2
  */
 public interface DocumentCSS extends DocumentStyle {
     /**
-     *  This method is used to retrieve the override style declaration for a
+     * This method is used to retrieve the override style declaration for a
      * specified element and a specified pseudo-element.
-     * @param elt  The element whose style is to be modified. This parameter
-     *   cannot be null.
-     * @param pseudoElt  The pseudo-element or <code>null</code> if none.
-     * @return  The override style declaration.
+     *
+     * @param elt       The element whose style is to be modified. This parameter
+     *                  cannot be null.
+     * @param pseudoElt The pseudo-element or <code>null</code> if none.
+     * @return The override style declaration.
      */
     public CSSStyleDeclaration getOverrideStyle(Element elt,
                                                 String pseudoElt);

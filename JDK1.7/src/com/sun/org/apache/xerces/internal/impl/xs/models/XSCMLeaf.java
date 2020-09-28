@@ -26,18 +26,19 @@ import com.sun.org.apache.xerces.internal.impl.dtd.models.CMStateSet;
 /**
  * Content model leaf node.
  *
- * @xerces.internal
- *
  * @author Neil Graham, IBM
+ * @xerces.internal
  */
 public class XSCMLeaf
-    extends CMNode {
+        extends CMNode {
 
     //
     // Data
     //
 
-    /** This is the leaf: element decl or wildcard decl. */
+    /**
+     * This is the leaf: element decl or wildcard decl.
+     */
     private Object fLeaf = null;
 
     /**
@@ -56,8 +57,10 @@ public class XSCMLeaf
     // Constructors
     //
 
-    /** Constructs a content model leaf. */
-    public XSCMLeaf(int type, Object leaf, int id, int position)  {
+    /**
+     * Constructs a content model leaf.
+     */
+    public XSCMLeaf(int type, Object leaf, int id, int position) {
         super(type);
 
         // Store the element index and position
@@ -101,11 +104,11 @@ public class XSCMLeaf
         StringBuffer strRet = new StringBuffer(fLeaf.toString());
         if (fPosition >= 0) {
             strRet.append
-            (
-                " (Pos:"
-                + Integer.toString(fPosition)
-                + ")"
-            );
+                    (
+                            " (Pos:"
+                                    + Integer.toString(fPosition)
+                                    + ")"
+                    );
         }
         return strRet.toString();
     }
@@ -117,7 +120,7 @@ public class XSCMLeaf
         if (fPosition == -1)
             toSet.zeroBits();
 
-        // Otherwise, its just the one bit of our position
+            // Otherwise, its just the one bit of our position
         else
             toSet.setBit(fPosition);
     }
@@ -127,7 +130,7 @@ public class XSCMLeaf
         if (fPosition == -1)
             toSet.zeroBits();
 
-        // Otherwise, its just the one bit of our position
+            // Otherwise, its just the one bit of our position
         else
             toSet.setBit(fPosition);
     }

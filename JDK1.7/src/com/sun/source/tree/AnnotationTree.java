@@ -29,20 +29,20 @@ import java.util.List;
 
 /**
  * A tree node for an annotation.
- *
+ * <p>
  * For example:
  * <pre>
  *    {@code @}<em>annotationType</em>
  *    {@code @}<em>annotationType</em> ( <em>arguments</em> )
  * </pre>
  *
- * @jls section 9.7
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls section 9.7
  * @since 1.6
  */
 public interface AnnotationTree extends ExpressionTree {
     Tree getAnnotationType();
+
     List<? extends ExpressionTree> getArguments();
 }

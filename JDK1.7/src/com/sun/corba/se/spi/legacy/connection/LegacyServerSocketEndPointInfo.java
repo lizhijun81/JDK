@@ -28,8 +28,7 @@ package com.sun.corba.se.spi.legacy.connection;
 /**
  * LegacyServerSocketEndPointInfo is an abstraction of a port.
  */
-public interface LegacyServerSocketEndPointInfo
-{
+public interface LegacyServerSocketEndPointInfo {
     /**
      * e.g.: "CLEAR_TEXT", "SSL", ...
      */
@@ -50,6 +49,7 @@ public interface LegacyServerSocketEndPointInfo
      * Note: Pre-ORT "port-exchange" model.
      */
     public int getLocatorPort();
+
     public void setLocatorPort(int port);
 
     // NAME is used while we still have a "port-exchange" ORBD

@@ -26,16 +26,17 @@
 package org.omg.CORBA;
 
 /**
-* A user exception thrown when a policy error occurs.  A <code>PolicyError</code>
-* exception may include one of the following policy error reason codes
-* defined in the org.omg.CORBA package: BAD_POLICY, BAD_POLICY_TYPE,
-* BAD_POLICY_VALUE, UNSUPPORTED_POLICY, UNSUPPORTED_POLICY_VALUE.
-*/
+ * A user exception thrown when a policy error occurs.  A <code>PolicyError</code>
+ * exception may include one of the following policy error reason codes
+ * defined in the org.omg.CORBA package: BAD_POLICY, BAD_POLICY_TYPE,
+ * BAD_POLICY_VALUE, UNSUPPORTED_POLICY, UNSUPPORTED_POLICY_VALUE.
+ */
 
 public final class PolicyError extends org.omg.CORBA.UserException {
 
     /**
      * The reason for the <code>PolicyError</code> exception being thrown.
+     *
      * @serial
      */
     public short reason;
@@ -51,6 +52,7 @@ public final class PolicyError extends org.omg.CORBA.UserException {
     /**
      * Constructs a <code>PolicyError</code> user exception
      * initialized with the given reason code and an empty reason detail message.
+     *
      * @param __reason the reason code.
      */
     public PolicyError(short __reason) {
@@ -61,8 +63,9 @@ public final class PolicyError extends org.omg.CORBA.UserException {
     /**
      * Constructs a <code>PolicyError</code> user exception
      * initialized with the given reason detail message and reason code.
+     *
      * @param reason_string the reason detail message.
-     * @param __reason the reason code.
+     * @param __reason      the reason code.
      */
     public PolicyError(String reason_string, short __reason) {
         super(reason_string);

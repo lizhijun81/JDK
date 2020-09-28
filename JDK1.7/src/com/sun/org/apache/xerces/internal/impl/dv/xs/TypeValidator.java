@@ -29,11 +29,9 @@ import com.sun.org.apache.xerces.internal.impl.dv.ValidationContext;
  * type: allowed facets, converting String to actual value, check equality,
  * comparison, etc.
  *
- * @xerces.internal
- *
  * @author Neeraj Bajaj, Sun Microsystems, inc.
  * @author Sandy Gao, IBM
- *
+ * @xerces.internal
  */
 public abstract class TypeValidator {
 
@@ -45,7 +43,7 @@ public abstract class TypeValidator {
     // get the BigDecimal, Double, Flout object.
     // for some types (string and derived), they just return the string itself
     public abstract Object getActualValue(String content, ValidationContext context)
-        throws InvalidDatatypeValueException;
+            throws InvalidDatatypeValueException;
 
     // for ID/IDREF/ENTITY types, do some extra checking after the value is
     // checked to be valid with respect to both lexical representation and
@@ -59,16 +57,16 @@ public abstract class TypeValidator {
     // doesn't support it.
 
     //order constants
-    public static final short LESS_THAN     = -1;
-    public static final short EQUAL         = 0;
-    public static final short GREATER_THAN  = 1;
+    public static final short LESS_THAN = -1;
+    public static final short EQUAL = 0;
+    public static final short GREATER_THAN = 1;
     public static final short INDETERMINATE = 2;
 
     // where there is distinction between identity and equality, this method
     // will be overwritten
     // checks whether the two values are identical; for ex, this distinguishes
     // -0.0 from 0.0
-    public boolean isIdentical (Object value1, Object value2) {
+    public boolean isIdentical(Object value1, Object value2) {
         return value1.equals(value2);
     }
 
@@ -81,7 +79,7 @@ public abstract class TypeValidator {
     // get the length of the value
     // the parameters are in compiled form (from getActualValue)
     public int getDataLength(Object value) {
-        return (value instanceof String) ? ((String)value).length() : -1;
+        return (value instanceof String) ? ((String) value).length() : -1;
     }
 
     // get the number of digits of the value

@@ -46,8 +46,7 @@ import static com.sun.java.swing.plaf.windows.XPStyle.Skin;
  *
  * @author Michael C. Albers
  */
-public class WindowsProgressBarUI extends BasicProgressBarUI
-{
+public class WindowsProgressBarUI extends BasicProgressBarUI {
 
     private Rectangle previousFullBox;
     private Insets indeterminateInsets;
@@ -70,7 +69,7 @@ public class WindowsProgressBarUI extends BasicProgressBarUI
     /**
      * Returns the baseline.
      *
-     * @throws NullPointerException {@inheritDoc}
+     * @throws NullPointerException     {@inheritDoc}
      * @throws IllegalArgumentException {@inheritDoc}
      * @see javax.swing.JComponent#getBaseline(int, int)
      * @since 1.6
@@ -85,14 +84,13 @@ public class WindowsProgressBarUI extends BasicProgressBarUI
             if (progressBar.isIndeterminate()) {
                 y = -1;
                 height--;
-            }
-            else {
+            } else {
                 y = 0;
                 height -= 3;
             }
             baseline = y + (height + metrics.getAscent() -
-                        metrics.getLeading() -
-                        metrics.getDescent()) / 2;
+                    metrics.getLeading() -
+                    metrics.getDescent()) / 2;
         }
         return baseline;
     }
@@ -100,23 +98,23 @@ public class WindowsProgressBarUI extends BasicProgressBarUI
     protected Dimension getPreferredInnerHorizontal() {
         XPStyle xp = XPStyle.getXP();
         if (xp != null) {
-             Skin skin = xp.getSkin(progressBar, Part.PP_BAR);
-             return new Dimension(
-                     (int)super.getPreferredInnerHorizontal().getWidth(),
-                     skin.getHeight());
-         }
-         return super.getPreferredInnerHorizontal();
+            Skin skin = xp.getSkin(progressBar, Part.PP_BAR);
+            return new Dimension(
+                    (int) super.getPreferredInnerHorizontal().getWidth(),
+                    skin.getHeight());
+        }
+        return super.getPreferredInnerHorizontal();
     }
 
     protected Dimension getPreferredInnerVertical() {
-         XPStyle xp = XPStyle.getXP();
-         if (xp != null) {
-             Skin skin = xp.getSkin(progressBar, Part.PP_BARVERT);
-             return new Dimension(
-                     skin.getWidth(),
-                     (int)super.getPreferredInnerVertical().getHeight());
-         }
-         return super.getPreferredInnerVertical();
+        XPStyle xp = XPStyle.getXP();
+        if (xp != null) {
+            Skin skin = xp.getSkin(progressBar, Part.PP_BARVERT);
+            return new Dimension(
+                    skin.getWidth(),
+                    (int) super.getPreferredInnerVertical().getHeight());
+        }
+        return super.getPreferredInnerVertical();
     }
 
     protected void paintDeterminate(Graphics g, JComponent c) {
@@ -125,7 +123,7 @@ public class WindowsProgressBarUI extends BasicProgressBarUI
             boolean vertical = (progressBar.getOrientation() == JProgressBar.VERTICAL);
             boolean isLeftToRight = WindowsGraphicsUtils.isLeftToRight(c);
             int barRectWidth = progressBar.getWidth();
-            int barRectHeight = progressBar.getHeight()-1;
+            int barRectHeight = progressBar.getHeight() - 1;
             // amount of progress to draw
             int amountFull = getAmountFull(null, barRectWidth, barRectHeight);
 
@@ -137,23 +135,23 @@ public class WindowsProgressBarUI extends BasicProgressBarUI
                 g.setColor(progressBar.getForeground());
                 barRectHeight -= 2;
                 barRectWidth -= 2;
-                Graphics2D g2 = (Graphics2D)g;
-                g2.setStroke(new BasicStroke((float)(vertical ? barRectWidth : barRectHeight),
-                                             BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setStroke(new BasicStroke((float) (vertical ? barRectWidth : barRectHeight),
+                        BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL));
                 if (!vertical) {
                     if (isLeftToRight) {
-                        g2.drawLine(2,              barRectHeight / 2 + 1,
-                                    amountFull - 2, barRectHeight / 2 + 1);
+                        g2.drawLine(2, barRectHeight / 2 + 1,
+                                amountFull - 2, barRectHeight / 2 + 1);
                     } else {
                         g2.drawLine(2 + barRectWidth,
-                                    barRectHeight / 2 + 1,
-                                    2 + barRectWidth - (amountFull - 2),
-                                    barRectHeight / 2 + 1);
+                                barRectHeight / 2 + 1,
+                                2 + barRectWidth - (amountFull - 2),
+                                barRectHeight / 2 + 1);
                     }
                     paintString(g, 0, 0, barRectWidth, barRectHeight, amountFull, null);
                 } else {
-                    g2.drawLine(barRectWidth/2 + 1, barRectHeight + 1,
-                                barRectWidth/2 + 1, barRectHeight + 1 - amountFull + 2);
+                    g2.drawLine(barRectWidth / 2 + 1, barRectHeight + 1,
+                            barRectWidth / 2 + 1, barRectHeight + 1 - amountFull + 2);
                     paintString(g, 2, 2, barRectWidth, barRectHeight, amountFull, null);
                 }
 
@@ -168,27 +166,27 @@ public class WindowsProgressBarUI extends BasicProgressBarUI
 
                 int chunkSize = xp.getInt(progressBar, Part.PP_PROGRESS, null, Prop.PROGRESSCHUNKSIZE, 2);
                 int spaceSize = xp.getInt(progressBar, Part.PP_PROGRESS, null, Prop.PROGRESSSPACESIZE, 0);
-                int nChunks = (amountFull-4) / (chunkSize + spaceSize);
+                int nChunks = (amountFull - 4) / (chunkSize + spaceSize);
 
                 // See if we can squeeze in an extra chunk without spacing after
-                if (spaceSize > 0 && (nChunks * (chunkSize + spaceSize) + chunkSize) < (amountFull-4)) {
+                if (spaceSize > 0 && (nChunks * (chunkSize + spaceSize) + chunkSize) < (amountFull - 4)) {
                     nChunks++;
                 }
 
                 for (int i = 0; i < nChunks; i++) {
                     if (vertical) {
                         skin.paintSkin(g,
-                                       3, barRectHeight - i * (chunkSize + spaceSize) - chunkSize - 2,
-                                       thickness, chunkSize, null);
+                                3, barRectHeight - i * (chunkSize + spaceSize) - chunkSize - 2,
+                                thickness, chunkSize, null);
                     } else {
                         if (isLeftToRight) {
                             skin.paintSkin(g,
-                                           4 + i * (chunkSize + spaceSize), 2,
-                                           chunkSize, thickness, null);
+                                    4 + i * (chunkSize + spaceSize), 2,
+                                    chunkSize, thickness, null);
                         } else {
                             skin.paintSkin(g,
-                                           barRectWidth - (2 + (i+1) * (chunkSize + spaceSize)), 2,
-                                           chunkSize, thickness, null);
+                                    barRectWidth - (2 + (i + 1) * (chunkSize + spaceSize)), 2,
+                                    chunkSize, thickness, null);
                         }
                     }
                 }
@@ -201,6 +199,7 @@ public class WindowsProgressBarUI extends BasicProgressBarUI
 
     /**
      * {@inheritDoc}
+     *
      * @since 1.6
      */
     protected void setAnimationIndex(int newValue) {
@@ -224,6 +223,7 @@ public class WindowsProgressBarUI extends BasicProgressBarUI
 
     /**
      * {@inheritDoc}
+     *
      * @since 1.6
      */
     protected int getBoxLength(int availableLength, int otherDimension) {
@@ -236,6 +236,7 @@ public class WindowsProgressBarUI extends BasicProgressBarUI
 
     /**
      * {@inheritDoc}
+     *
      * @since 1.6
      */
     protected Rectangle getBox(Rectangle r) {
@@ -244,12 +245,12 @@ public class WindowsProgressBarUI extends BasicProgressBarUI
         XPStyle xp = XPStyle.getXP();
         if (xp != null) {
             boolean vertical = (progressBar.getOrientation()
-                                 == JProgressBar.VERTICAL);
+                    == JProgressBar.VERTICAL);
             Part part = vertical ? Part.PP_BARVERT : Part.PP_BAR;
             Insets ins = indeterminateInsets;
 
             int currentFrame = getAnimationIndex();
-            int framecount = getFrameCount()/2;
+            int framecount = getFrameCount() / 2;
 
             int gap = xp.getInt(progressBar, Part.PP_PROGRESS, null,
                     Prop.PROGRESSSPACESIZE, 0);
@@ -267,16 +268,16 @@ public class WindowsProgressBarUI extends BasicProgressBarUI
                 rect.y = rect.y + ins.top;
                 rect.height = progressBar.getHeight() - ins.top - ins.bottom;
                 int len = progressBar.getWidth() - ins.left - ins.right;
-                len += (rect.width+gap)*2; // add 2x for the trails
-                double delta = (double)(len) / (double)framecount;
-                rect.x = (int)(delta * currentFrame) + ins.left;
+                len += (rect.width + gap) * 2; // add 2x for the trails
+                double delta = (double) (len) / (double) framecount;
+                rect.x = (int) (delta * currentFrame) + ins.left;
             } else {
                 rect.x = rect.x + ins.left;
                 rect.width = progressBar.getWidth() - ins.left - ins.right;
                 int len = progressBar.getHeight() - ins.top - ins.bottom;
-                len += (rect.height+gap)*2; // add 2x for the trails
-                double delta = (double)(len) / (double)framecount;
-                rect.y = (int)(delta * currentFrame) + ins.top;
+                len += (rect.height + gap) * 2; // add 2x for the trails
+                double delta = (double) (len) / (double) framecount;
+                rect.y = (int) (delta * currentFrame) + ins.top;
             }
         }
         return rect;
@@ -287,7 +288,7 @@ public class WindowsProgressBarUI extends BasicProgressBarUI
         XPStyle xp = XPStyle.getXP();
         if (xp != null) {
             boolean vertical = (progressBar.getOrientation()
-                                 == JProgressBar.VERTICAL);
+                    == JProgressBar.VERTICAL);
             int barRectWidth = progressBar.getWidth();
             int barRectHeight = progressBar.getHeight();
             paintXPBackground(g, vertical, barRectWidth, barRectHeight);
@@ -299,8 +300,8 @@ public class WindowsProgressBarUI extends BasicProgressBarUI
                 if (!(g instanceof Graphics2D)) {
                     return;
                 }
-                paintIndeterminateFrame(boxRect, (Graphics2D)g, vertical,
-                                        barRectWidth, barRectHeight);
+                paintIndeterminateFrame(boxRect, (Graphics2D) g, vertical,
+                        barRectWidth, barRectHeight);
                 if (progressBar.isStringPainted()) {
                     if (!vertical) {
                         paintString(g, -1, -1, barRectWidth, barRectHeight, 0, null);
@@ -318,31 +319,31 @@ public class WindowsProgressBarUI extends BasicProgressBarUI
         boolean vertical = (progressBar.getOrientation() == JProgressBar.VERTICAL);
         XPStyle xp = XPStyle.getXP();
         int gap = xp.getInt(progressBar, Part.PP_PROGRESS, null,
-                            Prop.PROGRESSSPACESIZE, 0);
+                Prop.PROGRESSSPACESIZE, 0);
 
         if (!vertical) {
-            int chunksize = box.width+gap;
-            return new Rectangle(box.x-chunksize*2, box.y, chunksize*3, box.height);
+            int chunksize = box.width + gap;
+            return new Rectangle(box.x - chunksize * 2, box.y, chunksize * 3, box.height);
         } else {
-            int chunksize = box.height+gap;
-            return new Rectangle(box.x, box.y-chunksize*2, box.width, chunksize*3);
+            int chunksize = box.height + gap;
+            return new Rectangle(box.x, box.y - chunksize * 2, box.width, chunksize * 3);
         }
     }
 
     private void paintIndeterminateFrame(Rectangle box, Graphics2D g,
-                                          boolean vertical,
-                                          int bgwidth, int bgheight) {
+                                         boolean vertical,
+                                         int bgwidth, int bgheight) {
         XPStyle xp = XPStyle.getXP();
 
         // create a new graphics to keep drawing surface state
-        Graphics2D gfx = (Graphics2D)g.create();
+        Graphics2D gfx = (Graphics2D) g.create();
 
         Part part = vertical ? Part.PP_BARVERT : Part.PP_BAR;
         Part chunk = vertical ? Part.PP_CHUNKVERT : Part.PP_CHUNK;
 
         // calculate the chunk offsets
         int gap = xp.getInt(progressBar, Part.PP_PROGRESS, null,
-                            Prop.PROGRESSSPACESIZE, 0);
+                Prop.PROGRESSSPACESIZE, 0);
         int deltax = 0;
         int deltay = 0;
         if (!vertical) {
@@ -362,8 +363,8 @@ public class WindowsProgressBarUI extends BasicProgressBarUI
         // this is the entire progress bar minus the track and borders
         Insets ins = indeterminateInsets;
         Rectangle progbarExtents = new Rectangle(ins.left, ins.top,
-                                                 bgwidth  - ins.left - ins.right,
-                                                 bgheight - ins.top  - ins.bottom);
+                bgwidth - ins.left - ins.right,
+                bgheight - ins.top - ins.bottom);
 
         // only paint where the chunks overlap with the progress bar drawing area
         Rectangle repaintArea = progbarExtents.intersection(fullBox);

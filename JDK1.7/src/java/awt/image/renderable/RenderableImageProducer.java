@@ -34,6 +34,7 @@
  **********************************************************************/
 
 package java.awt.image.renderable;
+
 import java.awt.color.ColorSpace;
 import java.awt.image.ColorModel;
 import java.awt.image.DataBuffer;
@@ -61,13 +62,19 @@ import java.util.Vector;
  */
 public class RenderableImageProducer implements ImageProducer, Runnable {
 
-    /** The RenderableImage source for the producer. */
+    /**
+     * The RenderableImage source for the producer.
+     */
     RenderableImage rdblImage;
 
-    /** The RenderContext to use for producing the image. */
+    /**
+     * The RenderContext to use for producing the image.
+     */
     RenderContext rc;
 
-    /** A Vector of image consumers. */
+    /**
+     * A Vector of image consumers.
+     */
     Vector ics = new Vector();
 
     /**
@@ -75,7 +82,7 @@ public class RenderableImageProducer implements ImageProducer, Runnable {
      * and a RenderContext.
      *
      * @param rdblImage the RenderableImage to be rendered.
-     * @param rc the RenderContext to use for producing the pixels.
+     * @param rc        the RenderContext to use for producing the pixels.
      */
     public RenderableImageProducer(RenderableImage rdblImage,
                                    RenderContext rc) {
@@ -92,7 +99,7 @@ public class RenderableImageProducer implements ImageProducer, Runnable {
         this.rc = rc;
     }
 
-   /**
+    /**
      * Adds an ImageConsumer to the list of consumers interested in
      * data for this image.
      *
@@ -182,29 +189,29 @@ public class RenderableImageProducer implements ImageProducer, Runnable {
         // Set up the ImageConsumers
         icList = ics.elements();
         while (icList.hasMoreElements()) {
-            ic = (ImageConsumer)icList.nextElement();
-            ic.setDimensions(width,height);
+            ic = (ImageConsumer) icList.nextElement();
+            ic.setDimensions(width, height);
             ic.setHints(ImageConsumer.TOPDOWNLEFTRIGHT |
-                        ImageConsumer.COMPLETESCANLINES |
-                        ImageConsumer.SINGLEPASS |
-                        ImageConsumer.SINGLEFRAME);
+                    ImageConsumer.COMPLETESCANLINES |
+                    ImageConsumer.SINGLEPASS |
+                    ImageConsumer.SINGLEFRAME);
         }
 
         // Get RGB pixels from the raster scanline by scanline and
         // send to consumers.
         int pix[] = new int[width];
-        int i,j;
+        int i, j;
         int numBands = sampleModel.getNumBands();
         int tmpPixel[] = new int[numBands];
         for (j = 0; j < height; j++) {
-            for(i = 0; i < width; i++) {
+            for (i = 0; i < width; i++) {
                 sampleModel.getPixel(i, j, tmpPixel, dataBuffer);
                 pix[i] = colorModel.getDataElement(tmpPixel, 0);
             }
             // Now send the scanline to the Consumers
             icList = ics.elements();
             while (icList.hasMoreElements()) {
-                ic = (ImageConsumer)icList.nextElement();
+                ic = (ImageConsumer) icList.nextElement();
                 ic.setPixels(0, j, width, 1, colorModel, pix, 0, width);
             }
         }
@@ -212,7 +219,7 @@ public class RenderableImageProducer implements ImageProducer, Runnable {
         // Now tell the consumers we're done.
         icList = ics.elements();
         while (icList.hasMoreElements()) {
-            ic = (ImageConsumer)icList.nextElement();
+            ic = (ImageConsumer) icList.nextElement();
             ic.imageComplete(ImageConsumer.STATICIMAGEDONE);
         }
     }

@@ -25,8 +25,7 @@
 
 package com.sun.corba.se.spi.orbutil.threadpool;
 
-public interface Work
-{
+public interface Work {
 
     /**
      * This method denotes the actual work that is done by the work item.
@@ -46,8 +45,8 @@ public interface Work
     public long getEnqueueTime();
 
     /**
-    * This method will return the name of the work item.
-    */
+     * This method will return the name of the work item.
+     */
     public String getName();
 
 }

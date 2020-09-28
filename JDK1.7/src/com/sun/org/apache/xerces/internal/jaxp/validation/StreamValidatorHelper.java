@@ -54,48 +54,68 @@ final class StreamValidatorHelper implements ValidatorHelper {
 
     // feature identifiers
 
-    /** Feature identifier: parser settings. */
+    /**
+     * Feature identifier: parser settings.
+     */
     private static final String PARSER_SETTINGS =
-        Constants.XERCES_FEATURE_PREFIX + Constants.PARSER_SETTINGS;
+            Constants.XERCES_FEATURE_PREFIX + Constants.PARSER_SETTINGS;
 
     // property identifiers
 
-    /** Property identifier: entity resolver. */
+    /**
+     * Property identifier: entity resolver.
+     */
     private static final String ENTITY_RESOLVER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ENTITY_RESOLVER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ENTITY_RESOLVER_PROPERTY;
 
-    /** Property identifier: error handler. */
+    /**
+     * Property identifier: error handler.
+     */
     private static final String ERROR_HANDLER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_HANDLER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_HANDLER_PROPERTY;
 
-    /** Property identifier: error reporter. */
+    /**
+     * Property identifier: error reporter.
+     */
     private static final String ERROR_REPORTER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_REPORTER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.ERROR_REPORTER_PROPERTY;
 
-    /** Property identifier: XML Schema validator. */
+    /**
+     * Property identifier: XML Schema validator.
+     */
     private static final String SCHEMA_VALIDATOR =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.SCHEMA_VALIDATOR_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SCHEMA_VALIDATOR_PROPERTY;
 
-    /** Property identifier: symbol table. */
+    /**
+     * Property identifier: symbol table.
+     */
     private static final String SYMBOL_TABLE =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY;
 
-    /** Property identifier: validation manager. */
+    /**
+     * Property identifier: validation manager.
+     */
     private static final String VALIDATION_MANAGER =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.VALIDATION_MANAGER_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.VALIDATION_MANAGER_PROPERTY;
 
     private static final String DEFAULT_TRANSFORMER_IMPL = "com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl";
     //
     // Data
     //
 
-    /** SoftReference to parser configuration. **/
+    /**
+     * SoftReference to parser configuration.
+     **/
     private SoftReference fConfiguration = new SoftReference(null);
 
-    /** Schema validator. **/
+    /**
+     * Schema validator.
+     **/
     private com.sun.org.apache.xerces.internal.impl.xs.XMLSchemaValidator fSchemaValidator;
 
-    /** Component manager. **/
+    /**
+     * Component manager.
+     **/
     private XMLSchemaValidatorComponentManager fComponentManager;
 
     private ValidatorHandlerImpl handler = null;
@@ -106,16 +126,16 @@ final class StreamValidatorHelper implements ValidatorHelper {
     }
 
     public void validate(Source source, Result result)
-        throws SAXException, IOException {
+            throws SAXException, IOException {
         if (result == null || result instanceof StreamResult) {
             final StreamSource streamSource = (StreamSource) source;
-            TransformerHandler identityTransformerHandler ;
+            TransformerHandler identityTransformerHandler;
 
-            if( result!=null ) {
+            if (result != null) {
                 try {
                     SAXTransformerFactory tf = fComponentManager.getFeature(Constants.ORACLE_FEATURE_SERVICE_MECHANISM) ?
-                                    (SAXTransformerFactory)SAXTransformerFactory.newInstance()
-                                    : (SAXTransformerFactory) TransformerFactory.newInstance(DEFAULT_TRANSFORMER_IMPL, StreamValidatorHelper.class.getClassLoader());
+                            (SAXTransformerFactory) SAXTransformerFactory.newInstance()
+                            : (SAXTransformerFactory) TransformerFactory.newInstance(DEFAULT_TRANSFORMER_IMPL, StreamValidatorHelper.class.getClassLoader());
                     identityTransformerHandler = tf.newTransformerHandler();
                 } catch (TransformerConfigurationException e) {
                     throw new TransformerFactoryConfigurationError(e);
@@ -148,18 +168,16 @@ final class StreamValidatorHelper implements ValidatorHelper {
 
             try {
                 config.parse(input);
-            }
-            catch (XMLParseException e) {
+            } catch (XMLParseException e) {
                 throw Util.toSAXParseException(e);
-            }
-            catch (XNIException e) {
+            } catch (XNIException e) {
                 throw Util.toSAXException(e);
             }
             return;
         }
         throw new IllegalArgumentException(JAXPValidationMessageFormatter.formatMessage(fComponentManager.getLocale(),
                 "SourceResultMismatch",
-                new Object [] {source.getClass().getName(), result.getClass().getName()}));
+                new Object[]{source.getClass().getName(), result.getClass().getName()}));
     }
 
     private XMLParserConfiguration initialize() {

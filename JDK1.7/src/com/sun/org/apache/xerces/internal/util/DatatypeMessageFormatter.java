@@ -21,6 +21,7 @@
 package com.sun.org.apache.xerces.internal.util;
 
 import com.sun.org.apache.xerces.internal.utils.SecuritySupport;
+
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -28,7 +29,7 @@ import java.util.ResourceBundle;
 /**
  * <p>Used to format JAXP 1.3 Datatype API error messages using a specified locale.</p>
  *
- * @author  Neeraj Bajaj, Sun Microsystems
+ * @author Neeraj Bajaj, Sun Microsystems
  * @version $Id: DatatypeMessageFormatter.java,v 1.6 2010-11-01 04:40:14 joehw Exp $
  */
 public class DatatypeMessageFormatter {
@@ -44,24 +45,21 @@ public class DatatypeMessageFormatter {
      * @param arguments The message replacement text arguments. The order
      *                  of the arguments must match that of the placeholders
      *                  in the actual message.
-     *
-     * @return          the formatted message.
-     *
+     * @return the formatted message.
      * @throws MissingResourceException Thrown if the message with the
      *                                  specified key cannot be found.
      */
     public static String formatMessage(Locale locale,
-        String key, Object[] arguments)
-        throws MissingResourceException {
+                                       String key, Object[] arguments)
+            throws MissingResourceException {
 
         ResourceBundle resourceBundle = null;
         if (locale != null) {
             resourceBundle =
-                SecuritySupport.getResourceBundle(BASE_NAME, locale);
-        }
-        else {
+                    SecuritySupport.getResourceBundle(BASE_NAME, locale);
+        } else {
             resourceBundle =
-                SecuritySupport.getResourceBundle(BASE_NAME);
+                    SecuritySupport.getResourceBundle(BASE_NAME);
         }
 
         // format message
@@ -71,8 +69,7 @@ public class DatatypeMessageFormatter {
             if (arguments != null) {
                 try {
                     msg = java.text.MessageFormat.format(msg, arguments);
-                }
-                catch (Exception e) {
+                } catch (Exception e) {
                     msg = resourceBundle.getString("FormatFailed");
                     msg += " " + resourceBundle.getString(key);
                 }

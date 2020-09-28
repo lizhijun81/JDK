@@ -41,17 +41,20 @@ import sun.swing.plaf.synth.SynthIcon;
 import com.sun.java.swing.plaf.gtk.GTKEngine.WidgetType;
 
 /**
- *
  * @author Scott Violet
  */
 class GTKStyle extends SynthStyle implements GTKConstants {
 
     private static native int nativeGetXThickness(int widgetType);
+
     private static native int nativeGetYThickness(int widgetType);
+
     private static native int nativeGetColorForState(int widgetType,
                                                      int state, int typeID);
+
     private static native Object nativeGetClassValue(int widgetType,
                                                      String key);
+
     private static native String nativeGetPangoFontName(int widgetType);
 
     private static final String ICON_PROPERTY_PREFIX = "gtk.icon.";
@@ -60,7 +63,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
     static final Color WHITE_COLOR = new ColorUIResource(Color.WHITE);
 
     static final Font DEFAULT_FONT = new FontUIResource("sansserif",
-                                                        Font.PLAIN, 10  );
+            Font.PLAIN, 10);
     static final Insets BUTTON_DEFAULT_BORDER_INSETS = new Insets(1, 1, 1, 1);
 
     private static final GTKGraphicsUtils GTK_GRAPHICS = new GTKGraphicsUtils();
@@ -69,13 +72,13 @@ class GTKStyle extends SynthStyle implements GTKConstants {
      * Maps from a key that is passed to Style.get to the equivalent class
      * specific key.
      */
-    private static final Map<String,String> CLASS_SPECIFIC_MAP;
+    private static final Map<String, String> CLASS_SPECIFIC_MAP;
 
     /**
      * Backing style properties that are used if the style does not
      * defined the property.
      */
-    private static final Map<String,GTKStockIcon> ICONS_MAP;
+    private static final Map<String, GTKStockIcon> ICONS_MAP;
 
     /**
      * The font used for this particular style, as determined at
@@ -83,10 +86,14 @@ class GTKStyle extends SynthStyle implements GTKConstants {
      */
     private final Font font;
 
-    /** Widget type used when looking up class specific values. */
+    /**
+     * Widget type used when looking up class specific values.
+     */
     private final int widgetType;
 
-    /** The x/y thickness values for this particular style. */
+    /**
+     * The x/y thickness values for this particular style.
+     */
     private final int xThickness, yThickness;
 
     GTKStyle(Font userFont, WidgetType widgetType) {
@@ -117,8 +124,8 @@ class GTKStyle extends SynthStyle implements GTKConstants {
         super.installDefaults(context);
         if (!context.getRegion().isSubregion()) {
             context.getComponent().putClientProperty(
-                SwingUtilities2.AA_TEXT_PROPERTY_KEY,
-                GTKLookAndFeel.aaTextInfo);
+                    SwingUtilities2.AA_TEXT_PROPERTY_KEY,
+                    GTKLookAndFeel.aaTextInfo);
         }
     }
 
@@ -142,8 +149,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
     protected Color getColorForState(SynthContext context, ColorType type) {
         if (type == ColorType.FOCUS || type == GTKColorType.BLACK) {
             return BLACK_COLOR;
-        }
-        else if (type == GTKColorType.WHITE) {
+        } else if (type == GTKColorType.WHITE) {
             return WHITE_COLOR;
         }
 
@@ -152,23 +158,23 @@ class GTKStyle extends SynthStyle implements GTKConstants {
         state = GTKLookAndFeel.synthStateToGTKState(id, state);
 
         if (type == ColorType.TEXT_FOREGROUND &&
-               (id == Region.BUTTON ||
-                id == Region.CHECK_BOX ||
-                id == Region.CHECK_BOX_MENU_ITEM ||
-                id == Region.MENU ||
-                id == Region.MENU_ITEM ||
-                id == Region.RADIO_BUTTON ||
-                id == Region.RADIO_BUTTON_MENU_ITEM ||
-                id == Region.TABBED_PANE_TAB ||
-                id == Region.TOGGLE_BUTTON ||
-                id == Region.TOOL_TIP ||
-                id == Region.MENU_ITEM_ACCELERATOR ||
-                id == Region.TABBED_PANE_TAB)) {
+                (id == Region.BUTTON ||
+                        id == Region.CHECK_BOX ||
+                        id == Region.CHECK_BOX_MENU_ITEM ||
+                        id == Region.MENU ||
+                        id == Region.MENU_ITEM ||
+                        id == Region.RADIO_BUTTON ||
+                        id == Region.RADIO_BUTTON_MENU_ITEM ||
+                        id == Region.TABBED_PANE_TAB ||
+                        id == Region.TOGGLE_BUTTON ||
+                        id == Region.TOOL_TIP ||
+                        id == Region.MENU_ITEM_ACCELERATOR ||
+                        id == Region.TABBED_PANE_TAB)) {
             type = ColorType.FOREGROUND;
         } else if (id == Region.TABLE ||
-                   id == Region.LIST ||
-                   id == Region.TREE ||
-                   id == Region.TREE_CELL) {
+                id == Region.LIST ||
+                id == Region.TREE ||
+                id == Region.TREE_CELL) {
             if (type == ColorType.FOREGROUND) {
                 type = ColorType.TEXT_FOREGROUND;
                 if (state == SynthConstants.PRESSED) {
@@ -187,12 +193,11 @@ class GTKStyle extends SynthStyle implements GTKConstants {
      * invoked when other variants don't fit.
      */
     private Color getStyleSpecificColor(SynthContext context, int state,
-                                        ColorType type)
-    {
+                                        ColorType type) {
         state = GTKLookAndFeel.synthStateToGTKStateType(state).ordinal();
         synchronized (sun.awt.UNIXToolkit.GTK_LOCK) {
             int rgb = nativeGetColorForState(widgetType, state,
-                                             type.getID());
+                    type.getID());
             return new ColorUIResource(rgb);
         }
     }
@@ -205,8 +210,8 @@ class GTKStyle extends SynthStyle implements GTKConstants {
      * Returns the color for the specified state.
      *
      * @param context SynthContext identifying requester
-     * @param state to get the color for
-     * @param type of the color
+     * @param state   to get the color for
+     * @param type    of the color
      * @return Color to render with
      */
     Color getGTKColor(SynthContext context, int state, ColorType type) {
@@ -216,16 +221,15 @@ class GTKStyle extends SynthStyle implements GTKConstants {
 
             state = GTKLookAndFeel.synthStateToGTKState(id, state);
             if (!id.isSubregion() &&
-                (state & SynthConstants.ENABLED) != 0) {
+                    (state & SynthConstants.ENABLED) != 0) {
                 if (type == ColorType.BACKGROUND ||
-                    type == ColorType.TEXT_BACKGROUND) {
+                        type == ColorType.TEXT_BACKGROUND) {
                     Color bg = c.getBackground();
                     if (!(bg instanceof UIResource)) {
                         return bg;
                     }
-                }
-                else if (type == ColorType.FOREGROUND ||
-                         type == ColorType.TEXT_FOREGROUND) {
+                } else if (type == ColorType.FOREGROUND ||
+                        type == ColorType.TEXT_FOREGROUND) {
                     Color fg = c.getForeground();
                     if (!(fg instanceof UIResource)) {
                         return fg;
@@ -244,12 +248,12 @@ class GTKStyle extends SynthStyle implements GTKConstants {
         int state = context.getComponentState();
 
         if (c.getName() == "Table.cellRenderer") {
-             if (type == ColorType.BACKGROUND) {
-                 return c.getBackground();
-             }
-             if (type == ColorType.FOREGROUND) {
-                 return c.getForeground();
-             }
+            if (type == ColorType.BACKGROUND) {
+                return c.getBackground();
+            }
+            if (type == ColorType.FOREGROUND) {
+                return c.getForeground();
+            }
         }
 
         if (id == Region.LABEL && type == ColorType.TEXT_FOREGROUND) {
@@ -260,11 +264,9 @@ class GTKStyle extends SynthStyle implements GTKConstants {
         if (!id.isSubregion() && (state & SynthConstants.ENABLED) != 0) {
             if (type == ColorType.BACKGROUND) {
                 return c.getBackground();
-            }
-            else if (type == ColorType.FOREGROUND) {
+            } else if (type == ColorType.FOREGROUND) {
                 return c.getForeground();
-            }
-            else if (type == ColorType.TEXT_FOREGROUND) {
+            } else if (type == ColorType.TEXT_FOREGROUND) {
                 // If getForeground returns a non-UIResource it means the
                 // developer has explicitly set the foreground, use it over
                 // that of TEXT_FOREGROUND as that is typically the expected
@@ -306,7 +308,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
      * created and returned.
      *
      * @param context SynthContext indentifying requestor
-     * @param insets Where to place Insets
+     * @param insets  Where to place Insets
      * @return Insets.
      */
     @Override
@@ -329,66 +331,51 @@ class GTKStyle extends SynthStyle implements GTKConstants {
             } else {
                 return getButtonInsets(state, insets);
             }
-        }
-        else if (id == Region.CHECK_BOX || id == Region.RADIO_BUTTON) {
+        } else if (id == Region.CHECK_BOX || id == Region.RADIO_BUTTON) {
             return getRadioInsets(state, insets);
-        }
-        else if (id == Region.MENU_BAR) {
+        } else if (id == Region.MENU_BAR) {
             return getMenuBarInsets(state, insets);
-        }
-        else if (id == Region.MENU ||
-                 id == Region.MENU_ITEM ||
-                 id == Region.CHECK_BOX_MENU_ITEM ||
-                 id == Region.RADIO_BUTTON_MENU_ITEM) {
+        } else if (id == Region.MENU ||
+                id == Region.MENU_ITEM ||
+                id == Region.CHECK_BOX_MENU_ITEM ||
+                id == Region.RADIO_BUTTON_MENU_ITEM) {
             return getMenuItemInsets(state, insets);
-        }
-        else if (id == Region.FORMATTED_TEXT_FIELD) {
+        } else if (id == Region.FORMATTED_TEXT_FIELD) {
             return getTextFieldInsets(state, insets);
-        }
-        else if (id == Region.INTERNAL_FRAME) {
+        } else if (id == Region.INTERNAL_FRAME) {
             insets = Metacity.INSTANCE.getBorderInsets(state, insets);
-        }
-        else if (id == Region.LABEL) {
+        } else if (id == Region.LABEL) {
             if ("TableHeader.renderer" == name) {
                 return getButtonInsets(state, insets);
-            }
-            else if (component instanceof ListCellRenderer) {
+            } else if (component instanceof ListCellRenderer) {
                 return getTextFieldInsets(state, insets);
-            }
-            else if ("Tree.cellRenderer" == name) {
+            } else if ("Tree.cellRenderer" == name) {
                 return getSimpleInsets(state, insets, 1);
             }
-        }
-        else if (id == Region.OPTION_PANE) {
+        } else if (id == Region.OPTION_PANE) {
             return getSimpleInsets(state, insets, 6);
-        }
-        else if (id == Region.POPUP_MENU) {
+        } else if (id == Region.POPUP_MENU) {
             return getSimpleInsets(state, insets, 2);
-        }
-        else if (id == Region.PROGRESS_BAR || id == Region.SLIDER ||
-                 id == Region.TABBED_PANE  || id == Region.TABBED_PANE_CONTENT ||
-                 id == Region.TOOL_BAR     ||
-                 id == Region.TOOL_BAR_DRAG_WINDOW ||
-                 id == Region.TOOL_TIP) {
+        } else if (id == Region.PROGRESS_BAR || id == Region.SLIDER ||
+                id == Region.TABBED_PANE || id == Region.TABBED_PANE_CONTENT ||
+                id == Region.TOOL_BAR ||
+                id == Region.TOOL_BAR_DRAG_WINDOW ||
+                id == Region.TOOL_TIP) {
             return getThicknessInsets(state, insets);
-        }
-        else if (id == Region.SCROLL_BAR) {
+        } else if (id == Region.SCROLL_BAR) {
             return getScrollBarInsets(state, insets);
-        }
-        else if (id == Region.SLIDER_TRACK) {
+        } else if (id == Region.SLIDER_TRACK) {
             return getSliderTrackInsets(state, insets);
-        }
-        else if (id == Region.TABBED_PANE_TAB) {
+        } else if (id == Region.TABBED_PANE_TAB) {
             return getTabbedPaneTabInsets(state, insets);
-        }
-        else if (id == Region.TEXT_FIELD || id == Region.PASSWORD_FIELD) {
+        } else if (id == Region.TEXT_FIELD || id == Region.PASSWORD_FIELD) {
             if (name == "Tree.cellEditor") {
                 return getSimpleInsets(state, insets, 1);
             }
             return getTextFieldInsets(state, insets);
         } else if (id == Region.SEPARATOR ||
-                   id == Region.POPUP_MENU_SEPARATOR ||
-                   id == Region.TOOL_BAR_SEPARATOR) {
+                id == Region.POPUP_MENU_SEPARATOR ||
+                id == Region.TOOL_BAR_SEPARATOR) {
             return getSeparatorInsets(state, insets);
         } else if (id == GTKEngine.CustomRegion.TITLED_BORDER) {
             return getThicknessInsets(state, insets);
@@ -400,7 +387,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
         // The following calculations are derived from gtkbutton.c
         // (GTK+ version 2.8.20), gtk_button_size_allocate() method.
         int CHILD_SPACING = 1;
-        int focusSize = getClassSpecificIntValue(context, "focus-line-width",1);
+        int focusSize = getClassSpecificIntValue(context, "focus-line-width", 1);
         int focusPad = getClassSpecificIntValue(context, "focus-padding", 1);
         int xThickness = getXThickness();
         int yThickness = getYThickness();
@@ -411,16 +398,15 @@ class GTKStyle extends SynthStyle implements GTKConstants {
 
         Component component = context.getComponent();
         if ((component instanceof JButton) &&
-            !(component.getParent() instanceof JToolBar) &&
-            ((JButton)component).isDefaultCapable())
-        {
+                !(component.getParent() instanceof JToolBar) &&
+                ((JButton) component).isDefaultCapable()) {
             // Include the default border insets, but only for JButtons
             // that are default capable.  Note that
             // JButton.getDefaultCapable() returns true by default, but
             // GtkToolButtons are never default capable, so we skip this
             // step if the button is contained in a toolbar.
             Insets defaultInsets = getClassSpecificInsetsValue(context,
-                          "default-border", BUTTON_DEFAULT_BORDER_INSETS);
+                    "default-border", BUTTON_DEFAULT_BORDER_INSETS);
             insets.left += defaultInsets.left;
             insets.right += defaultInsets.right;
             insets.top += defaultInsets.top;
@@ -437,22 +423,22 @@ class GTKStyle extends SynthStyle implements GTKConstants {
         // The following calculations are derived from gtkcheckbutton.c
         // (GTK+ version 2.8.20), gtk_check_button_size_allocate() method.
         int focusSize =
-            getClassSpecificIntValue(context, "focus-line-width", 1);
+                getClassSpecificIntValue(context, "focus-line-width", 1);
         int focusPad =
-            getClassSpecificIntValue(context, "focus-padding", 1);
+                getClassSpecificIntValue(context, "focus-padding", 1);
         int totalFocus = focusSize + focusPad;
 
         // Note: GTKIconFactory.DelegateIcon will have already included the
         // "indicator-spacing" value in the size of the indicator icon,
         // which explains why we use zero as the left inset (or right inset
         // in the RTL case); see 6489585 for more details.
-        insets.top    = totalFocus;
+        insets.top = totalFocus;
         insets.bottom = totalFocus;
         if (context.getComponent().getComponentOrientation().isLeftToRight()) {
-            insets.left  = 0;
+            insets.left = 0;
             insets.right = totalFocus;
         } else {
-            insets.left  = totalFocus;
+            insets.left = totalFocus;
             insets.right = 0;
         }
 
@@ -463,7 +449,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
         // The following calculations are derived from gtkmenubar.c
         // (GTK+ version 2.8.20), gtk_menu_bar_size_allocate() method.
         int internalPadding = getClassSpecificIntValue(context,
-                                                       "internal-padding", 1);
+                "internal-padding", 1);
         int xThickness = getXThickness();
         int yThickness = getYThickness();
         insets.left = insets.right = xThickness + internalPadding;
@@ -475,7 +461,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
         // The following calculations are derived from gtkmenuitem.c
         // (GTK+ version 2.8.20), gtk_menu_item_size_allocate() method.
         int horizPadding = getClassSpecificIntValue(context,
-                                                    "horizontal-padding", 3);
+                "horizontal-padding", 3);
         int xThickness = getXThickness();
         int yThickness = getYThickness();
         insets.left = insets.right = xThickness + horizPadding;
@@ -493,7 +479,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
         int horizPadding = 0;
         if (context.getRegion() == Region.POPUP_MENU_SEPARATOR) {
             horizPadding =
-                getClassSpecificIntValue(context, "horizontal-padding", 3);
+                    getClassSpecificIntValue(context, "horizontal-padding", 3);
         }
         insets.right = insets.left = getXThickness() + horizPadding;
         insets.top = insets.bottom = getYThickness();
@@ -516,7 +502,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
     private Insets getTabbedPaneTabInsets(SynthContext context, Insets insets) {
         int xThickness = getXThickness();
         int yThickness = getYThickness();
-        int focusSize = getClassSpecificIntValue(context, "focus-line-width",1);
+        int focusSize = getClassSpecificIntValue(context, "focus-line-width", 1);
         int pad = 2;
 
         insets.left = insets.right = focusSize + pad + xThickness;
@@ -527,7 +513,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
     // NOTE: this is called for ComboBox, and FormattedTextField also
     private Insets getTextFieldInsets(SynthContext context, Insets insets) {
         insets = getClassSpecificInsetsValue(context, "inner-border",
-                                    getSimpleInsets(context, insets, 2));
+                getSimpleInsets(context, insets, 2));
 
         int xThickness = getXThickness();
         int yThickness = getYThickness();
@@ -536,19 +522,19 @@ class GTKStyle extends SynthStyle implements GTKConstants {
         int focusSize = 0;
 
         if (!interiorFocus) {
-            focusSize = getClassSpecificIntValue(context, "focus-line-width",1);
+            focusSize = getClassSpecificIntValue(context, "focus-line-width", 1);
         }
 
-        insets.left   += focusSize + xThickness;
-        insets.right  += focusSize + xThickness;
-        insets.top    += focusSize + yThickness;
+        insets.left += focusSize + xThickness;
+        insets.right += focusSize + xThickness;
+        insets.top += focusSize + yThickness;
         insets.bottom += focusSize + yThickness;
         return insets;
     }
 
     private Insets getScrollBarInsets(SynthContext context, Insets insets) {
         int troughBorder =
-            getClassSpecificIntValue(context, "trough-border", 1);
+                getClassSpecificIntValue(context, "trough-border", 1);
         insets.left = insets.right = insets.top = insets.bottom = troughBorder;
 
         JComponent c = context.getComponent();
@@ -557,9 +543,9 @@ class GTKStyle extends SynthStyle implements GTKConstants {
             // "scrollbar-spacing" style property to determine the padding
             // between the scrollbar and its parent scrollpane.
             int spacing =
-                getClassSpecificIntValue(WidgetType.SCROLL_PANE,
-                                         "scrollbar-spacing", 3);
-            if (((JScrollBar)c).getOrientation() == JScrollBar.HORIZONTAL) {
+                    getClassSpecificIntValue(WidgetType.SCROLL_PANE,
+                            "scrollbar-spacing", 3);
+            if (((JScrollBar) c).getOrientation() == JScrollBar.HORIZONTAL) {
                 insets.top += spacing;
             } else {
                 if (c.getComponentOrientation().isLeftToRight()) {
@@ -573,13 +559,13 @@ class GTKStyle extends SynthStyle implements GTKConstants {
             // focus line in addition to the trough border.
             if (c.isFocusable()) {
                 int focusSize =
-                    getClassSpecificIntValue(context, "focus-line-width", 1);
+                        getClassSpecificIntValue(context, "focus-line-width", 1);
                 int focusPad =
-                    getClassSpecificIntValue(context, "focus-padding", 1);
+                        getClassSpecificIntValue(context, "focus-padding", 1);
                 int totalFocus = focusSize + focusPad;
-                insets.left   += totalFocus;
-                insets.right  += totalFocus;
-                insets.top    += totalFocus;
+                insets.left += totalFocus;
+                insets.right += totalFocus;
+                insets.top += totalFocus;
                 insets.bottom += totalFocus;
             }
         }
@@ -594,7 +580,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
      * SCROLL_BAR, but certain values can only be extracted from a
      * SCROLL_PANE region).
      *
-     * @param wt WidgetType for which to fetch the value
+     * @param wt  WidgetType for which to fetch the value
      * @param key Key identifying class specific value
      * @return Value, or null if one has not been defined
      */
@@ -608,18 +594,17 @@ class GTKStyle extends SynthStyle implements GTKConstants {
      * Convenience method to get a class specific integer value for
      * a particular WidgetType.
      *
-     * @param wt WidgetType for which to fetch the value
-     * @param key Key identifying class specific value
+     * @param wt           WidgetType for which to fetch the value
+     * @param key          Key identifying class specific value
      * @param defaultValue Returned if there is no value for the specified
-     *        type
+     *                     type
      * @return Value, or defaultValue if <code>key</code> is not defined
      */
     private static int getClassSpecificIntValue(WidgetType wt, String key,
-                                                int defaultValue)
-    {
+                                                int defaultValue) {
         Object value = getClassSpecificValue(wt, key);
         if (value instanceof Number) {
-            return ((Number)value).intValue();
+            return ((Number) value).intValue();
         }
         return defaultValue;
     }
@@ -640,19 +625,18 @@ class GTKStyle extends SynthStyle implements GTKConstants {
     /**
      * Convenience method to get a class specific integer value.
      *
-     * @param context SynthContext indentifying requestor
-     * @param key Key identifying class specific value
+     * @param context      SynthContext indentifying requestor
+     * @param key          Key identifying class specific value
      * @param defaultValue Returned if there is no value for the specified
-     *        type
+     *                     type
      * @return Value, or defaultValue if <code>key</code> is not defined
      */
     int getClassSpecificIntValue(SynthContext context, String key,
-                                 int defaultValue)
-    {
+                                 int defaultValue) {
         Object value = getClassSpecificValue(key);
 
         if (value instanceof Number) {
-            return ((Number)value).intValue();
+            return ((Number) value).intValue();
         }
         return defaultValue;
     }
@@ -660,19 +644,18 @@ class GTKStyle extends SynthStyle implements GTKConstants {
     /**
      * Convenience method to get a class specific Insets value.
      *
-     * @param context SynthContext indentifying requestor
-     * @param key Key identifying class specific value
+     * @param context      SynthContext indentifying requestor
+     * @param key          Key identifying class specific value
      * @param defaultValue Returned if there is no value for the specified
-     *        type
+     *                     type
      * @return Value, or defaultValue if <code>key</code> is not defined
      */
     Insets getClassSpecificInsetsValue(SynthContext context, String key,
-                                       Insets defaultValue)
-    {
+                                       Insets defaultValue) {
         Object value = getClassSpecificValue(key);
 
         if (value instanceof Insets) {
-            return (Insets)value;
+            return (Insets) value;
         }
         return defaultValue;
     }
@@ -680,19 +663,18 @@ class GTKStyle extends SynthStyle implements GTKConstants {
     /**
      * Convenience method to get a class specific Boolean value.
      *
-     * @param context SynthContext indentifying requestor
-     * @param key Key identifying class specific value
+     * @param context      SynthContext indentifying requestor
+     * @param key          Key identifying class specific value
      * @param defaultValue Returned if there is no value for the specified
-     *        type
+     *                     type
      * @return Value, or defaultValue if <code>key</code> is not defined
      */
     boolean getClassSpecificBoolValue(SynthContext context, String key,
-                                      boolean defaultValue)
-    {
+                                      boolean defaultValue) {
         Object value = getClassSpecificValue(key);
 
         if (value instanceof Boolean) {
-            return ((Boolean)value).booleanValue();
+            return ((Boolean) value).booleanValue();
         }
         return defaultValue;
     }
@@ -709,29 +691,29 @@ class GTKStyle extends SynthStyle implements GTKConstants {
     public boolean isOpaque(SynthContext context) {
         Region region = context.getRegion();
         if (region == Region.COMBO_BOX ||
-              region == Region.DESKTOP_PANE ||
-              region == Region.DESKTOP_ICON ||
-              region == Region.EDITOR_PANE ||
-              region == Region.FORMATTED_TEXT_FIELD ||
-              region == Region.INTERNAL_FRAME ||
-              region == Region.LIST ||
-              region == Region.MENU_BAR ||
-              region == Region.PANEL ||
-              region == Region.PASSWORD_FIELD ||
-              region == Region.POPUP_MENU ||
-              region == Region.PROGRESS_BAR ||
-              region == Region.ROOT_PANE ||
-              region == Region.SCROLL_PANE ||
-              region == Region.SPINNER ||
-              region == Region.SPLIT_PANE_DIVIDER ||
-              region == Region.TABLE ||
-              region == Region.TEXT_AREA ||
-              region == Region.TEXT_FIELD ||
-              region == Region.TEXT_PANE ||
-              region == Region.TOOL_BAR_DRAG_WINDOW ||
-              region == Region.TOOL_TIP ||
-              region == Region.TREE ||
-              region == Region.VIEWPORT) {
+                region == Region.DESKTOP_PANE ||
+                region == Region.DESKTOP_ICON ||
+                region == Region.EDITOR_PANE ||
+                region == Region.FORMATTED_TEXT_FIELD ||
+                region == Region.INTERNAL_FRAME ||
+                region == Region.LIST ||
+                region == Region.MENU_BAR ||
+                region == Region.PANEL ||
+                region == Region.PASSWORD_FIELD ||
+                region == Region.POPUP_MENU ||
+                region == Region.PROGRESS_BAR ||
+                region == Region.ROOT_PANE ||
+                region == Region.SCROLL_PANE ||
+                region == Region.SPINNER ||
+                region == Region.SPLIT_PANE_DIVIDER ||
+                region == Region.TABLE ||
+                region == Region.TEXT_AREA ||
+                region == Region.TEXT_FIELD ||
+                region == Region.TEXT_PANE ||
+                region == Region.TOOL_BAR_DRAG_WINDOW ||
+                region == Region.TOOL_TIP ||
+                region == Region.TREE ||
+                region == Region.VIEWPORT) {
             return true;
         }
         Component c = context.getComponent();
@@ -756,45 +738,39 @@ class GTKStyle extends SynthStyle implements GTKConstants {
         // Is it a specific value ?
         if (key == "ScrollPane.viewportBorderInsets") {
             return getThicknessInsets(context, new Insets(0, 0, 0, 0));
-        }
-        else if (key == "Slider.tickColor") {
+        } else if (key == "Slider.tickColor") {
             return getColorForState(context, ColorType.FOREGROUND);
-        }
-        else if (key == "ScrollBar.minimumThumbSize") {
+        } else if (key == "ScrollBar.minimumThumbSize") {
             int len =
-                getClassSpecificIntValue(context, "min-slider-length", 21);
-            JScrollBar sb = (JScrollBar)context.getComponent();
+                    getClassSpecificIntValue(context, "min-slider-length", 21);
+            JScrollBar sb = (JScrollBar) context.getComponent();
             if (sb.getOrientation() == JScrollBar.HORIZONTAL) {
                 return new DimensionUIResource(len, 0);
             } else {
                 return new DimensionUIResource(0, len);
             }
-        }
-        else if (key == "Separator.thickness") {
-            JSeparator sep = (JSeparator)context.getComponent();
+        } else if (key == "Separator.thickness") {
+            JSeparator sep = (JSeparator) context.getComponent();
             if (sep.getOrientation() == JSeparator.HORIZONTAL) {
                 return getYThickness();
             } else {
                 return getXThickness();
             }
-        }
-        else if (key == "ToolBar.separatorSize") {
+        } else if (key == "ToolBar.separatorSize") {
             int size = getClassSpecificIntValue(WidgetType.TOOL_BAR,
-                                                "space-size", 12);
+                    "space-size", 12);
             return new DimensionUIResource(size, size);
-        }
-        else if (key == "ScrollBar.buttonSize") {
-            JScrollBar sb = (JScrollBar)context.getComponent().getParent();
+        } else if (key == "ScrollBar.buttonSize") {
+            JScrollBar sb = (JScrollBar) context.getComponent().getParent();
             boolean horiz = (sb.getOrientation() == JScrollBar.HORIZONTAL);
             WidgetType wt = horiz ?
-                WidgetType.HSCROLL_BAR : WidgetType.VSCROLL_BAR;
+                    WidgetType.HSCROLL_BAR : WidgetType.VSCROLL_BAR;
             int sliderWidth = getClassSpecificIntValue(wt, "slider-width", 14);
             int stepperSize = getClassSpecificIntValue(wt, "stepper-size", 14);
             return horiz ?
-                new DimensionUIResource(stepperSize, sliderWidth) :
-                new DimensionUIResource(sliderWidth, stepperSize);
-        }
-        else if (key == "ArrowButton.size") {
+                    new DimensionUIResource(stepperSize, sliderWidth) :
+                    new DimensionUIResource(sliderWidth, stepperSize);
+        } else if (key == "ArrowButton.size") {
             String name = context.getComponent().getName();
             if (name != null && name.startsWith("Spinner")) {
                 // Believe it or not, the size of a spinner arrow button is
@@ -804,30 +780,28 @@ class GTKStyle extends SynthStyle implements GTKConstants {
                 String pangoFontName;
                 synchronized (sun.awt.UNIXToolkit.GTK_LOCK) {
                     pangoFontName =
-                        nativeGetPangoFontName(WidgetType.SPINNER.ordinal());
+                            nativeGetPangoFontName(WidgetType.SPINNER.ordinal());
                 }
                 int arrowSize = (pangoFontName != null) ?
-                    PangoFonts.getFontSize(pangoFontName) : 10;
+                        PangoFonts.getFontSize(pangoFontName) : 10;
                 return (arrowSize + (getXThickness() * 2));
             }
             // For all other kinds of arrow buttons (e.g. combobox arrow
             // buttons), we will simply fall back on the value of
             // ArrowButton.size as defined in the UIDefaults for
             // GTKLookAndFeel when we call UIManager.get() below...
-        }
-        else if ("CheckBox.iconTextGap".equals(key) ||
-                 "RadioButton.iconTextGap".equals(key))
-        {
+        } else if ("CheckBox.iconTextGap".equals(key) ||
+                "RadioButton.iconTextGap".equals(key)) {
             // The iconTextGap value needs to include "indicator-spacing"
             // and it also needs to leave enough space for the focus line,
             // which falls between the indicator icon and the text.
             // See getRadioInsets() and 6489585 for more details.
             int indicatorSpacing =
-                getClassSpecificIntValue(context, "indicator-spacing", 2);
+                    getClassSpecificIntValue(context, "indicator-spacing", 2);
             int focusSize =
-                getClassSpecificIntValue(context, "focus-line-width", 1);
+                    getClassSpecificIntValue(context, "focus-line-width", 1);
             int focusPad =
-                getClassSpecificIntValue(context, "focus-padding", 1);
+                    getClassSpecificIntValue(context, "focus-padding", 1);
             return indicatorSpacing + focusSize + focusPad;
         }
 
@@ -867,7 +841,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
 
         if (context != null) {
             ComponentOrientation co = context.getComponent().
-                                              getComponentOrientation();
+                    getComponentOrientation();
 
             if (co != null && !co.isLeftToRight()) {
                 direction = TextDirection.RTL;
@@ -884,9 +858,9 @@ class GTKStyle extends SynthStyle implements GTKConstants {
         // In a failure case where native GTK (unexpectedly) returns a
         // null icon, we can try loading a default icon as a fallback.
         String propName = ICON_PROPERTY_PREFIX + key + '.' + type + '.' +
-                          (direction == TextDirection.RTL ? "rtl" : "ltr");
+                (direction == TextDirection.RTL ? "rtl" : "ltr");
         Image img = (Image)
-            Toolkit.getDefaultToolkit().getDesktopProperty(propName);
+                Toolkit.getDefaultToolkit().getDesktopProperty(propName);
         if (img != null) {
             return new ImageIcon(img);
         }
@@ -898,21 +872,20 @@ class GTKStyle extends SynthStyle implements GTKConstants {
     }
 
     private Icon getStyleSpecificIcon(String key,
-                                      TextDirection direction, int type)
-    {
-        UNIXToolkit tk = (UNIXToolkit)Toolkit.getDefaultToolkit();
+                                      TextDirection direction, int type) {
+        UNIXToolkit tk = (UNIXToolkit) Toolkit.getDefaultToolkit();
         Image img =
-            tk.getStockIcon(widgetType, key, type, direction.ordinal(), null);
+                tk.getStockIcon(widgetType, key, type, direction.ordinal(), null);
         return (img != null) ? new ImageIcon(img) : null;
     }
 
     static class GTKStockIconInfo {
-        private static Map<String,Integer> ICON_TYPE_MAP;
+        private static Map<String, Integer> ICON_TYPE_MAP;
         private static final Object ICON_SIZE_KEY = new StringBuffer("IconSize");
 
         private static Dimension[] getIconSizesMap() {
             AppContext appContext = AppContext.getAppContext();
-            Dimension[] iconSizes = (Dimension[])appContext.get(ICON_SIZE_KEY);
+            Dimension[] iconSizes = (Dimension[]) appContext.get(ICON_SIZE_KEY);
 
             if (iconSizes == null) {
                 iconSizes = new Dimension[7];
@@ -937,7 +910,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
         public static Dimension getIconSize(int type) {
             Dimension[] iconSizes = getIconSizesMap();
             return type >= 0 && type < iconSizes.length ?
-                iconSizes[type] : null;
+                    iconSizes[type] : null;
         }
 
         /**
@@ -945,8 +918,8 @@ class GTKStyle extends SynthStyle implements GTKConstants {
          * that parses the gtk-icon-sizes setting
          *
          * @param type icon type (GtkIconSize value)
-         * @param w the new icon width
-         * @param h the new icon height
+         * @param w    the new icon width
+         * @param h    the new icon height
          */
         public static void setIconSize(int type, int w, int h) {
             Dimension[] iconSizes = getIconSizesMap();
@@ -974,7 +947,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
         }
 
         private static void initIconTypeMap() {
-            ICON_TYPE_MAP = new HashMap<String,Integer>();
+            ICON_TYPE_MAP = new HashMap<String, Integer>();
             ICON_TYPE_MAP.put("gtk-menu", Integer.valueOf(1));
             ICON_TYPE_MAP.put("gtk-small-toolbar", Integer.valueOf(2));
             ICON_TYPE_MAP.put("gtk-large-toolbar", Integer.valueOf(3));
@@ -1009,8 +982,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
             if (icon != null) {
                 if (context == null) {
                     icon.paintIcon(null, g, x, y);
-                }
-                else {
+                } else {
                     icon.paintIcon(context.getComponent(), g, x, y);
                 }
             }
@@ -1037,7 +1009,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
         private Icon getIcon(SynthContext context) {
             if (context != null) {
                 ComponentOrientation co = context.getComponent().
-                                                  getComponentOrientation();
+                        getComponentOrientation();
                 SynthStyle style = context.getStyle();
 
                 if (style != this.style) {
@@ -1047,15 +1019,14 @@ class GTKStyle extends SynthStyle implements GTKConstants {
                 if (co == null || co.isLeftToRight()) {
                     if (!loadedLTR) {
                         loadedLTR = true;
-                        ltrIcon = ((GTKStyle)context.getStyle()).
-                                  getStockIcon(context, key, size);
+                        ltrIcon = ((GTKStyle) context.getStyle()).
+                                getStockIcon(context, key, size);
                     }
                     return ltrIcon;
-                }
-                else if (!loadedRTL) {
+                } else if (!loadedRTL) {
                     loadedRTL = true;
-                    rtlIcon = ((GTKStyle)context.getStyle()).
-                              getStockIcon(context, key,size);
+                    rtlIcon = ((GTKStyle) context.getStyle()).
+                            getStockIcon(context, key, size);
                 }
                 return rtlIcon;
             }
@@ -1086,15 +1057,15 @@ class GTKStyle extends SynthStyle implements GTKConstants {
 
         public Object createValue(UIDefaults table) {
             try {
-                Class c = Class.forName(className, true,Thread.currentThread().
-                                        getContextClassLoader());
+                Class c = Class.forName(className, true, Thread.currentThread().
+                        getContextClassLoader());
 
                 if (methodName == null) {
                     return c.newInstance();
                 }
-                Method m = c.getMethod(methodName, (Class[])null);
+                Method m = c.getMethod(methodName, (Class[]) null);
 
-                return m.invoke(c, (Object[])null);
+                return m.invoke(c, (Object[]) null);
             } catch (ClassNotFoundException cnfe) {
             } catch (IllegalAccessException iae) {
             } catch (InvocationTargetException ite) {
@@ -1106,7 +1077,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
     }
 
     static {
-        CLASS_SPECIFIC_MAP = new HashMap<String,String>();
+        CLASS_SPECIFIC_MAP = new HashMap<String, String>();
         CLASS_SPECIFIC_MAP.put("Slider.thumbHeight", "slider-width");
         CLASS_SPECIFIC_MAP.put("Slider.trackBorder", "trough-border");
         CLASS_SPECIFIC_MAP.put("SplitPane.size", "handle-size");
@@ -1128,7 +1099,7 @@ class GTKStyle extends SynthStyle implements GTKConstants {
 
         ICONS_MAP = new HashMap<String, GTKStockIcon>();
         ICONS_MAP.put("FileChooser.cancelIcon", new GTKStockIcon("gtk-cancel", 4));
-        ICONS_MAP.put("FileChooser.okIcon",     new GTKStockIcon("gtk-ok",     4));
+        ICONS_MAP.put("FileChooser.okIcon", new GTKStockIcon("gtk-ok", 4));
         ICONS_MAP.put("OptionPane.errorIcon", new GTKStockIcon("gtk-dialog-error", 6));
         ICONS_MAP.put("OptionPane.informationIcon", new GTKStockIcon("gtk-dialog-info", 6));
         ICONS_MAP.put("OptionPane.warningIcon", new GTKStockIcon("gtk-dialog-warning", 6));

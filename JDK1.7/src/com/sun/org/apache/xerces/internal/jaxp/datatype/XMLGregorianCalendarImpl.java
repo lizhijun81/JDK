@@ -38,6 +38,7 @@ import javax.xml.datatype.DatatypeConstants;
 import javax.xml.datatype.Duration;
 import javax.xml.datatype.XMLGregorianCalendar;
 import javax.xml.namespace.QName;
+
 import com.sun.org.apache.xerces.internal.util.DatatypeMessageFormatter;
 import com.sun.org.apache.xerces.internal.utils.SecuritySupport;
 
@@ -233,7 +234,7 @@ public class XMLGregorianCalendarImpl
     /**
      * <p>Second of this <code>XMLGregorianCalendar</code>.</p>
      */
-    private int second = DatatypeConstants.FIELD_UNDEFINED ;
+    private int second = DatatypeConstants.FIELD_UNDEFINED;
 
     /**
      * <p>Fractional second of this <code>XMLGregorianCalendar</code>.</p>
@@ -246,31 +247,31 @@ public class XMLGregorianCalendarImpl
     private static final BigInteger BILLION = new BigInteger("1000000000");
 
     /**
-     *   <p>Obtain a pure Gregorian Calendar by calling
-     *   GregorianCalendar.setChange(PURE_GREGORIAN_CHANGE). </p>
+     * <p>Obtain a pure Gregorian Calendar by calling
+     * GregorianCalendar.setChange(PURE_GREGORIAN_CHANGE). </p>
      */
     private static final Date PURE_GREGORIAN_CHANGE =
-        new Date(Long.MIN_VALUE);
+            new Date(Long.MIN_VALUE);
 
     /**
      * Year index for MIN_ and MAX_FIELD_VALUES.
      */
-    private static final int YEAR   = 0;
+    private static final int YEAR = 0;
 
     /**
      * Month index for MIN_ and MAX_FIELD_VALUES.
      */
-    private static final int MONTH  = 1;
+    private static final int MONTH = 1;
 
     /**
      * Day index for MIN_ and MAX_FIELD_VALUES.
      */
-    private static final int DAY    = 2;
+    private static final int DAY = 2;
 
     /**
      * Hour index for MIN_ and MAX_FIELD_VALUES.
      */
-    private static final int HOUR   = 3;
+    private static final int HOUR = 3;
 
     /**
      * Minute index for MIN_ and MAX_FIELD_VALUES.
@@ -297,14 +298,14 @@ public class XMLGregorianCalendarImpl
      * field names indexed by YEAR..TIMEZONE.
      */
     private static final String FIELD_NAME[] = {
-        "Year",
-        "Month",
-        "Day",
-        "Hour",
-        "Minute",
-        "Second",
-        "Millisecond",
-        "Timezone"
+            "Year",
+            "Month",
+            "Day",
+            "Hour",
+            "Minute",
+            "Second",
+            "Millisecond",
+            "Timezone"
     };
 
     /**
@@ -328,35 +329,32 @@ public class XMLGregorianCalendarImpl
      * @see #toGregorianCalendar(TimeZone, Locale, XMLGregorianCalendar)
      */
     public static final XMLGregorianCalendar LEAP_YEAR_DEFAULT =
-                createDateTime(
-                        400,  //year
-                DatatypeConstants.JANUARY,  //month
-                        1,  // day
+            createDateTime(
+                    400,  //year
+                    DatatypeConstants.JANUARY,  //month
+                    1,  // day
                     0,  // hour
                     0,  // minute
                     0,  // second
                     DatatypeConstants.FIELD_UNDEFINED,  // milliseconds
                     DatatypeConstants.FIELD_UNDEFINED // timezone
-                );
+            );
 
     // Constructors
 
     /**
      * Constructs a new XMLGregorianCalendar object.
-     *
+     * <p>
      * String parsing documented by {@link #parse(String)}.
-     *
+     * <p>
      * Returns a non-null valid XMLGregorianCalendar object that holds the
      * value indicated by the lexicalRepresentation parameter.
      *
-     * @param lexicalRepresentation
-     *      Lexical representation of one the eight
-     *      XML Schema date/time datatypes.
-     * @throws IllegalArgumentException
-     *      If the given string does not conform as documented in
-     *      {@link #parse(String)}.
-     * @throws NullPointerException
-     *      If the given string is null.
+     * @param lexicalRepresentation Lexical representation of one the eight
+     *                              XML Schema date/time datatypes.
+     * @throws IllegalArgumentException If the given string does not conform as documented in
+     *                                  {@link #parse(String)}.
+     * @throws NullPointerException     If the given string is null.
      */
     protected XMLGregorianCalendarImpl(String lexicalRepresentation)
             throws IllegalArgumentException {
@@ -459,67 +457,66 @@ public class XMLGregorianCalendarImpl
      * arbitrarily large numbers and fractionalSecond has infinite
      * precision.</p>
      *
-     * @param year of <code>XMLGregorianCalendar</code> to be created.
-     * @param month of <code>XMLGregorianCalendar</code> to be created.
-     * @param day of <code>XMLGregorianCalendar</code> to be created.
-     * @param hour of <code>XMLGregorianCalendar</code> to be created.
-     * @param minute of <code>XMLGregorianCalendar</code> to be created.
-     * @param second of <code>XMLGregorianCalendar</code> to be created.
+     * @param year             of <code>XMLGregorianCalendar</code> to be created.
+     * @param month            of <code>XMLGregorianCalendar</code> to be created.
+     * @param day              of <code>XMLGregorianCalendar</code> to be created.
+     * @param hour             of <code>XMLGregorianCalendar</code> to be created.
+     * @param minute           of <code>XMLGregorianCalendar</code> to be created.
+     * @param second           of <code>XMLGregorianCalendar</code> to be created.
      * @param fractionalSecond of <code>XMLGregorianCalendar</code> to be created.
-     * @param timezone of <code>XMLGregorianCalendar</code> to be created.
-     *
+     * @param timezone         of <code>XMLGregorianCalendar</code> to be created.
      */
     protected XMLGregorianCalendarImpl(
-        BigInteger year,
-        int month,
-        int day,
-        int hour,
-        int minute,
-        int second,
-        BigDecimal fractionalSecond,
-        int timezone) {
+            BigInteger year,
+            int month,
+            int day,
+            int hour,
+            int minute,
+            int second,
+            BigDecimal fractionalSecond,
+            int timezone) {
 
-                setYear(year);
+        setYear(year);
         setMonth(month);
         setDay(day);
         setTime(hour, minute, second, fractionalSecond);
-                setTimezone(timezone);
+        setTimezone(timezone);
 
-                // check for validity
-                if (!isValid()) {
+        // check for validity
+        if (!isValid()) {
 
             throw new IllegalArgumentException(
-                DatatypeMessageFormatter.formatMessage(null,
-                    "InvalidXGCValue-fractional",
-                    new Object[] { year, new Integer(month), new Integer(day),
-                    new Integer(hour), new Integer(minute), new Integer(second),
-                    fractionalSecond, new Integer(timezone)})
-                        );
+                    DatatypeMessageFormatter.formatMessage(null,
+                            "InvalidXGCValue-fractional",
+                            new Object[]{year, new Integer(month), new Integer(day),
+                                    new Integer(hour), new Integer(minute), new Integer(second),
+                                    fractionalSecond, new Integer(timezone)})
+            );
 
-                        /**
-                String yearString = "null";
-                if (year != null) {
-                    yearString = year.toString();
-                }
-                String fractionalSecondString = "null";
-                if (fractionalSecond != null) {
-                    fractionalSecondString = fractionalSecond.toString();
-                }
+            /**
+             String yearString = "null";
+             if (year != null) {
+             yearString = year.toString();
+             }
+             String fractionalSecondString = "null";
+             if (fractionalSecond != null) {
+             fractionalSecondString = fractionalSecond.toString();
+             }
 
-                throw new IllegalArgumentException(
-                    "year = " + yearString
-                    + ", month = " + month
-                    + ", day = " + day
-                    + ", hour = " + hour
-                    + ", minute = " + minute
-                    + ", second = " + second
-                    + ", fractionalSecond = " + fractionalSecondString
-                    + ", timezone = " + timezone
-                    + ", is not a valid representation of an XML Gregorian Calendar value."
-                );
-                */
+             throw new IllegalArgumentException(
+             "year = " + yearString
+             + ", month = " + month
+             + ", day = " + day
+             + ", hour = " + hour
+             + ", minute = " + minute
+             + ", second = " + second
+             + ", fractionalSecond = " + fractionalSecondString
+             + ", timezone = " + timezone
+             + ", is not a valid representation of an XML Gregorian Calendar value."
+             );
+             */
 
-                }
+        }
 
     }
 
@@ -531,41 +528,41 @@ public class XMLGregorianCalendarImpl
      * <p><code>XMLGregorianCalendar eon</code> and
      * <code>fractionalSecond</code> are set to <code>null</code></p>
      *
-     * @param year of <code>XMLGregorianCalendar</code> to be created.
-     * @param month of <code>XMLGregorianCalendar</code> to be created.
-     * @param day of <code>XMLGregorianCalendar</code> to be created.
-     * @param hour of <code>XMLGregorianCalendar</code> to be created.
-     * @param minute of <code>XMLGregorianCalendar</code> to be created.
-     * @param second of <code>XMLGregorianCalendar</code> to be created.
+     * @param year        of <code>XMLGregorianCalendar</code> to be created.
+     * @param month       of <code>XMLGregorianCalendar</code> to be created.
+     * @param day         of <code>XMLGregorianCalendar</code> to be created.
+     * @param hour        of <code>XMLGregorianCalendar</code> to be created.
+     * @param minute      of <code>XMLGregorianCalendar</code> to be created.
+     * @param second      of <code>XMLGregorianCalendar</code> to be created.
      * @param millisecond of <code>XMLGregorianCalendar</code> to be created.
-     * @param timezone of <code>XMLGregorianCalendar</code> to be created.
+     * @param timezone    of <code>XMLGregorianCalendar</code> to be created.
      */
     private XMLGregorianCalendarImpl(
-        int year,
-        int month,
-        int day,
-        int hour,
-        int minute,
-        int second,
-                int millisecond,
-        int timezone) {
+            int year,
+            int month,
+            int day,
+            int hour,
+            int minute,
+            int second,
+            int millisecond,
+            int timezone) {
 
-                setYear(year);
+        setYear(year);
         setMonth(month);
         setDay(day);
         setTime(hour, minute, second);
-                setTimezone(timezone);
-                setMillisecond(millisecond);
+        setTimezone(timezone);
+        setMillisecond(millisecond);
 
-                if (!isValid()) {
+        if (!isValid()) {
 
             throw new IllegalArgumentException(
-                DatatypeMessageFormatter.formatMessage(null,
-                "InvalidXGCValue-milli",
-                new Object[] { new Integer(year), new Integer(month), new Integer(day),
-                new Integer(hour), new Integer(minute), new Integer(second),
-                new Integer(millisecond), new Integer(timezone)})
-                        );
+                    DatatypeMessageFormatter.formatMessage(null,
+                            "InvalidXGCValue-milli",
+                            new Object[]{new Integer(year), new Integer(month), new Integer(day),
+                                    new Integer(hour), new Integer(minute), new Integer(second),
+                                    new Integer(millisecond), new Integer(timezone)})
+            );
                 /*
                 throw new IllegalArgumentException(
                     "year = " + year
@@ -580,66 +577,66 @@ public class XMLGregorianCalendarImpl
                     );
                  */
 
-                }
+        }
     }
 
-        /**
-         * <p>Convert a <code>java.util.GregorianCalendar</code> to XML Schema 1.0
-         * representation.</p>
-         *
-         * <table border="2" rules="all" cellpadding="2">
-         *   <thead>
-         *     <tr>
-         *       <th align="center" colspan="2">
-         *          Field by Field Conversion from
-         *          <code>java.util.GregorianCalendar</code> to this class
-         *       </th>
-         *     </tr>
-         *   </thead>
-         *   <tbody>
-         *     <tr>
-         *        <th><code>javax.xml.datatype.XMLGregorianCalendar</code> field</th>
-         *        <th><code>java.util.GregorianCalendar</code> field</th>
-         *     </tr>
-         *     <tr>
-         *       <th>{@link #setYear(int)}</th>
-         *       <th><code>ERA == GregorianCalendar.BC ? -YEAR : YEAR</code></th>
-         *     </tr>
-         *     <tr>
-         *       <th>{@link #setMonth(int)}</th>
-         *       <th><code>MONTH + 1</code></th>
-         *     </tr>
-         *     <tr>
-         *       <th>{@link #setDay(int)}</th>
-         *       <th><code>DAY_OF_MONTH</code></th>
-         *     </tr>
-         *     <tr>
-         *       <th>{@link #setTime(int,int,int, BigDecimal)}</th>
-         *       <th><code>HOUR_OF_DAY, MINUTE, SECOND, MILLISECOND</code></th>
-         *     </tr>
-         *     <tr>
-         *       <th>{@link #setTimezone(int)}<i>*</i></th>
-         *       <th><code>(ZONE_OFFSET + DST_OFFSET) / (60*1000)</code><br/>
-         *       <i>(in minutes)</i>
-         *       </th>
-         *     </tr>
-         *   </tbody>
-         * </table>
-         * <p><i>*</i>conversion loss of information. It is not possible to represent
-         * a <code>java.util.GregorianCalendar</code> daylight savings timezone id in the
-         * XML Schema 1.0 date/time datatype representation.</p>
-         *
-         * <p>To compute the return value's <code>TimeZone</code> field,
-         * <ul>
-         * <li>when <code>this.getTimezone() != DatatypeConstants.FIELD_UNDEFINED</code>,
-         * create a <code>java.util.TimeZone</code> with a custom timezone id
-         * using the <code>this.getTimezone()</code>.</li>
-         * <li>else use the <code>GregorianCalendar</code> default timezone value
-         * for the host is defined as specified by
-         * <code>java.util.TimeZone.getDefault()</code>.</li></p>
-         *
-         * @param cal <code>java.util.GregorianCalendar</code> used to create <code>XMLGregorianCalendar</code>
-         */
+    /**
+     * <p>Convert a <code>java.util.GregorianCalendar</code> to XML Schema 1.0
+     * representation.</p>
+     *
+     * <table border="2" rules="all" cellpadding="2">
+     *   <thead>
+     *     <tr>
+     *       <th align="center" colspan="2">
+     *          Field by Field Conversion from
+     *          <code>java.util.GregorianCalendar</code> to this class
+     *       </th>
+     *     </tr>
+     *   </thead>
+     *   <tbody>
+     *     <tr>
+     *        <th><code>javax.xml.datatype.XMLGregorianCalendar</code> field</th>
+     *        <th><code>java.util.GregorianCalendar</code> field</th>
+     *     </tr>
+     *     <tr>
+     *       <th>{@link #setYear(int)}</th>
+     *       <th><code>ERA == GregorianCalendar.BC ? -YEAR : YEAR</code></th>
+     *     </tr>
+     *     <tr>
+     *       <th>{@link #setMonth(int)}</th>
+     *       <th><code>MONTH + 1</code></th>
+     *     </tr>
+     *     <tr>
+     *       <th>{@link #setDay(int)}</th>
+     *       <th><code>DAY_OF_MONTH</code></th>
+     *     </tr>
+     *     <tr>
+     *       <th>{@link #setTime(int, int, int, BigDecimal)}</th>
+     *       <th><code>HOUR_OF_DAY, MINUTE, SECOND, MILLISECOND</code></th>
+     *     </tr>
+     *     <tr>
+     *       <th>{@link #setTimezone(int)}<i>*</i></th>
+     *       <th><code>(ZONE_OFFSET + DST_OFFSET) / (60*1000)</code><br/>
+     *       <i>(in minutes)</i>
+     *       </th>
+     *     </tr>
+     *   </tbody>
+     * </table>
+     * <p><i>*</i>conversion loss of information. It is not possible to represent
+     * a <code>java.util.GregorianCalendar</code> daylight savings timezone id in the
+     * XML Schema 1.0 date/time datatype representation.</p>
+     *
+     * <p>To compute the return value's <code>TimeZone</code> field,
+     * <ul>
+     * <li>when <code>this.getTimezone() != DatatypeConstants.FIELD_UNDEFINED</code>,
+     * create a <code>java.util.TimeZone</code> with a custom timezone id
+     * using the <code>this.getTimezone()</code>.</li>
+     * <li>else use the <code>GregorianCalendar</code> default timezone value
+     * for the host is defined as specified by
+     * <code>java.util.TimeZone.getDefault()</code>.</li></p>
+     *
+     * @param cal <code>java.util.GregorianCalendar</code> used to create <code>XMLGregorianCalendar</code>
+     */
     public XMLGregorianCalendarImpl(GregorianCalendar cal) {
 
         int year = cal.get(Calendar.YEAR);
@@ -669,77 +666,71 @@ public class XMLGregorianCalendarImpl
      * <p>Create a Java representation of XML Schema builtin datatype <code>dateTime</code>.
      * All possible fields are specified for this factory method.</p>
      *
-     * @param year represents both high-order eons and low-order year.
-     * @param month of <code>dateTime</code>
-     * @param day of <code>dateTime</code>
-     * @param hours of <code>dateTime</code>
-     * @param minutes of <code>dateTime</code>
-     * @param seconds of <code>dateTime</code>
+     * @param year             represents both high-order eons and low-order year.
+     * @param month            of <code>dateTime</code>
+     * @param day              of <code>dateTime</code>
+     * @param hours            of <code>dateTime</code>
+     * @param minutes          of <code>dateTime</code>
+     * @param seconds          of <code>dateTime</code>
      * @param fractionalSecond value of null indicates optional field is absent.
-     * @param timezone offset in minutes. {@link DatatypeConstants#FIELD_UNDEFINED} indicates optional field is not set.
-     *
+     * @param timezone         offset in minutes. {@link DatatypeConstants#FIELD_UNDEFINED} indicates optional field is not set.
      * @return <code>XMLGregorianCalendar</code> created from parameter values.
-     *
-     * @see DatatypeConstants#FIELD_UNDEFINED
-     *
      * @throws IllegalArgumentException if any parameter is outside value
-     * constraints for the field as specified in
-     * <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     *                                  constraints for the field as specified in
+     *                                  <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     * @see DatatypeConstants#FIELD_UNDEFINED
      */
     public static XMLGregorianCalendar createDateTime(
-        BigInteger year,
-        int month,
-        int day,
-        int hours,
-        int minutes,
-        int seconds,
-        BigDecimal fractionalSecond,
-        int timezone) {
+            BigInteger year,
+            int month,
+            int day,
+            int hours,
+            int minutes,
+            int seconds,
+            BigDecimal fractionalSecond,
+            int timezone) {
 
         return new XMLGregorianCalendarImpl(
-            year,
-            month,
-            day,
-            hours,
-            minutes,
-            seconds,
-            fractionalSecond,
-            timezone);
+                year,
+                month,
+                day,
+                hours,
+                minutes,
+                seconds,
+                fractionalSecond,
+                timezone);
     }
 
     /**
      * <p>Create a Java instance of XML Schema builtin datatype dateTime.</p>
      *
-     * @param year represents both high-order eons and low-order year.
-     * @param month of <code>dateTime</code>
-     * @param day of <code>dateTime</code>
-     * @param hour of <code>dateTime</code>
+     * @param year   represents both high-order eons and low-order year.
+     * @param month  of <code>dateTime</code>
+     * @param day    of <code>dateTime</code>
+     * @param hour   of <code>dateTime</code>
      * @param minute of <code>dateTime</code>
      * @param second of <code>dateTime</code>
-     *
      * @return <code>XMLGregorianCalendar</code> created from parameter values.
-     *
      * @throws IllegalArgumentException if any parameter is outside value constraints for the field as specified in
-     *   <a href="#datetimefieldmapping">date/time field mapping table</a>.
-     *
+     *                                  <a href="#datetimefieldmapping">date/time field mapping table</a>.
      * @see DatatypeConstants#FIELD_UNDEFINED
      */
     public static XMLGregorianCalendar createDateTime(
-        int year,
-        int month,
-        int day,
-        int hour,
-        int minute,
-        int second) {
+            int year,
+            int month,
+            int day,
+            int hour,
+            int minute,
+            int second) {
 
         return new XMLGregorianCalendarImpl(
-            year,
-            month,
-            day,
-            hour,
-            minute,
-            second,
-            DatatypeConstants.FIELD_UNDEFINED,  //millisecond
+                year,
+                month,
+                day,
+                hour,
+                minute,
+                second,
+                DatatypeConstants.FIELD_UNDEFINED,  //millisecond
                 DatatypeConstants.FIELD_UNDEFINED //timezone
         );
     }
@@ -748,41 +739,38 @@ public class XMLGregorianCalendarImpl
      * <p>Create a Java representation of XML Schema builtin datatype <code>dateTime</code>.
      * All possible fields are specified for this factory method.</p>
      *
-     * @param year represents low-order year.
-     * @param month of <code>dateTime</code>
-     * @param day of <code>dateTime</code>
-     * @param hours of <code>dateTime</code>
-     * @param minutes of <code>dateTime</code>
-     * @param seconds of <code>dateTime</code>
+     * @param year         represents low-order year.
+     * @param month        of <code>dateTime</code>
+     * @param day          of <code>dateTime</code>
+     * @param hours        of <code>dateTime</code>
+     * @param minutes      of <code>dateTime</code>
+     * @param seconds      of <code>dateTime</code>
      * @param milliseconds of <code>dateTime</code>. {@link DatatypeConstants#FIELD_UNDEFINED} indicates optional field is not set.
-     * @param timezone offset in minutes. {@link DatatypeConstants#FIELD_UNDEFINED} indicates optional field is not set.
-     *
+     * @param timezone     offset in minutes. {@link DatatypeConstants#FIELD_UNDEFINED} indicates optional field is not set.
      * @return <code>XMLGregorianCalendar</code> created from parameter values.
-     *
      * @throws IllegalArgumentException if any parameter is outside value constraints for the field as specified in
-     *   <a href="#datetimefieldmapping">date/time field mapping table</a>.
-     *
+     *                                  <a href="#datetimefieldmapping">date/time field mapping table</a>.
      * @see DatatypeConstants#FIELD_UNDEFINED
      */
     public static XMLGregorianCalendar createDateTime(
-        int year,
-        int month,
-        int day,
-        int hours,
-        int minutes,
-        int seconds,
-        int milliseconds,
-        int timezone) {
+            int year,
+            int month,
+            int day,
+            int hours,
+            int minutes,
+            int seconds,
+            int milliseconds,
+            int timezone) {
 
         return new XMLGregorianCalendarImpl(
-            year,
-            month,
-            day,
-            hours,
-            minutes,
-            seconds,
-            milliseconds,
-            timezone);
+                year,
+                month,
+                day,
+                hours,
+                minutes,
+                seconds,
+                milliseconds,
+                timezone);
     }
 
     /**
@@ -792,126 +780,115 @@ public class XMLGregorianCalendarImpl
      * with <code>month</code> and <code>day</code> parameters set to
      * {@link DatatypeConstants#FIELD_UNDEFINED}.</p>
      *
-     * @param year of <code>XMLGregorianCalendar</code> to be created.
-     * @param month of <code>XMLGregorianCalendar</code> to be created.
-     * @param day of <code>XMLGregorianCalendar</code> to be created.
+     * @param year     of <code>XMLGregorianCalendar</code> to be created.
+     * @param month    of <code>XMLGregorianCalendar</code> to be created.
+     * @param day      of <code>XMLGregorianCalendar</code> to be created.
      * @param timezone offset in minutes. {@link DatatypeConstants#FIELD_UNDEFINED} indicates optional field is not set.
-     *
      * @return <code>XMLGregorianCalendar</code> created from parameter values.
-     *
-     * @see DatatypeConstants#FIELD_UNDEFINED
-     *
      * @throws IllegalArgumentException if any parameter is outside value
-     * constraints for the field as specified in
-     * <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     *                                  constraints for the field as specified in
+     *                                  <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     * @see DatatypeConstants#FIELD_UNDEFINED
      */
     public static XMLGregorianCalendar createDate(
-        int year,
-        int month,
-        int day,
-        int timezone) {
+            int year,
+            int month,
+            int day,
+            int timezone) {
 
         return new XMLGregorianCalendarImpl(
-            year,
-            month,
-            day,
-            DatatypeConstants.FIELD_UNDEFINED, // hour
-            DatatypeConstants.FIELD_UNDEFINED, // minute
-            DatatypeConstants.FIELD_UNDEFINED, // second
+                year,
+                month,
+                day,
+                DatatypeConstants.FIELD_UNDEFINED, // hour
+                DatatypeConstants.FIELD_UNDEFINED, // minute
+                DatatypeConstants.FIELD_UNDEFINED, // second
                 DatatypeConstants.FIELD_UNDEFINED, // millisecond
-            timezone);
+                timezone);
     }
 
     /**
      * Create a Java instance of XML Schema builtin datatype <code>time</code>.
-     * @param hours number of hours
-     * @param minutes number of minutes
-     * @param seconds number of seconds
+     *
+     * @param hours    number of hours
+     * @param minutes  number of minutes
+     * @param seconds  number of seconds
      * @param timezone offset in minutes. {@link DatatypeConstants#FIELD_UNDEFINED} indicates optional field is not set.
-     *
      * @return <code>XMLGregorianCalendar</code> created from parameter values.
-     *
-     * @see DatatypeConstants#FIELD_UNDEFINED
-     *
      * @throws IllegalArgumentException if any parameter is outside value
-     * constraints for the field as specified in
-     * <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     *                                  constraints for the field as specified in
+     *                                  <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     * @see DatatypeConstants#FIELD_UNDEFINED
      */
     public static XMLGregorianCalendar createTime(
-        int hours,
-        int minutes,
-        int seconds,
-                int timezone) {
-
-                return new XMLGregorianCalendarImpl(
-                        DatatypeConstants.FIELD_UNDEFINED, // Year
-                        DatatypeConstants.FIELD_UNDEFINED, // Month
-                        DatatypeConstants.FIELD_UNDEFINED, // Day
-                        hours,
-                        minutes,
-                        seconds,
-                        DatatypeConstants.FIELD_UNDEFINED, //Millisecond
-                        timezone);
-    }
-
-    /**
-     * <p>Create a Java instance of XML Schema builtin datatype time.</p>
-     *
-     * @param hours number of hours
-     * @param minutes number of minutes
-     * @param seconds number of seconds
-     * @param fractionalSecond value of <code>null</code> indicates that this optional field is not set.
-     * @param timezone offset in minutes. {@link DatatypeConstants#FIELD_UNDEFINED} indicates optional field is not set.
-     *
-     * @return <code>XMLGregorianCalendar</code> created from parameter values.
-     *
-     * @see DatatypeConstants#FIELD_UNDEFINED
-     *
-     * @throws IllegalArgumentException if any parameter is outside value
-     * constraints for the field as specified in
-     * <a href="#datetimefieldmapping">date/time field mapping table</a>.
-     */
-    public static XMLGregorianCalendar createTime(
-        int hours,
-        int minutes,
-        int seconds,
-        BigDecimal fractionalSecond,
-        int timezone) {
+            int hours,
+            int minutes,
+            int seconds,
+            int timezone) {
 
         return new XMLGregorianCalendarImpl(
-            null,            // Year
-            DatatypeConstants.FIELD_UNDEFINED, // month
-            DatatypeConstants.FIELD_UNDEFINED, // day
-            hours,
-            minutes,
-            seconds,
-            fractionalSecond,
-            timezone);
+                DatatypeConstants.FIELD_UNDEFINED, // Year
+                DatatypeConstants.FIELD_UNDEFINED, // Month
+                DatatypeConstants.FIELD_UNDEFINED, // Day
+                hours,
+                minutes,
+                seconds,
+                DatatypeConstants.FIELD_UNDEFINED, //Millisecond
+                timezone);
     }
 
     /**
      * <p>Create a Java instance of XML Schema builtin datatype time.</p>
      *
-     * @param hours number of hours
-     * @param minutes number of minutes
-     * @param seconds number of seconds
-     * @param milliseconds number of milliseconds
-     * @param timezone offset in minutes. {@link DatatypeConstants#FIELD_UNDEFINED} indicates optional field is not set.
-     *
+     * @param hours            number of hours
+     * @param minutes          number of minutes
+     * @param seconds          number of seconds
+     * @param fractionalSecond value of <code>null</code> indicates that this optional field is not set.
+     * @param timezone         offset in minutes. {@link DatatypeConstants#FIELD_UNDEFINED} indicates optional field is not set.
      * @return <code>XMLGregorianCalendar</code> created from parameter values.
-     *
-     * @see DatatypeConstants#FIELD_UNDEFINED
-     *
      * @throws IllegalArgumentException if any parameter is outside value
-     * constraints for the field as specified in
-     * <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     *                                  constraints for the field as specified in
+     *                                  <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     * @see DatatypeConstants#FIELD_UNDEFINED
      */
     public static XMLGregorianCalendar createTime(
-        int hours,
-        int minutes,
-        int seconds,
-        int milliseconds,
-        int timezone) {
+            int hours,
+            int minutes,
+            int seconds,
+            BigDecimal fractionalSecond,
+            int timezone) {
+
+        return new XMLGregorianCalendarImpl(
+                null,            // Year
+                DatatypeConstants.FIELD_UNDEFINED, // month
+                DatatypeConstants.FIELD_UNDEFINED, // day
+                hours,
+                minutes,
+                seconds,
+                fractionalSecond,
+                timezone);
+    }
+
+    /**
+     * <p>Create a Java instance of XML Schema builtin datatype time.</p>
+     *
+     * @param hours        number of hours
+     * @param minutes      number of minutes
+     * @param seconds      number of seconds
+     * @param milliseconds number of milliseconds
+     * @param timezone     offset in minutes. {@link DatatypeConstants#FIELD_UNDEFINED} indicates optional field is not set.
+     * @return <code>XMLGregorianCalendar</code> created from parameter values.
+     * @throws IllegalArgumentException if any parameter is outside value
+     *                                  constraints for the field as specified in
+     *                                  <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     * @see DatatypeConstants#FIELD_UNDEFINED
+     */
+    public static XMLGregorianCalendar createTime(
+            int hours,
+            int minutes,
+            int seconds,
+            int milliseconds,
+            int timezone) {
 
         return new XMLGregorianCalendarImpl(
                 DatatypeConstants.FIELD_UNDEFINED, // year
@@ -933,14 +910,14 @@ public class XMLGregorianCalendarImpl
      *
      * <p>Value constraints for this value are summarized in
      * <a href="#datetimefield-year">year field of date/time field mapping table</a>.</p>
+     *
      * @return eon of this <code>XMLGregorianCalendar</code>. The value
      * returned is an integer multiple of 10^9.
-     *
      * @see #getYear()
      * @see #getEonAndYear()
      */
     public BigInteger getEon() {
-           return eon;
+        return eon;
     }
 
     /**
@@ -951,12 +928,11 @@ public class XMLGregorianCalendarImpl
      * <a href="#datetimefield-year">year field of date/time field mapping table</a>.</p>
      *
      * @return year  of this <code>XMLGregorianCalendar</code>.
-     *
      * @see #getEon()
      * @see #getEonAndYear()
      */
     public int getYear() {
-           return year;
+        return year;
     }
 
     /**
@@ -970,29 +946,28 @@ public class XMLGregorianCalendarImpl
      * when both fields are defined. When only <code>year</code> is defined,
      * return it. When both <code>eon</code> and <code>year</code> are not
      * defined, return <code>null</code>.
-     *
      * @see #getEon()
      * @see #getYear()
      */
     public BigInteger getEonAndYear() {
 
-                // both are defined
-                if (year != DatatypeConstants.FIELD_UNDEFINED
-                        && eon != null) {
+        // both are defined
+        if (year != DatatypeConstants.FIELD_UNDEFINED
+                && eon != null) {
 
-                        return eon.add(BigInteger.valueOf((long) year));
-                }
+            return eon.add(BigInteger.valueOf((long) year));
+        }
 
-                // only year is defined
-                if (year != DatatypeConstants.FIELD_UNDEFINED
-                        && eon == null) {
+        // only year is defined
+        if (year != DatatypeConstants.FIELD_UNDEFINED
+                && eon == null) {
 
-                        return BigInteger.valueOf((long) year);
-                }
+            return BigInteger.valueOf((long) year);
+        }
 
         // neither are defined
         // or only eon is defined which is not valid without a year
-                return null;
+        return null;
     }
 
     /**
@@ -1002,7 +977,6 @@ public class XMLGregorianCalendarImpl
      * <a href="#datetimefield-month">month field of date/time field mapping table</a>.</p>
      *
      * @return year  of this <code>XMLGregorianCalendar</code>.
-     *
      */
     public int getMonth() {
         return month;
@@ -1039,6 +1013,7 @@ public class XMLGregorianCalendarImpl
      *
      * <p>Value constraints for this value are summarized in
      * <a href="#datetimefield-hour">hour field of date/time field mapping table</a>.</p>
+     *
      * @see #setTime(int, int, int)
      */
     public int getHour() {
@@ -1051,6 +1026,7 @@ public class XMLGregorianCalendarImpl
      *
      * <p>Value constraints for this value are summarized in
      * <a href="#datetimefield-minute">minute field of date/time field mapping table</a>.</p>
+     *
      * @see #setTime(int, int, int)
      */
     public int getMinute() {
@@ -1070,13 +1046,12 @@ public class XMLGregorianCalendarImpl
      * <a href="#datetimefield-second">second field of date/time field mapping table</a>.</p>
      *
      * @return Second  of this <code>XMLGregorianCalendar</code>.
-     *
      * @see #getFractionalSecond()
      * @see #getMillisecond()
      * @see #setTime(int, int, int)
      */
     public int getSecond() {
-           return second;
+        return second;
     }
 
     /**
@@ -1110,7 +1085,6 @@ public class XMLGregorianCalendarImpl
      * <a href="#datetimefield-second">second field of date/time field mapping table</a>.</p>
      *
      * @return Millisecond  of this <code>XMLGregorianCalendar</code>.
-     *
      * @see #getFractionalSecond()
      * @see #setTime(int, int, int)
      */
@@ -1138,12 +1112,11 @@ public class XMLGregorianCalendarImpl
      * does not return {@link DatatypeConstants#FIELD_UNDEFINED}).</p>
      *
      * @return fractional seconds  of this <code>XMLGregorianCalendar</code>.
-     *
      * @see #getSecond()
      * @see #setTime(int, int, int, BigDecimal)
      */
     public BigDecimal getFractionalSecond() {
-           return fractionalSecond;
+        return fractionalSecond;
     }
 
     // setters
@@ -1154,10 +1127,9 @@ public class XMLGregorianCalendarImpl
      * <p>Unset this field by invoking the setter with a parameter value of <code>null</code>.</p>
      *
      * @param year value constraints summarized in <a href="#datetimefield-year">year field of date/time field mapping table</a>.
-     *
      * @throws IllegalArgumentException if <code>year</code> parameter is
-     * outside value constraints for the field as specified in
-     * <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     *                                  outside value constraints for the field as specified in
+     *                                  <a href="#datetimefieldmapping">date/time field mapping table</a>.
      */
     public void setYear(BigInteger year) {
         if (year == null) {
@@ -1181,7 +1153,7 @@ public class XMLGregorianCalendarImpl
      * <code>null</code> by this method.</p>
      *
      * @param year value constraints are summarized in <a href="#datetimefield-year">year field of date/time field mapping table</a>.
-     *   If year is {@link DatatypeConstants#FIELD_UNDEFINED}, then eon is set to <code>null</code>.
+     *             If year is {@link DatatypeConstants#FIELD_UNDEFINED}, then eon is set to <code>null</code>.
      */
     public void setYear(int year) {
         if (year == DatatypeConstants.FIELD_UNDEFINED) {
@@ -1221,14 +1193,13 @@ public class XMLGregorianCalendarImpl
      * <p>Unset this field by invoking the setter with a parameter value of {@link DatatypeConstants#FIELD_UNDEFINED}.</p>
      *
      * @param month value constraints summarized in <a href="#datetimefield-month">month field of date/time field mapping table</a>.
-     *
      * @throws IllegalArgumentException if <code>month</code> parameter is
-     * outside value constraints for the field as specified in
-     * <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     *                                  outside value constraints for the field as specified in
+     *                                  <a href="#datetimefieldmapping">date/time field mapping table</a>.
      */
     public void setMonth(int month) {
-        if(month<DatatypeConstants.JANUARY || DatatypeConstants.DECEMBER<month)
-            if(month!=DatatypeConstants.FIELD_UNDEFINED)
+        if (month < DatatypeConstants.JANUARY || DatatypeConstants.DECEMBER < month)
+            if (month != DatatypeConstants.FIELD_UNDEFINED)
                 invalidFieldValue(MONTH, month);
         this.month = month;
     }
@@ -1239,15 +1210,14 @@ public class XMLGregorianCalendarImpl
      * <p>Unset this field by invoking the setter with a parameter value of {@link DatatypeConstants#FIELD_UNDEFINED}.</p>
      *
      * @param day value constraints summarized in <a href="#datetimefield-day">day field of date/time field mapping table</a>.
-     *
      * @throws IllegalArgumentException if <code>day</code> parameter is
-     * outside value constraints for the field as specified in
-     * <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     *                                  outside value constraints for the field as specified in
+     *                                  <a href="#datetimefieldmapping">date/time field mapping table</a>.
      */
     public void setDay(int day) {
-        if(day<1 || 31<day)
-            if(day!=DatatypeConstants.FIELD_UNDEFINED)
-                invalidFieldValue(DAY,day);
+        if (day < 1 || 31 < day)
+            if (day != DatatypeConstants.FIELD_UNDEFINED)
+                invalidFieldValue(DAY, day);
         this.day = day;
     }
 
@@ -1257,34 +1227,31 @@ public class XMLGregorianCalendarImpl
      * <p>Unset this field by invoking the setter with a parameter value of {@link DatatypeConstants#FIELD_UNDEFINED}.</p>
      *
      * @param offset value constraints summarized in <a href="#datetimefield-timezone">
-     *   timezone field of date/time field mapping table</a>.
-     *
+     *               timezone field of date/time field mapping table</a>.
      * @throws IllegalArgumentException if <code>offset</code> parameter is
-     * outside value constraints for the field as specified in
-     * <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     *                                  outside value constraints for the field as specified in
+     *                                  <a href="#datetimefieldmapping">date/time field mapping table</a>.
      */
     public void setTimezone(int offset) {
-            if(offset<-14*60 || 14*60<offset)
-            if(offset!=DatatypeConstants.FIELD_UNDEFINED)
-                invalidFieldValue(TIMEZONE,offset);
+        if (offset < -14 * 60 || 14 * 60 < offset)
+            if (offset != DatatypeConstants.FIELD_UNDEFINED)
+                invalidFieldValue(TIMEZONE, offset);
         this.timezone = offset;
     }
 
     /**
      * <p>Set time as one unit.</p>
      *
-     * @param hour value constraints are summarized in
-     * <a href="#datetimefield-hour">hour field of date/time field mapping table</a>.
+     * @param hour   value constraints are summarized in
+     *               <a href="#datetimefield-hour">hour field of date/time field mapping table</a>.
      * @param minute value constraints are summarized in
-     * <a href="#datetimefield-minute">minute field of date/time field mapping table</a>.
+     *               <a href="#datetimefield-minute">minute field of date/time field mapping table</a>.
      * @param second value constraints are summarized in
-     * <a href="#datetimefield-second">second field of date/time field mapping table</a>.
-     *
-     * @see #setTime(int, int, int, BigDecimal)
-     *
+     *               <a href="#datetimefield-second">second field of date/time field mapping table</a>.
      * @throws IllegalArgumentException if any parameter is
-     * outside value constraints for the field as specified in
-     * <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     *                                  outside value constraints for the field as specified in
+     *                                  <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     * @see #setTime(int, int, int, BigDecimal)
      */
     public void setTime(int hour, int minute, int second) {
         setTime(hour, minute, second, null);
@@ -1292,8 +1259,8 @@ public class XMLGregorianCalendarImpl
 
     private void invalidFieldValue(int field, int value) {
         throw new IllegalArgumentException(
-            DatatypeMessageFormatter.formatMessage(null, "InvalidFieldValue",
-                new Object[]{ new Integer(value), FIELD_NAME[field]})
+                DatatypeMessageFormatter.formatMessage(null, "InvalidFieldValue",
+                        new Object[]{new Integer(value), FIELD_NAME[field]})
         );
     }
 
@@ -1333,35 +1300,34 @@ public class XMLGregorianCalendarImpl
     }
 
     public void setMinute(int minute) {
-        if(minute<0 || 59<minute)
-            if(minute!=DatatypeConstants.FIELD_UNDEFINED)
+        if (minute < 0 || 59 < minute)
+            if (minute != DatatypeConstants.FIELD_UNDEFINED)
                 invalidFieldValue(MINUTE, minute);
         this.minute = minute;
     }
 
     public void setSecond(int second) {
-        if(second<0 || 60<second)   // leap second allows for 60
-            if(second!=DatatypeConstants.FIELD_UNDEFINED)
+        if (second < 0 || 60 < second)   // leap second allows for 60
+            if (second != DatatypeConstants.FIELD_UNDEFINED)
                 invalidFieldValue(SECOND, second);
-        this.second  = second;
+        this.second = second;
     }
 
     /**
      * <p>Set time as one unit, including the optional infinite precison
      * fractional seconds.</p>
      *
-     * @param hour value constraints are summarized in
-     * <a href="#datetimefield-hour">hour field of date/time field mapping table</a>.
-     * @param minute value constraints are summarized in
-     * <a href="#datetimefield-minute">minute field of date/time field mapping table</a>.
-     * @param second value constraints are summarized in
-     * <a href="#datetimefield-second">second field of date/time field mapping table</a>.
+     * @param hour       value constraints are summarized in
+     *                   <a href="#datetimefield-hour">hour field of date/time field mapping table</a>.
+     * @param minute     value constraints are summarized in
+     *                   <a href="#datetimefield-minute">minute field of date/time field mapping table</a>.
+     * @param second     value constraints are summarized in
+     *                   <a href="#datetimefield-second">second field of date/time field mapping table</a>.
      * @param fractional value of <code>null</code> indicates this optional
      *                   field is not set.
-     *
      * @throws IllegalArgumentException if any parameter is
-     * outside value constraints for the field as specified in
-     * <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     *                                  outside value constraints for the field as specified in
+     *                                  <a href="#datetimefieldmapping">date/time field mapping table</a>.
      */
     public void setTime(
             int hour,
@@ -1390,18 +1356,17 @@ public class XMLGregorianCalendarImpl
     /**
      * <p>Set time as one unit, including optional milliseconds.</p>
      *
-     * @param hour value constraints are summarized in
-     * <a href="#datetimefield-hour">hour field of date/time field mapping table</a>.
-     * @param minute value constraints are summarized in
-     * <a href="#datetimefield-minute">minute field of date/time field mapping table</a>.
-     * @param second value constraints are summarized in
-     * <a href="#datetimefield-second">second field of date/time field mapping table</a>.
+     * @param hour        value constraints are summarized in
+     *                    <a href="#datetimefield-hour">hour field of date/time field mapping table</a>.
+     * @param minute      value constraints are summarized in
+     *                    <a href="#datetimefield-minute">minute field of date/time field mapping table</a>.
+     * @param second      value constraints are summarized in
+     *                    <a href="#datetimefield-second">second field of date/time field mapping table</a>.
      * @param millisecond value of {@link DatatypeConstants#FIELD_UNDEFINED} indicates this
      *                    optional field is not set.
-     *
      * @throws IllegalArgumentException if any parameter is
-     * outside value constraints for the field as specified in
-     * <a href="#datetimefieldmapping">date/time field mapping table</a>.
+     *                                  outside value constraints for the field as specified in
+     *                                  <a href="#datetimefieldmapping">date/time field mapping table</a>.
      */
     public void setTime(int hour, int minute, int second, int millisecond) {
 
@@ -1422,6 +1387,7 @@ public class XMLGregorianCalendarImpl
     }
 
     // comparisons
+
     /**
      * <p>Compare two instances of W3C XML Schema 1.0 date/time datatypes
      * according to partial order relation defined in
@@ -1433,15 +1399,13 @@ public class XMLGregorianCalendarImpl
      * <a href="#datetimefieldmapping">date/time field mapping table</a>.</p>
      *
      * @param rhs instance of <code>XMLGregorianCalendar</code> to compare
-     *
      * @return the relationship between <code>lhs</code> and <code>rhs</code> as
-     *   {@link DatatypeConstants#LESSER},
-     *   {@link DatatypeConstants#EQUAL},
-     *   {@link DatatypeConstants#GREATER} or
-     *   {@link DatatypeConstants#INDETERMINATE}.
-     *
+     * {@link DatatypeConstants#LESSER},
+     * {@link DatatypeConstants#EQUAL},
+     * {@link DatatypeConstants#GREATER} or
+     * {@link DatatypeConstants#INDETERMINATE}.
      * @throws NullPointerException if <code>lhs</code> or <code>rhs</code>
-     * parameters are null.
+     *                              parameters are null.
      */
     public int compare(XMLGregorianCalendar rhs) {
 
@@ -1536,12 +1500,12 @@ public class XMLGregorianCalendarImpl
         return normalized;
     }
 
-        /**
-         * <p>Normalize this instance to UTC.</p>
-         *
-         * <p>2000-03-04T23:00:00+03:00 normalizes to 2000-03-04T20:00:00Z</p>
-         * <p>Implements W3C XML Schema Part 2, Section 3.2.7.3 (A).</p>
-         */
+    /**
+     * <p>Normalize this instance to UTC.</p>
+     *
+     * <p>2000-03-04T23:00:00+03:00 normalizes to 2000-03-04T20:00:00Z</p>
+     * <p>Implements W3C XML Schema Part 2, Section 3.2.7.3 (A).</p>
+     */
     private XMLGregorianCalendar normalizeToTimezone(int timezone) {
 
         int minutes = timezone;
@@ -1566,18 +1530,17 @@ public class XMLGregorianCalendarImpl
     }
 
     /**
+     * <p>Implements Step B from http://www.w3.org/TR/xmlschema-2/#dateTime-order </p>
      *
-     *  <p>Implements Step B from http://www.w3.org/TR/xmlschema-2/#dateTime-order </p>
      * @param P calendar instance with normalized timezone offset or
      *          having same timezone as Q
      * @param Q calendar instance with normalized timezone offset or
      *          having same timezone as P
-     *
      * @return result of comparing P and Q, value of
-     *   {@link DatatypeConstants#EQUAL},
-     *   {@link DatatypeConstants#LESSER},
-     *   {@link DatatypeConstants#GREATER} or
-     *   {@link DatatypeConstants#INDETERMINATE}.
+     * {@link DatatypeConstants#EQUAL},
+     * {@link DatatypeConstants#LESSER},
+     * {@link DatatypeConstants#GREATER} or
+     * {@link DatatypeConstants#INDETERMINATE}.
      */
     private static int internalCompare(XMLGregorianCalendar P,
                                        XMLGregorianCalendar Q) {
@@ -1680,7 +1643,6 @@ public class XMLGregorianCalendarImpl
      * <p>Indicates whether parameter <code>obj</code> is "equal to" this one.</p>
      *
      * @param obj to compare.
-     *
      * @return <code>true</code> when <code>compare(this,(XMLGregorianCalendar)obj) == EQUAL.</code>.
      */
     public boolean equals(Object obj) {
@@ -1737,18 +1699,14 @@ public class XMLGregorianCalendarImpl
      * indicated by the lexicalRepresentation parameter.</p>
      *
      * @param lexicalRepresentation Lexical representation of one the 8 XML Schema calendar datatypes.
-     *
      * @return <code>XMLGregorianCalendar</code> created from parsing <code>lexicalRepresentation</code> parameter.
-     *
-     * @throws IllegalArgumentException
-     *      If the given string does not conform to the aforementioned
-     *      specification.
-     * @throws NullPointerException
-     *      If the given string is null.
+     * @throws IllegalArgumentException If the given string does not conform to the aforementioned
+     *                                  specification.
+     * @throws NullPointerException     If the given string is null.
      */
     public static XMLGregorianCalendar parse(String lexicalRepresentation) {
 
-                return new XMLGregorianCalendarImpl(lexicalRepresentation);
+        return new XMLGregorianCalendarImpl(lexicalRepresentation);
     }
 
     /**
@@ -1761,9 +1719,8 @@ public class XMLGregorianCalendarImpl
      * {@link #getXMLSchemaType()}.</p>
      *
      * @return XML, as <code>String</code>, representation of this <code>XMLGregorianCalendar</code>
-     *
      * @throws java.lang.IllegalStateException if the combination of set fields
-     *    does not match one of the eight defined XML Schema builtin date/time datatypes.
+     *                                         does not match one of the eight defined XML Schema builtin date/time datatypes.
      */
     public String toXMLFormat() {
 
@@ -1890,58 +1847,59 @@ public class XMLGregorianCalendarImpl
      *   </tbody>
      * </table>
      *
-     * @throws java.lang.IllegalStateException if the combination of set fields
-     *    does not match one of the eight defined XML Schema builtin
-     *    date/time datatypes.
      * @return One of the following class constants:
-     *   {@link DatatypeConstants#DATETIME},
-     *   {@link DatatypeConstants#TIME},
-     *   {@link DatatypeConstants#DATE},
-     *   {@link DatatypeConstants#GYEARMONTH},
-     *   {@link DatatypeConstants#GMONTHDAY},
-     *   {@link DatatypeConstants#GYEAR},
-     *   {@link DatatypeConstants#GMONTH} or
-     *   {@link DatatypeConstants#GDAY}.
+     * {@link DatatypeConstants#DATETIME},
+     * {@link DatatypeConstants#TIME},
+     * {@link DatatypeConstants#DATE},
+     * {@link DatatypeConstants#GYEARMONTH},
+     * {@link DatatypeConstants#GMONTHDAY},
+     * {@link DatatypeConstants#GYEAR},
+     * {@link DatatypeConstants#GMONTH} or
+     * {@link DatatypeConstants#GDAY}.
+     * @throws java.lang.IllegalStateException if the combination of set fields
+     *                                         does not match one of the eight defined XML Schema builtin
+     *                                         date/time datatypes.
      */
     public QName getXMLSchemaType() {
 
         int mask =
-            (year != DatatypeConstants.FIELD_UNDEFINED ?   0x20 : 0 )|
-            (month != DatatypeConstants.FIELD_UNDEFINED ?  0x10 : 0 )|
-            (day != DatatypeConstants.FIELD_UNDEFINED ?    0x08 : 0 )|
-            (hour != DatatypeConstants.FIELD_UNDEFINED ?   0x04 : 0 )|
-            (minute != DatatypeConstants.FIELD_UNDEFINED ? 0x02 : 0 )|
-            (second != DatatypeConstants.FIELD_UNDEFINED ? 0x01 : 0 );
+                (year != DatatypeConstants.FIELD_UNDEFINED ? 0x20 : 0) |
+                        (month != DatatypeConstants.FIELD_UNDEFINED ? 0x10 : 0) |
+                        (day != DatatypeConstants.FIELD_UNDEFINED ? 0x08 : 0) |
+                        (hour != DatatypeConstants.FIELD_UNDEFINED ? 0x04 : 0) |
+                        (minute != DatatypeConstants.FIELD_UNDEFINED ? 0x02 : 0) |
+                        (second != DatatypeConstants.FIELD_UNDEFINED ? 0x01 : 0);
 
-        switch(mask) {
-        case 0x3F:
+        switch (mask) {
+            case 0x3F:
                 return DatatypeConstants.DATETIME;
-        case 0x38:
+            case 0x38:
                 return DatatypeConstants.DATE;
-        case 0x07:
+            case 0x07:
                 return DatatypeConstants.TIME;
-        case 0x30:
+            case 0x30:
                 return DatatypeConstants.GYEARMONTH;
-        case 0x18:
+            case 0x18:
                 return DatatypeConstants.GMONTHDAY;
-        case 0x20:
+            case 0x20:
                 return DatatypeConstants.GYEAR;
-        case 0x10:
+            case 0x10:
                 return DatatypeConstants.GMONTH;
-        case 0x08:
+            case 0x08:
                 return DatatypeConstants.GDAY;
-        default:
-            throw new IllegalStateException(
-                this.getClass().getName()
-                + "#getXMLSchemaType() :"
-                + DatatypeMessageFormatter.formatMessage(null, "InvalidXGCFields", null)
-            );
+            default:
+                throw new IllegalStateException(
+                        this.getClass().getName()
+                                + "#getXMLSchemaType() :"
+                                + DatatypeMessageFormatter.formatMessage(null, "InvalidXGCFields", null)
+                );
         }
     }
 
 
     /**
      * Validate instance by <code>getXMLSchemaType()</code> constraints.
+     *
      * @return true if data values are valid.
      */
     public boolean isValid() {
@@ -1956,8 +1914,8 @@ public class XMLGregorianCalendarImpl
             int maxDays = 29;
 
             if (eon == null) {
-                if(year!=DatatypeConstants.FIELD_UNDEFINED)
-                    maxDays = maximumDayInMonthFor(year,getMonth());
+                if (year != DatatypeConstants.FIELD_UNDEFINED)
+                    maxDays = maximumDayInMonthFor(year, getMonth());
             } else {
                 BigInteger years = getEonAndYear();
                 if (years != null) {
@@ -1971,7 +1929,7 @@ public class XMLGregorianCalendarImpl
 
         // http://www.w3.org/2001/05/xmlschema-errata#e2-45
         if (getHour() == 24) {
-            if(getMinute() != 0) {
+            if (getMinute() != 0) {
                 return false;
             } else if (getSecond() != 0) {
                 return false;
@@ -2010,34 +1968,33 @@ public class XMLGregorianCalendarImpl
      * to this class' representation of those fields.</p>
      *
      * @param duration Duration to add to this <code>XMLGregorianCalendar</code>.
-     *
-     * @throws NullPointerException  when <code>duration</code> parameter is <code>null</code>.
+     * @throws NullPointerException when <code>duration</code> parameter is <code>null</code>.
      */
     public void add(Duration duration) {
 
         /*
-           * Extracted from
-           * http://www.w3.org/TR/xmlschema-2/#adding-durations-to-dateTimes
-           * to ensure implemented properly. See spec for definitions of methods
-           * used in algorithm.
-           *
-           * Given a dateTime S and a duration D, specifies how to compute a
-           * dateTime E where E is the end of the time period with start S and
-           * duration D i.e. E = S + D.
-           *
-           * The following is the precise specification.
-           * These steps must be followed in the same order.
-           * If a field in D is not specified, it is treated as if it were zero.
-           * If a field in S is not specified, it is treated in the calculation
-           * as if it were the minimum allowed value in that field, however,
-           * after the calculation is concluded, the corresponding field in
-           * E is removed (set to unspecified).
-           *
-           * Months (may be modified additionally below)
-               *  temp := S[month] + D[month]
-               *  E[month] := modulo(temp, 1, 13)
-               *  carry := fQuotient(temp, 1, 13)
-           */
+         * Extracted from
+         * http://www.w3.org/TR/xmlschema-2/#adding-durations-to-dateTimes
+         * to ensure implemented properly. See spec for definitions of methods
+         * used in algorithm.
+         *
+         * Given a dateTime S and a duration D, specifies how to compute a
+         * dateTime E where E is the end of the time period with start S and
+         * duration D i.e. E = S + D.
+         *
+         * The following is the precise specification.
+         * These steps must be followed in the same order.
+         * If a field in D is not specified, it is treated as if it were zero.
+         * If a field in S is not specified, it is treated in the calculation
+         * as if it were the minimum allowed value in that field, however,
+         * after the calculation is concluded, the corresponding field in
+         * E is removed (set to unspecified).
+         *
+         * Months (may be modified additionally below)
+         *  temp := S[month] + D[month]
+         *  E[month] := modulo(temp, 1, 13)
+         *  carry := fQuotient(temp, 1, 13)
+         */
 
         boolean fieldUndefined[] = {
                 false,
@@ -2063,8 +2020,8 @@ public class XMLGregorianCalendarImpl
                 new BigDecimal(temp.subtract(BigInteger.ONE)).divide(new BigDecimal(TWELVE), BigDecimal.ROUND_FLOOR).toBigInteger();
 
         /* Years (may be modified additionally below)
-            *  E[year] := S[year] + D[year] + carry
-            */
+         *  E[year] := S[year] + D[year] + carry
+         */
         BigInteger startYear = getEonAndYear();
         if (startYear == null) {
             fieldUndefined[YEAR] = true;
@@ -2075,16 +2032,16 @@ public class XMLGregorianCalendarImpl
         setYear(endYear);
 
         /* Zone
-               *  E[zone] := S[zone]
-           *
-           * no-op since adding to this, not to a new end point.
-           */
+         *  E[zone] := S[zone]
+         *
+         * no-op since adding to this, not to a new end point.
+         */
 
         /* Seconds
-            *  temp := S[second] + D[second]
-            *  E[second] := modulo(temp, 60)
-            *  carry := fQuotient(temp, 60)
-            */
+         *  temp := S[second] + D[second]
+         *  E[second] := modulo(temp, 60)
+         *  carry := fQuotient(temp, 60)
+         */
         BigDecimal startSeconds;
         if (getSecond() == DatatypeConstants.FIELD_UNDEFINED) {
             fieldUndefined[SECOND] = true;
@@ -2117,10 +2074,10 @@ public class XMLGregorianCalendarImpl
         }
 
         /* Minutes
-               *  temp := S[minute] + D[minute] + carry
-               *  E[minute] := modulo(temp, 60)
-               *  carry := fQuotient(temp, 60)
-           */
+         *  temp := S[minute] + D[minute] + carry
+         *  E[minute] := modulo(temp, 60)
+         *  carry := fQuotient(temp, 60)
+         */
         int startMinutes = getMinute();
         if (startMinutes == DatatypeConstants.FIELD_UNDEFINED) {
             fieldUndefined[MINUTE] = true;
@@ -2133,10 +2090,10 @@ public class XMLGregorianCalendarImpl
         carry = new BigDecimal(temp).divide(DECIMAL_SIXTY, BigDecimal.ROUND_FLOOR).toBigInteger();
 
         /* Hours
-               *  temp := S[hour] + D[hour] + carry
-               *  E[hour] := modulo(temp, 24)
-               *  carry := fQuotient(temp, 24)
-           */
+         *  temp := S[hour] + D[hour] + carry
+         *  E[hour] := modulo(temp, 24)
+         *  carry := fQuotient(temp, 24)
+         */
         int startHours = getHour();
         if (startHours == DatatypeConstants.FIELD_UNDEFINED) {
             fieldUndefined[HOUR] = true;
@@ -2149,28 +2106,28 @@ public class XMLGregorianCalendarImpl
         carry = new BigDecimal(temp).divide(new BigDecimal(TWENTY_FOUR), BigDecimal.ROUND_FLOOR).toBigInteger();
 
         /* Days
-           *  if S[day] > maximumDayInMonthFor(E[year], E[month])
-           *       + tempDays := maximumDayInMonthFor(E[year], E[month])
-           *  else if S[day] < 1
-           *       + tempDays := 1
-           *  else
-           *       + tempDays := S[day]
-           *  E[day] := tempDays + D[day] + carry
-           *  START LOOP
-           *       + IF E[day] < 1
-           *             # E[day] := E[day] +
-            *                 maximumDayInMonthFor(E[year], E[month] - 1)
-           *             # carry := -1
-           *       + ELSE IF E[day] > maximumDayInMonthFor(E[year], E[month])
-           *             # E[day] :=
-            *                    E[day] - maximumDayInMonthFor(E[year], E[month])
-           *             # carry := 1
-           *       + ELSE EXIT LOOP
-           *       + temp := E[month] + carry
-           *       + E[month] := modulo(temp, 1, 13)
-           *       + E[year] := E[year] + fQuotient(temp, 1, 13)
-           *       + GOTO START LOOP
-           */
+         *  if S[day] > maximumDayInMonthFor(E[year], E[month])
+         *       + tempDays := maximumDayInMonthFor(E[year], E[month])
+         *  else if S[day] < 1
+         *       + tempDays := 1
+         *  else
+         *       + tempDays := S[day]
+         *  E[day] := tempDays + D[day] + carry
+         *  START LOOP
+         *       + IF E[day] < 1
+         *             # E[day] := E[day] +
+         *                 maximumDayInMonthFor(E[year], E[month] - 1)
+         *             # carry := -1
+         *       + ELSE IF E[day] > maximumDayInMonthFor(E[year], E[month])
+         *             # E[day] :=
+         *                    E[day] - maximumDayInMonthFor(E[year], E[month])
+         *             # carry := 1
+         *       + ELSE EXIT LOOP
+         *       + temp := E[month] + carry
+         *       + E[month] := modulo(temp, 1, 13)
+         *       + E[year] := E[year] + fQuotient(temp, 1, 13)
+         *       + GOTO START LOOP
+         */
         BigInteger tempDays;
         int startDay = getDay();
         if (startDay == DatatypeConstants.FIELD_UNDEFINED) {
@@ -2229,25 +2186,25 @@ public class XMLGregorianCalendarImpl
         for (int i = YEAR; i <= SECOND; i++) {
             if (fieldUndefined[i]) {
                 switch (i) {
-                case YEAR:
-                    setYear(DatatypeConstants.FIELD_UNDEFINED);
-                    break;
-                case MONTH:
-                    setMonth(DatatypeConstants.FIELD_UNDEFINED);
-                    break;
-                case DAY:
-                    setDay(DatatypeConstants.FIELD_UNDEFINED);
-                    break;
-                case HOUR:
-                    setHour(DatatypeConstants.FIELD_UNDEFINED, false);
-                    break;
-                case MINUTE:
-                    setMinute(DatatypeConstants.FIELD_UNDEFINED);
-                    break;
-                case SECOND:
-                    setSecond(DatatypeConstants.FIELD_UNDEFINED);
-                    setFractionalSecond(null);
-                    break;
+                    case YEAR:
+                        setYear(DatatypeConstants.FIELD_UNDEFINED);
+                        break;
+                    case MONTH:
+                        setMonth(DatatypeConstants.FIELD_UNDEFINED);
+                        break;
+                    case DAY:
+                        setDay(DatatypeConstants.FIELD_UNDEFINED);
+                        break;
+                    case HOUR:
+                        setHour(DatatypeConstants.FIELD_UNDEFINED, false);
+                        break;
+                    case MINUTE:
+                        setMinute(DatatypeConstants.FIELD_UNDEFINED);
+                        break;
+                    case SECOND:
+                        setSecond(DatatypeConstants.FIELD_UNDEFINED);
+                        setFractionalSecond(null);
+                        break;
                 }
             }
         }
@@ -2264,9 +2221,9 @@ public class XMLGregorianCalendarImpl
     private static final BigDecimal DECIMAL_SIXTY = new BigDecimal("60");
 
 
-    private static int daysInMonth[] = { 0,  // XML Schema months start at 1.
-                                       31, 28, 31, 30, 31, 30,
-                                       31, 31, 30, 31, 30, 31};
+    private static int daysInMonth[] = {0,  // XML Schema months start at 1.
+            31, 28, 31, 30, 31, 30,
+            31, 31, 30, 31, 30, 31};
 
     private static int maximumDayInMonthFor(BigInteger year, int month) {
         if (month != DatatypeConstants.FEBRUARY) {
@@ -2445,7 +2402,6 @@ public class XMLGregorianCalendarImpl
     }
 
     /**
-     *
      * @return default locale
      */
     private Locale getDefaultLocale() {
@@ -2520,7 +2476,6 @@ public class XMLGregorianCalendarImpl
      *                 within the specified <code>defaults</code> is undefined,
      *                 just use <code>java.util.GregorianCalendar</code> defaults.
      * @return a java.util.GregorianCalendar conversion of this instance.
-     *
      * @see #LEAP_YEAR_DEFAULT
      */
     public GregorianCalendar toGregorianCalendar(TimeZone timezone,
@@ -2639,8 +2594,7 @@ public class XMLGregorianCalendarImpl
      * (Same default as java.util.GregorianCalendar).</p>
      *
      * @param defaultZoneoffset default zoneoffset if this zoneoffset is
-     * {@link DatatypeConstants#FIELD_UNDEFINED}.
-     *
+     *                          {@link DatatypeConstants#FIELD_UNDEFINED}.
      * @return TimeZone for this.
      */
     public TimeZone getTimeZone(int defaultZoneoffset) {
@@ -2683,14 +2637,14 @@ public class XMLGregorianCalendarImpl
      *
      * @return copy of this <code>Object</code>
      */
-   public Object clone() {
+    public Object clone() {
         // Both this.eon and this.fractionalSecond are instances
         // of immutable classes, so they do not need to be cloned.
-       return new XMLGregorianCalendarImpl(getEonAndYear(),
-                        this.month, this.day,
-                        this.hour, this.minute, this.second,
-                        this.fractionalSecond,
-                        this.timezone);
+        return new XMLGregorianCalendarImpl(getEonAndYear(),
+                this.month, this.day,
+                this.hour, this.minute, this.second,
+                this.fractionalSecond,
+                this.timezone);
     }
 
     /**
@@ -2715,8 +2669,8 @@ public class XMLGregorianCalendarImpl
         if (millisecond == DatatypeConstants.FIELD_UNDEFINED) {
             fractionalSecond = null;
         } else {
-            if(millisecond<0 || 999<millisecond)
-                if(millisecond!=DatatypeConstants.FIELD_UNDEFINED)
+            if (millisecond < 0 || 999 < millisecond)
+                if (millisecond != DatatypeConstants.FIELD_UNDEFINED)
                     invalidFieldValue(MILLISECOND, millisecond);
             fractionalSecond = new BigDecimal((long) millisecond).movePointLeft(3);
         }
@@ -2769,27 +2723,27 @@ public class XMLGregorianCalendarImpl
 
                 // seen meta character. we don't do error check against the format
                 switch (format.charAt(fidx++)) {
-                    case 'Y' : // year
+                    case 'Y': // year
                         parseAndSetYear(4);
                         break;
 
-                    case 'M' : // month
+                    case 'M': // month
                         setMonth(parseInt(2, 2));
                         break;
 
-                    case 'D' : // days
+                    case 'D': // days
                         setDay(parseInt(2, 2));
                         break;
 
-                    case 'h' : // hours
+                    case 'h': // hours
                         setHour(parseInt(2, 2), false);
                         break;
 
-                    case 'm' : // minutes
+                    case 'm': // minutes
                         setMinute(parseInt(2, 2));
                         break;
 
-                    case 's' : // parse seconds.
+                    case 's': // parse seconds.
                         setSecond(parseInt(2, 2));
 
                         if (peek() == '.') {
@@ -2797,7 +2751,7 @@ public class XMLGregorianCalendarImpl
                         }
                         break;
 
-                    case 'z' : // time zone. missing, 'Z', or [+-]nn:nn
+                    case 'z': // time zone. missing, 'Z', or [+-]nn:nn
                         char vch = peek();
                         if (vch == 'Z') {
                             vidx++;
@@ -2812,7 +2766,7 @@ public class XMLGregorianCalendarImpl
 
                         break;
 
-                    default :
+                    default:
                         // illegal meta character. impossible.
                         throw new InternalError();
                 }
@@ -2846,14 +2800,14 @@ public class XMLGregorianCalendarImpl
         }
 
         private int parseInt(int minDigits, int maxDigits)
-            throws IllegalArgumentException {
+                throws IllegalArgumentException {
 
             int n = 0;
             char ch;
             int vstart = vidx;
-            while (isDigit(ch=peek()) && (vidx - vstart) <= maxDigits) {
+            while (isDigit(ch = peek()) && (vidx - vstart) <= maxDigits) {
                 vidx++;
-                n = n*10 + ch-'0';
+                n = n * 10 + ch - '0';
             }
             if ((vidx - vstart) < minDigits) {
                 // we are expecting more digits
@@ -2874,12 +2828,12 @@ public class XMLGregorianCalendarImpl
                 vidx++;
                 neg = true;
             }
-            while(true) {
+            while (true) {
                 char ch = peek();
-                if(!isDigit(ch))
+                if (!isDigit(ch))
                     break;
                 vidx++;
-                n = n*10 + ch-'0';
+                n = n * 10 + ch - '0';
             }
 
             if ((vidx - vstart) < minDigits) {
@@ -2887,10 +2841,10 @@ public class XMLGregorianCalendarImpl
                 throw new IllegalArgumentException(value); //,vidx);
             }
 
-            if(vidx-vstart<7) {
+            if (vidx - vstart < 7) {
                 // definitely int only. I don't know the exact # of digits that can be in int,
                 // but as long as we can catch (0-9999) range, that should be enough.
-                if(neg)     n = -n;
+                if (neg) n = -n;
                 year = n;
                 eon = null;
             } else {
@@ -2931,158 +2885,157 @@ public class XMLGregorianCalendarImpl
      * It almost cut the execution time to half, but unfortunately we can't use it
      * because we need to run on JDK 1.3
      */
-    private String format( String format ) {
+    private String format(String format) {
         char[] buf = new char[32];
         int bufPtr = 0;
 
-        int fidx=0,flen=format.length();
+        int fidx = 0, flen = format.length();
 
-        while(fidx<flen) {
+        while (fidx < flen) {
             char fch = format.charAt(fidx++);
-            if(fch!='%') {// not a meta char
+            if (fch != '%') {// not a meta char
                 buf[bufPtr++] = fch;
                 continue;
             }
 
-            switch(format.charAt(fidx++)) {
-            case 'Y':
-                if(eon==null) {
-                    // optimized path
-                    int y = getYear();
-                    if(y<0) {
-                        buf[bufPtr++] = '-';
-                        y = -y;
-                    }
-                    bufPtr = print4Number(buf,bufPtr,y);
-                } else {
-                    String s = getEonAndYear().toString();
-                    // reallocate the buffer now so that it has enough space
-                    char[] n = new char[buf.length+s.length()];
-                    System.arraycopy(buf,0,n,0,bufPtr);
-                    buf = n;
-                    for(int i=s.length();i<4;i++)
-                        buf[bufPtr++] = '0';
-                    s.getChars(0,s.length(),buf,bufPtr);
-                    bufPtr += s.length();
-                }
-                break;
-            case 'M':
-                bufPtr = print2Number(buf,bufPtr,getMonth());
-                break;
-            case 'D':
-                bufPtr = print2Number(buf,bufPtr,getDay());
-                break;
-            case 'h':
-                bufPtr = print2Number(buf,bufPtr,getHour());
-                break;
-            case 'm':
-                bufPtr = print2Number(buf,bufPtr,getMinute());
-                break;
-            case 's':
-                bufPtr = print2Number(buf,bufPtr,getSecond());
-                if (getFractionalSecond() != null) {
-                    // Note: toPlainString() isn't available before Java 1.5
-                    String frac = getFractionalSecond().toString();
-
-                    int pos = frac.indexOf("E-");
-                    if (pos >= 0) {
-                        String zeros = frac.substring(pos+2);
-                        frac = frac.substring(0,pos);
-                        pos = frac.indexOf(".");
-                        if (pos >= 0) {
-                            frac = frac.substring(0,pos) + frac.substring(pos+1);
+            switch (format.charAt(fidx++)) {
+                case 'Y':
+                    if (eon == null) {
+                        // optimized path
+                        int y = getYear();
+                        if (y < 0) {
+                            buf[bufPtr++] = '-';
+                            y = -y;
                         }
-                        int count = Integer.parseInt(zeros);
-                        if (count < 40) {
-                            frac = "00000000000000000000000000000000000000000".substring(0,count-1) + frac;
-                        } else {
-                            // do it the hard way
-                            while (count > 1) {
-                                frac = "0" + frac;
-                                count--;
-                            }
-                        }
-                        frac = "0." + frac;
-                    }
-
-                    // reallocate the buffer now so that it has enough space
-                    char[] n = new char[buf.length+frac.length()];
-                    System.arraycopy(buf,0,n,0,bufPtr);
-                    buf = n;
-                    //skip leading zero.
-                    frac.getChars(1, frac.length(), buf, bufPtr);
-                    bufPtr += frac.length()-1;
-                }
-                break;
-            case 'z':
-                int offset = getTimezone();
-                if (offset == 0) {
-                    buf[bufPtr++] = 'Z';
-                } else
-                if (offset != DatatypeConstants.FIELD_UNDEFINED) {
-                    if (offset < 0) {
-                        buf[bufPtr++] = '-';
-                        offset *= -1;
+                        bufPtr = print4Number(buf, bufPtr, y);
                     } else {
-                        buf[bufPtr++] = '+';
+                        String s = getEonAndYear().toString();
+                        // reallocate the buffer now so that it has enough space
+                        char[] n = new char[buf.length + s.length()];
+                        System.arraycopy(buf, 0, n, 0, bufPtr);
+                        buf = n;
+                        for (int i = s.length(); i < 4; i++)
+                            buf[bufPtr++] = '0';
+                        s.getChars(0, s.length(), buf, bufPtr);
+                        bufPtr += s.length();
                     }
-                    bufPtr = print2Number(buf, bufPtr, offset / 60);
-                    buf[bufPtr++] = ':';
-                    bufPtr = print2Number(buf, bufPtr, offset % 60);
-                }
-                break;
-            default:
-                throw new InternalError();  // impossible
+                    break;
+                case 'M':
+                    bufPtr = print2Number(buf, bufPtr, getMonth());
+                    break;
+                case 'D':
+                    bufPtr = print2Number(buf, bufPtr, getDay());
+                    break;
+                case 'h':
+                    bufPtr = print2Number(buf, bufPtr, getHour());
+                    break;
+                case 'm':
+                    bufPtr = print2Number(buf, bufPtr, getMinute());
+                    break;
+                case 's':
+                    bufPtr = print2Number(buf, bufPtr, getSecond());
+                    if (getFractionalSecond() != null) {
+                        // Note: toPlainString() isn't available before Java 1.5
+                        String frac = getFractionalSecond().toString();
+
+                        int pos = frac.indexOf("E-");
+                        if (pos >= 0) {
+                            String zeros = frac.substring(pos + 2);
+                            frac = frac.substring(0, pos);
+                            pos = frac.indexOf(".");
+                            if (pos >= 0) {
+                                frac = frac.substring(0, pos) + frac.substring(pos + 1);
+                            }
+                            int count = Integer.parseInt(zeros);
+                            if (count < 40) {
+                                frac = "00000000000000000000000000000000000000000".substring(0, count - 1) + frac;
+                            } else {
+                                // do it the hard way
+                                while (count > 1) {
+                                    frac = "0" + frac;
+                                    count--;
+                                }
+                            }
+                            frac = "0." + frac;
+                        }
+
+                        // reallocate the buffer now so that it has enough space
+                        char[] n = new char[buf.length + frac.length()];
+                        System.arraycopy(buf, 0, n, 0, bufPtr);
+                        buf = n;
+                        //skip leading zero.
+                        frac.getChars(1, frac.length(), buf, bufPtr);
+                        bufPtr += frac.length() - 1;
+                    }
+                    break;
+                case 'z':
+                    int offset = getTimezone();
+                    if (offset == 0) {
+                        buf[bufPtr++] = 'Z';
+                    } else if (offset != DatatypeConstants.FIELD_UNDEFINED) {
+                        if (offset < 0) {
+                            buf[bufPtr++] = '-';
+                            offset *= -1;
+                        } else {
+                            buf[bufPtr++] = '+';
+                        }
+                        bufPtr = print2Number(buf, bufPtr, offset / 60);
+                        buf[bufPtr++] = ':';
+                        bufPtr = print2Number(buf, bufPtr, offset % 60);
+                    }
+                    break;
+                default:
+                    throw new InternalError();  // impossible
             }
         }
 
-        return new String(buf,0,bufPtr);
+        return new String(buf, 0, bufPtr);
     }
 
     /**
      * Prints an int as two digits into the buffer.
      *
-     * @param number
-     *      Number to be printed. Must be positive.
+     * @param number Number to be printed. Must be positive.
      */
-    private int print2Number( char[] out, int bufptr, int number ) {
-        out[bufptr++] = (char) ('0'+(number/10));
-        out[bufptr++] = (char) ('0'+(number%10));
+    private int print2Number(char[] out, int bufptr, int number) {
+        out[bufptr++] = (char) ('0' + (number / 10));
+        out[bufptr++] = (char) ('0' + (number % 10));
         return bufptr;
     }
 
     /**
      * Prints an int as four digits into the buffer.
      *
-     * @param number
-     *      Number to be printed. Must be positive.
+     * @param number Number to be printed. Must be positive.
      */
-    private int print4Number( char[] out, int bufptr, int number ) {
-        out[bufptr+3] = (char) ('0'+(number%10));
+    private int print4Number(char[] out, int bufptr, int number) {
+        out[bufptr + 3] = (char) ('0' + (number % 10));
         number /= 10;
-        out[bufptr+2] = (char) ('0'+(number%10));
+        out[bufptr + 2] = (char) ('0' + (number % 10));
         number /= 10;
-        out[bufptr+1] = (char) ('0'+(number%10));
+        out[bufptr + 1] = (char) ('0' + (number % 10));
         number /= 10;
-        out[bufptr  ] = (char) ('0'+(number%10));
-        return bufptr+4;
+        out[bufptr] = (char) ('0' + (number % 10));
+        return bufptr + 4;
     }
 
     /**
      * Compute <code>value*signum</code> where value==null is treated as
      * value==0.
+     *
      * @return non-null {@link BigInteger}.
      */
     static BigInteger sanitize(Number value, int signum) {
         if (signum == 0 || value == null) {
             return BigInteger.ZERO;
         }
-        return (signum <  0)? ((BigInteger)value).negate() : (BigInteger)value;
+        return (signum < 0) ? ((BigInteger) value).negate() : (BigInteger) value;
     }
 
-    /** <p><code>reset()</code> is designed to allow the reuse of existing
+    /**
+     * <p><code>reset()</code> is designed to allow the reuse of existing
      * <code>XMLGregorianCalendar</code>s thus saving resources associated
-     *  with the creation of new <code>XMLGregorianCalendar</code>s.</p>
+     * with the creation of new <code>XMLGregorianCalendar</code>s.</p>
      */
     public void reset() {
         //PENDING : Implementation of reset method

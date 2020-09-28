@@ -85,10 +85,10 @@ import java.io.IOException;
  * identifiers to local URIs or to look up replacements in a catalog
  * (possibly by using the public identifier).</p>
  *
- * @since SAX 1.0
  * @author David Megginson
  * @see org.xml.sax.XMLReader#setEntityResolver
  * @see org.xml.sax.InputSource
+ * @since SAX 1.0
  */
 public interface EntityResolver {
 
@@ -121,22 +121,22 @@ public interface EntityResolver {
      * resolve it fully before reporting it to the application.</p>
      *
      * @param publicId The public identifier of the external entity
-     *        being referenced, or null if none was supplied.
+     *                 being referenced, or null if none was supplied.
      * @param systemId The system identifier of the external entity
-     *        being referenced.
+     *                 being referenced.
      * @return An InputSource object describing the new input source,
-     *         or null to request that the parser open a regular
-     *         URI connection to the system identifier.
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
-     * @exception java.io.IOException A Java-specific IO exception,
-     *            possibly the result of creating a new InputStream
-     *            or Reader for the InputSource.
+     * or null to request that the parser open a regular
+     * URI connection to the system identifier.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
+     * @throws java.io.IOException      A Java-specific IO exception,
+     *                                  possibly the result of creating a new InputStream
+     *                                  or Reader for the InputSource.
      * @see org.xml.sax.InputSource
      */
-    public abstract InputSource resolveEntity (String publicId,
-                                               String systemId)
-        throws SAXException, IOException;
+    public abstract InputSource resolveEntity(String publicId,
+                                              String systemId)
+            throws SAXException, IOException;
 
 }
 

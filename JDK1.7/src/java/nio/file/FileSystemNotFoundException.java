@@ -30,8 +30,7 @@ package java.nio.file;
  */
 
 public class FileSystemNotFoundException
-    extends RuntimeException
-{
+        extends RuntimeException {
     static final long serialVersionUID = 7999581764446402397L;
 
     /**
@@ -43,8 +42,7 @@ public class FileSystemNotFoundException
     /**
      * Constructs an instance of this class.
      *
-     * @param   msg
-     *          the detail message
+     * @param msg the detail message
      */
     public FileSystemNotFoundException(String msg) {
         super(msg);

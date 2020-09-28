@@ -28,7 +28,6 @@ package com.sun.security.auth;
 /**
  * <p> This class abstracts an NT security token
  * and provides a mechanism to do same-process security impersonation.
- *
  */
 
 public class NTNumericCredential {
@@ -41,7 +40,6 @@ public class NTNumericCredential {
      * <p>
      *
      * @param token the Windows NT security token for this user. <p>
-     *
      */
     public NTNumericCredential(long token) {
         this.impersonationToken = token;
@@ -54,7 +52,7 @@ public class NTNumericCredential {
      * <p>
      *
      * @return an integer representation of this
-     *          <code>NTNumericCredential</code>.
+     * <code>NTNumericCredential</code>.
      */
     public long getToken() {
         return impersonationToken;
@@ -71,7 +69,7 @@ public class NTNumericCredential {
         java.text.MessageFormat form = new java.text.MessageFormat
                 (sun.security.util.ResourcesMgr.getString
                         ("NTNumericCredential.name",
-                        "sun.security.util.AuthResources"));
+                                "sun.security.util.AuthResources"));
         Object[] source = {Long.toString(impersonationToken)};
         return form.format(source);
     }
@@ -86,9 +84,8 @@ public class NTNumericCredential {
      *
      * @param o Object to be compared for equality with this
      *          <code>NTNumericCredential</code>.
-     *
      * @return true if the specified Object is equal equal to this
-     *          <code>NTNumericCredential</code>.
+     * <code>NTNumericCredential</code>.
      */
     public boolean equals(Object o) {
         if (o == null)
@@ -99,7 +96,7 @@ public class NTNumericCredential {
 
         if (!(o instanceof NTNumericCredential))
             return false;
-        NTNumericCredential that = (NTNumericCredential)o;
+        NTNumericCredential that = (NTNumericCredential) o;
 
         if (impersonationToken == that.getToken())
             return true;
@@ -114,6 +111,6 @@ public class NTNumericCredential {
      * @return a hash code for this <code>NTNumericCredential</code>.
      */
     public int hashCode() {
-        return (int)this.impersonationToken;
+        return (int) this.impersonationToken;
     }
 }

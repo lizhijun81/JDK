@@ -38,8 +38,8 @@ import java.util.Arrays;
  * this class can be called after the stream has been closed without
  * generating an <tt>IOException</tt>.
  *
- * @author  Arthur van Hoff
- * @since   JDK1.0
+ * @author Arthur van Hoff
+ * @since JDK1.0
  */
 
 public class ByteArrayOutputStream extends OutputStream {
@@ -66,13 +66,13 @@ public class ByteArrayOutputStream extends OutputStream {
      * Creates a new byte array output stream, with a buffer capacity of
      * the specified size, in bytes.
      *
-     * @param   size   the initial size.
-     * @exception  IllegalArgumentException if size is negative.
+     * @param size the initial size.
+     * @throws IllegalArgumentException if size is negative.
      */
     public ByteArrayOutputStream(int size) {
         if (size < 0) {
             throw new IllegalArgumentException("Negative initial size: "
-                                               + size);
+                    + size);
         }
         buf = new byte[size];
     }
@@ -84,8 +84,8 @@ public class ByteArrayOutputStream extends OutputStream {
      *
      * @param minCapacity the desired minimum capacity
      * @throws OutOfMemoryError if {@code minCapacity < 0}.  This is
-     * interpreted as a request for the unsatisfiably large capacity
-     * {@code (long) Integer.MAX_VALUE + (minCapacity - Integer.MAX_VALUE)}.
+     *                          interpreted as a request for the unsatisfiably large capacity
+     *                          {@code (long) Integer.MAX_VALUE + (minCapacity - Integer.MAX_VALUE)}.
      */
     private void ensureCapacity(int minCapacity) {
         // overflow-conscious code
@@ -116,7 +116,7 @@ public class ByteArrayOutputStream extends OutputStream {
     /**
      * Writes the specified byte to this byte array output stream.
      *
-     * @param   b   the byte to be written.
+     * @param b the byte to be written.
      */
     public synchronized void write(int b) {
         ensureCapacity(count + 1);
@@ -128,13 +128,13 @@ public class ByteArrayOutputStream extends OutputStream {
      * Writes <code>len</code> bytes from the specified byte array
      * starting at offset <code>off</code> to this byte array output stream.
      *
-     * @param   b     the data.
-     * @param   off   the start offset in the data.
-     * @param   len   the number of bytes to write.
+     * @param b   the data.
+     * @param off the start offset in the data.
+     * @param len the number of bytes to write.
      */
     public synchronized void write(byte b[], int off, int len) {
         if ((off < 0) || (off > b.length) || (len < 0) ||
-            ((off + len) - b.length > 0)) {
+                ((off + len) - b.length > 0)) {
             throw new IndexOutOfBoundsException();
         }
         ensureCapacity(count + len);
@@ -147,8 +147,8 @@ public class ByteArrayOutputStream extends OutputStream {
      * the specified output stream argument, as if by calling the output
      * stream's write method using <code>out.write(buf, 0, count)</code>.
      *
-     * @param      out   the output stream to which to write the data.
-     * @exception  IOException  if an I/O error occurs.
+     * @param out the output stream to which to write the data.
+     * @throws IOException if an I/O error occurs.
      */
     public synchronized void writeTo(OutputStream out) throws IOException {
         out.write(buf, 0, count);
@@ -160,7 +160,7 @@ public class ByteArrayOutputStream extends OutputStream {
      * output stream is discarded. The output stream can be used again,
      * reusing the already allocated buffer space.
      *
-     * @see     java.io.ByteArrayInputStream#count
+     * @see java.io.ByteArrayInputStream#count
      */
     public synchronized void reset() {
         count = 0;
@@ -171,8 +171,8 @@ public class ByteArrayOutputStream extends OutputStream {
      * size of this output stream and the valid contents of the buffer
      * have been copied into it.
      *
-     * @return  the current contents of this output stream, as a byte array.
-     * @see     java.io.ByteArrayOutputStream#size()
+     * @return the current contents of this output stream, as a byte array.
+     * @see java.io.ByteArrayOutputStream#size()
      */
     public synchronized byte toByteArray()[] {
         return Arrays.copyOf(buf, count);
@@ -181,9 +181,9 @@ public class ByteArrayOutputStream extends OutputStream {
     /**
      * Returns the current size of the buffer.
      *
-     * @return  the value of the <code>count</code> field, which is the number
-     *          of valid bytes in this output stream.
-     * @see     java.io.ByteArrayOutputStream#count
+     * @return the value of the <code>count</code> field, which is the number
+     * of valid bytes in this output stream.
+     * @see java.io.ByteArrayOutputStream#count
      */
     public synchronized int size() {
         return count;
@@ -202,7 +202,7 @@ public class ByteArrayOutputStream extends OutputStream {
      * required.
      *
      * @return String decoded from the buffer's contents.
-     * @since  JDK1.1
+     * @since JDK1.1
      */
     public synchronized String toString() {
         return new String(buf, 0, count);
@@ -219,16 +219,14 @@ public class ByteArrayOutputStream extends OutputStream {
      * java.nio.charset.CharsetDecoder} class should be used when more control
      * over the decoding process is required.
      *
-     * @param  charsetName  the name of a supported
-     *              {@linkplain java.nio.charset.Charset </code>charset<code>}
+     * @param charsetName the name of a supported
+     *                    {@linkplain java.nio.charset.Charset </code>charset<code>}
      * @return String decoded from the buffer's contents.
-     * @exception  UnsupportedEncodingException
-     *             If the named charset is not supported
-     * @since   JDK1.1
+     * @throws UnsupportedEncodingException If the named charset is not supported
+     * @since JDK1.1
      */
     public synchronized String toString(String charsetName)
-        throws UnsupportedEncodingException
-    {
+            throws UnsupportedEncodingException {
         return new String(buf, 0, count, charsetName);
     }
 
@@ -242,17 +240,16 @@ public class ByteArrayOutputStream extends OutputStream {
      *     c == (char)(((hibyte &amp; 0xff) &lt;&lt; 8) | (b &amp; 0xff))
      * </pre></blockquote>
      *
+     * @param hibyte the high byte of each resulting Unicode character.
+     * @return the current contents of the output stream, as a string.
+     * @see java.io.ByteArrayOutputStream#size()
+     * @see java.io.ByteArrayOutputStream#toString(String)
+     * @see java.io.ByteArrayOutputStream#toString()
      * @deprecated This method does not properly convert bytes into characters.
      * As of JDK&nbsp;1.1, the preferred way to do this is via the
      * <code>toString(String enc)</code> method, which takes an encoding-name
      * argument, or the <code>toString()</code> method, which uses the
      * platform's default character encoding.
-     *
-     * @param      hibyte    the high byte of each resulting Unicode character.
-     * @return     the current contents of the output stream, as a string.
-     * @see        java.io.ByteArrayOutputStream#size()
-     * @see        java.io.ByteArrayOutputStream#toString(String)
-     * @see        java.io.ByteArrayOutputStream#toString()
      */
     @Deprecated
     public synchronized String toString(int hibyte) {
@@ -264,7 +261,6 @@ public class ByteArrayOutputStream extends OutputStream {
      * this class can be called after the stream has been closed without
      * generating an <tt>IOException</tt>.
      * <p>
-     *
      */
     public void close() throws IOException {
     }

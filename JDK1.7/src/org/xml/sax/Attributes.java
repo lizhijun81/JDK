@@ -85,13 +85,12 @@ package org.xml.sax;
  * <p>The order of attributes in the list is unspecified, and will
  * vary from implementation to implementation.</p>
  *
- * @since SAX 2.0
  * @author David Megginson
  * @see org.xml.sax.helpers.AttributesImpl
  * @see org.xml.sax.ext.DeclHandler#attributeDecl
+ * @since SAX 2.0
  */
-public interface Attributes
-{
+public interface Attributes {
 
 
     ////////////////////////////////////////////////////////////////////
@@ -112,7 +111,7 @@ public interface Attributes
      * @see #getType(int)
      * @see #getValue(int)
      */
-    public abstract int getLength ();
+    public abstract int getLength();
 
 
     /**
@@ -120,11 +119,11 @@ public interface Attributes
      *
      * @param index The attribute index (zero-based).
      * @return The Namespace URI, or the empty string if none
-     *         is available, or null if the index is out of
-     *         range.
+     * is available, or null if the index is out of
+     * range.
      * @see #getLength
      */
-    public abstract String getURI (int index);
+    public abstract String getURI(int index);
 
 
     /**
@@ -132,11 +131,11 @@ public interface Attributes
      *
      * @param index The attribute index (zero-based).
      * @return The local name, or the empty string if Namespace
-     *         processing is not being performed, or null
-     *         if the index is out of range.
+     * processing is not being performed, or null
+     * if the index is out of range.
      * @see #getLength
      */
-    public abstract String getLocalName (int index);
+    public abstract String getLocalName(int index);
 
 
     /**
@@ -144,11 +143,11 @@ public interface Attributes
      *
      * @param index The attribute index (zero-based).
      * @return The XML qualified name, or the empty string
-     *         if none is available, or null if the index
-     *         is out of range.
+     * if none is available, or null if the index
+     * is out of range.
      * @see #getLength
      */
-    public abstract String getQName (int index);
+    public abstract String getQName(int index);
 
 
     /**
@@ -168,10 +167,10 @@ public interface Attributes
      *
      * @param index The attribute index (zero-based).
      * @return The attribute's type as a string, or null if the
-     *         index is out of range.
+     * index is out of range.
      * @see #getLength
      */
-    public abstract String getType (int index);
+    public abstract String getType(int index);
 
 
     /**
@@ -184,11 +183,10 @@ public interface Attributes
      *
      * @param index The attribute index (zero-based).
      * @return The attribute's value as a string, or null if the
-     *         index is out of range.
+     * index is out of range.
      * @see #getLength
      */
-    public abstract String getValue (int index);
-
+    public abstract String getValue(int index);
 
 
     ////////////////////////////////////////////////////////////////////
@@ -199,13 +197,13 @@ public interface Attributes
     /**
      * Look up the index of an attribute by Namespace name.
      *
-     * @param uri The Namespace URI, or the empty string if
-     *        the name has no Namespace URI.
+     * @param uri       The Namespace URI, or the empty string if
+     *                  the name has no Namespace URI.
      * @param localName The attribute's local name.
      * @return The index of the attribute, or -1 if it does not
-     *         appear in the list.
+     * appear in the list.
      */
-    public int getIndex (String uri, String localName);
+    public int getIndex(String uri, String localName);
 
 
     /**
@@ -213,9 +211,9 @@ public interface Attributes
      *
      * @param qName The qualified (prefixed) name.
      * @return The index of the attribute, or -1 if it does not
-     *         appear in the list.
+     * appear in the list.
      */
-    public int getIndex (String qName);
+    public int getIndex(String qName);
 
 
     /**
@@ -224,14 +222,14 @@ public interface Attributes
      * <p>See {@link #getType(int) getType(int)} for a description
      * of the possible types.</p>
      *
-     * @param uri The Namespace URI, or the empty String if the
-     *        name has no Namespace URI.
+     * @param uri       The Namespace URI, or the empty String if the
+     *                  name has no Namespace URI.
      * @param localName The local name of the attribute.
      * @return The attribute type as a string, or null if the
-     *         attribute is not in the list or if Namespace
-     *         processing is not being performed.
+     * attribute is not in the list or if Namespace
+     * processing is not being performed.
      */
-    public abstract String getType (String uri, String localName);
+    public abstract String getType(String uri, String localName);
 
 
     /**
@@ -242,10 +240,10 @@ public interface Attributes
      *
      * @param qName The XML qualified name.
      * @return The attribute type as a string, or null if the
-     *         attribute is not in the list or if qualified names
-     *         are not available.
+     * attribute is not in the list or if qualified names
+     * are not available.
      */
-    public abstract String getType (String qName);
+    public abstract String getType(String qName);
 
 
     /**
@@ -254,13 +252,13 @@ public interface Attributes
      * <p>See {@link #getValue(int) getValue(int)} for a description
      * of the possible values.</p>
      *
-     * @param uri The Namespace URI, or the empty String if the
-     *        name has no Namespace URI.
+     * @param uri       The Namespace URI, or the empty String if the
+     *                  name has no Namespace URI.
      * @param localName The local name of the attribute.
      * @return The attribute value as a string, or null if the
-     *         attribute is not in the list.
+     * attribute is not in the list.
      */
-    public abstract String getValue (String uri, String localName);
+    public abstract String getValue(String uri, String localName);
 
 
     /**
@@ -271,10 +269,10 @@ public interface Attributes
      *
      * @param qName The XML qualified name.
      * @return The attribute value as a string, or null if the
-     *         attribute is not in the list or if qualified names
-     *         are not available.
+     * attribute is not in the list or if qualified names
+     * are not available.
      */
-    public abstract String getValue (String qName);
+    public abstract String getValue(String qName);
 
 }
 

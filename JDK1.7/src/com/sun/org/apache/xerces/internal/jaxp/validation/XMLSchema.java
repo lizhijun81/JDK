@@ -29,10 +29,14 @@ import com.sun.org.apache.xerces.internal.xni.grammars.XMLGrammarPool;
  */
 final class XMLSchema extends AbstractXMLSchema {
 
-    /** The grammar pool is immutable */
+    /**
+     * The grammar pool is immutable
+     */
     private final XMLGrammarPool fGrammarPool;
 
-    /** Constructor */
+    /**
+     * Constructor
+     */
     public XMLSchema(XMLGrammarPool grammarPool) {
         fGrammarPool = grammarPool;
     }

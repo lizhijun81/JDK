@@ -37,28 +37,28 @@ import java.security.Principal;
  * identity.  Refer to the <code>Subject</code> class for more information
  * on how to achieve this.  Authorization decisions can then be based upon
  * the Principals associated with a <code>Subject</code>.
- * @deprecated As of JDK&nbsp;1.4, replaced by
- *             {@link UnixNumericUserPrincipal}.
- *             This class is entirely deprecated.
  *
  * @see java.security.Principal
  * @see javax.security.auth.Subject
+ * @deprecated As of JDK&nbsp;1.4, replaced by
+ * {@link UnixNumericUserPrincipal}.
+ * This class is entirely deprecated.
  */
 @Deprecated
 public class SolarisNumericUserPrincipal implements
-                                        Principal,
-                                        java.io.Serializable {
+        Principal,
+        java.io.Serializable {
 
     private static final long serialVersionUID = -3178578484679887104L;
 
     private static final java.util.ResourceBundle rb =
-          java.security.AccessController.doPrivileged
-          (new java.security.PrivilegedAction<java.util.ResourceBundle>() {
-              public java.util.ResourceBundle run() {
-                  return (java.util.ResourceBundle.getBundle
-                                ("sun.security.util.AuthResources"));
-              }
-           });
+            java.security.AccessController.doPrivileged
+                    (new java.security.PrivilegedAction<java.util.ResourceBundle>() {
+                        public java.util.ResourceBundle run() {
+                            return (java.util.ResourceBundle.getBundle
+                                    ("sun.security.util.AuthResources"));
+                        }
+                    });
 
 
     /**
@@ -74,9 +74,8 @@ public class SolarisNumericUserPrincipal implements
      * <p>
      *
      * @param name the user identification number (UID) for this user.
-     *
-     * @exception NullPointerException if the <code>name</code>
-     *                  is <code>null</code>.
+     * @throws NullPointerException if the <code>name</code>
+     *                              is <code>null</code>.
      */
     public SolarisNumericUserPrincipal(String name) {
         if (name == null)
@@ -92,7 +91,7 @@ public class SolarisNumericUserPrincipal implements
      * <p>
      *
      * @param name the user identification number (UID) for this user
-     *                  represented as a long.
+     *             represented as a long.
      */
     public SolarisNumericUserPrincipal(long name) {
         this.name = (new Long(name)).toString();
@@ -105,7 +104,7 @@ public class SolarisNumericUserPrincipal implements
      * <p>
      *
      * @return the user identification number (UID) for this
-     *          <code>SolarisNumericUserPrincipal</code>
+     * <code>SolarisNumericUserPrincipal</code>
      */
     public String getName() {
         return name;
@@ -118,7 +117,7 @@ public class SolarisNumericUserPrincipal implements
      * <p>
      *
      * @return the user identification number (UID) for this
-     *          <code>SolarisNumericUserPrincipal</code> as a long.
+     * <code>SolarisNumericUserPrincipal</code> as a long.
      */
     public long longValue() {
         return ((new Long(name)).longValue());
@@ -131,10 +130,10 @@ public class SolarisNumericUserPrincipal implements
      * <p>
      *
      * @return a string representation of this
-     *          <code>SolarisNumericUserPrincipal</code>.
+     * <code>SolarisNumericUserPrincipal</code>.
      */
     public String toString() {
-        return(rb.getString("SolarisNumericUserPrincipal.") + name);
+        return (rb.getString("SolarisNumericUserPrincipal.") + name);
     }
 
     /**
@@ -149,9 +148,8 @@ public class SolarisNumericUserPrincipal implements
      *
      * @param o Object to be compared for equality with this
      *          <code>SolarisNumericUserPrincipal</code>.
-     *
      * @return true if the specified Object is equal equal to this
-     *          <code>SolarisNumericUserPrincipal</code>.
+     * <code>SolarisNumericUserPrincipal</code>.
      */
     public boolean equals(Object o) {
         if (o == null)
@@ -162,7 +160,7 @@ public class SolarisNumericUserPrincipal implements
 
         if (!(o instanceof SolarisNumericUserPrincipal))
             return false;
-        SolarisNumericUserPrincipal that = (SolarisNumericUserPrincipal)o;
+        SolarisNumericUserPrincipal that = (SolarisNumericUserPrincipal) o;
 
         if (this.getName().equals(that.getName()))
             return true;

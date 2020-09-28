@@ -42,15 +42,15 @@ public class JPEGImageMetadataFormat extends JPEGMetadataFormat {
 
     private JPEGImageMetadataFormat() {
         super(JPEG.nativeImageMetadataFormatName,
-              CHILD_POLICY_ALL);
+                CHILD_POLICY_ALL);
 
         addElement("JPEGvariety",
-                   JPEG.nativeImageMetadataFormatName,
-                   CHILD_POLICY_CHOICE);
+                JPEG.nativeImageMetadataFormatName,
+                CHILD_POLICY_CHOICE);
 
         addElement("markerSequence",
-                   JPEG.nativeImageMetadataFormatName,
-                   CHILD_POLICY_SEQUENCE);
+                JPEG.nativeImageMetadataFormatName,
+                CHILD_POLICY_SEQUENCE);
 
         addElement("app0JFIF", "JPEGvariety", CHILD_POLICY_SOME);
 
@@ -69,57 +69,57 @@ public class JPEGImageMetadataFormat extends JPEGMetadataFormat {
         addElement("app2ICC", "app0JFIF", CHILD_POLICY_EMPTY);
 
         addAttribute("app0JFIF",
-                     "majorVersion",
-                     DATATYPE_INTEGER,
-                     false,
-                     "1",
-                     "0", "255",
-                     true, true);
+                "majorVersion",
+                DATATYPE_INTEGER,
+                false,
+                "1",
+                "0", "255",
+                true, true);
         addAttribute("app0JFIF",
-                     "minorVersion",
-                     DATATYPE_INTEGER,
-                     false,
-                     "2",
-                     "0", "255",
-                     true, true);
+                "minorVersion",
+                DATATYPE_INTEGER,
+                false,
+                "2",
+                "0", "255",
+                true, true);
         List resUnits = new ArrayList();
         resUnits.add("0");
         resUnits.add("1");
         resUnits.add("2");
         addAttribute("app0JFIF",
-                     "resUnits",
-                     DATATYPE_INTEGER,
-                     false,
-                     "0",
-                     resUnits);
+                "resUnits",
+                DATATYPE_INTEGER,
+                false,
+                "0",
+                resUnits);
         addAttribute("app0JFIF",
-                     "Xdensity",
-                     DATATYPE_INTEGER,
-                     false,
-                     "1",
-                     "1", "65535",
-                     true, true);
+                "Xdensity",
+                DATATYPE_INTEGER,
+                false,
+                "1",
+                "1", "65535",
+                true, true);
         addAttribute("app0JFIF",
-                     "Ydensity",
-                     DATATYPE_INTEGER,
-                     false,
-                     "1",
-                     "1", "65535",
-                     true, true);
+                "Ydensity",
+                DATATYPE_INTEGER,
+                false,
+                "1",
+                "1", "65535",
+                true, true);
         addAttribute("app0JFIF",
-                     "thumbWidth",
-                     DATATYPE_INTEGER,
-                     false,
-                     "0",
-                     "0", "255",
-                     true, true);
+                "thumbWidth",
+                DATATYPE_INTEGER,
+                false,
+                "0",
+                "0", "255",
+                true, true);
         addAttribute("app0JFIF",
-                     "thumbHeight",
-                     DATATYPE_INTEGER,
-                     false,
-                     "0",
-                     "0", "255",
-                     true, true);
+                "thumbHeight",
+                DATATYPE_INTEGER,
+                false,
+                "0",
+                "0", "255",
+                true, true);
 
         addElement("JFIFthumbJPEG", "app0JFXX", CHILD_POLICY_SOME);
         addElement("JFIFthumbPalette", "app0JFXX", CHILD_POLICY_EMPTY);
@@ -130,78 +130,78 @@ public class JPEGImageMetadataFormat extends JPEGMetadataFormat {
         codes.add("17"); // Hex 11
         codes.add("19"); // Hex 13
         addAttribute("app0JFXX",
-                     "extensionCode",
-                     DATATYPE_INTEGER,
-                     false,
-                     null,
-                     codes);
+                "extensionCode",
+                DATATYPE_INTEGER,
+                false,
+                null,
+                codes);
 
         addChildElement("markerSequence", "JFIFthumbJPEG");
 
         addAttribute("JFIFthumbPalette",
-                     "thumbWidth",
-                     DATATYPE_INTEGER,
-                     false,
-                     null,
-                     "0", "255",
-                     true, true);
+                "thumbWidth",
+                DATATYPE_INTEGER,
+                false,
+                null,
+                "0", "255",
+                true, true);
         addAttribute("JFIFthumbPalette",
-                     "thumbHeight",
-                     DATATYPE_INTEGER,
-                     false,
-                     null,
-                     "0", "255",
-                     true, true);
+                "thumbHeight",
+                DATATYPE_INTEGER,
+                false,
+                null,
+                "0", "255",
+                true, true);
 
         addAttribute("JFIFthumbRGB",
-                     "thumbWidth",
-                     DATATYPE_INTEGER,
-                     false,
-                     null,
-                     "0", "255",
-                     true, true);
+                "thumbWidth",
+                DATATYPE_INTEGER,
+                false,
+                null,
+                "0", "255",
+                true, true);
         addAttribute("JFIFthumbRGB",
-                     "thumbHeight",
-                     DATATYPE_INTEGER,
-                     false,
-                     null,
-                     "0", "255",
-                     true, true);
+                "thumbHeight",
+                DATATYPE_INTEGER,
+                false,
+                null,
+                "0", "255",
+                true, true);
 
         addObjectValue("app2ICC", ICC_Profile.class, false, null);
 
         addAttribute("app14Adobe",
-                     "version",
-                     DATATYPE_INTEGER,
-                     false,
-                     "100",
-                     "100", "255",
-                     true, true);
+                "version",
+                DATATYPE_INTEGER,
+                false,
+                "100",
+                "100", "255",
+                true, true);
         addAttribute("app14Adobe",
-                     "flags0",
-                     DATATYPE_INTEGER,
-                     false,
-                     "0",
-                     "0", "65535",
-                     true, true);
+                "flags0",
+                DATATYPE_INTEGER,
+                false,
+                "0",
+                "0", "65535",
+                true, true);
         addAttribute("app14Adobe",
-                     "flags1",
-                     DATATYPE_INTEGER,
-                     false,
-                     "0",
-                     "0", "65535",
-                     true, true);
+                "flags1",
+                DATATYPE_INTEGER,
+                false,
+                "0",
+                "0", "65535",
+                true, true);
 
         List transforms = new ArrayList();
         transforms.add("0");
         transforms.add("1");
         transforms.add("2");
         addAttribute("app14Adobe",
-                     "transform",
-                     DATATYPE_INTEGER,
-                     true,
-                     null,
-                     transforms);
+                "transform",
+                DATATYPE_INTEGER,
+                true,
+                null,
+                transforms);
 
         addElement("componentSpec", "sof", CHILD_POLICY_EMPTY);
 
@@ -210,146 +210,146 @@ public class JPEGImageMetadataFormat extends JPEGMetadataFormat {
         procs.add("1");
         procs.add("2");
         addAttribute("sof",
-                     "process",
-                     DATATYPE_INTEGER,
-                     false,
-                     null,
-                     procs);
+                "process",
+                DATATYPE_INTEGER,
+                false,
+                null,
+                procs);
         addAttribute("sof",
-                     "samplePrecision",
-                     DATATYPE_INTEGER,
-                     false,
-                     "8");
+                "samplePrecision",
+                DATATYPE_INTEGER,
+                false,
+                "8");
         addAttribute("sof",
-                     "numLines",
-                     DATATYPE_INTEGER,
-                     false,
-                     null,
-                     "0", "65535",
-                     true, true);
+                "numLines",
+                DATATYPE_INTEGER,
+                false,
+                null,
+                "0", "65535",
+                true, true);
         addAttribute("sof",
-                     "samplesPerLine",
-                     DATATYPE_INTEGER,
-                     false,
-                     null,
-                     "0", "65535",
-                     true, true);
+                "samplesPerLine",
+                DATATYPE_INTEGER,
+                false,
+                null,
+                "0", "65535",
+                true, true);
         List comps = new ArrayList();
         comps.add("1");
         comps.add("2");
         comps.add("3");
         comps.add("4");
         addAttribute("sof",
-                     "numFrameComponents",
-                     DATATYPE_INTEGER,
-                     false,
-                     null,
-                     comps);
+                "numFrameComponents",
+                DATATYPE_INTEGER,
+                false,
+                null,
+                comps);
 
         addAttribute("componentSpec",
-                     "componentId",
-                     DATATYPE_INTEGER,
-                     true,
-                     null,
-                     "0", "255",
-                     true, true);
+                "componentId",
+                DATATYPE_INTEGER,
+                true,
+                null,
+                "0", "255",
+                true, true);
         addAttribute("componentSpec",
-                     "HsamplingFactor",
-                     DATATYPE_INTEGER,
-                     true,
-                     null,
-                     "1", "255",
-                     true, true);
+                "HsamplingFactor",
+                DATATYPE_INTEGER,
+                true,
+                null,
+                "1", "255",
+                true, true);
         addAttribute("componentSpec",
-                     "VsamplingFactor",
-                     DATATYPE_INTEGER,
-                     true,
-                     null,
-                     "1", "255",
-                     true, true);
+                "VsamplingFactor",
+                DATATYPE_INTEGER,
+                true,
+                null,
+                "1", "255",
+                true, true);
         List tabids = new ArrayList();
         tabids.add("0");
         tabids.add("1");
         tabids.add("2");
         tabids.add("3");
         addAttribute("componentSpec",
-                     "QtableSelector",
-                     DATATYPE_INTEGER,
-                     true,
-                     null,
-                     tabids);
+                "QtableSelector",
+                DATATYPE_INTEGER,
+                true,
+                null,
+                tabids);
 
         addElement("scanComponentSpec", "sos", CHILD_POLICY_EMPTY);
 
         addAttribute("sos",
-                     "numScanComponents",
-                     DATATYPE_INTEGER,
-                     true,
-                     null,
-                     comps);
+                "numScanComponents",
+                DATATYPE_INTEGER,
+                true,
+                null,
+                comps);
         addAttribute("sos",
-                     "startSpectralSelection",
-                      DATATYPE_INTEGER,
-                     false,
-                     "0",
-                     "0", "63",
-                     true, true);
+                "startSpectralSelection",
+                DATATYPE_INTEGER,
+                false,
+                "0",
+                "0", "63",
+                true, true);
         addAttribute("sos",
-                     "endSpectralSelection",
-                      DATATYPE_INTEGER,
-                     false,
-                     "63",
-                     "0", "63",
-                     true, true);
+                "endSpectralSelection",
+                DATATYPE_INTEGER,
+                false,
+                "63",
+                "0", "63",
+                true, true);
         addAttribute("sos",
-                     "approxHigh",
-                      DATATYPE_INTEGER,
-                     false,
-                     "0",
-                     "0", "15",
-                     true, true);
+                "approxHigh",
+                DATATYPE_INTEGER,
+                false,
+                "0",
+                "0", "15",
+                true, true);
         addAttribute("sos",
-                     "approxLow",
-                      DATATYPE_INTEGER,
-                     false,
-                     "0",
-                     "0", "15",
-                     true, true);
+                "approxLow",
+                DATATYPE_INTEGER,
+                false,
+                "0",
+                "0", "15",
+                true, true);
 
         addAttribute("scanComponentSpec",
-                     "componentSelector",
-                     DATATYPE_INTEGER,
-                     true,
-                     null,
-                     "0", "255",
-                     true, true);
+                "componentSelector",
+                DATATYPE_INTEGER,
+                true,
+                null,
+                "0", "255",
+                true, true);
         addAttribute("scanComponentSpec",
-                     "dcHuffTable",
-                     DATATYPE_INTEGER,
-                     true,
-                     null,
-                     tabids);
+                "dcHuffTable",
+                DATATYPE_INTEGER,
+                true,
+                null,
+                tabids);
         addAttribute("scanComponentSpec",
-                     "acHuffTable",
-                     DATATYPE_INTEGER,
-                     true,
-                     null,
-                     tabids);
+                "acHuffTable",
+                DATATYPE_INTEGER,
+                true,
+                null,
+                tabids);
     }
 
     public boolean canNodeAppear(String elementName,
                                  ImageTypeSpecifier imageType) {
         // All images can have these
         if (elementName.equals(getRootName())
-            || elementName.equals("JPEGvariety")
-            || isInSubtree(elementName, "markerSequence")) {
+                || elementName.equals("JPEGvariety")
+                || isInSubtree(elementName, "markerSequence")) {
             return true;
         }
 
         // If it is an element in the app0jfif subtree, just check
         // that the image type is JFIF compliant.
         if ((isInSubtree(elementName, "app0JFIF"))
-            && JPEG.isJFIFcompliant(imageType, true)) {
+                && JPEG.isJFIFcompliant(imageType, true)) {
             return true;
         }
 

@@ -38,25 +38,28 @@ import org.w3c.dom.NamedNodeMap;
  * ElementImpl.
  *
  * @xerces.internal
- *
  * @see DeferredElementImpl
  */
 public class DeferredElementNSImpl
-    extends ElementNSImpl
-    implements DeferredNode {
+        extends ElementNSImpl
+        implements DeferredNode {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = -5001885145370927385L;
 
     //
     // Data
     //
 
-    /** Node index. */
+    /**
+     * Node index.
+     */
     protected transient int fNodeIndex;
 
     //
@@ -79,7 +82,9 @@ public class DeferredElementNSImpl
     // DeferredNode methods
     //
 
-    /** Returns the node index. */
+    /**
+     * Returns the node index.
+     */
     public final int getNodeIndex() {
         return fNodeIndex;
     }
@@ -88,7 +93,9 @@ public class DeferredElementNSImpl
     // Protected methods
     //
 
-    /** Synchronizes the data (name and value) for fast nodes. */
+    /**
+     * Synchronizes the data (name and value) for fast nodes.
+     */
     protected final void synchronizeData() {
 
         // no need to sync in the future
@@ -96,7 +103,7 @@ public class DeferredElementNSImpl
 
         // fluff data
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl) this.ownerDocument;
+                (DeferredDocumentImpl) this.ownerDocument;
 
         // we don't want to generate any event for this so turn them off
         boolean orig = ownerDocument.mutationEvents;
@@ -108,13 +115,12 @@ public class DeferredElementNSImpl
         int index = name.indexOf(':');
         if (index < 0) {
             localName = name;
-        }
-        else {
+        } else {
             localName = name.substring(index + 1);
         }
 
-            namespaceURI = ownerDocument.getNodeURI(fNodeIndex);
-        type = (XSTypeDefinition)ownerDocument.getTypeInfo(fNodeIndex);
+        namespaceURI = ownerDocument.getNodeURI(fNodeIndex);
+        type = (XSTypeDefinition) ownerDocument.getTypeInfo(fNodeIndex);
 
         // attributes
         setupDefaultAttributes();
@@ -128,13 +134,12 @@ public class DeferredElementNSImpl
                 // non-namespace aware setAttributeNode() method could overwrite
                 // another attribute with the same local name.
                 if (!attr.getSpecified() && (seenSchemaDefault ||
-                    (attr.getNamespaceURI() != null &&
-                    attr.getNamespaceURI() != NamespaceContext.XMLNS_URI &&
-                    attr.getName().indexOf(':') < 0))) {
+                        (attr.getNamespaceURI() != null &&
+                                attr.getNamespaceURI() != NamespaceContext.XMLNS_URI &&
+                                attr.getName().indexOf(':') < 0))) {
                     seenSchemaDefault = true;
                     attrs.setNamedItemNS(attr);
-                }
-                else {
+                } else {
                     attrs.setNamedItem(attr);
                 }
                 attrIndex = ownerDocument.getPrevSibling(attrIndex);
@@ -154,7 +159,7 @@ public class DeferredElementNSImpl
      */
     protected final void synchronizeChildren() {
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl) ownerDocument();
+                (DeferredDocumentImpl) ownerDocument();
         ownerDocument.synchronizeChildren(this, fNodeIndex);
     } // synchronizeChildren()
 

@@ -23,6 +23,7 @@ import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.PropertyResourceBundle;
+
 import com.sun.org.apache.xerces.internal.util.MessageFormatter;
 import com.sun.org.apache.xerces.internal.utils.SecuritySupport;
 
@@ -30,9 +31,8 @@ import com.sun.org.apache.xerces.internal.utils.SecuritySupport;
  * XPointerMessageFormatter provides error messages for the XPointer Framework
  * and element() Scheme Recommendations.
  *
- * @xerces.internal
- *
  * @version $Id: XPointerMessageFormatter.java,v 1.5 2010-11-01 04:40:26 joehw Exp $
+ * @xerces.internal
  */
 class XPointerMessageFormatter implements MessageFormatter {
 
@@ -47,19 +47,13 @@ class XPointerMessageFormatter implements MessageFormatter {
      * Formats a message with the specified arguments using the given locale
      * information.
      *
-     * @param locale
-     *            The locale of the message.
-     * @param key
-     *            The message key.
-     * @param arguments
-     *            The message replacement text arguments. The order of the
-     *            arguments must match that of the placeholders in the actual
-     *            message.
-     *
+     * @param locale    The locale of the message.
+     * @param key       The message key.
+     * @param arguments The message replacement text arguments. The order of the
+     *                  arguments must match that of the placeholders in the actual
+     *                  message.
      * @return Returns the formatted message.
-     *
-     * @throws MissingResourceException
-     *             Thrown if the message with the specified key cannot be found.
+     * @throws MissingResourceException Thrown if the message with the specified key cannot be found.
      */
     public String formatMessage(Locale locale, String key, Object[] arguments)
             throws MissingResourceException {

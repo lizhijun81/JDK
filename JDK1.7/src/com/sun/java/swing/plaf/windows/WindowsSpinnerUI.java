@@ -44,13 +44,14 @@ public class WindowsSpinnerUI extends BasicSpinnerUI {
 
     /**
      * {@inheritDoc}
+     *
      * @since 1.6
      */
     public void paint(Graphics g, JComponent c) {
         if (XPStyle.getXP() != null) {
             paintXPBackground(g, c);
         }
-        super.paint(g,c);
+        super.paint(g, c);
     }
 
     private State getXPState(JComponent c) {
@@ -95,7 +96,7 @@ public class WindowsSpinnerUI extends BasicSpinnerUI {
     private UIResource getUIResource(Object[] listeners) {
         for (int counter = 0; counter < listeners.length; counter++) {
             if (listeners[counter] instanceof UIResource) {
-                return (UIResource)listeners[counter];
+                return (UIResource) listeners[counter];
             }
         }
         return null;

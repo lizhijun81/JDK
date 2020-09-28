@@ -28,8 +28,7 @@ package com.sun.corba.se.spi.transport;
 /**
  * @author Harold Carr
  */
-public interface CorbaConnectionCache
-{
+public interface CorbaConnectionCache {
     public String getMonitoringName();
 }
 

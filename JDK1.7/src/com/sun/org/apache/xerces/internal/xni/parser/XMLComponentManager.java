@@ -32,11 +32,9 @@ import com.sun.org.apache.xerces.internal.util.PropertyState;
  * The methods of the component manager allow components to query features
  * and properties that affect the operation of the component.
  *
- * @see XMLComponent
- *
  * @author Andy Clark, IBM
- *
  * @version $Id: XMLComponentManager.java,v 1.6 2010-11-01 04:40:22 joehw Exp $
+ * @see XMLComponent
  */
 public interface XMLComponentManager {
 
@@ -48,17 +46,16 @@ public interface XMLComponentManager {
      * Returns the state of a feature.
      *
      * @param featureId The feature identifier.
-     *
      * @throws XMLConfigurationException Thrown on configuration error.
      */
     public boolean getFeature(String featureId)
-        throws XMLConfigurationException;
+            throws XMLConfigurationException;
 
     /**
      * Returns the state of a feature.
      * Does not throw exceptions.
      *
-     * @param featureId The feature identifier.
+     * @param featureId    The feature identifier.
      * @param defaultValue Default value if future is not available.
      */
     public boolean getFeature(String featureId, boolean defaultValue);
@@ -67,19 +64,17 @@ public interface XMLComponentManager {
      * Returns the value of a property.
      *
      * @param propertyId The property identifier.
-     *
-    * @throws XMLConfigurationException Thrown on configuration error.
+     * @throws XMLConfigurationException Thrown on configuration error.
      */
     public Object getProperty(String propertyId)
-        throws XMLConfigurationException;
+            throws XMLConfigurationException;
 
     /**
      * Returns the value of a property.
      * Does not throw exceptions.
      *
-     * @param propertyId The property identifier.
+     * @param propertyId    The property identifier.
      * @param defaultObject Return value if property is not available.
-     *
      */
     public Object getProperty(String propertyId, Object defaultObject);
 

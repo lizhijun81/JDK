@@ -23,18 +23,19 @@
  *
  */
 
-package com.sun.corba.se.spi.orbutil.proxy ;
+package com.sun.corba.se.spi.orbutil.proxy;
 
-import java.lang.reflect.InvocationHandler ;
+import java.lang.reflect.InvocationHandler;
 
-public interface InvocationHandlerFactory
-{
-    /** Get an InvocationHandler.
+public interface InvocationHandlerFactory {
+    /**
+     * Get an InvocationHandler.
      */
-    InvocationHandler getInvocationHandler() ;
+    InvocationHandler getInvocationHandler();
 
-    /** Get the interfaces that InvocationHandler instances
+    /**
+     * Get the interfaces that InvocationHandler instances
      * produced by this InvocationHandlerFactory support.
      */
-    Class[] getProxyInterfaces() ;
+    Class[] getProxyInterfaces();
 }

@@ -29,21 +29,23 @@ import javax.lang.model.element.Name;
 
 /**
  * A tree node for a variable declaration.
- *
+ * <p>
  * For example:
  * <pre>
  *   <em>modifiers</em> <em>type</em> <em>name</em> <em>initializer</em> ;
  * </pre>
  *
- * @jls sections 8.3 and 14.4
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls sections 8.3 and 14.4
  * @since 1.6
  */
 public interface VariableTree extends StatementTree {
     ModifiersTree getModifiers();
+
     Name getName();
+
     Tree getType();
+
     ExpressionTree getInitializer();
 }

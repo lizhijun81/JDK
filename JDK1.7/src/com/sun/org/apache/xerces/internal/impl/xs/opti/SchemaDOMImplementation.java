@@ -20,26 +20,29 @@
  */
 
 package com.sun.org.apache.xerces.internal.impl.xs.opti;
+
 import org.w3c.dom.DOMException;
 import org.w3c.dom.DOMImplementation;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 
 /**
- * @xerces.internal
- *
  * @version $Id: SchemaDOMImplementation.java,v 1.2 2010-10-26 23:01:18 joehw Exp $
+ * @xerces.internal
  */
 final class SchemaDOMImplementation implements DOMImplementation {
 
     private static final SchemaDOMImplementation singleton = new SchemaDOMImplementation();
 
-    /** NON-DOM: Obtain and return the single shared object */
+    /**
+     * NON-DOM: Obtain and return the single shared object
+     */
     public static DOMImplementation getDOMImplementation() {
         return singleton;
     }
 
-    private SchemaDOMImplementation() {}
+    private SchemaDOMImplementation() {
+    }
 
     public Document createDocument(String namespaceURI, String qualifiedName, DocumentType doctype)
             throws DOMException {
@@ -61,7 +64,7 @@ final class SchemaDOMImplementation implements DOMImplementation {
     public boolean hasFeature(String feature, String version) {
         final boolean anyVersion = version == null || version.length() == 0;
         return (feature.equalsIgnoreCase("Core") || feature.equalsIgnoreCase("XML")) &&
-            (anyVersion || version.equals("1.0") || version.equals("2.0") || version.equals("3.0"));
+                (anyVersion || version.equals("1.0") || version.equals("2.0") || version.equals("3.0"));
     }
 
 }

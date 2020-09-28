@@ -28,14 +28,14 @@ package com.sun.org.apache.xerces.internal.dom;
  * Entity's children, in exactly the structure which an
  * EntityReference to this name will present within the document's
  * body.
- * <P>
+ * <p>
  * Note that this object models the actual entity, _not_ the entity
  * declaration or the entity reference.
- * <P>
+ * <p>
  * An XML processor may choose to completely expand entities before
  * the structure model is passed to the DOM; in this case, there will
  * be no EntityReferences in the DOM tree.
- * <P>
+ * <p>
  * Quoting the 10/01 DOM Proposal,
  * <BLOCKQUOTE>
  * "The DOM Level 1 does not support editing Entity nodes; if a user
@@ -52,25 +52,28 @@ package com.sun.org.apache.xerces.internal.dom;
  * simplest solution.
  *
  * @xerces.internal
- *
- * @since  PR-DOM-Level-1-19980818.
+ * @since PR-DOM-Level-1-19980818.
  */
 public class DeferredEntityImpl
-    extends EntityImpl
-    implements DeferredNode {
+        extends EntityImpl
+        implements DeferredNode {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = 4760180431078941638L;
 
     //
     // Data
     //
 
-    /** Node index. */
+    /**
+     * Node index.
+     */
     protected transient int fNodeIndex;
 
     //
@@ -94,7 +97,9 @@ public class DeferredEntityImpl
     // DeferredNode methods
     //
 
-    /** Returns the node index. */
+    /**
+     * Returns the node index.
+     */
     public int getNodeIndex() {
         return fNodeIndex;
     }
@@ -114,20 +119,20 @@ public class DeferredEntityImpl
 
         // get the node data
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl)this.ownerDocument;
+                (DeferredDocumentImpl) this.ownerDocument;
         name = ownerDocument.getNodeName(fNodeIndex);
 
         // get the entity data
-        publicId    = ownerDocument.getNodeValue(fNodeIndex);
-        systemId    = ownerDocument.getNodeURI(fNodeIndex);
+        publicId = ownerDocument.getNodeValue(fNodeIndex);
+        systemId = ownerDocument.getNodeURI(fNodeIndex);
         int extraDataIndex = ownerDocument.getNodeExtra(fNodeIndex);
         ownerDocument.getNodeType(extraDataIndex);
 
         notationName = ownerDocument.getNodeName(extraDataIndex);
 
         // encoding and version DOM L3
-        version     = ownerDocument.getNodeValue(extraDataIndex);
-        encoding    = ownerDocument.getNodeURI(extraDataIndex);
+        version = ownerDocument.getNodeValue(extraDataIndex);
+        encoding = ownerDocument.getNodeURI(extraDataIndex);
 
         // baseURI, actualEncoding DOM L3
         int extraIndex2 = ownerDocument.getNodeExtra(extraDataIndex);
@@ -136,7 +141,9 @@ public class DeferredEntityImpl
 
     } // synchronizeData()
 
-    /** Synchronize the children. */
+    /**
+     * Synchronize the children.
+     */
     protected void synchronizeChildren() {
 
         // no need to synchronize again
@@ -144,7 +151,7 @@ public class DeferredEntityImpl
 
         isReadOnly(false);
         DeferredDocumentImpl ownerDocument =
-            (DeferredDocumentImpl) ownerDocument();
+                (DeferredDocumentImpl) ownerDocument();
         ownerDocument.synchronizeChildren(this, fNodeIndex);
         setReadOnly(true, true);
 

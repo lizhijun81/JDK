@@ -43,9 +43,8 @@ public final class InquireSecContextPermission extends BasicPermission {
      * {@link InquireType} allowed.
      *
      * @param name the {@link InquireType} allowed by this
-     * permission. "*" means all {@link InquireType}s are allowed.
-     *
-     * @throws NullPointerException if <code>name</code> is <code>null</code>.
+     *             permission. "*" means all {@link InquireType}s are allowed.
+     * @throws NullPointerException     if <code>name</code> is <code>null</code>.
      * @throws IllegalArgumentException if <code>name</code> is empty.
      */
     public InquireSecContextPermission(String name) {

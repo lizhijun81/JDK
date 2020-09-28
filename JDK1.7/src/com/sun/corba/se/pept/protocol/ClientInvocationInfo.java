@@ -27,13 +27,13 @@ package com.sun.corba.se.pept.protocol;
 
 import com.sun.corba.se.pept.protocol.MessageMediator;
 import com.sun.corba.se.pept.protocol.ClientRequestDispatcher;
+
 import java.util.Iterator;
 
 /**
  * @author Harold Carr
  */
-public interface ClientInvocationInfo
-{
+public interface ClientInvocationInfo {
     public Iterator getContactInfoListIterator();
 
     public void setContactInfoListIterator(Iterator contactInfoListIterator);

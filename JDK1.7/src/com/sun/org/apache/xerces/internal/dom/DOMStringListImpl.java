@@ -26,16 +26,15 @@ import org.w3c.dom.DOMStringList;
 
 /**
  * DOM Level 3
- *
+ * <p>
  * This class implements the DOM Level 3 Core interface DOMStringList.
  *
- * @xerces.internal
- *
  * @author Neil Delima, IBM
+ * @xerces.internal
  */
 public class DOMStringListImpl implements DOMStringList {
 
-        //A collection of DOMString values
+    //A collection of DOMString values
     private Vector fStrings;
 
     /**
@@ -52,30 +51,30 @@ public class DOMStringListImpl implements DOMStringList {
         fStrings = params;
     }
 
-        /**
-         * @see org.w3c.dom.DOMStringList#item(int)
-         */
-        public String item(int index) {
+    /**
+     * @see org.w3c.dom.DOMStringList#item(int)
+     */
+    public String item(int index) {
         try {
             return (String) fStrings.elementAt(index);
         } catch (ArrayIndexOutOfBoundsException e) {
             return null;
         }
-        }
+    }
 
-        /**
-         * @see org.w3c.dom.DOMStringList#getLength()
-         */
-        public int getLength() {
-                return fStrings.size();
-        }
+    /**
+     * @see org.w3c.dom.DOMStringList#getLength()
+     */
+    public int getLength() {
+        return fStrings.size();
+    }
 
-        /**
-         * @see org.w3c.dom.DOMStringList#contains(String)
-         */
-        public boolean contains(String param) {
-                return fStrings.contains(param) ;
-        }
+    /**
+     * @see org.w3c.dom.DOMStringList#contains(String)
+     */
+    public boolean contains(String param) {
+        return fStrings.contains(param);
+    }
 
     /**
      * DOM Internal:

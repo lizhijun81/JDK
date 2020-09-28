@@ -50,20 +50,21 @@ import com.sun.java.swing.plaf.windows.XPStyle.*;
 
 public class WindowsMenuItemUI extends BasicMenuItemUI {
     final WindowsMenuItemUIAccessor accessor =
-        new  WindowsMenuItemUIAccessor() {
+            new WindowsMenuItemUIAccessor() {
 
-            public JMenuItem getMenuItem() {
-                return menuItem;
-            }
+                public JMenuItem getMenuItem() {
+                    return menuItem;
+                }
 
-            public State getState(JMenuItem menuItem) {
-                return WindowsMenuItemUI.getState(this, menuItem);
-            }
+                public State getState(JMenuItem menuItem) {
+                    return WindowsMenuItemUI.getState(this, menuItem);
+                }
 
-            public Part getPart(JMenuItem menuItem) {
-                return WindowsMenuItemUI.getPart(this, menuItem);
-            }
-    };
+                public Part getPart(JMenuItem menuItem) {
+                    return WindowsMenuItemUI.getPart(this, menuItem);
+                }
+            };
+
     public static ComponentUI createUI(JComponent c) {
         return new WindowsMenuItemUI();
     }
@@ -71,10 +72,11 @@ public class WindowsMenuItemUI extends BasicMenuItemUI {
     /**
      * Method which renders the text of the current menu item.
      * <p>
-     * @param g Graphics context
+     *
+     * @param g        Graphics context
      * @param menuItem Current menu item to render
      * @param textRect Bounding rectangle to render the text.
-     * @param text String to render
+     * @param text     String to render
      */
     protected void paintText(Graphics g, JMenuItem menuItem,
                              Rectangle textRect, String text) {
@@ -85,9 +87,9 @@ public class WindowsMenuItemUI extends BasicMenuItemUI {
         ButtonModel model = menuItem.getModel();
         Color oldColor = g.getColor();
 
-        if(model.isEnabled() &&
-            (model.isArmed() || (menuItem instanceof JMenu &&
-             model.isSelected()))) {
+        if (model.isEnabled() &&
+                (model.isArmed() || (menuItem instanceof JMenu &&
+                        model.isSelected()))) {
             g.setColor(selectionForeground); // Uses protected field.
         }
 
@@ -98,7 +100,7 @@ public class WindowsMenuItemUI extends BasicMenuItemUI {
 
     @Override
     protected void paintBackground(Graphics g, JMenuItem menuItem,
-            Color bgColor) {
+                                   Color bgColor) {
         if (WindowsMenuItemUI.isVistaPainting()) {
             WindowsMenuItemUI.paintBackground(accessor, g, menuItem, bgColor);
             return;
@@ -107,7 +109,7 @@ public class WindowsMenuItemUI extends BasicMenuItemUI {
     }
 
     static void paintBackground(WindowsMenuItemUIAccessor menuItemUI,
-            Graphics g, JMenuItem menuItem, Color bgColor) {
+                                Graphics g, JMenuItem menuItem, Color bgColor) {
         assert isVistaPainting();
         if (isVistaPainting()) {
             int menuWidth = menuItem.getWidth();
@@ -115,22 +117,22 @@ public class WindowsMenuItemUI extends BasicMenuItemUI {
             if (menuItem.isOpaque()) {
                 Color oldColor = g.getColor();
                 g.setColor(menuItem.getBackground());
-                g.fillRect(0,0, menuWidth, menuHeight);
+                g.fillRect(0, 0, menuWidth, menuHeight);
                 g.setColor(oldColor);
             }
             XPStyle xp = XPStyle.getXP();
             Part part = menuItemUI.getPart(menuItem);
             Skin skin = xp.getSkin(menuItem, part);
-            skin.paintSkin(g, 0 , 0,
-                menuWidth,
-                menuHeight,
-                menuItemUI.getState(menuItem));
+            skin.paintSkin(g, 0, 0,
+                    menuWidth,
+                    menuHeight,
+                    menuItemUI.getState(menuItem));
         }
     }
 
     static void paintText(WindowsMenuItemUIAccessor menuItemUI, Graphics g,
-                                JMenuItem menuItem, Rectangle textRect,
-                                String text) {
+                          JMenuItem menuItem, Rectangle textRect,
+                          String text) {
         assert isVistaPainting();
         if (isVistaPainting()) {
             State state = menuItemUI.getState(menuItem);
@@ -143,10 +145,10 @@ public class WindowsMenuItemUI extends BasicMenuItemUI {
                 mnemIndex = -1;
             }
             WindowsGraphicsUtils.paintXPText(menuItem,
-                menuItemUI.getPart(menuItem), state,
-                g, textRect.x,
-                textRect.y + fm.getAscent(),
-                text, mnemIndex);
+                    menuItemUI.getPart(menuItem), state,
+                    g, textRect.x,
+                    textRect.y + fm.getAscent(),
+                    text, mnemIndex);
         }
     }
 

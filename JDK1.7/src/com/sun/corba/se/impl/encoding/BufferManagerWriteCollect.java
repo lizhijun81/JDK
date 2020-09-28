@@ -46,18 +46,16 @@ import com.sun.corba.se.pept.encoding.OutputObject;
 /**
  * Collect buffer manager.
  */
-public class BufferManagerWriteCollect extends BufferManagerWrite
-{
+public class BufferManagerWriteCollect extends BufferManagerWrite {
     private BufferQueue queue = new BufferQueue();
 
     private boolean sentFragment = false;
     private boolean debug = false;
 
 
-    BufferManagerWriteCollect(ORB orb)
-    {
+    BufferManagerWriteCollect(ORB orb) {
         super(orb);
-         if (orb != null)
+        if (orb != null)
             debug = orb.transportDebugFlag;
     }
 
@@ -75,8 +73,7 @@ public class BufferManagerWriteCollect extends BufferManagerWrite
 
     // Set the fragment's "more fragments" bit to true, put it in the
     // queue, and allocate a new bbwi.
-    public void overflow (ByteBufferWithInfo bbwi)
-    {
+    public void overflow(ByteBufferWithInfo bbwi) {
         // Set the fragment's moreFragments field to true
         MessageBase.setFlag(bbwi.byteBuffer, Message.MORE_FRAGMENTS_BIT);
 
@@ -88,7 +85,7 @@ public class BufferManagerWriteCollect extends BufferManagerWrite
         newBbwi.fragmented = true;
 
         // XREVISIT - Downcast
-        ((CDROutputObject)outputObject).setByteBufferWithInfo(newBbwi);
+        ((CDROutputObject) outputObject).setByteBufferWithInfo(newBbwi);
 
         // Now we must marshal in the fragment header/GIOP header
 
@@ -97,23 +94,22 @@ public class BufferManagerWriteCollect extends BufferManagerWrite
 
         // XREVISIT - Downcast
         FragmentMessage header =
-              ((CDROutputObject)outputObject).getMessageHeader()
-                                             .createFragmentMessage();
+                ((CDROutputObject) outputObject).getMessageHeader()
+                        .createFragmentMessage();
 
-        header.write((CDROutputObject)outputObject);
+        header.write((CDROutputObject) outputObject);
     }
 
     // Send all fragments
-    public void sendMessage ()
-    {
+    public void sendMessage() {
         // Enqueue the last fragment
-        queue.enqueue(((CDROutputObject)outputObject).getByteBufferWithInfo());
+        queue.enqueue(((CDROutputObject) outputObject).getByteBufferWithInfo());
 
         Iterator bufs = iterator();
 
         Connection conn =
-                          ((OutputObject)outputObject).getMessageMediator().
-                                                       getConnection();
+                ((OutputObject) outputObject).getMessageMediator().
+                        getConnection();
 
         // With the collect strategy, we must lock the connection
         // while fragments are being sent.  This is so that there are
@@ -131,17 +127,16 @@ public class BufferManagerWriteCollect extends BufferManagerWrite
 
             while (bufs.hasNext()) {
 
-                ByteBufferWithInfo bbwi = (ByteBufferWithInfo)bufs.next();
-                ((CDROutputObject)outputObject).setByteBufferWithInfo(bbwi);
+                ByteBufferWithInfo bbwi = (ByteBufferWithInfo) bufs.next();
+                ((CDROutputObject) outputObject).setByteBufferWithInfo(bbwi);
 
-                conn.sendWithoutLock(((CDROutputObject)outputObject));
+                conn.sendWithoutLock(((CDROutputObject) outputObject));
 
                 sentFragment = true;
 
                 // Release ByteBufferWithInfo's ByteBuffer back to the pool
                 // of ByteBuffers.
-                if (debug)
-                {
+                if (debug) {
                     // print address of ByteBuffer being released
                     int bbAddress = System.identityHashCode(bbwi.byteBuffer);
                     StringBuffer sb = new StringBuffer(80);
@@ -165,12 +160,11 @@ public class BufferManagerWriteCollect extends BufferManagerWrite
 
     /**
      * Close the BufferManagerWrite - do any outstanding cleanup.
-     *
+     * <p>
      * For a BufferManagerWriteGrow any queued ByteBufferWithInfo must
      * have its ByteBuffer released to the ByteBufferPool.
      */
-    public void close()
-    {
+    public void close() {
         // iterate thru queue and release any ByteBufferWithInfo's
         // ByteBuffer that may be remaining on the queue to the
         // ByteBufferPool.
@@ -179,13 +173,10 @@ public class BufferManagerWriteCollect extends BufferManagerWrite
 
         ByteBufferPool byteBufferPool = orb.getByteBufferPool();
 
-        while (bufs.hasNext())
-        {
-            ByteBufferWithInfo bbwi = (ByteBufferWithInfo)bufs.next();
-            if (bbwi != null && bbwi.byteBuffer != null)
-            {
-                if (debug)
-                {
+        while (bufs.hasNext()) {
+            ByteBufferWithInfo bbwi = (ByteBufferWithInfo) bufs.next();
+            if (bbwi != null && bbwi.byteBuffer != null) {
+                if (debug) {
                     // print address of ByteBuffer being released
                     int bbAddress = System.identityHashCode(bbwi.byteBuffer);
                     StringBuffer sb = new StringBuffer(80);
@@ -194,37 +185,31 @@ public class BufferManagerWriteCollect extends BufferManagerWrite
                     String msg = sb.toString();
                     dprint(msg);
                 }
-                 byteBufferPool.releaseByteBuffer(bbwi.byteBuffer);
-                 bbwi.byteBuffer = null;
-                 bbwi = null;
+                byteBufferPool.releaseByteBuffer(bbwi.byteBuffer);
+                bbwi.byteBuffer = null;
+                bbwi = null;
             }
         }
     }
 
-    private void dprint(String msg)
-    {
+    private void dprint(String msg) {
         ORBUtility.dprint("BufferManagerWriteCollect", msg);
     }
 
-    private Iterator iterator ()
-    {
+    private Iterator iterator() {
         return new BufferManagerWriteCollectIterator();
     }
 
-    private class BufferManagerWriteCollectIterator implements Iterator
-    {
-        public boolean hasNext ()
-        {
+    private class BufferManagerWriteCollectIterator implements Iterator {
+        public boolean hasNext() {
             return queue.size() != 0;
         }
 
-        public Object next ()
-        {
+        public Object next() {
             return queue.dequeue();
         }
 
-        public void remove ()
-        {
+        public void remove() {
             throw new UnsupportedOperationException();
         }
     }

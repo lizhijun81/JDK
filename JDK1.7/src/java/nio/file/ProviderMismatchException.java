@@ -31,8 +31,7 @@ package java.nio.file;
  * different file system provider.
  */
 public class ProviderMismatchException
-    extends java.lang.IllegalArgumentException
-{
+        extends java.lang.IllegalArgumentException {
     static final long serialVersionUID = 4990847485741612530L;
 
     /**
@@ -44,8 +43,7 @@ public class ProviderMismatchException
     /**
      * Constructs an instance of this class.
      *
-     * @param   msg
-     *          the detail message
+     * @param msg the detail message
      */
     public ProviderMismatchException(String msg) {
         super(msg);

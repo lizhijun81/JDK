@@ -31,6 +31,7 @@ import javax.security.auth.*;
 import javax.security.auth.callback.*;
 import javax.security.auth.login.*;
 import javax.security.auth.spi.*;
+
 import com.sun.security.auth.UnixPrincipal;
 import com.sun.security.auth.UnixNumericUserPrincipal;
 import com.sun.security.auth.UnixNumericGroupPrincipal;
@@ -45,7 +46,6 @@ import com.sun.security.auth.UnixNumericGroupPrincipal;
  * <p> This LoginModule recognizes the debug option.
  * If set to true in the login Configuration,
  * debug messages will be output to the output stream, System.out.
- *
  */
 public class UnixLoginModule implements LoginModule {
 
@@ -70,28 +70,25 @@ public class UnixLoginModule implements LoginModule {
     private UnixNumericUserPrincipal UIDPrincipal;
     private UnixNumericGroupPrincipal GIDPrincipal;
     private LinkedList<UnixNumericGroupPrincipal> supplementaryGroups =
-                new LinkedList<>();
+            new LinkedList<>();
 
     /**
      * Initialize this <code>LoginModule</code>.
      *
      * <p>
      *
-     * @param subject the <code>Subject</code> to be authenticated. <p>
-     *
+     * @param subject         the <code>Subject</code> to be authenticated. <p>
      * @param callbackHandler a <code>CallbackHandler</code> for communicating
-     *                  with the end user (prompting for usernames and
-     *                  passwords, for example). <p>
-     *
-     * @param sharedState shared <code>LoginModule</code> state. <p>
-     *
-     * @param options options specified in the login
-     *                  <code>Configuration</code> for this particular
-     *                  <code>LoginModule</code>.
+     *                        with the end user (prompting for usernames and
+     *                        passwords, for example). <p>
+     * @param sharedState     shared <code>LoginModule</code> state. <p>
+     * @param options         options specified in the login
+     *                        <code>Configuration</code> for this particular
+     *                        <code>LoginModule</code>.
      */
     public void initialize(Subject subject, CallbackHandler callbackHandler,
-                           Map<String,?> sharedState,
-                           Map<String,?> options) {
+                           Map<String, ?> sharedState,
+                           Map<String, ?> options) {
 
         this.subject = subject;
         this.callbackHandler = callbackHandler;
@@ -99,7 +96,7 @@ public class UnixLoginModule implements LoginModule {
         this.options = options;
 
         // initialize any configured options
-        debug = "true".equalsIgnoreCase((String)options.get("debug"));
+        debug = "true".equalsIgnoreCase((String) options.get("debug"));
     }
 
     /**
@@ -111,11 +108,10 @@ public class UnixLoginModule implements LoginModule {
      *
      * <p>
      *
-     * @exception FailedLoginException if attempts to retrieve the underlying
-     *          system information fail.
-     *
      * @return true in all cases (this <code>LoginModule</code>
-     *          should not be ignored).
+     * should not be ignored).
+     * @throws FailedLoginException if attempts to retrieve the underlying
+     *                              system information fail.
      */
     public boolean login() throws LoginException {
 
@@ -126,8 +122,8 @@ public class UnixLoginModule implements LoginModule {
         if (ss == null) {
             succeeded = false;
             throw new FailedLoginException
-                                ("Failed in attempt to import " +
-                                "the underlying system identity information");
+                    ("Failed in attempt to import " +
+                            "the underlying system identity information");
         } else {
             userPrincipal = new UnixPrincipal(ss.getUsername());
             UIDPrincipal = new UnixNumericUserPrincipal(ss.getUid());
@@ -136,8 +132,8 @@ public class UnixLoginModule implements LoginModule {
                 unixGroups = ss.getGroups();
                 for (int i = 0; i < unixGroups.length; i++) {
                     UnixNumericGroupPrincipal ngp =
-                        new UnixNumericGroupPrincipal
-                        (unixGroups[i], false);
+                            new UnixNumericGroupPrincipal
+                                    (unixGroups[i], false);
                     if (!ngp.getName().equals(GIDPrincipal.getName()))
                         supplementaryGroups.add(ngp);
                 }
@@ -175,23 +171,22 @@ public class UnixLoginModule implements LoginModule {
      *
      * <p>
      *
-     * @exception LoginException if the commit fails
-     *
      * @return true if this LoginModule's own login and commit attempts
-     *          succeeded, or false otherwise.
+     * succeeded, or false otherwise.
+     * @throws LoginException if the commit fails
      */
     public boolean commit() throws LoginException {
         if (succeeded == false) {
             if (debug) {
                 System.out.println("\t\t[UnixLoginModule]: " +
-                    "did not add any Principals to Subject " +
-                    "because own authentication failed.");
+                        "did not add any Principals to Subject " +
+                        "because own authentication failed.");
             }
             return false;
         } else {
             if (subject.isReadOnly()) {
                 throw new LoginException
-                    ("commit Failed: Subject is Readonly");
+                        ("commit Failed: Subject is Readonly");
             }
             if (!subject.getPrincipals().contains(userPrincipal))
                 subject.getPrincipals().add(userPrincipal);
@@ -201,13 +196,13 @@ public class UnixLoginModule implements LoginModule {
                 subject.getPrincipals().add(GIDPrincipal);
             for (int i = 0; i < supplementaryGroups.size(); i++) {
                 if (!subject.getPrincipals().contains
-                    (supplementaryGroups.get(i)))
+                        (supplementaryGroups.get(i)))
                     subject.getPrincipals().add(supplementaryGroups.get(i));
             }
 
             if (debug) {
                 System.out.println("\t\t[UnixLoginModule]: " +
-                    "added UnixPrincipal,");
+                        "added UnixPrincipal,");
                 System.out.println("\t\t\t\tUnixNumericUserPrincipal,");
                 System.out.println("\t\t\t\tUnixNumericGroupPrincipal(s),");
                 System.out.println("\t\t\t to Subject");
@@ -232,15 +227,14 @@ public class UnixLoginModule implements LoginModule {
      *
      * <p>
      *
-     * @exception LoginException if the abort fails
-     *
      * @return false if this LoginModule's own login and/or commit attempts
-     *          failed, and true otherwise.
+     * failed, and true otherwise.
+     * @throws LoginException if the abort fails
      */
     public boolean abort() throws LoginException {
         if (debug) {
             System.out.println("\t\t[UnixLoginModule]: " +
-                "aborted authentication attempt");
+                    "aborted authentication attempt");
         }
 
         if (succeeded == false) {
@@ -270,17 +264,16 @@ public class UnixLoginModule implements LoginModule {
      *
      * <p>
      *
-     * @exception LoginException if the logout fails
-     *
      * @return true in all cases (this <code>LoginModule</code>
-     *          should not be ignored).
+     * should not be ignored).
+     * @throws LoginException if the logout fails
      */
     public boolean logout() throws LoginException {
 
         if (subject.isReadOnly()) {
-                throw new LoginException
+            throw new LoginException
                     ("logout Failed: Subject is Readonly");
-            }
+        }
         // remove the added Principals from the Subject
         subject.getPrincipals().remove(userPrincipal);
         subject.getPrincipals().remove(UIDPrincipal);
@@ -300,7 +293,7 @@ public class UnixLoginModule implements LoginModule {
 
         if (debug) {
             System.out.println("\t\t[UnixLoginModule]: " +
-                "logged out Subject");
+                    "logged out Subject");
         }
         return true;
     }

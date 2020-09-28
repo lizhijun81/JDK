@@ -24,6 +24,7 @@ package com.sun.org.apache.xml.internal.utils;
 
 import com.sun.org.apache.xalan.internal.utils.SecuritySupport;
 import com.sun.org.apache.xalan.internal.utils.FactoryImpl;
+
 import java.util.HashMap;
 
 import javax.xml.parsers.FactoryConfigurationError;
@@ -41,11 +42,11 @@ import org.xml.sax.SAXException;
 public class XMLReaderManager {
 
     private static final String NAMESPACES_FEATURE =
-                             "http://xml.org/sax/features/namespaces";
+            "http://xml.org/sax/features/namespaces";
     private static final String NAMESPACE_PREFIXES_FEATURE =
-                             "http://xml.org/sax/features/namespace-prefixes";
+            "http://xml.org/sax/features/namespace-prefixes";
     private static final XMLReaderManager m_singletonManager =
-                                                     new XMLReaderManager();
+            new XMLReaderManager();
     private static final String property = "org.xml.sax.driver";
     /**
      * Parser factory to be used to construct XMLReader objects
@@ -63,6 +64,7 @@ public class XMLReaderManager {
     private HashMap m_inUse;
 
     private boolean m_useServicesMechanism = true;
+
     /**
      * Hidden constructor
      */
@@ -103,7 +105,7 @@ public class XMLReaderManager {
         boolean threadHasReader = (reader != null);
         String factory = SecuritySupport.getSystemProperty(property);
         if (threadHasReader && m_inUse.get(reader) != Boolean.TRUE &&
-                ( factory == null || reader.getClass().getName().equals(factory))) {
+                (factory == null || reader.getClass().getName().equals(factory))) {
             m_inUse.put(reader, Boolean.TRUE);
         } else {
             try {
@@ -115,7 +117,7 @@ public class XMLReaderManager {
                     reader = XMLReaderFactory.createXMLReader();
 
                 } catch (Exception e) {
-                   try {
+                    try {
                         // If unable to create an instance, let's try to use
                         // the XMLReader from JAXP
                         if (m_parserFactory == null) {
@@ -124,9 +126,9 @@ public class XMLReaderManager {
                         }
 
                         reader = m_parserFactory.newSAXParser().getXMLReader();
-                   } catch (ParserConfigurationException pce) {
-                       throw pce;   // pass along pce
-                   }
+                    } catch (ParserConfigurationException pce) {
+                        throw pce;   // pass along pce
+                    }
                 }
                 try {
                     reader.setFeature(NAMESPACES_FEATURE, true);
@@ -167,6 +169,7 @@ public class XMLReaderManager {
             m_inUse.remove(reader);
         }
     }
+
     /**
      * Return the state of the services mechanism feature.
      */

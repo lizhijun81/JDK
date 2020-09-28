@@ -35,7 +35,7 @@ import javax.imageio.stream.ImageInputStream;
  * image input/output streams on VM shutdown.
  * This might be useful for proper cleanup such as removal
  * of temporary files.
- *
+ * <p>
  * Addition of stream do not prevent it from being garbage collected
  * if no other references to it exists. Stream can be closed
  * explicitly without removal from StreamCloser queue.
@@ -50,7 +50,7 @@ public class StreamCloser {
         synchronized (StreamCloser.class) {
             if (toCloseQueue == null) {
                 toCloseQueue =
-                    new WeakHashMap<CloseAction, Object>();
+                        new WeakHashMap<CloseAction, Object>();
             }
 
             toCloseQueue.put(ca, null);
@@ -61,12 +61,12 @@ public class StreamCloser {
                         if (toCloseQueue != null) {
                             synchronized (StreamCloser.class) {
                                 Set<CloseAction> set =
-                                    toCloseQueue.keySet();
+                                        toCloseQueue.keySet();
                                 // Make a copy of the set in order to avoid
                                 // concurrent modification (the is.close()
                                 // will in turn call removeFromQueue())
                                 CloseAction[] actions =
-                                    new CloseAction[set.size()];
+                                        new CloseAction[set.size()];
                                 actions = set.toArray(actions);
                                 for (CloseAction ca : actions) {
                                     if (ca != null) {
@@ -82,26 +82,27 @@ public class StreamCloser {
                 };
 
                 java.security.AccessController.doPrivileged(
-                    new java.security.PrivilegedAction() {
-                        public Object run() {
-                            /* The thread must be a member of a thread group
-                             * which will not get GCed before VM exit.
-                             * Make its parent the top-level thread group.
-                             */
-                            ThreadGroup tg =
-                                Thread.currentThread().getThreadGroup();
-                            for (ThreadGroup tgn = tg;
-                                 tgn != null;
-                                 tg = tgn, tgn = tg.getParent());
-                            streamCloser = new Thread(tg, streamCloserRunnable);
-                            /* Set context class loader to null in order to avoid
-                             * keeping a strong reference to an application classloader.
-                             */
-                            streamCloser.setContextClassLoader(null);
-                            Runtime.getRuntime().addShutdownHook(streamCloser);
-                            return null;
-                        }
-                    });
+                        new java.security.PrivilegedAction() {
+                            public Object run() {
+                                /* The thread must be a member of a thread group
+                                 * which will not get GCed before VM exit.
+                                 * Make its parent the top-level thread group.
+                                 */
+                                ThreadGroup tg =
+                                        Thread.currentThread().getThreadGroup();
+                                for (ThreadGroup tgn = tg;
+                                     tgn != null;
+                                     tg = tgn, tgn = tg.getParent())
+                                    ;
+                                streamCloser = new Thread(tg, streamCloserRunnable);
+                                /* Set context class loader to null in order to avoid
+                                 * keeping a strong reference to an application classloader.
+                                 */
+                                streamCloser.setContextClassLoader(null);
+                                Runtime.getRuntime().addShutdownHook(streamCloser);
+                                return null;
+                            }
+                        });
             }
         }
     }

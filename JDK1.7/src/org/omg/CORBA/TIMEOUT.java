@@ -31,8 +31,8 @@ package org.omg.CORBA;
  * exception because time-to-live QoS can be applied to any invocation.
  *
  * @see <A href="../../../../technotes/guides/idl/jidlExceptions.html">documentation on
- *      Java&nbsp;IDL exceptions</A>
- * @since   J2SE 1.5
+ * Java&nbsp;IDL exceptions</A>
+ * @since J2SE 1.5
  */
 
 public final class TIMEOUT extends SystemException {
@@ -59,7 +59,7 @@ public final class TIMEOUT extends SystemException {
      * Constructs an <code>TIMEOUT</code> exception with the
      * specified minor code and completion status.
      *
-     * @param minorCode minor code.
+     * @param minorCode        minor code.
      * @param completionStatus completion status.
      */
     public TIMEOUT(int minorCode,
@@ -71,8 +71,8 @@ public final class TIMEOUT extends SystemException {
      * Constructs an <code>TIMEOUT</code> exception with the
      * specified message, minor code, and completion status.
      *
-     * @param detailMessage string containing a detailed message.
-     * @param minorCode minor code.
+     * @param detailMessage    string containing a detailed message.
+     * @param minorCode        minor code.
      * @param completionStatus completion status.
      */
     public TIMEOUT(String detailMessage,

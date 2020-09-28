@@ -56,7 +56,8 @@ final class VersionHelper12 extends VersionHelper {
 
     private boolean getSystemPropsFailed = false;
 
-    VersionHelper12() {} // Disallow external from creating one of these.
+    VersionHelper12() {
+    } // Disallow external from creating one of these.
 
     public Class loadClass(String className) throws ClassNotFoundException {
         ClassLoader cl = getContextClassLoader();
@@ -64,19 +65,19 @@ final class VersionHelper12 extends VersionHelper {
     }
 
     /**
-      * Package private.
-      */
+     * Package private.
+     */
     Class loadClass(String className, ClassLoader cl)
-        throws ClassNotFoundException {
+            throws ClassNotFoundException {
         return Class.forName(className, true, cl);
     }
 
     /**
      * @param className A non-null fully qualified class name.
-     * @param codebase A non-null, space-separated list of URL strings.
+     * @param codebase  A non-null, space-separated list of URL strings.
      */
     public Class loadClass(String className, String codebase)
-        throws ClassNotFoundException, MalformedURLException {
+            throws ClassNotFoundException, MalformedURLException {
         ClassLoader cl;
 
         ClassLoader parent = getContextClassLoader();
@@ -87,15 +88,15 @@ final class VersionHelper12 extends VersionHelper {
 
     String getJndiProperty(final int i) {
         return (String) AccessController.doPrivileged(
-            new PrivilegedAction() {
-                public Object run() {
-                    try {
-                        return System.getProperty(PROPS[i]);
-                    } catch (SecurityException e) {
-                        return null;
+                new PrivilegedAction() {
+                    public Object run() {
+                        try {
+                            return System.getProperty(PROPS[i]);
+                        } catch (SecurityException e) {
+                            return null;
+                        }
                     }
                 }
-            }
         );
     }
 
@@ -104,16 +105,16 @@ final class VersionHelper12 extends VersionHelper {
             return null;        // after one failure, don't bother trying again
         }
         Properties sysProps = (Properties) AccessController.doPrivileged(
-            new PrivilegedAction() {
-                public Object run() {
-                    try {
-                        return System.getProperties();
-                    } catch (SecurityException e) {
-                        getSystemPropsFailed = true;
-                        return null;
+                new PrivilegedAction() {
+                    public Object run() {
+                        try {
+                            return System.getProperties();
+                        } catch (SecurityException e) {
+                            getSystemPropsFailed = true;
+                            return null;
+                        }
                     }
                 }
-            }
         );
         if (sysProps == null) {
             return null;
@@ -127,61 +128,60 @@ final class VersionHelper12 extends VersionHelper {
 
     InputStream getResourceAsStream(final Class c, final String name) {
         return (InputStream) AccessController.doPrivileged(
-            new PrivilegedAction() {
-                public Object run() {
-                    return c.getResourceAsStream(name);
+                new PrivilegedAction() {
+                    public Object run() {
+                        return c.getResourceAsStream(name);
+                    }
                 }
-            }
         );
     }
 
     InputStream getJavaHomeLibStream(final String filename) {
         return (InputStream) AccessController.doPrivileged(
-            new PrivilegedAction() {
-                public Object run() {
-                    try {
-                        String javahome = System.getProperty("java.home");
-                        if (javahome == null) {
+                new PrivilegedAction() {
+                    public Object run() {
+                        try {
+                            String javahome = System.getProperty("java.home");
+                            if (javahome == null) {
+                                return null;
+                            }
+                            String pathname = javahome + java.io.File.separator +
+                                    "lib" + java.io.File.separator + filename;
+                            return new java.io.FileInputStream(pathname);
+                        } catch (Exception e) {
                             return null;
                         }
-                        String pathname = javahome + java.io.File.separator +
-                            "lib" + java.io.File.separator + filename;
-                        return new java.io.FileInputStream(pathname);
-                    } catch (Exception e) {
-                        return null;
                     }
                 }
-            }
         );
     }
 
     NamingEnumeration getResources(final ClassLoader cl, final String name)
-            throws IOException
-    {
+            throws IOException {
         Enumeration urls;
         try {
             urls = (Enumeration) AccessController.doPrivileged(
-                new PrivilegedExceptionAction() {
-                    public Object run() throws IOException {
-                        return (cl == null)
-                            ? ClassLoader.getSystemResources(name)
-                            : cl.getResources(name);
+                    new PrivilegedExceptionAction() {
+                        public Object run() throws IOException {
+                            return (cl == null)
+                                    ? ClassLoader.getSystemResources(name)
+                                    : cl.getResources(name);
+                        }
                     }
-                }
             );
         } catch (PrivilegedActionException e) {
-            throw (IOException)e.getException();
+            throw (IOException) e.getException();
         }
         return new InputStreamEnumeration(urls);
     }
 
     ClassLoader getContextClassLoader() {
         return (ClassLoader) AccessController.doPrivileged(
-            new PrivilegedAction() {
-                public Object run() {
-                    return Thread.currentThread().getContextClassLoader();
+                new PrivilegedAction() {
+                    public Object run() {
+                        return Thread.currentThread().getContextClassLoader();
+                    }
                 }
-            }
         );
     }
 
@@ -209,18 +209,18 @@ final class VersionHelper12 extends VersionHelper {
          */
         private Object getNextElement() {
             return AccessController.doPrivileged(
-                new PrivilegedAction() {
-                    public Object run() {
-                        while (urls.hasMoreElements()) {
-                            try {
-                                return ((URL)urls.nextElement()).openStream();
-                            } catch (IOException e) {
-                                // skip this URL
+                    new PrivilegedAction() {
+                        public Object run() {
+                            while (urls.hasMoreElements()) {
+                                try {
+                                    return ((URL) urls.nextElement()).openStream();
+                                } catch (IOException e) {
+                                    // skip this URL
+                                }
                             }
+                            return null;
                         }
-                        return null;
                     }
-                }
             );
         }
 

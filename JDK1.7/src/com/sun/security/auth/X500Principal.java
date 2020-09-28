@@ -26,6 +26,7 @@
 package com.sun.security.auth;
 
 import java.security.Principal;
+
 import sun.security.x509.X500Name;
 
 /**
@@ -43,25 +44,25 @@ import sun.security.x509.X500Name;
  *
  * @see java.security.Principal
  * @see javax.security.auth.Subject
- * @deprecated A new X500Principal class is available in the Java platform.
- *             This X500Principal classs is entirely deprecated and
- *             is here to allow for a smooth transition to the new
- *             class.
  * @see javax.security.auth.x500.X500Principal
-*/
+ * @deprecated A new X500Principal class is available in the Java platform.
+ * This X500Principal classs is entirely deprecated and
+ * is here to allow for a smooth transition to the new
+ * class.
+ */
 @Deprecated
 public class X500Principal implements Principal, java.io.Serializable {
 
     private static final long serialVersionUID = -8222422609431628648L;
 
     private static final java.util.ResourceBundle rb =
-        java.security.AccessController.doPrivileged
-        (new java.security.PrivilegedAction<java.util.ResourceBundle>() {
-              public java.util.ResourceBundle run() {
-                  return (java.util.ResourceBundle.getBundle
-                                ("sun.security.util.AuthResources"));
-              }
-        });
+            java.security.AccessController.doPrivileged
+                    (new java.security.PrivilegedAction<java.util.ResourceBundle>() {
+                        public java.util.ResourceBundle run() {
+                            return (java.util.ResourceBundle.getBundle
+                                    ("sun.security.util.AuthResources"));
+                        }
+                    });
 
     /**
      * @serial
@@ -78,12 +79,10 @@ public class X500Principal implements Principal, java.io.Serializable {
      * <p>
      *
      * @param name the X.500 name
-     *
-     * @exception NullPointerException if the <code>name</code>
-     *                  is <code>null</code>. <p>
-     *
-     * @exception IllegalArgumentException if the <code>name</code>
-     *                  is improperly specified.
+     * @throws NullPointerException     if the <code>name</code>
+     *                                  is <code>null</code>. <p>
+     * @throws IllegalArgumentException if the <code>name</code>
+     *                                  is improperly specified.
      */
     public X500Principal(String name) {
         if (name == null)
@@ -128,9 +127,8 @@ public class X500Principal implements Principal, java.io.Serializable {
      *
      * @param o Object to be compared for equality with this
      *          <code>X500Principal</code>.
-     *
      * @return true if the specified Object is equal equal to this
-     *          <code>X500Principal</code>.
+     * <code>X500Principal</code>.
      */
     public boolean equals(Object o) {
         if (o == null)
@@ -140,7 +138,7 @@ public class X500Principal implements Principal, java.io.Serializable {
             return true;
 
         if (o instanceof X500Principal) {
-            X500Principal that = (X500Principal)o;
+            X500Principal that = (X500Principal) o;
             try {
                 X500Name thatX500Name = new X500Name(that.getName());
                 return thisX500Name.equals(thatX500Name);
@@ -172,9 +170,9 @@ public class X500Principal implements Principal, java.io.Serializable {
      * Reads this object from a stream (i.e., deserializes it)
      */
     private void readObject(java.io.ObjectInputStream s) throws
-                                        java.io.IOException,
-                                        java.io.NotActiveException,
-                                        ClassNotFoundException {
+            java.io.IOException,
+            java.io.NotActiveException,
+            ClassNotFoundException {
 
         s.defaultReadObject();
 

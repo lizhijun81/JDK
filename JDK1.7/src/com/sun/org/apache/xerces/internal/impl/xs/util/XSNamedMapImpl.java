@@ -37,11 +37,9 @@ import com.sun.org.apache.xerces.internal.xs.XSObject;
 /**
  * Containts the map between qnames and XSObject's.
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
- *
  * @version $Id: XSNamedMapImpl.java,v 1.7 2010-11-01 04:40:06 joehw Exp $
+ * @xerces.internal
  */
 public class XSNamedMapImpl extends AbstractMap implements XSNamedMap {
 
@@ -72,8 +70,8 @@ public class XSNamedMapImpl extends AbstractMap implements XSNamedMap {
      * @param map       the map from local names to components
      */
     public XSNamedMapImpl(String namespace, SymbolHash map) {
-        fNamespaces = new String[] {namespace};
-        fMaps = new SymbolHash[] {map};
+        fNamespaces = new String[]{namespace};
+        fMaps = new SymbolHash[]{map};
         fNSNum = 1;
     }
 
@@ -93,8 +91,8 @@ public class XSNamedMapImpl extends AbstractMap implements XSNamedMap {
     /**
      * Construct an XSNamedMap implementation one namespace from an array
      *
-     * @param array     containing all components
-     * @param length    number of components
+     * @param array  containing all components
+     * @param length number of components
      */
     public XSNamedMapImpl(XSObject[] array, int length) {
         if (length == 0) {
@@ -136,14 +134,15 @@ public class XSNamedMapImpl extends AbstractMap implements XSNamedMap {
      * <br>Per XML Namespaces, applications must use the value <code>null</code> as the
      * <code>namespace</code> parameter for methods if they wish to specify
      * no namespace.
+     *
      * @param namespace The namespace URI of the <code>XSObject</code> to
-     *   retrieve, or <code>null</code> if the <code>XSObject</code> has no
-     *   namespace.
+     *                  retrieve, or <code>null</code> if the <code>XSObject</code> has no
+     *                  namespace.
      * @param localName The local name of the <code>XSObject</code> to
-     *   retrieve.
+     *                  retrieve.
      * @return A <code>XSObject</code> (of any type) with the specified local
-     *   name and namespace URI, or <code>null</code> if they do not
-     *   identify any object in this map.
+     * name and namespace URI, or <code>null</code> if they do not
+     * identify any object in this map.
      */
     public XSObject itemByName(String namespace, String localName) {
         for (int i = 0; i < fNSNum; i++) {
@@ -151,7 +150,7 @@ public class XSNamedMapImpl extends AbstractMap implements XSNamedMap {
                 // when this map is created from SymbolHash's
                 // get the component from SymbolHash
                 if (fMaps != null) {
-                    return (XSObject)fMaps[i].get(localName);
+                    return (XSObject) fMaps[i].get(localName);
                 }
                 // Otherwise (it's created from an array)
                 // go through the array to find a matching name
@@ -172,10 +171,11 @@ public class XSNamedMapImpl extends AbstractMap implements XSNamedMap {
      * Returns the <code>index</code>th item in the collection or
      * <code>null</code> if <code>index</code> is greater than or equal to
      * the number of objects in the list. The index starts at 0.
-     * @param index  index into the collection.
-     * @return  The <code>XSObject</code> at the <code>index</code>th
-     *   position in the <code>XSObjectList</code>, or <code>null</code> if
-     *   the index specified is not valid.
+     *
+     * @param index index into the collection.
+     * @return The <code>XSObject</code> at the <code>index</code>th
+     * position in the <code>XSObjectList</code>, or <code>null</code> if
+     * the index specified is not valid.
      */
     public synchronized XSObject item(int index) {
         if (fArray == null) {
@@ -237,20 +237,24 @@ public class XSNamedMapImpl extends AbstractMap implements XSNamedMap {
                 public Iterator iterator() {
                     return new Iterator() {
                         private int index = 0;
+
                         public boolean hasNext() {
                             return (index < length);
                         }
+
                         public Object next() {
                             if (index < length) {
                                 return entries[index++];
                             }
                             throw new NoSuchElementException();
                         }
+
                         public void remove() {
                             throw new UnsupportedOperationException();
                         }
                     };
                 }
+
                 public int size() {
                     return length;
                 }
@@ -259,37 +263,46 @@ public class XSNamedMapImpl extends AbstractMap implements XSNamedMap {
         return fEntrySet;
     }
 
-    /** An entry in the XSNamedMap. **/
+    /**
+     * An entry in the XSNamedMap.
+     **/
     private static final class XSNamedMapEntry implements Map.Entry {
         private final QName key;
         private final XSObject value;
+
         public XSNamedMapEntry(QName key, XSObject value) {
             this.key = key;
             this.value = value;
         }
+
         public Object getKey() {
             return key;
         }
+
         public Object getValue() {
             return value;
         }
+
         public Object setValue(Object value) {
             throw new UnsupportedOperationException();
         }
+
         public boolean equals(Object o) {
             if (o instanceof Map.Entry) {
                 Map.Entry e = (Map.Entry) o;
                 Object otherKey = e.getKey();
                 Object otherValue = e.getValue();
                 return (key == null ? otherKey == null : key.equals(otherKey)) &&
-                    (value == null ? otherValue == null : value.equals(otherValue));
+                        (value == null ? otherValue == null : value.equals(otherValue));
             }
             return false;
         }
+
         public int hashCode() {
             return (key == null ? 0 : key.hashCode())
-                ^ (value == null ? 0 : value.hashCode());
+                    ^ (value == null ? 0 : value.hashCode());
         }
+
         public String toString() {
             StringBuffer buffer = new StringBuffer();
             buffer.append(String.valueOf(key));

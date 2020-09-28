@@ -44,7 +44,7 @@ package org.w3c.dom.css;
 import org.w3c.dom.DOMException;
 
 /**
- *  The <code>CSSCharsetRule</code> interface represents a @charset rule in a
+ * The <code>CSSCharsetRule</code> interface represents a @charset rule in a
  * CSS style sheet. The value of the <code>encoding</code> attribute does
  * not affect the encoding of text data in the DOM objects; this encoding is
  * always UTF-16. After a stylesheet is loaded, the value of the
@@ -59,22 +59,24 @@ import org.w3c.dom.DOMException;
  * header, has priority (see CSS document representation) but this is not
  * reflected in the <code>CSSCharsetRule</code>.
  * <p>See also the <a href='http://www.w3.org/TR/2000/REC-DOM-Level-2-Style-20001113'>Document Object Model (DOM) Level 2 Style Specification</a>.
+ *
  * @since DOM Level 2
  */
 public interface CSSCharsetRule extends CSSRule {
     /**
-     *  The encoding information used in this <code>@charset</code> rule.
+     * The encoding information used in this <code>@charset</code> rule.
      */
     public String getEncoding();
+
     /**
-     *  The encoding information used in this <code>@charset</code> rule.
-     * @exception DOMException
-     *   SYNTAX_ERR: Raised if the specified encoding value has a syntax error
-     *   and is unparsable.
-     *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this encoding rule is
-     *   readonly.
+     * The encoding information used in this <code>@charset</code> rule.
+     *
+     * @throws DOMException SYNTAX_ERR: Raised if the specified encoding value has a syntax error
+     *                      and is unparsable.
+     *                      <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this encoding rule is
+     *                      readonly.
      */
     public void setEncoding(String encoding)
-                           throws DOMException;
+            throws DOMException;
 
 }

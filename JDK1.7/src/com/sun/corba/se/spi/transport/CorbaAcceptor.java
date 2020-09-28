@@ -36,13 +36,15 @@ import com.sun.corba.se.impl.oa.poa.Policies;
  * @author Harold Carr
  */
 public interface CorbaAcceptor
-    extends
-        Acceptor
-{
+        extends
+        Acceptor {
     public String getObjectAdapterId();
+
     public String getObjectAdapterManagerId();
+
     public void addToIORTemplate(IORTemplate iorTemplate, Policies policies,
                                  String codebase);
+
     public String getMonitoringName();
 }
 

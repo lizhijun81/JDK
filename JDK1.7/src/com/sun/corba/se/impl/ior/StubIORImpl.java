@@ -31,30 +31,29 @@
 
 package com.sun.corba.se.impl.ior;
 
-import java.io.ObjectInputStream ;
-import java.io.ObjectOutputStream ;
-import java.io.IOException ;
-import java.io.StringWriter ;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.IOException;
+import java.io.StringWriter;
 
-import org.omg.CORBA.ORB ;
+import org.omg.CORBA.ORB;
 
-import org.omg.CORBA.portable.Delegate ;
-import org.omg.CORBA.portable.InputStream ;
-import org.omg.CORBA.portable.OutputStream ;
+import org.omg.CORBA.portable.Delegate;
+import org.omg.CORBA.portable.InputStream;
+import org.omg.CORBA.portable.OutputStream;
 
 // Be very careful: com.sun.corba imports must not depend on
 // PEORB internal classes in ways that prevent portability to
 // other vendor's ORBs.
-import com.sun.corba.se.spi.presentation.rmi.StubAdapter ;
-import com.sun.corba.se.impl.orbutil.HexOutputStream ;
+import com.sun.corba.se.spi.presentation.rmi.StubAdapter;
+import com.sun.corba.se.impl.orbutil.HexOutputStream;
 
 /**
  * This class implements a very simply IOR representation
  * which must be completely ORBImpl free so that this class
  * can be used in the implementation of a portable StubDelegateImpl.
  */
-public class StubIORImpl
-{
+public class StubIORImpl {
     // cached hash code
     private int hashCode;
 
@@ -63,26 +62,23 @@ public class StubIORImpl
     private int[] profileTags;
     private byte[][] profileData;
 
-    public StubIORImpl()
-    {
-        hashCode = 0 ;
-        typeData = null ;
-        profileTags = null ;
-        profileData = null ;
+    public StubIORImpl() {
+        hashCode = 0;
+        typeData = null;
+        profileTags = null;
+        profileData = null;
     }
 
-    public String getRepositoryId()
-    {
+    public String getRepositoryId() {
         if (typeData == null)
-            return null ;
+            return null;
 
-        return new String( typeData ) ;
+        return new String(typeData);
     }
 
-    public StubIORImpl( org.omg.CORBA.Object obj )
-    {
+    public StubIORImpl(org.omg.CORBA.Object obj) {
         // write the IOR to an OutputStream and get an InputStream
-        OutputStream ostr = StubAdapter.getORB( obj ).create_output_stream();
+        OutputStream ostr = StubAdapter.getORB(obj).create_output_stream();
         ostr.write_Object(obj);
         InputStream istr = ostr.create_input_stream();
 
@@ -100,8 +96,7 @@ public class StubIORImpl
         }
     }
 
-    public Delegate getDelegate( ORB orb )
-    {
+    public Delegate getDelegate(ORB orb) {
         // write the IOR components to an org.omg.CORBA.portable.OutputStream
         OutputStream ostr = orb.create_output_stream();
         ostr.write_long(typeData.length);
@@ -113,16 +108,15 @@ public class StubIORImpl
             ostr.write_octet_array(profileData[i], 0, profileData[i].length);
         }
 
-        InputStream istr = ostr.create_input_stream() ;
+        InputStream istr = ostr.create_input_stream();
 
         // read the IOR back from the stream
-        org.omg.CORBA.Object obj = (org.omg.CORBA.Object)istr.read_Object();
-        return StubAdapter.getDelegate( obj ) ;
+        org.omg.CORBA.Object obj = (org.omg.CORBA.Object) istr.read_Object();
+        return StubAdapter.getDelegate(obj);
     }
 
-    public  void doRead( java.io.ObjectInputStream stream )
-        throws IOException, ClassNotFoundException
-    {
+    public void doRead(java.io.ObjectInputStream stream)
+            throws IOException, ClassNotFoundException {
         // read the IOR from the ObjectInputStream
         int typeLength = stream.readInt();
         typeData = new byte[typeLength];
@@ -137,9 +131,8 @@ public class StubIORImpl
         }
     }
 
-    public  void doWrite( ObjectOutputStream stream )
-        throws IOException
-    {
+    public void doWrite(ObjectOutputStream stream)
+            throws IOException {
         // write the IOR to the ObjectOutputStream
         stream.writeInt(typeData.length);
         stream.write(typeData);
@@ -154,10 +147,10 @@ public class StubIORImpl
     /**
      * Returns a hash code value for the object which is the same for all stubs
      * that represent the same remote object.
+     *
      * @return the hash code value.
      */
-    public synchronized int hashCode()
-    {
+    public synchronized int hashCode() {
         if (hashCode == 0) {
 
             // compute the hash code
@@ -176,47 +169,43 @@ public class StubIORImpl
         return hashCode;
     }
 
-    private boolean equalArrays( int[] data1, int[] data2 )
-    {
+    private boolean equalArrays(int[] data1, int[] data2) {
         if (data1.length != data2.length)
-            return false ;
+            return false;
 
-        for (int ctr=0; ctr<data1.length; ctr++) {
+        for (int ctr = 0; ctr < data1.length; ctr++) {
             if (data1[ctr] != data2[ctr])
-                return false ;
+                return false;
         }
 
-        return true ;
+        return true;
     }
 
-    private boolean equalArrays( byte[] data1, byte[] data2 )
-    {
+    private boolean equalArrays(byte[] data1, byte[] data2) {
         if (data1.length != data2.length)
-            return false ;
+            return false;
 
-        for (int ctr=0; ctr<data1.length; ctr++) {
+        for (int ctr = 0; ctr < data1.length; ctr++) {
             if (data1[ctr] != data2[ctr])
-                return false ;
+                return false;
         }
 
-        return true ;
+        return true;
     }
 
-    private boolean equalArrays( byte[][] data1, byte[][] data2 )
-    {
+    private boolean equalArrays(byte[][] data1, byte[][] data2) {
         if (data1.length != data2.length)
-            return false ;
+            return false;
 
-        for (int ctr=0; ctr<data1.length; ctr++) {
-            if (!equalArrays( data1[ctr], data2[ctr] ))
-                return false ;
+        for (int ctr = 0; ctr < data1.length; ctr++) {
+            if (!equalArrays(data1[ctr], data2[ctr]))
+                return false;
         }
 
-        return true ;
+        return true;
     }
 
-    public boolean equals(java.lang.Object obj)
-    {
+    public boolean equals(java.lang.Object obj) {
         if (this == obj) {
             return true;
         }
@@ -230,15 +219,14 @@ public class StubIORImpl
             return false;
         }
 
-        return equalArrays( typeData, other.typeData ) &&
-            equalArrays( profileTags, other.profileTags ) &&
-            equalArrays( profileData, other.profileData ) ;
+        return equalArrays(typeData, other.typeData) &&
+                equalArrays(profileTags, other.profileTags) &&
+                equalArrays(profileData, other.profileData);
     }
 
-    private void appendByteArray( StringBuffer result, byte[] data )
-    {
-        for ( int ctr=0; ctr<data.length; ctr++ ) {
-            result.append( Integer.toHexString( data[ctr] ) ) ;
+    private void appendByteArray(StringBuffer result, byte[] data) {
+        for (int ctr = 0; ctr < data.length; ctr++) {
+            result.append(Integer.toHexString(data[ctr]));
         }
     }
 
@@ -246,22 +234,22 @@ public class StubIORImpl
      * Returns a string representation of this stub. Returns the same string
      * for all stubs that represent the same remote object.
      * "SimpleIORImpl[<typeName>,[<profileID>]data, ...]"
+     *
      * @return a string representation of this stub.
      */
-    public String toString()
-    {
-        StringBuffer result = new StringBuffer() ;
-        result.append( "SimpleIORImpl[" ) ;
-        String repositoryId = new String( typeData ) ;
-        result.append( repositoryId ) ;
-        for (int ctr=0; ctr<profileTags.length; ctr++) {
-            result.append( ",(" ) ;
-            result.append( profileTags[ctr] ) ;
-            result.append( ")" ) ;
-            appendByteArray( result,  profileData[ctr] ) ;
+    public String toString() {
+        StringBuffer result = new StringBuffer();
+        result.append("SimpleIORImpl[");
+        String repositoryId = new String(typeData);
+        result.append(repositoryId);
+        for (int ctr = 0; ctr < profileTags.length; ctr++) {
+            result.append(",(");
+            result.append(profileTags[ctr]);
+            result.append(")");
+            appendByteArray(result, profileData[ctr]);
         }
 
-        result.append( "]" ) ;
-        return result.toString() ;
+        result.append("]");
+        return result.toString();
     }
 }

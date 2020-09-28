@@ -46,18 +46,16 @@ package org.xml.sax;
  * unrecognized feature or property identifier; SAX applications and
  * extensions may use this class for other, similar purposes.</p>
  *
- * @since SAX 2.0
  * @author David Megginson
  * @see org.xml.sax.SAXNotSupportedException
+ * @since SAX 2.0
  */
-public class SAXNotRecognizedException extends SAXException
-{
+public class SAXNotRecognizedException extends SAXException {
 
     /**
      * Default constructor.
      */
-    public SAXNotRecognizedException ()
-    {
+    public SAXNotRecognizedException() {
         super();
     }
 
@@ -67,8 +65,7 @@ public class SAXNotRecognizedException extends SAXException
      *
      * @param message The text message of the exception.
      */
-    public SAXNotRecognizedException (String message)
-    {
+    public SAXNotRecognizedException(String message) {
         super(message);
     }
 

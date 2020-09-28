@@ -37,12 +37,12 @@ import org.w3c.dom.Text;
  * implementation... and in DOM Level 1, nodes aren't allowed to cross
  * Document boundaries anyway. What is really needed for this is a
  * very lightweight object.  DocumentFragment is such an object.
- * <P>
+ * <p>
  * Furthermore, various operations -- such as inserting nodes as
  * children of another Node -- may take DocumentFragment objects as
  * arguments; this results in all the child nodes of the
  * DocumentFragment being moved to the child list of this node.
- * <P>
+ * <p>
  * The children of a DocumentFragment node are zero or more nodes
  * representing the tops of any sub-trees defining the structure of
  * the document.  DocumentFragment do not need to be well-formed XML
@@ -51,7 +51,7 @@ import org.w3c.dom.Text;
  * nodes). For example, a DocumentFragment might have only one child
  * and that child node could be a Text node. Such a structure model
  * represents neither an HTML document nor a well-formed XML document.
- * <P>
+ * <p>
  * When a DocumentFragment is inserted into a Document (or indeed any
  * other Node that may take children) the children of the
  * DocumentFragment and not the DocumentFragment itself are inserted
@@ -62,31 +62,37 @@ import org.w3c.dom.Text;
  * and appendChild().
  *
  * @xerces.internal
- *
- * @since  PR-DOM-Level-1-19980818.
+ * @since PR-DOM-Level-1-19980818.
  */
 public class DocumentFragmentImpl
-    extends ParentNode
-    implements DocumentFragment {
+        extends ParentNode
+        implements DocumentFragment {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = -7596449967279236746L;
 
     //
     // Constructors
     //
 
-    /** Factory constructor. */
+    /**
+     * Factory constructor.
+     */
     public DocumentFragmentImpl(CoreDocumentImpl ownerDoc) {
         super(ownerDoc);
     }
 
-    /** Constructor for serialization. */
-    public DocumentFragmentImpl() {}
+    /**
+     * Constructor for serialization.
+     */
+    public DocumentFragmentImpl() {
+    }
 
     //
     // Node methods
@@ -100,7 +106,9 @@ public class DocumentFragmentImpl
         return Node.DOCUMENT_FRAGMENT_NODE;
     }
 
-    /** Returns the node name. */
+    /**
+     * Returns the node name.
+     */
     public String getNodeName() {
         return "#document-fragment";
     }
@@ -128,20 +136,16 @@ public class DocumentFragmentImpl
             //   1) There is an adjacent text node
             //   2) There is no adjacent text node, but kid is
             //      an empty text node.
-            if ( kid.getNodeType() == Node.TEXT_NODE )
-            {
+            if (kid.getNodeType() == Node.TEXT_NODE) {
                 // If an adjacent text node, merge it with kid
-                if ( next!=null && next.getNodeType() == Node.TEXT_NODE )
-                {
-                    ((Text)kid).appendData(next.getNodeValue());
-                    removeChild( next );
+                if (next != null && next.getNodeType() == Node.TEXT_NODE) {
+                    ((Text) kid).appendData(next.getNodeValue());
+                    removeChild(next);
                     next = kid; // Don't advance; there might be another.
-                }
-                else
-                {
+                } else {
                     // If kid is empty, remove it
-                    if ( kid.getNodeValue() == null || kid.getNodeValue().length() == 0 ) {
-                        removeChild( kid );
+                    if (kid.getNodeValue() == null || kid.getNodeValue().length() == 0) {
+                        removeChild(kid);
                     }
                 }
             }

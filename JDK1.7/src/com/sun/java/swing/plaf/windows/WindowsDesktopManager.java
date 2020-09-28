@@ -48,8 +48,8 @@ import java.lang.ref.WeakReference;
  * This means that if the currently selected window is maximized
  * and another window is selected, that new window will be maximized.
  *
- * @see javax.swing.DefaultDesktopManager
  * @author Thomas Ball
+ * @see javax.swing.DefaultDesktopManager
  */
 public class WindowsDesktopManager extends DefaultDesktopManager
         implements java.io.Serializable, javax.swing.plaf.UIResource {
@@ -61,15 +61,15 @@ public class WindowsDesktopManager extends DefaultDesktopManager
 
     public void activateFrame(JInternalFrame f) {
         JInternalFrame currentFrame = currentFrameRef != null ?
-            currentFrameRef.get() : null;
+                currentFrameRef.get() : null;
         try {
             super.activateFrame(f);
             if (currentFrame != null && f != currentFrame) {
                 // If the current frame is maximized, transfer that
                 // attribute to the frame being activated.
                 if (currentFrame.isMaximum() &&
-                    (f.getClientProperty("JInternalFrame.frameType") !=
-                    "optionDialog") ) {
+                        (f.getClientProperty("JInternalFrame.frameType") !=
+                                "optionDialog")) {
                     //Special case.  If key binding was used to select next
                     //frame instead of minimizing the icon via the minimize
                     //icon.
@@ -94,7 +94,8 @@ public class WindowsDesktopManager extends DefaultDesktopManager
             if (!f.isSelected()) {
                 f.setSelected(true);
             }
-        } catch (PropertyVetoException e) {}
+        } catch (PropertyVetoException e) {
+        }
         if (f != currentFrame) {
             currentFrameRef = new WeakReference<JInternalFrame>(f);
         }

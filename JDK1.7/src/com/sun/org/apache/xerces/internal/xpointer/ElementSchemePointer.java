@@ -35,10 +35,8 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLErrorHandler;
  * Implements the XPointerPart interface for element() scheme specific processing.
  * </p>
  *
- * @xerces.internal
- *
  * @version $Id: ElementSchemePointer.java,v 1.4 2009/06/11 23:51:50 joehw Exp $
- *
+ * @xerces.internal
  */
 class ElementSchemePointer implements XPointerPart {
 
@@ -80,7 +78,8 @@ class ElementSchemePointer implements XPointerPart {
     private int fCurrentChildDepth = 0;
 
     // The current element's child sequence
-    private int fCurrentChildSequence[];;
+    private int fCurrentChildSequence[];
+    ;
 
     // Stores if the Fragment was resolved by the pointer
     private boolean fIsFragmentResolved = false;
@@ -108,7 +107,7 @@ class ElementSchemePointer implements XPointerPart {
     }
 
     public ElementSchemePointer(SymbolTable symbolTable,
-            XMLErrorReporter errorReporter) {
+                                XMLErrorReporter errorReporter) {
         fSymbolTable = symbolTable;
         fErrorReporter = errorReporter;
     }
@@ -140,8 +139,8 @@ class ElementSchemePointer implements XPointerPart {
                     super.addToken(tokens, token);
                     return;
                 }
-                reportError("InvalidElementSchemeToken", new Object[] { tokens
-                        .getTokenString(token) });
+                reportError("InvalidElementSchemeToken", new Object[]{tokens
+                        .getTokenString(token)});
             }
         };
 
@@ -152,7 +151,7 @@ class ElementSchemePointer implements XPointerPart {
 
         if (!success) {
             reportError("InvalidElementSchemeXPointer",
-                    new Object[] { xpointer });
+                    new Object[]{xpointer});
         }
 
         // Initialize a temp arrays to the size of token count which should
@@ -167,28 +166,28 @@ class ElementSchemePointer implements XPointerPart {
             int token = tokens.nextToken();
 
             switch (token) {
-            case Tokens.XPTRTOKEN_ELEM_NCNAME: {
-                // Note:  Only a single ShortHand pointer can be present
+                case Tokens.XPTRTOKEN_ELEM_NCNAME: {
+                    // Note:  Only a single ShortHand pointer can be present
 
-                // The shortHand name
-                token = tokens.nextToken();
-                fShortHandPointerName = tokens.getTokenString(token);
+                    // The shortHand name
+                    token = tokens.nextToken();
+                    fShortHandPointerName = tokens.getTokenString(token);
 
-                // Create a new ShortHandPointer
-                fShortHandPointer = new ShortHandPointer(fSymbolTable);
-                fShortHandPointer.setSchemeName(fShortHandPointerName);
+                    // Create a new ShortHandPointer
+                    fShortHandPointer = new ShortHandPointer(fSymbolTable);
+                    fShortHandPointer.setSchemeName(fShortHandPointerName);
 
-                break;
-            }
-            case Tokens.XPTRTOKEN_ELEM_CHILD: {
-                tmpChildSequence[i] = tokens.nextToken();
-                i++;
+                    break;
+                }
+                case Tokens.XPTRTOKEN_ELEM_CHILD: {
+                    tmpChildSequence[i] = tokens.nextToken();
+                    i++;
 
-                break;
-            }
-            default:
-                reportError("InvalidElementSchemeXPointer",
-                        new Object[] { xpointer });
+                    break;
+                }
+                default:
+                    reportError("InvalidElementSchemeXPointer",
+                            new Object[]{xpointer});
             }
         }
 
@@ -201,6 +200,7 @@ class ElementSchemePointer implements XPointerPart {
 
     /**
      * Returns the scheme name i.e element
+     *
      * @see com.sun.org.apache.xerces.internal.xpointer.XPointerPart#getSchemeName()
      */
     public String getSchemeName() {
@@ -243,7 +243,7 @@ class ElementSchemePointer implements XPointerPart {
      * @see com.sun.org.apache.xerces.internal.xpointer.XPointerProcessor#resolveXPointer(com.sun.org.apache.xerces.internal.xni.QName, com.sun.org.apache.xerces.internal.xni.XMLAttributes, com.sun.org.apache.xerces.internal.xni.Augmentations, int event)
      */
     public boolean resolveXPointer(QName element, XMLAttributes attributes,
-            Augmentations augs, int event) throws XNIException {
+                                   Augmentations augs, int event) throws XNIException {
 
         boolean isShortHandPointerResolved = false;
 
@@ -347,12 +347,12 @@ class ElementSchemePointer implements XPointerPart {
                 // Donot check for empty elements if the empty element is
                 // a child of a found parent element
                 //if (!fIsElementFound) {
-                    if (checkMatch()) {
-                        fIsElementFound = true;
-                        fWasOnlyEmptyElementFound = true;
-                    } else {
-                        fIsElementFound = false;
-                    }
+                if (checkMatch()) {
+                    fIsElementFound = true;
+                    fWasOnlyEmptyElementFound = true;
+                } else {
+                    fIsElementFound = false;
+                }
                 //}
 
             }
@@ -419,7 +419,7 @@ class ElementSchemePointer implements XPointerPart {
     public boolean isFragmentResolved() throws XNIException {
         // Return true if the Fragment was resolved and the current Node depth
         // is greater than or equal to the depth at which the element was found
-        return fIsFragmentResolved ;
+        return fIsFragmentResolved;
     }
 
     /**
@@ -427,29 +427,28 @@ class ElementSchemePointer implements XPointerPart {
      * of the current resource fragment.
      *
      * @see com.sun.org.apache.xerces.internal.xpointer.XPointerPart#isChildFragmentResolved()
-     *
      */
     public boolean isChildFragmentResolved() {
         // if only a shorthand pointer was present
         if (fIsShortHand && fShortHandPointer != null && fChildSequence.length <= 0) {
-                return fShortHandPointer.isChildFragmentResolved();
+            return fShortHandPointer.isChildFragmentResolved();
         } else {
-                return fWasOnlyEmptyElementFound ? !fWasOnlyEmptyElementFound
-                                : (fIsFragmentResolved && (fCurrentChildDepth >= fFoundDepth));
+            return fWasOnlyEmptyElementFound ? !fWasOnlyEmptyElementFound
+                    : (fIsFragmentResolved && (fCurrentChildDepth >= fFoundDepth));
         }
     }
 
     /**
-         * Reports an XPointer error
-         */
+     * Reports an XPointer error
+     */
     protected void reportError(String key, Object[] arguments)
             throws XNIException {
         /*fErrorReporter.reportError(XPointerMessageFormatter.XPOINTER_DOMAIN,
          key, arguments, XMLErrorReporter.SEVERITY_ERROR);
          */
         throw new XNIException((fErrorReporter
-                        .getMessageFormatter(XPointerMessageFormatter.XPOINTER_DOMAIN))
-                                .formatMessage(fErrorReporter.getLocale(), key, arguments));
+                .getMessageFormatter(XPointerMessageFormatter.XPOINTER_DOMAIN))
+                .formatMessage(fErrorReporter.getLocale(), key, arguments));
     }
 
     /**
@@ -493,11 +492,9 @@ class ElementSchemePointer implements XPointerPart {
     /**
      * List of XPointer Framework tokens.
      *
-     * @xerces.internal
-     *
      * @author Neil Delima, IBM
      * @version $Id: ElementSchemePointer.java,v 1.4 2009/06/11 23:51:50 joehw Exp $
-     *
+     * @xerces.internal
      */
     private final class Tokens {
 
@@ -511,8 +508,8 @@ class ElementSchemePointer implements XPointerPart {
         private static final int XPTRTOKEN_ELEM_CHILD = 1;
 
         // Token names
-        private final String[] fgTokenNames = { "XPTRTOKEN_ELEM_NCNAME",
-                "XPTRTOKEN_ELEM_CHILD" };
+        private final String[] fgTokenNames = {"XPTRTOKEN_ELEM_NCNAME",
+                "XPTRTOKEN_ELEM_CHILD"};
 
         // Token count
         private static final int INITIAL_TOKEN_COUNT = 1 << 8;
@@ -553,6 +550,7 @@ class ElementSchemePointer implements XPointerPart {
 
         /**
          * Returns the token String
+         *
          * @param token The index of the token
          * @return String The token string
          */
@@ -609,7 +607,7 @@ class ElementSchemePointer implements XPointerPart {
         /**
          * Obtains the token at the current position, then advance
          * the current position by one.
-         *
+         * <p>
          * If there's no such next token, this method throws
          * <tt>new XNIException("InvalidXPointerExpression");</tt>.
          */
@@ -622,7 +620,7 @@ class ElementSchemePointer implements XPointerPart {
         /**
          * Obtains the token at the current position, without advancing
          * the current position.
-         *
+         * <p>
          * If there's no such next token, this method throws
          * <tt>new XNIException("InvalidXPointerExpression");</tt>.
          */
@@ -634,7 +632,7 @@ class ElementSchemePointer implements XPointerPart {
 
         /**
          * Obtains the token at the current position as a String.
-         *
+         * <p>
          * If there's no current token or if the current token
          * is not a string token, this method throws
          * If there's no such next token, this method throws
@@ -649,7 +647,6 @@ class ElementSchemePointer implements XPointerPart {
 
         /**
          * Returns the number of tokens.
-         *
          */
         private int getTokenCount() {
             return fTokenCount;
@@ -657,27 +654,26 @@ class ElementSchemePointer implements XPointerPart {
     }
 
     /**
-     *
      * The XPointer expression scanner.  Scans the XPointer framework expression.
      *
-     * @xerces.internal
-     *
      * @version $Id: ElementSchemePointer.java,v 1.4 2009/06/11 23:51:50 joehw Exp $
+     * @xerces.internal
      */
     private class Scanner {
 
         /**
          * 7-bit ASCII subset
-         *
-         *  0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
-         *  0,  0,  0,  0,  0,  0,  0,  0,  0, HT, LF,  0,  0, CR,  0,  0,  // 0
-         *  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  // 1
+         * <p>
+         * 0   1   2   3   4   5   6   7   8   9   A   B   C   D   E   F
+         * 0,  0,  0,  0,  0,  0,  0,  0,  0, HT, LF,  0,  0, CR,  0,  0,  // 0
+         * 0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  // 1
          * SP,  !,  ",  #,  $,  %,  &,  ',  (,  ),  *,  +,  ,,  -,  .,  /,  // 2
-         *  0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  :,  ;,  <,  =,  >,  ?,  // 3
-         *  @,  A,  B,  C,  D,  E,  F,  G,  H,  I,  J,  K,  L,  M,  N,  O,  // 4
-         *  P,  Q,  R,  S,  T,  U,  V,  W,  X,  Y,  Z,  [,  \,  ],  ^,  _,  // 5
-         *  `,  a,  b,  c,  d,  e,  f,  g,  h,  i,  j,  k,  l,  m,  n,  o,  // 6
-         *  p,  q,  r,  s,  t,  u,  v,  w,  x,  y,  z,  {,  |,  },  ~, DEL  // 7
+         * 0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  :,  ;,  <,  =,  >,  ?,  // 3
+         *
+         * @, A,  B,  C,  D,  E,  F,  G,  H,  I,  J,  K,  L,  M,  N,  O,  // 4
+         * P,  Q,  R,  S,  T,  U,  V,  W,  X,  Y,  Z,  [,  \,  ],  ^,  _,  // 5
+         * `,  a,  b,  c,  d,  e,  f,  g,  h,  i,  j,  k,  l,  m,  n,  o,  // 6
+         * p,  q,  r,  s,  t,  u,  v,  w,  x,  y,  z,  {,  |,  },  ~, DEL  // 7
          */
         private static final byte CHARTYPE_INVALID = 0, // invalid XML characters, control characters and 7F
                 CHARTYPE_OTHER = 1, // A valid XML character (possibly invalid NCNameChar) that does not fall in one of the other categories
@@ -689,13 +685,13 @@ class ElementSchemePointer implements XPointerPart {
                 CHARTYPE_UNDERSCORE = 7, // '_' (0x5F)
                 CHARTYPE_NONASCII = 8; // Non-ASCII Unicode codepoint (>= 0x80)
 
-        private final byte[] fASCIICharMap = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+        private final byte[] fASCIICharMap = {0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
                 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 4, 5, 5, 5, 5, 5,
                 5, 5, 5, 5, 5, 1, 1, 1, 1, 1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 6, 6,
                 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 1, 1, 1, 1,
                 7, 1, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
-                6, 6, 6, 6, 6, 6, 6, 1, 1, 1, 1, 1 };
+                6, 6, 6, 6, 6, 6, 6, 1, 1, 1, 1, 1};
 
         /**
          * Symbol literals
@@ -704,7 +700,9 @@ class ElementSchemePointer implements XPointerPart {
         //
         // Data
         //
-        /** Symbol table. */
+        /**
+         * Symbol table.
+         */
         private SymbolTable fSymbolTable;
 
         //
@@ -724,10 +722,9 @@ class ElementSchemePointer implements XPointerPart {
 
         /**
          * Scans the XPointer Expression
-         *
          */
         private boolean scanExpr(SymbolTable symbolTable, Tokens tokens,
-                String data, int currentOffset, int endOffset)
+                                 String data, int currentOffset, int endOffset)
                 throws XNIException {
 
             int ch;
@@ -750,66 +747,66 @@ class ElementSchemePointer implements XPointerPart {
 
                 switch (chartype) {
 
-                case CHARTYPE_SLASH:
-                    // if last character is '/', break and report an error
-                    if (++currentOffset == endOffset) {
-                        return false;
-                    }
-
-                    addToken(tokens, Tokens.XPTRTOKEN_ELEM_CHILD);
-                    ch = data.charAt(currentOffset);
-
-                    // ChildSequence    ::=    ('/' [1-9] [0-9]*)+
-                    int child = 0;
-                    while (ch >= '0' && ch <= '9') {
-                        child = (child * 10) + (ch - '0');
+                    case CHARTYPE_SLASH:
+                        // if last character is '/', break and report an error
                         if (++currentOffset == endOffset) {
-                            break;
+                            return false;
                         }
+
+                        addToken(tokens, Tokens.XPTRTOKEN_ELEM_CHILD);
                         ch = data.charAt(currentOffset);
-                    }
 
-                    // An invalid child sequence character
-                    if (child == 0) {
-                        reportError("InvalidChildSequenceCharacter",
-                                new Object[] { new Character((char) ch) });
-                        return false;
-                    }
+                        // ChildSequence    ::=    ('/' [1-9] [0-9]*)+
+                        int child = 0;
+                        while (ch >= '0' && ch <= '9') {
+                            child = (child * 10) + (ch - '0');
+                            if (++currentOffset == endOffset) {
+                                break;
+                            }
+                            ch = data.charAt(currentOffset);
+                        }
 
-                    tokens.addToken(child);
+                        // An invalid child sequence character
+                        if (child == 0) {
+                            reportError("InvalidChildSequenceCharacter",
+                                    new Object[]{new Character((char) ch)});
+                            return false;
+                        }
 
-                    break;
+                        tokens.addToken(child);
 
-                case CHARTYPE_DIGIT:
-                case CHARTYPE_LETTER:
-                case CHARTYPE_MINUS:
-                case CHARTYPE_NONASCII:
-                case CHARTYPE_OTHER:
-                case CHARTYPE_PERIOD:
-                case CHARTYPE_UNDERSCORE:
-                    // Scan the ShortHand Pointer NCName
-                    nameOffset = currentOffset;
-                    currentOffset = scanNCName(data, endOffset, currentOffset);
+                        break;
 
-                    if (currentOffset == nameOffset) {
-                        //return false;
-                        reportError("InvalidNCNameInElementSchemeData",
-                                new Object[] { data });
-                        return false;
-                    }
+                    case CHARTYPE_DIGIT:
+                    case CHARTYPE_LETTER:
+                    case CHARTYPE_MINUS:
+                    case CHARTYPE_NONASCII:
+                    case CHARTYPE_OTHER:
+                    case CHARTYPE_PERIOD:
+                    case CHARTYPE_UNDERSCORE:
+                        // Scan the ShortHand Pointer NCName
+                        nameOffset = currentOffset;
+                        currentOffset = scanNCName(data, endOffset, currentOffset);
 
-                    if (currentOffset < endOffset) {
-                        ch = data.charAt(currentOffset);
-                    } else {
-                        ch = -1;
-                    }
+                        if (currentOffset == nameOffset) {
+                            //return false;
+                            reportError("InvalidNCNameInElementSchemeData",
+                                    new Object[]{data});
+                            return false;
+                        }
 
-                    nameHandle = symbolTable.addSymbol(data.substring(
-                            nameOffset, currentOffset));
-                    addToken(tokens, Tokens.XPTRTOKEN_ELEM_NCNAME);
-                    tokens.addToken(nameHandle);
+                        if (currentOffset < endOffset) {
+                            ch = data.charAt(currentOffset);
+                        } else {
+                            ch = -1;
+                        }
 
-                    break;
+                        nameHandle = symbolTable.addSymbol(data.substring(
+                                nameOffset, currentOffset));
+                        addToken(tokens, Tokens.XPTRTOKEN_ELEM_NCNAME);
+                        tokens.addToken(nameHandle);
+
+                        break;
                 }
             }
             return true;
@@ -821,8 +818,8 @@ class ElementSchemePointer implements XPointerPart {
          * [5] NCName ::= (Letter | '_') (NCNameChar)*
          * [6] NCNameChar ::= Letter | Digit | '.' | '-' | '_' | CombiningChar | Extender
          *
-         * @param data A String containing the XPointer expression
-         * @param endOffset The int XPointer expression length
+         * @param data          A String containing the XPointer expression
+         * @param endOffset     The int XPointer expression length
          * @param currentOffset An int representing the current position of the XPointer expression pointer
          */
         private int scanNCName(String data, int endOffset, int currentOffset) {

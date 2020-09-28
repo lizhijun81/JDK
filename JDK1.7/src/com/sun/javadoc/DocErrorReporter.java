@@ -28,8 +28,8 @@ package com.sun.javadoc;
 /**
  * This interface provides error, warning and notice printing.
  *
- * @since 1.2
  * @author Robert Field
+ * @since 1.2
  */
 public interface DocErrorReporter {
 

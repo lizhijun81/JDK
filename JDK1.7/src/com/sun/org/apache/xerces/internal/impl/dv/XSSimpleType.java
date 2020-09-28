@@ -29,10 +29,8 @@ import com.sun.org.apache.xerces.internal.xs.XSSimpleTypeDefinition;
  * Any simple type (atomic, list or union) will implement this interface.
  * It inherits from <code>XSTypeDecl</code>.
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
- *
+ * @xerces.internal
  */
 public interface XSSimpleType extends XSSimpleTypeDefinition {
 
@@ -41,11 +39,17 @@ public interface XSSimpleType extends XSSimpleTypeDefinition {
      * see <a href='http://www.w3.org/TR/xmlschema-2/#dt-whiteSpace'> XML Schema
      * Part 2: Datatypes </a>
      */
-    /** preserve the white spaces */
+    /**
+     * preserve the white spaces
+     */
     public static final short WS_PRESERVE = 0;
-    /** replace the white spaces */
-    public static final short WS_REPLACE  = 1;
-    /** collapse the white spaces */
+    /**
+     * replace the white spaces
+     */
+    public static final short WS_REPLACE = 1;
+    /**
+     * collapse the white spaces
+     */
     public static final short WS_COLLAPSE = 2;
 
     /**
@@ -53,54 +57,94 @@ public interface XSSimpleType extends XSSimpleTypeDefinition {
      * see <a href='http://www.w3.org/TR/xmlschema-2/#built-in-primitive-datatypes'>
      * XML Schema Part 2: Datatypes </a>
      */
-    /** "string" type */
-    public static final short PRIMITIVE_STRING        = 1;
-    /** "boolean" type */
-    public static final short PRIMITIVE_BOOLEAN       = 2;
-    /** "decimal" type */
-    public static final short PRIMITIVE_DECIMAL       = 3;
-    /** "float" type */
-    public static final short PRIMITIVE_FLOAT         = 4;
-    /** "double" type */
-    public static final short PRIMITIVE_DOUBLE        = 5;
-    /** "duration" type */
-    public static final short PRIMITIVE_DURATION      = 6;
-    /** "dataTime" type */
-    public static final short PRIMITIVE_DATETIME      = 7;
-    /** "time" type */
-    public static final short PRIMITIVE_TIME          = 8;
-    /** "date" type */
-    public static final short PRIMITIVE_DATE          = 9;
-    /** "gYearMonth" type */
-    public static final short PRIMITIVE_GYEARMONTH    = 10;
-    /** "gYear" type */
-    public static final short PRIMITIVE_GYEAR         = 11;
-    /** "gMonthDay" type */
-    public static final short PRIMITIVE_GMONTHDAY     = 12;
-    /** "gDay" type */
-    public static final short PRIMITIVE_GDAY          = 13;
-    /** "gMonth" type */
-    public static final short PRIMITIVE_GMONTH        = 14;
-    /** "hexBinary" type */
-    public static final short PRIMITIVE_HEXBINARY     = 15;
-    /** "base64Binary" type */
-    public static final short PRIMITIVE_BASE64BINARY  = 16;
-    /** "anyURI" type */
-    public static final short PRIMITIVE_ANYURI        = 17;
-    /** "QName" type */
-    public static final short PRIMITIVE_QNAME         = 18;
-    /** "precisionDecimal" type */
+    /**
+     * "string" type
+     */
+    public static final short PRIMITIVE_STRING = 1;
+    /**
+     * "boolean" type
+     */
+    public static final short PRIMITIVE_BOOLEAN = 2;
+    /**
+     * "decimal" type
+     */
+    public static final short PRIMITIVE_DECIMAL = 3;
+    /**
+     * "float" type
+     */
+    public static final short PRIMITIVE_FLOAT = 4;
+    /**
+     * "double" type
+     */
+    public static final short PRIMITIVE_DOUBLE = 5;
+    /**
+     * "duration" type
+     */
+    public static final short PRIMITIVE_DURATION = 6;
+    /**
+     * "dataTime" type
+     */
+    public static final short PRIMITIVE_DATETIME = 7;
+    /**
+     * "time" type
+     */
+    public static final short PRIMITIVE_TIME = 8;
+    /**
+     * "date" type
+     */
+    public static final short PRIMITIVE_DATE = 9;
+    /**
+     * "gYearMonth" type
+     */
+    public static final short PRIMITIVE_GYEARMONTH = 10;
+    /**
+     * "gYear" type
+     */
+    public static final short PRIMITIVE_GYEAR = 11;
+    /**
+     * "gMonthDay" type
+     */
+    public static final short PRIMITIVE_GMONTHDAY = 12;
+    /**
+     * "gDay" type
+     */
+    public static final short PRIMITIVE_GDAY = 13;
+    /**
+     * "gMonth" type
+     */
+    public static final short PRIMITIVE_GMONTH = 14;
+    /**
+     * "hexBinary" type
+     */
+    public static final short PRIMITIVE_HEXBINARY = 15;
+    /**
+     * "base64Binary" type
+     */
+    public static final short PRIMITIVE_BASE64BINARY = 16;
+    /**
+     * "anyURI" type
+     */
+    public static final short PRIMITIVE_ANYURI = 17;
+    /**
+     * "QName" type
+     */
+    public static final short PRIMITIVE_QNAME = 18;
+    /**
+     * "precisionDecimal" type
+     */
     public static final short PRIMITIVE_PRECISIONDECIMAL = 19;
-    /** "NOTATION" type */
-    public static final short PRIMITIVE_NOTATION      = 20;
+    /**
+     * "NOTATION" type
+     */
+    public static final short PRIMITIVE_NOTATION = 20;
 
     /**
      * return an ID representing the built-in primitive base type.
      * REVISIT: This method is (currently) for internal use only.
-     *          the constants returned from this method are not finalized yet.
-     *          the names and values might change in the further.
+     * the constants returned from this method are not finalized yet.
+     * the names and values might change in the further.
      *
-     * @return   an ID representing the built-in primitive base type
+     * @return an ID representing the built-in primitive base type
      */
     public short getPrimitiveKind();
 
@@ -110,11 +154,10 @@ public interface XSSimpleType extends XSSimpleTypeDefinition {
      * @param content       the string value that needs to be validated
      * @param context       the validation context
      * @param validatedInfo used to store validation result
-     *
-     * @return              the actual value (QName, Boolean) of the string value
+     * @return the actual value (QName, Boolean) of the string value
      */
     public Object validate(String content, ValidationContext context, ValidatedInfo validatedInfo)
-        throws InvalidDatatypeValueException;
+            throws InvalidDatatypeValueException;
 
     /**
      * validate a given string value, represented by content.toString().
@@ -124,44 +167,43 @@ public interface XSSimpleType extends XSSimpleTypeDefinition {
      * @param content       the string value that needs to be validated
      * @param context       the validation context
      * @param validatedInfo used to store validation result
-     *
-     * @return              the actual value (QName, Boolean) of the string value
+     * @return the actual value (QName, Boolean) of the string value
      */
     public Object validate(Object content, ValidationContext context, ValidatedInfo validatedInfo)
-        throws InvalidDatatypeValueException;
+            throws InvalidDatatypeValueException;
 
     /**
      * Validate an actual value against this simple type.
      *
      * @param context       the validation context
      * @param validatedInfo used to provide the actual value and member types
-     * @exception InvalidDatatypeValueException  exception for invalid values.
+     * @throws InvalidDatatypeValueException exception for invalid values.
      */
     public void validate(ValidationContext context, ValidatedInfo validatedInfo)
-        throws InvalidDatatypeValueException;
+            throws InvalidDatatypeValueException;
 
     /**
      * If this type is created from restriction, then some facets can be applied
      * to the simple type. <code>XSFacets</code> is used to pass the value of
      * different facets.
      *
-     * @param facets        the value of all the facets
-     * @param presentFacet  bit combination value of the costraining facet
-     *                      constants which are present.
-     * @param fixedFacet    bit combination value of the costraining facet
-     *                      constants which are fixed.
-     * @param context       the validation context
-     * @exception InvalidDatatypeFacetException  exception for invalid facet values.
+     * @param facets       the value of all the facets
+     * @param presentFacet bit combination value of the costraining facet
+     *                     constants which are present.
+     * @param fixedFacet   bit combination value of the costraining facet
+     *                     constants which are fixed.
+     * @param context      the validation context
+     * @throws InvalidDatatypeFacetException exception for invalid facet values.
      */
     public void applyFacets(XSFacets facets, short presentFacet, short fixedFacet, ValidationContext context)
-        throws InvalidDatatypeFacetException;
+            throws InvalidDatatypeFacetException;
 
     /**
      * Check whether two actual values are equal.
      *
-     * @param value1  the first value
-     * @param value2  the second value
-     * @return        true if the two value are equal
+     * @param value1 the first value
+     * @param value2 the second value
+     * @return true if the two value are equal
      */
     public boolean isEqual(Object value1, Object value2);
 
@@ -185,10 +227,10 @@ public interface XSSimpleType extends XSSimpleTypeDefinition {
     /**
      * Check whether this type is or is derived from ID.
      * REVISIT: this method makes ID special, which is not a good design.
-     *          but since ID is not a primitive, there doesn't seem to be a
-     *          clean way of doing it except to define special method like this.
+     * but since ID is not a primitive, there doesn't seem to be a
+     * clean way of doing it except to define special method like this.
      *
-     * @return  whether this simple type is or is derived from ID.
+     * @return whether this simple type is or is derived from ID.
      */
     public boolean isIDType();
 
@@ -196,8 +238,7 @@ public interface XSSimpleType extends XSSimpleTypeDefinition {
      * Return the whitespace corresponding to this datatype.
      *
      * @return valid values are WS_PRESERVE, WS_REPLACE, WS_COLLAPSE.
-     * @exception DatatypeException
-     *                   union datatypes don't have whitespace facet associated with them
+     * @throws DatatypeException union datatypes don't have whitespace facet associated with them
      */
     public short getWhitespace() throws DatatypeException;
 }

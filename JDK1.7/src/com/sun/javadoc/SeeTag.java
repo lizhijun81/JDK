@@ -40,7 +40,6 @@ package com.sun.javadoc;
  * @author Kaiyang Liu (original)
  * @author Robert Field (rewrite)
  * @author Atul M Dambalkar
- *
  */
 public interface SeeTag extends Tag {
 
@@ -49,7 +48,7 @@ public interface SeeTag extends Tag {
      * Return null if no label is present.
      * For example, for:
      * <p>
-     *    &nbsp;&nbsp;<code>@see String#trim() the trim method</code>
+     * &nbsp;&nbsp;<code>@see String#trim() the trim method</code>
      * </p>
      * return "the trim method".
      */
@@ -62,7 +61,7 @@ public interface SeeTag extends Tag {
      * interface, field, constructor, method) or non-element.
      * For example, for:
      * <p>
-     *   &nbsp;&nbsp;<code>@see java.lang</code>
+     * &nbsp;&nbsp;<code>@see java.lang</code>
      * </p>
      * return the <code>PackageDoc</code> for <code>java.lang</code>.
      */
@@ -77,7 +76,7 @@ public interface SeeTag extends Tag {
      * the package name instead.
      * For example, for:
      * <p>
-     *   &nbsp;&nbsp;<code>@see String#valueOf(java.lang.Object)</code>
+     * &nbsp;&nbsp;<code>@see String#valueOf(java.lang.Object)</code>
      * </p>
      * return "java.lang.String".
      * For "<code>@see java.lang</code>", return "java.lang".
@@ -91,7 +90,7 @@ public interface SeeTag extends Tag {
      * Return null if the class cannot be found.
      * For example, for:
      * <p>
-     *   &nbsp;&nbsp;<code>@see String#valueOf(java.lang.Object)</code>
+     * &nbsp;&nbsp;<code>@see String#valueOf(java.lang.Object)</code>
      * </p>
      * return the <code>ClassDoc</code> for <code>java.lang.String</code>.
      */
@@ -104,7 +103,7 @@ public interface SeeTag extends Tag {
      * References to member classes (nested classes) return null.
      * For example, for:
      * <p>
-     *   &nbsp;&nbsp;<code>@see String#startsWith(String)</code>
+     * &nbsp;&nbsp;<code>@see String#startsWith(String)</code>
      * </p>
      * return "startsWith(String)".
      */
@@ -118,7 +117,7 @@ public interface SeeTag extends Tag {
      * References to member classes (nested classes) return null.
      * For example, for:
      * <p>
-     *   &nbsp;&nbsp;<code>@see String#startsWith(java.lang.String)</code>
+     * &nbsp;&nbsp;<code>@see String#startsWith(java.lang.String)</code>
      * </p>
      * return the <code>MethodDoc</code> for <code>startsWith</code>.
      */

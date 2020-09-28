@@ -34,6 +34,7 @@
  **********************************************************************/
 
 package java.awt.image.renderable;
+
 import java.awt.geom.Rectangle2D;
 import java.awt.image.RenderedImage;
 
@@ -65,14 +66,14 @@ public interface ContextualRenderedImageFactory extends RenderedImageFactory {
      * use this mechanism to avoid obtaining sources of higher quality
      * than necessary.
      *
-     * @param i the index of the source image.
+     * @param i             the index of the source image.
      * @param renderContext the RenderContext being applied to the operation.
-     * @param paramBlock a ParameterBlock containing the operation's
-     *        sources and parameters.
-     * @param image the RenderableImage being rendered.
+     * @param paramBlock    a ParameterBlock containing the operation's
+     *                      sources and parameters.
+     * @param image         the RenderableImage being rendered.
      * @return a <code>RenderContext</code> for
-     *         the source at the specified index of the parameters
-     *         Vector contained in the specified ParameterBlock.
+     * the source at the specified index of the parameters
+     * Vector contained in the specified ParameterBlock.
      */
     RenderContext mapRenderContext(int i,
                                    RenderContext renderContext,
@@ -89,11 +90,11 @@ public interface ContextualRenderedImageFactory extends RenderedImageFactory {
      * RenderContext.
      *
      * @param renderContext The RenderContext specifying the rendering
-     * @param paramBlock a ParameterBlock containing the operation's
-     *        sources and parameters
+     * @param paramBlock    a ParameterBlock containing the operation's
+     *                      sources and parameters
      * @return a <code>RenderedImage</code> from the sources and parameters
-     *         in the specified ParameterBlock and according to the
-     *         rendering instructions in the specified RenderContext.
+     * in the specified ParameterBlock and according to the
+     * rendering instructions in the specified RenderContext.
      */
     RenderedImage create(RenderContext renderContext,
                          ParameterBlock paramBlock);
@@ -105,9 +106,9 @@ public interface ContextualRenderedImageFactory extends RenderedImageFactory {
      * axis-aligned rectangle with floating-point corner coordinates.
      *
      * @param paramBlock a ParameterBlock containing the operation's
-     *        sources and parameters.
+     *                   sources and parameters.
      * @return a Rectangle2D specifying the rendering-independent
-     *         bounding box of the output.
+     * bounding box of the output.
      */
     Rectangle2D getBounds2D(ParameterBlock paramBlock);
 
@@ -117,14 +118,15 @@ public interface ContextualRenderedImageFactory extends RenderedImageFactory {
      * return when there are multiple sources that each specify the property.
      *
      * @param paramBlock a ParameterBlock containing the operation's
-     *        sources and parameters.
-     * @param name a String naming the desired property.
+     *                   sources and parameters.
+     * @param name       a String naming the desired property.
      * @return an object reference to the value of the property requested.
      */
     Object getProperty(ParameterBlock paramBlock, String name);
 
     /**
      * Returns a list of names recognized by getProperty.
+     *
      * @return the list of property names.
      */
     String[] getPropertyNames();
@@ -135,9 +137,10 @@ public interface ContextualRenderedImageFactory extends RenderedImageFactory {
      * may produce different results.  This method may be used to
      * determine whether an existing rendering may be cached and
      * reused.  It is always safe to return true.
+     *
      * @return <code>true</code> if successive renderings with the
-     *         same arguments might produce different results;
-     *         <code>false</code> otherwise.
+     * same arguments might produce different results;
+     * <code>false</code> otherwise.
      */
     boolean isDynamic();
 }

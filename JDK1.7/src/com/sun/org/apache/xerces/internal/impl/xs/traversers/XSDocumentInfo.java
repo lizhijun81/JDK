@@ -40,10 +40,9 @@ import org.w3c.dom.NamedNodeMap;
  * namespace bindings and other settings on the <schema/> element
  * affect the contents of that schema document alone.
  *
- * @xerces.internal
- *
  * @author Neil Graham, IBM
  * @version $Id: XSDocumentInfo.java,v 1.5 2007/10/15 22:27:48 spericas Exp $
+ * @xerces.internal
  */
 class XSDocumentInfo {
 
@@ -84,7 +83,7 @@ class XSDocumentInfo {
 
     // array of objects on the schema's root element.  This is null
     // once returnSchemaAttrs has been called.
-    protected Object [] fSchemaAttrs;
+    protected Object[] fSchemaAttrs;
 
     // list of annotations contained in the schema document. This is null
     // once removeAnnotations has been called.
@@ -92,8 +91,8 @@ class XSDocumentInfo {
 
     // note that the caller must ensure to call returnSchemaAttrs()
     // to avoid memory leaks!
-    XSDocumentInfo (Element schemaRoot, XSAttributeChecker attrChecker, SymbolTable symbolTable)
-                    throws XMLSchemaException {
+    XSDocumentInfo(Element schemaRoot, XSAttributeChecker attrChecker, SymbolTable symbolTable)
+            throws XMLSchemaException {
         fSchemaElement = schemaRoot;
         initNamespaceSupport(schemaRoot);
         fIsChameleonSchema = false;
@@ -111,15 +110,15 @@ class XSDocumentInfo {
                 throw new XMLSchemaException(null, null);
             }
             fAreLocalAttributesQualified =
-                ((XInt)fSchemaAttrs[XSAttributeChecker.ATTIDX_AFORMDEFAULT]).intValue() == SchemaSymbols.FORM_QUALIFIED;
+                    ((XInt) fSchemaAttrs[XSAttributeChecker.ATTIDX_AFORMDEFAULT]).intValue() == SchemaSymbols.FORM_QUALIFIED;
             fAreLocalElementsQualified =
-                ((XInt)fSchemaAttrs[XSAttributeChecker.ATTIDX_EFORMDEFAULT]).intValue() == SchemaSymbols.FORM_QUALIFIED;
+                    ((XInt) fSchemaAttrs[XSAttributeChecker.ATTIDX_EFORMDEFAULT]).intValue() == SchemaSymbols.FORM_QUALIFIED;
             fBlockDefault =
-                ((XInt)fSchemaAttrs[XSAttributeChecker.ATTIDX_BLOCKDEFAULT]).shortValue();
+                    ((XInt) fSchemaAttrs[XSAttributeChecker.ATTIDX_BLOCKDEFAULT]).shortValue();
             fFinalDefault =
-                ((XInt)fSchemaAttrs[XSAttributeChecker.ATTIDX_FINALDEFAULT]).shortValue();
+                    ((XInt) fSchemaAttrs[XSAttributeChecker.ATTIDX_FINALDEFAULT]).shortValue();
             fTargetNamespace =
-                (String)fSchemaAttrs[XSAttributeChecker.ATTIDX_TARGETNAMESPACE];
+                    (String) fSchemaAttrs[XSAttributeChecker.ATTIDX_TARGETNAMESPACE];
             if (fTargetNamespace != null)
                 fTargetNamespace = symbolTable.addSymbol(fTargetNamespace);
 
@@ -141,9 +140,9 @@ class XSDocumentInfo {
      * declarations in the root's ancestors. This is necessary to
      * support schemas fragments, i.e. schemas embedded in other
      * documents. See,
-     *
+     * <p>
      * https://jaxp.dev.java.net/issues/show_bug.cgi?id=43
-     *
+     * <p>
      * Requires the DOM to be created with namespace support enabled.
      */
     private void initNamespaceSupport(Element schemaRoot) {
@@ -152,8 +151,7 @@ class XSDocumentInfo {
 
         Node parent = schemaRoot.getParentNode();
         while (parent != null && parent.getNodeType() == Node.ELEMENT_NODE
-                && !parent.getNodeName().equals("DOCUMENT_NODE"))
-        {
+                && !parent.getNodeName().equals("DOCUMENT_NODE")) {
             Element eparent = (Element) parent;
             NamedNodeMap map = eparent.getAttributes();
             int length = (map != null) ? map.getLength() : 0;
@@ -188,13 +186,13 @@ class XSDocumentInfo {
     }
 
     void restoreNSSupport() {
-        fNamespaceSupport = (SchemaNamespaceSupport)SchemaNamespaceSupportStack.pop();
+        fNamespaceSupport = (SchemaNamespaceSupport) SchemaNamespaceSupportStack.pop();
         fValidationContext.setNamespaceSupport(fNamespaceSupport);
     }
 
     // some Object methods
     public String toString() {
-        return fTargetNamespace == null?"no targetNamspace":"targetNamespace is " + fTargetNamespace;
+        return fTargetNamespace == null ? "no targetNamspace" : "targetNamespace is " + fTargetNamespace;
     }
 
     public void addAllowedNS(String namespace) {
@@ -208,6 +206,7 @@ class XSDocumentInfo {
     // store whether we have reported an error about that this document
     // can't access components from the given namespace
     private Vector fReportedTNS = null;
+
     // check whether we need to report an error against the given uri.
     // if we have reported an error, then we don't need to report again;
     // otherwise we reported the error, and remember this fact.
@@ -221,14 +220,14 @@ class XSDocumentInfo {
     }
 
     // return the attributes on the schema element itself:
-    Object [] getSchemaAttrs () {
+    Object[] getSchemaAttrs() {
         return fSchemaAttrs;
     }
 
     // deallocate the storage set aside for the schema element's
     // attributes
-    void returnSchemaAttrs () {
-        fAttrChecker.returnAttrArray (fSchemaAttrs, null);
+    void returnSchemaAttrs() {
+        fAttrChecker.returnAttrArray(fSchemaAttrs, null);
         fSchemaAttrs = null;
     }
 

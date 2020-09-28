@@ -33,13 +33,13 @@ import com.sun.corba.se.pept.protocol.MessageMediator;
  *
  * @author Harold Carr
  */
-public interface ProtocolHandler
-{
+public interface ProtocolHandler {
     // REVISIT - return type
+
     /**
      * This method determines the type of an incoming message and
      * dispatches it appropriately.
-     *
+     * <p>
      * For example, on the server side, it may find a
      * {@link com.sun.corba.se.pept.protocol.ServerRequestDispatcher
      * ServerRequestDispatcher} to handle the request.  On the client-side

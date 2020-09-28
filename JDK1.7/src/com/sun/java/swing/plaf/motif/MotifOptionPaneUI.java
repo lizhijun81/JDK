@@ -48,11 +48,10 @@ import java.awt.Rectangle;
  *
  * @author Scott Violet
  */
-public class MotifOptionPaneUI extends BasicOptionPaneUI
-{
+public class MotifOptionPaneUI extends BasicOptionPaneUI {
     /**
-      * Creates a new MotifOptionPaneUI instance.
-      */
+     * Creates a new MotifOptionPaneUI instance.
+     */
     public static ComponentUI createUI(JComponent x) {
         return new MotifOptionPaneUI();
     }
@@ -62,10 +61,10 @@ public class MotifOptionPaneUI extends BasicOptionPaneUI
      * are created by calling <code>getButtons</code>.
      */
     protected Container createButtonArea() {
-        Container          b = super.createButtonArea();
+        Container b = super.createButtonArea();
 
-        if(b != null && b.getLayout() instanceof ButtonAreaLayout) {
-            ((ButtonAreaLayout)b.getLayout()).setCentersChildren(false);
+        if (b != null && b.getLayout() instanceof ButtonAreaLayout) {
+            ((ButtonAreaLayout) b.getLayout()).setCentersChildren(false);
         }
         return b;
     }
@@ -101,10 +100,10 @@ public class MotifOptionPaneUI extends BasicOptionPaneUI
      */
     protected void addIcon(Container top) {
         /* Create the icon. */
-        Icon                  sideIcon = getIcon();
+        Icon sideIcon = getIcon();
 
         if (sideIcon != null) {
-            JLabel            iconLabel = new JLabel(sideIcon);
+            JLabel iconLabel = new JLabel(sideIcon);
 
             iconLabel.setVerticalAlignment(SwingConstants.CENTER);
             top.add(iconLabel, "West");

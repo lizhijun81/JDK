@@ -23,7 +23,7 @@
  *
  */
 
-package com.sun.corba.se.impl.ior ;
+package com.sun.corba.se.impl.ior;
 
 
 public class ByteBuffer {
@@ -31,7 +31,7 @@ public class ByteBuffer {
      * The array buffer into which the components of the ByteBuffer are
      * stored. The capacity of the ByteBuffer is the length of this array buffer,
      * and is at least large enough to contain all the ByteBuffer's elements.<p>
-     *
+     * <p>
      * Any array elements following the last element in the ByteBuffer are 0.
      */
     protected byte elementData[];
@@ -59,17 +59,17 @@ public class ByteBuffer {
      * Constructs an empty ByteBuffer with the specified initial capacity and
      * capacity increment.
      *
-     * @param   initialCapacity     the initial capacity of the ByteBuffer.
-     * @param   capacityIncrement   the amount by which the capacity is
-     *                              increased when the ByteBuffer overflows.
-     * @exception IllegalArgumentException if the specified initial capacity
-     *               is negative
+     * @param initialCapacity   the initial capacity of the ByteBuffer.
+     * @param capacityIncrement the amount by which the capacity is
+     *                          increased when the ByteBuffer overflows.
+     * @throws IllegalArgumentException if the specified initial capacity
+     *                                  is negative
      */
     public ByteBuffer(int initialCapacity, int capacityIncrement) {
         super();
         if (initialCapacity < 0)
-            throw new IllegalArgumentException("Illegal Capacity: "+
-                                               initialCapacity);
+            throw new IllegalArgumentException("Illegal Capacity: " +
+                    initialCapacity);
         this.elementData = new byte[initialCapacity];
         this.capacityIncrement = capacityIncrement;
     }
@@ -78,9 +78,9 @@ public class ByteBuffer {
      * Constructs an empty ByteBuffer with the specified initial capacity and
      * with its capacity increment equal to zero.
      *
-     * @param   initialCapacity   the initial capacity of the ByteBuffer.
-     * @exception IllegalArgumentException if the specified initial capacity
-     *               is negative
+     * @param initialCapacity the initial capacity of the ByteBuffer.
+     * @throws IllegalArgumentException if the specified initial capacity
+     *                                  is negative
      */
     public ByteBuffer(int initialCapacity) {
         this(initialCapacity, 0);
@@ -125,7 +125,7 @@ public class ByteBuffer {
         if (minCapacity > oldCapacity) {
             byte oldData[] = elementData;
             int newCapacity = (capacityIncrement > 0) ?
-                (oldCapacity + capacityIncrement) : (oldCapacity * 2);
+                    (oldCapacity + capacityIncrement) : (oldCapacity * 2);
             if (newCapacity < minCapacity) {
                 newCapacity = minCapacity;
             }
@@ -137,9 +137,9 @@ public class ByteBuffer {
     /**
      * Returns the current capacity of this ByteBuffer.
      *
-     * @return  the current capacity (the length of its internal
-     *          data arary, kept in the field <tt>elementData</tt>
-     *          of this ByteBuffer.
+     * @return the current capacity (the length of its internal
+     * data arary, kept in the field <tt>elementData</tt>
+     * of this ByteBuffer.
      */
     public int capacity() {
         return elementData.length;
@@ -148,7 +148,7 @@ public class ByteBuffer {
     /**
      * Returns the number of components in this ByteBuffer.
      *
-     * @return  the number of components in this ByteBuffer.
+     * @return the number of components in this ByteBuffer.
      */
     public int size() {
         return elementCount;
@@ -157,43 +157,39 @@ public class ByteBuffer {
     /**
      * Tests if this ByteBuffer has no components.
      *
-     * @return  <code>true</code> if and only if this ByteBuffer has
-     *          no components, that is, its size is zero;
-     *          <code>false</code> otherwise.
+     * @return <code>true</code> if and only if this ByteBuffer has
+     * no components, that is, its size is zero;
+     * <code>false</code> otherwise.
      */
     public boolean isEmpty() {
         return elementCount == 0;
     }
 
-    public void append(byte value)
-    {
+    public void append(byte value) {
         ensureCapacityHelper(elementCount + 1);
         elementData[elementCount++] = value;
     }
 
-    public void append( int value )
-    {
+    public void append(int value) {
         ensureCapacityHelper(elementCount + 4);
-        doAppend( value ) ;
+        doAppend(value);
     }
 
-    private void doAppend( int value )
-    {
-        int current = value ;
-        for (int ctr=0; ctr<4; ctr++) {
-            elementData[elementCount+ctr] = (byte)(current & 255) ;
-            current = current >> 8 ;
+    private void doAppend(int value) {
+        int current = value;
+        for (int ctr = 0; ctr < 4; ctr++) {
+            elementData[elementCount + ctr] = (byte) (current & 255);
+            current = current >> 8;
         }
-        elementCount += 4 ;
+        elementCount += 4;
     }
 
-    public void append( String value )
-    {
-        byte[] data = value.getBytes() ;
-        ensureCapacityHelper( elementCount + data.length + 4 ) ;
-        doAppend( data.length ) ;
-        System.arraycopy( data, 0, elementData, elementCount, data.length ) ;
-        elementCount += data.length ;
+    public void append(String value) {
+        byte[] data = value.getBytes();
+        ensureCapacityHelper(elementCount + data.length + 4);
+        doAppend(data.length);
+        System.arraycopy(data, 0, elementData, elementCount, data.length);
+        elementCount += data.length;
     }
 
     /**
@@ -203,6 +199,6 @@ public class ByteBuffer {
      * @since 1.2
      */
     public byte[] toArray() {
-        return elementData ;
+        return elementData;
     }
 }

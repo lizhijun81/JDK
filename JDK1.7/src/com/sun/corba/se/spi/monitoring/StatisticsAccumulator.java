@@ -38,7 +38,7 @@ import java.util.*;
  * the statistics for the collected samples (Which are Minimum, Maximum,
  * Average, StandardDeviation) and provides a nice printable record as a
  * String.
- *
+ * <p>
  * Users can easily extend this class and provide the implementation of
  * toString() method to format the stats as desired. By default all the stats
  * are printed in a single line.
@@ -46,8 +46,8 @@ import java.util.*;
  */
 public class StatisticsAccumulator {
 
-  ///////////////////////////////////////
-  // attributes
+    ///////////////////////////////////////
+    // attributes
 
 
     // Users can extend this class to get access to current Max value
@@ -65,61 +65,58 @@ public class StatisticsAccumulator {
     protected String unit;
 
 
-
-  ///////////////////////////////////////
-  // operations
-
+    ///////////////////////////////////////
+    // operations
 
 
-/**
- * <p>
- * User will use this method to just register a sample with the
- * StatisticsAccumulator. This is the only method that User will use to
- * expose the statistics, internally the StatisticMonitoredAttribute will
- * collect the information when requested from the ASAdmin.
- * </p>
- * <p>
- *
- * </p>
- * <p>
- *
- * @param value a double value to make it more precise
- * </p>
- */
+    /**
+     * <p>
+     * User will use this method to just register a sample with the
+     * StatisticsAccumulator. This is the only method that User will use to
+     * expose the statistics, internally the StatisticMonitoredAttribute will
+     * collect the information when requested from the ASAdmin.
+     * </p>
+     * <p>
+     *
+     * </p>
+     * <p>
+     *
+     * @param value a double value to make it more precise
+     *              </p>
+     */
     public void sample(double value) {
         sampleCount++;
-        if( value < min )  min = value;
-        if( value > max) max = value;
+        if (value < min) min = value;
+        if (value > max) max = value;
         sampleSum += value;
         sampleSquareSum += (value * value);
     } // end sample
 
 
-
     /**
-     *  Computes the Standard Statistic Results based on the samples collected
-     *  so far and provides the complete value as a formatted String
+     * Computes the Standard Statistic Results based on the samples collected
+     * so far and provides the complete value as a formatted String
      */
-    public String getValue( ) {
+    public String getValue() {
         return toString();
     }
 
     /**
-     *  Users can extend StatisticsAccumulator to provide the complete
-     *  Stats in the format they prefer, if the default format doesn't suffice.
+     * Users can extend StatisticsAccumulator to provide the complete
+     * Stats in the format they prefer, if the default format doesn't suffice.
      */
-    public String toString( ) {
+    public String toString() {
         return "Minimum Value = " + min + " " + unit + " " +
-            "Maximum Value = " + max + " " + unit + " " +
-            "Average Value = " + computeAverage() + " " +  unit + " " +
-            "Standard Deviation = " + computeStandardDeviation() + " " + unit +
-            " " + "Samples Collected = " + sampleCount;
+                "Maximum Value = " + max + " " + unit + " " +
+                "Average Value = " + computeAverage() + " " + unit + " " +
+                "Standard Deviation = " + computeStandardDeviation() + " " + unit +
+                " " + "Samples Collected = " + sampleCount;
     }
 
     /**
-     *  If users choose to custom format the stats.
+     * If users choose to custom format the stats.
      */
-    protected double computeAverage( ) {
+    protected double computeAverage() {
         return (sampleSum / sampleCount);
     }
 
@@ -127,31 +124,31 @@ public class StatisticsAccumulator {
     /**
      * We use a derived Standard Deviation formula to compute SD. This way
      * there is no need to hold on to all the samples provided.
-     *
+     * <p>
      * The method is protected to let users extend and format the results.
      */
-    protected double computeStandardDeviation( ) {
+    protected double computeStandardDeviation() {
         double sampleSumSquare = sampleSum * sampleSum;
         return Math.sqrt(
-            (sampleSquareSum-((sampleSumSquare)/sampleCount))/(sampleCount-1));
+                (sampleSquareSum - ((sampleSumSquare) / sampleCount)) / (sampleCount - 1));
     }
 
-/**
- * <p>
- * Construct the Statistics Accumulator by providing the unit as a String.
- * The examples of units are &quot;Hours&quot;, &quot;Minutes&quot;,
- * &quot;Seconds&quot;, &quot;MilliSeconds&quot;, &quot;Micro Seconds&quot;
- * etc.,
- * </p>
- * <p>
- *
- * @return a StatisticsAccumulator with ...
- * </p>
- * <p>
- * @param unit a String representing the units for the samples collected
- * </p>
- */
-    public StatisticsAccumulator( String unit ) {
+    /**
+     * <p>
+     * Construct the Statistics Accumulator by providing the unit as a String.
+     * The examples of units are &quot;Hours&quot;, &quot;Minutes&quot;,
+     * &quot;Seconds&quot;, &quot;MilliSeconds&quot;, &quot;Micro Seconds&quot;
+     * etc.,
+     * </p>
+     * <p>
+     *
+     * @param unit a String representing the units for the samples collected
+     *             </p>
+     * @return a StatisticsAccumulator with ...
+     * </p>
+     * <p>
+     */
+    public StatisticsAccumulator(String unit) {
         this.unit = unit;
         sampleCount = 0;
         sampleSum = 0;
@@ -160,9 +157,9 @@ public class StatisticsAccumulator {
 
 
     /**
-     *  Clears the samples and starts fresh on new samples.
+     * Clears the samples and starts fresh on new samples.
      */
-    void clearState( ) {
+    void clearState() {
         min = Double.MAX_VALUE;
         max = Double.MIN_VALUE;
         sampleCount = 0;
@@ -171,50 +168,49 @@ public class StatisticsAccumulator {
     }
 
     /**
-     *  This is an internal API to test StatisticsAccumulator...
+     * This is an internal API to test StatisticsAccumulator...
      */
-    public void unitTestValidate( String expectedUnit, double expectedMin,
-        double expectedMax, long expectedSampleCount, double expectedAverage,
-        double expectedStandardDeviation )
-    {
-        if( !expectedUnit.equals( unit ) ){
+    public void unitTestValidate(String expectedUnit, double expectedMin,
+                                 double expectedMax, long expectedSampleCount, double expectedAverage,
+                                 double expectedStandardDeviation) {
+        if (!expectedUnit.equals(unit)) {
             throw new RuntimeException(
-                "Unit is not same as expected Unit" +
-                "\nUnit = " + unit + "ExpectedUnit = " + expectedUnit );
+                    "Unit is not same as expected Unit" +
+                            "\nUnit = " + unit + "ExpectedUnit = " + expectedUnit);
         }
-        if( min != expectedMin ) {
+        if (min != expectedMin) {
             throw new RuntimeException(
-                "Minimum value is not same as expected minimum value" +
-                "\nMin Value = " + min + "Expected Min Value = " + expectedMin);
+                    "Minimum value is not same as expected minimum value" +
+                            "\nMin Value = " + min + "Expected Min Value = " + expectedMin);
         }
-        if( max != expectedMax ) {
+        if (max != expectedMax) {
             throw new RuntimeException(
-                "Maximum value is not same as expected maximum value" +
-                "\nMax Value = " + max + "Expected Max Value = " + expectedMax);
+                    "Maximum value is not same as expected maximum value" +
+                            "\nMax Value = " + max + "Expected Max Value = " + expectedMax);
         }
-        if( sampleCount != expectedSampleCount ) {
+        if (sampleCount != expectedSampleCount) {
             throw new RuntimeException(
-                "Sample count is not same as expected Sample Count" +
-                "\nSampleCount = " + sampleCount + "Expected Sample Count = " +
-                expectedSampleCount);
+                    "Sample count is not same as expected Sample Count" +
+                            "\nSampleCount = " + sampleCount + "Expected Sample Count = " +
+                            expectedSampleCount);
         }
-        if( computeAverage() != expectedAverage ) {
+        if (computeAverage() != expectedAverage) {
             throw new RuntimeException(
-                "Average is not same as expected Average" +
-                "\nAverage = " + computeAverage() + "Expected Average = " +
-                expectedAverage);
+                    "Average is not same as expected Average" +
+                            "\nAverage = " + computeAverage() + "Expected Average = " +
+                            expectedAverage);
         }
         // We are computing Standard Deviation from two different methods
         // for comparison. So, the values will not be the exact same to the last
         // few digits. So, we are taking the difference and making sure that
         // the difference is not greater than 1.
         double difference = Math.abs(
-            computeStandardDeviation() - expectedStandardDeviation);
-        if( difference > 1 ) {
+                computeStandardDeviation() - expectedStandardDeviation);
+        if (difference > 1) {
             throw new RuntimeException(
-                "Standard Deviation is not same as expected Std Deviation" +
-                "\nStandard Dev = " + computeStandardDeviation() +
-                "Expected Standard Dev = " + expectedStandardDeviation);
+                    "Standard Deviation is not same as expected Std Deviation" +
+                            "\nStandard Dev = " + computeStandardDeviation() +
+                            "Expected Standard Dev = " + expectedStandardDeviation);
         }
     }
 

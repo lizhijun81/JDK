@@ -26,8 +26,7 @@ package com.sun.corba.se.impl.encoding;
 
 import com.sun.corba.se.spi.ior.iiop.GIOPVersion;
 
-public class CDRInputStream_1_1 extends CDRInputStream_1_0
-{
+public class CDRInputStream_1_1 extends CDRInputStream_1_0 {
     // See notes in CDROutputStream
     protected int fragmentOffset = 0;
 
@@ -39,7 +38,7 @@ public class CDRInputStream_1_1 extends CDRInputStream_1_0
     public CDRInputStreamBase dup() {
         CDRInputStreamBase result = super.dup();
 
-        ((CDRInputStream_1_1)result).fragmentOffset = this.fragmentOffset;
+        ((CDRInputStream_1_1) result).fragmentOffset = this.fragmentOffset;
 
         return result;
     }
@@ -57,13 +56,12 @@ public class CDRInputStream_1_1 extends CDRInputStream_1_0
         // checkBlockLength since it may move the position
         int alignment = computeAlignment(bbwi.position(), align);
 
-        if (bbwi.position() + n + alignment  > bbwi.buflen) {
+        if (bbwi.position() + n + alignment > bbwi.buflen) {
 
             // Some other ORBs may have found a way to send 1.1
             // fragments which put alignment bytes at the end
             // of a fragment
-            if (bbwi.position() + alignment == bbwi.buflen)
-            {
+            if (bbwi.position() + alignment == bbwi.buflen) {
                 bbwi.position(bbwi.position() + alignment);
             }
 
@@ -109,12 +107,10 @@ public class CDRInputStream_1_1 extends CDRInputStream_1_0
 
     // Mark/reset ---------------------------------------
 
-    private class FragmentableStreamMemento extends StreamMemento
-    {
+    private class FragmentableStreamMemento extends StreamMemento {
         private int fragmentOffset_;
 
-        public FragmentableStreamMemento()
-        {
+        public FragmentableStreamMemento() {
             super();
 
             fragmentOffset_ = fragmentOffset;
@@ -125,12 +121,11 @@ public class CDRInputStream_1_1 extends CDRInputStream_1_0
         return new FragmentableStreamMemento();
     }
 
-    public void restoreInternalState(java.lang.Object streamMemento)
-    {
+    public void restoreInternalState(java.lang.Object streamMemento) {
         super.restoreInternalState(streamMemento);
 
         fragmentOffset
-            = ((FragmentableStreamMemento)streamMemento).fragmentOffset_;
+                = ((FragmentableStreamMemento) streamMemento).fragmentOffset_;
     }
 
     // --------------------------------------------------
@@ -151,7 +146,7 @@ public class CDRInputStream_1_1 extends CDRInputStream_1_0
         // assigned, and a single 16 bit Java char isn't enough.
         // Better to use strings for i18n purposes.
         if (getWCharConverter().getNumChars() > 1)
-            throw wrapper.btcResultMoreThanOneChar() ;
+            throw wrapper.btcResultMoreThanOneChar();
 
         return result[0];
     }

@@ -36,7 +36,6 @@ import java.io.Reader;
  * </ul>
  *
  * @author Andy Clark, IBM
- *
  */
 public class XMLInputSource {
 
@@ -44,22 +43,34 @@ public class XMLInputSource {
     // Data
     //
 
-    /** Public identifier. */
+    /**
+     * Public identifier.
+     */
     protected String fPublicId;
 
-    /** System identifier. */
+    /**
+     * System identifier.
+     */
     protected String fSystemId;
 
-    /** Base system identifier. */
+    /**
+     * Base system identifier.
+     */
     protected String fBaseSystemId;
 
-    /** Byte stream. */
+    /**
+     * Byte stream.
+     */
     protected InputStream fByteStream;
 
-    /** Character stream. */
+    /**
+     * Character stream.
+     */
     protected Reader fCharStream;
 
-    /** Encoding. */
+    /**
+     * Encoding.
+     */
     protected String fEncoding;
 
     //
@@ -93,7 +104,7 @@ public class XMLInputSource {
      * object, leaving resolution of the entity and opening of
      * the input stream up to the caller.
      *
-     * @param resourceIdentifier    the XMLResourceIdentifier containing the information
+     * @param resourceIdentifier the XMLResourceIdentifier containing the information
      */
     public XMLInputSource(XMLResourceIdentifier resourceIdentifier) {
 
@@ -166,7 +177,9 @@ public class XMLInputSource {
         fPublicId = publicId;
     } // setPublicId(String)
 
-    /** Returns the public identifier. */
+    /**
+     * Returns the public identifier.
+     */
     public String getPublicId() {
         return fPublicId;
     } // getPublicId():String
@@ -180,7 +193,9 @@ public class XMLInputSource {
         fSystemId = systemId;
     } // setSystemId(String)
 
-    /** Returns the system identifier. */
+    /**
+     * Returns the system identifier.
+     */
     public String getSystemId() {
         return fSystemId;
     } // getSystemId():String
@@ -194,7 +209,9 @@ public class XMLInputSource {
         fBaseSystemId = baseSystemId;
     } // setBaseSystemId(String)
 
-    /** Returns the base system identifier. */
+    /**
+     * Returns the base system identifier.
+     */
     public String getBaseSystemId() {
         return fBaseSystemId;
     } // getBaseSystemId():String
@@ -212,7 +229,9 @@ public class XMLInputSource {
         fByteStream = byteStream;
     } // setByteStream(InputSource)
 
-    /** Returns the byte stream. */
+    /**
+     * Returns the byte stream.
+     */
     public InputStream getByteStream() {
         return fByteStream;
     } // getByteStream():InputStream
@@ -225,14 +244,15 @@ public class XMLInputSource {
      * also be set on this object, if known.
      *
      * @param charStream The new character stream.
-     *
      * @see #setEncoding
      */
     public void setCharacterStream(Reader charStream) {
         fCharStream = charStream;
     } // setCharacterStream(Reader)
 
-    /** Returns the character stream. */
+    /**
+     * Returns the character stream.
+     */
     public Reader getCharacterStream() {
         return fCharStream;
     } // getCharacterStream():Reader
@@ -246,7 +266,9 @@ public class XMLInputSource {
         fEncoding = encoding;
     } // setEncoding(String)
 
-    /** Returns the encoding of the stream, or null if not known. */
+    /**
+     * Returns the encoding of the stream, or null if not known.
+     */
     public String getEncoding() {
         return fEncoding;
     } // getEncoding():String

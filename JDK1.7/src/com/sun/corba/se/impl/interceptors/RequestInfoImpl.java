@@ -24,12 +24,12 @@
  */
 package com.sun.corba.se.impl.interceptors;
 
-import java.io.IOException ;
+import java.io.IOException;
 
-import java.lang.reflect.Method ;
-import java.lang.reflect.InvocationTargetException ;
+import java.lang.reflect.Method;
+import java.lang.reflect.InvocationTargetException;
 
-import java.util.HashMap ;
+import java.util.HashMap;
 
 import org.omg.PortableInterceptor.ForwardRequest;
 import org.omg.PortableInterceptor.InvalidSlot;
@@ -99,9 +99,8 @@ import sun.corba.SharedSecrets;
  * orbos/99-12-02 section 5.4.1.
  */
 public abstract class RequestInfoImpl
-    extends LocalObject
-    implements RequestInfo, RequestInfoExt
-{
+        extends LocalObject
+        implements RequestInfo, RequestInfoExt {
     //////////////////////////////////////////////////////////////////////
     //
     // NOTE: IF AN ATTRIBUTE IS ADDED, PLEASE UPDATE RESET();
@@ -110,8 +109,8 @@ public abstract class RequestInfoImpl
 
     // The ORB from which to get PICurrent and other info
     protected ORB myORB;
-    protected InterceptorsSystemException wrapper ;
-    protected OMGSystemException stdWrapper ;
+    protected InterceptorsSystemException wrapper;
+    protected OMGSystemException stdWrapper;
 
     // The number of interceptors actually invoked for this client request.
     // See setFlowStackIndex for a detailed description.
@@ -152,7 +151,7 @@ public abstract class RequestInfoImpl
     protected boolean alreadyExecuted;
 
     // Sources of request information
-    protected Connection     connection;
+    protected Connection connection;
     protected ServiceContexts serviceContexts;
 
     // The ForwardRequest object if this request is being forwarded.
@@ -189,7 +188,7 @@ public abstract class RequestInfoImpl
         intermediatePointCall = 0;
         endingPointCall = 0;
         // 6763340
-        setReplyStatus( UNINITIALIZED ) ;
+        setReplyStatus(UNINITIALIZED);
         currentExecutionPoint = EXECUTION_POINT_STARTING;
         alreadyExecuted = false;
         connection = null;
@@ -210,22 +209,22 @@ public abstract class RequestInfoImpl
 
     // Method IDs for all methods in RequestInfo.  This allows for a
     // convenient O(1) lookup for checkAccess().
-    protected static final int MID_REQUEST_ID                   =  0;
-    protected static final int MID_OPERATION                    =  1;
-    protected static final int MID_ARGUMENTS                    =  2;
-    protected static final int MID_EXCEPTIONS                   =  3;
-    protected static final int MID_CONTEXTS                     =  4;
-    protected static final int MID_OPERATION_CONTEXT            =  5;
-    protected static final int MID_RESULT                       =  6;
-    protected static final int MID_RESPONSE_EXPECTED            =  7;
-    protected static final int MID_SYNC_SCOPE                   =  8;
-    protected static final int MID_REPLY_STATUS                 =  9;
-    protected static final int MID_FORWARD_REFERENCE            = 10;
-    protected static final int MID_GET_SLOT                     = 11;
-    protected static final int MID_GET_REQUEST_SERVICE_CONTEXT  = 12;
-    protected static final int MID_GET_REPLY_SERVICE_CONTEXT    = 13;
+    protected static final int MID_REQUEST_ID = 0;
+    protected static final int MID_OPERATION = 1;
+    protected static final int MID_ARGUMENTS = 2;
+    protected static final int MID_EXCEPTIONS = 3;
+    protected static final int MID_CONTEXTS = 4;
+    protected static final int MID_OPERATION_CONTEXT = 5;
+    protected static final int MID_RESULT = 6;
+    protected static final int MID_RESPONSE_EXPECTED = 7;
+    protected static final int MID_SYNC_SCOPE = 8;
+    protected static final int MID_REPLY_STATUS = 9;
+    protected static final int MID_FORWARD_REFERENCE = 10;
+    protected static final int MID_GET_SLOT = 11;
+    protected static final int MID_GET_REQUEST_SERVICE_CONTEXT = 12;
+    protected static final int MID_GET_REPLY_SERVICE_CONTEXT = 13;
     // The last value from RequestInfo (be sure to update this):
-    protected static final int MID_RI_LAST                      = 13;
+    protected static final int MID_RI_LAST = 13;
 
     /*
      **********************************************************************
@@ -235,37 +234,37 @@ public abstract class RequestInfoImpl
     /**
      * Creates a new RequestInfoImpl object.
      */
-    public RequestInfoImpl( ORB myORB ) {
+    public RequestInfoImpl(ORB myORB) {
         super();
 
         this.myORB = myORB;
-        wrapper = InterceptorsSystemException.get( myORB,
-            CORBALogDomains.RPC_PROTOCOL ) ;
-        stdWrapper = OMGSystemException.get( myORB,
-            CORBALogDomains.RPC_PROTOCOL ) ;
+        wrapper = InterceptorsSystemException.get(myORB,
+                CORBALogDomains.RPC_PROTOCOL);
+        stdWrapper = OMGSystemException.get(myORB,
+                CORBALogDomains.RPC_PROTOCOL);
 
         // Capture the current TSC and make it the RSC of this request.
-        PICurrent current = (PICurrent)(myORB.getPIHandler().getPICurrent());
-        slotTable = current.getSlotTable( );
+        PICurrent current = (PICurrent) (myORB.getPIHandler().getPICurrent());
+        slotTable = current.getSlotTable();
     }
 
     /**
      * Implementation for request_id() differs for client and server
      * implementations.
-     *
+     * <p>
      * Uniquely identifies an active request/reply sequence.  Once a
      * request/reply sequence is concluded this ID may be reused.  (this
      * is NOT necessarily the same as the GIOP request_id).
      */
-    abstract public int request_id ();
+    abstract public int request_id();
 
     /**
      * Implementation for operation() differs for client and server
      * implementations.
-     *
+     * <p>
      * The name of the operation being invoked.
      */
-    abstract public String operation ();
+    abstract public String operation();
 
 
     /**
@@ -273,47 +272,47 @@ public abstract class RequestInfoImpl
      * invoked. It raises NO_RESOURCES exception if the operation is not invoked
      * by using DII mechanism.
      */
-    abstract public Parameter[] arguments ();
+    abstract public Parameter[] arguments();
 
     /**
      * This method returns the list of exceptios  that was raised when the
      * operation was invoked. It raises NO_RESOURCES exception if the operation
      * is not invoked by using DII mechanism.
      */
-    abstract public TypeCode[] exceptions ();
+    abstract public TypeCode[] exceptions();
 
     /**
      * This method returns the list of contexts for the DII operation.
      * It raises NO_RESOURCES exception if the operation is not invoked by
      * using DII mechanism.
      */
-    abstract public String[] contexts ();
+    abstract public String[] contexts();
 
     /**
      * This method returns the list of operation_context for the DII operation.
      * It raises NO_RESOURCES exception if the operation is not invoked by
      * using DII mechanism.
      */
-    abstract public String[] operation_context ();
+    abstract public String[] operation_context();
 
     /**
      * This method returns the result from the invoked DII operation.
      * It raises NO_RESOURCES exception if the operation is not invoked by
      * using DII mechanism.
      */
-    abstract public Any result ();
+    abstract public Any result();
 
     /**
      * Implementation for response_expected() differs for client and server
      * implementations.
-     *
+     * <p>
      * Indicates whether a response is expected.  On the client, a reply is
      * not returned when response_expected is false, so receive_reply cannot
      * be called.  receive_other is called unless an exception occurs, in
      * which case receive_exception is called.  On the client, within
      * send_poll, this attribute is true.
      */
-    abstract public boolean response_expected ();
+    abstract public boolean response_expected();
 
     /**
      * Defined in the Messaging specification.  Pertinent only when
@@ -328,8 +327,8 @@ public abstract class RequestInfoImpl
      *   <li>Messaging::SYNC_WITH_TARGET</li>
      * </ul>
      */
-    public short sync_scope (){
-        checkAccess( MID_SYNC_SCOPE );
+    public short sync_scope() {
+        checkAccess(MID_SYNC_SCOPE);
         return SYNC_WITH_TRANSPORT.value; // REVISIT - get from MessageMediator
     }
 
@@ -344,21 +343,21 @@ public abstract class RequestInfoImpl
      *   <li>PortableInterceptor::TRANSPORT_RETRY</li>
      * </ul>
      */
-    public short reply_status (){
-        checkAccess( MID_REPLY_STATUS );
+    public short reply_status() {
+        checkAccess(MID_REPLY_STATUS);
         return replyStatus;
     }
 
     /**
      * Implementation for forward_reference() differs for client and server
      * implementations.
-     *
+     * <p>
      * If the reply_status attribute is LOCATION_FORWARD
      * then this attribute will contain the object
      * to which the request will be forwarded.  It is indeterminate whether a
      * forwarded request will actually occur.
      */
-    abstract public Object forward_reference ();
+    abstract public Object forward_reference();
 
 
     /**
@@ -370,39 +369,38 @@ public abstract class RequestInfoImpl
      * <p>
      * If the ID does not define an allocated slot, InvalidSlot is raised.
      */
-    public Any get_slot (int id)
-        throws InvalidSlot
-    {
+    public Any get_slot(int id)
+            throws InvalidSlot {
         // access is currently valid for all states:
         //checkAccess( MID_GET_SLOT );
         // Delegate the call to the slotTable which was set when RequestInfo was
         // created.
-        return slotTable.get_slot( id );
+        return slotTable.get_slot(id);
     }
 
     /**
      * Implementation for get_request_service_context() differs for client
      * and server implementations.
-     *
+     * <p>
      * This operation returns a copy of the service context with the given ID
      * that is associated with the request.  If the request's service context
      * does not contain an etry for that ID, BAD_PARAM with a minor code of
      * TBD_BP is raised.
      */
     abstract public org.omg.IOP.ServiceContext
-        get_request_service_context(int id);
+    get_request_service_context(int id);
 
     /**
      * Implementation for get_reply_service_context() differs for client
      * and server implementations.
-     *
+     * <p>
      * This operation returns a copy of the service context with the given ID
      * that is associated with the reply.  IF the request's service context
      * does not contain an entry for that ID, BAD_PARAM with a minor code of
      * TBD_BP is raised.
      */
     abstract public org.omg.IOP.ServiceContext
-        get_reply_service_context (int id);
+    get_reply_service_context(int id);
 
 
     // NOTE: When adding a method, be sure to:
@@ -420,12 +418,11 @@ public abstract class RequestInfoImpl
 
     /**
      * @return The connection on which the request is made.
-     *
+     * <p>
      * Note: we store the connection as an internal type but
      * expose it here as an external type.
      */
-    public com.sun.corba.se.spi.legacy.connection.Connection connection()
-    {
+    public com.sun.corba.se.spi.legacy.connection.Connection connection() {
         return connection;
     }
 
@@ -440,61 +437,58 @@ public abstract class RequestInfoImpl
      * OMGSYstemException.UNKNOWN_USER_EXCEPTION if the Helper class could not be
      * found to insert it with.
      */
-    private void insertApplicationException( ApplicationException appException,
-                                             Any result )
-        throws UNKNOWN
-    {
+    private void insertApplicationException(ApplicationException appException,
+                                            Any result)
+            throws UNKNOWN {
         try {
             // Extract the UserException from the ApplicationException.
             // Look up class name from repository id:
             RepositoryId repId = RepositoryId.cache.getId(
-                appException.getId() );
+                    appException.getId());
             String className = repId.getClassName();
 
             // Find the read method on the helper class:
             String helperClassName = className + "Helper";
             Class<?> helperClass =
-                SharedSecrets.getJavaCorbaAccess().loadClass( helperClassName );
+                    SharedSecrets.getJavaCorbaAccess().loadClass(helperClassName);
             Class[] readParams = new Class[1];
             readParams[0] = org.omg.CORBA.portable.InputStream.class;
-            Method readMethod = helperClass.getMethod( "read", readParams );
+            Method readMethod = helperClass.getMethod("read", readParams);
 
             // Invoke the read method, passing in the input stream to
             // retrieve the user exception.  Mark and reset the stream
             // as to not disturb it.
             InputStream ueInputStream = appException.getInputStream();
-            ueInputStream.mark( 0 );
+            ueInputStream.mark(0);
             UserException userException = null;
             try {
                 java.lang.Object[] readArguments = new java.lang.Object[1];
                 readArguments[0] = ueInputStream;
-                userException = (UserException)readMethod.invoke(
-                    null, readArguments );
-            }
-            finally {
+                userException = (UserException) readMethod.invoke(
+                        null, readArguments);
+            } finally {
                 try {
                     ueInputStream.reset();
-                }
-                catch( IOException e ) {
-                    throw wrapper.markAndResetFailed( e ) ;
+                } catch (IOException e) {
+                    throw wrapper.markAndResetFailed(e);
                 }
             }
 
             // Insert this UserException into the provided Any using the
             // helper class.
-            insertUserException( userException, result );
-        } catch( ClassNotFoundException e ) {
-            throw stdWrapper.unknownUserException( CompletionStatus.COMPLETED_MAYBE, e ) ;
-        } catch( NoSuchMethodException e ) {
-            throw stdWrapper.unknownUserException( CompletionStatus.COMPLETED_MAYBE, e ) ;
-        } catch( SecurityException e ) {
-            throw stdWrapper.unknownUserException( CompletionStatus.COMPLETED_MAYBE, e ) ;
-        } catch( IllegalAccessException e ) {
-            throw stdWrapper.unknownUserException( CompletionStatus.COMPLETED_MAYBE, e ) ;
-        } catch( IllegalArgumentException e ) {
-            throw stdWrapper.unknownUserException( CompletionStatus.COMPLETED_MAYBE, e ) ;
-        } catch( InvocationTargetException e ) {
-            throw stdWrapper.unknownUserException( CompletionStatus.COMPLETED_MAYBE, e ) ;
+            insertUserException(userException, result);
+        } catch (ClassNotFoundException e) {
+            throw stdWrapper.unknownUserException(CompletionStatus.COMPLETED_MAYBE, e);
+        } catch (NoSuchMethodException e) {
+            throw stdWrapper.unknownUserException(CompletionStatus.COMPLETED_MAYBE, e);
+        } catch (SecurityException e) {
+            throw stdWrapper.unknownUserException(CompletionStatus.COMPLETED_MAYBE, e);
+        } catch (IllegalAccessException e) {
+            throw stdWrapper.unknownUserException(CompletionStatus.COMPLETED_MAYBE, e);
+        } catch (IllegalArgumentException e) {
+            throw stdWrapper.unknownUserException(CompletionStatus.COMPLETED_MAYBE, e);
+        } catch (InvocationTargetException e) {
+            throw stdWrapper.unknownUserException(CompletionStatus.COMPLETED_MAYBE, e);
         }
     }
 
@@ -504,45 +498,44 @@ public abstract class RequestInfoImpl
      * OMGSYstemException.UNKNOWN_USER_EXCEPTION if the Helper class could not be
      * found to insert it with.
      */
-    private void insertUserException( UserException userException, Any result )
-        throws UNKNOWN
-    {
+    private void insertUserException(UserException userException, Any result)
+            throws UNKNOWN {
         try {
             // Insert this UserException into the provided Any using the
             // helper class.
-            if( userException != null ) {
+            if (userException != null) {
                 Class exceptionClass = userException.getClass();
                 String className = exceptionClass.getName();
                 String helperClassName = className + "Helper";
                 Class<?> helperClass =
-                    SharedSecrets.getJavaCorbaAccess().loadClass( helperClassName );
+                        SharedSecrets.getJavaCorbaAccess().loadClass(helperClassName);
 
                 // Find insert( Any, class ) method
                 Class[] insertMethodParams = new Class[2];
                 insertMethodParams[0] = org.omg.CORBA.Any.class;
                 insertMethodParams[1] = exceptionClass;
                 Method insertMethod = helperClass.getMethod(
-                    "insert", insertMethodParams );
+                        "insert", insertMethodParams);
 
                 // Call helper.insert( result, userException ):
                 java.lang.Object[] insertMethodArguments =
-                    new java.lang.Object[2];
+                        new java.lang.Object[2];
                 insertMethodArguments[0] = result;
                 insertMethodArguments[1] = userException;
-                insertMethod.invoke( null, insertMethodArguments );
+                insertMethod.invoke(null, insertMethodArguments);
             }
-        } catch( ClassNotFoundException e ) {
-            throw stdWrapper.unknownUserException( CompletionStatus.COMPLETED_MAYBE, e );
-        } catch( NoSuchMethodException e ) {
-            throw stdWrapper.unknownUserException( CompletionStatus.COMPLETED_MAYBE, e );
-        } catch( SecurityException e ) {
-            throw stdWrapper.unknownUserException( CompletionStatus.COMPLETED_MAYBE, e );
-        } catch( IllegalAccessException e ) {
-            throw stdWrapper.unknownUserException( CompletionStatus.COMPLETED_MAYBE, e );
-        } catch( IllegalArgumentException e ) {
-            throw stdWrapper.unknownUserException( CompletionStatus.COMPLETED_MAYBE, e );
-        } catch( InvocationTargetException e ) {
-            throw stdWrapper.unknownUserException( CompletionStatus.COMPLETED_MAYBE, e );
+        } catch (ClassNotFoundException e) {
+            throw stdWrapper.unknownUserException(CompletionStatus.COMPLETED_MAYBE, e);
+        } catch (NoSuchMethodException e) {
+            throw stdWrapper.unknownUserException(CompletionStatus.COMPLETED_MAYBE, e);
+        } catch (SecurityException e) {
+            throw stdWrapper.unknownUserException(CompletionStatus.COMPLETED_MAYBE, e);
+        } catch (IllegalAccessException e) {
+            throw stdWrapper.unknownUserException(CompletionStatus.COMPLETED_MAYBE, e);
+        } catch (IllegalArgumentException e) {
+            throw stdWrapper.unknownUserException(CompletionStatus.COMPLETED_MAYBE, e);
+        } catch (InvocationTargetException e) {
+            throw stdWrapper.unknownUserException(CompletionStatus.COMPLETED_MAYBE, e);
         }
     }
 
@@ -554,7 +547,7 @@ public abstract class RequestInfoImpl
     /**
      * Internal utility method to convert an NVList into a PI Parameter[]
      */
-    protected Parameter[] nvListToParameterArray( NVList parNVList ) {
+    protected Parameter[] nvListToParameterArray(NVList parNVList) {
 
         // _REVISIT_ This utility method should probably be doing a deep
         // copy so interceptor can't accidentally change the arguments.
@@ -562,10 +555,10 @@ public abstract class RequestInfoImpl
         int count = parNVList.count();
         Parameter[] plist = new Parameter[count];
         try {
-            for( int i = 0; i < count; i++ ) {
+            for (int i = 0; i < count; i++) {
                 Parameter p = new Parameter();
                 plist[i] = p;
-                NamedValue nv = parNVList.item( i );
+                NamedValue nv = parNVList.item(i);
                 plist[i].argument = nv.value();
                 // ParameterMode spec can be found in 99-10-07.pdf
                 // Section:10.5.22
@@ -574,10 +567,10 @@ public abstract class RequestInfoImpl
                 // nv.flags has ARG_IN as 1, ARG_OUT as 2 and ARG_INOUT as 3
                 // To convert this into enum PARAM_IN, PARAM_OUT and
                 // PARAM_INOUT the value is subtracted by 1.
-                plist[i].mode = ParameterMode.from_int( nv.flags() - 1 );
+                plist[i].mode = ParameterMode.from_int(nv.flags() - 1);
             }
-        } catch ( Exception e ) {
-            throw wrapper.exceptionInArguments( e ) ;
+        } catch (Exception e) {
+            throw wrapper.exceptionInArguments(e);
         }
 
         return plist;
@@ -589,39 +582,39 @@ public abstract class RequestInfoImpl
      * an any, then this returns an Any containing the system exception
      * UNKNOWN.
      */
-    protected Any exceptionToAny( Exception exception ){
+    protected Any exceptionToAny(Exception exception) {
         Any result = myORB.create_any();
 
-        if( exception == null ) {
+        if (exception == null) {
             // Note: exception should never be null here since we will throw
             // a BAD_INV_ORDER if this is not called from receive_exception.
-            throw wrapper.exceptionWasNull2() ;
-        } else if( exception instanceof SystemException ) {
+            throw wrapper.exceptionWasNull2();
+        } else if (exception instanceof SystemException) {
             ORBUtility.insertSystemException(
-                (SystemException)exception, result );
-        } else if( exception instanceof ApplicationException ) {
+                    (SystemException) exception, result);
+        } else if (exception instanceof ApplicationException) {
             // Use the Helper class for this exception to insert it into an
             // Any.
             try {
                 // Insert the user exception inside the application exception
                 // into the Any result:
                 ApplicationException appException =
-                    (ApplicationException)exception;
-                insertApplicationException( appException, result );
-            } catch( UNKNOWN e ) {
+                        (ApplicationException) exception;
+                insertApplicationException(appException, result);
+            } catch (UNKNOWN e) {
                 // As per ptc/00-08-06, 21.3.13.4. if we cannot find the
                 // appropriate class, then return an any containing UNKNOWN,
                 // with a minor code of 1.  This is conveniently the same
                 // exception that is returned from the
                 // insertApplicationException utility method.
-                ORBUtility.insertSystemException( e, result );
+                ORBUtility.insertSystemException(e, result);
             }
-        } else if( exception instanceof UserException ) {
+        } else if (exception instanceof UserException) {
             try {
-                UserException userException = (UserException)exception;
-                insertUserException( userException, result );
-            } catch( UNKNOWN e ) {
-                ORBUtility.insertSystemException( e, result );
+                UserException userException = (UserException) exception;
+                insertUserException(userException, result);
+            } catch (UNKNOWN e) {
+                ORBUtility.insertSystemException(e, result);
             }
         }
 
@@ -635,38 +628,37 @@ public abstract class RequestInfoImpl
      * a cache.  If not found in cache, the result is inserted in the cache.
      */
     protected org.omg.IOP.ServiceContext
-        getServiceContext ( HashMap cachedServiceContexts,
-                            ServiceContexts serviceContexts, int id )
-    {
+    getServiceContext(HashMap cachedServiceContexts,
+                      ServiceContexts serviceContexts, int id) {
         org.omg.IOP.ServiceContext result = null;
-        Integer integerId = new Integer( id );
+        Integer integerId = new Integer(id);
 
         // Search cache first:
         result = (org.omg.IOP.ServiceContext)
-            cachedServiceContexts.get( integerId );
+                cachedServiceContexts.get(integerId);
 
         // null could normally mean that either we cached the value null
         // or it's not in the cache.  However, there is no way for us to
         // cache the value null in the following code.
-        if( result == null ) {
+        if (result == null) {
             // Not in cache.  Find it and put in cache.
             // Get the desired "core" service context.
             com.sun.corba.se.spi.servicecontext.ServiceContext context =
-                serviceContexts.get( id );
+                    serviceContexts.get(id);
             if (context == null)
-                throw stdWrapper.invalidServiceContextId() ;
+                throw stdWrapper.invalidServiceContextId();
 
             // Convert the "core" service context to an
             // "IOP" ServiceContext by writing it to a
             // CDROutputStream and reading it back.
             EncapsOutputStream out =
-                sun.corba.OutputStreamFactory.newEncapsOutputStream(myORB);
+                    sun.corba.OutputStreamFactory.newEncapsOutputStream(myORB);
 
-            context.write( out, GIOPVersion.V1_2 );
+            context.write(out, GIOPVersion.V1_2);
             InputStream inputStream = out.create_input_stream();
-            result = ServiceContextHelper.read( inputStream );
+            result = ServiceContextHelper.read(inputStream);
 
-            cachedServiceContexts.put( integerId, result );
+            cachedServiceContexts.put(integerId, result);
         }
 
         // Good citizen: For increased efficiency, we assume that interceptors
@@ -689,37 +681,36 @@ public abstract class RequestInfoImpl
      * in the container, it goes in the HashMap as well.
      */
     protected void addServiceContext(
-        HashMap cachedServiceContexts,
-        ServiceContexts serviceContexts,
-        org.omg.IOP.ServiceContext service_context,
-        boolean replace )
-    {
-        int id = 0 ;
+            HashMap cachedServiceContexts,
+            ServiceContexts serviceContexts,
+            org.omg.IOP.ServiceContext service_context,
+            boolean replace) {
+        int id = 0;
         // Convert IOP.service_context to core.ServiceContext:
         EncapsOutputStream outputStream =
-           sun.corba.OutputStreamFactory.newEncapsOutputStream(myORB);
+                sun.corba.OutputStreamFactory.newEncapsOutputStream(myORB);
         InputStream inputStream = null;
         UnknownServiceContext coreServiceContext = null;
-        ServiceContextHelper.write( outputStream, service_context );
+        ServiceContextHelper.write(outputStream, service_context);
         inputStream = outputStream.create_input_stream();
 
         // Constructor expects id to already have been read from stream.
         coreServiceContext = new UnknownServiceContext(
-            inputStream.read_long(),
-            (org.omg.CORBA_2_3.portable.InputStream)inputStream );
+                inputStream.read_long(),
+                (org.omg.CORBA_2_3.portable.InputStream) inputStream);
 
         id = coreServiceContext.getId();
 
         if (serviceContexts.get(id) != null)
             if (replace)
-                serviceContexts.delete( id );
+                serviceContexts.delete(id);
             else
-                throw stdWrapper.serviceContextAddFailed( new Integer(id) ) ;
+                throw stdWrapper.serviceContextAddFailed(new Integer(id));
 
-        serviceContexts.put( coreServiceContext );
+        serviceContexts.put(coreServiceContext);
 
         // Place IOP.ServiceContext in cache as well:
-        cachedServiceContexts.put( new Integer( id ), service_context );
+        cachedServiceContexts.put(new Integer(id), service_context);
     }
 
     /**
@@ -731,8 +722,9 @@ public abstract class RequestInfoImpl
      * so we know not to execute the corresponding ending interception
      * points for the interceptors whose starting interception points
      * were not completed.  This simulates the "Flow Stack Visual Model"
-     * presented in section 5.1.3.*/
-    protected void setFlowStackIndex(int num ) {
+     * presented in section 5.1.3.
+     */
+    protected void setFlowStackIndex(int num) {
         this.flowStackIndex = num;
     }
 
@@ -749,7 +741,7 @@ public abstract class RequestInfoImpl
      * Sets which ending interception point should be called
      * for each interceptor in the virtual flow stack.
      */
-    protected void setEndingPointCall( int call ) {
+    protected void setEndingPointCall(int call) {
         this.endingPointCall = call;
     }
 
@@ -765,7 +757,7 @@ public abstract class RequestInfoImpl
      * Sets which intermediate interception point should be called
      * for each interceptor in the virtual flow stack.
      */
-    protected void setIntermediatePointCall( int call ) {
+    protected void setIntermediatePointCall(int call) {
         this.intermediatePointCall = call;
     }
 
@@ -781,7 +773,7 @@ public abstract class RequestInfoImpl
      * Sets which starting interception point should be called
      * for each interceptor in the virtual flow stack.
      */
-    protected void setStartingPointCall( int call ) {
+    protected void setStartingPointCall(int call) {
         this.startingPointCall = call;
     }
 
@@ -805,14 +797,14 @@ public abstract class RequestInfoImpl
      * Sets whether all interceotrs' starting and ending points
      * have already been executed to completion.
      */
-    protected void setAlreadyExecuted( boolean alreadyExecuted ) {
+    protected void setAlreadyExecuted(boolean alreadyExecuted) {
         this.alreadyExecuted = alreadyExecuted;
     }
 
     /**
      * Sets the value to be returned by reply_status
      */
-    protected void setReplyStatus( short replyStatus ) {
+    protected void setReplyStatus(short replyStatus) {
         this.replyStatus = replyStatus;
     }
 
@@ -828,7 +820,7 @@ public abstract class RequestInfoImpl
      * Stores the given ForwardRequest object for later analysis.
      * This version supplements setForwardRequest( IOR );
      */
-    protected void setForwardRequest( ForwardRequest forwardRequest ) {
+    protected void setForwardRequest(ForwardRequest forwardRequest) {
         this.forwardRequest = forwardRequest;
         this.forwardRequestIOR = null;
     }
@@ -837,7 +829,7 @@ public abstract class RequestInfoImpl
      * Stores the given IOR for later forward request analysis.
      * This version supplements setForwardRequest( ForwardRequest );
      */
-    protected void setForwardRequest( IOR ior ) {
+    protected void setForwardRequest(IOR ior) {
         this.forwardRequestIOR = ior;
         this.forwardRequest = null;
     }
@@ -846,12 +838,12 @@ public abstract class RequestInfoImpl
      * Retrieves the ForwardRequest object as a ForwardRequest exception.
      */
     protected ForwardRequest getForwardRequestException() {
-        if( this.forwardRequest == null ) {
-            if( this.forwardRequestIOR != null ) {
+        if (this.forwardRequest == null) {
+            if (this.forwardRequestIOR != null) {
                 // Convert the internal IOR to a forward request exception
                 // by creating an object reference.
                 org.omg.CORBA.Object obj = iorToObject(this.forwardRequestIOR);
-                this.forwardRequest = new ForwardRequest( obj );
+                this.forwardRequest = new ForwardRequest(obj);
             }
         }
 
@@ -862,10 +854,10 @@ public abstract class RequestInfoImpl
      * Retrieves the IOR of the ForwardRequest exception.
      */
     protected IOR getForwardRequestIOR() {
-        if( this.forwardRequestIOR == null ) {
-            if( this.forwardRequest != null ) {
+        if (this.forwardRequestIOR == null) {
+            if (this.forwardRequest != null) {
                 this.forwardRequestIOR = ORBUtility.getIOR(
-                    this.forwardRequest.forward ) ;
+                        this.forwardRequest.forward);
             }
         }
 
@@ -876,7 +868,7 @@ public abstract class RequestInfoImpl
      * Sets the exception to be returned by received_exception and
      * received_exception_id.
      */
-    protected void setException( Exception exception ) {
+    protected void setException(Exception exception) {
         this.exception = exception;
     }
 
@@ -893,7 +885,7 @@ public abstract class RequestInfoImpl
      * (starting points, intermediate points, or ending points).
      * This allows us to enforce the validity table.
      */
-    protected void setCurrentExecutionPoint( int executionPoint ) {
+    protected void setCurrentExecutionPoint(int executionPoint) {
         this.currentExecutionPoint = executionPoint;
     }
 
@@ -906,24 +898,22 @@ public abstract class RequestInfoImpl
      * TBD_BIO.
      *
      * @param methodID The ID of this method, one of the MID_* constants.
-     *     This allows us to easily look up the method access in a table.
-     *     Note that method ids may overlap between subclasses.
+     *                 This allows us to easily look up the method access in a table.
+     *                 Note that method ids may overlap between subclasses.
      */
-    protected abstract void checkAccess( int methodID )
-        throws BAD_INV_ORDER;
+    protected abstract void checkAccess(int methodID)
+            throws BAD_INV_ORDER;
 
     /**
      * The server side does an explicit set rather than taking the
      * current PICurrent table as is done in the general RequestInfoImpl
      * constructor.
      */
-    void setSlotTable(SlotTable slotTable)
-    {
+    void setSlotTable(SlotTable slotTable) {
         this.slotTable = slotTable;
     }
 
-    protected org.omg.CORBA.Object iorToObject( IOR ior )
-    {
-        return ORBUtility.makeObjectReference( ior ) ;
+    protected org.omg.CORBA.Object iorToObject(IOR ior) {
+        return ORBUtility.makeObjectReference(ior);
     }
 }

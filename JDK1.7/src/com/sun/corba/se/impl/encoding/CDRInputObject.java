@@ -56,34 +56,32 @@ import com.sun.corba.se.impl.orbutil.ORBUtility;
  * @author Harold Carr
  */
 public class CDRInputObject extends CDRInputStream
-    implements
-        InputObject
-{
+        implements
+        InputObject {
     private CorbaConnection corbaConnection;
     private Message header;
     private boolean unmarshaledHeader;
-    private ORB orb ;
-    private ORBUtilSystemException wrapper ;
-    private OMGSystemException omgWrapper ;
+    private ORB orb;
+    private ORBUtilSystemException wrapper;
+    private OMGSystemException omgWrapper;
 
     public CDRInputObject(ORB orb,
                           CorbaConnection corbaConnection,
                           ByteBuffer byteBuffer,
-                          Message header)
-    {
+                          Message header) {
         super(orb, byteBuffer, header.getSize(), header.isLittleEndian(),
-              header.getGIOPVersion(), header.getEncodingVersion(),
-              BufferManagerFactory.newBufferManagerRead(
-                                          header.getGIOPVersion(),
-                                          header.getEncodingVersion(),
-                                          orb));
+                header.getGIOPVersion(), header.getEncodingVersion(),
+                BufferManagerFactory.newBufferManagerRead(
+                        header.getGIOPVersion(),
+                        header.getEncodingVersion(),
+                        orb));
 
         this.corbaConnection = corbaConnection;
-        this.orb = orb ;
-        this.wrapper = ORBUtilSystemException.get( orb,
-            CORBALogDomains.RPC_ENCODING ) ;
-        this.omgWrapper = OMGSystemException.get( orb,
-            CORBALogDomains.RPC_ENCODING ) ;
+        this.orb = orb;
+        this.wrapper = ORBUtilSystemException.get(orb,
+                CORBALogDomains.RPC_ENCODING);
+        this.omgWrapper = OMGSystemException.get(orb,
+                CORBALogDomains.RPC_ENCODING);
 
         if (orb.transportDebugFlag) {
             dprint(".CDRInputObject constructor:");
@@ -104,8 +102,7 @@ public class CDRInputObject extends CDRInputStream
     // This connection normally is accessed from the message mediator.
     // However, giop input needs to get code set info from the connetion
     // *before* the message mediator is available.
-    public final CorbaConnection getConnection()
-    {
+    public final CorbaConnection getConnection() {
         return corbaConnection;
     }
 
@@ -113,8 +110,7 @@ public class CDRInputObject extends CDRInputStream
     // message mediator?  Or should we not have a header and
     // have the information stored in the message mediator
     // directly?
-    public Message getMessageHeader()
-    {
+    public Message getMessageHeader() {
         return header;
     }
 
@@ -124,43 +120,41 @@ public class CDRInputObject extends CDRInputStream
      * See CorbaResponseWaitingRoomImpl.waitForResponse.  It is done
      * there in the client thread.
      */
-    public void unmarshalHeader()
-    {
+    public void unmarshalHeader() {
         // Unmarshal the extended GIOP message from the buffer.
 
         if (!unmarshaledHeader) {
             try {
-                if (((ORB)orb()).transportDebugFlag) {
+                if (((ORB) orb()).transportDebugFlag) {
                     dprint(".unmarshalHeader->: " + getMessageHeader());
                 }
                 getMessageHeader().read(this);
-                unmarshaledHeader= true;
+                unmarshaledHeader = true;
             } catch (RuntimeException e) {
-                if (((ORB)orb()).transportDebugFlag) {
+                if (((ORB) orb()).transportDebugFlag) {
                     dprint(".unmarshalHeader: !!ERROR!!: "
-                           + getMessageHeader()
-                           + ": " + e);
+                            + getMessageHeader()
+                            + ": " + e);
                 }
                 throw e;
             } finally {
-                if (((ORB)orb()).transportDebugFlag) {
+                if (((ORB) orb()).transportDebugFlag) {
                     dprint(".unmarshalHeader<-: " + getMessageHeader());
                 }
             }
         }
     }
 
-    public final boolean unmarshaledHeader()
-    {
+    public final boolean unmarshaledHeader() {
         return unmarshaledHeader;
     }
 
     /**
      * Override the default CDR factory behavior to get the
      * negotiated code sets from the connection.
-     *
+     * <p>
      * These are only called once per message, the first time needed.
-     *
+     * <p>
      * In the local case, there is no Connection, so use the
      * local code sets.
      */
@@ -174,10 +168,10 @@ public class CDRInputObject extends CDRInputStream
             return super.createCharBTCConverter();
 
         OSFCodeSetRegistry.Entry charSet
-            = OSFCodeSetRegistry.lookupEntry(codesets.getCharCodeSet());
+                = OSFCodeSetRegistry.lookupEntry(codesets.getCharCodeSet());
 
         if (charSet == null)
-            throw wrapper.unknownCodeset( charSet ) ;
+            throw wrapper.unknownCodeset(charSet);
 
         return CodeSetConversion.impl().getBTCConverter(charSet, isLittleEndian());
     }
@@ -191,16 +185,16 @@ public class CDRInputObject extends CDRInputStream
         // See CORBA formal 00-11-03 13.9.2.6.
         if (codesets == null) {
             if (getConnection().isServer())
-                throw omgWrapper.noClientWcharCodesetCtx() ;
+                throw omgWrapper.noClientWcharCodesetCtx();
             else
-                throw omgWrapper.noServerWcharCodesetCmp() ;
+                throw omgWrapper.noServerWcharCodesetCmp();
         }
 
         OSFCodeSetRegistry.Entry wcharSet
-            = OSFCodeSetRegistry.lookupEntry(codesets.getWCharCodeSet());
+                = OSFCodeSetRegistry.lookupEntry(codesets.getWCharCodeSet());
 
         if (wcharSet == null)
-            throw wrapper.unknownCodeset( wcharSet ) ;
+            throw wrapper.unknownCodeset(wcharSet);
 
         // For GIOP 1.2 and UTF-16, use big endian if there is no byte
         // order marker.  (See issue 3405b)
@@ -258,8 +252,7 @@ public class CDRInputObject extends CDRInputStream
         // return new XIIOPInputStream(this);
     }
 
-    protected void dprint(String msg)
-    {
+    protected void dprint(String msg) {
         ORBUtility.dprint("CDRInputObject", msg);
     }
 }

@@ -66,22 +66,43 @@ import org.xml.sax.Locator;
 /**
  * Wraps SAX {@link Locator} into Xerces {@link XMLLocator}.
  *
- * @author
- *     Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
+ * @author Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
  */
 public class LocatorWrapper implements XMLLocator {
 
     private final Locator locator;
 
-    public LocatorWrapper( Locator _loc ) { this.locator=_loc; }
+    public LocatorWrapper(Locator _loc) {
+        this.locator = _loc;
+    }
 
-    public int getColumnNumber()  { return locator.getColumnNumber(); }
-    public int getLineNumber()    { return locator.getLineNumber(); }
-    public String getBaseSystemId() { return null; }
-    public String getExpandedSystemId() { return locator.getSystemId(); }
-    public String getLiteralSystemId() { return locator.getSystemId(); }
-    public String getPublicId()   { return locator.getPublicId(); }
-    public String getEncoding() { return null; }
+    public int getColumnNumber() {
+        return locator.getColumnNumber();
+    }
+
+    public int getLineNumber() {
+        return locator.getLineNumber();
+    }
+
+    public String getBaseSystemId() {
+        return null;
+    }
+
+    public String getExpandedSystemId() {
+        return locator.getSystemId();
+    }
+
+    public String getLiteralSystemId() {
+        return locator.getSystemId();
+    }
+
+    public String getPublicId() {
+        return locator.getPublicId();
+    }
+
+    public String getEncoding() {
+        return null;
+    }
 
     /**
      * <p>Returns the character offset,

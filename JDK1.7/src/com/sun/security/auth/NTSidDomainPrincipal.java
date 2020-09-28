@@ -53,10 +53,9 @@ public class NTSidDomainPrincipal extends NTSid {
      * <p>
      *
      * @param name a string version of the Windows NT SID for this
-     *                  user's domain.<p>
-     *
-     * @exception NullPointerException if the <code>name</code>
-     *                  is <code>null</code>.
+     *             user's domain.<p>
+     * @throws NullPointerException if the <code>name</code>
+     *                              is <code>null</code>.
      */
     public NTSidDomainPrincipal(String name) {
         super(name);
@@ -68,13 +67,13 @@ public class NTSidDomainPrincipal extends NTSid {
      * <p>
      *
      * @return a string representation of this
-     *          <code>NTSidDomainPrincipal</code>.
+     * <code>NTSidDomainPrincipal</code>.
      */
     public String toString() {
         java.text.MessageFormat form = new java.text.MessageFormat
                 (sun.security.util.ResourcesMgr.getString
                         ("NTSidDomainPrincipal.name",
-                        "sun.security.util.AuthResources"));
+                                "sun.security.util.AuthResources"));
         Object[] source = {getName()};
         return form.format(source);
     }
@@ -89,13 +88,12 @@ public class NTSidDomainPrincipal extends NTSid {
      *
      * @param o Object to be compared for equality with this
      *          <code>NTSidDomainPrincipal</code>.
-     *
      * @return true if the specified Object is equal equal to this
-     *          <code>NTSidDomainPrincipal</code>.
+     * <code>NTSidDomainPrincipal</code>.
      */
     public boolean equals(Object o) {
-            if (o == null)
-                return false;
+        if (o == null)
+            return false;
 
         if (this == o)
             return true;

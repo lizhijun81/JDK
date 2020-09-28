@@ -31,33 +31,40 @@ import org.w3c.dom.Node;
  * attributes. In Level 2 it should enable the ChildRule support.
  *
  * @xerces.internal
- *
  */
 public class ElementDefinitionImpl
-    extends ParentNode {
+        extends ParentNode {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = -8373890672670022714L;
 
     //
     // Data
     //
 
-    /** Element definition name. */
+    /**
+     * Element definition name.
+     */
     protected String name;
 
-    /** Default attributes. */
+    /**
+     * Default attributes.
+     */
     protected NamedNodeMapImpl attributes;
 
     //
     // Constructors
     //
 
-    /** Factory constructor. */
+    /**
+     * Factory constructor.
+     */
     public ElementDefinitionImpl(CoreDocumentImpl ownerDocument, String name) {
         super(ownerDocument);
         this.name = name;
@@ -92,7 +99,7 @@ public class ElementDefinitionImpl
     public Node cloneNode(boolean deep) {
 
         ElementDefinitionImpl newnode =
-            (ElementDefinitionImpl) super.cloneNode(deep);
+                (ElementDefinitionImpl) super.cloneNode(deep);
         // NamedNodeMap must be explicitly replicated to avoid sharing
         newnode.attributes = attributes.cloneMap(newnode);
         return newnode;

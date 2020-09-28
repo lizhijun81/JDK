@@ -55,11 +55,10 @@ import org.xml.sax.helpers.LocatorImpl;
  *
  * @author Arnaud  Le Hors, IBM
  * @author Andy Clark, IBM
- *
  * @version $Id: DOMParser.java,v 1.7 2010-11-01 04:40:09 joehw Exp $
  */
 public class DOMParser
-    extends AbstractDOMParser {
+        extends AbstractDOMParser {
 
     //
     // Constants
@@ -67,32 +66,40 @@ public class DOMParser
 
     // features
 
-    /** Feature identifier: EntityResolver2. */
+    /**
+     * Feature identifier: EntityResolver2.
+     */
     protected static final String USE_ENTITY_RESOLVER2 =
-        Constants.SAX_FEATURE_PREFIX + Constants.USE_ENTITY_RESOLVER2_FEATURE;
+            Constants.SAX_FEATURE_PREFIX + Constants.USE_ENTITY_RESOLVER2_FEATURE;
 
     protected static final String REPORT_WHITESPACE =
             Constants.SUN_SCHEMA_FEATURE_PREFIX + Constants.SUN_REPORT_IGNORED_ELEMENT_CONTENT_WHITESPACE;
 
     // recognized features:
     private static final String[] RECOGNIZED_FEATURES = {
-        REPORT_WHITESPACE
+            REPORT_WHITESPACE
     };
 
     // properties
 
-    /** Property identifier: symbol table. */
+    /**
+     * Property identifier: symbol table.
+     */
     protected static final String SYMBOL_TABLE =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY;
 
-    /** Property identifier: XML grammar pool. */
+    /**
+     * Property identifier: XML grammar pool.
+     */
     protected static final String XMLGRAMMAR_POOL =
-        Constants.XERCES_PROPERTY_PREFIX+Constants.XMLGRAMMAR_POOL_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.XMLGRAMMAR_POOL_PROPERTY;
 
-    /** Recognized properties. */
+    /**
+     * Recognized properties.
+     */
     private static final String[] RECOGNIZED_PROPERTIES = {
-        SYMBOL_TABLE,
-        XMLGRAMMAR_POOL,
+            SYMBOL_TABLE,
+            XMLGRAMMAR_POOL,
     };
 
     //
@@ -101,7 +108,9 @@ public class DOMParser
 
     // features
 
-    /** Use EntityResolver2. */
+    /**
+     * Use EntityResolver2.
+     */
     protected boolean fUseEntityResolver2 = true;
 
     //
@@ -163,9 +172,8 @@ public class DOMParser
      * </pre>
      *
      * @param systemId The system identifier (URI).
-     *
-     * @exception org.xml.sax.SAXException Throws exception on SAX error.
-     * @exception java.io.IOException Throws exception on i/o error.
+     * @throws org.xml.sax.SAXException Throws exception on SAX error.
+     * @throws java.io.IOException      Throws exception on i/o error.
      */
     public void parse(String systemId) throws SAXException, IOException {
 
@@ -190,24 +198,23 @@ public class DOMParser
             }
             if (ex instanceof SAXException) {
                 // why did we create an XMLParseException?
-                throw (SAXException)ex;
+                throw (SAXException) ex;
             }
             if (ex instanceof IOException) {
-                throw (IOException)ex;
+                throw (IOException) ex;
             }
             throw new SAXException(ex);
-        }
-        catch (XNIException e) {
+        } catch (XNIException e) {
             e.printStackTrace();
             Exception ex = e.getException();
             if (ex == null) {
                 throw new SAXException(e.getMessage());
             }
             if (ex instanceof SAXException) {
-                throw (SAXException)ex;
+                throw (SAXException) ex;
             }
             if (ex instanceof IOException) {
-                throw (IOException)ex;
+                throw (IOException) ex;
             }
             throw new SAXException(ex);
         }
@@ -218,19 +225,18 @@ public class DOMParser
      * parse
      *
      * @param inputSource
-     *
-     * @exception org.xml.sax.SAXException
-     * @exception java.io.IOException
+     * @throws org.xml.sax.SAXException
+     * @throws java.io.IOException
      */
     public void parse(InputSource inputSource)
-        throws SAXException, IOException {
+            throws SAXException, IOException {
 
         // parse document
         try {
             XMLInputSource xmlInputSource =
-                new XMLInputSource(inputSource.getPublicId(),
-                                   inputSource.getSystemId(),
-                                   null);
+                    new XMLInputSource(inputSource.getPublicId(),
+                            inputSource.getSystemId(),
+                            null);
             xmlInputSource.setByteStream(inputSource.getByteStream());
             xmlInputSource.setCharacterStream(inputSource.getCharacterStream());
             xmlInputSource.setEncoding(inputSource.getEncoding());
@@ -252,23 +258,22 @@ public class DOMParser
             }
             if (ex instanceof SAXException) {
                 // why did we create an XMLParseException?
-                throw (SAXException)ex;
+                throw (SAXException) ex;
             }
             if (ex instanceof IOException) {
-                throw (IOException)ex;
+                throw (IOException) ex;
             }
             throw new SAXException(ex);
-        }
-        catch (XNIException e) {
+        } catch (XNIException e) {
             Exception ex = e.getException();
             if (ex == null) {
                 throw new SAXException(e.getMessage());
             }
             if (ex instanceof SAXException) {
-                throw (SAXException)ex;
+                throw (SAXException) ex;
             }
             if (ex instanceof IOException) {
-                throw (IOException)ex;
+                throw (IOException) ex;
             }
             throw new SAXException(ex);
         }
@@ -290,24 +295,20 @@ public class DOMParser
                 if (xer instanceof EntityResolver2Wrapper) {
                     EntityResolver2Wrapper er2w = (EntityResolver2Wrapper) xer;
                     er2w.setEntityResolver((EntityResolver2) resolver);
-                }
-                else {
+                } else {
                     fConfiguration.setProperty(ENTITY_RESOLVER,
                             new EntityResolver2Wrapper((EntityResolver2) resolver));
                 }
-            }
-            else {
+            } else {
                 if (xer instanceof EntityResolverWrapper) {
                     EntityResolverWrapper erw = (EntityResolverWrapper) xer;
                     erw.setEntityResolver(resolver);
-                }
-                else {
+                } else {
                     fConfiguration.setProperty(ENTITY_RESOLVER,
                             new EntityResolverWrapper(resolver));
                 }
             }
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             // do nothing
         }
 
@@ -317,7 +318,7 @@ public class DOMParser
      * Return the current entity resolver.
      *
      * @return The current entity resolver, or null if none
-     *         has been registered.
+     * has been registered.
      * @see #setEntityResolver
      */
     public EntityResolver getEntityResolver() {
@@ -325,19 +326,17 @@ public class DOMParser
         EntityResolver entityResolver = null;
         try {
             XMLEntityResolver xmlEntityResolver =
-                (XMLEntityResolver)fConfiguration.getProperty(ENTITY_RESOLVER);
+                    (XMLEntityResolver) fConfiguration.getProperty(ENTITY_RESOLVER);
             if (xmlEntityResolver != null) {
                 if (xmlEntityResolver instanceof EntityResolverWrapper) {
                     entityResolver =
-                        ((EntityResolverWrapper) xmlEntityResolver).getEntityResolver();
-                }
-                else if (xmlEntityResolver instanceof EntityResolver2Wrapper) {
+                            ((EntityResolverWrapper) xmlEntityResolver).getEntityResolver();
+                } else if (xmlEntityResolver instanceof EntityResolver2Wrapper) {
                     entityResolver =
-                        ((EntityResolver2Wrapper) xmlEntityResolver).getEntityResolver();
+                            ((EntityResolver2Wrapper) xmlEntityResolver).getEntityResolver();
                 }
             }
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             // do nothing
         }
         return entityResolver;
@@ -358,8 +357,8 @@ public class DOMParser
      * handler immediately.</p>
      *
      * @param errorHandler The error handler.
-     * @exception java.lang.NullPointerException If the handler
-     *            argument is null.
+     * @throws java.lang.NullPointerException If the handler
+     *                                        argument is null.
      * @see #getErrorHandler
      */
     public void setErrorHandler(ErrorHandler errorHandler) {
@@ -369,13 +368,11 @@ public class DOMParser
             if (xeh instanceof ErrorHandlerWrapper) {
                 ErrorHandlerWrapper ehw = (ErrorHandlerWrapper) xeh;
                 ehw.setErrorHandler(errorHandler);
-            }
-            else {
+            } else {
                 fConfiguration.setProperty(ERROR_HANDLER,
                         new ErrorHandlerWrapper(errorHandler));
             }
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             // do nothing
         }
 
@@ -385,7 +382,7 @@ public class DOMParser
      * Return the current error handler.
      *
      * @return The current error handler, or null if none
-     *         has been registered.
+     * has been registered.
      * @see #setErrorHandler
      */
     public ErrorHandler getErrorHandler() {
@@ -393,13 +390,12 @@ public class DOMParser
         ErrorHandler errorHandler = null;
         try {
             XMLErrorHandler xmlErrorHandler =
-                (XMLErrorHandler)fConfiguration.getProperty(ERROR_HANDLER);
+                    (XMLErrorHandler) fConfiguration.getProperty(ERROR_HANDLER);
             if (xmlErrorHandler != null &&
-                xmlErrorHandler instanceof ErrorHandlerWrapper) {
-                errorHandler = ((ErrorHandlerWrapper)xmlErrorHandler).getErrorHandler();
+                    xmlErrorHandler instanceof ErrorHandlerWrapper) {
+                errorHandler = ((ErrorHandlerWrapper) xmlErrorHandler).getErrorHandler();
             }
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             // do nothing
         }
         return errorHandler;
@@ -412,16 +408,15 @@ public class DOMParser
      * it, it might not be able to fulfill the request.
      *
      * @param featureId The unique identifier (URI) of the feature.
-     * @param state The requested state of the feature (true or false).
-     *
-     * @exception SAXNotRecognizedException If the
-     *            requested feature is not known.
-     * @exception SAXNotSupportedException If the
-     *            requested feature is known, but the requested
-     *            state is not supported.
+     * @param state     The requested state of the feature (true or false).
+     * @throws SAXNotRecognizedException If the
+     *                                   requested feature is not known.
+     * @throws SAXNotSupportedException  If the
+     *                                   requested feature is known, but the requested
+     *                                   state is not supported.
      */
     public void setFeature(String featureId, boolean state)
-        throws SAXNotRecognizedException, SAXNotSupportedException {
+            throws SAXNotRecognizedException, SAXNotSupportedException {
 
         try {
 
@@ -443,18 +438,16 @@ public class DOMParser
             //
 
             fConfiguration.setFeature(featureId, state);
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             String identifier = e.getIdentifier();
             if (e.getType() == Status.NOT_RECOGNIZED) {
                 throw new SAXNotRecognizedException(
-                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                    "feature-not-recognized", new Object [] {identifier}));
-            }
-            else {
+                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                "feature-not-recognized", new Object[]{identifier}));
+            } else {
                 throw new SAXNotSupportedException(
-                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                    "feature-not-supported", new Object [] {identifier}));
+                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                "feature-not-supported", new Object[]{identifier}));
             }
         }
 
@@ -462,20 +455,20 @@ public class DOMParser
 
     /**
      * Query the state of a feature.
-     *
+     * <p>
      * Query the current state of any feature in a SAX2 parser.  The
      * parser might not recognize the feature.
      *
      * @param featureId The unique identifier (URI) of the feature
      *                  being set.
      * @return The current state of the feature.
-     * @exception org.xml.sax.SAXNotRecognizedException If the
-     *            requested feature is not known.
-     * @exception SAXNotSupportedException If the
-     *            requested feature is known but not supported.
+     * @throws org.xml.sax.SAXNotRecognizedException If the
+     *                                               requested feature is not known.
+     * @throws SAXNotSupportedException              If the
+     *                                               requested feature is known but not supported.
      */
     public boolean getFeature(String featureId)
-        throws SAXNotRecognizedException, SAXNotSupportedException {
+            throws SAXNotRecognizedException, SAXNotSupportedException {
 
         try {
 
@@ -492,18 +485,16 @@ public class DOMParser
             //
 
             return fConfiguration.getFeature(featureId);
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             String identifier = e.getIdentifier();
             if (e.getType() == Status.NOT_RECOGNIZED) {
                 throw new SAXNotRecognizedException(
-                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                    "feature-not-recognized", new Object [] {identifier}));
-            }
-            else {
+                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                "feature-not-recognized", new Object[]{identifier}));
+            } else {
                 throw new SAXNotSupportedException(
-                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                    "feature-not-supported", new Object [] {identifier}));
+                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                "feature-not-supported", new Object[]{identifier}));
             }
         }
 
@@ -516,31 +507,28 @@ public class DOMParser
      *
      * @param propertyId The unique identifier (URI) of the property
      *                   being set.
-     * @param value The value to which the property is being set.
-     *
-     * @exception SAXNotRecognizedException If the
-     *            requested property is not known.
-     * @exception SAXNotSupportedException If the
-     *            requested property is known, but the requested
-     *            value is not supported.
+     * @param value      The value to which the property is being set.
+     * @throws SAXNotRecognizedException If the
+     *                                   requested property is not known.
+     * @throws SAXNotSupportedException  If the
+     *                                   requested property is known, but the requested
+     *                                   value is not supported.
      */
     public void setProperty(String propertyId, Object value)
-        throws SAXNotRecognizedException, SAXNotSupportedException {
+            throws SAXNotRecognizedException, SAXNotSupportedException {
 
         try {
             fConfiguration.setProperty(propertyId, value);
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             String identifier = e.getIdentifier();
             if (e.getType() == Status.NOT_RECOGNIZED) {
                 throw new SAXNotRecognizedException(
-                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                    "property-not-recognized", new Object [] {identifier}));
-            }
-            else {
+                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                "property-not-recognized", new Object[]{identifier}));
+            } else {
                 throw new SAXNotSupportedException(
-                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                    "property-not-supported", new Object [] {identifier}));
+                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                "property-not-supported", new Object[]{identifier}));
             }
         }
 
@@ -548,50 +536,47 @@ public class DOMParser
 
     /**
      * Query the value of a property.
-     *
+     * <p>
      * Return the current value of a property in a SAX2 parser.
      * The parser might not recognize the property.
      *
      * @param propertyId The unique identifier (URI) of the property
      *                   being set.
      * @return The current value of the property.
-     * @exception org.xml.sax.SAXNotRecognizedException If the
-     *            requested property is not known.
-     * @exception SAXNotSupportedException If the
-     *            requested property is known but not supported.
+     * @throws org.xml.sax.SAXNotRecognizedException If the
+     *                                               requested property is not known.
+     * @throws SAXNotSupportedException              If the
+     *                                               requested property is known but not supported.
      */
     public Object getProperty(String propertyId)
-        throws SAXNotRecognizedException, SAXNotSupportedException {
+            throws SAXNotRecognizedException, SAXNotSupportedException {
 
-       if (propertyId.equals(CURRENT_ELEMENT_NODE)) {
-           boolean deferred = false;
-           try {
-               deferred = getFeature(DEFER_NODE_EXPANSION);
-           }
-           catch (XMLConfigurationException e){
-               // ignore
-           }
-           if (deferred) {
-               throw new SAXNotSupportedException("Current element node cannot be queried when node expansion is deferred.");
-           }
-           return (fCurrentNode!=null &&
-                   fCurrentNode.getNodeType() == Node.ELEMENT_NODE)? fCurrentNode:null;
-       }
+        if (propertyId.equals(CURRENT_ELEMENT_NODE)) {
+            boolean deferred = false;
+            try {
+                deferred = getFeature(DEFER_NODE_EXPANSION);
+            } catch (XMLConfigurationException e) {
+                // ignore
+            }
+            if (deferred) {
+                throw new SAXNotSupportedException("Current element node cannot be queried when node expansion is deferred.");
+            }
+            return (fCurrentNode != null &&
+                    fCurrentNode.getNodeType() == Node.ELEMENT_NODE) ? fCurrentNode : null;
+        }
 
         try {
             return fConfiguration.getProperty(propertyId);
-        }
-        catch (XMLConfigurationException e) {
+        } catch (XMLConfigurationException e) {
             String identifier = e.getIdentifier();
             if (e.getType() == Status.NOT_RECOGNIZED) {
                 throw new SAXNotRecognizedException(
-                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                    "property-not-recognized", new Object [] {identifier}));
-            }
-            else {
+                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                "property-not-recognized", new Object[]{identifier}));
+            } else {
                 throw new SAXNotSupportedException(
-                    SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
-                    "property-not-supported", new Object [] {identifier}));
+                        SAXMessageFormatter.formatMessage(fConfiguration.getLocale(),
+                                "property-not-supported", new Object[]{identifier}));
             }
         }
 

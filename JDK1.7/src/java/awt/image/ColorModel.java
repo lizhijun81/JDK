@@ -28,9 +28,11 @@ package java.awt.image;
 import java.awt.Transparency;
 import java.awt.color.ColorSpace;
 import java.awt.color.ICC_ColorSpace;
+
 import sun.java2d.cmm.CMSManager;
 import sun.java2d.cmm.ColorTransform;
 import sun.java2d.cmm.PCMM;
+
 import java.awt.Toolkit;
 import java.util.Collections;
 import java.util.Map;
@@ -153,7 +155,7 @@ import java.util.WeakHashMap;
  * @see Raster
  * @see DataBuffer
  */
-public abstract class ColorModel implements Transparency{
+public abstract class ColorModel implements Transparency {
     private long pData;         // Placeholder for data for native functions
 
     /**
@@ -179,13 +181,13 @@ public abstract class ColorModel implements Transparency{
     /**
      * This is copied from java.awt.Toolkit since we need the library
      * loaded in java.awt.image also:
-     *
+     * <p>
      * WARNING: This is a temporary workaround for a problem in the
      * way the AWT loads native libraries. A number of classes in the
      * AWT package have a native method, initIDs(), which initializes
      * the JNI field and method ids used in the native portion of
      * their implementation.
-     *
+     * <p>
      * Since the use and storage of these ids is done by the
      * implementation libraries, the implementation of these method is
      * provided by the particular AWT implementations (for example,
@@ -196,24 +198,28 @@ public abstract class ColorModel implements Transparency{
      * would be to provide a separate library which defines java.awt.*
      * initIDs, and exports the relevant symbols out to the
      * implementation libraries.
-     *
+     * <p>
      * For now, we know it's done by the implementation, and we assume
      * that the name of the library is "awt".  -br.
      */
     private static boolean loaded = false;
+
     static void loadLibraries() {
         if (!loaded) {
             java.security.AccessController.doPrivileged(
-                  new sun.security.action.LoadLibraryAction("awt"));
+                    new sun.security.action.LoadLibraryAction("awt"));
             loaded = true;
         }
     }
+
     private static native void initIDs();
+
     static {
         /* ensure that the proper libraries are loaded */
         loadLibraries();
         initIDs();
     }
+
     private static ColorModel RGBdefault;
 
     /**
@@ -229,17 +235,18 @@ public abstract class ColorModel implements Transparency{
      * necessarily represent the native or the most efficient
      * <code>ColorModel</code> for a particular device or for all images.
      * It is merely used as a common color model format.
+     *
      * @return a <code>DirectColorModel</code>object describing default
-     *          RGB values.
+     * RGB values.
      */
     public static ColorModel getRGBdefault() {
         if (RGBdefault == null) {
             RGBdefault = new DirectColorModel(32,
-                                              0x00ff0000,       // Red
-                                              0x0000ff00,       // Green
-                                              0x000000ff,       // Blue
-                                              0xff000000        // Alpha
-                                              );
+                    0x00ff0000,       // Red
+                    0x0000ff00,       // Green
+                    0x000000ff,       // Blue
+                    0xff000000        // Alpha
+            );
         }
         return RGBdefault;
     }
@@ -260,9 +267,10 @@ public abstract class ColorModel implements Transparency{
      * number of bits per color and alpha component, any subclass calling
      * this constructor should override any method that requires this
      * information.
+     *
      * @param bits the number of bits of a pixel
      * @throws IllegalArgumentException if the number
-     *          of bits in <code>bits</code> is less than 1
+     *                                  of bits in <code>bits</code> is less than 1
      */
     public ColorModel(int bits) {
         pixel_bits = bits;
@@ -300,26 +308,27 @@ public abstract class ColorModel implements Transparency{
      * <code>IndexColorModel</code> with <code>pixel_bits</code> equal to
      * 16, the bits array might have four elements with each element set
      * to 8.
-     * @param pixel_bits the number of bits in the pixel values
-     * @param bits array that specifies the number of significant bits
-     *          per color and alpha component
-     * @param cspace the specified <code>ColorSpace</code>
-     * @param hasAlpha <code>true</code> if alpha information is present;
-     *          <code>false</code> otherwise
+     *
+     * @param pixel_bits           the number of bits in the pixel values
+     * @param bits                 array that specifies the number of significant bits
+     *                             per color and alpha component
+     * @param cspace               the specified <code>ColorSpace</code>
+     * @param hasAlpha             <code>true</code> if alpha information is present;
+     *                             <code>false</code> otherwise
      * @param isAlphaPremultiplied <code>true</code> if color samples are
-     *          assumed to be premultiplied by the alpha samples;
-     *          <code>false</code> otherwise
-     * @param transparency what alpha values can be represented by this
-     *          color model
-     * @param transferType the type of the array used to represent pixel
-     *          values
+     *                             assumed to be premultiplied by the alpha samples;
+     *                             <code>false</code> otherwise
+     * @param transparency         what alpha values can be represented by this
+     *                             color model
+     * @param transferType         the type of the array used to represent pixel
+     *                             values
      * @throws IllegalArgumentException if the length of
-     *          the bit array is less than the number of color or alpha
-     *          components in this <code>ColorModel</code>, or if the
-     *          transparency is not a valid value.
+     *                                  the bit array is less than the number of color or alpha
+     *                                  components in this <code>ColorModel</code>, or if the
+     *                                  transparency is not a valid value.
      * @throws IllegalArgumentException if the sum of the number
-     *          of bits in <code>bits</code> is less than 1 or if
-     *          any of the elements in <code>bits</code> is less than 0.
+     *                                  of bits in <code>bits</code> is less than 1 or if
+     *                                  any of the elements in <code>bits</code> is less than 0.
      * @see java.awt.Transparency
      */
     protected ColorModel(int pixel_bits, int[] bits, ColorSpace cspace,
@@ -327,49 +336,47 @@ public abstract class ColorModel implements Transparency{
                          boolean isAlphaPremultiplied,
                          int transparency,
                          int transferType) {
-        colorSpace                = cspace;
-        colorSpaceType            = cspace.getType();
-        numColorComponents        = cspace.getNumComponents();
-        numComponents             = numColorComponents + (hasAlpha ? 1 : 0);
-        supportsAlpha             = hasAlpha;
+        colorSpace = cspace;
+        colorSpaceType = cspace.getType();
+        numColorComponents = cspace.getNumComponents();
+        numComponents = numColorComponents + (hasAlpha ? 1 : 0);
+        supportsAlpha = hasAlpha;
         if (bits.length < numComponents) {
-            throw new IllegalArgumentException("Number of color/alpha "+
-                                               "components should be "+
-                                               numComponents+
-                                               " but length of bits array is "+
-                                               bits.length);
+            throw new IllegalArgumentException("Number of color/alpha " +
+                    "components should be " +
+                    numComponents +
+                    " but length of bits array is " +
+                    bits.length);
         }
 
         // 4186669
         if (transparency < Transparency.OPAQUE ||
-            transparency > Transparency.TRANSLUCENT)
-        {
-            throw new IllegalArgumentException("Unknown transparency: "+
-                                               transparency);
+                transparency > Transparency.TRANSLUCENT) {
+            throw new IllegalArgumentException("Unknown transparency: " +
+                    transparency);
         }
 
         if (supportsAlpha == false) {
             this.isAlphaPremultiplied = false;
             this.transparency = Transparency.OPAQUE;
-        }
-        else {
+        } else {
             this.isAlphaPremultiplied = isAlphaPremultiplied;
-            this.transparency         = transparency;
+            this.transparency = transparency;
         }
 
         nBits = (int[]) bits.clone();
         this.pixel_bits = pixel_bits;
         if (pixel_bits <= 0) {
-            throw new IllegalArgumentException("Number of pixel bits must "+
-                                               "be > 0");
+            throw new IllegalArgumentException("Number of pixel bits must " +
+                    "be > 0");
         }
         // Check for bits < 0
         maxBits = 0;
-        for (int i=0; i < bits.length; i++) {
+        for (int i = 0; i < bits.length; i++) {
             // bug 4304697
             if (bits[i] < 0) {
                 throw new
-                    IllegalArgumentException("Number of bits must be >= 0");
+                        IllegalArgumentException("Number of bits must be >= 0");
             }
             if (maxBits < bits[i]) {
                 maxBits = bits[i];
@@ -378,9 +385,9 @@ public abstract class ColorModel implements Transparency{
 
         // Make sure that we don't have all 0-bit components
         if (maxBits == 0) {
-            throw new IllegalArgumentException("There must be at least "+
-                                               "one component with > 0 "+
-                                              "pixel bits.");
+            throw new IllegalArgumentException("There must be at least " +
+                    "one component with > 0 " +
+                    "pixel bits.");
         }
 
         // Save this since we always need to check if it is the default CS
@@ -395,6 +402,7 @@ public abstract class ColorModel implements Transparency{
     /**
      * Returns whether or not alpha is supported in this
      * <code>ColorModel</code>.
+     *
      * @return <code>true</code> if alpha is supported in this
      * <code>ColorModel</code>; <code>false</code> otherwise.
      */
@@ -410,9 +418,10 @@ public abstract class ColorModel implements Transparency{
      * information are represented as separate spatial bands, and color
      * samples are assumed to have been multiplied by the
      * alpha sample.
+     *
      * @return <code>true</code> if the alpha values are premultiplied
-     *          in the pixel values to be translated by this
-     *          <code>ColorModel</code>; <code>false</code> otherwise.
+     * in the pixel values to be translated by this
+     * <code>ColorModel</code>; <code>false</code> otherwise.
      */
     final public boolean isAlphaPremultiplied() {
         return isAlphaPremultiplied;
@@ -422,6 +431,7 @@ public abstract class ColorModel implements Transparency{
      * Returns the transfer type of this <code>ColorModel</code>.
      * The transfer type is the type of primitive array used to represent
      * pixel values as arrays.
+     *
      * @return the transfer type.
      * @since 1.3
      */
@@ -432,6 +442,7 @@ public abstract class ColorModel implements Transparency{
     /**
      * Returns the number of bits per pixel described by this
      * <code>ColorModel</code>.
+     *
      * @return the number of bits per pixel.
      */
     public int getPixelSize() {
@@ -447,14 +458,15 @@ public abstract class ColorModel implements Transparency{
      * to blue.  If this <code>ColorModel</code> supports alpha, the alpha
      * component corresponds to the index following the last color
      * component.
+     *
      * @param componentIdx the index of the color/alpha component
      * @return the number of bits for the color/alpha component at the
-     *          specified index.
+     * specified index.
      * @throws ArrayIndexOutOfBoundsException if <code>componentIdx</code>
-     *         is greater than the number of components or
-     *         less than zero
-     * @throws NullPointerException if the number of bits array is
-     *         <code>null</code>
+     *                                        is greater than the number of components or
+     *                                        less than zero
+     * @throws NullPointerException           if the number of bits array is
+     *                                        <code>null</code>
      */
     public int getComponentSize(int componentIdx) {
         // REMIND:
@@ -470,6 +482,7 @@ public abstract class ColorModel implements Transparency{
      * The array contains the color components in the order specified by the
      * <code>ColorSpace</code>, followed by the alpha component, if
      * present.
+     *
      * @return an array of the number of bits per color/alpha component
      */
     public int[] getComponentSize() {
@@ -483,6 +496,7 @@ public abstract class ColorModel implements Transparency{
     /**
      * Returns the transparency.  Returns either OPAQUE, BITMASK,
      * or TRANSLUCENT.
+     *
      * @return the transparency of this <code>ColorModel</code>.
      * @see Transparency#OPAQUE
      * @see Transparency#BITMASK
@@ -496,6 +510,7 @@ public abstract class ColorModel implements Transparency{
      * Returns the number of components, including alpha, in this
      * <code>ColorModel</code>.  This is equal to the number of color
      * components, optionally plus one, if there is an alpha component.
+     *
      * @return the number of components in this <code>ColorModel</code>
      */
     public int getNumComponents() {
@@ -507,6 +522,7 @@ public abstract class ColorModel implements Transparency{
      * <code>ColorModel</code>.
      * This is the number of components returned by
      * {@link ColorSpace#getNumComponents}.
+     *
      * @return the number of color components in this
      * <code>ColorModel</code>.
      * @see ColorSpace#getNumComponents
@@ -525,6 +541,7 @@ public abstract class ColorModel implements Transparency{
      * pre-multiplied value.  For example, if the
      * alpha is premultiplied, this method divides it out before returning
      * the value.  If the alpha value is 0, the red value is 0.
+     *
      * @param pixel a specified pixel
      * @return the value of the red component of the specified pixel.
      */
@@ -540,6 +557,7 @@ public abstract class ColorModel implements Transparency{
      * pre-multiplied value.  For example, if the alpha is premultiplied,
      * this method divides it out before returning
      * the value.  If the alpha value is 0, the green value is 0.
+     *
      * @param pixel the specified pixel
      * @return the value of the green component of the specified pixel.
      */
@@ -555,6 +573,7 @@ public abstract class ColorModel implements Transparency{
      * value, for example, if the alpha is premultiplied, this method
      * divides it out before returning the value.  If the alpha value is
      * 0, the blue value is 0.
+     *
      * @param pixel the specified pixel
      * @return the value of the blue component of the specified pixel.
      */
@@ -566,6 +585,7 @@ public abstract class ColorModel implements Transparency{
      * An <code>IllegalArgumentException</code> is thrown if pixel
      * values for this <code>ColorModel</code> are not conveniently
      * representable as a single int.
+     *
      * @param pixel the specified pixel
      * @return the value of alpha component of the specified pixel.
      */
@@ -581,16 +601,17 @@ public abstract class ColorModel implements Transparency{
      * pre-multiplied format. For example, if the alpha is premultiplied,
      * this method divides it out of the color components.  If the alpha
      * value is 0, the color values are 0.
+     *
      * @param pixel the specified pixel
      * @return the RGB value of the color/alpha components of the
-     *          specified pixel.
+     * specified pixel.
      * @see ColorModel#getRGBdefault
      */
     public int getRGB(int pixel) {
         return (getAlpha(pixel) << 24)
-            | (getRed(pixel) << 16)
-            | (getGreen(pixel) << 8)
-            | (getBlue(pixel) << 0);
+                | (getRed(pixel) << 16)
+                | (getGreen(pixel) << 8)
+                | (getBlue(pixel) << 0);
     }
 
     /**
@@ -618,45 +639,45 @@ public abstract class ColorModel implements Transparency{
      * <code>DataBuffer.TYPE_BYTE</code>,
      * <code>DataBuffer.TYPE_USHORT</code>, or
      * <code>DataBuffer.TYPE_INT</code>.
+     *
      * @param inData an array of pixel values
      * @return the value of the red component of the specified pixel.
-     * @throws ClassCastException if <code>inData</code>
-     *  is not a primitive array of type <code>transferType</code>
+     * @throws ClassCastException             if <code>inData</code>
+     *                                        is not a primitive array of type <code>transferType</code>
      * @throws ArrayIndexOutOfBoundsException if
-     *  <code>inData</code> is not large enough to hold a pixel value
-     *  for this <code>ColorModel</code>
-     * @throws UnsupportedOperationException if this
-     *  <code>tranferType</code> is not supported by this
-     *  <code>ColorModel</code>
+     *                                        <code>inData</code> is not large enough to hold a pixel value
+     *                                        for this <code>ColorModel</code>
+     * @throws UnsupportedOperationException  if this
+     *                                        <code>tranferType</code> is not supported by this
+     *                                        <code>ColorModel</code>
      */
     public int getRed(Object inData) {
-        int pixel=0,length=0;
+        int pixel = 0, length = 0;
         switch (transferType) {
             case DataBuffer.TYPE_BYTE:
-               byte bdata[] = (byte[])inData;
-               pixel = bdata[0] & 0xff;
-               length = bdata.length;
-            break;
+                byte bdata[] = (byte[]) inData;
+                pixel = bdata[0] & 0xff;
+                length = bdata.length;
+                break;
             case DataBuffer.TYPE_USHORT:
-               short sdata[] = (short[])inData;
-               pixel = sdata[0] & 0xffff;
-               length = sdata.length;
-            break;
+                short sdata[] = (short[]) inData;
+                pixel = sdata[0] & 0xffff;
+                length = sdata.length;
+                break;
             case DataBuffer.TYPE_INT:
-               int idata[] = (int[])inData;
-               pixel = idata[0];
-               length = idata.length;
-            break;
+                int idata[] = (int[]) inData;
+                pixel = idata[0];
+                length = idata.length;
+                break;
             default:
-               throw new UnsupportedOperationException("This method has not been "+
-                   "implemented for transferType " + transferType);
+                throw new UnsupportedOperationException("This method has not been " +
+                        "implemented for transferType " + transferType);
         }
         if (length == 1) {
             return getRed(pixel);
-        }
-        else {
+        } else {
             throw new UnsupportedOperationException
-                ("This method is not supported by this color model");
+                    ("This method is not supported by this color model");
         }
     }
 
@@ -685,45 +706,45 @@ public abstract class ColorModel implements Transparency{
      * <code>DataBuffer.TYPE_BYTE</code>,
      * <code>DataBuffer.TYPE_USHORT</code>, or
      * <code>DataBuffer.TYPE_INT</code>.
+     *
      * @param inData an array of pixel values
      * @return the value of the green component of the specified pixel.
-     * @throws <code>ClassCastException</code> if <code>inData</code>
-     *  is not a primitive array of type <code>transferType</code>
+     * @throws <code>ClassCastException</code>             if <code>inData</code>
+     *                                                     is not a primitive array of type <code>transferType</code>
      * @throws <code>ArrayIndexOutOfBoundsException</code> if
-     *  <code>inData</code> is not large enough to hold a pixel value
-     *  for this <code>ColorModel</code>
-     * @throws <code>UnsupportedOperationException</code> if this
-     *  <code>tranferType</code> is not supported by this
-     *  <code>ColorModel</code>
+     *                                                     <code>inData</code> is not large enough to hold a pixel value
+     *                                                     for this <code>ColorModel</code>
+     * @throws <code>UnsupportedOperationException</code>  if this
+     *                                                     <code>tranferType</code> is not supported by this
+     *                                                     <code>ColorModel</code>
      */
     public int getGreen(Object inData) {
-        int pixel=0,length=0;
+        int pixel = 0, length = 0;
         switch (transferType) {
             case DataBuffer.TYPE_BYTE:
-               byte bdata[] = (byte[])inData;
-               pixel = bdata[0] & 0xff;
-               length = bdata.length;
-            break;
+                byte bdata[] = (byte[]) inData;
+                pixel = bdata[0] & 0xff;
+                length = bdata.length;
+                break;
             case DataBuffer.TYPE_USHORT:
-               short sdata[] = (short[])inData;
-               pixel = sdata[0] & 0xffff;
-               length = sdata.length;
-            break;
+                short sdata[] = (short[]) inData;
+                pixel = sdata[0] & 0xffff;
+                length = sdata.length;
+                break;
             case DataBuffer.TYPE_INT:
-               int idata[] = (int[])inData;
-               pixel = idata[0];
-               length = idata.length;
-            break;
+                int idata[] = (int[]) inData;
+                pixel = idata[0];
+                length = idata.length;
+                break;
             default:
-               throw new UnsupportedOperationException("This method has not been "+
-                   "implemented for transferType " + transferType);
+                throw new UnsupportedOperationException("This method has not been " +
+                        "implemented for transferType " + transferType);
         }
         if (length == 1) {
             return getGreen(pixel);
-        }
-        else {
+        } else {
             throw new UnsupportedOperationException
-                ("This method is not supported by this color model");
+                    ("This method is not supported by this color model");
         }
     }
 
@@ -752,45 +773,45 @@ public abstract class ColorModel implements Transparency{
      * <code>DataBuffer.TYPE_BYTE</code>,
      * <code>DataBuffer.TYPE_USHORT</code>, or
      * <code>DataBuffer.TYPE_INT</code>.
+     *
      * @param inData an array of pixel values
      * @return the value of the blue component of the specified pixel.
-     * @throws ClassCastException if <code>inData</code>
-     *  is not a primitive array of type <code>transferType</code>
+     * @throws ClassCastException             if <code>inData</code>
+     *                                        is not a primitive array of type <code>transferType</code>
      * @throws ArrayIndexOutOfBoundsException if
-     *  <code>inData</code> is not large enough to hold a pixel value
-     *  for this <code>ColorModel</code>
-     * @throws UnsupportedOperationException if this
-     *  <code>tranferType</code> is not supported by this
-     *  <code>ColorModel</code>
+     *                                        <code>inData</code> is not large enough to hold a pixel value
+     *                                        for this <code>ColorModel</code>
+     * @throws UnsupportedOperationException  if this
+     *                                        <code>tranferType</code> is not supported by this
+     *                                        <code>ColorModel</code>
      */
     public int getBlue(Object inData) {
-        int pixel=0,length=0;
+        int pixel = 0, length = 0;
         switch (transferType) {
             case DataBuffer.TYPE_BYTE:
-               byte bdata[] = (byte[])inData;
-               pixel = bdata[0] & 0xff;
-               length = bdata.length;
-            break;
+                byte bdata[] = (byte[]) inData;
+                pixel = bdata[0] & 0xff;
+                length = bdata.length;
+                break;
             case DataBuffer.TYPE_USHORT:
-               short sdata[] = (short[])inData;
-               pixel = sdata[0] & 0xffff;
-               length = sdata.length;
-            break;
+                short sdata[] = (short[]) inData;
+                pixel = sdata[0] & 0xffff;
+                length = sdata.length;
+                break;
             case DataBuffer.TYPE_INT:
-               int idata[] = (int[])inData;
-               pixel = idata[0];
-               length = idata.length;
-            break;
+                int idata[] = (int[]) inData;
+                pixel = idata[0];
+                length = idata.length;
+                break;
             default:
-               throw new UnsupportedOperationException("This method has not been "+
-                   "implemented for transferType " + transferType);
+                throw new UnsupportedOperationException("This method has not been " +
+                        "implemented for transferType " + transferType);
         }
         if (length == 1) {
             return getBlue(pixel);
-        }
-        else {
+        } else {
             throw new UnsupportedOperationException
-                ("This method is not supported by this color model");
+                    ("This method is not supported by this color model");
         }
     }
 
@@ -814,46 +835,46 @@ public abstract class ColorModel implements Transparency{
      * <code>DataBuffer.TYPE_BYTE</code>,
      * <code>DataBuffer.TYPE_USHORT</code>, or
      * <code>DataBuffer.TYPE_INT</code>.
+     *
      * @param inData the specified pixel
      * @return the alpha component of the specified pixel, scaled from
      * 0 to 255.
-     * @throws ClassCastException if <code>inData</code>
-     *  is not a primitive array of type <code>transferType</code>
+     * @throws ClassCastException             if <code>inData</code>
+     *                                        is not a primitive array of type <code>transferType</code>
      * @throws ArrayIndexOutOfBoundsException if
-     *  <code>inData</code> is not large enough to hold a pixel value
-     *  for this <code>ColorModel</code>
-     * @throws UnsupportedOperationException if this
-     *  <code>tranferType</code> is not supported by this
-     *  <code>ColorModel</code>
+     *                                        <code>inData</code> is not large enough to hold a pixel value
+     *                                        for this <code>ColorModel</code>
+     * @throws UnsupportedOperationException  if this
+     *                                        <code>tranferType</code> is not supported by this
+     *                                        <code>ColorModel</code>
      */
     public int getAlpha(Object inData) {
-        int pixel=0,length=0;
+        int pixel = 0, length = 0;
         switch (transferType) {
             case DataBuffer.TYPE_BYTE:
-               byte bdata[] = (byte[])inData;
-               pixel = bdata[0] & 0xff;
-               length = bdata.length;
-            break;
+                byte bdata[] = (byte[]) inData;
+                pixel = bdata[0] & 0xff;
+                length = bdata.length;
+                break;
             case DataBuffer.TYPE_USHORT:
-               short sdata[] = (short[])inData;
-               pixel = sdata[0] & 0xffff;
-               length = sdata.length;
-            break;
+                short sdata[] = (short[]) inData;
+                pixel = sdata[0] & 0xffff;
+                length = sdata.length;
+                break;
             case DataBuffer.TYPE_INT:
-               int idata[] = (int[])inData;
-               pixel = idata[0];
-               length = idata.length;
-            break;
+                int idata[] = (int[]) inData;
+                pixel = idata[0];
+                length = idata.length;
+                break;
             default:
-               throw new UnsupportedOperationException("This method has not been "+
-                   "implemented for transferType " + transferType);
+                throw new UnsupportedOperationException("This method has not been " +
+                        "implemented for transferType " + transferType);
         }
         if (length == 1) {
             return getAlpha(pixel);
-        }
-        else {
+        } else {
             throw new UnsupportedOperationException
-                ("This method is not supported by this color model");
+                    ("This method is not supported by this color model");
         }
     }
 
@@ -870,15 +891,16 @@ public abstract class ColorModel implements Transparency{
      * The returned value will be in a non pre-multiplied format, i.e. if
      * the alpha is premultiplied, this method will divide it out of the
      * color components (if the alpha value is 0, the color values will be 0).
+     *
      * @param inData the specified pixel
      * @return the color and alpha components of the specified pixel.
      * @see ColorModel#getRGBdefault
      */
     public int getRGB(Object inData) {
         return (getAlpha(inData) << 24)
-            | (getRed(inData) << 16)
-            | (getGreen(inData) << 8)
-            | (getBlue(inData) << 0);
+                | (getRed(inData) << 16)
+                | (getGreen(inData) << 8)
+                | (getBlue(inData) << 0);
     }
 
     /**
@@ -903,24 +925,25 @@ public abstract class ColorModel implements Transparency{
      * any instance is an instance of a subclass.  Subclasses must
      * override this method since the implementation in this abstract
      * class throws an <code>UnsupportedOperationException</code>.
-     * @param rgb the integer pixel representation in the default RGB
-     * color model
+     *
+     * @param rgb   the integer pixel representation in the default RGB
+     *              color model
      * @param pixel the specified pixel
      * @return an array representation of the specified pixel in this
-     *  <code>ColorModel</code>.
-     * @throws ClassCastException if <code>pixel</code>
-     *  is not a primitive array of type <code>transferType</code>
+     * <code>ColorModel</code>.
+     * @throws ClassCastException             if <code>pixel</code>
+     *                                        is not a primitive array of type <code>transferType</code>
      * @throws ArrayIndexOutOfBoundsException if
-     *  <code>pixel</code> is not large enough to hold a pixel value
-     *  for this <code>ColorModel</code>
-     * @throws UnsupportedOperationException if this
-     *  method is not supported by this <code>ColorModel</code>
+     *                                        <code>pixel</code> is not large enough to hold a pixel value
+     *                                        for this <code>ColorModel</code>
+     * @throws UnsupportedOperationException  if this
+     *                                        method is not supported by this <code>ColorModel</code>
      * @see WritableRaster#setDataElements
      * @see SampleModel#setDataElements
      */
     public Object getDataElements(int rgb, Object pixel) {
         throw new UnsupportedOperationException
-            ("This method is not supported by this color model.");
+                ("This method is not supported by this color model.");
     }
 
     /**
@@ -945,19 +968,20 @@ public abstract class ColorModel implements Transparency{
      * any instance is an instance of a subclass.  Subclasses must
      * override this method since the implementation in this abstract
      * class throws an <code>UnsupportedOperationException</code>.
-     * @param pixel the specified pixel
+     *
+     * @param pixel      the specified pixel
      * @param components the array to receive the color and alpha
-     * components of the specified pixel
-     * @param offset the offset into the <code>components</code> array at
-     * which to start storing the color and alpha components
+     *                   components of the specified pixel
+     * @param offset     the offset into the <code>components</code> array at
+     *                   which to start storing the color and alpha components
      * @return an array containing the color and alpha components of the
      * specified pixel starting at the specified offset.
      * @throws UnsupportedOperationException if this
-     *          method is not supported by this <code>ColorModel</code>
+     *                                       method is not supported by this <code>ColorModel</code>
      */
     public int[] getComponents(int pixel, int[] components, int offset) {
         throw new UnsupportedOperationException
-            ("This method is not supported by this color model.");
+                ("This method is not supported by this color model.");
     }
 
     /**
@@ -986,20 +1010,21 @@ public abstract class ColorModel implements Transparency{
      * any instance is an instance of a subclass.  Subclasses must
      * override this method since the implementation in this abstract
      * class throws an <code>UnsupportedOperationException</code>.
-     * @param pixel the specified pixel
+     *
+     * @param pixel      the specified pixel
      * @param components an array that receives the color and alpha
-     * components of the specified pixel
-     * @param offset the index into the <code>components</code> array at
-     * which to begin storing the color and alpha components of the
-     * specified pixel
+     *                   components of the specified pixel
+     * @param offset     the index into the <code>components</code> array at
+     *                   which to begin storing the color and alpha components of the
+     *                   specified pixel
      * @return an array containing the color and alpha components of the
      * specified pixel starting at the specified offset.
      * @throws UnsupportedOperationException if this
-     *          method is not supported by this <code>ColorModel</code>
+     *                                       method is not supported by this <code>ColorModel</code>
      */
     public int[] getComponents(Object pixel, int[] components, int offset) {
         throw new UnsupportedOperationException
-            ("This method is not supported by this color model.");
+                ("This method is not supported by this color model.");
     }
 
     /**
@@ -1026,27 +1051,28 @@ public abstract class ColorModel implements Transparency{
      * <code>normComponents</code> array is not large enough to hold
      * all the color and alpha components starting at
      * <code>normOffset</code>.
+     *
      * @param normComponents an array containing normalized components
-     * @param normOffset the offset into the <code>normComponents</code>
-     * array at which to start retrieving normalized components
-     * @param components an array that receives the components from
-     * <code>normComponents</code>
-     * @param offset the index into <code>components</code> at which to
-     * begin storing normalized components from
-     * <code>normComponents</code>
+     * @param normOffset     the offset into the <code>normComponents</code>
+     *                       array at which to start retrieving normalized components
+     * @param components     an array that receives the components from
+     *                       <code>normComponents</code>
+     * @param offset         the index into <code>components</code> at which to
+     *                       begin storing normalized components from
+     *                       <code>normComponents</code>
      * @return an array containing unnormalized color and alpha
      * components.
-     * @throws IllegalArgumentException If the component values for this
-     * <CODE>ColorModel</CODE> are not conveniently representable in the
-     * unnormalized form.
-     * @throws IllegalArgumentException if the length of
-     *          <code>normComponents</code> minus <code>normOffset</code>
-     *          is less than <code>numComponents</code>
+     * @throws IllegalArgumentException      If the component values for this
+     *                                       <CODE>ColorModel</CODE> are not conveniently representable in the
+     *                                       unnormalized form.
+     * @throws IllegalArgumentException      if the length of
+     *                                       <code>normComponents</code> minus <code>normOffset</code>
+     *                                       is less than <code>numComponents</code>
      * @throws UnsupportedOperationException if the
-     *          constructor of this <code>ColorModel</code> called the
-     *          <code>super(bits)</code> constructor, but did not
-     *          override this method.  See the constructor,
-     *          {@link #ColorModel(int)}.
+     *                                       constructor of this <code>ColorModel</code> called the
+     *                                       <code>super(bits)</code> constructor, but did not
+     *                                       override this method.  See the constructor,
+     *                                       {@link #ColorModel(int)}.
      */
     public int[] getUnnormalizedComponents(float[] normComponents,
                                            int normOffset,
@@ -1054,40 +1080,39 @@ public abstract class ColorModel implements Transparency{
         // Make sure that someone isn't using a custom color model
         // that called the super(bits) constructor.
         if (colorSpace == null) {
-            throw new UnsupportedOperationException("This method is not supported "+
-                                        "by this color model.");
+            throw new UnsupportedOperationException("This method is not supported " +
+                    "by this color model.");
         }
 
         if (nBits == null) {
-            throw new UnsupportedOperationException ("This method is not supported.  "+
-                                         "Unable to determine #bits per "+
-                                         "component.");
+            throw new UnsupportedOperationException("This method is not supported.  " +
+                    "Unable to determine #bits per " +
+                    "component.");
         }
         if ((normComponents.length - normOffset) < numComponents) {
             throw new
-                IllegalArgumentException(
-                        "Incorrect number of components.  Expecting "+
-                        numComponents);
+                    IllegalArgumentException(
+                    "Incorrect number of components.  Expecting " +
+                            numComponents);
         }
 
         if (components == null) {
-            components = new int[offset+numComponents];
+            components = new int[offset + numComponents];
         }
 
         if (supportsAlpha && isAlphaPremultiplied) {
-            float normAlpha = normComponents[normOffset+numColorComponents];
-            for (int i=0; i < numColorComponents; i++) {
-                components[offset+i] = (int) (normComponents[normOffset+i]
-                                              * ((1<<nBits[i]) - 1)
-                                              * normAlpha + 0.5f);
+            float normAlpha = normComponents[normOffset + numColorComponents];
+            for (int i = 0; i < numColorComponents; i++) {
+                components[offset + i] = (int) (normComponents[normOffset + i]
+                        * ((1 << nBits[i]) - 1)
+                        * normAlpha + 0.5f);
             }
-            components[offset+numColorComponents] = (int)
-                (normAlpha * ((1<<nBits[numColorComponents]) - 1) + 0.5f);
-        }
-        else {
-            for (int i=0; i < numComponents; i++) {
-                components[offset+i] = (int) (normComponents[normOffset+i]
-                                              * ((1<<nBits[i]) - 1) + 0.5f);
+            components[offset + numColorComponents] = (int)
+                    (normAlpha * ((1 << nBits[numColorComponents]) - 1) + 0.5f);
+        } else {
+            for (int i = 0; i < numComponents; i++) {
+                components[offset + i] = (int) (normComponents[normOffset + i]
+                        * ((1 << nBits[i]) - 1) + 0.5f);
             }
         }
 
@@ -1125,24 +1150,25 @@ public abstract class ColorModel implements Transparency{
      * form.  Therefore, subclasses which may
      * have instances which do not support the unnormalized form must
      * override this method.
-     * @param components an array containing unnormalized components
-     * @param offset the offset into the <code>components</code> array at
-     * which to start retrieving unnormalized components
+     *
+     * @param components     an array containing unnormalized components
+     * @param offset         the offset into the <code>components</code> array at
+     *                       which to start retrieving unnormalized components
      * @param normComponents an array that receives the normalized components
-     * @param normOffset the index into <code>normComponents</code> at
-     * which to begin storing normalized components
+     * @param normOffset     the index into <code>normComponents</code> at
+     *                       which to begin storing normalized components
      * @return an array containing normalized color and alpha
      * components.
-     * @throws IllegalArgumentException If the component values for this
-     * <CODE>ColorModel</CODE> are not conveniently representable in the
-     * unnormalized form.
+     * @throws IllegalArgumentException      If the component values for this
+     *                                       <CODE>ColorModel</CODE> are not conveniently representable in the
+     *                                       unnormalized form.
      * @throws UnsupportedOperationException if the
-     *          constructor of this <code>ColorModel</code> called the
-     *          <code>super(bits)</code> constructor, but did not
-     *          override this method.  See the constructor,
-     *          {@link #ColorModel(int)}.
+     *                                       constructor of this <code>ColorModel</code> called the
+     *                                       <code>super(bits)</code> constructor, but did not
+     *                                       override this method.  See the constructor,
+     *                                       {@link #ColorModel(int)}.
      * @throws UnsupportedOperationException if this method is unable
-     *          to determine the number of bits per component
+     *                                       to determine the number of bits per component
      */
     public float[] getNormalizedComponents(int[] components, int offset,
                                            float[] normComponents,
@@ -1150,47 +1176,46 @@ public abstract class ColorModel implements Transparency{
         // Make sure that someone isn't using a custom color model
         // that called the super(bits) constructor.
         if (colorSpace == null) {
-            throw new UnsupportedOperationException("This method is not supported by "+
-                                        "this color model.");
+            throw new UnsupportedOperationException("This method is not supported by " +
+                    "this color model.");
         }
         if (nBits == null) {
-            throw new UnsupportedOperationException ("This method is not supported.  "+
-                                         "Unable to determine #bits per "+
-                                         "component.");
+            throw new UnsupportedOperationException("This method is not supported.  " +
+                    "Unable to determine #bits per " +
+                    "component.");
         }
 
         if ((components.length - offset) < numComponents) {
             throw new
-                IllegalArgumentException(
-                        "Incorrect number of components.  Expecting "+
-                        numComponents);
+                    IllegalArgumentException(
+                    "Incorrect number of components.  Expecting " +
+                            numComponents);
         }
 
         if (normComponents == null) {
-            normComponents = new float[numComponents+normOffset];
+            normComponents = new float[numComponents + normOffset];
         }
 
         if (supportsAlpha && isAlphaPremultiplied) {
             // Normalized coordinates are non premultiplied
-            float normAlpha = (float)components[offset+numColorComponents];
-            normAlpha /= (float) ((1<<nBits[numColorComponents]) - 1);
+            float normAlpha = (float) components[offset + numColorComponents];
+            normAlpha /= (float) ((1 << nBits[numColorComponents]) - 1);
             if (normAlpha != 0.0f) {
-                for (int i=0; i < numColorComponents; i++) {
-                    normComponents[normOffset+i] =
-                        ((float) components[offset+i]) /
-                        (normAlpha * ((float) ((1<<nBits[i]) - 1)));
+                for (int i = 0; i < numColorComponents; i++) {
+                    normComponents[normOffset + i] =
+                            ((float) components[offset + i]) /
+                                    (normAlpha * ((float) ((1 << nBits[i]) - 1)));
                 }
             } else {
-                for (int i=0; i < numColorComponents; i++) {
-                    normComponents[normOffset+i] = 0.0f;
+                for (int i = 0; i < numColorComponents; i++) {
+                    normComponents[normOffset + i] = 0.0f;
                 }
             }
-            normComponents[normOffset+numColorComponents] = normAlpha;
-        }
-        else {
-            for (int i=0; i < numComponents; i++) {
-                normComponents[normOffset+i] = ((float) components[offset+i]) /
-                                               ((float) ((1<<nBits[i]) - 1));
+            normComponents[normOffset + numColorComponents] = normAlpha;
+        } else {
+            for (int i = 0; i < numComponents; i++) {
+                normComponents[normOffset + i] = ((float) components[offset + i]) /
+                        ((float) ((1 << nBits[i]) - 1));
             }
         }
 
@@ -1213,28 +1238,29 @@ public abstract class ColorModel implements Transparency{
      * any instance is an instance of a subclass.  Subclasses must
      * override this method since the implementation in this abstract
      * class throws an <code>UnsupportedOperationException</code>.
+     *
      * @param components an array of unnormalized color and alpha
-     * components
-     * @param offset the index into <code>components</code> at which to
-     * begin retrieving the color and alpha components
+     *                   components
+     * @param offset     the index into <code>components</code> at which to
+     *                   begin retrieving the color and alpha components
      * @return an <code>int</code> pixel value in this
      * <code>ColorModel</code> corresponding to the specified components.
-     * @throws IllegalArgumentException if
-     *  pixel values for this <code>ColorModel</code> are not
-     *  conveniently representable as a single <code>int</code>
-     * @throws IllegalArgumentException if
-     *  component values for this <code>ColorModel</code> are not
-     *  conveniently representable in the unnormalized form
+     * @throws IllegalArgumentException       if
+     *                                        pixel values for this <code>ColorModel</code> are not
+     *                                        conveniently representable as a single <code>int</code>
+     * @throws IllegalArgumentException       if
+     *                                        component values for this <code>ColorModel</code> are not
+     *                                        conveniently representable in the unnormalized form
      * @throws ArrayIndexOutOfBoundsException if
-     *  the <code>components</code> array is not large enough to
-     *  hold all of the color and alpha components starting at
-     *  <code>offset</code>
-     * @throws UnsupportedOperationException if this
-     *  method is not supported by this <code>ColorModel</code>
+     *                                        the <code>components</code> array is not large enough to
+     *                                        hold all of the color and alpha components starting at
+     *                                        <code>offset</code>
+     * @throws UnsupportedOperationException  if this
+     *                                        method is not supported by this <code>ColorModel</code>
      */
     public int getDataElement(int[] components, int offset) {
-        throw new UnsupportedOperationException("This method is not supported "+
-                                    "by this color model.");
+        throw new UnsupportedOperationException("This method is not supported " +
+                "by this color model.");
     }
 
     /**
@@ -1260,32 +1286,33 @@ public abstract class ColorModel implements Transparency{
      * any instance is an instance of a subclass.  Subclasses must
      * override this method since the implementation in this abstract
      * class throws an <code>UnsupportedOperationException</code>.
+     *
      * @param components an array of unnormalized color and alpha
-     * components
-     * @param offset the index into <code>components</code> at which to
-     * begin retrieving color and alpha components
-     * @param obj the <code>Object</code> representing an array of color
-     * and alpha components
+     *                   components
+     * @param offset     the index into <code>components</code> at which to
+     *                   begin retrieving color and alpha components
+     * @param obj        the <code>Object</code> representing an array of color
+     *                   and alpha components
      * @return an <code>Object</code> representing an array of color and
      * alpha components.
-     * @throws ClassCastException if <code>obj</code>
-     *  is not a primitive array of type <code>transferType</code>
+     * @throws ClassCastException             if <code>obj</code>
+     *                                        is not a primitive array of type <code>transferType</code>
      * @throws ArrayIndexOutOfBoundsException if
-     *  <code>obj</code> is not large enough to hold a pixel value
-     *  for this <code>ColorModel</code> or the <code>components</code>
-     *  array is not large enough to hold all of the color and alpha
-     *  components starting at <code>offset</code>
-     * @throws IllegalArgumentException if
-     *  component values for this <code>ColorModel</code> are not
-     *  conveniently representable in the unnormalized form
-     * @throws UnsupportedOperationException if this
-     *  method is not supported by this <code>ColorModel</code>
+     *                                        <code>obj</code> is not large enough to hold a pixel value
+     *                                        for this <code>ColorModel</code> or the <code>components</code>
+     *                                        array is not large enough to hold all of the color and alpha
+     *                                        components starting at <code>offset</code>
+     * @throws IllegalArgumentException       if
+     *                                        component values for this <code>ColorModel</code> are not
+     *                                        conveniently representable in the unnormalized form
+     * @throws UnsupportedOperationException  if this
+     *                                        method is not supported by this <code>ColorModel</code>
      * @see WritableRaster#setDataElements
      * @see SampleModel#setDataElements
      */
     public Object getDataElements(int[] components, int offset, Object obj) {
-        throw new UnsupportedOperationException("This method has not been implemented "+
-                                    "for this color model.");
+        throw new UnsupportedOperationException("This method has not been implemented " +
+                "for this color model.");
     }
 
     /**
@@ -1305,24 +1332,25 @@ public abstract class ColorModel implements Transparency{
      * <code>getDataElement(int[], int)</code>.  Subclasses which may
      * have instances which do not support the unnormalized form must
      * override this method.
+     *
      * @param normComponents an array of normalized color and alpha
-     * components
-     * @param normOffset the index into <code>normComponents</code> at which to
-     * begin retrieving the color and alpha components
+     *                       components
+     * @param normOffset     the index into <code>normComponents</code> at which to
+     *                       begin retrieving the color and alpha components
      * @return an <code>int</code> pixel value in this
      * <code>ColorModel</code> corresponding to the specified components.
-     * @throws IllegalArgumentException if
-     *  pixel values for this <code>ColorModel</code> are not
-     *  conveniently representable as a single <code>int</code>
+     * @throws IllegalArgumentException       if
+     *                                        pixel values for this <code>ColorModel</code> are not
+     *                                        conveniently representable as a single <code>int</code>
      * @throws ArrayIndexOutOfBoundsException if
-     *  the <code>normComponents</code> array is not large enough to
-     *  hold all of the color and alpha components starting at
-     *  <code>normOffset</code>
+     *                                        the <code>normComponents</code> array is not large enough to
+     *                                        hold all of the color and alpha components starting at
+     *                                        <code>normOffset</code>
      * @since 1.4
      */
     public int getDataElement(float[] normComponents, int normOffset) {
         int components[] = getUnnormalizedComponents(normComponents,
-                                                     normOffset, null, 0);
+                normOffset, null, 0);
         return getDataElement(components, 0);
     }
 
@@ -1349,20 +1377,21 @@ public abstract class ColorModel implements Transparency{
      * <code>getDataElement(int[], int, Object)</code>.  Subclasses which may
      * have instances which do not support the unnormalized form must
      * override this method.
+     *
      * @param normComponents an array of normalized color and alpha
-     * components
-     * @param normOffset the index into <code>normComponents</code> at which to
-     * begin retrieving color and alpha components
-     * @param obj a primitive data array to hold the returned pixel
+     *                       components
+     * @param normOffset     the index into <code>normComponents</code> at which to
+     *                       begin retrieving color and alpha components
+     * @param obj            a primitive data array to hold the returned pixel
      * @return an <code>Object</code> which is a primitive data array
      * representation of a pixel
-     * @throws ClassCastException if <code>obj</code>
-     *  is not a primitive array of type <code>transferType</code>
+     * @throws ClassCastException             if <code>obj</code>
+     *                                        is not a primitive array of type <code>transferType</code>
      * @throws ArrayIndexOutOfBoundsException if
-     *  <code>obj</code> is not large enough to hold a pixel value
-     *  for this <code>ColorModel</code> or the <code>normComponents</code>
-     *  array is not large enough to hold all of the color and alpha
-     *  components starting at <code>normOffset</code>
+     *                                        <code>obj</code> is not large enough to hold a pixel value
+     *                                        for this <code>ColorModel</code> or the <code>normComponents</code>
+     *                                        array is not large enough to hold all of the color and alpha
+     *                                        components starting at <code>normOffset</code>
      * @see WritableRaster#setDataElements
      * @see SampleModel#setDataElements
      * @since 1.4
@@ -1370,7 +1399,7 @@ public abstract class ColorModel implements Transparency{
     public Object getDataElements(float[] normComponents, int normOffset,
                                   Object obj) {
         int components[] = getUnnormalizedComponents(normComponents,
-                                                     normOffset, null, 0);
+                normOffset, null, 0);
         return getDataElements(components, 0, obj);
     }
 
@@ -1404,27 +1433,28 @@ public abstract class ColorModel implements Transparency{
      * Subclasses which may
      * have instances which do not support the unnormalized form must
      * override this method.
-     * @param pixel the specified pixel
+     *
+     * @param pixel          the specified pixel
      * @param normComponents an array to receive the normalized components
-     * @param normOffset the offset into the <code>normComponents</code>
-     * array at which to start storing normalized components
+     * @param normOffset     the offset into the <code>normComponents</code>
+     *                       array at which to start storing normalized components
      * @return an array containing normalized color and alpha
      * components.
-     * @throws ClassCastException if <code>pixel</code> is not a primitive
-     *          array of type transferType
+     * @throws ClassCastException             if <code>pixel</code> is not a primitive
+     *                                        array of type transferType
      * @throws ArrayIndexOutOfBoundsException if
-     *          <code>normComponents</code> is not large enough to hold all
-     *          color and alpha components starting at <code>normOffset</code>
+     *                                        <code>normComponents</code> is not large enough to hold all
+     *                                        color and alpha components starting at <code>normOffset</code>
      * @throws ArrayIndexOutOfBoundsException if
-     *          <code>pixel</code> is not large enough to hold a pixel
-     *          value for this <code>ColorModel</code>.
-     * @throws UnsupportedOperationException if the
-     *          constructor of this <code>ColorModel</code> called the
-     *          <code>super(bits)</code> constructor, but did not
-     *          override this method.  See the constructor,
-     *          {@link #ColorModel(int)}.
-     * @throws UnsupportedOperationException if this method is unable
-     *          to determine the number of bits per component
+     *                                        <code>pixel</code> is not large enough to hold a pixel
+     *                                        value for this <code>ColorModel</code>.
+     * @throws UnsupportedOperationException  if the
+     *                                        constructor of this <code>ColorModel</code> called the
+     *                                        <code>super(bits)</code> constructor, but did not
+     *                                        override this method.  See the constructor,
+     *                                        {@link #ColorModel(int)}.
+     * @throws UnsupportedOperationException  if this method is unable
+     *                                        to determine the number of bits per component
      * @since 1.4
      */
     public float[] getNormalizedComponents(Object pixel,
@@ -1432,13 +1462,14 @@ public abstract class ColorModel implements Transparency{
                                            int normOffset) {
         int components[] = getComponents(pixel, null, 0);
         return getNormalizedComponents(components, 0,
-                                       normComponents, normOffset);
+                normComponents, normOffset);
     }
 
     /**
      * Tests if the specified <code>Object</code> is an instance of
      * <code>ColorModel</code> and if it equals this
      * <code>ColorModel</code>.
+     *
      * @param obj the <code>Object</code> to test for equality
      * @return <code>true</code> if the specified <code>Object</code>
      * is an instance of <code>ColorModel</code> and equals this
@@ -1454,11 +1485,10 @@ public abstract class ColorModel implements Transparency{
             return true;
         }
         if (supportsAlpha != cm.hasAlpha() ||
-            isAlphaPremultiplied != cm.isAlphaPremultiplied() ||
-            pixel_bits != cm.getPixelSize() ||
-            transparency != cm.getTransparency() ||
-            numComponents != cm.getNumComponents())
-        {
+                isAlphaPremultiplied != cm.isAlphaPremultiplied() ||
+                pixel_bits != cm.getPixelSize() ||
+                transparency != cm.getTransparency() ||
+                numComponents != cm.getNumComponents()) {
             return false;
         }
 
@@ -1480,17 +1510,17 @@ public abstract class ColorModel implements Transparency{
     /**
      * Returns the hash code for this ColorModel.
      *
-     * @return    a hash code for this ColorModel.
+     * @return a hash code for this ColorModel.
      */
     public int hashCode() {
 
         int result = 0;
 
         result = (supportsAlpha ? 2 : 3) +
-                 (isAlphaPremultiplied ? 4 : 5) +
-                 pixel_bits * 6 +
-                 transparency * 7 +
-                 numComponents * 8;
+                (isAlphaPremultiplied ? 4 : 5) +
+                pixel_bits * 6 +
+                transparency * 7 +
+                numComponents * 8;
 
         if (nBits != null) {
             for (int i = 0; i < numComponents; i++) {
@@ -1504,6 +1534,7 @@ public abstract class ColorModel implements Transparency{
     /**
      * Returns the <code>ColorSpace</code> associated with this
      * <code>ColorModel</code>.
+     *
      * @return the <code>ColorSpace</code> of this
      * <code>ColorModel</code>.
      */
@@ -1526,36 +1557,38 @@ public abstract class ColorModel implements Transparency{
      * any instance is an instance of a subclass.  Subclasses must
      * override this method since the implementation in this abstract
      * class throws an <code>UnsupportedOperationException</code>.
-     * @param raster the <code>WritableRaster</code> data
+     *
+     * @param raster               the <code>WritableRaster</code> data
      * @param isAlphaPremultiplied <code>true</code> if the alpha is
-     * premultiplied; <code>false</code> otherwise
+     *                             premultiplied; <code>false</code> otherwise
      * @return a <code>ColorModel</code> object that represents the
      * coerced data.
      */
-    public ColorModel coerceData (WritableRaster raster,
-                                  boolean isAlphaPremultiplied) {
+    public ColorModel coerceData(WritableRaster raster,
+                                 boolean isAlphaPremultiplied) {
         throw new UnsupportedOperationException
-            ("This method is not supported by this color model");
+                ("This method is not supported by this color model");
     }
 
     /**
-      * Returns <code>true</code> if <code>raster</code> is compatible
-      * with this <code>ColorModel</code> and <code>false</code> if it is
-      * not.
-      * Since <code>ColorModel</code> is an abstract class,
-      * any instance is an instance of a subclass.  Subclasses must
-      * override this method since the implementation in this abstract
-      * class throws an <code>UnsupportedOperationException</code>.
-      * @param raster the {@link Raster} object to test for compatibility
-      * @return <code>true</code> if <code>raster</code> is compatible
-      * with this <code>ColorModel</code>.
-      * @throws UnsupportedOperationException if this
-      *         method has not been implemented for this
-      *         <code>ColorModel</code>
-      */
+     * Returns <code>true</code> if <code>raster</code> is compatible
+     * with this <code>ColorModel</code> and <code>false</code> if it is
+     * not.
+     * Since <code>ColorModel</code> is an abstract class,
+     * any instance is an instance of a subclass.  Subclasses must
+     * override this method since the implementation in this abstract
+     * class throws an <code>UnsupportedOperationException</code>.
+     *
+     * @param raster the {@link Raster} object to test for compatibility
+     * @return <code>true</code> if <code>raster</code> is compatible
+     * with this <code>ColorModel</code>.
+     * @throws UnsupportedOperationException if this
+     *                                       method has not been implemented for this
+     *                                       <code>ColorModel</code>
+     */
     public boolean isCompatibleRaster(Raster raster) {
         throw new UnsupportedOperationException(
-            "This method has not been implemented for this ColorModel.");
+                "This method has not been implemented for this ColorModel.");
     }
 
     /**
@@ -1566,18 +1599,19 @@ public abstract class ColorModel implements Transparency{
      * any instance is an instance of a subclass.  Subclasses must
      * override this method since the implementation in this abstract
      * class throws an <code>UnsupportedOperationException</code>.
+     *
      * @param w the width to apply to the new <code>WritableRaster</code>
      * @param h the height to apply to the new <code>WritableRaster</code>
      * @return a <code>WritableRaster</code> object with the specified
      * width and height.
      * @throws UnsupportedOperationException if this
-     *          method is not supported by this <code>ColorModel</code>
+     *                                       method is not supported by this <code>ColorModel</code>
      * @see WritableRaster
      * @see SampleModel
      */
     public WritableRaster createCompatibleWritableRaster(int w, int h) {
         throw new UnsupportedOperationException
-            ("This method is not supported by this color model");
+                ("This method is not supported by this color model");
     }
 
     /**
@@ -1588,36 +1622,39 @@ public abstract class ColorModel implements Transparency{
      * any instance is an instance of a subclass.  Subclasses must
      * override this method since the implementation in this abstract
      * class throws an <code>UnsupportedOperationException</code>.
+     *
      * @param w the width to apply to the new <code>SampleModel</code>
      * @param h the height to apply to the new <code>SampleModel</code>
      * @return a <code>SampleModel</code> object with the specified
      * width and height.
      * @throws UnsupportedOperationException if this
-     *          method is not supported by this <code>ColorModel</code>
+     *                                       method is not supported by this <code>ColorModel</code>
      * @see SampleModel
      */
     public SampleModel createCompatibleSampleModel(int w, int h) {
         throw new UnsupportedOperationException
-            ("This method is not supported by this color model");
+                ("This method is not supported by this color model");
     }
 
-    /** Checks if the <code>SampleModel</code> is compatible with this
+    /**
+     * Checks if the <code>SampleModel</code> is compatible with this
      * <code>ColorModel</code>.
      * Since <code>ColorModel</code> is an abstract class,
      * any instance is an instance of a subclass.  Subclasses must
      * override this method since the implementation in this abstract
      * class throws an <code>UnsupportedOperationException</code>.
+     *
      * @param sm the specified <code>SampleModel</code>
      * @return <code>true</code> if the specified <code>SampleModel</code>
      * is compatible with this <code>ColorModel</code>; <code>false</code>
      * otherwise.
      * @throws UnsupportedOperationException if this
-     *          method is not supported by this <code>ColorModel</code>
+     *                                       method is not supported by this <code>ColorModel</code>
      * @see SampleModel
      */
     public boolean isCompatibleSampleModel(SampleModel sm) {
         throw new UnsupportedOperationException
-            ("This method is not supported by this color model");
+                ("This method is not supported by this color model");
     }
 
     /**
@@ -1650,6 +1687,7 @@ public abstract class ColorModel implements Transparency{
      * method to get any behavior other than returning <code>null</code>
      * because the implementation in this abstract class returns
      * <code>null</code>.
+     *
      * @param raster the specified <code>Raster</code>
      * @return a <code>Raster</code> representing the alpha channel of
      * an image, obtained from the specified <code>Raster</code>.
@@ -1661,17 +1699,18 @@ public abstract class ColorModel implements Transparency{
     /**
      * Returns the <code>String</code> representation of the contents of
      * this <code>ColorModel</code>object.
+     *
      * @return a <code>String</code> representing the contents of this
      * <code>ColorModel</code> object.
      */
     public String toString() {
-       return new String("ColorModel: #pixelBits = "+pixel_bits
-                         + " numComponents = "+numComponents
-                         + " color space = "+colorSpace
-                         + " transparency = "+transparency
-                         + " has alpha = "+supportsAlpha
-                         + " isAlphaPre = "+isAlphaPremultiplied
-                         );
+        return new String("ColorModel: #pixelBits = " + pixel_bits
+                + " numComponents = " + numComponents
+                + " color space = " + colorSpace
+                + " transparency = " + transparency
+                + " has alpha = " + supportsAlpha
+                + " isAlphaPre = " + isAlphaPremultiplied
+        );
     }
 
     static int getDefaultTransferType(int pixel_bits) {
@@ -1691,7 +1730,7 @@ public abstract class ColorModel implements Transparency{
     static byte[] l16Tos8 = null;  // 16-bit linear to 8-bit non-linear sRGB LUT
     static short[] s8Tol16 = null; // 8-bit non-linear sRGB to 16-bit linear LUT
 
-                                // Maps to hold LUTs for grayscale conversions
+    // Maps to hold LUTs for grayscale conversions
     static Map g8Tos8Map = null;     // 8-bit gray values to 8-bit sRGB values
     static Map lg16Toog8Map = null;  // 16-bit linear to 8-bit "other" gray
     static Map g16Tos8Map = null;    // 16-bit gray values to 8-bit sRGB values
@@ -1724,7 +1763,7 @@ public abstract class ColorModel implements Transparency{
                     output = input * 12.92f;
                 } else {
                     output = 1.055f * ((float) Math.pow(input, (1.0 / 2.4)))
-                             - 0.055f;
+                            - 0.055f;
                 }
                 l8Tos8[i] = (byte) Math.round(output * 255.0f);
             }
@@ -1761,7 +1800,7 @@ public abstract class ColorModel implements Transparency{
                     output = input * 12.92f;
                 } else {
                     output = 1.055f * ((float) Math.pow(input, (1.0 / 2.4)))
-                             - 0.055f;
+                            - 0.055f;
                 }
                 l16Tos8[i] = (byte) Math.round(output * 255.0f);
             }
@@ -1799,7 +1838,7 @@ public abstract class ColorModel implements Transparency{
             return getLinearRGB8TosRGB8LUT();
         }
         if (g8Tos8Map != null) {
-            byte[] g8Tos8LUT = (byte []) g8Tos8Map.get(grayCS);
+            byte[] g8Tos8LUT = (byte[]) g8Tos8Map.get(grayCS);
             if (g8Tos8LUT != null) {
                 return g8Tos8LUT;
             }
@@ -1811,14 +1850,14 @@ public abstract class ColorModel implements Transparency{
         ColorTransform[] transformList = new ColorTransform[2];
         PCMM mdl = CMSManager.getModule();
         ICC_ColorSpace srgbCS =
-            (ICC_ColorSpace) ColorSpace.getInstance(ColorSpace.CS_sRGB);
+                (ICC_ColorSpace) ColorSpace.getInstance(ColorSpace.CS_sRGB);
         transformList[0] = mdl.createTransform(
-            grayCS.getProfile(), ColorTransform.Any, ColorTransform.In);
+                grayCS.getProfile(), ColorTransform.Any, ColorTransform.In);
         transformList[1] = mdl.createTransform(
-            srgbCS.getProfile(), ColorTransform.Any, ColorTransform.Out);
+                srgbCS.getProfile(), ColorTransform.Any, ColorTransform.Out);
         ColorTransform t = mdl.createTransform(transformList);
         byte[] tmp = t.colorConvert(g8Tos8LUT, null);
-        for (int i = 0, j= 2; i <= 255; i++, j += 3) {
+        for (int i = 0, j = 2; i <= 255; i++, j += 3) {
             // All three components of tmp should be equal, since
             // the input color space to colorConvert is a gray scale
             // space.  However, there are slight anomalies in the results.
@@ -1840,7 +1879,7 @@ public abstract class ColorModel implements Transparency{
      */
     static byte[] getLinearGray16ToOtherGray8LUT(ICC_ColorSpace grayCS) {
         if (lg16Toog8Map != null) {
-            byte[] lg16Toog8LUT = (byte []) lg16Toog8Map.get(grayCS);
+            byte[] lg16Toog8LUT = (byte[]) lg16Toog8Map.get(grayCS);
             if (lg16Toog8LUT != null) {
                 return lg16Toog8LUT;
             }
@@ -1852,18 +1891,18 @@ public abstract class ColorModel implements Transparency{
         ColorTransform[] transformList = new ColorTransform[2];
         PCMM mdl = CMSManager.getModule();
         ICC_ColorSpace lgCS =
-            (ICC_ColorSpace) ColorSpace.getInstance(ColorSpace.CS_GRAY);
-        transformList[0] = mdl.createTransform (
-            lgCS.getProfile(), ColorTransform.Any, ColorTransform.In);
-        transformList[1] = mdl.createTransform (
-            grayCS.getProfile(), ColorTransform.Any, ColorTransform.Out);
+                (ICC_ColorSpace) ColorSpace.getInstance(ColorSpace.CS_GRAY);
+        transformList[0] = mdl.createTransform(
+                lgCS.getProfile(), ColorTransform.Any, ColorTransform.In);
+        transformList[1] = mdl.createTransform(
+                grayCS.getProfile(), ColorTransform.Any, ColorTransform.Out);
         ColorTransform t = mdl.createTransform(transformList);
         tmp = t.colorConvert(tmp, null);
         byte[] lg16Toog8LUT = new byte[65536];
         for (int i = 0; i <= 65535; i++) {
             // scale unsigned short (0 - 65535) to unsigned byte (0 - 255)
             lg16Toog8LUT[i] =
-                (byte) (((float) (tmp[i] & 0xffff)) * (1.0f /257.0f) + 0.5f);
+                    (byte) (((float) (tmp[i] & 0xffff)) * (1.0f / 257.0f) + 0.5f);
         }
         if (lg16Toog8Map == null) {
             lg16Toog8Map = Collections.synchronizedMap(new WeakHashMap(2));
@@ -1884,7 +1923,7 @@ public abstract class ColorModel implements Transparency{
             return getLinearRGB16TosRGB8LUT();
         }
         if (g16Tos8Map != null) {
-            byte[] g16Tos8LUT = (byte []) g16Tos8Map.get(grayCS);
+            byte[] g16Tos8LUT = (byte[]) g16Tos8Map.get(grayCS);
             if (g16Tos8LUT != null) {
                 return g16Tos8LUT;
             }
@@ -1896,15 +1935,15 @@ public abstract class ColorModel implements Transparency{
         ColorTransform[] transformList = new ColorTransform[2];
         PCMM mdl = CMSManager.getModule();
         ICC_ColorSpace srgbCS =
-            (ICC_ColorSpace) ColorSpace.getInstance(ColorSpace.CS_sRGB);
-        transformList[0] = mdl.createTransform (
-            grayCS.getProfile(), ColorTransform.Any, ColorTransform.In);
-        transformList[1] = mdl.createTransform (
-            srgbCS.getProfile(), ColorTransform.Any, ColorTransform.Out);
+                (ICC_ColorSpace) ColorSpace.getInstance(ColorSpace.CS_sRGB);
+        transformList[0] = mdl.createTransform(
+                grayCS.getProfile(), ColorTransform.Any, ColorTransform.In);
+        transformList[1] = mdl.createTransform(
+                srgbCS.getProfile(), ColorTransform.Any, ColorTransform.Out);
         ColorTransform t = mdl.createTransform(transformList);
         tmp = t.colorConvert(tmp, null);
         byte[] g16Tos8LUT = new byte[65536];
-        for (int i = 0, j= 2; i <= 65535; i++, j += 3) {
+        for (int i = 0, j = 2; i <= 65535; i++, j += 3) {
             // All three components of tmp should be equal, since
             // the input color space to colorConvert is a gray scale
             // space.  However, there are slight anomalies in the results.
@@ -1913,7 +1952,7 @@ public abstract class ColorModel implements Transparency{
 
             // scale unsigned short (0 - 65535) to unsigned byte (0 - 255)
             g16Tos8LUT[i] =
-                (byte) (((float) (tmp[j] & 0xffff)) * (1.0f /257.0f) + 0.5f);
+                    (byte) (((float) (tmp[j] & 0xffff)) * (1.0f / 257.0f) + 0.5f);
         }
         if (g16Tos8Map == null) {
             g16Tos8Map = Collections.synchronizedMap(new WeakHashMap(2));
@@ -1929,7 +1968,7 @@ public abstract class ColorModel implements Transparency{
      */
     static short[] getLinearGray16ToOtherGray16LUT(ICC_ColorSpace grayCS) {
         if (lg16Toog16Map != null) {
-            short[] lg16Toog16LUT = (short []) lg16Toog16Map.get(grayCS);
+            short[] lg16Toog16LUT = (short[]) lg16Toog16Map.get(grayCS);
             if (lg16Toog16LUT != null) {
                 return lg16Toog16LUT;
             }
@@ -1941,13 +1980,13 @@ public abstract class ColorModel implements Transparency{
         ColorTransform[] transformList = new ColorTransform[2];
         PCMM mdl = CMSManager.getModule();
         ICC_ColorSpace lgCS =
-            (ICC_ColorSpace) ColorSpace.getInstance(ColorSpace.CS_GRAY);
-        transformList[0] = mdl.createTransform (
-            lgCS.getProfile(), ColorTransform.Any, ColorTransform.In);
+                (ICC_ColorSpace) ColorSpace.getInstance(ColorSpace.CS_GRAY);
+        transformList[0] = mdl.createTransform(
+                lgCS.getProfile(), ColorTransform.Any, ColorTransform.In);
         transformList[1] = mdl.createTransform(
-            grayCS.getProfile(), ColorTransform.Any, ColorTransform.Out);
+                grayCS.getProfile(), ColorTransform.Any, ColorTransform.Out);
         ColorTransform t = mdl.createTransform(
-            transformList);
+                transformList);
         short[] lg16Toog16LUT = t.colorConvert(tmp, null);
         if (lg16Toog16Map == null) {
             lg16Toog16Map = Collections.synchronizedMap(new WeakHashMap(2));

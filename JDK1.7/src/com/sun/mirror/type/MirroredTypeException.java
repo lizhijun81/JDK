@@ -35,13 +35,12 @@ import com.sun.mirror.declaration.Declaration;
  * Thrown when an application attempts to access the {@link Class} object
  * corresponding to a {@link TypeMirror}.
  *
+ * @see MirroredTypesException
+ * @see Declaration#getAnnotation(Class)
  * @deprecated All components of this API have been superseded by the
  * standardized annotation processing API.  The replacement for the
  * functionality of this exception is {@link
  * javax.lang.model.type.MirroredTypeException}.
- *
- * @see MirroredTypesException
- * @see Declaration#getAnnotation(Class)
  */
 @Deprecated
 @SuppressWarnings("deprecation")
@@ -55,7 +54,7 @@ public class MirroredTypeException extends RuntimeException {
     /**
      * Constructs a new MirroredTypeException for the specified type.
      *
-     * @param type  the type being accessed
+     * @param type the type being accessed
      */
     public MirroredTypeException(TypeMirror type) {
         super("Attempt to access Class object for TypeMirror " + type);

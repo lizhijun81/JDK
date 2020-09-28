@@ -44,39 +44,55 @@ final class SoftReferenceGrammarPool implements XMLGrammarPool {
     // Constants
     //
 
-    /** Default size. */
+    /**
+     * Default size.
+     */
     protected static final int TABLE_SIZE = 11;
 
-    /** Zero length grammar array. */
-    protected static final Grammar [] ZERO_LENGTH_GRAMMAR_ARRAY = new Grammar [0];
+    /**
+     * Zero length grammar array.
+     */
+    protected static final Grammar[] ZERO_LENGTH_GRAMMAR_ARRAY = new Grammar[0];
 
     //
     // Data
     //
 
-    /** Grammars. */
-    protected Entry [] fGrammars = null;
+    /**
+     * Grammars.
+     */
+    protected Entry[] fGrammars = null;
 
-    /** Flag indicating whether this pool is locked */
+    /**
+     * Flag indicating whether this pool is locked
+     */
     protected boolean fPoolIsLocked;
 
-    /** The number of grammars in the pool */
+    /**
+     * The number of grammars in the pool
+     */
     protected int fGrammarCount = 0;
 
-    /** Reference queue for cleared grammar references */
+    /**
+     * Reference queue for cleared grammar references
+     */
     protected final ReferenceQueue fReferenceQueue = new ReferenceQueue();
 
     //
     // Constructors
     //
 
-    /** Constructs a grammar pool with a default number of buckets. */
+    /**
+     * Constructs a grammar pool with a default number of buckets.
+     */
     public SoftReferenceGrammarPool() {
         fGrammars = new Entry[TABLE_SIZE];
         fPoolIsLocked = false;
     } // <init>()
 
-    /** Constructs a grammar pool with a specified number of buckets. */
+    /**
+     * Constructs a grammar pool with a specified number of buckets.
+     */
     public SoftReferenceGrammarPool(int initialCapacity) {
         fGrammars = new Entry[initialCapacity];
         fPoolIsLocked = false;
@@ -96,7 +112,7 @@ final class SoftReferenceGrammarPool implements XMLGrammarPool {
      *                    interface.
      * @return            The set of grammars the validator may put in its "bucket"
      */
-    public Grammar [] retrieveInitialGrammarSet (String grammarType) {
+    public Grammar[] retrieveInitialGrammarSet(String grammarType) {
         synchronized (fGrammars) {
             clean();
             // Return no grammars. This allows the garbage collector to sift
@@ -194,8 +210,7 @@ final class SoftReferenceGrammarPool implements XMLGrammarPool {
                 /** If the soft reference has been cleared, remove this entry from the pool. */
                 if (tempGrammar == null) {
                     removeEntry(entry);
-                }
-                else if ((entry.hash == hash) && equals(entry.desc, desc)) {
+                } else if ((entry.hash == hash) && equals(entry.desc, desc)) {
                     return tempGrammar;
                 }
             }
@@ -210,7 +225,7 @@ final class SoftReferenceGrammarPool implements XMLGrammarPool {
      * as the key for Schema grammars.
      *
      * @param desc The Grammar Description.
-     * @return     The removed grammar.
+     * @return The removed grammar.
      */
     public Grammar removeGrammar(XMLGrammarDescription desc) {
         synchronized (fGrammars) {
@@ -239,13 +254,12 @@ final class SoftReferenceGrammarPool implements XMLGrammarPool {
             clean();
             int hash = hashCode(desc);
             int index = (hash & 0x7FFFFFFF) % fGrammars.length;
-            for (Entry entry = fGrammars[index]; entry != null ; entry = entry.next) {
+            for (Entry entry = fGrammars[index]; entry != null; entry = entry.next) {
                 Grammar tempGrammar = (Grammar) entry.grammar.get();
                 /** If the soft reference has been cleared, remove this entry from the pool. */
                 if (tempGrammar == null) {
                     removeEntry(entry);
-                }
-                else if ((entry.hash == hash) && equals(entry.desc, desc)) {
+                } else if ((entry.hash == hash) && equals(entry.desc, desc)) {
                     return true;
                 }
             }
@@ -273,8 +287,8 @@ final class SoftReferenceGrammarPool implements XMLGrammarPool {
      * to all the grammars in it.</p>
      */
     public void clear() {
-        for (int i=0; i<fGrammars.length; i++) {
-            if(fGrammars[i] != null) {
+        for (int i = 0; i < fGrammars.length; i++) {
+            if (fGrammars[i] != null) {
                 fGrammars[i].clear();
                 fGrammars[i] = null;
             }
@@ -289,7 +303,7 @@ final class SoftReferenceGrammarPool implements XMLGrammarPool {
      *
      * @param desc1 The grammar description
      * @param desc2 The grammar description of the grammar to be compared to
-     * @return      True if the grammars are equal, otherwise false
+     * @return True if the grammars are equal, otherwise false
      */
     public boolean equals(XMLGrammarDescription desc1, XMLGrammarDescription desc2) {
         if (desc1 instanceof XMLSchemaDescription) {
@@ -303,8 +317,7 @@ final class SoftReferenceGrammarPool implements XMLGrammarPool {
                 if (!targetNamespace.equals(sd2.getTargetNamespace())) {
                     return false;
                 }
-            }
-            else if (sd2.getTargetNamespace() != null) {
+            } else if (sd2.getTargetNamespace() != null) {
                 return false;
             }
             // The JAXP 1.3 spec says that the implementation can assume that
@@ -317,8 +330,7 @@ final class SoftReferenceGrammarPool implements XMLGrammarPool {
                 if (!expandedSystemId.equals(sd2.getExpandedSystemId())) {
                     return false;
                 }
-            }
-            else if (sd2.getExpandedSystemId() != null) {
+            } else if (sd2.getExpandedSystemId() != null) {
                 return false;
             }
             return true;
@@ -330,7 +342,7 @@ final class SoftReferenceGrammarPool implements XMLGrammarPool {
      * Returns the hash code value for the given grammar description.
      *
      * @param desc The grammar description
-     * @return     The hash code value
+     * @return The hash code value
      */
     public int hashCode(XMLGrammarDescription desc) {
         if (desc instanceof XMLSchemaDescription) {
@@ -353,8 +365,7 @@ final class SoftReferenceGrammarPool implements XMLGrammarPool {
     private Grammar removeEntry(Entry entry) {
         if (entry.prev != null) {
             entry.prev.next = entry.next;
-        }
-        else {
+        } else {
             fGrammars[entry.bucket] = entry.next;
         }
         if (entry.next != null) {
@@ -406,10 +417,10 @@ final class SoftReferenceGrammarPool implements XMLGrammarPool {
 
         // clear this entry; useful to promote garbage collection
         // since reduces reference count of objects to be destroyed
-        protected void clear () {
+        protected void clear() {
             desc = null;
             grammar = null;
-            if(next != null) {
+            if (next != null) {
                 next.clear();
                 next = null;
             }

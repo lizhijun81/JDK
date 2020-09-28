@@ -67,9 +67,9 @@ package org.xml.sax;
  * obtained through this interface to find the entity and/or
  * notation corresponding with the attribute value.</p>
  *
- * @since SAX 1.0
  * @author David Megginson
  * @see org.xml.sax.XMLReader#setDTDHandler
+ * @since SAX 1.0
  */
 public interface DTDHandler {
 
@@ -91,20 +91,20 @@ public interface DTDHandler {
      * <p>There is no guarantee that the notation declaration will be
      * reported before any unparsed entities that use it.</p>
      *
-     * @param name The notation name.
+     * @param name     The notation name.
      * @param publicId The notation's public identifier, or null if
-     *        none was given.
+     *                 none was given.
      * @param systemId The notation's system identifier, or null if
-     *        none was given.
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
+     *                 none was given.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
      * @see #unparsedEntityDecl
      * @see org.xml.sax.Attributes
      */
-    public abstract void notationDecl (String name,
-                                       String publicId,
-                                       String systemId)
-        throws SAXException;
+    public abstract void notationDecl(String name,
+                                      String publicId,
+                                      String systemId)
+            throws SAXException;
 
 
     /**
@@ -120,21 +120,21 @@ public interface DTDHandler {
      * <p>If the system identifier is a URL, the parser must resolve it
      * fully before passing it to the application.</p>
      *
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
-     * @param name The unparsed entity's name.
-     * @param publicId The entity's public identifier, or null if none
-     *        was given.
-     * @param systemId The entity's system identifier.
+     * @param name         The unparsed entity's name.
+     * @param publicId     The entity's public identifier, or null if none
+     *                     was given.
+     * @param systemId     The entity's system identifier.
      * @param notationName The name of the associated notation.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
      * @see #notationDecl
      * @see org.xml.sax.Attributes
      */
-    public abstract void unparsedEntityDecl (String name,
-                                             String publicId,
-                                             String systemId,
-                                             String notationName)
-        throws SAXException;
+    public abstract void unparsedEntityDecl(String name,
+                                            String publicId,
+                                            String systemId,
+                                            String notationName)
+            throws SAXException;
 
 }
 

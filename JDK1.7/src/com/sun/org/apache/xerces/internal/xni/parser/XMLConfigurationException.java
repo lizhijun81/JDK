@@ -29,23 +29,28 @@ import com.sun.org.apache.xerces.internal.xni.XNIException;
  * parsing errors and configuration errors.
  *
  * @author Andy Clark, IBM
- *
  * @version $Id: XMLConfigurationException.java,v 1.7 2010-11-01 04:40:22 joehw Exp $
  */
 public class XMLConfigurationException
-    extends XNIException {
+        extends XNIException {
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = -5437427404547669188L;
 
     //
     // Data
     //
 
-    /** Exception type. */
+    /**
+     * Exception type.
+     */
     protected Status fType;
 
-    /** Identifier. */
+    /**
+     * Identifier.
+     */
     protected String fIdentifier;
 
     //
@@ -91,7 +96,9 @@ public class XMLConfigurationException
         return fType;
     } // getType():short
 
-    /** Returns the feature or property identifier. */
+    /**
+     * Returns the feature or property identifier.
+     */
     public String getIdentifier() {
         return fIdentifier;
     } // getIdentifier():String

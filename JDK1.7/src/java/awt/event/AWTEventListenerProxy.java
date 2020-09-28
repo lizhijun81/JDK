@@ -53,10 +53,10 @@ public class AWTEventListenerProxy
      * Constructor which binds the {@code AWTEventListener}
      * to a specific event mask.
      *
-     * @param eventMask  the bitmap of event types to receive
-     * @param listener   the listener object
+     * @param eventMask the bitmap of event types to receive
+     * @param listener  the listener object
      */
-    public AWTEventListenerProxy (long eventMask, AWTEventListener listener) {
+    public AWTEventListenerProxy(long eventMask, AWTEventListener listener) {
         super(listener);
         this.eventMask = eventMask;
     }
@@ -64,7 +64,7 @@ public class AWTEventListenerProxy
     /**
      * Forwards the AWT event to the listener delegate.
      *
-     * @param event  the AWT event
+     * @param event the AWT event
      */
     public void eventDispatched(AWTEvent event) {
         getListener().eventDispatched(event);

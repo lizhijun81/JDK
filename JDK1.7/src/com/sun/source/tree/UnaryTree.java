@@ -28,7 +28,7 @@ package com.sun.source.tree;
 /**
  * A tree node for postfix and unary expressions.
  * Use {@link #getKind getKind} to determine the kind of operator.
- *
+ * <p>
  * For example:
  * <pre>
  *   <em>operator</em> <em>expression</em>
@@ -36,10 +36,9 @@ package com.sun.source.tree;
  *   <em>expression</em> <em>operator</em>
  * </pre>
  *
- * @jls sections 15.14 and 15.15
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls sections 15.14 and 15.15
  * @since 1.6
  */
 public interface UnaryTree extends ExpressionTree {

@@ -33,12 +33,10 @@ import com.sun.org.apache.xerces.internal.xs.XSObjectList;
  * The XML representation for a wildcard declaration
  * schema component is an <any> or <anyAttribute> element information item
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
  * @author Rahul Srivastava, Sun Microsystems Inc.
- *
  * @version $Id: XSWildcardDecl.java,v 1.7 2010-11-01 04:39:55 joehw Exp $
+ * @xerces.internal
  */
 public class XSWildcardDecl implements XSWildcard {
 
@@ -115,7 +113,7 @@ public class XSWildcardDecl implements XSWildcard {
     }
 
     /**
-     *  Schema Component Constraint: Wildcard Subset
+     * Schema Component Constraint: Wildcard Subset
      */
     public boolean isSubsetOf(XSWildcardDecl superWildcard) {
         // if the super is null (not expressible), return false
@@ -137,7 +135,7 @@ public class XSWildcardDecl implements XSWildcard {
         //     since we store other as not(list)
         if (fType == NSCONSTRAINT_NOT) {
             if (superWildcard.fType == NSCONSTRAINT_NOT &&
-                fNamespaceList[0] == superWildcard.fNamespaceList[0]) {
+                    fNamespaceList[0] == superWildcard.fNamespaceList[0]) {
                 return true;
             }
         }
@@ -154,13 +152,13 @@ public class XSWildcardDecl implements XSWildcard {
         //         that none of the namespaces in super.list is in sub.list.
         if (fType == NSCONSTRAINT_LIST) {
             if (superWildcard.fType == NSCONSTRAINT_LIST &&
-                subset2sets(fNamespaceList, superWildcard.fNamespaceList)) {
+                    subset2sets(fNamespaceList, superWildcard.fNamespaceList)) {
                 return true;
             }
 
             if (superWildcard.fType == NSCONSTRAINT_NOT &&
-                !elementInSet(superWildcard.fNamespaceList[0], fNamespaceList) &&
-                !elementInSet(ABSENT, fNamespaceList)) {
+                    !elementInSet(superWildcard.fNamespaceList[0], fNamespaceList) &&
+                    !elementInSet(ABSENT, fNamespaceList)) {
                 return true;
             }
         }
@@ -175,9 +173,9 @@ public class XSWildcardDecl implements XSWildcard {
      */
     public boolean weakerProcessContents(XSWildcardDecl superWildcard) {
         return fProcessContents == XSWildcardDecl.PC_LAX &&
-               superWildcard.fProcessContents == XSWildcardDecl.PC_STRICT ||
-               fProcessContents == XSWildcardDecl.PC_SKIP &&
-               superWildcard.fProcessContents != XSWildcardDecl.PC_SKIP;
+                superWildcard.fProcessContents == XSWildcardDecl.PC_STRICT ||
+                fProcessContents == XSWildcardDecl.PC_SKIP &&
+                        superWildcard.fProcessContents != XSWildcardDecl.PC_SKIP;
     }
 
     /**
@@ -203,13 +201,13 @@ public class XSWildcardDecl implements XSWildcard {
         }
 
         // 2 If either O1 or O2 is any, then any must be the value.
-        else if ( (fType == NSCONSTRAINT_ANY) || (wildcard.fType == NSCONSTRAINT_ANY) ) {
+        else if ((fType == NSCONSTRAINT_ANY) || (wildcard.fType == NSCONSTRAINT_ANY)) {
             unionWildcard.fType = NSCONSTRAINT_ANY;
         }
 
         // 3 If both O1 and O2 are sets of (namespace names or absent), then the union of
         //   those sets must be the value.
-        else if ( (fType == NSCONSTRAINT_LIST) && (wildcard.fType == NSCONSTRAINT_LIST) ) {
+        else if ((fType == NSCONSTRAINT_LIST) && (wildcard.fType == NSCONSTRAINT_LIST)) {
             unionWildcard.fType = NSCONSTRAINT_LIST;
             unionWildcard.fNamespaceList = union2sets(fNamespaceList, wildcard.fNamespaceList);
         }
@@ -249,16 +247,15 @@ public class XSWildcardDecl implements XSWildcard {
         //        +5.2.2 If the set does not include absent, then whichever of O1 or O2 is
         //               a pair of not and a namespace name must be the value.
         // * when we have not(list), the operation is just not(otherlist-list)
-        else if ( ((fType == NSCONSTRAINT_NOT) && (wildcard.fType == NSCONSTRAINT_LIST)) ||
-                  ((fType == NSCONSTRAINT_LIST) && (wildcard.fType == NSCONSTRAINT_NOT)) ) {
+        else if (((fType == NSCONSTRAINT_NOT) && (wildcard.fType == NSCONSTRAINT_LIST)) ||
+                ((fType == NSCONSTRAINT_LIST) && (wildcard.fType == NSCONSTRAINT_NOT))) {
             String[] other = null;
             String[] list = null;
 
             if (fType == NSCONSTRAINT_NOT) {
                 other = fNamespaceList;
                 list = wildcard.fNamespaceList;
-            }
-            else {
+            } else {
                 other = wildcard.fNamespaceList;
                 list = fNamespaceList;
             }
@@ -317,7 +314,7 @@ public class XSWildcardDecl implements XSWildcard {
         }
 
         // 2 If either O1 or O2 is any, then the other must be the value.
-        else if ( (fType == NSCONSTRAINT_ANY) || (wildcard.fType == NSCONSTRAINT_ANY) ) {
+        else if ((fType == NSCONSTRAINT_ANY) || (wildcard.fType == NSCONSTRAINT_ANY)) {
             // both cannot be ANY, if we have reached here.
             XSWildcardDecl other = this;
 
@@ -336,16 +333,15 @@ public class XSWildcardDecl implements XSWildcard {
         //    namespace name if it was in the set, then minus absent if it was in the
         //    set, must be the value.
         // * when we have not(list), the operation is just list-otherlist
-        else if ( ((fType == NSCONSTRAINT_NOT) && (wildcard.fType == NSCONSTRAINT_LIST)) ||
-                  ((fType == NSCONSTRAINT_LIST) && (wildcard.fType == NSCONSTRAINT_NOT)) ) {
+        else if (((fType == NSCONSTRAINT_NOT) && (wildcard.fType == NSCONSTRAINT_LIST)) ||
+                ((fType == NSCONSTRAINT_LIST) && (wildcard.fType == NSCONSTRAINT_NOT))) {
             String[] list = null;
             String[] other = null;
 
             if (fType == NSCONSTRAINT_NOT) {
                 other = fNamespaceList;
                 list = wildcard.fNamespaceList;
-            }
-            else {
+            } else {
                 other = wildcard.fNamespaceList;
                 list = fNamespaceList;
             }
@@ -365,7 +361,7 @@ public class XSWildcardDecl implements XSWildcard {
 
         // 4 If both O1 and O2 are sets of (namespace names or absent), then the intersection of those
         //   sets must be the value.
-        else if ( (fType == NSCONSTRAINT_LIST) && (wildcard.fType == NSCONSTRAINT_LIST) ) {
+        else if ((fType == NSCONSTRAINT_LIST) && (wildcard.fType == NSCONSTRAINT_LIST)) {
             intersectWildcard.fType = NSCONSTRAINT_LIST;
             intersectWildcard.fNamespaceList = intersect2sets(fNamespaceList, wildcard.fNamespaceList);
         }
@@ -410,7 +406,7 @@ public class XSWildcardDecl implements XSWildcard {
             // and each item in one list must appear in the other one
             // (we are assuming that there are no duplicate items in a list)
             if (fNamespaceList.length == wildcard.fNamespaceList.length) {
-                for (int i=0; i<fNamespaceList.length; i++) {
+                for (int i = 0; i < fNamespaceList.length; i++) {
                     if (!elementInSet(fNamespaceList[i], wildcard.fNamespaceList))
                         return false;
                 }
@@ -421,12 +417,12 @@ public class XSWildcardDecl implements XSWildcard {
         return false;
     } // areSame
 
-    String[] intersect2sets(String[] one, String[] theOther){
-        String[] result = new String[Math.min(one.length,theOther.length)];
+    String[] intersect2sets(String[] one, String[] theOther) {
+        String[] result = new String[Math.min(one.length, theOther.length)];
 
         // simple implemention,
         int count = 0;
-        for (int i=0; i<one.length; i++) {
+        for (int i = 0; i < one.length; i++) {
             if (elementInSet(one[i], theOther))
                 result[count++] = one[i];
         }
@@ -437,25 +433,25 @@ public class XSWildcardDecl implements XSWildcard {
         return result2;
     }
 
-    String[] union2sets(String[] one, String[] theOther){
+    String[] union2sets(String[] one, String[] theOther) {
         String[] result1 = new String[one.length];
 
         // simple implemention,
         int count = 0;
-        for (int i=0; i<one.length; i++) {
+        for (int i = 0; i < one.length; i++) {
             if (!elementInSet(one[i], theOther))
                 result1[count++] = one[i];
         }
 
-        String[] result2 = new String[count+theOther.length];
+        String[] result2 = new String[count + theOther.length];
         System.arraycopy(result1, 0, result2, 0, count);
         System.arraycopy(theOther, 0, result2, count, theOther.length);
 
         return result2;
     }
 
-    boolean subset2sets(String[] subSet, String[] superSet){
-        for (int i=0; i<subSet.length; i++) {
+    boolean subset2sets(String[] subSet, String[] superSet) {
+        for (int i = 0; i < subSet.length; i++) {
             if (!elementInSet(subSet[i], superSet))
                 return false;
         }
@@ -463,10 +459,10 @@ public class XSWildcardDecl implements XSWildcard {
         return true;
     }
 
-    boolean elementInSet(String ele, String[] set){
+    boolean elementInSet(String ele, String[] set) {
         boolean found = false;
-        for (int i=0; i<set.length && !found; i++) {
-            if (ele==set[i])
+        for (int i = 0; i < set.length && !found; i++) {
+            if (ele == set[i])
                 found = true;
         }
 
@@ -477,35 +473,36 @@ public class XSWildcardDecl implements XSWildcard {
      * get the string description of this wildcard
      */
     private String fDescription = null;
+
     public String toString() {
         if (fDescription == null) {
             StringBuffer buffer = new StringBuffer();
             buffer.append("WC[");
             switch (fType) {
-            case NSCONSTRAINT_ANY:
-                buffer.append(SchemaSymbols.ATTVAL_TWOPOUNDANY);
-                break;
-            case NSCONSTRAINT_NOT:
-                buffer.append(SchemaSymbols.ATTVAL_TWOPOUNDOTHER);
-                buffer.append(":\"");
-                if (fNamespaceList[0] != null)
-                    buffer.append(fNamespaceList[0]);
-                buffer.append("\"");
-                break;
-            case NSCONSTRAINT_LIST:
-                if (fNamespaceList.length == 0)
+                case NSCONSTRAINT_ANY:
+                    buffer.append(SchemaSymbols.ATTVAL_TWOPOUNDANY);
                     break;
-                buffer.append("\"");
-                if (fNamespaceList[0] != null)
-                    buffer.append(fNamespaceList[0]);
-                buffer.append("\"");
-                for (int i = 1; i < fNamespaceList.length; i++) {
-                    buffer.append(",\"");
-                    if (fNamespaceList[i] != null)
-                        buffer.append(fNamespaceList[i]);
+                case NSCONSTRAINT_NOT:
+                    buffer.append(SchemaSymbols.ATTVAL_TWOPOUNDOTHER);
+                    buffer.append(":\"");
+                    if (fNamespaceList[0] != null)
+                        buffer.append(fNamespaceList[0]);
                     buffer.append("\"");
-                }
-                break;
+                    break;
+                case NSCONSTRAINT_LIST:
+                    if (fNamespaceList.length == 0)
+                        break;
+                    buffer.append("\"");
+                    if (fNamespaceList[0] != null)
+                        buffer.append(fNamespaceList[0]);
+                    buffer.append("\"");
+                    for (int i = 1; i < fNamespaceList.length; i++) {
+                        buffer.append(",\"");
+                        if (fNamespaceList[i] != null)
+                            buffer.append(fNamespaceList[i]);
+                        buffer.append("\"");
+                    }
+                    break;
             }
             buffer.append(']');
             fDescription = buffer.toString();
@@ -568,10 +565,14 @@ public class XSWildcardDecl implements XSWildcard {
      */
     public String getProcessContentsAsString() {
         switch (fProcessContents) {
-            case XSWildcardDecl.PC_SKIP: return "skip";
-            case XSWildcardDecl.PC_LAX: return "lax";
-            case XSWildcardDecl.PC_STRICT: return "strict";
-            default: return "invalid value";
+            case XSWildcardDecl.PC_SKIP:
+                return "skip";
+            case XSWildcardDecl.PC_LAX:
+                return "lax";
+            case XSWildcardDecl.PC_STRICT:
+                return "strict";
+            default:
+                return "invalid value";
         }
     }
 

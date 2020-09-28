@@ -34,8 +34,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
 import static java.io.ObjectStreamClass.processQueue;
+
 import java.io.SerialCallbackContext;
+
 import sun.reflect.misc.ReflectUtil;
 
 /**
@@ -150,46 +153,65 @@ import sun.reflect.misc.ReflectUtil;
  * defaultWriteObject and writeFields initially terminate any existing
  * block-data record.
  *
- * @author      Mike Warres
- * @author      Roger Riggs
+ * @author Mike Warres
+ * @author Roger Riggs
  * @see java.io.DataOutput
  * @see java.io.ObjectInputStream
  * @see java.io.Serializable
  * @see java.io.Externalizable
  * @see <a href="../../../platform/serialization/spec/output.html">Object Serialization Specification, Section 2, Object Output Classes</a>
- * @since       JDK1.1
+ * @since JDK1.1
  */
 public class ObjectOutputStream
-    extends OutputStream implements ObjectOutput, ObjectStreamConstants
-{
+        extends OutputStream implements ObjectOutput, ObjectStreamConstants {
 
     private static class Caches {
-        /** cache of subclass security audit results */
-        static final ConcurrentMap<WeakClassKey,Boolean> subclassAudits =
-            new ConcurrentHashMap<>();
+        /**
+         * cache of subclass security audit results
+         */
+        static final ConcurrentMap<WeakClassKey, Boolean> subclassAudits =
+                new ConcurrentHashMap<>();
 
-        /** queue for WeakReferences to audited subclasses */
+        /**
+         * queue for WeakReferences to audited subclasses
+         */
         static final ReferenceQueue<Class<?>> subclassAuditsQueue =
-            new ReferenceQueue<>();
+                new ReferenceQueue<>();
     }
 
-    /** filter stream for handling block data conversion */
+    /**
+     * filter stream for handling block data conversion
+     */
     private final BlockDataOutputStream bout;
-    /** obj -> wire handle map */
+    /**
+     * obj -> wire handle map
+     */
     private final HandleTable handles;
-    /** obj -> replacement obj map */
+    /**
+     * obj -> replacement obj map
+     */
     private final ReplaceTable subs;
-    /** stream protocol version */
+    /**
+     * stream protocol version
+     */
     private int protocol = PROTOCOL_VERSION_2;
-    /** recursion depth */
+    /**
+     * recursion depth
+     */
     private int depth;
 
-    /** buffer for writing primitive field values */
+    /**
+     * buffer for writing primitive field values
+     */
     private byte[] primVals;
 
-    /** if true, invoke writeObjectOverride() instead of writeObject() */
+    /**
+     * if true, invoke writeObjectOverride() instead of writeObject()
+     */
     private final boolean enableOverride;
-    /** if true, invoke replaceObject() */
+    /**
+     * if true, invoke replaceObject()
+     */
     private boolean enableReplace;
 
     // values below valid only during upcalls to writeObject()/writeExternal()
@@ -199,10 +221,14 @@ public class ObjectOutputStream
      * Null when not during writeObject upcall.
      */
     private SerialCallbackContext curContext;
-    /** current PutField object */
+    /**
+     * current PutField object
+     */
     private PutFieldImpl curPut;
 
-    /** custom storage for debug trace info */
+    /**
+     * custom storage for debug trace info
+     */
     private final DebugTraceInfoStack debugInfoStack;
 
     /**
@@ -210,9 +236,9 @@ public class ObjectOutputStream
      * as true or false for extended information about exception's place
      */
     private static final boolean extendedDebugInfo =
-        java.security.AccessController.doPrivileged(
-            new sun.security.action.GetBooleanAction(
-                "sun.io.serialization.extendedDebugInfo")).booleanValue();
+            java.security.AccessController.doPrivileged(
+                    new sun.security.action.GetBooleanAction(
+                            "sun.io.serialization.extendedDebugInfo")).booleanValue();
 
     /**
      * Creates an ObjectOutputStream that writes to the specified OutputStream.
@@ -227,15 +253,15 @@ public class ObjectOutputStream
      * the ObjectOutputStream.putFields or ObjectOutputStream.writeUnshared
      * methods.
      *
-     * @param   out output stream to write to
-     * @throws  IOException if an I/O error occurs while writing stream header
-     * @throws  SecurityException if untrusted subclass illegally overrides
-     *          security-sensitive methods
-     * @throws  NullPointerException if <code>out</code> is <code>null</code>
-     * @since   1.4
-     * @see     ObjectOutputStream#ObjectOutputStream()
-     * @see     ObjectOutputStream#putFields()
-     * @see     ObjectInputStream#ObjectInputStream(InputStream)
+     * @param out output stream to write to
+     * @throws IOException          if an I/O error occurs while writing stream header
+     * @throws SecurityException    if untrusted subclass illegally overrides
+     *                              security-sensitive methods
+     * @throws NullPointerException if <code>out</code> is <code>null</code>
+     * @see ObjectOutputStream#ObjectOutputStream()
+     * @see ObjectOutputStream#putFields()
+     * @see ObjectInputStream#ObjectInputStream(InputStream)
+     * @since 1.4
      */
     public ObjectOutputStream(OutputStream out) throws IOException {
         verifySubclass();
@@ -262,9 +288,9 @@ public class ObjectOutputStream
      * <code>SerializablePermission("enableSubclassImplementation")</code>
      * permission to ensure it's ok to enable subclassing.
      *
-     * @throws  SecurityException if a security manager exists and its
-     *          <code>checkPermission</code> method denies enabling
-     *          subclassing.
+     * @throws SecurityException if a security manager exists and its
+     *                           <code>checkPermission</code> method denies enabling
+     *                           subclassing.
      * @see SecurityManager#checkPermission
      * @see java.io.SerializablePermission
      */
@@ -291,14 +317,14 @@ public class ObjectOutputStream
      * backwards incompatibilities; however, sometimes there is no
      * other alternative.
      *
-     * @param   version use ProtocolVersion from java.io.ObjectStreamConstants.
-     * @throws  IllegalStateException if called after any objects
-     *          have been serialized.
-     * @throws  IllegalArgumentException if invalid version is passed in.
-     * @throws  IOException if I/O errors occur
+     * @param version use ProtocolVersion from java.io.ObjectStreamConstants.
+     * @throws IllegalStateException    if called after any objects
+     *                                  have been serialized.
+     * @throws IllegalArgumentException if invalid version is passed in.
+     * @throws IOException              if I/O errors occur
      * @see java.io.ObjectStreamConstants#PROTOCOL_VERSION_1
      * @see java.io.ObjectStreamConstants#PROTOCOL_VERSION_2
-     * @since   1.2
+     * @since 1.2
      */
     public void useProtocolVersion(int version) throws IOException {
         if (handles.size() != 0) {
@@ -313,7 +339,7 @@ public class ObjectOutputStream
 
             default:
                 throw new IllegalArgumentException(
-                    "unknown version: " + version);
+                        "unknown version: " + version);
         }
     }
 
@@ -331,12 +357,12 @@ public class ObjectOutputStream
      * OutputStream, which is left in an indeterminate state, and it is up to
      * the caller to ignore or recover the stream state.
      *
-     * @throws  InvalidClassException Something is wrong with a class used by
-     *          serialization.
-     * @throws  NotSerializableException Some object to be serialized does not
-     *          implement the java.io.Serializable interface.
-     * @throws  IOException Any exception thrown by the underlying
-     *          OutputStream.
+     * @throws InvalidClassException    Something is wrong with a class used by
+     *                                  serialization.
+     * @throws NotSerializableException Some object to be serialized does not
+     *                                  implement the java.io.Serializable interface.
+     * @throws IOException              Any exception thrown by the underlying
+     *                                  OutputStream.
      */
     public final void writeObject(Object obj) throws IOException {
         if (enableOverride) {
@@ -360,9 +386,9 @@ public class ObjectOutputStream
      * The subclass is expected to provide an override method with the modifier
      * "final".
      *
-     * @param   obj object to be written to the underlying stream
-     * @throws  IOException if there are I/O errors while writing to the
-     *          underlying stream
+     * @param obj object to be written to the underlying stream
+     * @throws IOException if there are I/O errors while writing to the
+     *                     underlying stream
      * @see #ObjectOutputStream()
      * @see #writeObject(Object)
      * @since 1.2
@@ -401,12 +427,12 @@ public class ObjectOutputStream
      * instantiate such a subclass without this permission will cause a
      * SecurityException to be thrown.
      *
-     * @param   obj object to write to stream
-     * @throws  NotSerializableException if an object in the graph to be
-     *          serialized does not implement the Serializable interface
-     * @throws  InvalidClassException if a problem exists with the class of an
-     *          object to be serialized
-     * @throws  IOException if an I/O error occurs during serialization
+     * @param obj object to write to stream
+     * @throws NotSerializableException if an object in the graph to be
+     *                                  serialized does not implement the Serializable interface
+     * @throws InvalidClassException    if a problem exists with the class of an
+     *                                  object to be serialized
+     * @throws IOException              if an I/O error occurs during serialization
      * @since 1.4
      */
     public void writeUnshared(Object obj) throws IOException {
@@ -426,11 +452,11 @@ public class ObjectOutputStream
      * class being serialized. It will throw the NotActiveException if it is
      * called otherwise.
      *
-     * @throws  IOException if I/O errors occur while writing to the underlying
-     *          <code>OutputStream</code>
+     * @throws IOException if I/O errors occur while writing to the underlying
+     *                     <code>OutputStream</code>
      */
     public void defaultWriteObject() throws IOException {
-        if ( curContext == null ) {
+        if (curContext == null) {
             throw new NotActiveException("not in call to writeObject");
         }
         Object curObj = curContext.getObj();
@@ -445,9 +471,9 @@ public class ObjectOutputStream
      * the stream.  The fields will be written to the stream when writeFields
      * method is called.
      *
-     * @return  an instance of the class Putfield that holds the serializable
-     *          fields
-     * @throws  IOException if I/O errors occur
+     * @return an instance of the class Putfield that holds the serializable
+     * fields
+     * @throws IOException if I/O errors occur
      * @since 1.2
      */
     public ObjectOutputStream.PutField putFields() throws IOException {
@@ -465,10 +491,10 @@ public class ObjectOutputStream
     /**
      * Write the buffered fields to the stream.
      *
-     * @throws  IOException if I/O errors occur while writing to the underlying
-     *          stream
-     * @throws  NotActiveException Called when a classes writeObject method was
-     *          not called to write the state of the object.
+     * @throws IOException        if I/O errors occur while writing to the underlying
+     *                            stream
+     * @throws NotActiveException Called when a classes writeObject method was
+     *                            not called to write the state of the object.
      * @since 1.2
      */
     public void writeFields() throws IOException {
@@ -488,7 +514,7 @@ public class ObjectOutputStream
      * written to the stream will not be refered to as already being in the
      * stream.  They will be written to the stream again.
      *
-     * @throws  IOException if reset() is invoked while serializing an object.
+     * @throws IOException if reset() is invoked while serializing an object.
      */
     public void reset() throws IOException {
         if (depth != 0) {
@@ -512,9 +538,9 @@ public class ObjectOutputStream
      * ObjectInputStream must read and use any data or objects written by
      * annotateClass.
      *
-     * @param   cl the class to annotate custom data for
-     * @throws  IOException Any exception thrown by the underlying
-     *          OutputStream.
+     * @param cl the class to annotate custom data for
+     * @throws IOException Any exception thrown by the underlying
+     *                     OutputStream.
      */
     protected void annotateClass(Class<?> cl) throws IOException {
     }
@@ -534,11 +560,11 @@ public class ObjectOutputStream
      * <code>ObjectInputStream</code> must read any data or objects written by
      * <code>annotateProxyClass</code>.
      *
-     * @param   cl the proxy class to annotate custom data for
-     * @throws  IOException any exception thrown by the underlying
-     *          <code>OutputStream</code>
+     * @param cl the proxy class to annotate custom data for
+     * @throws IOException any exception thrown by the underlying
+     *                     <code>OutputStream</code>
      * @see ObjectInputStream#resolveProxyClass(String[])
-     * @since   1.3
+     * @since 1.3
      */
     protected void annotateProxyClass(Class<?> cl) throws IOException {
     }
@@ -576,10 +602,10 @@ public class ObjectOutputStream
      * original object since they may be expecting an object instead of
      * null.
      *
-     * @param   obj the object to be replaced
-     * @return  the alternate object that replaced the specified one
-     * @throws  IOException Any exception thrown by the underlying
-     *          OutputStream.
+     * @param obj the object to be replaced
+     * @return the alternate object that replaced the specified one
+     * @throws IOException Any exception thrown by the underlying
+     *                     OutputStream.
      */
     protected Object replaceObject(Object obj) throws IOException {
         return obj;
@@ -597,17 +623,16 @@ public class ObjectOutputStream
      * ensure it's ok to enable the stream to do replacement of objects in the
      * stream.
      *
-     * @param   enable boolean parameter to enable replacement of objects
-     * @return  the previous setting before this method was invoked
-     * @throws  SecurityException if a security manager exists and its
-     *          <code>checkPermission</code> method denies enabling the stream
-     *          to do replacement of objects in the stream.
+     * @param enable boolean parameter to enable replacement of objects
+     * @return the previous setting before this method was invoked
+     * @throws SecurityException if a security manager exists and its
+     *                           <code>checkPermission</code> method denies enabling the stream
+     *                           to do replacement of objects in the stream.
      * @see SecurityManager#checkPermission
      * @see java.io.SerializablePermission
      */
     protected boolean enableReplaceObject(boolean enable)
-        throws SecurityException
-    {
+            throws SecurityException {
         if (enable == enableReplace) {
             return enable;
         }
@@ -626,8 +651,8 @@ public class ObjectOutputStream
      * prepend their own header to the stream.  It writes the magic number and
      * version to the stream.
      *
-     * @throws  IOException if I/O errors occur while writing to the underlying
-     *          stream
+     * @throws IOException if I/O errors occur while writing to the underlying
+     *                     stream
      */
     protected void writeStreamHeader() throws IOException {
         bout.writeShort(STREAM_MAGIC);
@@ -652,16 +677,15 @@ public class ObjectOutputStream
      * (<code>PROTOCOL_VERSION_1</code>), the class descriptor will be written
      * internally in a manner that cannot be overridden or customized.
      *
-     * @param   desc class descriptor to write to the stream
-     * @throws  IOException If an I/O error has occurred.
+     * @param desc class descriptor to write to the stream
+     * @throws IOException If an I/O error has occurred.
      * @see java.io.ObjectInputStream#readClassDescriptor()
      * @see #useProtocolVersion(int)
      * @see java.io.ObjectStreamConstants#PROTOCOL_VERSION_1
      * @since 1.3
      */
     protected void writeClassDescriptor(ObjectStreamClass desc)
-        throws IOException
-    {
+            throws IOException {
         desc.writeNonProxy(this);
     }
 
@@ -669,8 +693,8 @@ public class ObjectOutputStream
      * Writes a byte. This method will block until the byte is actually
      * written.
      *
-     * @param   val the byte to be written to the stream
-     * @throws  IOException If an I/O error has occurred.
+     * @param val the byte to be written to the stream
+     * @throws IOException If an I/O error has occurred.
      */
     public void write(int val) throws IOException {
         bout.write(val);
@@ -680,8 +704,8 @@ public class ObjectOutputStream
      * Writes an array of bytes. This method will block until the bytes are
      * actually written.
      *
-     * @param   buf the data to be written
-     * @throws  IOException If an I/O error has occurred.
+     * @param buf the data to be written
+     * @throws IOException If an I/O error has occurred.
      */
     public void write(byte[] buf) throws IOException {
         bout.write(buf, 0, buf.length, false);
@@ -690,10 +714,10 @@ public class ObjectOutputStream
     /**
      * Writes a sub array of bytes.
      *
-     * @param   buf the data to be written
-     * @param   off the start offset in the data
-     * @param   len the number of bytes that are written
-     * @throws  IOException If an I/O error has occurred.
+     * @param buf the data to be written
+     * @param off the start offset in the data
+     * @param len the number of bytes that are written
+     * @throws IOException If an I/O error has occurred.
      */
     public void write(byte[] buf, int off, int len) throws IOException {
         if (buf == null) {
@@ -710,7 +734,7 @@ public class ObjectOutputStream
      * Flushes the stream. This will write any buffered output bytes and flush
      * through to the underlying stream.
      *
-     * @throws  IOException If an I/O error has occurred.
+     * @throws IOException If an I/O error has occurred.
      */
     public void flush() throws IOException {
         bout.flush();
@@ -720,8 +744,8 @@ public class ObjectOutputStream
      * Drain any buffered data in ObjectOutputStream.  Similar to flush but
      * does not propagate the flush to the underlying stream.
      *
-     * @throws  IOException if I/O errors occur while writing to the underlying
-     *          stream
+     * @throws IOException if I/O errors occur while writing to the underlying
+     *                     stream
      */
     protected void drain() throws IOException {
         bout.drain();
@@ -731,7 +755,7 @@ public class ObjectOutputStream
      * Closes the stream. This method must be called to release any resources
      * associated with the stream.
      *
-     * @throws  IOException If an I/O error has occurred.
+     * @throws IOException If an I/O error has occurred.
      */
     public void close() throws IOException {
         flush();
@@ -742,9 +766,9 @@ public class ObjectOutputStream
     /**
      * Writes a boolean.
      *
-     * @param   val the boolean to be written
-     * @throws  IOException if I/O errors occur while writing to the underlying
-     *          stream
+     * @param val the boolean to be written
+     * @throws IOException if I/O errors occur while writing to the underlying
+     *                     stream
      */
     public void writeBoolean(boolean val) throws IOException {
         bout.writeBoolean(val);
@@ -753,64 +777,64 @@ public class ObjectOutputStream
     /**
      * Writes an 8 bit byte.
      *
-     * @param   val the byte value to be written
-     * @throws  IOException if I/O errors occur while writing to the underlying
-     *          stream
+     * @param val the byte value to be written
+     * @throws IOException if I/O errors occur while writing to the underlying
+     *                     stream
      */
-    public void writeByte(int val) throws IOException  {
+    public void writeByte(int val) throws IOException {
         bout.writeByte(val);
     }
 
     /**
      * Writes a 16 bit short.
      *
-     * @param   val the short value to be written
-     * @throws  IOException if I/O errors occur while writing to the underlying
-     *          stream
+     * @param val the short value to be written
+     * @throws IOException if I/O errors occur while writing to the underlying
+     *                     stream
      */
-    public void writeShort(int val)  throws IOException {
+    public void writeShort(int val) throws IOException {
         bout.writeShort(val);
     }
 
     /**
      * Writes a 16 bit char.
      *
-     * @param   val the char value to be written
-     * @throws  IOException if I/O errors occur while writing to the underlying
-     *          stream
+     * @param val the char value to be written
+     * @throws IOException if I/O errors occur while writing to the underlying
+     *                     stream
      */
-    public void writeChar(int val)  throws IOException {
+    public void writeChar(int val) throws IOException {
         bout.writeChar(val);
     }
 
     /**
      * Writes a 32 bit int.
      *
-     * @param   val the integer value to be written
-     * @throws  IOException if I/O errors occur while writing to the underlying
-     *          stream
+     * @param val the integer value to be written
+     * @throws IOException if I/O errors occur while writing to the underlying
+     *                     stream
      */
-    public void writeInt(int val)  throws IOException {
+    public void writeInt(int val) throws IOException {
         bout.writeInt(val);
     }
 
     /**
      * Writes a 64 bit long.
      *
-     * @param   val the long value to be written
-     * @throws  IOException if I/O errors occur while writing to the underlying
-     *          stream
+     * @param val the long value to be written
+     * @throws IOException if I/O errors occur while writing to the underlying
+     *                     stream
      */
-    public void writeLong(long val)  throws IOException {
+    public void writeLong(long val) throws IOException {
         bout.writeLong(val);
     }
 
     /**
      * Writes a 32 bit float.
      *
-     * @param   val the float value to be written
-     * @throws  IOException if I/O errors occur while writing to the underlying
-     *          stream
+     * @param val the float value to be written
+     * @throws IOException if I/O errors occur while writing to the underlying
+     *                     stream
      */
     public void writeFloat(float val) throws IOException {
         bout.writeFloat(val);
@@ -819,9 +843,9 @@ public class ObjectOutputStream
     /**
      * Writes a 64 bit double.
      *
-     * @param   val the double value to be written
-     * @throws  IOException if I/O errors occur while writing to the underlying
-     *          stream
+     * @param val the double value to be written
+     * @throws IOException if I/O errors occur while writing to the underlying
+     *                     stream
      */
     public void writeDouble(double val) throws IOException {
         bout.writeDouble(val);
@@ -830,9 +854,9 @@ public class ObjectOutputStream
     /**
      * Writes a String as a sequence of bytes.
      *
-     * @param   str the String of bytes to be written
-     * @throws  IOException if I/O errors occur while writing to the underlying
-     *          stream
+     * @param str the String of bytes to be written
+     * @throws IOException if I/O errors occur while writing to the underlying
+     *                     stream
      */
     public void writeBytes(String str) throws IOException {
         bout.writeBytes(str);
@@ -841,9 +865,9 @@ public class ObjectOutputStream
     /**
      * Writes a String as a sequence of chars.
      *
-     * @param   str the String of chars to be written
-     * @throws  IOException if I/O errors occur while writing to the underlying
-     *          stream
+     * @param str the String of chars to be written
+     * @throws IOException if I/O errors occur while writing to the underlying
+     *                     stream
      */
     public void writeChars(String str) throws IOException {
         bout.writeChars(str);
@@ -858,9 +882,9 @@ public class ObjectOutputStream
      * is written into the stream as a String initially. Future writeObject()
      * calls write references to the string into the stream.
      *
-     * @param   str the String to be written
-     * @throws  IOException if I/O errors occur while writing to the underlying
-     *          stream
+     * @param str the String to be written
+     * @throws IOException if I/O errors occur while writing to the underlying
+     *                     stream
      */
     public void writeUTF(String str) throws IOException {
         bout.writeUTF(str);
@@ -877,109 +901,109 @@ public class ObjectOutputStream
         /**
          * Put the value of the named boolean field into the persistent field.
          *
-         * @param  name the name of the serializable field
-         * @param  val the value to assign to the field
+         * @param name the name of the serializable field
+         * @param val  the value to assign to the field
          * @throws IllegalArgumentException if <code>name</code> does not
-         * match the name of a serializable field for the class whose fields
-         * are being written, or if the type of the named field is not
-         * <code>boolean</code>
+         *                                  match the name of a serializable field for the class whose fields
+         *                                  are being written, or if the type of the named field is not
+         *                                  <code>boolean</code>
          */
         public abstract void put(String name, boolean val);
 
         /**
          * Put the value of the named byte field into the persistent field.
          *
-         * @param  name the name of the serializable field
-         * @param  val the value to assign to the field
+         * @param name the name of the serializable field
+         * @param val  the value to assign to the field
          * @throws IllegalArgumentException if <code>name</code> does not
-         * match the name of a serializable field for the class whose fields
-         * are being written, or if the type of the named field is not
-         * <code>byte</code>
+         *                                  match the name of a serializable field for the class whose fields
+         *                                  are being written, or if the type of the named field is not
+         *                                  <code>byte</code>
          */
         public abstract void put(String name, byte val);
 
         /**
          * Put the value of the named char field into the persistent field.
          *
-         * @param  name the name of the serializable field
-         * @param  val the value to assign to the field
+         * @param name the name of the serializable field
+         * @param val  the value to assign to the field
          * @throws IllegalArgumentException if <code>name</code> does not
-         * match the name of a serializable field for the class whose fields
-         * are being written, or if the type of the named field is not
-         * <code>char</code>
+         *                                  match the name of a serializable field for the class whose fields
+         *                                  are being written, or if the type of the named field is not
+         *                                  <code>char</code>
          */
         public abstract void put(String name, char val);
 
         /**
          * Put the value of the named short field into the persistent field.
          *
-         * @param  name the name of the serializable field
-         * @param  val the value to assign to the field
+         * @param name the name of the serializable field
+         * @param val  the value to assign to the field
          * @throws IllegalArgumentException if <code>name</code> does not
-         * match the name of a serializable field for the class whose fields
-         * are being written, or if the type of the named field is not
-         * <code>short</code>
+         *                                  match the name of a serializable field for the class whose fields
+         *                                  are being written, or if the type of the named field is not
+         *                                  <code>short</code>
          */
         public abstract void put(String name, short val);
 
         /**
          * Put the value of the named int field into the persistent field.
          *
-         * @param  name the name of the serializable field
-         * @param  val the value to assign to the field
+         * @param name the name of the serializable field
+         * @param val  the value to assign to the field
          * @throws IllegalArgumentException if <code>name</code> does not
-         * match the name of a serializable field for the class whose fields
-         * are being written, or if the type of the named field is not
-         * <code>int</code>
+         *                                  match the name of a serializable field for the class whose fields
+         *                                  are being written, or if the type of the named field is not
+         *                                  <code>int</code>
          */
         public abstract void put(String name, int val);
 
         /**
          * Put the value of the named long field into the persistent field.
          *
-         * @param  name the name of the serializable field
-         * @param  val the value to assign to the field
+         * @param name the name of the serializable field
+         * @param val  the value to assign to the field
          * @throws IllegalArgumentException if <code>name</code> does not
-         * match the name of a serializable field for the class whose fields
-         * are being written, or if the type of the named field is not
-         * <code>long</code>
+         *                                  match the name of a serializable field for the class whose fields
+         *                                  are being written, or if the type of the named field is not
+         *                                  <code>long</code>
          */
         public abstract void put(String name, long val);
 
         /**
          * Put the value of the named float field into the persistent field.
          *
-         * @param  name the name of the serializable field
-         * @param  val the value to assign to the field
+         * @param name the name of the serializable field
+         * @param val  the value to assign to the field
          * @throws IllegalArgumentException if <code>name</code> does not
-         * match the name of a serializable field for the class whose fields
-         * are being written, or if the type of the named field is not
-         * <code>float</code>
+         *                                  match the name of a serializable field for the class whose fields
+         *                                  are being written, or if the type of the named field is not
+         *                                  <code>float</code>
          */
         public abstract void put(String name, float val);
 
         /**
          * Put the value of the named double field into the persistent field.
          *
-         * @param  name the name of the serializable field
-         * @param  val the value to assign to the field
+         * @param name the name of the serializable field
+         * @param val  the value to assign to the field
          * @throws IllegalArgumentException if <code>name</code> does not
-         * match the name of a serializable field for the class whose fields
-         * are being written, or if the type of the named field is not
-         * <code>double</code>
+         *                                  match the name of a serializable field for the class whose fields
+         *                                  are being written, or if the type of the named field is not
+         *                                  <code>double</code>
          */
         public abstract void put(String name, double val);
 
         /**
          * Put the value of the named Object field into the persistent field.
          *
-         * @param  name the name of the serializable field
-         * @param  val the value to assign to the field
-         *         (which may be <code>null</code>)
+         * @param name the name of the serializable field
+         * @param val  the value to assign to the field
+         *             (which may be <code>null</code>)
          * @throws IllegalArgumentException if <code>name</code> does not
-         * match the name of a serializable field for the class whose fields
-         * are being written, or if the type of the named field is not a
-         * reference type
+         *                                  match the name of a serializable field for the class whose fields
+         *                                  are being written, or if the type of the named field is not a
+         *                                  reference type
          */
         public abstract void put(String name, Object val);
 
@@ -988,18 +1012,18 @@ public class ObjectOutputStream
          * which must be the same stream that produced this
          * <code>PutField</code> object.
          *
-         * @param  out the stream to write the data and fields to
-         * @throws IOException if I/O errors occur while writing to the
-         *         underlying stream
+         * @param out the stream to write the data and fields to
+         * @throws IOException              if I/O errors occur while writing to the
+         *                                  underlying stream
          * @throws IllegalArgumentException if the specified stream is not
-         *         the same stream that produced this <code>PutField</code>
-         *         object
+         *                                  the same stream that produced this <code>PutField</code>
+         *                                  object
          * @deprecated This method does not write the values contained by this
-         *         <code>PutField</code> object in a proper format, and may
-         *         result in corruption of the serialization stream.  The
-         *         correct way to write <code>PutField</code> data is by
-         *         calling the {@link java.io.ObjectOutputStream#writeFields()}
-         *         method.
+         * <code>PutField</code> object in a proper format, and may
+         * result in corruption of the serialization stream.  The
+         * correct way to write <code>PutField</code> data is by
+         * calling the {@link java.io.ObjectOutputStream#writeFields()}
+         * method.
          */
         @Deprecated
         public abstract void write(ObjectOutput out) throws IOException;
@@ -1063,27 +1087,26 @@ public class ObjectOutputStream
      */
     private static boolean auditSubclass(final Class subcl) {
         Boolean result = AccessController.doPrivileged(
-            new PrivilegedAction<Boolean>() {
-                public Boolean run() {
-                    for (Class cl = subcl;
-                         cl != ObjectOutputStream.class;
-                         cl = cl.getSuperclass())
-                    {
-                        try {
-                            cl.getDeclaredMethod(
-                                "writeUnshared", new Class[] { Object.class });
-                            return Boolean.FALSE;
-                        } catch (NoSuchMethodException ex) {
+                new PrivilegedAction<Boolean>() {
+                    public Boolean run() {
+                        for (Class cl = subcl;
+                             cl != ObjectOutputStream.class;
+                             cl = cl.getSuperclass()) {
+                            try {
+                                cl.getDeclaredMethod(
+                                        "writeUnshared", new Class[]{Object.class});
+                                return Boolean.FALSE;
+                            } catch (NoSuchMethodException ex) {
+                            }
+                            try {
+                                cl.getDeclaredMethod("putFields", (Class[]) null);
+                                return Boolean.FALSE;
+                            } catch (NoSuchMethodException ex) {
+                            }
                         }
-                        try {
-                            cl.getDeclaredMethod("putFields", (Class[]) null);
-                            return Boolean.FALSE;
-                        } catch (NoSuchMethodException ex) {
-                        }
+                        return Boolean.TRUE;
                     }
-                    return Boolean.TRUE;
                 }
-            }
         );
         return result.booleanValue();
     }
@@ -1100,8 +1123,7 @@ public class ObjectOutputStream
      * Underlying writeObject/writeUnshared implementation.
      */
     private void writeObject0(Object obj, boolean unshared)
-        throws IOException
-    {
+            throws IOException {
         boolean oldMode = bout.setBlockDataMode(false);
         depth++;
         try {
@@ -1125,14 +1147,13 @@ public class ObjectOutputStream
             Object orig = obj;
             Class cl = obj.getClass();
             ObjectStreamClass desc;
-            for (;;) {
+            for (; ; ) {
                 // REMIND: skip this check for strings/arrays?
                 Class repCl;
                 desc = ObjectStreamClass.lookup(cl, true);
                 if (!desc.hasWriteReplaceMethod() ||
-                    (obj = desc.invokeWriteReplace(obj)) == null ||
-                    (repCl = obj.getClass()) == cl)
-                {
+                        (obj = desc.invokeWriteReplace(obj)) == null ||
+                        (repCl = obj.getClass()) == cl) {
                     break;
                 }
                 cl = repCl;
@@ -1176,7 +1197,7 @@ public class ObjectOutputStream
             } else {
                 if (extendedDebugInfo) {
                     throw new NotSerializableException(
-                        cl.getName() + "\n" + debugInfoStack.toString());
+                            cl.getName() + "\n" + debugInfoStack.toString());
                 } else {
                     throw new NotSerializableException(cl.getName());
                 }
@@ -1215,8 +1236,7 @@ public class ObjectOutputStream
      * Writes representation of given class descriptor to stream.
      */
     private void writeClassDesc(ObjectStreamClass desc, boolean unshared)
-        throws IOException
-    {
+            throws IOException {
         int handle;
         if (desc == null) {
             writeNull();
@@ -1232,15 +1252,14 @@ public class ObjectOutputStream
     private boolean isCustomSubclass() {
         // Return true if this class is a custom subclass of ObjectOutputStream
         return getClass().getClassLoader()
-                   != ObjectOutputStream.class.getClassLoader();
+                != ObjectOutputStream.class.getClassLoader();
     }
 
     /**
      * Writes class descriptor representing a dynamic proxy class to stream.
      */
     private void writeProxyDesc(ObjectStreamClass desc, boolean unshared)
-        throws IOException
-    {
+            throws IOException {
         bout.writeByte(TC_PROXYCLASSDESC);
         handles.assign(unshared ? null : desc);
 
@@ -1267,8 +1286,7 @@ public class ObjectOutputStream
      * proxy) class to stream.
      */
     private void writeNonProxyDesc(ObjectStreamClass desc, boolean unshared)
-        throws IOException
-    {
+            throws IOException {
         bout.writeByte(TC_CLASSDESC);
         handles.assign(unshared ? null : desc);
 
@@ -1313,8 +1331,7 @@ public class ObjectOutputStream
     private void writeArray(Object array,
                             ObjectStreamClass desc,
                             boolean unshared)
-        throws IOException
-    {
+            throws IOException {
         bout.writeByte(TC_ARRAY);
         writeClassDesc(desc, false);
         handles.assign(unshared ? null : array);
@@ -1362,14 +1379,14 @@ public class ObjectOutputStream
             bout.writeInt(len);
             if (extendedDebugInfo) {
                 debugInfoStack.push(
-                    "array (class \"" + array.getClass().getName() +
-                    "\", size: " + len  + ")");
+                        "array (class \"" + array.getClass().getName() +
+                                "\", size: " + len + ")");
             }
             try {
                 for (int i = 0; i < len; i++) {
                     if (extendedDebugInfo) {
                         debugInfoStack.push(
-                            "element of array (index: " + i + ")");
+                                "element of array (index: " + i + ")");
                     }
                     try {
                         writeObject0(objs[i], false);
@@ -1393,8 +1410,7 @@ public class ObjectOutputStream
     private void writeEnum(Enum en,
                            ObjectStreamClass desc,
                            boolean unshared)
-        throws IOException
-    {
+            throws IOException {
         bout.writeByte(TC_ENUM);
         ObjectStreamClass sdesc = desc.getSuperDesc();
         writeClassDesc((sdesc.forClass() == Enum.class) ? desc : sdesc, false);
@@ -1410,12 +1426,11 @@ public class ObjectOutputStream
     private void writeOrdinaryObject(Object obj,
                                      ObjectStreamClass desc,
                                      boolean unshared)
-        throws IOException
-    {
+            throws IOException {
         if (extendedDebugInfo) {
             debugInfoStack.push(
-                (depth == 1 ? "root " : "") + "object (class \"" +
-                obj.getClass().getName() + "\", " + obj.toString() + ")");
+                    (depth == 1 ? "root " : "") + "object (class \"" +
+                            obj.getClass().getName() + "\", " + obj.toString() + ")");
         }
         try {
             desc.checkSerialize();
@@ -1472,8 +1487,7 @@ public class ObjectOutputStream
      * superclass to subclass.
      */
     private void writeSerialData(Object obj, ObjectStreamClass desc)
-        throws IOException
-    {
+            throws IOException {
         ObjectStreamClass.ClassDataSlot[] slots = desc.getClassDataLayout();
         for (int i = 0; i < slots.length; i++) {
             ObjectStreamClass slotDesc = slots[i].desc;
@@ -1484,8 +1498,8 @@ public class ObjectOutputStream
 
                 if (extendedDebugInfo) {
                     debugInfoStack.push(
-                        "custom writeObject data (class \"" +
-                        slotDesc.getName() + "\")");
+                            "custom writeObject data (class \"" +
+                                    slotDesc.getName() + "\")");
                 }
                 try {
                     curContext = new SerialCallbackContext(obj, slotDesc);
@@ -1514,8 +1528,7 @@ public class ObjectOutputStream
      * write, and in which order they should be written.
      */
     private void defaultWriteFields(Object obj, ObjectStreamClass desc)
-        throws IOException
-    {
+            throws IOException {
         // REMIND: perform conservative isInstance check here?
         desc.checkDefaultSerialize();
 
@@ -1533,13 +1546,13 @@ public class ObjectOutputStream
         for (int i = 0; i < objVals.length; i++) {
             if (extendedDebugInfo) {
                 debugInfoStack.push(
-                    "field (class \"" + desc.getName() + "\", name: \"" +
-                    fields[numPrimFields + i].getName() + "\", type: \"" +
-                    fields[numPrimFields + i].getType() + "\")");
+                        "field (class \"" + desc.getName() + "\", name: \"" +
+                                fields[numPrimFields + i].getName() + "\", type: \"" +
+                                fields[numPrimFields + i].getType() + "\")");
             }
             try {
                 writeObject0(objVals[i],
-                             fields[numPrimFields + i].isUnshared());
+                        fields[numPrimFields + i].isUnshared());
             } finally {
                 if (extendedDebugInfo) {
                     debugInfoStack.pop();
@@ -1595,11 +1608,17 @@ public class ObjectOutputStream
      */
     private class PutFieldImpl extends PutField {
 
-        /** class descriptor describing serializable fields */
+        /**
+         * class descriptor describing serializable fields
+         */
         private final ObjectStreamClass desc;
-        /** primitive field values */
+        /**
+         * primitive field values
+         */
         private final byte[] primVals;
-        /** object field values */
+        /**
+         * object field values
+         */
         private final Object[] objVals;
 
         /**
@@ -1692,13 +1711,13 @@ public class ObjectOutputStream
             for (int i = 0; i < objVals.length; i++) {
                 if (extendedDebugInfo) {
                     debugInfoStack.push(
-                        "field (class \"" + desc.getName() + "\", name: \"" +
-                        fields[numPrimFields + i].getName() + "\", type: \"" +
-                        fields[numPrimFields + i].getType() + "\")");
+                            "field (class \"" + desc.getName() + "\", name: \"" +
+                                    fields[numPrimFields + i].getName() + "\", type: \"" +
+                                    fields[numPrimFields + i].getType() + "\")");
                 }
                 try {
                     writeObject0(objVals[i],
-                                 fields[numPrimFields + i].isUnshared());
+                            fields[numPrimFields + i].isUnshared());
                 } finally {
                     if (extendedDebugInfo) {
                         debugInfoStack.pop();
@@ -1717,7 +1736,7 @@ public class ObjectOutputStream
             ObjectStreamField field = desc.getField(name, type);
             if (field == null) {
                 throw new IllegalArgumentException("no such field " + name +
-                                                   " with type " + type);
+                        " with type " + type);
             }
             return field.getOffset();
         }
@@ -1730,30 +1749,49 @@ public class ObjectOutputStream
      * for details).
      */
     private static class BlockDataOutputStream
-        extends OutputStream implements DataOutput
-    {
-        /** maximum data block length */
+            extends OutputStream implements DataOutput {
+        /**
+         * maximum data block length
+         */
         private static final int MAX_BLOCK_SIZE = 1024;
-        /** maximum data block header length */
+        /**
+         * maximum data block header length
+         */
         private static final int MAX_HEADER_SIZE = 5;
-        /** (tunable) length of char buffer (for writing strings) */
+        /**
+         * (tunable) length of char buffer (for writing strings)
+         */
         private static final int CHAR_BUF_SIZE = 256;
 
-        /** buffer for writing general/block data */
+        /**
+         * buffer for writing general/block data
+         */
         private final byte[] buf = new byte[MAX_BLOCK_SIZE];
-        /** buffer for writing block data headers */
+        /**
+         * buffer for writing block data headers
+         */
         private final byte[] hbuf = new byte[MAX_HEADER_SIZE];
-        /** char buffer for fast string writes */
+        /**
+         * char buffer for fast string writes
+         */
         private final char[] cbuf = new char[CHAR_BUF_SIZE];
 
-        /** block data mode */
+        /**
+         * block data mode
+         */
         private boolean blkmode = false;
-        /** current offset into buf */
+        /**
+         * current offset into buf
+         */
         private int pos = 0;
 
-        /** underlying output stream */
+        /**
+         * underlying output stream
+         */
         private final OutputStream out;
-        /** loopback stream (for data writes that span data blocks) */
+        /**
+         * loopback stream (for data writes that span data blocks)
+         */
         private final DataOutputStream dout;
 
         /**
@@ -1828,8 +1866,7 @@ public class ObjectOutputStream
          * original byte array).
          */
         void write(byte[] b, int off, int len, boolean copy)
-            throws IOException
-        {
+                throws IOException {
             if (!(copy || blkmode)) {           // write directly
                 drain();
                 out.write(b, off, len);
@@ -2440,7 +2477,7 @@ public class ObjectOutputStream
          * Removes the object at the top of enclosed list.
          */
         void pop() {
-            stack.remove(stack.size()-1);
+            stack.remove(stack.size() - 1);
         }
 
         /**
@@ -2456,8 +2493,8 @@ public class ObjectOutputStream
         public String toString() {
             StringBuilder buffer = new StringBuilder();
             if (!stack.isEmpty()) {
-                for(int i = stack.size(); i > 0; i-- ) {
-                    buffer.append(stack.get(i-1) + ((i != 1) ? "\n" : ""));
+                for (int i = stack.size(); i > 0; i--) {
+                    buffer.append(stack.get(i - 1) + ((i != 1) ? "\n" : ""));
                 }
             }
             return buffer.toString();

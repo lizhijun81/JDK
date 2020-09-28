@@ -47,64 +47,62 @@ import org.w3c.dom.Element;
 /**
  * The element declaration schema component traverser.
  * <element
- *   abstract = boolean : false
- *   block = (#all | List of (extension | restriction | substitution))
- *   default = string
- *   final = (#all | List of (extension | restriction))
- *   fixed = string
- *   form = (qualified | unqualified)
- *   id = ID
- *   maxOccurs = (nonNegativeInteger | unbounded)  : 1
- *   minOccurs = nonNegativeInteger : 1
- *   name = NCName
- *   nillable = boolean : false
- *   ref = QName
- *   substitutionGroup = QName
- *   type = QName
- *   {any attributes with non-schema namespace . . .}>
- *   Content: (annotation?, ((simpleType | complexType)?, (unique | key | keyref)*))
+ * abstract = boolean : false
+ * block = (#all | List of (extension | restriction | substitution))
+ * default = string
+ * final = (#all | List of (extension | restriction))
+ * fixed = string
+ * form = (qualified | unqualified)
+ * id = ID
+ * maxOccurs = (nonNegativeInteger | unbounded)  : 1
+ * minOccurs = nonNegativeInteger : 1
+ * name = NCName
+ * nillable = boolean : false
+ * ref = QName
+ * substitutionGroup = QName
+ * type = QName
+ * {any attributes with non-schema namespace . . .}>
+ * Content: (annotation?, ((simpleType | complexType)?, (unique | key | keyref)*))
  * </element>
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
- *
  * @version $Id: XSDElementTraverser.java,v 1.9 2010-11-01 04:40:02 joehw Exp $
+ * @xerces.internal
  */
 class XSDElementTraverser extends XSDAbstractTraverser {
 
-    protected final XSElementDecl  fTempElementDecl  = new XSElementDecl();
+    protected final XSElementDecl fTempElementDecl = new XSElementDecl();
 
     // this controls what happens when a local element is encountered.
     // We may not encounter all local elements when first parsing.
     boolean fDeferTraversingLocalElements;
 
-    XSDElementTraverser (XSDHandler handler,
-            XSAttributeChecker gAttrCheck) {
+    XSDElementTraverser(XSDHandler handler,
+                        XSAttributeChecker gAttrCheck) {
         super(handler, gAttrCheck);
     }
 
     /**
      * Traverse a locally declared element (or an element reference).
-     *
+     * <p>
      * To handle the recursive cases efficiently, we delay the traversal
      * and return an empty particle node. We'll fill in this particle node
      * later after we've done with all the global declarations.
      * This method causes a number of data structures in the schema handler to be filled in.
      *
-     * @param  elmDecl
-     * @param  schemaDoc
-     * @param  grammar
+     * @param elmDecl
+     * @param schemaDoc
+     * @param grammar
      * @return the particle
      */
     XSParticleDecl traverseLocal(Element elmDecl,
-            XSDocumentInfo schemaDoc,
-            SchemaGrammar grammar,
-            int allContextFlags,
-            XSObject parent) {
+                                 XSDocumentInfo schemaDoc,
+                                 SchemaGrammar grammar,
+                                 int allContextFlags,
+                                 XSObject parent) {
 
         XSParticleDecl particle = null;
-        if (fSchemaHandler.fDeclPool !=null) {
+        if (fSchemaHandler.fDeclPool != null) {
             particle = fSchemaHandler.fDeclPool.getParticleDecl();
         } else {
             particle = new XSParticleDecl();
@@ -121,8 +119,7 @@ class XSDElementTraverser extends XSDAbstractTraverser {
                     int m = Integer.parseInt(XMLChar.trim(min));
                     if (m >= 0)
                         particle.fMinOccurs = m;
-                }
-                catch (NumberFormatException ex) {
+                } catch (NumberFormatException ex) {
                 }
             }
             fSchemaHandler.fillInLocalElemInfo(elmDecl, schemaDoc, allContextFlags, parent, particle);
@@ -138,19 +135,19 @@ class XSDElementTraverser extends XSDAbstractTraverser {
 
     /**
      * Traverse a locally declared element (or an element reference).
-     *
+     * <p>
      * This is the real traversal method. It's called after we've done with
      * all the global declarations.
      *
-     * @param  index
+     * @param index
      */
     protected void traverseLocal(XSParticleDecl particle,
-            Element elmDecl,
-            XSDocumentInfo schemaDoc,
-            SchemaGrammar grammar,
-            int allContextFlags,
-            XSObject parent,
-            String[] localNSDecls) {
+                                 Element elmDecl,
+                                 XSDocumentInfo schemaDoc,
+                                 SchemaGrammar grammar,
+                                 int allContextFlags,
+                                 XSObject parent,
+                                 String[] localNSDecls) {
 
         if (localNSDecls != null) {
             schemaDoc.fNamespaceSupport.setEffectiveContext(localNSDecls);
@@ -160,21 +157,20 @@ class XSDElementTraverser extends XSDAbstractTraverser {
         Object[] attrValues = fAttrChecker.checkAttributes(elmDecl, false, schemaDoc);
 
         QName refAtt = (QName) attrValues[XSAttributeChecker.ATTIDX_REF];
-        XInt  minAtt = (XInt)  attrValues[XSAttributeChecker.ATTIDX_MINOCCURS];
-        XInt  maxAtt = (XInt)  attrValues[XSAttributeChecker.ATTIDX_MAXOCCURS];
+        XInt minAtt = (XInt) attrValues[XSAttributeChecker.ATTIDX_MINOCCURS];
+        XInt maxAtt = (XInt) attrValues[XSAttributeChecker.ATTIDX_MAXOCCURS];
 
         XSElementDecl element = null;
         XSAnnotationImpl annotation = null;
         if (elmDecl.getAttributeNode(SchemaSymbols.ATT_REF) != null) {
             if (refAtt != null) {
-                element = (XSElementDecl)fSchemaHandler.getGlobalDecl(schemaDoc, XSDHandler.ELEMENT_TYPE, refAtt, elmDecl);
+                element = (XSElementDecl) fSchemaHandler.getGlobalDecl(schemaDoc, XSDHandler.ELEMENT_TYPE, refAtt, elmDecl);
 
                 Element child = DOMUtil.getFirstChildElement(elmDecl);
                 if (child != null && DOMUtil.getLocalName(child).equals(SchemaSymbols.ELT_ANNOTATION)) {
                     annotation = traverseAnnotationDecl(child, attrValues, false, schemaDoc);
                     child = DOMUtil.getNextSiblingElement(child);
-                }
-                else {
+                } else {
                     String text = DOMUtil.getSyntheticAnnotation(elmDecl);
                     if (text != null) {
                         annotation = traverseSyntheticAnnotation(elmDecl, text, attrValues, false, schemaDoc);
@@ -199,8 +195,7 @@ class XSDElementTraverser extends XSDAbstractTraverser {
         if (element != null) {
             particle.fType = XSParticleDecl.PARTICLE_ELEMENT;
             particle.fValue = element;
-        }
-        else {
+        } else {
             particle.fType = XSParticleDecl.PARTICLE_EMPTY;
         }
         if (refAtt != null) {
@@ -216,9 +211,9 @@ class XSDElementTraverser extends XSDAbstractTraverser {
             particle.fAnnotations = ((element != null) ? element.fAnnotations
                     : XSObjectListImpl.EMPTY_LIST);
         }
-        Long defaultVals = (Long)attrValues[XSAttributeChecker.ATTIDX_FROMDEFAULT];
+        Long defaultVals = (Long) attrValues[XSAttributeChecker.ATTIDX_FROMDEFAULT];
         checkOccurrences(particle, SchemaSymbols.ELT_ELEMENT,
-                (Element)elmDecl.getParentNode(), allContextFlags,
+                (Element) elmDecl.getParentNode(), allContextFlags,
                 defaultVals.longValue());
 
         fAttrChecker.returnAttrArray(attrValues, schemaDoc);
@@ -227,14 +222,14 @@ class XSDElementTraverser extends XSDAbstractTraverser {
     /**
      * Traverse a globally declared element.
      *
-     * @param  elmDecl
-     * @param  schemaDoc
-     * @param  grammar
+     * @param elmDecl
+     * @param schemaDoc
+     * @param grammar
      * @return the element declaration
      */
     XSElementDecl traverseGlobal(Element elmDecl,
-            XSDocumentInfo schemaDoc,
-            SchemaGrammar grammar) {
+                                 XSDocumentInfo schemaDoc,
+                                 SchemaGrammar grammar) {
 
         // General Attribute Checking'
 
@@ -248,35 +243,35 @@ class XSDElementTraverser extends XSDAbstractTraverser {
     /**
      * Traverse a globally declared element.
      *
-     * @param  elmDecl
-     * @param  attrValues
-     * @param  schemaDoc
-     * @param  grammar
-     * @param  isGlobal
+     * @param elmDecl
+     * @param attrValues
+     * @param schemaDoc
+     * @param grammar
+     * @param isGlobal
      * @return the element declaration
      */
     XSElementDecl traverseNamedElement(Element elmDecl,
-            Object[] attrValues,
-            XSDocumentInfo schemaDoc,
-            SchemaGrammar grammar,
-            boolean isGlobal,
-            XSObject parent) {
+                                       Object[] attrValues,
+                                       XSDocumentInfo schemaDoc,
+                                       SchemaGrammar grammar,
+                                       boolean isGlobal,
+                                       XSObject parent) {
 
-        Boolean abstractAtt  = (Boolean) attrValues[XSAttributeChecker.ATTIDX_ABSTRACT];
-        XInt    blockAtt     = (XInt)    attrValues[XSAttributeChecker.ATTIDX_BLOCK];
-        String  defaultAtt   = (String)  attrValues[XSAttributeChecker.ATTIDX_DEFAULT];
-        XInt    finalAtt     = (XInt)    attrValues[XSAttributeChecker.ATTIDX_FINAL];
-        String  fixedAtt     = (String)  attrValues[XSAttributeChecker.ATTIDX_FIXED];
-        XInt    formAtt      = (XInt)    attrValues[XSAttributeChecker.ATTIDX_FORM];
-        String  nameAtt      = (String)  attrValues[XSAttributeChecker.ATTIDX_NAME];
-        Boolean nillableAtt  = (Boolean) attrValues[XSAttributeChecker.ATTIDX_NILLABLE];
-        QName   subGroupAtt  = (QName)   attrValues[XSAttributeChecker.ATTIDX_SUBSGROUP];
-        QName   typeAtt      = (QName)   attrValues[XSAttributeChecker.ATTIDX_TYPE];
+        Boolean abstractAtt = (Boolean) attrValues[XSAttributeChecker.ATTIDX_ABSTRACT];
+        XInt blockAtt = (XInt) attrValues[XSAttributeChecker.ATTIDX_BLOCK];
+        String defaultAtt = (String) attrValues[XSAttributeChecker.ATTIDX_DEFAULT];
+        XInt finalAtt = (XInt) attrValues[XSAttributeChecker.ATTIDX_FINAL];
+        String fixedAtt = (String) attrValues[XSAttributeChecker.ATTIDX_FIXED];
+        XInt formAtt = (XInt) attrValues[XSAttributeChecker.ATTIDX_FORM];
+        String nameAtt = (String) attrValues[XSAttributeChecker.ATTIDX_NAME];
+        Boolean nillableAtt = (Boolean) attrValues[XSAttributeChecker.ATTIDX_NILLABLE];
+        QName subGroupAtt = (QName) attrValues[XSAttributeChecker.ATTIDX_SUBSGROUP];
+        QName typeAtt = (QName) attrValues[XSAttributeChecker.ATTIDX_TYPE];
 
         // Step 1: get declaration information
 
         XSElementDecl element = null;
-        if (fSchemaHandler.fDeclPool !=null) {
+        if (fSchemaHandler.fDeclPool != null) {
             element = fSchemaHandler.fDeclPool.getElementDecl();
         } else {
             element = new XSElementDecl();
@@ -289,10 +284,9 @@ class XSDElementTraverser extends XSDAbstractTraverser {
         if (isGlobal) {
             element.fTargetNamespace = schemaDoc.fTargetNamespace;
             element.setIsGlobal();
-        }
-        else {
+        } else {
             if (parent instanceof XSComplexTypeDecl)
-                element.setIsLocal((XSComplexTypeDecl)parent);
+                element.setIsLocal((XSComplexTypeDecl) parent);
 
             if (formAtt != null) {
                 if (formAtt.intValue() == SchemaSymbols.FORM_QUALIFIED)
@@ -307,27 +301,27 @@ class XSDElementTraverser extends XSDAbstractTraverser {
         }
 
         // get 'block', 'final', 'nillable', 'abstract'
-         if (blockAtt == null) {
-             // use defaults
-             element.fBlock = schemaDoc.fBlockDefault;
-             // discard valid Block 'Default' values that are invalid for Block
-             // respect #all
-             if (element.fBlock != XSConstants.DERIVATION_ALL) {
-                 element.fBlock &= (XSConstants.DERIVATION_EXTENSION | XSConstants.DERIVATION_RESTRICTION | XSConstants.DERIVATION_SUBSTITUTION);
-             }
-         } else {
-             // use specified values
-             element.fBlock = blockAtt.shortValue();
-             // check for valid values
-             if ((element.fBlock != XSConstants.DERIVATION_ALL)
-                 &&
-                 ((element.fBlock | XSConstants.DERIVATION_EXTENSION_RESTRICTION_SUBSTITION)
-                     != XSConstants.DERIVATION_EXTENSION_RESTRICTION_SUBSTITION)) {
-                 reportSchemaError(
-                         "s4s-att-invalid-value",
-                         new Object[]{element.fName, "block", "must be (#all | List of (extension | restriction | substitution))"},
-                         elmDecl);
-             }
+        if (blockAtt == null) {
+            // use defaults
+            element.fBlock = schemaDoc.fBlockDefault;
+            // discard valid Block 'Default' values that are invalid for Block
+            // respect #all
+            if (element.fBlock != XSConstants.DERIVATION_ALL) {
+                element.fBlock &= (XSConstants.DERIVATION_EXTENSION | XSConstants.DERIVATION_RESTRICTION | XSConstants.DERIVATION_SUBSTITUTION);
+            }
+        } else {
+            // use specified values
+            element.fBlock = blockAtt.shortValue();
+            // check for valid values
+            if ((element.fBlock != XSConstants.DERIVATION_ALL)
+                    &&
+                    ((element.fBlock | XSConstants.DERIVATION_EXTENSION_RESTRICTION_SUBSTITION)
+                            != XSConstants.DERIVATION_EXTENSION_RESTRICTION_SUBSTITION)) {
+                reportSchemaError(
+                        "s4s-att-invalid-value",
+                        new Object[]{element.fName, "block", "must be (#all | List of (extension | restriction | substitution))"},
+                        elmDecl);
+            }
         }
 
         element.fFinal = finalAtt == null ? schemaDoc.fFinalDefault : finalAtt.shortValue();
@@ -354,17 +348,16 @@ class XSDElementTraverser extends XSDAbstractTraverser {
 
         // get 'substitutionGroup affiliation'
         if (subGroupAtt != null) {
-            element.fSubGroup = (XSElementDecl)fSchemaHandler.getGlobalDecl(schemaDoc, XSDHandler.ELEMENT_TYPE, subGroupAtt, elmDecl);
+            element.fSubGroup = (XSElementDecl) fSchemaHandler.getGlobalDecl(schemaDoc, XSDHandler.ELEMENT_TYPE, subGroupAtt, elmDecl);
         }
 
         // get 'annotation'
         Element child = DOMUtil.getFirstChildElement(elmDecl);
         XSAnnotationImpl annotation = null;
-        if(child != null && DOMUtil.getLocalName(child).equals(SchemaSymbols.ELT_ANNOTATION)) {
+        if (child != null && DOMUtil.getLocalName(child).equals(SchemaSymbols.ELT_ANNOTATION)) {
             annotation = traverseAnnotationDecl(child, attrValues, false, schemaDoc);
             child = DOMUtil.getNextSiblingElement(child);
-        }
-        else {
+        } else {
             String text = DOMUtil.getSyntheticAnnotation(elmDecl);
             if (text != null) {
                 annotation = traverseSyntheticAnnotation(elmDecl, text, attrValues, false, schemaDoc);
@@ -374,7 +367,7 @@ class XSDElementTraverser extends XSDAbstractTraverser {
         XSObjectList annotations;
         if (annotation != null) {
             annotations = new XSObjectListImpl();
-            ((XSObjectListImpl)annotations).addXSObject (annotation);
+            ((XSObjectListImpl) annotations).addXSObject(annotation);
         } else {
             annotations = XSObjectListImpl.EMPTY_LIST;
         }
@@ -392,8 +385,7 @@ class XSDElementTraverser extends XSDAbstractTraverser {
                 elementType = fSchemaHandler.fComplexTypeTraverser.traverseLocal(child, schemaDoc, grammar);
                 haveAnonType = true;
                 child = DOMUtil.getNextSiblingElement(child);
-            }
-            else if (childName.equals(SchemaSymbols.ELT_SIMPLETYPE)) {
+            } else if (childName.equals(SchemaSymbols.ELT_SIMPLETYPE)) {
                 elementType = fSchemaHandler.fSimpleTypeTraverser.traverseLocal(child, schemaDoc, grammar);
                 haveAnonType = true;
                 child = DOMUtil.getNextSiblingElement(child);
@@ -402,7 +394,7 @@ class XSDElementTraverser extends XSDAbstractTraverser {
 
         // Handler type attribute
         if (elementType == null && typeAtt != null) {
-            elementType = (XSTypeDefinition)fSchemaHandler.getGlobalDecl(schemaDoc, XSDHandler.TYPEDECL_TYPE, typeAtt, elmDecl);
+            elementType = (XSTypeDefinition) fSchemaHandler.getGlobalDecl(schemaDoc, XSDHandler.TYPEDECL_TYPE, typeAtt, elmDecl);
             if (elementType == null) {
                 element.fUnresolvedTypeName = typeAtt;
             }
@@ -435,12 +427,12 @@ class XSDElementTraverser extends XSDAbstractTraverser {
                     // because it has global scope
                     DOMUtil.setHidden(child, fSchemaHandler.fHiddenNodes);
                     fSchemaHandler.fUniqueOrKeyTraverser.traverse(child, element, schemaDoc, grammar);
-                    if(DOMUtil.getAttrValue(child, SchemaSymbols.ATT_NAME).length() != 0 ) {
+                    if (DOMUtil.getAttrValue(child, SchemaSymbols.ATT_NAME).length() != 0) {
                         fSchemaHandler.checkForDuplicateNames(
-                                (schemaDoc.fTargetNamespace == null) ? ","+DOMUtil.getAttrValue(child, SchemaSymbols.ATT_NAME)
-                                        : schemaDoc.fTargetNamespace+","+ DOMUtil.getAttrValue(child, SchemaSymbols.ATT_NAME),
-                                        fSchemaHandler.ATTRIBUTE_TYPE, fSchemaHandler.getIDRegistry(), fSchemaHandler.getIDRegistry_sub(),
-                                        child, schemaDoc);
+                                (schemaDoc.fTargetNamespace == null) ? "," + DOMUtil.getAttrValue(child, SchemaSymbols.ATT_NAME)
+                                        : schemaDoc.fTargetNamespace + "," + DOMUtil.getAttrValue(child, SchemaSymbols.ATT_NAME),
+                                fSchemaHandler.ATTRIBUTE_TYPE, fSchemaHandler.getIDRegistry(), fSchemaHandler.getIDRegistry_sub(),
+                                child, schemaDoc);
                     }
                 } else if (childName.equals(SchemaSymbols.ELT_KEYREF)) {
                     fSchemaHandler.storeKeyRef(child, schemaDoc, element);
@@ -499,7 +491,7 @@ class XSDElementTraverser extends XSDAbstractTraverser {
         if (element.fDefault != null) {
             fValidationState.setNamespaceSupport(schemaDoc.fNamespaceSupport);
             if (XSConstraints.ElementDefaultValidImmediate(element.fType, element.fDefault.normalizedValue, fValidationState, element.fDefault) == null) {
-                reportSchemaError ("e-props-correct.2", new Object[]{nameAtt, element.fDefault.normalizedValue}, elmDecl);
+                reportSchemaError("e-props-correct.2", new Object[]{nameAtt, element.fDefault.normalizedValue}, elmDecl);
                 element.fDefault = null;
                 element.setConstraintType(XSConstants.VC_NONE);
             }
@@ -508,7 +500,7 @@ class XSDElementTraverser extends XSDAbstractTraverser {
         // 4 If there is an {substitution group affiliation}, the {type definition} of the element declaration must be validly derived from the {type definition} of the {substitution group affiliation}, given the value of the {substitution group exclusions} of the {substitution group affiliation}, as defined in Type Derivation OK (Complex) (3.4.6) (if the {type definition} is complex) or as defined in Type Derivation OK (Simple) (3.14.6) (if the {type definition} is simple).
         if (element.fSubGroup != null) {
             if (!XSConstraints.checkTypeDerivationOk(element.fType, element.fSubGroup.fType, element.fSubGroup.fFinal)) {
-                reportSchemaError ("e-props-correct.4", new Object[]{nameAtt, subGroupAtt.prefix+":"+subGroupAtt.localpart}, elmDecl);
+                reportSchemaError("e-props-correct.4", new Object[]{nameAtt, subGroupAtt.prefix + ":" + subGroupAtt.localpart}, elmDecl);
                 element.fSubGroup = null;
             }
         }
@@ -516,10 +508,10 @@ class XSDElementTraverser extends XSDAbstractTraverser {
         // 5 If the {type definition} or {type definition}'s {content type} is or is derived from ID then there must not be a {value constraint}.
         if (element.fDefault != null) {
             if ((elementType.getTypeCategory() == XSTypeDefinition.SIMPLE_TYPE &&
-                    ((XSSimpleType)elementType).isIDType()) ||
+                    ((XSSimpleType) elementType).isIDType()) ||
                     (elementType.getTypeCategory() == XSTypeDefinition.COMPLEX_TYPE &&
-                            ((XSComplexTypeDecl)elementType).containsTypeID())) {
-                reportSchemaError ("e-props-correct.5", new Object[]{element.fName}, elmDecl);
+                            ((XSComplexTypeDecl) elementType).containsTypeID())) {
+                reportSchemaError("e-props-correct.5", new Object[]{element.fName}, elmDecl);
                 element.fDefault = null;
                 element.setConstraintType(XSConstants.VC_NONE);
             }

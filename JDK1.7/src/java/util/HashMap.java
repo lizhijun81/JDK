@@ -383,6 +383,11 @@ public class HashMap<K,V>
     }
 
     /**
+     * 获取key对应的value
+     * 1.如果key是null，直接遍历数组中第一个单链表，返回key为null的值
+     * 2.获取key对应的Entry
+     * 3.如果Entry为null，则返回null；否则返回Entry中的value；
+     *
      * Returns the value to which the specified key is mapped,
      * or {@code null} if this map contains no mapping for the key.
      *
@@ -435,6 +440,9 @@ public class HashMap<K,V>
     }
 
     /**
+     * 计算key对应的hash，后计算key对应的数组位置；
+     * 遍历对应数组位置的单链表，判断 hash 相等 并且(key指向相同的内存位置或者equals相等)，则key存在；否则不存在；
+     *
      * Returns the entry associated with the specified key in the
      * HashMap.  Returns null if the HashMap contains no mapping
      * for the key.
@@ -466,12 +474,15 @@ public class HashMap<K,V>
      *         previously associated <tt>null</tt> with <tt>key</tt>.)
      */
     public V put(K key, V value) {
+        // key 为 null，则 将 key插入到数组的第一个链表中
         if (key == null)
             return putForNullKey(value);
         int hash = hash(key);
+        // h & (length-1);  取 hash 值的低 n 位  计算出，元素在数组中的位置
         int i = indexFor(hash, table.length);
         for (Entry<K,V> e = table[i]; e != null; e = e.next) {
             Object k;
+            // 如果插入的key已经存在，则 将旧值替换成新值后，返回旧值
             if (e.hash == hash && ((k = e.key) == key || key.equals(k))) {
                 V oldValue = e.value;
                 e.value = value;
@@ -480,6 +491,7 @@ public class HashMap<K,V>
             }
         }
 
+        // 不存在的key 则 进行插入
         modCount++;
         addEntry(hash, key, value, i);
         return null;
@@ -535,6 +547,12 @@ public class HashMap<K,V>
     }
 
     /**
+     * rehash
+     * 1.将map中包含的元素，分配到长度更大的数组中；当map中key的size达到threshold时，自动调用；
+     * 2.如果map的capacity设置为Integer.MAX_VALUE时，会导致这个方法不会进行rehash，会影响效率；
+     * 3.newCapacity新分配的数组的大小必须是2的次幂；并且要大于当前数组的大小；
+     *
+     *
      * Rehashes the contents of this map into a new array with a
      * larger capacity.  This method is called automatically when the
      * number of keys in this map reaches its threshold.
@@ -567,6 +585,10 @@ public class HashMap<K,V>
     }
 
     /**
+     * 将数组的元素转换到新的数组中
+     * 1.遍历数组和单链表
+     * 2.使用hash和新数组的长度重新计算元素在新数组中的位置
+     * 3.将数组放入到新数组中链表的头结点
      * Transfers all entries from current table to newTable.
      */
     void transfer(Entry[] newTable, boolean rehash) {
@@ -575,6 +597,7 @@ public class HashMap<K,V>
             while(null != e) {
                 Entry<K,V> next = e.next;
                 if (rehash) {
+                    // string类型的Key，使用stringHash32重新计算hash值，减少hash冲突
                     e.hash = null == e.key ? 0 : hash(e.key);
                 }
                 int i = indexFor(e.hash, newCapacity);
@@ -847,16 +870,22 @@ public class HashMap<K,V>
      * Subclass overrides this to alter the behavior of put method.
      */
     void addEntry(int hash, K key, V value, int bucketIndex) {
+        // map 中元素的个数 超过 threshold=DEFAULT_INITIAL_CAPACITY*DEFAULT_LOAD_FACTOR=16*0.75=12；则进行rehash过程
         if ((size >= threshold) && (null != table[bucketIndex])) {
+            // 数组的长度增长为原来的两倍
             resize(2 * table.length);
             hash = (null != key) ? hash(key) : 0;
+            // 重新计算key对应的数组位置
             bucketIndex = indexFor(hash, table.length);
         }
 
+        // 创建 key 对应的Entry实体后插入到 map
         createEntry(hash, key, value, bucketIndex);
     }
 
     /**
+     * 创建 Entry 并且插入到 对应数组(桶)的头结点；
+     *
      * Like addEntry except that this version is used when creating entries
      * as part of Map construction or "pseudo-construction" (cloning,
      * deserialization).  This version needn't worry about resizing the table.

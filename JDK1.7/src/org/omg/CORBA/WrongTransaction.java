@@ -48,6 +48,7 @@ public final class WrongTransaction extends UserException {
 
     /**
      * Constructs a WrongTransaction object with the given detail message.
+     *
      * @param reason The detail message explaining what caused this exception to be thrown.
      */
     public WrongTransaction(String reason) {

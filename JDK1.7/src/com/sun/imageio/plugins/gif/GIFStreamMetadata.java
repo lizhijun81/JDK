@@ -31,6 +31,7 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.metadata.IIOMetadataFormat;
 import javax.imageio.metadata.IIOMetadataFormatImpl;
+
 import org.w3c.dom.Node;
 
 // TODO - document elimination of globalColorTableFlag
@@ -39,9 +40,9 @@ public class GIFStreamMetadata extends GIFMetadata {
 
     // package scope
     static final String
-        nativeMetadataFormatName = "javax_imageio_gif_stream_1.0";
+            nativeMetadataFormatName = "javax_imageio_gif_stream_1.0";
 
-    public static final String[] versionStrings = { "87a", "89a" };
+    public static final String[] versionStrings = {"87a", "89a"};
 
     public String version; // 87a or 89a
     public int logicalScreenWidth;
@@ -53,7 +54,7 @@ public class GIFStreamMetadata extends GIFMetadata {
     public boolean sortFlag; // Valid if globalColorTable != null
 
     public static final String[] colorTableSizes = {
-        "2", "4", "8", "16", "32", "64", "128", "256"
+            "2", "4", "8", "16", "32", "64", "128", "256"
     };
 
     // Set global color table flag in header to 0 if null, 1 otherwise
@@ -63,20 +64,19 @@ public class GIFStreamMetadata extends GIFMetadata {
                                 String nativeMetadataFormatName,
                                 String nativeMetadataFormatClassName,
                                 String[] extraMetadataFormatNames,
-                                String[] extraMetadataFormatClassNames)
-    {
+                                String[] extraMetadataFormatClassNames) {
         super(standardMetadataFormatSupported,
-              nativeMetadataFormatName,
-              nativeMetadataFormatClassName,
-              extraMetadataFormatNames,
-              extraMetadataFormatClassNames);
+                nativeMetadataFormatName,
+                nativeMetadataFormatClassName,
+                extraMetadataFormatNames,
+                extraMetadataFormatClassNames);
     }
 
     public GIFStreamMetadata() {
         this(true,
-              nativeMetadataFormatName,
-              "com.sun.imageio.plugins.gif.GIFStreamMetadataFormat",
-              null, null);
+                nativeMetadataFormatName,
+                "com.sun.imageio.plugins.gif.GIFStreamMetadataFormat",
+                null, null);
 
     }
 
@@ -88,7 +88,7 @@ public class GIFStreamMetadata extends GIFMetadata {
         if (formatName.equals(nativeMetadataFormatName)) {
             return getNativeTree();
         } else if (formatName.equals
-                   (IIOMetadataFormatImpl.standardMetadataFormatName)) {
+                (IIOMetadataFormatImpl.standardMetadataFormatName)) {
             return getStandardTree();
         } else {
             throw new IllegalArgumentException("Not a recognized format!");
@@ -98,7 +98,7 @@ public class GIFStreamMetadata extends GIFMetadata {
     private Node getNativeTree() {
         IIOMetadataNode node; // scratch node
         IIOMetadataNode root =
-            new IIOMetadataNode(nativeMetadataFormatName);
+                new IIOMetadataNode(nativeMetadataFormatName);
 
         node = new IIOMetadataNode("Version");
         node.setAttribute("value", version);
@@ -111,36 +111,36 @@ public class GIFStreamMetadata extends GIFMetadata {
          * We need to add better support for undefined/default values later.
          */
         node.setAttribute("logicalScreenWidth",
-                          logicalScreenWidth == UNDEFINED_INTEGER_VALUE ?
-                          "" : Integer.toString(logicalScreenWidth));
+                logicalScreenWidth == UNDEFINED_INTEGER_VALUE ?
+                        "" : Integer.toString(logicalScreenWidth));
         node.setAttribute("logicalScreenHeight",
-                          logicalScreenHeight == UNDEFINED_INTEGER_VALUE ?
-                          "" : Integer.toString(logicalScreenHeight));
+                logicalScreenHeight == UNDEFINED_INTEGER_VALUE ?
+                        "" : Integer.toString(logicalScreenHeight));
         // Stored value plus one
         node.setAttribute("colorResolution",
-                          colorResolution == UNDEFINED_INTEGER_VALUE ?
-                          "" : Integer.toString(colorResolution));
+                colorResolution == UNDEFINED_INTEGER_VALUE ?
+                        "" : Integer.toString(colorResolution));
         node.setAttribute("pixelAspectRatio",
-                          Integer.toString(pixelAspectRatio));
+                Integer.toString(pixelAspectRatio));
         root.appendChild(node);
 
         if (globalColorTable != null) {
             node = new IIOMetadataNode("GlobalColorTable");
-            int numEntries = globalColorTable.length/3;
+            int numEntries = globalColorTable.length / 3;
             node.setAttribute("sizeOfGlobalColorTable",
-                              Integer.toString(numEntries));
+                    Integer.toString(numEntries));
             node.setAttribute("backgroundColorIndex",
-                              Integer.toString(backgroundColorIndex));
+                    Integer.toString(backgroundColorIndex));
             node.setAttribute("sortFlag",
-                              sortFlag ? "TRUE" : "FALSE");
+                    sortFlag ? "TRUE" : "FALSE");
 
             for (int i = 0; i < numEntries; i++) {
                 IIOMetadataNode entry =
-                    new IIOMetadataNode("ColorTableEntry");
+                        new IIOMetadataNode("ColorTableEntry");
                 entry.setAttribute("index", Integer.toString(i));
-                int r = globalColorTable[3*i] & 0xff;
-                int g = globalColorTable[3*i + 1] & 0xff;
-                int b = globalColorTable[3*i + 2] & 0xff;
+                int r = globalColorTable[3 * i] & 0xff;
+                int g = globalColorTable[3 * i + 1] & 0xff;
+                int b = globalColorTable[3 * i + 2] & 0xff;
                 entry.setAttribute("red", Integer.toString(r));
                 entry.setAttribute("green", Integer.toString(g));
                 entry.setAttribute("blue", Integer.toString(b));
@@ -169,17 +169,17 @@ public class GIFStreamMetadata extends GIFMetadata {
 
         if (globalColorTable != null) {
             node = new IIOMetadataNode("Palette");
-            int numEntries = globalColorTable.length/3;
+            int numEntries = globalColorTable.length / 3;
             for (int i = 0; i < numEntries; i++) {
                 IIOMetadataNode entry =
-                    new IIOMetadataNode("PaletteEntry");
+                        new IIOMetadataNode("PaletteEntry");
                 entry.setAttribute("index", Integer.toString(i));
                 entry.setAttribute("red",
-                           Integer.toString(globalColorTable[3*i] & 0xff));
+                        Integer.toString(globalColorTable[3 * i] & 0xff));
                 entry.setAttribute("green",
-                           Integer.toString(globalColorTable[3*i + 1] & 0xff));
+                        Integer.toString(globalColorTable[3 * i + 1] & 0xff));
                 entry.setAttribute("blue",
-                           Integer.toString(globalColorTable[3*i + 2] & 0xff));
+                        Integer.toString(globalColorTable[3 * i + 2] & 0xff));
                 node.appendChild(entry);
             }
             chroma_node.appendChild(node);
@@ -223,8 +223,8 @@ public class GIFStreamMetadata extends GIFMetadata {
 
         node = new IIOMetadataNode("BitsPerSample");
         node.setAttribute("value",
-                          colorResolution == UNDEFINED_INTEGER_VALUE ?
-                          "" : Integer.toString(colorResolution));
+                colorResolution == UNDEFINED_INTEGER_VALUE ?
+                        "" : Integer.toString(colorResolution));
         data_node.appendChild(node);
 
         // SignificantBitsPerSample
@@ -240,7 +240,7 @@ public class GIFStreamMetadata extends GIFMetadata {
         node = new IIOMetadataNode("PixelAspectRatio");
         float aspectRatio = 1.0F;
         if (pixelAspectRatio != 0) {
-            aspectRatio = (pixelAspectRatio + 15)/64.0F;
+            aspectRatio = (pixelAspectRatio + 15) / 64.0F;
         }
         node.setAttribute("value", Float.toString(aspectRatio));
         dimension_node.appendChild(node);
@@ -260,14 +260,14 @@ public class GIFStreamMetadata extends GIFMetadata {
 
         node = new IIOMetadataNode("HorizontalScreenSize");
         node.setAttribute("value",
-                          logicalScreenWidth == UNDEFINED_INTEGER_VALUE ?
-                          "" : Integer.toString(logicalScreenWidth));
+                logicalScreenWidth == UNDEFINED_INTEGER_VALUE ?
+                        "" : Integer.toString(logicalScreenWidth));
         dimension_node.appendChild(node);
 
         node = new IIOMetadataNode("VerticalScreenSize");
         node.setAttribute("value",
-                          logicalScreenHeight == UNDEFINED_INTEGER_VALUE ?
-                          "" : Integer.toString(logicalScreenHeight));
+                logicalScreenHeight == UNDEFINED_INTEGER_VALUE ?
+                        "" : Integer.toString(logicalScreenHeight));
         dimension_node.appendChild(node);
 
         return dimension_node;
@@ -299,18 +299,15 @@ public class GIFStreamMetadata extends GIFMetadata {
     }
 
     public void setFromTree(String formatName, Node root)
-        throws IIOInvalidTreeException
-    {
+            throws IIOInvalidTreeException {
         throw new IllegalStateException("Metadata is read-only!");
     }
 
-    protected void mergeNativeTree(Node root) throws IIOInvalidTreeException
-    {
+    protected void mergeNativeTree(Node root) throws IIOInvalidTreeException {
         throw new IllegalStateException("Metadata is read-only!");
     }
 
-    protected void mergeStandardTree(Node root) throws IIOInvalidTreeException
-    {
+    protected void mergeStandardTree(Node root) throws IIOInvalidTreeException {
         throw new IllegalStateException("Metadata is read-only!");
     }
 

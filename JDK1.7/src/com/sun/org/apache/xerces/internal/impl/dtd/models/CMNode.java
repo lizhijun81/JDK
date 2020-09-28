@@ -65,15 +65,12 @@ package com.sun.org.apache.xerces.internal.impl.dtd.models;
  * A content model node.
  *
  * @xerces.internal
- *
  */
-public abstract class CMNode
-{
+public abstract class CMNode {
     // -------------------------------------------------------------------
     //  Constructors
     // -------------------------------------------------------------------
-    public CMNode(int type)
-    {
+    public CMNode(int type) {
         fType = type;
     }
 
@@ -82,22 +79,19 @@ public abstract class CMNode
     //  Package, abstract methods
     // -------------------------------------------------------------------
     // made this public so it could be implemented and used outside this package -neilg.
-    public abstract boolean isNullable() ;
+    public abstract boolean isNullable();
 
 
     // -------------------------------------------------------------------
     //  Package final methods
     // -------------------------------------------------------------------
-    public final int type()
-    {
+    public final int type() {
         return fType;
     }
 
     // made this public so it could be implemented and used outside this package -neilg.
-    public final CMStateSet firstPos()
-    {
-        if (fFirstPos == null)
-        {
+    public final CMStateSet firstPos() {
+        if (fFirstPos == null) {
             fFirstPos = new CMStateSet(fMaxStates);
             calcFirstPos(fFirstPos);
         }
@@ -105,23 +99,19 @@ public abstract class CMNode
     }
 
     // made this public so it could be implemented and used outside this package -neilg.
-    public final CMStateSet lastPos()
-    {
-        if (fLastPos == null)
-        {
+    public final CMStateSet lastPos() {
+        if (fLastPos == null) {
             fLastPos = new CMStateSet(fMaxStates);
             calcLastPos(fLastPos);
         }
         return fLastPos;
     }
 
-    final void setFollowPos(CMStateSet setToAdopt)
-    {
+    final void setFollowPos(CMStateSet setToAdopt) {
         fFollowPos = setToAdopt;
     }
 
-    public final void setMaxStates(int maxStates)
-    {
+    public final void setMaxStates(int maxStates) {
         fMaxStates = maxStates;
     }
 
@@ -146,9 +136,9 @@ public abstract class CMNode
     // -------------------------------------------------------------------
     //  Protected, abstract methods
     // -------------------------------------------------------------------
-    protected abstract void calcFirstPos(CMStateSet toSet) ;
+    protected abstract void calcFirstPos(CMStateSet toSet);
 
-    protected abstract void calcLastPos(CMStateSet toSet) ;
+    protected abstract void calcLastPos(CMStateSet toSet);
 
 
     // -------------------------------------------------------------------
@@ -181,10 +171,10 @@ public abstract class CMNode
     //      init to to -1 so it will cause an error if its used without
     //      being initialized.
     // -------------------------------------------------------------------
-    private int         fType;
-    private CMStateSet  fFirstPos   = null;
-    private CMStateSet  fFollowPos  = null;
-    private CMStateSet  fLastPos    = null;
-    private int         fMaxStates  = -1;
-    private Object      fUserData   = null;
+    private int fType;
+    private CMStateSet fFirstPos = null;
+    private CMStateSet fFollowPos = null;
+    private CMStateSet fLastPos = null;
+    private int fMaxStates = -1;
+    private Object fUserData = null;
 };

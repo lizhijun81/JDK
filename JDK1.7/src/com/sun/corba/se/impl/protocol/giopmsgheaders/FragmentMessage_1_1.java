@@ -36,7 +36,8 @@ public final class FragmentMessage_1_1 extends Message_1_1
 
     // Constructors
 
-    FragmentMessage_1_1() {}
+    FragmentMessage_1_1() {
+    }
 
     FragmentMessage_1_1(Message_1_1 msg11) {
         this.magic = msg11.magic;
@@ -72,8 +73,7 @@ public final class FragmentMessage_1_1 extends Message_1_1
     }
 
     public void callback(MessageHandler handler)
-        throws java.io.IOException
-    {
+            throws java.io.IOException {
         handler.handleInput(this);
     }
 } // class FragmentMessage_1_1

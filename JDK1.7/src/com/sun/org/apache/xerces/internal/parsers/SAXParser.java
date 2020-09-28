@@ -32,11 +32,10 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLParserConfiguration;
  *
  * @author Arnaud  Le Hors, IBM
  * @author Andy Clark, IBM
- *
  * @version $Id: SAXParser.java,v 1.7 2010-11-01 04:40:09 joehw Exp $
  */
 public class SAXParser
-    extends AbstractSAXParser {
+        extends AbstractSAXParser {
 
     //
     // Constants
@@ -44,33 +43,43 @@ public class SAXParser
 
     // features
 
-    /** Feature identifier: notify built-in refereces. */
+    /**
+     * Feature identifier: notify built-in refereces.
+     */
     protected static final String NOTIFY_BUILTIN_REFS =
-        Constants.XERCES_FEATURE_PREFIX + Constants.NOTIFY_BUILTIN_REFS_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.NOTIFY_BUILTIN_REFS_FEATURE;
 
     protected static final String REPORT_WHITESPACE =
             Constants.SUN_SCHEMA_FEATURE_PREFIX + Constants.SUN_REPORT_IGNORED_ELEMENT_CONTENT_WHITESPACE;
 
-    /** Recognized features. */
+    /**
+     * Recognized features.
+     */
     private static final String[] RECOGNIZED_FEATURES = {
-        NOTIFY_BUILTIN_REFS,
-        REPORT_WHITESPACE
+            NOTIFY_BUILTIN_REFS,
+            REPORT_WHITESPACE
     };
 
     // properties
 
-    /** Property identifier: symbol table. */
+    /**
+     * Property identifier: symbol table.
+     */
     protected static final String SYMBOL_TABLE =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY;
 
-    /** Property identifier: XML grammar pool. */
+    /**
+     * Property identifier: XML grammar pool.
+     */
     protected static final String XMLGRAMMAR_POOL =
-        Constants.XERCES_PROPERTY_PREFIX+Constants.XMLGRAMMAR_POOL_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.XMLGRAMMAR_POOL_PROPERTY;
 
-    /** Recognized properties. */
+    /**
+     * Recognized properties.
+     */
     private static final String[] RECOGNIZED_PROPERTIES = {
-        SYMBOL_TABLE,
-        XMLGRAMMAR_POOL,
+            SYMBOL_TABLE,
+            XMLGRAMMAR_POOL,
     };
 
     //

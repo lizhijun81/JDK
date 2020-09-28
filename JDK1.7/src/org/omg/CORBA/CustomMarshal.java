@@ -37,6 +37,7 @@ import org.omg.CORBA.DataInputStream;
  * <tt>CustomMarshal</tt> operations. The manner in which this is done is
  * specified in the IDL to Java langauge mapping. Each custom
  * marshaled value type shall have its own implementation.
+ *
  * @see DataInputStream
  */
 public interface CustomMarshal {
@@ -47,6 +48,7 @@ public interface CustomMarshal {
      * @param os a DataOutputStream
      */
     void marshal(DataOutputStream os);
+
     /**
      * Unmarshal method has to be implemented by the Customized Marshal class.
      * This is the method invoked for Unmarshalling.

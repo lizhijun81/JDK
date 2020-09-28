@@ -30,22 +30,20 @@ import com.sun.org.apache.xerces.internal.xs.XSTerm;
 /**
  * Store schema particle declaration.
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
- *
  * @version $Id: XSParticleDecl.java,v 1.7 2010-11-01 04:39:55 joehw Exp $
+ * @xerces.internal
  */
 public class XSParticleDecl implements XSParticle {
 
     // types of particles
-    public static final short PARTICLE_EMPTY        = 0;
-    public static final short PARTICLE_ELEMENT      = 1;
-    public static final short PARTICLE_WILDCARD     = 2;
-    public static final short PARTICLE_MODELGROUP   = 3;
+    public static final short PARTICLE_EMPTY = 0;
+    public static final short PARTICLE_ELEMENT = 1;
+    public static final short PARTICLE_WILDCARD = 2;
+    public static final short PARTICLE_MODELGROUP = 3;
     public static final short PARTICLE_ZERO_OR_MORE = 4;
-    public static final short PARTICLE_ZERO_OR_ONE  = 5;
-    public static final short PARTICLE_ONE_OR_MORE  = 6;
+    public static final short PARTICLE_ZERO_OR_ONE = 5;
+    public static final short PARTICLE_ONE_OR_MORE = 6;
 
     // type of the particle
     public short fType = PARTICLE_EMPTY;
@@ -86,16 +84,16 @@ public class XSParticleDecl implements XSParticle {
     // whether this particle contains nothing
     public boolean isEmpty() {
         if (fType == PARTICLE_EMPTY)
-             return true;
+            return true;
         if (fType == PARTICLE_ELEMENT || fType == PARTICLE_WILDCARD)
             return false;
 
-        return ((XSModelGroupImpl)fValue).isEmpty();
+        return ((XSModelGroupImpl) fValue).isEmpty();
     }
 
     /**
      * 3.8.6 Effective Total Range (all and sequence) and
-     *       Effective Total Range (choice)
+     * Effective Total Range (choice)
      * The following methods are used to return min/max range for a particle.
      * They are not exactly the same as it's described in the spec, but all the
      * values from the spec are retrievable by these methods.
@@ -105,7 +103,7 @@ public class XSParticleDecl implements XSParticle {
             return 0;
         }
         if (fType == PARTICLE_MODELGROUP) {
-            return ((XSModelGroupImpl)fValue).minEffectiveTotalRange() * fMinOccurs;
+            return ((XSModelGroupImpl) fValue).minEffectiveTotalRange() * fMinOccurs;
         }
         return fMinOccurs;
     }
@@ -115,7 +113,7 @@ public class XSParticleDecl implements XSParticle {
             return 0;
         }
         if (fType == PARTICLE_MODELGROUP) {
-            int max = ((XSModelGroupImpl)fValue).maxEffectiveTotalRange();
+            int max = ((XSModelGroupImpl) fValue).maxEffectiveTotalRange();
             if (max == SchemaSymbols.OCCURRENCE_UNBOUNDED)
                 return SchemaSymbols.OCCURRENCE_UNBOUNDED;
             if (max != 0 && fMaxOccurs == SchemaSymbols.OCCURRENCE_UNBOUNDED)
@@ -129,12 +127,13 @@ public class XSParticleDecl implements XSParticle {
      * get the string description of this particle
      */
     private String fDescription = null;
+
     public String toString() {
         if (fDescription == null) {
             StringBuffer buffer = new StringBuffer();
             appendParticle(buffer);
             if (!(fMinOccurs == 0 && fMaxOccurs == 0 ||
-                  fMinOccurs == 1 && fMaxOccurs == 1)) {
+                    fMinOccurs == 1 && fMaxOccurs == 1)) {
                 buffer.append('{').append(fMinOccurs);
                 if (fMaxOccurs == SchemaSymbols.OCCURRENCE_UNBOUNDED)
                     buffer.append("-UNBOUNDED");
@@ -153,24 +152,24 @@ public class XSParticleDecl implements XSParticle {
      */
     void appendParticle(StringBuffer buffer) {
         switch (fType) {
-        case PARTICLE_EMPTY:
-            buffer.append("EMPTY");
-            break;
-        case PARTICLE_ELEMENT:
-            buffer.append(fValue.toString());
-            break;
-        case PARTICLE_WILDCARD:
-            buffer.append('(');
-            buffer.append(fValue.toString());
-            buffer.append(')');
-            break;
-        case PARTICLE_MODELGROUP:
-            buffer.append(fValue.toString());
-            break;
+            case PARTICLE_EMPTY:
+                buffer.append("EMPTY");
+                break;
+            case PARTICLE_ELEMENT:
+                buffer.append(fValue.toString());
+                break;
+            case PARTICLE_WILDCARD:
+                buffer.append('(');
+                buffer.append(fValue.toString());
+                buffer.append(')');
+                break;
+            case PARTICLE_MODELGROUP:
+                buffer.append(fValue.toString());
+                break;
         }
     }
 
-    public void reset(){
+    public void reset() {
         fType = PARTICLE_EMPTY;
         fValue = null;
         fMinOccurs = 1;
@@ -231,12 +230,12 @@ public class XSParticleDecl implements XSParticle {
         return fValue;
     }
 
-        /**
-         * @see org.apache.xerces.xs.XSObject#getNamespaceItem()
-         */
-        public XSNamespaceItem getNamespaceItem() {
-                return null;
-        }
+    /**
+     * @see org.apache.xerces.xs.XSObject#getNamespaceItem()
+     */
+    public XSNamespaceItem getNamespaceItem() {
+        return null;
+    }
 
     /**
      * Optional. Annotations.

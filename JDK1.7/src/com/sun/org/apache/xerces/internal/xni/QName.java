@@ -69,18 +69,16 @@ package com.sun.org.apache.xerces.internal.xni;
  * equal strings. Within the parser, these values are considered symbols
  * and should always be retrieved from the <code>SymbolTable</code>.
  *
- * @see <a href="../../../../../xerces2/com/sun/org/apache/xerces/internal/util/SymbolTable.html">com.sun.org.apache.xerces.internal.util.SymbolTable</a>
- *
  * @author Andy Clark, IBM
- *
+ * <p>
  * Better performance patch for the equals method by Daniel Petersson: refer to jaxp issue 61;
  * == were used to compare strings
  * @author Joe Wang, Oracle
- *
  * @version $Id: QName.java,v 1.6 2010/03/18 19:32:31 joehw Exp $
+ * @see <a href="../../../../../xerces2/com/sun/org/apache/xerces/internal/util/SymbolTable.html">com.sun.org.apache.xerces.internal.util.SymbolTable</a>
  */
 public class QName
-implements Cloneable {
+        implements Cloneable {
 
 
     /**
@@ -111,17 +109,23 @@ implements Cloneable {
     // Constructors
     //
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public QName() {
         clear();
     } // <init>()
 
-    /** Constructs a QName with the specified values. */
+    /**
+     * Constructs a QName with the specified values.
+     */
     public QName(String prefix, String localpart, String rawname, String uri) {
         setValues(prefix, localpart, rawname, uri);
     } // <init>(String,String,String,String)
 
-    /** Constructs a copy of the specified QName. */
+    /**
+     * Constructs a copy of the specified QName.
+     */
     public QName(QName qname) {
         setValues(qname);
     } // <init>(QName)
@@ -151,14 +155,16 @@ implements Cloneable {
      * @param uri       The URI binding. (e.g. "http://foo.com/mybinding")
      */
     public void setValues(String prefix, String localpart, String rawname,
-    String uri) {
+                          String uri) {
         this.prefix = prefix;
         this.localpart = localpart;
         this.rawname = rawname;
         this.uri = uri;
     } // setValues(String,String,String,String)
 
-    /** Clears the values of the qname components. */
+    /**
+     * Clears the values of the qname components.
+     */
     public void clear() {
         prefix = null;
         localpart = null;
@@ -170,7 +176,9 @@ implements Cloneable {
     // Cloneable methods
     //
 
-    /** Returns a clone of this object. */
+    /**
+     * Returns a clone of this object.
+     */
     public Object clone() {
         return new QName(this);
     } // clone():Object
@@ -179,27 +187,30 @@ implements Cloneable {
     // Object methods
     //
 
-    /** Returns the hashcode for this object. */
+    /**
+     * Returns the hashcode for this object.
+     */
     public int hashCode() {
         if (uri != null) {
             return uri.hashCode() +
-                ((localpart != null) ? localpart.hashCode() : 0);
+                    ((localpart != null) ? localpart.hashCode() : 0);
         }
         return (rawname != null) ? rawname.hashCode() : 0;
     } // hashCode():int
 
-    /** Returns true if the two objects are equal. */
+    /**
+     * Returns true if the two objects are equal.
+     */
     public boolean equals(Object object) {
         if (object == this) {
             return true;
         }
 
         if (object != null && object instanceof QName) {
-            QName qname = (QName)object;
+            QName qname = (QName) object;
             if (qname.uri != null) {
-                    return qname.localpart.equals(localpart) && qname.uri.equals(uri);
-            }
-            else if (uri == null) {
+                return qname.localpart.equals(localpart) && qname.uri.equals(uri);
+            } else if (uri == null) {
                 return rawname.equals(qname.rawname);
             }
             // fall through and return not equal
@@ -207,34 +218,36 @@ implements Cloneable {
         return false;
     } // equals(Object):boolean
 
-    /** Returns a string representation of this object. */
+    /**
+     * Returns a string representation of this object.
+     */
     public String toString() {
 
         StringBuffer str = new StringBuffer();
         boolean comma = false;
         if (prefix != null) {
-            str.append("prefix=\""+prefix+'"');
+            str.append("prefix=\"" + prefix + '"');
             comma = true;
         }
         if (localpart != null) {
             if (comma) {
                 str.append(',');
             }
-            str.append("localpart=\""+localpart+'"');
+            str.append("localpart=\"" + localpart + '"');
             comma = true;
         }
         if (rawname != null) {
             if (comma) {
                 str.append(',');
             }
-            str.append("rawname=\""+rawname+'"');
+            str.append("rawname=\"" + rawname + '"');
             comma = true;
         }
         if (uri != null) {
             if (comma) {
                 str.append(',');
             }
-            str.append("uri=\""+uri+'"');
+            str.append("uri=\"" + uri + '"');
         }
         return str.toString();
 

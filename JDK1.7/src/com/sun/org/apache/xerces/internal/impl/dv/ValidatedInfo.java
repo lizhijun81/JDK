@@ -26,10 +26,8 @@ import com.sun.org.apache.xerces.internal.xs.ShortList;
  * Class to get the information back after content is validated. This info
  * would be filled by validate().
  *
- * @xerces.internal
- *
  * @author Neeraj Bajaj, Sun Microsystems, inc.
- *
+ * @xerces.internal
  */
 public class ValidatedInfo {
 
@@ -61,7 +59,7 @@ public class ValidatedInfo {
     /**
      * If
      * 1. the type is a union type where one of the member types is a list, or
-     *    if the type is a list; and
+     * if the type is a list; and
      * 2. the item type of the list is a union type
      * then an array of member types used to validate the values.
      */

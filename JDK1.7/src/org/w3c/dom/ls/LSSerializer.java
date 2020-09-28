@@ -46,14 +46,14 @@ import org.w3c.dom.Node;
 import org.w3c.dom.DOMException;
 
 /**
- *  A <code>LSSerializer</code> provides an API for serializing (writing) a
+ * A <code>LSSerializer</code> provides an API for serializing (writing) a
  * DOM document out into XML. The XML data is written to a string or an
  * output stream. Any changes or fixups made during the serialization affect
  * only the serialized data. The <code>Document</code> object and its
  * children are never altered by the serialization operation.
  * <p> During serialization of XML data, namespace fixup is done as defined in [<a href='http://www.w3.org/TR/2004/REC-DOM-Level-3-Core-20040407'>DOM Level 3 Core</a>]
  * , Appendix B. [<a href='http://www.w3.org/TR/2000/REC-DOM-Level-2-Core-20001113'>DOM Level 2 Core</a>]
- *  allows empty strings as a real namespace URI. If the
+ * allows empty strings as a real namespace URI. If the
  * <code>namespaceURI</code> of a <code>Node</code> is empty string, the
  * serialization will treat them as <code>null</code>, ignoring the prefix
  * if any.
@@ -203,11 +203,11 @@ import org.w3c.dom.DOMException;
  * other error and warning cases such as IO errors (file not found,
  * permission denied,...) and so on.
  * <p>See also the <a href='http://www.w3.org/TR/2004/REC-DOM-Level-3-LS-20040407'>Document Object Model (DOM) Level 3 Load
-and Save Specification</a>.
+ * and Save Specification</a>.
  */
 public interface LSSerializer {
     /**
-     *  The <code>DOMConfiguration</code> object used by the
+     * The <code>DOMConfiguration</code> object used by the
      * <code>LSSerializer</code> when serializing a DOM node.
      * <br> In addition to the parameters recognized by the <a href='http://www.w3.org/TR/DOM-Level-3-Core/core.html#DOMConfiguration'>
      * DOMConfiguration</a> interface defined in [<a href='http://www.w3.org/TR/2004/REC-DOM-Level-3-Core-20040407'>DOM Level 3 Core</a>]
@@ -309,7 +309,7 @@ public interface LSSerializer {
     public DOMConfiguration getDomConfig();
 
     /**
-     *  The end-of-line sequence of characters to be used in the XML being
+     * The end-of-line sequence of characters to be used in the XML being
      * written out. Any string is supported, but XML treats only a certain
      * set of characters sequence as end-of-line (See section 2.11,
      * "End-of-Line Handling" in [<a href='http://www.w3.org/TR/2004/REC-xml-20040204'>XML 1.0</a>], if the
@@ -329,8 +329,9 @@ public interface LSSerializer {
      * <br>
      */
     public String getNewLine();
+
     /**
-     *  The end-of-line sequence of characters to be used in the XML being
+     * The end-of-line sequence of characters to be used in the XML being
      * written out. Any string is supported, but XML treats only a certain
      * set of characters sequence as end-of-line (See section 2.11,
      * "End-of-Line Handling" in [<a href='http://www.w3.org/TR/2004/REC-xml-20040204'>XML 1.0</a>], if the
@@ -352,7 +353,7 @@ public interface LSSerializer {
     public void setNewLine(String newLine);
 
     /**
-     *  When the application provides a filter, the serializer will call out
+     * When the application provides a filter, the serializer will call out
      * to the filter before serializing each Node. The filter implementation
      * can choose to remove the node from the stream or to terminate the
      * serialization early.
@@ -362,8 +363,9 @@ public interface LSSerializer {
      * cdata-sections</a>" is set to <code>false</code>.
      */
     public LSSerializerFilter getFilter();
+
     /**
-     *  When the application provides a filter, the serializer will call out
+     * When the application provides a filter, the serializer will call out
      * to the filter before serializing each Node. The filter implementation
      * can choose to remove the node from the stream or to terminate the
      * serialization early.
@@ -375,7 +377,7 @@ public interface LSSerializer {
     public void setFilter(LSSerializerFilter filter);
 
     /**
-     *  Serialize the specified node as described above in the general
+     * Serialize the specified node as described above in the general
      * description of the <code>LSSerializer</code> interface. The output is
      * written to the supplied <code>LSOutput</code>.
      * <br> When writing to a <code>LSOutput</code>, the encoding is found by
@@ -402,64 +404,63 @@ public interface LSSerializer {
      * <br> When writing to a HTTP URI, a HTTP PUT is performed. When writing
      * to other types of URIs, the mechanism for writing the data to the URI
      * is implementation dependent.
-     * @param nodeArg  The node to serialize.
+     *
+     * @param nodeArg     The node to serialize.
      * @param destination The destination for the serialized DOM.
-     * @return  Returns <code>true</code> if <code>node</code> was
-     *   successfully serialized. Return <code>false</code> in case the
-     *   normal processing stopped but the implementation kept serializing
-     *   the document; the result of the serialization being implementation
-     *   dependent then.
-     * @exception LSException
-     *    SERIALIZE_ERR: Raised if the <code>LSSerializer</code> was unable to
-     *   serialize the node. DOM applications should attach a
-     *   <code>DOMErrorHandler</code> using the parameter "<a href='http://www.w3.org/TR/DOM-Level-3-Core/core.html#parameter-error-handler'>
-     *   error-handler</a>" if they wish to get details on the error.
+     * @return Returns <code>true</code> if <code>node</code> was
+     * successfully serialized. Return <code>false</code> in case the
+     * normal processing stopped but the implementation kept serializing
+     * the document; the result of the serialization being implementation
+     * dependent then.
+     * @throws LSException SERIALIZE_ERR: Raised if the <code>LSSerializer</code> was unable to
+     *                     serialize the node. DOM applications should attach a
+     *                     <code>DOMErrorHandler</code> using the parameter "<a href='http://www.w3.org/TR/DOM-Level-3-Core/core.html#parameter-error-handler'>
+     *                     error-handler</a>" if they wish to get details on the error.
      */
     public boolean write(Node nodeArg,
                          LSOutput destination)
-                         throws LSException;
+            throws LSException;
 
     /**
-     *  A convenience method that acts as if <code>LSSerializer.write</code>
+     * A convenience method that acts as if <code>LSSerializer.write</code>
      * was called with a <code>LSOutput</code> with no encoding specified
      * and <code>LSOutput.systemId</code> set to the <code>uri</code>
      * argument.
-     * @param nodeArg  The node to serialize.
-     * @param uri The URI to write to.
-     * @return  Returns <code>true</code> if <code>node</code> was
-     *   successfully serialized. Return <code>false</code> in case the
-     *   normal processing stopped but the implementation kept serializing
-     *   the document; the result of the serialization being implementation
-     *   dependent then.
-     * @exception LSException
-     *    SERIALIZE_ERR: Raised if the <code>LSSerializer</code> was unable to
-     *   serialize the node. DOM applications should attach a
-     *   <code>DOMErrorHandler</code> using the parameter "<a href='http://www.w3.org/TR/DOM-Level-3-Core/core.html#parameter-error-handler'>
-     *   error-handler</a>" if they wish to get details on the error.
+     *
+     * @param nodeArg The node to serialize.
+     * @param uri     The URI to write to.
+     * @return Returns <code>true</code> if <code>node</code> was
+     * successfully serialized. Return <code>false</code> in case the
+     * normal processing stopped but the implementation kept serializing
+     * the document; the result of the serialization being implementation
+     * dependent then.
+     * @throws LSException SERIALIZE_ERR: Raised if the <code>LSSerializer</code> was unable to
+     *                     serialize the node. DOM applications should attach a
+     *                     <code>DOMErrorHandler</code> using the parameter "<a href='http://www.w3.org/TR/DOM-Level-3-Core/core.html#parameter-error-handler'>
+     *                     error-handler</a>" if they wish to get details on the error.
      */
     public boolean writeToURI(Node nodeArg,
                               String uri)
-                              throws LSException;
+            throws LSException;
 
     /**
-     *  Serialize the specified node as described above in the general
+     * Serialize the specified node as described above in the general
      * description of the <code>LSSerializer</code> interface. The output is
      * written to a <code>DOMString</code> that is returned to the caller.
      * The encoding used is the encoding of the <code>DOMString</code> type,
      * i.e. UTF-16. Note that no Byte Order Mark is generated in a
      * <code>DOMString</code> object.
-     * @param nodeArg  The node to serialize.
-     * @return  Returns the serialized data.
-     * @exception DOMException
-     *    DOMSTRING_SIZE_ERR: Raised if the resulting string is too long to
-     *   fit in a <code>DOMString</code>.
-     * @exception LSException
-     *    SERIALIZE_ERR: Raised if the <code>LSSerializer</code> was unable to
-     *   serialize the node. DOM applications should attach a
-     *   <code>DOMErrorHandler</code> using the parameter "<a href='http://www.w3.org/TR/DOM-Level-3-Core/core.html#parameter-error-handler'>
-     *   error-handler</a>" if they wish to get details on the error.
+     *
+     * @param nodeArg The node to serialize.
+     * @return Returns the serialized data.
+     * @throws DOMException DOMSTRING_SIZE_ERR: Raised if the resulting string is too long to
+     *                      fit in a <code>DOMString</code>.
+     * @throws LSException  SERIALIZE_ERR: Raised if the <code>LSSerializer</code> was unable to
+     *                      serialize the node. DOM applications should attach a
+     *                      <code>DOMErrorHandler</code> using the parameter "<a href='http://www.w3.org/TR/DOM-Level-3-Core/core.html#parameter-error-handler'>
+     *                      error-handler</a>" if they wish to get details on the error.
      */
     public String writeToString(Node nodeArg)
-                                throws DOMException, LSException;
+            throws DOMException, LSException;
 
 }

@@ -31,10 +31,10 @@ import java.security.PrivilegedAction;
  * This class defines a factory for creating DatagramSocketImpls. It defaults
  * to creating plain DatagramSocketImpls, but may create other DatagramSocketImpls
  * by setting the impl.prefix system property.
- *
+ * <p>
  * For Windows versions lower than Windows Vista a TwoStacksPlainDatagramSocketImpl
  * is always created. This impl supports IPv6 on these platform where available.
- *
+ * <p>
  * On Windows platforms greater than Vista that support a dual layer TCP/IP stack
  * a DualStackPlainDatagramSocketImpl is created for DatagramSockets. For MulticastSockets
  * a TwoStacksPlainDatagramSocketImpl is always created. This is to overcome the lack
@@ -43,8 +43,7 @@ import java.security.PrivilegedAction;
  * @author Chris Hegarty
  */
 
-class DefaultDatagramSocketImplFactory
-{
+class DefaultDatagramSocketImplFactory {
     static Class prefixImplClass = null;
 
     /* the windows version. */
@@ -73,12 +72,12 @@ class DefaultDatagramSocketImplFactory
                             version = Float.parseFloat(System.getProperties()
                                     .getProperty("os.version"));
                             preferIPv4Stack = Boolean.parseBoolean(
-                                              System.getProperties()
-                                              .getProperty(
-                                                   "java.net.preferIPv4Stack"));
+                                    System.getProperties()
+                                            .getProperty(
+                                                    "java.net.preferIPv4Stack"));
                             exclBindProp = System.getProperty(
                                     "sun.net.useExclusiveBind");
-                        } catch (NumberFormatException e ) {
+                        } catch (NumberFormatException e) {
                             assert false : e;
                         }
                         return null; // nothing to return
@@ -87,7 +86,7 @@ class DefaultDatagramSocketImplFactory
 
         // (version >= 6.0) implies Vista or greater.
         if (version >= 6.0 && !preferIPv4Stack) {
-                useDualStackImpl = true;
+            useDualStackImpl = true;
         }
         if (exclBindProp != null) {
             // sun.net.useExclusiveBind is true
@@ -101,24 +100,24 @@ class DefaultDatagramSocketImplFactory
         String prefix = null;
         try {
             prefix = AccessController.doPrivileged(
-                new sun.security.action.GetPropertyAction("impl.prefix", null));
+                    new sun.security.action.GetPropertyAction("impl.prefix", null));
             if (prefix != null)
-                prefixImplClass = Class.forName("java.net."+prefix+"DatagramSocketImpl");
+                prefixImplClass = Class.forName("java.net." + prefix + "DatagramSocketImpl");
         } catch (Exception e) {
             System.err.println("Can't find class: java.net." +
-                                prefix +
-                                "DatagramSocketImpl: check impl.prefix property");
+                    prefix +
+                    "DatagramSocketImpl: check impl.prefix property");
         }
     }
 
     /**
      * Creates a new <code>DatagramSocketImpl</code> instance.
      *
-     * @param   isMulticast true if this impl is to be used for a MutlicastSocket
-     * @return  a new instance of <code>PlainDatagramSocketImpl</code>.
+     * @param isMulticast true if this impl is to be used for a MutlicastSocket
+     * @return a new instance of <code>PlainDatagramSocketImpl</code>.
      */
     static DatagramSocketImpl createDatagramSocketImpl(boolean isMulticast)
-        throws SocketException {
+            throws SocketException {
         if (prefixImplClass != null) {
             try {
                 return (DatagramSocketImpl) prefixImplClass.newInstance();

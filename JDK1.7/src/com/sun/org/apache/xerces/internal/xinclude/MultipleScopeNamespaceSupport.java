@@ -30,13 +30,12 @@ import com.sun.org.apache.xerces.internal.xni.NamespaceContext;
  * scopes of namespace/prefix bindings.  This is useful in situations when it is
  * not always appropriate for elements to inherit the namespace bindings of their
  * ancestors (such as included elements in XInclude).
- *
+ * <p>
  * When searching for a URI to match a prefix, or a prefix to match a URI, it is
  * searched for in the current context, then the ancestors of the current context,
  * up to the beginning of the current scope.  Other scopes are not searched.
  *
  * @author Peter McCracken, IBM
- *
  */
 public class MultipleScopeNamespaceSupport extends NamespaceSupport {
 
@@ -74,8 +73,8 @@ public class MultipleScopeNamespaceSupport extends NamespaceSupport {
         String prefix = null;
         boolean unique = true;
         for (int i = fContext[fScope[fCurrentScope]];
-            i <= (fNamespaceSize - 2);
-            i += 2) {
+             i <= (fNamespaceSize - 2);
+             i += 2) {
             prefix = fNamespace[i];
             for (int k = 0; k < count; k++) {
                 if (fPrefixes[k] == prefix) {
@@ -114,11 +113,11 @@ public class MultipleScopeNamespaceSupport extends NamespaceSupport {
     }
 
     public String getPrefix(String uri, int context) {
-        return getPrefix(uri, fContext[context+1], fContext[fScope[getScopeForContext(context)]]);
+        return getPrefix(uri, fContext[context + 1], fContext[fScope[getScopeForContext(context)]]);
     }
 
     public String getURI(String prefix, int context) {
-        return getURI(prefix, fContext[context+1], fContext[fScope[getScopeForContext(context)]]);
+        return getURI(prefix, fContext[context + 1], fContext[fScope[getScopeForContext(context)]]);
     }
 
     public String getPrefix(String uri, int start, int end) {

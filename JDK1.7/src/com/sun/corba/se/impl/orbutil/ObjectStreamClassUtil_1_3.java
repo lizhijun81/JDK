@@ -26,6 +26,7 @@
 package com.sun.corba.se.impl.orbutil;
 
 // for computing the structural UID
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.DigestOutputStream;
@@ -70,27 +71,26 @@ public final class ObjectStreamClassUtil_1_3 {
     // up suid only for classes with private,static,final
     // declarations, and compute it for all others
 
-    private static Long getSerialVersion(final long csuid, final Class cl)
-    {
+    private static Long getSerialVersion(final long csuid, final Class cl) {
         return (Long) AccessController.doPrivileged(new PrivilegedAction() {
-          public Object run() {
-            long suid;
-            try {
-                final Field f = cl.getDeclaredField("serialVersionUID");
-                int mods = f.getModifiers();
-                if (Modifier.isStatic(mods) &&
-                    Modifier.isFinal(mods) && Modifier.isPrivate(mods)) {
-                    suid = csuid;
-                 } else {
+            public Object run() {
+                long suid;
+                try {
+                    final Field f = cl.getDeclaredField("serialVersionUID");
+                    int mods = f.getModifiers();
+                    if (Modifier.isStatic(mods) &&
+                            Modifier.isFinal(mods) && Modifier.isPrivate(mods)) {
+                        suid = csuid;
+                    } else {
+                        suid = _computeSerialVersionUID(cl);
+                    }
+                } catch (NoSuchFieldException ex) {
                     suid = _computeSerialVersionUID(cl);
-                 }
-              } catch (NoSuchFieldException ex) {
-                  suid = _computeSerialVersionUID(cl);
-              //} catch (IllegalAccessException ex) {
-              //     suid = _computeSerialVersionUID(cl);
-              }
-              return new Long(suid);
-           }
+                    //} catch (IllegalAccessException ex) {
+                    //     suid = _computeSerialVersionUID(cl);
+                }
+                return new Long(suid);
+            }
         });
     }
 
@@ -101,7 +101,7 @@ public final class ObjectStreamClassUtil_1_3 {
         try {
 
             if ((!java.io.Serializable.class.isAssignableFrom(cl)) ||
-                (cl.isInterface())){
+                    (cl.isInterface())) {
                 return 0;
             }
 
@@ -122,9 +122,9 @@ public final class ObjectStreamClassUtil_1_3 {
             Class parent = cl.getSuperclass();
             if ((parent != null) && (parent != java.lang.Object.class)) {
                 boolean hasWriteObjectFlag = false;
-                Class [] args = {java.io.ObjectOutputStream.class};
+                Class[] args = {java.io.ObjectOutputStream.class};
                 Method hasWriteObjectMethod = ObjectStreamClassUtil_1_3.getDeclaredMethod(parent, "writeObject", args,
-                       Modifier.PRIVATE, Modifier.STATIC);
+                        Modifier.PRIVATE, Modifier.STATIC);
                 if (hasWriteObjectMethod != null)
                     hasWriteObjectFlag = true;
                 data.writeLong(ObjectStreamClassUtil_1_3.computeStructuralUID(hasWriteObjectFlag, parent));
@@ -142,9 +142,9 @@ public final class ObjectStreamClassUtil_1_3 {
             for (int i = 0; i < field.length; i++) {
                 Field f = field[i];
 
-                                /* Include in the hash all fields except those that are
-                                 * transient or static.
-                                 */
+                /* Include in the hash all fields except those that are
+                 * transient or static.
+                 */
                 int m = f.getModifiers();
                 if (Modifier.isTransient(m) || Modifier.isStatic(m))
                     continue;
@@ -160,7 +160,7 @@ public final class ObjectStreamClassUtil_1_3 {
             byte hasharray[] = md.digest();
             int minimum = Math.min(8, hasharray.length);
             for (int i = minimum; i > 0; i--) {
-                h += (long)(hasharray[i] & 255) << (i * 8);
+                h += (long) (hasharray[i] & 255) << (i * 8);
             }
         } catch (IOException ignore) {
             /* can't happen, but be deterministic anyway. */
@@ -190,7 +190,7 @@ public final class ObjectStreamClassUtil_1_3 {
 
             int classaccess = cl.getModifiers();
             classaccess &= (Modifier.PUBLIC | Modifier.FINAL |
-                            Modifier.INTERFACE | Modifier.ABSTRACT);
+                    Modifier.INTERFACE | Modifier.ABSTRACT);
 
             /* Workaround for javac bug that only set ABSTRACT for
              * interfaces if the interface had some methods.
@@ -242,7 +242,7 @@ public final class ObjectStreamClassUtil_1_3 {
                  */
                 int m = f.getModifiers();
                 if (Modifier.isPrivate(m) &&
-                    (Modifier.isTransient(m) || Modifier.isStatic(m)))
+                        (Modifier.isTransient(m) || Modifier.isStatic(m)))
                     continue;
 
                 data.writeUTF(f.getName());
@@ -264,7 +264,7 @@ public final class ObjectStreamClassUtil_1_3 {
              */
 
             MethodSignature[] constructors =
-                MethodSignature.removePrivateAndSort(cl.getDeclaredConstructors());
+                    MethodSignature.removePrivateAndSort(cl.getDeclaredConstructors());
             for (int i = 0; i < constructors.length; i++) {
                 MethodSignature c = constructors[i];
                 String mname = "<init>";
@@ -279,8 +279,8 @@ public final class ObjectStreamClassUtil_1_3 {
              * private transient and private static.
              */
             MethodSignature[] methods =
-                MethodSignature.removePrivateAndSort(method);
-            for (int i = 0; i < methods.length; i++ ) {
+                    MethodSignature.removePrivateAndSort(method);
+            for (int i = 0; i < methods.length; i++) {
                 MethodSignature m = methods[i];
                 String desc = m.signature;
                 desc = desc.replace('/', '.');
@@ -295,7 +295,7 @@ public final class ObjectStreamClassUtil_1_3 {
             data.flush();
             byte hasharray[] = md.digest();
             for (int i = 0; i < Math.min(8, hasharray.length); i++) {
-                h += (long)(hasharray[i] & 255) << (i * 8);
+                h += (long) (hasharray[i] & 255) << (i * 8);
             }
         } catch (IOException ignore) {
             /* can't happen, but be deterministic anyway. */
@@ -310,12 +310,12 @@ public final class ObjectStreamClassUtil_1_3 {
      * Comparator object for Classes and Interfaces
      */
     private static Comparator compareClassByName =
-        new CompareClassByName();
+            new CompareClassByName();
 
     private static class CompareClassByName implements Comparator {
         public int compare(Object o1, Object o2) {
-            Class c1 = (Class)o1;
-            Class c2 = (Class)o2;
+            Class c1 = (Class) o1;
+            Class c2 = (Class) o2;
             return (c1.getName()).compareTo(c2.getName());
         }
     }
@@ -324,19 +324,19 @@ public final class ObjectStreamClassUtil_1_3 {
      * Comparator object for Members, Fields, and Methods
      */
     private static Comparator compareMemberByName =
-        new CompareMemberByName();
+            new CompareMemberByName();
 
     private static class CompareMemberByName implements Comparator {
         public int compare(Object o1, Object o2) {
-            String s1 = ((Member)o1).getName();
-            String s2 = ((Member)o2).getName();
+            String s1 = ((Member) o1).getName();
+            String s2 = ((Member) o2).getName();
 
             if (o1 instanceof Method) {
-                s1 += getSignature((Method)o1);
-                s2 += getSignature((Method)o2);
+                s1 += getSignature((Method) o1);
+                s2 += getSignature((Method) o2);
             } else if (o1 instanceof Constructor) {
-                s1 += getSignature((Constructor)o1);
-                s2 += getSignature((Constructor)o2);
+                s1 += getSignature((Constructor) o1);
+                s2 += getSignature((Constructor) o2);
             }
             return s1.compareTo(s2);
         }
@@ -438,14 +438,14 @@ public final class ObjectStreamClassUtil_1_3 {
         static MethodSignature[] removePrivateAndSort(Member[] m) {
             int numNonPrivate = 0;
             for (int i = 0; i < m.length; i++) {
-                if (! Modifier.isPrivate(m[i].getModifiers())) {
+                if (!Modifier.isPrivate(m[i].getModifiers())) {
                     numNonPrivate++;
                 }
             }
             MethodSignature[] cm = new MethodSignature[numNonPrivate];
             int cmi = 0;
             for (int i = 0; i < m.length; i++) {
-                if (! Modifier.isPrivate(m[i].getModifiers())) {
+                if (!Modifier.isPrivate(m[i].getModifiers())) {
                     cm[cmi] = new MethodSignature(m[i]);
                     cmi++;
                 }
@@ -462,8 +462,8 @@ public final class ObjectStreamClassUtil_1_3 {
             if (o1 == o2)
                 return 0;
 
-            MethodSignature c1 = (MethodSignature)o1;
-            MethodSignature c2 = (MethodSignature)o2;
+            MethodSignature c1 = (MethodSignature) o1;
+            MethodSignature c2 = (MethodSignature) o2;
 
             int result;
             if (isConstructor()) {
@@ -479,12 +479,13 @@ public final class ObjectStreamClassUtil_1_3 {
         final private boolean isConstructor() {
             return member instanceof Constructor;
         }
+
         private MethodSignature(Member m) {
             member = m;
             if (isConstructor()) {
-                signature = ObjectStreamClassUtil_1_3.getSignature((Constructor)m);
+                signature = ObjectStreamClassUtil_1_3.getSignature((Constructor) m);
             } else {
-                signature = ObjectStreamClassUtil_1_3.getSignature((Method)m);
+                signature = ObjectStreamClassUtil_1_3.getSignature((Method) m);
             }
         }
     }
@@ -494,6 +495,7 @@ public final class ObjectStreamClassUtil_1_3 {
     // private static native boolean hasStaticInitializer(Class cl);
 
     private static Method hasStaticInitializerMethod = null;
+
     /**
      * Returns true if the given class defines a static initializer method,
      * false otherwise.
@@ -520,48 +522,48 @@ public final class ObjectStreamClassUtil_1_3 {
                     classWithThisMethod = java.io.ObjectStreamClass.class;
 
                 hasStaticInitializerMethod =
-                    classWithThisMethod.getDeclaredMethod("hasStaticInitializer",
-                                                          new Class[] { Class.class });
+                        classWithThisMethod.getDeclaredMethod("hasStaticInitializer",
+                                new Class[]{Class.class});
             } catch (NoSuchMethodException ex) {
             }
 
             if (hasStaticInitializerMethod == null) {
                 throw new InternalError("Can't find hasStaticInitializer method on "
-                                        + classWithThisMethod.getName());
+                        + classWithThisMethod.getName());
             }
             hasStaticInitializerMethod.setAccessible(true);
         }
         try {
             Boolean retval = (Boolean)
-                hasStaticInitializerMethod.invoke(null, new Object[] { cl });
+                    hasStaticInitializerMethod.invoke(null, new Object[]{cl});
             return retval.booleanValue();
         } catch (Exception ex) {
             throw new InternalError("Error invoking hasStaticInitializer: "
-                                    + ex);
+                    + ex);
         }
     }
 
     private static Method getDeclaredMethod(final Class cl, final String methodName, final Class[] args,
-                                     final int requiredModifierMask,
-                                     final int disallowedModifierMask) {
+                                            final int requiredModifierMask,
+                                            final int disallowedModifierMask) {
         return (Method) AccessController.doPrivileged(new PrivilegedAction() {
             public Object run() {
                 Method method = null;
                 try {
                     method =
-                        cl.getDeclaredMethod(methodName, args);
-                        int mods = method.getModifiers();
-                        if ((mods & disallowedModifierMask) != 0 ||
+                            cl.getDeclaredMethod(methodName, args);
+                    int mods = method.getModifiers();
+                    if ((mods & disallowedModifierMask) != 0 ||
                             (mods & requiredModifierMask) != requiredModifierMask) {
-                            method = null;
-                        }
-                        //if (!Modifier.isPrivate(mods) ||
-                        //    Modifier.isStatic(mods)) {
-                        //    method = null;
-                        //}
+                        method = null;
+                    }
+                    //if (!Modifier.isPrivate(mods) ||
+                    //    Modifier.isStatic(mods)) {
+                    //    method = null;
+                    //}
                 } catch (NoSuchMethodException e) {
-                // Since it is alright if methodName does not exist,
-                // no need to do anything special here.
+                    // Since it is alright if methodName does not exist,
+                    // no need to do anything special here.
                 }
                 return method;
             }

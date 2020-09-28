@@ -26,6 +26,7 @@ package java.awt;
 
 import java.util.List;
 import java.util.ArrayList;
+
 import sun.util.logging.PlatformLogger;
 
 /**
@@ -53,13 +54,11 @@ import sun.util.logging.PlatformLogger;
  * policy is used to perform the search operation.
  *
  * @author David Mendenhall
- *
  * @see Container#getComponents
  * @since 1.4
  */
 public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
-    implements java.io.Serializable
-{
+        implements java.io.Serializable {
     private static final PlatformLogger log = PlatformLogger.getLogger("java.awt.ContainerOrderFocusTraversalPolicy");
 
     final private int FORWARD_TRAVERSAL = 0;
@@ -102,12 +101,15 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
      * the 2nd point but just override the implementation of the 1st one.
      * A striking example of such a descendant is the javax.swing.SortingFocusTraversalPolicy.
      */
-    /*protected*/ private List<Component> getFocusTraversalCycle(Container aContainer) {
+    /*protected*/
+    private List<Component> getFocusTraversalCycle(Container aContainer) {
         List<Component> cycle = new ArrayList<Component>();
         enumerateCycle(aContainer, cycle);
         return cycle;
     }
-    /*protected*/ private int getComponentIndex(List<Component> cycle, Component aComponent) {
+
+    /*protected*/
+    private int getComponentIndex(List<Component> cycle, Component aComponent) {
         return cycle.indexOf(aComponent);
     }
 
@@ -122,7 +124,7 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
         for (int i = 0; i < components.length; i++) {
             Component comp = components[i];
             if (comp instanceof Container) {
-                Container cont = (Container)comp;
+                Container cont = (Container) comp;
 
                 if (!cont.isFocusCycleRoot() && !cont.isFocusTraversalPolicyProvider()) {
                     enumerateCycle(cont, cycle);
@@ -136,7 +138,7 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
     private Container getTopmostProvider(Container focusCycleRoot, Component aComponent) {
         Container aCont = aComponent.getParent();
         Container ftp = null;
-        while (aCont  != focusCycleRoot && aCont != null) {
+        while (aCont != focusCycleRoot && aCont != null) {
             if (aCont.isFocusTraversalPolicyProvider()) {
                 ftp = aCont;
             }
@@ -159,7 +161,7 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
         Component retComp = null;
 
         if (comp instanceof Container) {
-            Container cont = (Container)comp;
+            Container cont = (Container) comp;
 
             if (cont.isFocusCycleRoot()) {
                 if (getImplicitDownCycleTraversal()) {
@@ -167,15 +169,15 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
 
                     if (retComp != null && log.isLoggable(PlatformLogger.FINE)) {
                         log.fine("### Transfered focus down-cycle to " + retComp +
-                                 " in the focus cycle root " + cont);
+                                " in the focus cycle root " + cont);
                     }
                 } else {
                     return null;
                 }
             } else if (cont.isFocusTraversalPolicyProvider()) {
                 retComp = (traversalDirection == FORWARD_TRAVERSAL ?
-                           cont.getFocusTraversalPolicy().getDefaultComponent(cont) :
-                           cont.getFocusTraversalPolicy().getLastComponent(cont));
+                        cont.getFocusTraversalPolicy().getDefaultComponent(cont) :
+                        cont.getFocusTraversalPolicy().getLastComponent(cont));
 
                 if (retComp != null && log.isLoggable(PlatformLogger.FINE)) {
                     log.fine("### Transfered focus to " + retComp + " in the FTP provider " + cont);
@@ -200,15 +202,16 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
      *
      * @param aContainer a focus cycle root of aComponent or a focus traversal policy provider
      * @param aComponent a (possibly indirect) child of aContainer, or
-     *        aContainer itself
+     *                   aContainer itself
      * @return the Component that should receive the focus after aComponent, or
-     *         null if no suitable Component can be found
+     * null if no suitable Component can be found
      * @throws IllegalArgumentException if aContainer is not a focus cycle
-     *         root of aComponent or focus traversal policy provider, or if either aContainer or
-     *         aComponent is null
+     *                                  root of aComponent or focus traversal policy provider, or if either aContainer or
+     *                                  aComponent is null
      */
     public Component getComponentAfter(Container aContainer, Component aComponent) {
-        if (log.isLoggable(PlatformLogger.FINE)) log.fine("### Searching in " + aContainer + " for component after " + aComponent);
+        if (log.isLoggable(PlatformLogger.FINE))
+            log.fine("### Searching in " + aContainer + " for component after " + aComponent);
 
         if (aContainer == null || aComponent == null) {
             throw new IllegalArgumentException("aContainer and aComponent cannot be null");
@@ -220,7 +223,7 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
             throw new IllegalArgumentException("aContainer is not a focus cycle root of aComponent");
         }
 
-        synchronized(aContainer.getTreeLock()) {
+        synchronized (aContainer.getTreeLock()) {
 
             if (!(aContainer.isVisible() && aContainer.isDisplayable())) {
                 return null;
@@ -298,12 +301,12 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
      *
      * @param aContainer a focus cycle root of aComponent or focus traversal policy provider
      * @param aComponent a (possibly indirect) child of aContainer, or
-     *        aContainer itself
+     *                   aContainer itself
      * @return the Component that should receive the focus before aComponent,
-     *         or null if no suitable Component can be found
+     * or null if no suitable Component can be found
      * @throws IllegalArgumentException if aContainer is not a focus cycle
-     *         root of aComponent or focus traversal policy provider, or if either aContainer or
-     *         aComponent is null
+     *                                  root of aComponent or focus traversal policy provider, or if either aContainer or
+     *                                  aComponent is null
      */
     public Component getComponentBefore(Container aContainer, Component aComponent) {
         if (aContainer == null || aComponent == null) {
@@ -316,7 +319,7 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
             throw new IllegalArgumentException("aContainer is not a focus cycle root of aComponent");
         }
 
-        synchronized(aContainer.getTreeLock()) {
+        synchronized (aContainer.getTreeLock()) {
 
             if (!(aContainer.isVisible() && aContainer.isDisplayable())) {
                 return null;
@@ -363,7 +366,7 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
             Component comp = null;
             Component tryComp = null;
 
-            for (index--; index>=0; index--) {
+            for (index--; index >= 0; index--) {
                 comp = cycle.get(index);
                 if (comp != aContainer && (tryComp = getComponentDownCycle(comp, BACKWARD_TRAVERSAL)) != null) {
                     return tryComp;
@@ -393,9 +396,9 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
      * forward direction.
      *
      * @param aContainer the focus cycle root or focus traversal policy provider whose first
-     *        Component is to be returned
+     *                   Component is to be returned
      * @return the first Component in the traversal cycle of aContainer,
-     *         or null if no suitable Component can be found
+     * or null if no suitable Component can be found
      * @throws IllegalArgumentException if aContainer is null
      */
     public Component getFirstComponent(Container aContainer) {
@@ -407,7 +410,7 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
 
         }
 
-        synchronized(aContainer.getTreeLock()) {
+        synchronized (aContainer.getTreeLock()) {
 
             if (!(aContainer.isVisible() && aContainer.isDisplayable())) {
                 return null;
@@ -429,8 +432,7 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
                 if (accept(comp)) {
                     return comp;
                 } else if (comp != aContainer &&
-                           (comp = getComponentDownCycle(comp, FORWARD_TRAVERSAL)) != null)
-                {
+                        (comp = getComponentDownCycle(comp, FORWARD_TRAVERSAL)) != null) {
                     return comp;
                 }
             }
@@ -444,9 +446,9 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
      * reverse direction.
      *
      * @param aContainer the focus cycle root or focus traversal policy provider whose last
-     *        Component is to be returned
+     *                   Component is to be returned
      * @return the last Component in the traversal cycle of aContainer,
-     *         or null if no suitable Component can be found
+     * or null if no suitable Component can be found
      * @throws IllegalArgumentException if aContainer is null
      */
     public Component getLastComponent(Container aContainer) {
@@ -457,7 +459,7 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
             throw new IllegalArgumentException("aContainer cannot be null");
         }
 
-        synchronized(aContainer.getTreeLock()) {
+        synchronized (aContainer.getTreeLock()) {
 
             if (!(aContainer.isVisible() && aContainer.isDisplayable())) {
                 return null;
@@ -475,12 +477,12 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
             }
             if (log.isLoggable(PlatformLogger.FINE)) log.fine("### Cycle is " + cycle);
 
-            for (int i= cycle.size() - 1; i >= 0; i--) {
+            for (int i = cycle.size() - 1; i >= 0; i--) {
                 Component comp = cycle.get(i);
                 if (accept(comp)) {
                     return comp;
                 } else if (comp instanceof Container && comp != aContainer) {
-                    Container cont = (Container)comp;
+                    Container cont = (Container) comp;
                     if (cont.isFocusTraversalPolicyProvider()) {
                         return cont.getFocusTraversalPolicy().getLastComponent(cont);
                     }
@@ -497,11 +499,11 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
      * returns the same Component as <code>getFirstComponent</code>.
      *
      * @param aContainer the focus cycle root or focus traversal policy provider whose default
-     *        Component is to be returned
+     *                   Component is to be returned
      * @return the default Component in the traversal cycle of aContainer,
-     *         or null if no suitable Component can be found
-     * @see #getFirstComponent
+     * or null if no suitable Component can be found
      * @throws IllegalArgumentException if aContainer is null
+     * @see #getFirstComponent
      */
     public Component getDefaultComponent(Container aContainer) {
         return getFirstComponent(aContainer);
@@ -517,8 +519,8 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
      * property is <code>true</code>.
      *
      * @param implicitDownCycleTraversal whether this
-     *        ContainerOrderFocusTraversalPolicy transfers focus down-cycle
-     *        implicitly
+     *                                   ContainerOrderFocusTraversalPolicy transfers focus down-cycle
+     *                                   implicitly
      * @see #getImplicitDownCycleTraversal
      * @see #getFirstComponent
      */
@@ -535,7 +537,7 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
      * focus cycle root will be traversed instead.
      *
      * @return whether this ContainerOrderFocusTraversalPolicy transfers focus
-     *         down-cycle implicitly
+     * down-cycle implicitly
      * @see #setImplicitDownCycleTraversal
      * @see #getFirstComponent
      */
@@ -549,9 +551,9 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
      * only if it is visible, displayable, enabled, and focusable.
      *
      * @param aComponent the Component whose fitness as a focus owner is to
-     *        be tested
+     *                   be tested
      * @return <code>true</code> if aComponent is visible, displayable,
-     *         enabled, and focusable; <code>false</code> otherwise
+     * enabled, and focusable; <code>false</code> otherwise
      */
     protected boolean accept(Component aComponent) {
         if (!aComponent.canBeFocusOwner()) {
@@ -564,8 +566,7 @@ public class ContainerOrderFocusTraversalPolicy extends FocusTraversalPolicy
         if (!(aComponent instanceof Window)) {
             for (Container enableTest = aComponent.getParent();
                  enableTest != null;
-                 enableTest = enableTest.getParent())
-            {
+                 enableTest = enableTest.getParent()) {
                 if (!(enableTest.isEnabled() || enableTest.isLightweight())) {
                     return false;
                 }

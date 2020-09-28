@@ -33,8 +33,8 @@ import javax.swing.plaf.basic.BasicTextFieldUI;
 import javax.swing.text.*;
 import javax.swing.*;
 import javax.swing.plaf.UIResource;
-import sun.swing.DefaultLookup;
 
+import sun.swing.DefaultLookup;
 
 
 /**
@@ -61,10 +61,9 @@ import sun.swing.DefaultLookup;
  * version of Swing.  A future release of Swing will provide support for
  * long term persistence.
  *
- * @author  Timothy Prinzing
+ * @author Timothy Prinzing
  */
-public class WindowsTextFieldUI extends BasicTextFieldUI
-{
+public class WindowsTextFieldUI extends BasicTextFieldUI {
     /**
      * Creates a UI for a JTextField.
      *
@@ -141,7 +140,8 @@ public class WindowsTextFieldUI extends BasicTextFieldUI
                     Rectangle startRect = null;
                     try {
                         startRect = ui.modelToView(field, dot, bias);
-                    } catch (BadLocationException ble) {}
+                    } catch (BadLocationException ble) {
+                    }
 
                     Insets i = field.getInsets();
                     BoundedRangeModel vis = field.getHorizontalVisibility();
@@ -160,10 +160,11 @@ public class WindowsTextFieldUI extends BasicTextFieldUI
                         try {
                             Rectangle endRect;
                             endRect = ui.modelToView(field, dot, bias);
-                            if (endRect != null && !endRect.equals(startRect)){
+                            if (endRect != null && !endRect.equals(startRect)) {
                                 damage(endRect);
                             }
-                        } catch (BadLocationException ble) {}
+                        } catch (BadLocationException ble) {
+                        }
                     }
                 }
             }

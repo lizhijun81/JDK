@@ -27,21 +27,20 @@ package com.sun.source.tree;
 
 /**
  * A tree node for a 'while' loop statement.
- *
+ * <p>
  * For example:
  * <pre>
  *   while ( <em>condition</em> )
  *     <em>statement</em>
  * </pre>
  *
- *
- * @jls section 14.12
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls section 14.12
  * @since 1.6
  */
 public interface WhileLoopTree extends StatementTree {
     ExpressionTree getCondition();
+
     StatementTree getStatement();
 }

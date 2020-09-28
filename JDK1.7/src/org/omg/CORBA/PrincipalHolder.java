@@ -43,12 +43,12 @@ import org.omg.CORBA.portable.OutputStream;
  * must also fill the "in" value to be sent to the server.
  * Before the method invocation returns, the ORB will fill in the
  * value corresponding to the "out" value returned from the server.
- * <P>
+ * <p>
  * If <code>myPrincipalHolder</code> is an instance of <code>PrincipalHolder</code>,
  * the value stored in its <code>value</code> field can be accessed with
  * <code>myPrincipalHolder.value</code>.
  *
- * @since       JDK1.2
+ * @since JDK1.2
  * @deprecated Deprecated by CORBA 2.2.
  */
 @Deprecated
@@ -70,6 +70,7 @@ public final class PrincipalHolder implements Streamable {
      * Constructs a new <code>PrincipalHolder</code> object with its
      * <code>value</code> field initialized to the given
      * <code>Principal</code> object.
+     *
      * @param initial the <code>Principal</code> with which to initialize
      *                the <code>value</code> field of the newly-created
      *                <code>PrincipalHolder</code> object

@@ -31,6 +31,7 @@ import java.awt.Event;
 import java.awt.KeyEventPostProcessor;
 import java.awt.Window;
 import java.awt.Toolkit;
+
 import sun.awt.SunToolkit;
 
 import java.awt.event.ActionEvent;
@@ -83,13 +84,13 @@ public class WindowsRootPaneUI extends BasicRootPaneUI {
 
         void altPressed(KeyEvent ev) {
             MenuSelectionManager msm =
-                MenuSelectionManager.defaultManager();
+                    MenuSelectionManager.defaultManager();
             MenuElement[] path = msm.getSelectedPath();
-            if (path.length > 0 && ! (path[0] instanceof ComboPopup)) {
+            if (path.length > 0 && !(path[0] instanceof ComboPopup)) {
                 msm.clearSelectedPath();
                 menuCanceledOnPress = true;
                 ev.consume();
-            } else if(path.length > 0) { // We are in ComboBox
+            } else if (path.length > 0) { // We are in ComboBox
                 menuCanceledOnPress = false;
                 WindowsLookAndFeel.setMnemonicHidden(false);
                 WindowsGraphicsUtils.repaintMnemonicsInWindow(winAncestor);
@@ -99,11 +100,11 @@ public class WindowsRootPaneUI extends BasicRootPaneUI {
                 WindowsLookAndFeel.setMnemonicHidden(false);
                 WindowsGraphicsUtils.repaintMnemonicsInWindow(winAncestor);
                 JMenuBar mbar = root != null ? root.getJMenuBar() : null;
-                if(mbar == null && winAncestor instanceof JFrame) {
-                    mbar = ((JFrame)winAncestor).getJMenuBar();
+                if (mbar == null && winAncestor instanceof JFrame) {
+                    mbar = ((JFrame) winAncestor).getJMenuBar();
                 }
                 JMenu menu = mbar != null ? mbar.getMenu(0) : null;
-                if(menu != null) {
+                if (menu != null) {
                     ev.consume();
                 }
             }
@@ -117,13 +118,13 @@ public class WindowsRootPaneUI extends BasicRootPaneUI {
             }
 
             MenuSelectionManager msm =
-                MenuSelectionManager.defaultManager();
+                    MenuSelectionManager.defaultManager();
             if (msm.getSelectedPath().length == 0) {
                 // if no menu is active, we try activating the menubar
 
                 JMenuBar mbar = root != null ? root.getJMenuBar() : null;
-                if(mbar == null && winAncestor instanceof JFrame) {
-                    mbar = ((JFrame)winAncestor).getJMenuBar();
+                if (mbar == null && winAncestor instanceof JFrame) {
+                    mbar = ((JFrame) winAncestor).getJMenuBar();
                 }
                 JMenu menu = mbar != null ? mbar.getMenu(0) : null;
 
@@ -136,7 +137,7 @@ public class WindowsRootPaneUI extends BasicRootPaneUI {
                 boolean skip = false;
                 Toolkit tk = Toolkit.getDefaultToolkit();
                 if (tk instanceof SunToolkit) {
-                    skip = ev.getWhen() <= ((SunToolkit)tk).getWindowDeactivationTime(winAncestor);
+                    skip = ev.getWhen() <= ((SunToolkit) tk).getWindowDeactivationTime(winAncestor);
                 }
 
                 if (menu != null && !skip) {
@@ -144,12 +145,12 @@ public class WindowsRootPaneUI extends BasicRootPaneUI {
                     path[0] = mbar;
                     path[1] = menu;
                     msm.setSelectedPath(path);
-                } else if(!WindowsLookAndFeel.isMnemonicHidden()) {
+                } else if (!WindowsLookAndFeel.isMnemonicHidden()) {
                     WindowsLookAndFeel.setMnemonicHidden(true);
                     WindowsGraphicsUtils.repaintMnemonicsInWindow(winAncestor);
                 }
             } else {
-                if((msm.getSelectedPath())[0] instanceof ComboPopup) {
+                if ((msm.getSelectedPath())[0] instanceof ComboPopup) {
                     WindowsLookAndFeel.setMnemonicHidden(true);
                     WindowsGraphicsUtils.repaintMnemonicsInWindow(winAncestor);
                 }
@@ -158,7 +159,7 @@ public class WindowsRootPaneUI extends BasicRootPaneUI {
         }
 
         public boolean postProcessKeyEvent(KeyEvent ev) {
-            if(ev.isConsumed()) {
+            if (ev.isConsumed()) {
                 // do not manage consumed event
                 return false;
             }
@@ -178,7 +179,7 @@ public class WindowsRootPaneUI extends BasicRootPaneUI {
                         altReleased(ev);
                     } else {
                         MenuSelectionManager msm =
-                            MenuSelectionManager.defaultManager();
+                                MenuSelectionManager.defaultManager();
                         MenuElement[] path = msm.getSelectedPath();
                         if (path.length <= 0) {
                             WindowsLookAndFeel.setMnemonicHidden(true);

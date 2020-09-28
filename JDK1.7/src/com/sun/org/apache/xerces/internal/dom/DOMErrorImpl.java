@@ -34,11 +34,9 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLParseException;
  *
  * <p>See also the <a href='http://www.w3.org/TR/2001/WD-DOM-Level-3-Core-20010913'>Document Object Model (DOM) Level 3 Core Specification</a>.
  *
- * @xerces.internal
- *
  * @author Gopal Sharma, SUN Microsystems Inc.
  * @author Elena Litani, IBM
- *
+ * @xerces.internal
  */
 
 // REVISIT: the implementation of ErrorReporter.
@@ -59,20 +57,23 @@ public class DOMErrorImpl implements DOMError {
     public Object fRelatedData;
 
 
-
     //
     // Constructors
     //
 
-    /** Default constructor. */
-    public DOMErrorImpl () {
+    /**
+     * Default constructor.
+     */
+    public DOMErrorImpl() {
     }
 
-    /** Exctracts information from XMLParserException) */
-    public DOMErrorImpl (short severity, XMLParseException exception) {
+    /**
+     * Exctracts information from XMLParserException)
+     */
+    public DOMErrorImpl(short severity, XMLParseException exception) {
         fSeverity = severity;
         fException = exception;
-        fLocator = createDOMLocator (exception);
+        fLocator = createDOMLocator(exception);
     }
 
     /**
@@ -104,9 +105,9 @@ public class DOMErrorImpl implements DOMError {
     private DOMLocatorImpl createDOMLocator(XMLParseException exception) {
         // assuming DOMLocator wants the *expanded*, not the literal, URI of the doc... - neilg
         return new DOMLocatorImpl(exception.getLineNumber(),
-                                  exception.getColumnNumber(),
-                                  exception.getCharacterOffset(),
-                                  exception.getExpandedSystemId());
+                exception.getColumnNumber(),
+                exception.getCharacterOffset(),
+                exception.getExpandedSystemId());
     } // createDOMLocator()
 
 
@@ -115,20 +116,20 @@ public class DOMErrorImpl implements DOMError {
      * word, we need to rename it.Change to "relatedException". (F2F 26 Sep
      * 2001)
      */
-    public Object getRelatedException(){
+    public Object getRelatedException() {
         return fException;
     }
 
-    public void reset(){
+    public void reset() {
         fSeverity = DOMError.SEVERITY_WARNING;
         fException = null;
     }
 
-    public String getType(){
+    public String getType() {
         return fType;
     }
 
-    public Object getRelatedData(){
+    public Object getRelatedData() {
         return fRelatedData;
     }
 

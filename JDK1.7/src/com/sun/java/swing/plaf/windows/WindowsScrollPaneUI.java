@@ -29,7 +29,6 @@ import javax.swing.plaf.basic.*;
 import javax.swing.*;
 
 
-
 /**
  * Windows rendition of the component.
  * <p>
@@ -40,5 +39,5 @@ import javax.swing.*;
  * version of Swing.  A future release of Swing will provide support for
  * long term persistence.
  */
-public class WindowsScrollPaneUI extends BasicScrollPaneUI
-{}
+public class WindowsScrollPaneUI extends BasicScrollPaneUI {
+}

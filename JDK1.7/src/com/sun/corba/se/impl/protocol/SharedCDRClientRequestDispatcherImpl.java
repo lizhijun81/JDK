@@ -85,9 +85,9 @@ import com.sun.corba.se.spi.orb.ORBVersion;
 import com.sun.corba.se.spi.orb.ORBVersionFactory;
 import com.sun.corba.se.spi.protocol.CorbaMessageMediator;
 import com.sun.corba.se.spi.protocol.RequestDispatcherRegistry;
-import com.sun.corba.se.spi.transport.CorbaContactInfo ;
-import com.sun.corba.se.spi.transport.CorbaContactInfoList ;
-import com.sun.corba.se.spi.transport.CorbaContactInfoListIterator ;
+import com.sun.corba.se.spi.transport.CorbaContactInfo;
+import com.sun.corba.se.spi.transport.CorbaContactInfoList;
+import com.sun.corba.se.spi.transport.CorbaContactInfoListIterator;
 import com.sun.corba.se.spi.transport.CorbaConnection;
 
 import com.sun.corba.se.spi.servicecontext.ServiceContext;
@@ -119,9 +119,8 @@ import com.sun.corba.se.impl.util.JDKBridge;
  * interface.
  */
 public class SharedCDRClientRequestDispatcherImpl
-    extends
-        CorbaClientRequestDispatcherImpl
-{
+        extends
+        CorbaClientRequestDispatcherImpl {
     // REVISIT:
     // Rather than have separate CDR subcontract,
     // use same CorbaClientRequestDispatcherImpl but have
@@ -132,87 +131,86 @@ public class SharedCDRClientRequestDispatcherImpl
 
     public InputObject marshalingComplete(java.lang.Object self,
                                           OutputObject outputObject)
-        throws
+            throws
             ApplicationException,
-            org.omg.CORBA.portable.RemarshalException
-    {
-      ORB orb = null;
-      CorbaMessageMediator messageMediator = null;
-      try {
-        messageMediator = (CorbaMessageMediator)
-            outputObject.getMessageMediator();
+            org.omg.CORBA.portable.RemarshalException {
+        ORB orb = null;
+        CorbaMessageMediator messageMediator = null;
+        try {
+            messageMediator = (CorbaMessageMediator)
+                    outputObject.getMessageMediator();
 
-        orb = (ORB) messageMediator.getBroker();
+            orb = (ORB) messageMediator.getBroker();
 
-        if (orb.subcontractDebugFlag) {
-            dprint(".marshalingComplete->: " + opAndId(messageMediator));
-        }
+            if (orb.subcontractDebugFlag) {
+                dprint(".marshalingComplete->: " + opAndId(messageMediator));
+            }
 
-        CDROutputObject cdrOutputObject = (CDROutputObject) outputObject;
+            CDROutputObject cdrOutputObject = (CDROutputObject) outputObject;
 
-        //
-        // Create server-side input object.
-        //
+            //
+            // Create server-side input object.
+            //
 
-        ByteBufferWithInfo bbwi = cdrOutputObject.getByteBufferWithInfo();
-        cdrOutputObject.getMessageHeader().setSize(bbwi.byteBuffer, bbwi.getSize());
+            ByteBufferWithInfo bbwi = cdrOutputObject.getByteBufferWithInfo();
+            cdrOutputObject.getMessageHeader().setSize(bbwi.byteBuffer, bbwi.getSize());
 
-        CDRInputObject cdrInputObject =
-            new CDRInputObject(orb, null, bbwi.byteBuffer,
-                               cdrOutputObject.getMessageHeader());
-        messageMediator.setInputObject(cdrInputObject);
-        cdrInputObject.setMessageMediator(messageMediator);
+            CDRInputObject cdrInputObject =
+                    new CDRInputObject(orb, null, bbwi.byteBuffer,
+                            cdrOutputObject.getMessageHeader());
+            messageMediator.setInputObject(cdrInputObject);
+            cdrInputObject.setMessageMediator(messageMediator);
 
-        //
-        // Dispatch
-        //
+            //
+            // Dispatch
+            //
 
-        // REVISIT: Impl cast.
-        ((CorbaMessageMediatorImpl)messageMediator).handleRequestRequest(
-            messageMediator);
+            // REVISIT: Impl cast.
+            ((CorbaMessageMediatorImpl) messageMediator).handleRequestRequest(
+                    messageMediator);
 
-        // InputStream must be closed on the InputObject so that its
-        // ByteBuffer can be released to the ByteBufferPool. We must do
-        // this before we re-assign the cdrInputObject reference below.
-        try { cdrInputObject.close(); }
-        catch (IOException ex) {
-            // No need to do anything since we're done with the input stream
-            // and cdrInputObject will be re-assigned a new client-side input
-            // object, (i.e. won't result in a corba error).
+            // InputStream must be closed on the InputObject so that its
+            // ByteBuffer can be released to the ByteBufferPool. We must do
+            // this before we re-assign the cdrInputObject reference below.
+            try {
+                cdrInputObject.close();
+            } catch (IOException ex) {
+                // No need to do anything since we're done with the input stream
+                // and cdrInputObject will be re-assigned a new client-side input
+                // object, (i.e. won't result in a corba error).
 
-            if (orb.transportDebugFlag) {
-               dprint(".marshalingComplete: ignoring IOException - " + ex.toString());
+                if (orb.transportDebugFlag) {
+                    dprint(".marshalingComplete: ignoring IOException - " + ex.toString());
+                }
+            }
+
+            //
+            // Create client-side input object
+            //
+
+            cdrOutputObject = (CDROutputObject) messageMediator.getOutputObject();
+            bbwi = cdrOutputObject.getByteBufferWithInfo();
+            cdrOutputObject.getMessageHeader().setSize(bbwi.byteBuffer, bbwi.getSize());
+            cdrInputObject =
+                    new CDRInputObject(orb, null, bbwi.byteBuffer,
+                            cdrOutputObject.getMessageHeader());
+            messageMediator.setInputObject(cdrInputObject);
+            cdrInputObject.setMessageMediator(messageMediator);
+
+            cdrInputObject.unmarshalHeader();
+
+            InputObject inputObject = cdrInputObject;
+
+            return processResponse(orb, messageMediator, inputObject);
+
+        } finally {
+            if (orb.subcontractDebugFlag) {
+                dprint(".marshalingComplete<-: " + opAndId(messageMediator));
             }
         }
-
-        //
-        // Create client-side input object
-        //
-
-        cdrOutputObject = (CDROutputObject) messageMediator.getOutputObject();
-        bbwi = cdrOutputObject.getByteBufferWithInfo();
-        cdrOutputObject.getMessageHeader().setSize(bbwi.byteBuffer, bbwi.getSize());
-        cdrInputObject =
-            new CDRInputObject(orb, null, bbwi.byteBuffer,
-                               cdrOutputObject.getMessageHeader());
-        messageMediator.setInputObject(cdrInputObject);
-        cdrInputObject.setMessageMediator(messageMediator);
-
-        cdrInputObject.unmarshalHeader();
-
-        InputObject inputObject = cdrInputObject;
-
-        return processResponse(orb, messageMediator, inputObject);
-
-      } finally {
-        if (orb.subcontractDebugFlag) {
-            dprint(".marshalingComplete<-: " + opAndId(messageMediator));
-        }
-      }
     }
 
-    protected void dprint(String msg)
-    {
+    protected void dprint(String msg) {
         ORBUtility.dprint("SharedCDRClientRequestDispatcherImpl", msg);
     }
 }

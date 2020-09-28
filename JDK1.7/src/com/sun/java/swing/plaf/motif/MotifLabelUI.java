@@ -44,8 +44,7 @@ import javax.swing.plaf.ComponentUI;
  *
  * @author Amy Fowler
  */
-public class MotifLabelUI extends BasicLabelUI
-{
+public class MotifLabelUI extends BasicLabelUI {
     private static final Object MOTIF_LABEL_UI_KEY = new Object();
 
     public static ComponentUI createUI(JComponent c) {

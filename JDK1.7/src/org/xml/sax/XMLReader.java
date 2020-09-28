@@ -75,14 +75,13 @@ import java.io.IOException;
  * <p>There are adapters available to convert a SAX1 Parser to
  * a SAX2 XMLReader and vice-versa.</p>
  *
- * @since SAX 2.0
  * @author David Megginson
  * @see org.xml.sax.XMLFilter
  * @see org.xml.sax.helpers.ParserAdapter
  * @see org.xml.sax.helpers.XMLReaderAdapter
+ * @since SAX 2.0
  */
-public interface XMLReader
-{
+public interface XMLReader {
 
 
     ////////////////////////////////////////////////////////////////////
@@ -139,15 +138,15 @@ public interface XMLReader
      *
      * @param name The feature name, which is a fully-qualified URI.
      * @return The current value of the feature (true or false).
-     * @exception org.xml.sax.SAXNotRecognizedException If the feature
-     *            value can't be assigned or retrieved.
-     * @exception org.xml.sax.SAXNotSupportedException When the
-     *            XMLReader recognizes the feature name but
-     *            cannot determine its value at this time.
+     * @throws org.xml.sax.SAXNotRecognizedException If the feature
+     *                                               value can't be assigned or retrieved.
+     * @throws org.xml.sax.SAXNotSupportedException  When the
+     *                                               XMLReader recognizes the feature name but
+     *                                               cannot determine its value at this time.
      * @see #setFeature
      */
-    public boolean getFeature (String name)
-        throws SAXNotRecognizedException, SAXNotSupportedException;
+    public boolean getFeature(String name)
+            throws SAXNotRecognizedException, SAXNotSupportedException;
 
 
     /**
@@ -164,17 +163,17 @@ public interface XMLReader
      * http://xml.org/sax/features/namespaces to true and
      * http://xml.org/sax/features/namespace-prefixes to false.</p>
      *
-     * @param name The feature name, which is a fully-qualified URI.
+     * @param name  The feature name, which is a fully-qualified URI.
      * @param value The requested value of the feature (true or false).
-     * @exception org.xml.sax.SAXNotRecognizedException If the feature
-     *            value can't be assigned or retrieved.
-     * @exception org.xml.sax.SAXNotSupportedException When the
-     *            XMLReader recognizes the feature name but
-     *            cannot set the requested value.
+     * @throws org.xml.sax.SAXNotRecognizedException If the feature
+     *                                               value can't be assigned or retrieved.
+     * @throws org.xml.sax.SAXNotSupportedException  When the
+     *                                               XMLReader recognizes the feature name but
+     *                                               cannot set the requested value.
      * @see #getFeature
      */
-    public void setFeature (String name, boolean value)
-        throws SAXNotRecognizedException, SAXNotSupportedException;
+    public void setFeature(String name, boolean value)
+            throws SAXNotRecognizedException, SAXNotSupportedException;
 
 
     /**
@@ -195,15 +194,15 @@ public interface XMLReader
      *
      * @param name The property name, which is a fully-qualified URI.
      * @return The current value of the property.
-     * @exception org.xml.sax.SAXNotRecognizedException If the property
-     *            value can't be assigned or retrieved.
-     * @exception org.xml.sax.SAXNotSupportedException When the
-     *            XMLReader recognizes the property name but
-     *            cannot determine its value at this time.
+     * @throws org.xml.sax.SAXNotRecognizedException If the property
+     *                                               value can't be assigned or retrieved.
+     * @throws org.xml.sax.SAXNotSupportedException  When the
+     *                                               XMLReader recognizes the property name but
+     *                                               cannot determine its value at this time.
      * @see #setProperty
      */
-    public Object getProperty (String name)
-        throws SAXNotRecognizedException, SAXNotSupportedException;
+    public Object getProperty(String name)
+            throws SAXNotRecognizedException, SAXNotSupportedException;
 
 
     /**
@@ -223,17 +222,16 @@ public interface XMLReader
      * <p>This method is also the standard mechanism for setting
      * extended handlers.</p>
      *
-     * @param name The property name, which is a fully-qualified URI.
+     * @param name  The property name, which is a fully-qualified URI.
      * @param value The requested value for the property.
-     * @exception org.xml.sax.SAXNotRecognizedException If the property
-     *            value can't be assigned or retrieved.
-     * @exception org.xml.sax.SAXNotSupportedException When the
-     *            XMLReader recognizes the property name but
-     *            cannot set the requested value.
+     * @throws org.xml.sax.SAXNotRecognizedException If the property
+     *                                               value can't be assigned or retrieved.
+     * @throws org.xml.sax.SAXNotSupportedException  When the
+     *                                               XMLReader recognizes the property name but
+     *                                               cannot set the requested value.
      */
-    public void setProperty (String name, Object value)
-        throws SAXNotRecognizedException, SAXNotSupportedException;
-
+    public void setProperty(String name, Object value)
+            throws SAXNotRecognizedException, SAXNotSupportedException;
 
 
     ////////////////////////////////////////////////////////////////////
@@ -254,17 +252,17 @@ public interface XMLReader
      * @param resolver The entity resolver.
      * @see #getEntityResolver
      */
-    public void setEntityResolver (EntityResolver resolver);
+    public void setEntityResolver(EntityResolver resolver);
 
 
     /**
      * Return the current entity resolver.
      *
      * @return The current entity resolver, or null if none
-     *         has been registered.
+     * has been registered.
      * @see #setEntityResolver
      */
-    public EntityResolver getEntityResolver ();
+    public EntityResolver getEntityResolver();
 
 
     /**
@@ -280,17 +278,17 @@ public interface XMLReader
      * @param handler The DTD handler.
      * @see #getDTDHandler
      */
-    public void setDTDHandler (DTDHandler handler);
+    public void setDTDHandler(DTDHandler handler);
 
 
     /**
      * Return the current DTD handler.
      *
      * @return The current DTD handler, or null if none
-     *         has been registered.
+     * has been registered.
      * @see #setDTDHandler
      */
-    public DTDHandler getDTDHandler ();
+    public DTDHandler getDTDHandler();
 
 
     /**
@@ -307,17 +305,17 @@ public interface XMLReader
      * @param handler The content handler.
      * @see #getContentHandler
      */
-    public void setContentHandler (ContentHandler handler);
+    public void setContentHandler(ContentHandler handler);
 
 
     /**
      * Return the current content handler.
      *
      * @return The current content handler, or null if none
-     *         has been registered.
+     * has been registered.
      * @see #setContentHandler
      */
-    public ContentHandler getContentHandler ();
+    public ContentHandler getContentHandler();
 
 
     /**
@@ -336,18 +334,17 @@ public interface XMLReader
      * @param handler The error handler.
      * @see #getErrorHandler
      */
-    public void setErrorHandler (ErrorHandler handler);
+    public void setErrorHandler(ErrorHandler handler);
 
 
     /**
      * Return the current error handler.
      *
      * @return The current error handler, or null if none
-     *         has been registered.
+     * has been registered.
      * @see #setErrorHandler
      */
-    public ErrorHandler getErrorHandler ();
-
+    public ErrorHandler getErrorHandler();
 
 
     ////////////////////////////////////////////////////////////////////
@@ -383,12 +380,12 @@ public interface XMLReader
      * parsing early, it should throw an exception.</p>
      *
      * @param input The input source for the top-level of the
-     *        XML document.
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
-     * @exception java.io.IOException An IO exception from the parser,
-     *            possibly from a byte stream or character stream
-     *            supplied by the application.
+     *              XML document.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
+     * @throws java.io.IOException      An IO exception from the parser,
+     *                                  possibly from a byte stream or character stream
+     *                                  supplied by the application.
      * @see org.xml.sax.InputSource
      * @see #parse(java.lang.String)
      * @see #setEntityResolver
@@ -396,8 +393,8 @@ public interface XMLReader
      * @see #setContentHandler
      * @see #setErrorHandler
      */
-    public void parse (InputSource input)
-        throws IOException, SAXException;
+    public void parse(InputSource input)
+            throws IOException, SAXException;
 
 
     /**
@@ -415,14 +412,14 @@ public interface XMLReader
      * by the application before it is passed to the parser.</p>
      *
      * @param systemId The system identifier (URI).
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
-     * @exception java.io.IOException An IO exception from the parser,
-     *            possibly from a byte stream or character stream
-     *            supplied by the application.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
+     * @throws java.io.IOException      An IO exception from the parser,
+     *                                  possibly from a byte stream or character stream
+     *                                  supplied by the application.
      * @see #parse(org.xml.sax.InputSource)
      */
-    public void parse (String systemId)
-        throws IOException, SAXException;
+    public void parse(String systemId)
+            throws IOException, SAXException;
 
 }

@@ -40,36 +40,36 @@ public class PNGImageReaderSpi extends ImageReaderSpi {
 
     private static final String version = "1.0";
 
-    private static final String[] names = { "png", "PNG" };
+    private static final String[] names = {"png", "PNG"};
 
-    private static final String[] suffixes = { "png" };
+    private static final String[] suffixes = {"png"};
 
-    private static final String[] MIMETypes = { "image/png", "image/x-png" };
+    private static final String[] MIMETypes = {"image/png", "image/x-png"};
 
     private static final String readerClassName =
-        "com.sun.imageio.plugins.png.PNGImageReader";
+            "com.sun.imageio.plugins.png.PNGImageReader";
 
     private static final String[] writerSpiNames = {
-        "com.sun.imageio.plugins.png.PNGImageWriterSpi"
+            "com.sun.imageio.plugins.png.PNGImageWriterSpi"
     };
 
     public PNGImageReaderSpi() {
         super(vendorName,
-              version,
-              names,
-              suffixes,
-              MIMETypes,
-              readerClassName,
-              new Class[] { ImageInputStream.class },
-              writerSpiNames,
-              false,
-              null, null,
-              null, null,
-              true,
-              PNGMetadata.nativeMetadataFormatName,
-              "com.sun.imageio.plugins.png.PNGMetadataFormat",
-              null, null
-              );
+                version,
+                names,
+                suffixes,
+                MIMETypes,
+                readerClassName,
+                new Class[]{ImageInputStream.class},
+                writerSpiNames,
+                false,
+                null, null,
+                null, null,
+                true,
+                PNGMetadata.nativeMetadataFormatName,
+                "com.sun.imageio.plugins.png.PNGMetadataFormat",
+                null, null
+        );
     }
 
     public String getDescription(Locale locale) {
@@ -81,20 +81,20 @@ public class PNGImageReaderSpi extends ImageReaderSpi {
             return false;
         }
 
-        ImageInputStream stream = (ImageInputStream)input;
+        ImageInputStream stream = (ImageInputStream) input;
         byte[] b = new byte[8];
         stream.mark();
         stream.readFully(b);
         stream.reset();
 
-        return (b[0] == (byte)137 &&
-                b[1] == (byte)80 &&
-                b[2] == (byte)78 &&
-                b[3] == (byte)71 &&
-                b[4] == (byte)13 &&
-                b[5] == (byte)10 &&
-                b[6] == (byte)26 &&
-                b[7] == (byte)10);
+        return (b[0] == (byte) 137 &&
+                b[1] == (byte) 80 &&
+                b[2] == (byte) 78 &&
+                b[3] == (byte) 71 &&
+                b[4] == (byte) 13 &&
+                b[5] == (byte) 10 &&
+                b[6] == (byte) 26 &&
+                b[7] == (byte) 10);
     }
 
     public ImageReader createReaderInstance(Object extension) {

@@ -92,16 +92,16 @@ import org.omg.CORBA.portable.OutputStream;
 // This means that any of the following com.sun.corba classes
 // must only occur in contexts that also handle the non-Sun case.
 
-import com.sun.corba.se.pept.transport.ContactInfoList ;
+import com.sun.corba.se.pept.transport.ContactInfoList;
 import com.sun.corba.se.spi.orb.ORB;
 import com.sun.corba.se.spi.orb.ORBVersionFactory;
 import com.sun.corba.se.spi.protocol.CorbaClientDelegate;
-import com.sun.corba.se.spi.transport.CorbaContactInfoList ;
-import com.sun.corba.se.spi.protocol.LocalClientRequestDispatcher ;
-import com.sun.corba.se.spi.copyobject.ReflectiveCopyException ;
-import com.sun.corba.se.spi.copyobject.CopierManager ;
-import com.sun.corba.se.spi.copyobject.ObjectCopierFactory ;
-import com.sun.corba.se.spi.copyobject.ObjectCopier ;
+import com.sun.corba.se.spi.transport.CorbaContactInfoList;
+import com.sun.corba.se.spi.protocol.LocalClientRequestDispatcher;
+import com.sun.corba.se.spi.copyobject.ReflectiveCopyException;
+import com.sun.corba.se.spi.copyobject.CopierManager;
+import com.sun.corba.se.spi.copyobject.ObjectCopierFactory;
+import com.sun.corba.se.spi.copyobject.ObjectCopier;
 import com.sun.corba.se.impl.io.ValueHandlerImpl;
 import com.sun.corba.se.impl.orbutil.ORBConstants;
 import com.sun.corba.se.impl.orbutil.ORBUtility;
@@ -117,8 +117,7 @@ import sun.corba.SharedSecrets;
  * Provides utility methods that can be used by stubs and ties to
  * perform common operations.
  */
-public class Util implements javax.rmi.CORBA.UtilDelegate
-{
+public class Util implements javax.rmi.CORBA.UtilDelegate {
     // Runs as long as there are exportedServants
     private static KeepAlive keepAlive = null;
 
@@ -126,10 +125,10 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
     private static IdentityHashtable exportedServants = new IdentityHashtable();
 
     private static final ValueHandlerImpl valueHandlerSingleton =
-        SharedSecrets.getJavaCorbaAccess().newValueHandlerImpl();
+            SharedSecrets.getJavaCorbaAccess().newValueHandlerImpl();
 
     private UtilSystemException utilWrapper = UtilSystemException.get(
-                                                  CORBALogDomains.RPC_ENCODING);
+            CORBALogDomains.RPC_ENCODING);
 
     private static Util instance = null;
 
@@ -137,7 +136,7 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
         setInstance(this);
     }
 
-    private static void setInstance( Util util ) {
+    private static void setInstance(Util util) {
         assert instance == null : "Instance already defined";
         instance = util;
     }
@@ -152,12 +151,10 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
 
     // Used by TOAFactory.shutdown to unexport all targets for this
     // particular ORB.  This happens during ORB shutdown.
-    public void unregisterTargetsForORB(org.omg.CORBA.ORB orb)
-    {
-        for (Enumeration e = exportedServants.keys(); e.hasMoreElements(); )
-        {
+    public void unregisterTargetsForORB(org.omg.CORBA.ORB orb) {
+        for (Enumeration e = exportedServants.keys(); e.hasMoreElements(); ) {
             java.lang.Object key = e.nextElement();
-            Remote target = (Remote)(key instanceof Tie ? ((Tie)key).getTarget() : key);
+            Remote target = (Remote) (key instanceof Tie ? ((Tie) key).getTarget() : key);
 
             // Bug 4476347: BAD_OPERATION is thrown if the ties delegate isn't set.
             // We can ignore this because it means the tie is not connected to an ORB.
@@ -165,7 +162,7 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
                 if (orb == getTie(target).orb()) {
                     try {
                         unexportObject(target);
-                    } catch( java.rmi.NoSuchObjectException ex ) {
+                    } catch (java.rmi.NoSuchObjectException ex) {
                         // We neglect this exception if at all if it is
                         // raised. It is not harmful.
                     }
@@ -176,20 +173,20 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
         }
     }
 
-   /**
+    /**
      * Maps a SystemException to a RemoteException.
+     *
      * @param ex the SystemException to map.
      * @return the mapped exception.
      */
-    public RemoteException mapSystemException(SystemException ex)
-    {
+    public RemoteException mapSystemException(SystemException ex) {
         if (ex instanceof UnknownException) {
-            Throwable orig = ((UnknownException)ex).originalEx;
+            Throwable orig = ((UnknownException) ex).originalEx;
             if (orig instanceof Error) {
-                return new ServerError("Error occurred in server thread",(Error)orig);
+                return new ServerError("Error occurred in server thread", (Error) orig);
             } else if (orig instanceof RemoteException) {
                 return new ServerException("RemoteException occurred in server thread",
-                    (Exception)orig);
+                        (Exception) orig);
             } else if (orig instanceof RuntimeException) {
                 throw (RuntimeException) orig;
             }
@@ -197,7 +194,7 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
 
         // Build the message string...
         String name = ex.getClass().getName();
-        String corbaName = name.substring(name.lastIndexOf('.')+1);
+        String corbaName = name.substring(name.lastIndexOf('.') + 1);
         String status;
         switch (ex.completed.value()) {
             case CompletionStatus._COMPLETED_YES:
@@ -247,21 +244,21 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
             // Pre-Merlin Sun ORBs used the incorrect minor code for
             // this case.  See Java to IDL ptc-00-01-08 1.4.8.
             if (ex.minor == ORBConstants.LEGACY_SUN_NOT_SERIALIZABLE ||
-                ex.minor == OMGSystemException.NOT_SERIALIZABLE) {
+                    ex.minor == OMGSystemException.NOT_SERIALIZABLE) {
 
                 if (ex.getMessage() != null)
                     inner = new NotSerializableException(ex.getMessage());
                 else
                     inner = new NotSerializableException();
 
-                inner.initCause( ex ) ;
+                inner.initCause(ex);
             }
 
-            return new MarshalException(message,inner);
+            return new MarshalException(message, inner);
         } else if (ex instanceof ACTIVITY_REQUIRED) {
             try {
                 Class<?> cl = SharedSecrets.getJavaCorbaAccess().loadClass(
-                               "javax.activity.ActivityRequiredException");
+                        "javax.activity.ActivityRequiredException");
                 Class[] params = new Class[2];
                 params[0] = java.lang.String.class;
                 params[1] = java.lang.Throwable.class;
@@ -272,12 +269,12 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
                 return (RemoteException) cr.newInstance(args);
             } catch (Throwable e) {
                 utilWrapper.classNotFound(
-                              e, "javax.activity.ActivityRequiredException");
+                        e, "javax.activity.ActivityRequiredException");
             }
         } else if (ex instanceof ACTIVITY_COMPLETED) {
             try {
                 Class<?> cl = SharedSecrets.getJavaCorbaAccess().loadClass(
-                               "javax.activity.ActivityCompletedException");
+                        "javax.activity.ActivityCompletedException");
                 Class[] params = new Class[2];
                 params[0] = java.lang.String.class;
                 params[1] = java.lang.Throwable.class;
@@ -286,14 +283,14 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
                 args[0] = message;
                 args[1] = ex;
                 return (RemoteException) cr.newInstance(args);
-              } catch (Throwable e) {
-                  utilWrapper.classNotFound(
-                                e, "javax.activity.ActivityCompletedException");
-              }
+            } catch (Throwable e) {
+                utilWrapper.classNotFound(
+                        e, "javax.activity.ActivityCompletedException");
+            }
         } else if (ex instanceof INVALID_ACTIVITY) {
             try {
                 Class<?> cl = SharedSecrets.getJavaCorbaAccess().loadClass(
-                               "javax.activity.InvalidActivityException");
+                        "javax.activity.InvalidActivityException");
                 Class[] params = new Class[2];
                 params[0] = java.lang.String.class;
                 params[1] = java.lang.Throwable.class;
@@ -302,10 +299,10 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
                 args[0] = message;
                 args[1] = ex;
                 return (RemoteException) cr.newInstance(args);
-              } catch (Throwable e) {
-                  utilWrapper.classNotFound(
-                                e, "javax.activity.InvalidActivityException");
-              }
+            } catch (Throwable e) {
+                utilWrapper.classNotFound(
+                        e, "javax.activity.InvalidActivityException");
+            }
         }
 
         // Just map to a generic RemoteException...
@@ -314,22 +311,22 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
 
     /**
      * Writes any java.lang.Object as a CORBA any.
+     *
      * @param out the stream in which to write the any.
      * @param obj the object to write as an any.
      */
-    public void writeAny( org.omg.CORBA.portable.OutputStream out,
-                         java.lang.Object obj)
-    {
+    public void writeAny(org.omg.CORBA.portable.OutputStream out,
+                         java.lang.Object obj) {
         org.omg.CORBA.ORB orb = out.orb();
 
         // Create Any
         Any any = orb.create_any();
 
         // Make sure we have a connected object...
-        java.lang.Object newObj = Utility.autoConnect(obj,orb,false);
+        java.lang.Object newObj = Utility.autoConnect(obj, orb, false);
 
         if (newObj instanceof org.omg.CORBA.Object) {
-            any.insert_Object((org.omg.CORBA.Object)newObj);
+            any.insert_Object((org.omg.CORBA.Object) newObj);
         } else {
             if (newObj == null) {
                 // Handle the null case, including backwards
@@ -339,11 +336,11 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
                 if (newObj instanceof Serializable) {
                     // If they're our Any and ORB implementations,
                     // we may want to do type code related versioning.
-                    TypeCode tc = createTypeCode((Serializable)newObj, any, orb);
+                    TypeCode tc = createTypeCode((Serializable) newObj, any, orb);
                     if (tc == null)
-                        any.insert_Value((Serializable)newObj);
+                        any.insert_Value((Serializable) newObj);
                     else
-                        any.insert_Value((Serializable)newObj, tc);
+                        any.insert_Value((Serializable) newObj, tc);
                 } else if (newObj instanceof Remote) {
                     ORBUtility.throwNotSerializableForCorba(newObj.getClass().getName());
                 } else {
@@ -360,14 +357,14 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
      * the ORB version and create the type code appropriately.  This is
      * to overcome a bug in which the JDK 1.3.x ORBs used a tk_char
      * rather than a tk_wchar to describe a Java char field.
-     *
+     * <p>
      * This only works in RMI-IIOP with Util.writeAny since we actually
      * know what ORB and stream we're writing with when we insert
      * the value.
-     *
+     * <p>
      * Returns null if it wasn't possible to create the TypeCode (means
      * it wasn't our ORB or Any implementation).
-     *
+     * <p>
      * This does not handle null objs.
      */
     private TypeCode createTypeCode(Serializable obj,
@@ -375,12 +372,12 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
                                     org.omg.CORBA.ORB orb) {
 
         if (any instanceof com.sun.corba.se.impl.corba.AnyImpl &&
-            orb instanceof ORB) {
+                orb instanceof ORB) {
 
             com.sun.corba.se.impl.corba.AnyImpl anyImpl
-                = (com.sun.corba.se.impl.corba.AnyImpl)any;
+                    = (com.sun.corba.se.impl.corba.AnyImpl) any;
 
-            ORB ourORB = (ORB)orb;
+            ORB ourORB = (ORB) orb;
 
             return anyImpl.createTypeCodeForClass(obj.getClass(), ourORB);
 
@@ -392,14 +389,13 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
     /**
      * This is used to create the TypeCode for a null reference.
      * It also handles backwards compatibility with JDK 1.3.x.
-     *
+     * <p>
      * This method will not return null.
      */
-    private TypeCode createTypeCodeForNull(org.omg.CORBA.ORB orb)
-    {
+    private TypeCode createTypeCodeForNull(org.omg.CORBA.ORB orb) {
         if (orb instanceof ORB) {
 
-            ORB ourORB = (ORB)orb;
+            ORB ourORB = (ORB) orb;
 
             // Preserve backwards compatibility with Kestrel and Ladybird
             // by not fully implementing interop issue resolution 3857,
@@ -407,7 +403,7 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
             // If we're not talking to Kestrel or Ladybird, fall through
             // to the abstract interface case (also used for foreign ORBs).
             if (!ORBVersionFactory.getFOREIGN().equals(ourORB.getORBVersion()) &&
-                ORBVersionFactory.getNEWER().compareTo(ourORB.getORBVersion()) > 0) {
+                    ORBVersionFactory.getNEWER().compareTo(ourORB.getORBVersion()) > 0) {
 
                 return orb.get_primitive_tc(TCKind.tk_value);
             }
@@ -423,14 +419,14 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
 
     /**
      * Reads a java.lang.Object as a CORBA any.
+     *
      * @param in the stream from which to read the any.
      * @return the object read from the stream.
      */
-    public Object readAny(InputStream in)
-    {
+    public Object readAny(InputStream in) {
         Any any = in.read_any();
-        if ( any.type().kind().value() == TCKind._tk_objref )
-            return any.extract_Object ();
+        if (any.type().kind().value() == TCKind._tk_objref)
+            return any.extract_Object();
         else
             return any.extract_Value();
     }
@@ -441,16 +437,16 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
      * and wired to <code>obj</code>, then written to <code>out.write_Object(org.omg.CORBA.Object)</code>.
      * If <code>obj</code> is a CORBA Object, it is written to
      * <code>out.write_Object(org.omg.CORBA.Object)</code>.
+     *
      * @param out the stream in which to write the object.
      * @param obj the object to write.
      */
-    public void writeRemoteObject(OutputStream out, java.lang.Object obj)
-    {
+    public void writeRemoteObject(OutputStream out, java.lang.Object obj) {
         // Make sure we have a connected object, then
         // write it out...
 
-        Object newObj = Utility.autoConnect(obj,out.orb(),false);
-        out.write_Object((org.omg.CORBA.Object)newObj);
+        Object newObj = Utility.autoConnect(obj, out.orb(), false);
+        out.write_Object((org.omg.CORBA.Object) newObj);
     }
 
     /**
@@ -459,38 +455,38 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
      * <code>out.write_abstract_interface(java.lang.Object)</code>. If <code>obj</code> is an exported
      * RMI-IIOP server object, the tie is found and wired to <code>obj</code>,
      * then written to <code>out.write_abstract_interface(java.lang.Object)</code>.
+     *
      * @param out the stream in which to write the object.
      * @param obj the object to write.
      */
-    public void writeAbstractObject( OutputStream out, java.lang.Object obj )
-    {
+    public void writeAbstractObject(OutputStream out, java.lang.Object obj) {
         // Make sure we have a connected object, then
         // write it out...
 
-        Object newObj = Utility.autoConnect(obj,out.orb(),false);
-        ((org.omg.CORBA_2_3.portable.OutputStream)out).write_abstract_interface(newObj);
+        Object newObj = Utility.autoConnect(obj, out.orb(), false);
+        ((org.omg.CORBA_2_3.portable.OutputStream) out).write_abstract_interface(newObj);
     }
 
     /**
      * Registers a target for a tie. Adds the tie to an internal table and calls
      * {@link Tie#setTarget} on the tie object.
-     * @param tie the tie to register.
+     *
+     * @param tie    the tie to register.
      * @param target the target for the tie.
      */
-    public void registerTarget(javax.rmi.CORBA.Tie tie, java.rmi.Remote target)
-    {
+    public void registerTarget(javax.rmi.CORBA.Tie tie, java.rmi.Remote target) {
         synchronized (exportedServants) {
             // Do we already have this target registered?
             if (lookupTie(target) == null) {
                 // No, so register it and set the target...
-                exportedServants.put(target,tie);
+                exportedServants.put(target, tie);
                 tie.setTarget(target);
 
                 // Do we need to instantiate our keep-alive thread?
                 if (keepAlive == null) {
                     // Yes. Instantiate our keep-alive thread and start
                     // it up...
-                    keepAlive = (KeepAlive)AccessController.doPrivileged(new PrivilegedAction() {
+                    keepAlive = (KeepAlive) AccessController.doPrivileged(new PrivilegedAction() {
                         public java.lang.Object run() {
                             return new KeepAlive();
                         }
@@ -504,11 +500,11 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
     /**
      * Removes the associated tie from an internal table and calls {@link Tie#deactivate}
      * to deactivate the object.
+     *
      * @param target the object to unexport.
      */
     public void unexportObject(java.rmi.Remote target)
-        throws java.rmi.NoSuchObjectException
-    {
+            throws java.rmi.NoSuchObjectException {
         synchronized (exportedServants) {
             Tie cachedTie = lookupTie(target);
             if (cachedTie != null) {
@@ -530,24 +526,23 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
                     keepAlive = null;
                 }
             } else {
-                throw new java.rmi.NoSuchObjectException("Tie not found" );
+                throw new java.rmi.NoSuchObjectException("Tie not found");
             }
         }
     }
 
     protected void cleanUpTie(Tie cachedTie)
-        throws java.rmi.NoSuchObjectException
-    {
+            throws java.rmi.NoSuchObjectException {
         cachedTie.setTarget(null);
         cachedTie.deactivate();
     }
 
     /**
      * Returns the tie (if any) for a given target object.
+     *
      * @return the tie or null if no tie is registered for the given target.
      */
-    public Tie getTie (Remote target)
-    {
+    public Tie getTie(Remote target) {
         synchronized (exportedServants) {
             return lookupTie(target);
         }
@@ -556,12 +551,11 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
     /**
      * An unsynchronized version of getTie() for internal use.
      */
-    private static Tie lookupTie (Remote target)
-    {
-        Tie result = (Tie)exportedServants.get(target);
+    private static Tie lookupTie(Remote target) {
+        Tie result = (Tie) exportedServants.get(target);
         if (result == null && target instanceof Tie) {
             if (exportedServants.contains(target)) {
-                result = (Tie)target;
+                result = (Tie) target;
             }
         }
         return result;
@@ -570,15 +564,16 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
     /**
      * Returns a singleton instance of a class that implements the
      * {@link ValueHandler} interface.
+     *
      * @return a class which implements the ValueHandler interface.
      */
-    public ValueHandler createValueHandler()
-    {
+    public ValueHandler createValueHandler() {
         return valueHandlerSingleton;
     }
 
     /**
      * Returns the codebase, if any, for the given class.
+     *
      * @param clz the class to get a codebase for.
      * @return a space-separated list of URLs, or null.
      */
@@ -588,188 +583,182 @@ public class Util implements javax.rmi.CORBA.UtilDelegate
 
     /**
      * Returns a class instance for the specified class.
-     * @param className the name of the class.
+     *
+     * @param className      the name of the class.
      * @param remoteCodebase a space-separated list of URLs at which
-     * the class might be found. May be null.
+     *                       the class might be found. May be null.
      * @param loadingContext a class whose ClassLoader may be used to
-     * load the class if all other methods fail.
+     *                       load the class if all other methods fail.
      * @return the <code>Class</code> object representing the loaded class.
-     * @exception ClassNotFoundException if class cannot be loaded.
+     * @throws ClassNotFoundException if class cannot be loaded.
      */
-    public Class loadClass( String className, String remoteCodebase,
-        ClassLoader loader) throws ClassNotFoundException
-    {
-        return JDKBridge.loadClass(className,remoteCodebase,loader);
+    public Class loadClass(String className, String remoteCodebase,
+                           ClassLoader loader) throws ClassNotFoundException {
+        return JDKBridge.loadClass(className, remoteCodebase, loader);
     }
 
     /**
      * The <tt>isLocal</tt> method has the same semantics as the
      * ObjectImpl._is_local method, except that it can throw a RemoteException.
      * (no it doesn't but the spec says it should.)
-     *
+     * <p>
      * The <tt>_is_local()</tt> method is provided so that stubs may determine
      * if a particular object is implemented by a local servant and hence local
      * invocation APIs may be used.
      *
      * @param stub the stub to test.
-     *
      * @return The <tt>_is_local()</tt> method returns true if
      * the servant incarnating the object is located in the same process as
      * the stub and they both share the same ORB instance.  The <tt>_is_local()</tt>
      * method returns false otherwise. The default behavior of <tt>_is_local()</tt> is
      * to return false.
-     *
      * @throws RemoteException The Java to IDL specification does to
-     * specify the conditions that cause a RemoteException to be thrown.
+     *                         specify the conditions that cause a RemoteException to be thrown.
      */
-    public boolean isLocal(javax.rmi.CORBA.Stub stub) throws RemoteException
-    {
-        boolean result = false ;
+    public boolean isLocal(javax.rmi.CORBA.Stub stub) throws RemoteException {
+        boolean result = false;
 
         try {
-            org.omg.CORBA.portable.Delegate delegate = stub._get_delegate() ;
+            org.omg.CORBA.portable.Delegate delegate = stub._get_delegate();
             if (delegate instanceof CorbaClientDelegate) {
                 // For the Sun ORB
-                CorbaClientDelegate cdel = (CorbaClientDelegate)delegate ;
-                ContactInfoList cil = cdel.getContactInfoList() ;
+                CorbaClientDelegate cdel = (CorbaClientDelegate) delegate;
+                ContactInfoList cil = cdel.getContactInfoList();
                 if (cil instanceof CorbaContactInfoList) {
-                    CorbaContactInfoList ccil = (CorbaContactInfoList)cil ;
-                    LocalClientRequestDispatcher lcs = ccil.getLocalClientRequestDispatcher() ;
-                    result = lcs.useLocalInvocation( null ) ;
+                    CorbaContactInfoList ccil = (CorbaContactInfoList) cil;
+                    LocalClientRequestDispatcher lcs = ccil.getLocalClientRequestDispatcher();
+                    result = lcs.useLocalInvocation(null);
                 }
             } else {
                 // For a non-Sun ORB
-                result = delegate.is_local( stub ) ;
+                result = delegate.is_local(stub);
             }
         } catch (SystemException e) {
             throw javax.rmi.CORBA.Util.mapSystemException(e);
         }
 
-        return result ;
+        return result;
     }
 
     /**
      * Wraps an exception thrown by an implementation
      * method.  It returns the corresponding client-side exception.
+     *
      * @param orig the exception to wrap.
      * @return the wrapped exception.
      */
-    public RemoteException wrapException(Throwable orig)
-    {
+    public RemoteException wrapException(Throwable orig) {
         if (orig instanceof SystemException) {
-            return mapSystemException((SystemException)orig);
+            return mapSystemException((SystemException) orig);
         }
 
         if (orig instanceof Error) {
-            return new ServerError("Error occurred in server thread",(Error)orig);
+            return new ServerError("Error occurred in server thread", (Error) orig);
         } else if (orig instanceof RemoteException) {
             return new ServerException("RemoteException occurred in server thread",
-                                       (Exception)orig);
+                    (Exception) orig);
         } else if (orig instanceof RuntimeException) {
             throw (RuntimeException) orig;
         }
 
         if (orig instanceof Exception)
-            return new UnexpectedException( orig.toString(), (Exception)orig );
+            return new UnexpectedException(orig.toString(), (Exception) orig);
         else
-            return new UnexpectedException( orig.toString());
+            return new UnexpectedException(orig.toString());
     }
 
     /**
      * Copies or connects an array of objects. Used by local stubs
      * to copy any number of actual parameters, preserving sharing
      * across parameters as necessary to support RMI semantics.
+     *
      * @param obj the objects to copy or connect.
      * @param orb the ORB.
      * @return the copied or connected objects.
-     * @exception RemoteException if any object could not be copied or connected.
+     * @throws RemoteException if any object could not be copied or connected.
      */
-    public Object[] copyObjects (Object[] obj, org.omg.CORBA.ORB orb)
-        throws RemoteException
-    {
+    public Object[] copyObjects(Object[] obj, org.omg.CORBA.ORB orb)
+            throws RemoteException {
         if (obj == null)
             // Bug fix for 5018613: JCK test expects copyObjects to throw
             // NPE when obj==null.  This is actually not in the spec, since
             // obj is not really an RMI-IDL data type, but we follow our
             // test here, and force this error to be thrown.
-            throw new NullPointerException() ;
+            throw new NullPointerException();
 
-        Class compType = obj.getClass().getComponentType() ;
-        if (Remote.class.isAssignableFrom( compType ) && !compType.isInterface()) {
+        Class compType = obj.getClass().getComponentType();
+        if (Remote.class.isAssignableFrom(compType) && !compType.isInterface()) {
             // obj is an array of remote impl types.  This
             // causes problems with stream copier, so we copy
             // it over to an array of Remotes instead.
-            Remote[] result = new Remote[obj.length] ;
-            System.arraycopy( (Object)obj, 0, (Object)result, 0, obj.length ) ;
-            return (Object[])copyObject( result, orb ) ;
+            Remote[] result = new Remote[obj.length];
+            System.arraycopy((Object) obj, 0, (Object) result, 0, obj.length);
+            return (Object[]) copyObject(result, orb);
         } else
-            return (Object[])copyObject( obj, orb ) ;
+            return (Object[]) copyObject(obj, orb);
     }
 
     /**
      * Copies or connects an object. Used by local stubs to copy
      * an actual parameter, result object, or exception.
+     *
      * @param obj the object to copy.
      * @param orb the ORB.
      * @return the copy or connected object.
-     * @exception RemoteException if the object could not be copied or connected.
+     * @throws RemoteException if the object could not be copied or connected.
      */
-    public Object copyObject (Object obj, org.omg.CORBA.ORB orb)
-        throws RemoteException
-    {
+    public Object copyObject(Object obj, org.omg.CORBA.ORB orb)
+            throws RemoteException {
         if (orb instanceof ORB) {
-            ORB lorb = (ORB)orb ;
+            ORB lorb = (ORB) orb;
 
             try {
                 try {
                     // This gets the copier for the current invocation, which was
                     // previously set by preinvoke.
-                    return lorb.peekInvocationInfo().getCopierFactory().make().copy( obj ) ;
+                    return lorb.peekInvocationInfo().getCopierFactory().make().copy(obj);
                 } catch (java.util.EmptyStackException exc) {
                     // copyObject was invoked outside of an invocation, probably by
                     // a test.  Get the default copier from the ORB.
                     // XXX should we just make the default copier available directly
                     // and avoid constructing one on each call?
-                    CopierManager cm = lorb.getCopierManager() ;
-                    ObjectCopier copier = cm.getDefaultObjectCopierFactory().make() ;
-                    return copier.copy( obj ) ;
+                    CopierManager cm = lorb.getCopierManager();
+                    ObjectCopier copier = cm.getDefaultObjectCopierFactory().make();
+                    return copier.copy(obj);
                 }
             } catch (ReflectiveCopyException exc) {
-                RemoteException rexc = new RemoteException() ;
-                rexc.initCause( exc ) ;
-                throw rexc ;
+                RemoteException rexc = new RemoteException();
+                rexc.initCause(exc);
+                throw rexc;
             }
         } else {
             org.omg.CORBA_2_3.portable.OutputStream out =
-                (org.omg.CORBA_2_3.portable.OutputStream)orb.create_output_stream();
-            out.write_value((Serializable)obj);
+                    (org.omg.CORBA_2_3.portable.OutputStream) orb.create_output_stream();
+            out.write_value((Serializable) obj);
             org.omg.CORBA_2_3.portable.InputStream in =
-                (org.omg.CORBA_2_3.portable.InputStream)out.create_input_stream();
+                    (org.omg.CORBA_2_3.portable.InputStream) out.create_input_stream();
             return in.read_value();
         }
     }
 }
 
-class KeepAlive extends Thread
-{
+class KeepAlive extends Thread {
     boolean quit = false;
 
-    public KeepAlive ()
-    {
+    public KeepAlive() {
         setDaemon(false);
     }
 
-    public synchronized void run ()
-    {
+    public synchronized void run() {
         while (!quit) {
             try {
                 wait();
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            }
         }
     }
 
-    public synchronized void quit ()
-    {
+    public synchronized void quit() {
         quit = true;
         notifyAll();
     }

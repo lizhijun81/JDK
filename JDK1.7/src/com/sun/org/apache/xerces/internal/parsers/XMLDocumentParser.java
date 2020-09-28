@@ -32,11 +32,10 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLParserConfiguration;
  *
  * @author Arnaud  Le Hors, IBM
  * @author Andy Clark, IBM
- *
  * @version $Id: XMLDocumentParser.java,v 1.6 2010-11-01 04:40:10 joehw Exp $
  */
 public class XMLDocumentParser
-    extends AbstractXMLDocumentParser {
+        extends AbstractXMLDocumentParser {
 
     //
     // Constructors
@@ -62,7 +61,7 @@ public class XMLDocumentParser
      */
     public XMLDocumentParser(SymbolTable symbolTable) {
         super(new XIncludeAwareParserConfiguration());
-        fConfiguration.setProperty(Constants.XERCES_PROPERTY_PREFIX+Constants.SYMBOL_TABLE_PROPERTY, symbolTable);
+        fConfiguration.setProperty(Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY, symbolTable);
     } // <init>(SymbolTable)
 
     /**
@@ -72,8 +71,8 @@ public class XMLDocumentParser
     public XMLDocumentParser(SymbolTable symbolTable,
                              XMLGrammarPool grammarPool) {
         super(new XIncludeAwareParserConfiguration());
-        fConfiguration.setProperty(Constants.XERCES_PROPERTY_PREFIX+Constants.SYMBOL_TABLE_PROPERTY, symbolTable);
-        fConfiguration.setProperty(Constants.XERCES_PROPERTY_PREFIX+Constants.XMLGRAMMAR_POOL_PROPERTY, grammarPool);
+        fConfiguration.setProperty(Constants.XERCES_PROPERTY_PREFIX + Constants.SYMBOL_TABLE_PROPERTY, symbolTable);
+        fConfiguration.setProperty(Constants.XERCES_PROPERTY_PREFIX + Constants.XMLGRAMMAR_POOL_PROPERTY, grammarPool);
     }
 
 } // class XMLDocumentParser

@@ -33,7 +33,6 @@ package com.sun.javadoc;
  * @author Robert Field
  * @author Atul M Dambalkar
  * @see ExecutableMemberDoc#throwsTags()
- *
  */
 public interface ThrowsTag extends Tag {
 

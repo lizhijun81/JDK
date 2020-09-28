@@ -62,9 +62,9 @@ package org.xml.sax;
  * event, the application should assume that a locator is not
  * available.</p>
  *
- * @since SAX 1.0
  * @author David Megginson
  * @see org.xml.sax.ContentHandler#setDocumentLocator
+ * @since SAX 1.0
  */
 public interface Locator {
 
@@ -77,10 +77,10 @@ public interface Locator {
      * triggering the event appears.</p>
      *
      * @return A string containing the public identifier, or
-     *         null if none is available.
+     * null if none is available.
      * @see #getSystemId
      */
-    public abstract String getPublicId ();
+    public abstract String getPublicId();
 
 
     /**
@@ -96,10 +96,10 @@ public interface Locator {
      * kinds of relative URI are also resolved against their bases.</p>
      *
      * @return A string containing the system identifier, or null
-     *         if none is available.
+     * if none is available.
      * @see #getPublicId
      */
-    public abstract String getSystemId ();
+    public abstract String getSystemId();
 
 
     /**
@@ -126,7 +126,7 @@ public interface Locator {
      * @return The line number, or -1 if none is available.
      * @see #getColumnNumber
      */
-    public abstract int getLineNumber ();
+    public abstract int getLineNumber();
 
 
     /**
@@ -153,7 +153,7 @@ public interface Locator {
      * @return The column number, or -1 if none is available.
      * @see #getLineNumber
      */
-    public abstract int getColumnNumber ();
+    public abstract int getColumnNumber();
 
 }
 

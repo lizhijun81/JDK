@@ -28,10 +28,9 @@ package com.sun.javadoc;
 /**
  * Represents a field in a java class.
  *
- * @see MemberDoc
- *
- * @since 1.2
  * @author Robert Field
+ * @see MemberDoc
+ * @since 1.2
  */
 public interface FieldDoc extends MemberDoc {
 
@@ -54,7 +53,7 @@ public interface FieldDoc extends MemberDoc {
      * Return the serialField tags in this FieldDoc item.
      *
      * @return an array of <tt>SerialFieldTag</tt> objects containing
-     *         all <code>@serialField</code> tags.
+     * all <code>@serialField</code> tags.
      */
     SerialFieldTag[] serialFieldTags();
 

@@ -30,7 +30,6 @@ import com.sun.org.apache.xerces.internal.xs.XSModel;
  * in this grammar can be obtained.
  *
  * @author Sandy Gao, IBM
- *
  */
 public interface XSGrammar extends Grammar {
 
@@ -39,7 +38,7 @@ public interface XSGrammar extends Grammar {
      * grammar and any schema grammars that are imported by this grammar
      * directly or indirectly.
      *
-     * @return  an <code>XSModel</code> representing this schema grammar
+     * @return an <code>XSModel</code> representing this schema grammar
      */
     public XSModel toXSModel();
 
@@ -48,7 +47,7 @@ public interface XSGrammar extends Grammar {
      * grammar and the grammars in the <code>grammars</code>parameter,
      * any schema grammars that are imported by them directly or indirectly.
      *
-     * @return  an <code>XSModel</code> representing these schema grammars
+     * @return an <code>XSModel</code> representing these schema grammars
      */
     public XSModel toXSModel(XSGrammar[] grammars);
 

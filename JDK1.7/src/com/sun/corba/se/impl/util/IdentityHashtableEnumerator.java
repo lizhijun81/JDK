@@ -62,17 +62,17 @@ class IdentityHashtableEnumerator implements Enumeration {
             }
         }
         return false;
-}
+    }
 
-public Object nextElement() {
-    if (entry == null) {
-        while ((index-- > 0) && ((entry = table[index]) == null));
-    }
-    if (entry != null) {
+    public Object nextElement() {
+        if (entry == null) {
+            while ((index-- > 0) && ((entry = table[index]) == null)) ;
+        }
+        if (entry != null) {
             IdentityHashtableEntry e = entry;
-        entry = e.next;
-        return keys ? e.key : e.value;
-    }
+            entry = e.next;
+            return keys ? e.key : e.value;
+        }
         throw new NoSuchElementException("IdentityHashtableEnumerator");
     }
 }

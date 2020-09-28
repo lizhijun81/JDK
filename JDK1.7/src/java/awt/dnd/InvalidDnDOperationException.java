@@ -42,14 +42,19 @@ public class InvalidDnDOperationException extends IllegalStateException {
      * Create a default Exception
      */
 
-    public InvalidDnDOperationException() { super(dft_msg); }
+    public InvalidDnDOperationException() {
+        super(dft_msg);
+    }
 
     /**
      * Create an Exception with its own descriptive message
-     * <P>
+     * <p>
+     *
      * @param msg the detail message
      */
 
-    public InvalidDnDOperationException(String msg) { super(msg); }
+    public InvalidDnDOperationException(String msg) {
+        super(msg);
+    }
 
 }

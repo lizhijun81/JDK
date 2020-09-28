@@ -34,23 +34,22 @@ import java.io.IOException;
  * possible to turn arbitrary binary data into an ASCII format.
  * The high 4 bits of the byte is translated into the first byte.
  *
- * @author      Jeff Nisewanger
+ * @author Jeff Nisewanger
  */
-public class HexOutputStream extends OutputStream
-{
+public class HexOutputStream extends OutputStream {
     static private final char hex[] = {
-        '0', '1', '2', '3', '4', '5', '6', '7',
-        '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
+            '0', '1', '2', '3', '4', '5', '6', '7',
+            '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'
     };
 
     private StringWriter writer;
 
     /**
      * Creates a new HexOutputStream.
+     *
      * @param w The underlying StringWriter.
      */
-    public
-        HexOutputStream(StringWriter w) {
+    public HexOutputStream(StringWriter w) {
         writer = w;
     }
 
@@ -59,7 +58,8 @@ public class HexOutputStream extends OutputStream
      * Writes a byte. Will block until the byte is actually
      * written.
      * param b The byte to write out.
-     * @exception java.io.IOException I/O error occurred.
+     *
+     * @throws java.io.IOException I/O error occurred.
      */
     public synchronized void write(int b) throws IOException {
         writer.write(hex[((b >> 4) & 0xF)]);
@@ -71,9 +71,8 @@ public class HexOutputStream extends OutputStream
     }
 
     public synchronized void write(byte[] b, int off, int len)
-        throws IOException
-    {
-        for(int i=0; i < len; i++) {
+            throws IOException {
+        for (int i = 0; i < len; i++) {
             write(b[off + i]);
         }
     }

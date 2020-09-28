@@ -28,9 +28,10 @@ package com.sun.imageio.plugins.jpeg;
 import java.util.ListResourceBundle;
 
 public class JPEGStreamMetadataFormatResources
-       extends JPEGMetadataFormatResources {
+        extends JPEGMetadataFormatResources {
 
-    public JPEGStreamMetadataFormatResources() {}
+    public JPEGStreamMetadataFormatResources() {
+    }
 
     protected Object[][] getContents() {
         // return a copy of commonContents; in theory we want a deep clone

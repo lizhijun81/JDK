@@ -34,8 +34,7 @@ import com.sun.corba.se.pept.transport.ContactInfoList;
  *
  * @author Harold Carr
  */
-public interface ClientDelegate
-{
+public interface ClientDelegate {
     /**
      * The {@link com.sun.corba.se.pept.broker.Broker Broker} associated
      * with an invocation.
@@ -50,8 +49,7 @@ public interface ClientDelegate
      * which represents they encoding/protocol/transport combinations that
      * may be used to contact the service.
      *
-     * @return
-     * {@link com.sun.corba.se.pept.transport.ContactInfoList ContactInfoList}
+     * @return {@link com.sun.corba.se.pept.transport.ContactInfoList ContactInfoList}
      */
     public ContactInfoList getContactInfoList();
 }

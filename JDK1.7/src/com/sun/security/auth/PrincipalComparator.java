@@ -58,7 +58,7 @@ public interface PrincipalComparator {
      * <p>
      *
      * @return true if the specified <code>Subject</code> is implied by
-     *          this object, or false otherwise.
+     * this object, or false otherwise.
      */
     boolean implies(javax.security.auth.Subject subject);
 }

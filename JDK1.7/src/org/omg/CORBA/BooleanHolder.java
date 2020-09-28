@@ -42,12 +42,12 @@ import org.omg.CORBA.portable.OutputStream;
  * must also fill the "in" value to be sent to the server.
  * Before the method invocation returns, the ORB will fill in the
  * value corresponding to the "out" value returned from the server.
- * <P>
+ * <p>
  * If <code>myBooleanHolder</code> is an instance of <code>BooleanHolder</code>,
  * the value stored in its <code>value</code> field can be accessed with
  * <code>myBooleanHolder.value</code>.
  *
- * @since       JDK1.2
+ * @since JDK1.2
  */
 public final class BooleanHolder implements Streamable {
 
@@ -67,6 +67,7 @@ public final class BooleanHolder implements Streamable {
     /**
      * Constructs a new <code>BooleanHolder</code> object with its
      * <code>value</code> field initialized with the given <code>boolean</code>.
+     *
      * @param initial the <code>boolean</code> with which to initialize
      *                the <code>value</code> field of the newly-created
      *                <code>BooleanHolder</code> object
@@ -100,8 +101,8 @@ public final class BooleanHolder implements Streamable {
      * Retrieves the <code>TypeCode</code> object that corresponds to the
      * value held in this <code>BooleanHolder</code> object.
      *
-     * @return    the <code>TypeCode</code> for the value held
-     *            in this <code>BooleanHolder</code> object
+     * @return the <code>TypeCode</code> for the value held
+     * in this <code>BooleanHolder</code> object
      */
     public TypeCode _type() {
         return ORB.init().get_primitive_tc(TCKind.tk_boolean);

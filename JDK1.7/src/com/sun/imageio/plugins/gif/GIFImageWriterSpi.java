@@ -32,6 +32,7 @@ import javax.imageio.ImageTypeSpecifier;
 import javax.imageio.ImageWriter;
 import javax.imageio.spi.ImageWriterSpi;
 import javax.imageio.stream.ImageOutputStream;
+
 import com.sun.imageio.plugins.common.PaletteBuilder;
 
 public class GIFImageWriterSpi extends ImageWriterSpi {
@@ -40,37 +41,37 @@ public class GIFImageWriterSpi extends ImageWriterSpi {
 
     private static final String version = "1.0";
 
-    private static final String[] names = { "gif", "GIF" };
+    private static final String[] names = {"gif", "GIF"};
 
-    private static final String[] suffixes = { "gif" };
+    private static final String[] suffixes = {"gif"};
 
-    private static final String[] MIMETypes = { "image/gif" };
+    private static final String[] MIMETypes = {"image/gif"};
 
     private static final String writerClassName =
-    "com.sun.imageio.plugins.gif.GIFImageWriter";
+            "com.sun.imageio.plugins.gif.GIFImageWriter";
 
     private static final String[] readerSpiNames = {
-        "com.sun.imageio.plugins.gif.GIFImageReaderSpi"
+            "com.sun.imageio.plugins.gif.GIFImageReaderSpi"
     };
 
     public GIFImageWriterSpi() {
         super(vendorName,
-              version,
-              names,
-              suffixes,
-              MIMETypes,
-              writerClassName,
-              new Class[] { ImageOutputStream.class },
-              readerSpiNames,
-              true,
-              GIFWritableStreamMetadata.NATIVE_FORMAT_NAME,
-              "com.sun.imageio.plugins.gif.GIFStreamMetadataFormat",
-              null, null,
-              true,
-              GIFWritableImageMetadata.NATIVE_FORMAT_NAME,
-              "com.sun.imageio.plugins.gif.GIFImageMetadataFormat",
-              null, null
-              );
+                version,
+                names,
+                suffixes,
+                MIMETypes,
+                writerClassName,
+                new Class[]{ImageOutputStream.class},
+                readerSpiNames,
+                true,
+                GIFWritableStreamMetadata.NATIVE_FORMAT_NAME,
+                "com.sun.imageio.plugins.gif.GIFStreamMetadataFormat",
+                null, null,
+                true,
+                GIFWritableImageMetadata.NATIVE_FORMAT_NAME,
+                "com.sun.imageio.plugins.gif.GIFImageMetadataFormat",
+                null, null
+        );
     }
 
     public boolean canEncodeImage(ImageTypeSpecifier type) {
@@ -82,10 +83,10 @@ public class GIFImageWriterSpi extends ImageWriterSpi {
         ColorModel cm = type.getColorModel();
 
         boolean canEncode = sm.getNumBands() == 1 &&
-            sm.getSampleSize(0) <= 8 &&
-            sm.getWidth() <= 65535 &&
-            sm.getHeight() <= 65535 &&
-            (cm == null || cm.getComponentSize()[0] <= 8);
+                sm.getSampleSize(0) <= 8 &&
+                sm.getWidth() <= 65535 &&
+                sm.getHeight() <= 65535 &&
+                (cm == null || cm.getComponentSize()[0] <= 8);
 
         if (canEncode) {
             return true;

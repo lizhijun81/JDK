@@ -62,27 +62,25 @@ public class NTSid implements Principal, java.io.Serializable {
      * <p>
      *
      * @param stringSid the Windows NT SID. <p>
-     *
-     * @exception NullPointerException if the <code>String</code>
-     *                  is <code>null</code>.
-     *
-     * @exception IllegalArgumentException if the <code>String</code>
-     *                  has zero length.
+     * @throws NullPointerException     if the <code>String</code>
+     *                                  is <code>null</code>.
+     * @throws IllegalArgumentException if the <code>String</code>
+     *                                  has zero length.
      */
-    public NTSid (String stringSid) {
+    public NTSid(String stringSid) {
         if (stringSid == null) {
             java.text.MessageFormat form = new java.text.MessageFormat
-                (sun.security.util.ResourcesMgr.getString
-                        ("invalid.null.input.value",
-                        "sun.security.util.AuthResources"));
+                    (sun.security.util.ResourcesMgr.getString
+                            ("invalid.null.input.value",
+                                    "sun.security.util.AuthResources"));
             Object[] source = {"stringSid"};
             throw new NullPointerException(form.format(source));
         }
         if (stringSid.length() == 0) {
             throw new IllegalArgumentException
-                (sun.security.util.ResourcesMgr.getString
-                        ("Invalid.NTSid.value",
-                        "sun.security.util.AuthResources"));
+                    (sun.security.util.ResourcesMgr.getString
+                            ("Invalid.NTSid.value",
+                                    "sun.security.util.AuthResources"));
         }
         sid = new String(stringSid);
     }
@@ -109,7 +107,7 @@ public class NTSid implements Principal, java.io.Serializable {
         java.text.MessageFormat form = new java.text.MessageFormat
                 (sun.security.util.ResourcesMgr.getString
                         ("NTSid.name",
-                        "sun.security.util.AuthResources"));
+                                "sun.security.util.AuthResources"));
         Object[] source = {sid};
         return form.format(source);
     }
@@ -124,9 +122,8 @@ public class NTSid implements Principal, java.io.Serializable {
      *
      * @param o Object to be compared for equality with this
      *          <code>NTSid</code>.
-     *
      * @return true if the specified Object is equal to this
-     *          <code>NTSid</code>.
+     * <code>NTSid</code>.
      */
     public boolean equals(Object o) {
         if (o == null)
@@ -137,7 +134,7 @@ public class NTSid implements Principal, java.io.Serializable {
 
         if (!(o instanceof NTSid))
             return false;
-        NTSid that = (NTSid)o;
+        NTSid that = (NTSid) o;
 
         if (sid.equals(that.sid)) {
             return true;

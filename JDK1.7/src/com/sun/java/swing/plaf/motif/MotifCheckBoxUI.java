@@ -77,7 +77,7 @@ public class MotifCheckBoxUI extends MotifRadioButtonUI {
     // ********************************
     public void installDefaults(AbstractButton b) {
         super.installDefaults(b);
-        if(!defaults_initialized) {
+        if (!defaults_initialized) {
             icon = UIManager.getIcon(getPropertyPrefix() + "icon");
             defaults_initialized = true;
         }

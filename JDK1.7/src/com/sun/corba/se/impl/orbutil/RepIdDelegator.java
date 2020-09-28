@@ -26,10 +26,14 @@
 package com.sun.corba.se.impl.orbutil;
 
 import org.omg.CORBA.ORB;
+
 import java.io.Serializable;
 import java.util.Hashtable;
+
 import com.sun.corba.se.impl.io.TypeMismatchException;
+
 import java.net.MalformedURLException;
+
 import com.sun.corba.se.impl.util.RepositoryId;
 
 /**
@@ -39,10 +43,9 @@ import com.sun.corba.se.impl.util.RepositoryId;
  * are static.
  */
 public final class RepIdDelegator
-    implements RepositoryIdStrings,
-               RepositoryIdUtility,
-               RepositoryIdInterface
-{
+        implements RepositoryIdStrings,
+        RepositoryIdUtility,
+        RepositoryIdInterface {
     // RepositoryIdFactory methods
 
     public String createForAnyType(Class type) {
@@ -50,14 +53,12 @@ public final class RepIdDelegator
     }
 
     public String createForJavaType(Serializable ser)
-        throws TypeMismatchException
-    {
+            throws TypeMismatchException {
         return RepositoryId.createForJavaType(ser);
     }
 
     public String createForJavaType(Class clz)
-        throws TypeMismatchException
-    {
+            throws TypeMismatchException {
         return RepositoryId.createForJavaType(clz);
     }
 
@@ -134,15 +135,13 @@ public final class RepIdDelegator
     }
 
     public Class getClassFromType(String codebaseURL)
-        throws ClassNotFoundException, MalformedURLException
-    {
+            throws ClassNotFoundException, MalformedURLException {
         return delegate.getClassFromType(codebaseURL);
     }
 
     public Class getClassFromType(Class expectedType,
                                   String codebaseURL)
-        throws ClassNotFoundException, MalformedURLException
-    {
+            throws ClassNotFoundException, MalformedURLException {
         return delegate.getClassFromType(expectedType, codebaseURL);
     }
 
@@ -151,7 +150,8 @@ public final class RepIdDelegator
     }
 
     // Constructor used for factory/utility cases
-    public RepIdDelegator() {}
+    public RepIdDelegator() {
+    }
 
     // Constructor used by getIdFromString.  All non-static
     // RepositoryId methods will use the provided delegate.

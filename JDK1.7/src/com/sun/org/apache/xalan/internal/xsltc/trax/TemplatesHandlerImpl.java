@@ -48,12 +48,12 @@ import java.util.Vector;
 
 /**
  * Implementation of a JAXP1.1 TemplatesHandler
+ *
  * @author Morten Jorgensen
  * @author Santiago Pericas-Geertsen
  */
 public class TemplatesHandlerImpl
-    implements ContentHandler, TemplatesHandler, SourceLoader
-{
+        implements ContentHandler, TemplatesHandler, SourceLoader {
     /**
      * System ID for this stylesheet.
      */
@@ -89,8 +89,7 @@ public class TemplatesHandlerImpl
      * Default constructor
      */
     protected TemplatesHandlerImpl(int indentNumber,
-        TransformerFactoryImpl tfactory)
-    {
+                                   TransformerFactoryImpl tfactory) {
         _indentNumber = indentNumber;
         _tfactory = tfactory;
 
@@ -111,6 +110,7 @@ public class TemplatesHandlerImpl
      * Implements javax.xml.transform.sax.TemplatesHandler.getSystemId()
      * Get the base ID (URI or system ID) from where relative URLs will be
      * resolved.
+     *
      * @return The systemID that was set with setSystemId(String id)
      */
     public String getSystemId() {
@@ -121,6 +121,7 @@ public class TemplatesHandlerImpl
      * Implements javax.xml.transform.sax.TemplatesHandler.setSystemId()
      * Get the base ID (URI or system ID) from where relative URLs will be
      * resolved.
+     *
      * @param id Base URI for this stylesheet
      */
     public void setSystemId(String id) {
@@ -140,8 +141,9 @@ public class TemplatesHandlerImpl
      * DocumentHandler for the parsing of transformation instructions, it
      * creates a Templates object, which the caller can get once the SAX
      * events have been completed.
+     *
      * @return The Templates object that was created during the SAX event
-     *         process, or null if no Templates object has been created.
+     * process, or null if no Templates object has been created.
      */
     public Templates getTemplates() {
         return _templates;
@@ -151,9 +153,9 @@ public class TemplatesHandlerImpl
      * This method implements XSLTC's SourceLoader interface. It is used to
      * glue a TrAX URIResolver to the XSLTC compiler's Input and Import classes.
      *
-     * @param href The URI of the document to load
+     * @param href    The URI of the document to load
      * @param context The URI of the currently loaded document
-     * @param xsltc The compiler that resuests the document
+     * @param xsltc   The compiler that resuests the document
      * @return An InputSource with the loaded document
      */
     public InputSource loadSource(String href, String context, XSLTC xsltc) {
@@ -163,8 +165,7 @@ public class TemplatesHandlerImpl
             if (source != null) {
                 return Util.getInputSource(xsltc, source);
             }
-        }
-        catch (TransformerException e) {
+        } catch (TransformerException e) {
             // Falls through
         }
         return null;
@@ -196,9 +197,8 @@ public class TemplatesHandlerImpl
             String transletName;
             if (_systemId != null) {
                 transletName = Util.baseName(_systemId);
-            }
-            else {
-                transletName = (String)_tfactory.getAttribute("translet-name");
+            } else {
+                transletName = (String) _tfactory.getAttribute("translet-name");
             }
             xsltc.setClassName(transletName);
 
@@ -216,9 +216,9 @@ public class TemplatesHandlerImpl
                 stylesheet.setParentStylesheet(null);
 
                 if (xsltc.getTemplateInlining())
-                   stylesheet.setTemplateInlining(true);
+                    stylesheet.setTemplateInlining(true);
                 else
-                   stylesheet.setTemplateInlining(false);
+                    stylesheet.setTemplateInlining(false);
 
                 // Set a document loader (for xsl:include/import) if defined
                 if (_uriResolver != null) {
@@ -250,16 +250,15 @@ public class TemplatesHandlerImpl
                 final byte[][] bytecodes = xsltc.getBytecodes();
                 if (bytecodes != null) {
                     _templates =
-                    new TemplatesImpl(xsltc.getBytecodes(), transletName,
-                        _parser.getOutputProperties(), _indentNumber, _tfactory);
+                            new TemplatesImpl(xsltc.getBytecodes(), transletName,
+                                    _parser.getOutputProperties(), _indentNumber, _tfactory);
 
                     // Set URIResolver on templates object
                     if (_uriResolver != null) {
                         _templates.setURIResolver(_uriResolver);
                     }
                 }
-            }
-            else {
+            } else {
                 StringBuffer errorMessage = new StringBuffer();
                 Vector errors = _parser.getErrors();
                 final int count = errors.size();
@@ -270,8 +269,7 @@ public class TemplatesHandlerImpl
                 }
                 throw new SAXException(ErrorMsg.JAXP_COMPILE_ERR, new TransformerException(errorMessage.toString()));
             }
-        }
-        catch (CompilerException e) {
+        } catch (CompilerException e) {
             throw new SAXException(ErrorMsg.JAXP_COMPILE_ERR, e);
         }
     }
@@ -294,8 +292,7 @@ public class TemplatesHandlerImpl
      * Just forward SAX2 event to parser object.
      */
     public void startElement(String uri, String localname, String qname,
-        Attributes attributes) throws SAXException
-    {
+                             Attributes attributes) throws SAXException {
         _parser.startElement(uri, localname, qname, attributes);
     }
 

@@ -63,11 +63,10 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLConfigurationException;
  *
  * @author Arnaud  Le Hors, IBM
  * @author Andy Clark, IBM
- *
  * @version $Id: StandardParserConfiguration.java,v 1.7 2010-11-01 04:40:10 joehw Exp $
  */
 public class StandardParserConfiguration
-    extends DTDConfiguration {
+        extends DTDConfiguration {
 
     //
     // Constants
@@ -75,66 +74,94 @@ public class StandardParserConfiguration
 
     // feature identifiers
 
-    /** Feature identifier: expose schema normalized value */
+    /**
+     * Feature identifier: expose schema normalized value
+     */
     protected static final String NORMALIZE_DATA =
-    Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_NORMALIZED_VALUE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_NORMALIZED_VALUE;
 
 
-    /** Feature identifier: send element default value via characters() */
+    /**
+     * Feature identifier: send element default value via characters()
+     */
     protected static final String SCHEMA_ELEMENT_DEFAULT =
-    Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_ELEMENT_DEFAULT;
+            Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_ELEMENT_DEFAULT;
 
 
-    /** Feature identifier: augment PSVI */
+    /**
+     * Feature identifier: augment PSVI
+     */
     protected static final String SCHEMA_AUGMENT_PSVI =
-    Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_AUGMENT_PSVI;
+            Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_AUGMENT_PSVI;
 
 
-    /** feature identifier: XML Schema validation */
+    /**
+     * feature identifier: XML Schema validation
+     */
     protected static final String XMLSCHEMA_VALIDATION =
-    Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_VALIDATION_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_VALIDATION_FEATURE;
 
-    /** feature identifier: XML Schema validation -- full checking */
+    /**
+     * feature identifier: XML Schema validation -- full checking
+     */
     protected static final String XMLSCHEMA_FULL_CHECKING =
-    Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_FULL_CHECKING;
+            Constants.XERCES_FEATURE_PREFIX + Constants.SCHEMA_FULL_CHECKING;
 
-    /** Feature: generate synthetic annotations */
+    /**
+     * Feature: generate synthetic annotations
+     */
     protected static final String GENERATE_SYNTHETIC_ANNOTATIONS =
-        Constants.XERCES_FEATURE_PREFIX + Constants.GENERATE_SYNTHETIC_ANNOTATIONS_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.GENERATE_SYNTHETIC_ANNOTATIONS_FEATURE;
 
-    /** Feature identifier: validate annotations */
+    /**
+     * Feature identifier: validate annotations
+     */
     protected static final String VALIDATE_ANNOTATIONS =
-        Constants.XERCES_FEATURE_PREFIX + Constants.VALIDATE_ANNOTATIONS_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.VALIDATE_ANNOTATIONS_FEATURE;
 
-    /** Feature identifier: honour all schemaLocations */
+    /**
+     * Feature identifier: honour all schemaLocations
+     */
     protected static final String HONOUR_ALL_SCHEMALOCATIONS =
-        Constants.XERCES_FEATURE_PREFIX + Constants.HONOUR_ALL_SCHEMALOCATIONS_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.HONOUR_ALL_SCHEMALOCATIONS_FEATURE;
 
-    /** Feature identifier: namespace growth */
+    /**
+     * Feature identifier: namespace growth
+     */
     protected static final String NAMESPACE_GROWTH =
-        Constants.XERCES_FEATURE_PREFIX + Constants.NAMESPACE_GROWTH_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.NAMESPACE_GROWTH_FEATURE;
 
-    /** Feature identifier: tolerate duplicates */
+    /**
+     * Feature identifier: tolerate duplicates
+     */
     protected static final String TOLERATE_DUPLICATES =
-        Constants.XERCES_FEATURE_PREFIX + Constants.TOLERATE_DUPLICATES_FEATURE;
+            Constants.XERCES_FEATURE_PREFIX + Constants.TOLERATE_DUPLICATES_FEATURE;
 
     // property identifiers
 
-    /** Property identifier: XML Schema validator. */
+    /**
+     * Property identifier: XML Schema validator.
+     */
     protected static final String SCHEMA_VALIDATOR =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.SCHEMA_VALIDATOR_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SCHEMA_VALIDATOR_PROPERTY;
 
-    /** Property identifier: schema location. */
+    /**
+     * Property identifier: schema location.
+     */
     protected static final String SCHEMA_LOCATION =
-    Constants.XERCES_PROPERTY_PREFIX + Constants.SCHEMA_LOCATION;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SCHEMA_LOCATION;
 
-    /** Property identifier: no namespace schema location. */
+    /**
+     * Property identifier: no namespace schema location.
+     */
     protected static final String SCHEMA_NONS_LOCATION =
-    Constants.XERCES_PROPERTY_PREFIX + Constants.SCHEMA_NONS_LOCATION;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SCHEMA_NONS_LOCATION;
 
-    /** Property identifier: Schema DV Factory */
+    /**
+     * Property identifier: Schema DV Factory
+     */
     protected static final String SCHEMA_DV_FACTORY =
-        Constants.XERCES_PROPERTY_PREFIX + Constants.SCHEMA_DV_FACTORY_PROPERTY;
+            Constants.XERCES_PROPERTY_PREFIX + Constants.SCHEMA_DV_FACTORY_PROPERTY;
 
     //
     // Data
@@ -142,14 +169,18 @@ public class StandardParserConfiguration
 
     // components (non-configurable)
 
-    /** XML Schema Validator. */
+    /**
+     * XML Schema Validator.
+     */
     protected XMLSchemaValidator fSchemaValidator;
 
     //
     // Constructors
     //
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public StandardParserConfiguration() {
         this(null, null, null);
     } // <init>()
@@ -198,20 +229,20 @@ public class StandardParserConfiguration
 
         // add default recognized features
         final String[] recognizedFeatures = {
-            NORMALIZE_DATA,
-            SCHEMA_ELEMENT_DEFAULT,
-            SCHEMA_AUGMENT_PSVI,
-            GENERATE_SYNTHETIC_ANNOTATIONS,
-            VALIDATE_ANNOTATIONS,
-            HONOUR_ALL_SCHEMALOCATIONS,
-            NAMESPACE_GROWTH,
-            TOLERATE_DUPLICATES,
-            // NOTE: These shouldn't really be here but since the XML Schema
-            //       validator is constructed dynamically, its recognized
-            //       features might not have been set and it would cause a
-            //       not-recognized exception to be thrown. -Ac
-            XMLSCHEMA_VALIDATION,
-            XMLSCHEMA_FULL_CHECKING,
+                NORMALIZE_DATA,
+                SCHEMA_ELEMENT_DEFAULT,
+                SCHEMA_AUGMENT_PSVI,
+                GENERATE_SYNTHETIC_ANNOTATIONS,
+                VALIDATE_ANNOTATIONS,
+                HONOUR_ALL_SCHEMALOCATIONS,
+                NAMESPACE_GROWTH,
+                TOLERATE_DUPLICATES,
+                // NOTE: These shouldn't really be here but since the XML Schema
+                //       validator is constructed dynamically, its recognized
+                //       features might not have been set and it would cause a
+                //       not-recognized exception to be thrown. -Ac
+                XMLSCHEMA_VALIDATION,
+                XMLSCHEMA_FULL_CHECKING,
         };
         addRecognizedFeatures(recognizedFeatures);
 
@@ -228,16 +259,16 @@ public class StandardParserConfiguration
         // add default recognized properties
 
         final String[] recognizedProperties = {
-            // NOTE: These shouldn't really be here but since the XML Schema
-            //       validator is constructed dynamically, its recognized
-            //       properties might not have been set and it would cause a
-            //       not-recognized exception to be thrown. -Ac
-            SCHEMA_LOCATION,
-            SCHEMA_NONS_LOCATION,
-            SCHEMA_DV_FACTORY,
-            };
+                // NOTE: These shouldn't really be here but since the XML Schema
+                //       validator is constructed dynamically, its recognized
+                //       properties might not have been set and it would cause a
+                //       not-recognized exception to be thrown. -Ac
+                SCHEMA_LOCATION,
+                SCHEMA_NONS_LOCATION,
+                SCHEMA_DV_FACTORY,
+        };
 
-                        addRecognizedProperties(recognizedProperties);
+        addRecognizedProperties(recognizedProperties);
 
     } // <init>(SymbolTable,XMLGrammarPool)
 
@@ -245,10 +276,12 @@ public class StandardParserConfiguration
     // Public methods
     //
 
-    /** Configures the pipeline. */
+    /**
+     * Configures the pipeline.
+     */
     protected void configurePipeline() {
         super.configurePipeline();
-        if ( getFeature(XMLSCHEMA_VALIDATION )) {
+        if (getFeature(XMLSCHEMA_VALIDATION)) {
             // If schema validator was not in the pipeline insert it.
             if (fSchemaValidator == null) {
                 fSchemaValidator = new XMLSchemaValidator();
@@ -256,7 +289,7 @@ public class StandardParserConfiguration
                 // add schema component
                 fProperties.put(SCHEMA_VALIDATOR, fSchemaValidator);
                 addComponent(fSchemaValidator);
-                 // add schema message formatter
+                // add schema message formatter
                 if (fErrorReporter.getMessageFormatter(XSMessageFormatter.SCHEMA_DOMAIN) == null) {
                     XSMessageFormatter xmft = new XSMessageFormatter();
                     fErrorReporter.putMessageFormatter(XSMessageFormatter.SCHEMA_DOMAIN, xmft);
@@ -280,7 +313,6 @@ public class StandardParserConfiguration
      * returns. Otherwise, the appropriate exception is thrown.
      *
      * @param featureId The unique identifier (URI) of the feature.
-     *
      * @throws XMLConfigurationException Thrown for configuration error.
      *                                   In general, components should
      *                                   only throw this exception if
@@ -288,7 +320,7 @@ public class StandardParserConfiguration
      *                                   a critical error.
      */
     protected FeatureState checkFeature(String featureId)
-        throws XMLConfigurationException {
+            throws XMLConfigurationException {
 
         //
         // Xerces Features
@@ -302,24 +334,24 @@ public class StandardParserConfiguration
             //   Lets the user turn Schema validation support on/off.
             //
             if (suffixLength == Constants.SCHEMA_VALIDATION_FEATURE.length() &&
-                featureId.endsWith(Constants.SCHEMA_VALIDATION_FEATURE)) {
+                    featureId.endsWith(Constants.SCHEMA_VALIDATION_FEATURE)) {
                 return FeatureState.RECOGNIZED;
             }
             // activate full schema checking
             if (suffixLength == Constants.SCHEMA_FULL_CHECKING.length() &&
-                featureId.endsWith(Constants.SCHEMA_FULL_CHECKING)) {
+                    featureId.endsWith(Constants.SCHEMA_FULL_CHECKING)) {
                 return FeatureState.RECOGNIZED;
             }
             // Feature identifier: expose schema normalized value
             //  http://apache.org/xml/features/validation/schema/normalized-value
             if (suffixLength == Constants.SCHEMA_NORMALIZED_VALUE.length() &&
-                featureId.endsWith(Constants.SCHEMA_NORMALIZED_VALUE)) {
+                    featureId.endsWith(Constants.SCHEMA_NORMALIZED_VALUE)) {
                 return FeatureState.RECOGNIZED;
             }
             // Feature identifier: send element default value via characters()
             // http://apache.org/xml/features/validation/schema/element-default
             if (suffixLength == Constants.SCHEMA_ELEMENT_DEFAULT.length() &&
-                featureId.endsWith(Constants.SCHEMA_ELEMENT_DEFAULT)) {
+                    featureId.endsWith(Constants.SCHEMA_ELEMENT_DEFAULT)) {
                 return FeatureState.RECOGNIZED;
             }
         }
@@ -338,7 +370,6 @@ public class StandardParserConfiguration
      *
      * @param propertyId The unique identifier (URI) of the property
      *                   being set.
-     *
      * @throws XMLConfigurationException Thrown for configuration error.
      *                                   In general, components should
      *                                   only throw this exception if
@@ -346,7 +377,7 @@ public class StandardParserConfiguration
      *                                   a critical error.
      */
     protected PropertyState checkProperty(String propertyId)
-        throws XMLConfigurationException {
+            throws XMLConfigurationException {
 
         //
         // Xerces Properties
@@ -356,11 +387,11 @@ public class StandardParserConfiguration
             final int suffixLength = propertyId.length() - Constants.XERCES_PROPERTY_PREFIX.length();
 
             if (suffixLength == Constants.SCHEMA_LOCATION.length() &&
-                propertyId.endsWith(Constants.SCHEMA_LOCATION)) {
+                    propertyId.endsWith(Constants.SCHEMA_LOCATION)) {
                 return PropertyState.RECOGNIZED;
             }
             if (suffixLength == Constants.SCHEMA_NONS_LOCATION.length() &&
-                propertyId.endsWith(Constants.SCHEMA_NONS_LOCATION)) {
+                    propertyId.endsWith(Constants.SCHEMA_NONS_LOCATION)) {
                 return PropertyState.RECOGNIZED;
             }
         }
@@ -369,7 +400,7 @@ public class StandardParserConfiguration
             final int suffixLength = propertyId.length() - Constants.JAXP_PROPERTY_PREFIX.length();
 
             if (suffixLength == Constants.SCHEMA_SOURCE.length() &&
-                propertyId.endsWith(Constants.SCHEMA_SOURCE)) {
+                    propertyId.endsWith(Constants.SCHEMA_SOURCE)) {
                 return PropertyState.RECOGNIZED;
             }
         }

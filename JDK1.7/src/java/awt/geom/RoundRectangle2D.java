@@ -38,7 +38,7 @@ import java.io.Serializable;
  * The actual storage representation of the coordinates is left to
  * the subclass.
  *
- * @author      Jim Graham
+ * @author Jim Graham
  * @since 1.2
  */
 public abstract class RoundRectangle2D extends RectangularShape {
@@ -46,50 +46,56 @@ public abstract class RoundRectangle2D extends RectangularShape {
     /**
      * The <code>Float</code> class defines a rectangle with rounded
      * corners all specified in <code>float</code> coordinates.
+     *
      * @since 1.2
      */
     public static class Float extends RoundRectangle2D
-        implements Serializable
-    {
+            implements Serializable {
         /**
          * The X coordinate of this <code>RoundRectangle2D</code>.
-         * @since 1.2
+         *
          * @serial
+         * @since 1.2
          */
         public float x;
 
         /**
          * The Y coordinate of this <code>RoundRectangle2D</code>.
-         * @since 1.2
+         *
          * @serial
+         * @since 1.2
          */
         public float y;
 
         /**
          * The width of this <code>RoundRectangle2D</code>.
-         * @since 1.2
+         *
          * @serial
+         * @since 1.2
          */
         public float width;
 
         /**
          * The height of this <code>RoundRectangle2D</code>.
-         * @since 1.2
+         *
          * @serial
+         * @since 1.2
          */
         public float height;
 
         /**
          * The width of the arc that rounds off the corners.
-         * @since 1.2
+         *
          * @serial
+         * @since 1.2
          */
         public float arcwidth;
 
         /**
          * The height of the arc that rounds off the corners.
-         * @since 1.2
+         *
          * @serial
+         * @since 1.2
          */
         public float archeight;
 
@@ -97,6 +103,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
          * Constructs a new <code>RoundRectangle2D</code>, initialized to
          * location (0.0,&nbsp;0.0), size (0.0,&nbsp;0.0), and corner arcs
          * of radius 0.0.
+         *
          * @since 1.2
          */
         public Float() {
@@ -106,14 +113,14 @@ public abstract class RoundRectangle2D extends RectangularShape {
          * Constructs and initializes a <code>RoundRectangle2D</code>
          * from the specified <code>float</code> coordinates.
          *
-         * @param x the X coordinate of the newly
-         *          constructed <code>RoundRectangle2D</code>
-         * @param y the Y coordinate of the newly
-         *          constructed <code>RoundRectangle2D</code>
-         * @param w the width to which to set the newly
-         *          constructed <code>RoundRectangle2D</code>
-         * @param h the height to which to set the newly
-         *          constructed <code>RoundRectangle2D</code>
+         * @param x    the X coordinate of the newly
+         *             constructed <code>RoundRectangle2D</code>
+         * @param y    the Y coordinate of the newly
+         *             constructed <code>RoundRectangle2D</code>
+         * @param w    the width to which to set the newly
+         *             constructed <code>RoundRectangle2D</code>
+         * @param h    the height to which to set the newly
+         *             constructed <code>RoundRectangle2D</code>
          * @param arcw the width of the arc to use to round off the
          *             corners of the newly constructed
          *             <code>RoundRectangle2D</code>
@@ -123,13 +130,13 @@ public abstract class RoundRectangle2D extends RectangularShape {
          * @since 1.2
          */
         public Float(float x, float y, float w, float h,
-                     float arcw, float arch)
-        {
+                     float arcw, float arch) {
             setRoundRect(x, y, w, h, arcw, arch);
         }
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public double getX() {
@@ -138,6 +145,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public double getY() {
@@ -146,6 +154,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public double getWidth() {
@@ -154,6 +163,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public double getHeight() {
@@ -162,6 +172,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public double getArcWidth() {
@@ -170,6 +181,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public double getArcHeight() {
@@ -178,6 +190,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public boolean isEmpty() {
@@ -189,14 +202,14 @@ public abstract class RoundRectangle2D extends RectangularShape {
          * <code>RoundRectangle2D</code> to the specified
          * <code>float</code> values.
          *
-         * @param x the X coordinate to which to set the
-         *          location of this <code>RoundRectangle2D</code>
-         * @param y the Y coordinate to which to set the
-         *          location of this <code>RoundRectangle2D</code>
-         * @param w the width to which to set this
-         *          <code>RoundRectangle2D</code>
-         * @param h the height to which to set this
-         *          <code>RoundRectangle2D</code>
+         * @param x    the X coordinate to which to set the
+         *             location of this <code>RoundRectangle2D</code>
+         * @param y    the Y coordinate to which to set the
+         *             location of this <code>RoundRectangle2D</code>
+         * @param w    the width to which to set this
+         *             <code>RoundRectangle2D</code>
+         * @param h    the height to which to set this
+         *             <code>RoundRectangle2D</code>
          * @param arcw the width to which to set the arc of this
          *             <code>RoundRectangle2D</code>
          * @param arch the height to which to set the arc of this
@@ -204,8 +217,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
          * @since 1.2
          */
         public void setRoundRect(float x, float y, float w, float h,
-                                 float arcw, float arch)
-        {
+                                 float arcw, float arch) {
             this.x = x;
             this.y = y;
             this.width = w;
@@ -216,11 +228,11 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public void setRoundRect(double x, double y, double w, double h,
-                                 double arcw, double arch)
-        {
+                                 double arcw, double arch) {
             this.x = (float) x;
             this.y = (float) y;
             this.width = (float) w;
@@ -231,6 +243,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public void setRoundRect(RoundRectangle2D rr) {
@@ -244,6 +257,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public Rectangle2D getBounds2D() {
@@ -259,50 +273,56 @@ public abstract class RoundRectangle2D extends RectangularShape {
     /**
      * The <code>Double</code> class defines a rectangle with rounded
      * corners all specified in <code>double</code> coordinates.
+     *
      * @since 1.2
      */
     public static class Double extends RoundRectangle2D
-        implements Serializable
-    {
+            implements Serializable {
         /**
          * The X coordinate of this <code>RoundRectangle2D</code>.
-         * @since 1.2
+         *
          * @serial
+         * @since 1.2
          */
         public double x;
 
         /**
          * The Y coordinate of this <code>RoundRectangle2D</code>.
-         * @since 1.2
+         *
          * @serial
+         * @since 1.2
          */
         public double y;
 
         /**
          * The width of this <code>RoundRectangle2D</code>.
-         * @since 1.2
+         *
          * @serial
+         * @since 1.2
          */
         public double width;
 
         /**
          * The height of this <code>RoundRectangle2D</code>.
-         * @since 1.2
+         *
          * @serial
+         * @since 1.2
          */
         public double height;
 
         /**
          * The width of the arc that rounds off the corners.
-         * @since 1.2
+         *
          * @serial
+         * @since 1.2
          */
         public double arcwidth;
 
         /**
          * The height of the arc that rounds off the corners.
-         * @since 1.2
+         *
          * @serial
+         * @since 1.2
          */
         public double archeight;
 
@@ -310,6 +330,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
          * Constructs a new <code>RoundRectangle2D</code>, initialized to
          * location (0.0,&nbsp;0.0), size (0.0,&nbsp;0.0), and corner arcs
          * of radius 0.0.
+         *
          * @since 1.2
          */
         public Double() {
@@ -319,14 +340,14 @@ public abstract class RoundRectangle2D extends RectangularShape {
          * Constructs and initializes a <code>RoundRectangle2D</code>
          * from the specified <code>double</code> coordinates.
          *
-         * @param x the X coordinate of the newly
-         *          constructed <code>RoundRectangle2D</code>
-         * @param y the Y coordinate of the newly
-         *          constructed <code>RoundRectangle2D</code>
-         * @param w the width to which to set the newly
-         *          constructed <code>RoundRectangle2D</code>
-         * @param h the height to which to set the newly
-         *          constructed <code>RoundRectangle2D</code>
+         * @param x    the X coordinate of the newly
+         *             constructed <code>RoundRectangle2D</code>
+         * @param y    the Y coordinate of the newly
+         *             constructed <code>RoundRectangle2D</code>
+         * @param w    the width to which to set the newly
+         *             constructed <code>RoundRectangle2D</code>
+         * @param h    the height to which to set the newly
+         *             constructed <code>RoundRectangle2D</code>
          * @param arcw the width of the arc to use to round off the
          *             corners of the newly constructed
          *             <code>RoundRectangle2D</code>
@@ -336,13 +357,13 @@ public abstract class RoundRectangle2D extends RectangularShape {
          * @since 1.2
          */
         public Double(double x, double y, double w, double h,
-                      double arcw, double arch)
-        {
+                      double arcw, double arch) {
             setRoundRect(x, y, w, h, arcw, arch);
         }
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public double getX() {
@@ -351,6 +372,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public double getY() {
@@ -359,6 +381,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public double getWidth() {
@@ -367,6 +390,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public double getHeight() {
@@ -375,6 +399,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public double getArcWidth() {
@@ -383,6 +408,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public double getArcHeight() {
@@ -391,6 +417,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public boolean isEmpty() {
@@ -399,11 +426,11 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public void setRoundRect(double x, double y, double w, double h,
-                                 double arcw, double arch)
-        {
+                                 double arcw, double arch) {
             this.x = x;
             this.y = y;
             this.width = w;
@@ -414,6 +441,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public void setRoundRect(RoundRectangle2D rr) {
@@ -427,6 +455,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
         /**
          * {@inheritDoc}
+         *
          * @since 1.2
          */
         public Rectangle2D getBounds2D() {
@@ -455,6 +484,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
     /**
      * Gets the width of the arc that rounds off the corners.
+     *
      * @return the width of the arc that rounds off the corners
      * of this <code>RoundRectangle2D</code>.
      * @since 1.2
@@ -463,6 +493,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
     /**
      * Gets the height of the arc that rounds off the corners.
+     *
      * @return the height of the arc that rounds off the corners
      * of this <code>RoundRectangle2D</code>.
      * @since 1.2
@@ -474,16 +505,16 @@ public abstract class RoundRectangle2D extends RectangularShape {
      * <code>RoundRectangle2D</code> to the specified
      * <code>double</code> values.
      *
-     * @param x the X coordinate to which to set the
-     *          location of this <code>RoundRectangle2D</code>
-     * @param y the Y coordinate to which to set the
-     *          location of this <code>RoundRectangle2D</code>
-     * @param w the width to which to set this
-     *          <code>RoundRectangle2D</code>
-     * @param h the height to which to set this
-     *          <code>RoundRectangle2D</code>
-     * @param arcWidth the width to which to set the arc of this
-     *                 <code>RoundRectangle2D</code>
+     * @param x         the X coordinate to which to set the
+     *                  location of this <code>RoundRectangle2D</code>
+     * @param y         the Y coordinate to which to set the
+     *                  location of this <code>RoundRectangle2D</code>
+     * @param w         the width to which to set this
+     *                  <code>RoundRectangle2D</code>
+     * @param h         the height to which to set this
+     *                  <code>RoundRectangle2D</code>
+     * @param arcWidth  the width to which to set the arc of this
+     *                  <code>RoundRectangle2D</code>
      * @param arcHeight the height to which to set the arc of this
      *                  <code>RoundRectangle2D</code>
      * @since 1.2
@@ -494,16 +525,18 @@ public abstract class RoundRectangle2D extends RectangularShape {
     /**
      * Sets this <code>RoundRectangle2D</code> to be the same as the
      * specified <code>RoundRectangle2D</code>.
+     *
      * @param rr the specified <code>RoundRectangle2D</code>
      * @since 1.2
      */
     public void setRoundRect(RoundRectangle2D rr) {
         setRoundRect(rr.getX(), rr.getY(), rr.getWidth(), rr.getHeight(),
-                     rr.getArcWidth(), rr.getArcHeight());
+                rr.getArcWidth(), rr.getArcHeight());
     }
 
     /**
      * {@inheritDoc}
+     *
      * @since 1.2
      */
     public void setFrame(double x, double y, double w, double h) {
@@ -512,6 +545,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
     /**
      * {@inheritDoc}
+     *
      * @since 1.2
      */
     public boolean contains(double x, double y) {
@@ -542,8 +576,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
     }
 
     private int classify(double coord, double left, double right,
-                         double arcsize)
-    {
+                         double arcsize) {
         if (coord < left) {
             return 0;
         } else if (coord < left + arcsize) {
@@ -559,6 +592,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
     /**
      * {@inheritDoc}
+     *
      * @since 1.2
      */
     public boolean intersects(double x, double y, double w, double h) {
@@ -602,6 +636,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
     /**
      * {@inheritDoc}
+     *
      * @since 1.2
      */
     public boolean contains(double x, double y, double w, double h) {
@@ -622,12 +657,13 @@ public abstract class RoundRectangle2D extends RectangularShape {
      * modifications to the geometry of this <code>RoundRectangle2D</code>
      * object do not affect any iterations of that geometry that
      * are already in process.
+     *
      * @param at an optional <code>AffineTransform</code> to be applied to
-     * the coordinates as they are returned in the iteration, or
-     * <code>null</code> if untransformed coordinates are desired
-     * @return    the <code>PathIterator</code> object that returns the
-     *          geometry of the outline of this
-     *          <code>RoundRectangle2D</code>, one segment at a time.
+     *           the coordinates as they are returned in the iteration, or
+     *           <code>null</code> if untransformed coordinates are desired
+     * @return the <code>PathIterator</code> object that returns the
+     * geometry of the outline of this
+     * <code>RoundRectangle2D</code>, one segment at a time.
      * @since 1.2
      */
     public PathIterator getPathIterator(AffineTransform at) {
@@ -636,6 +672,7 @@ public abstract class RoundRectangle2D extends RectangularShape {
 
     /**
      * Returns the hashcode for this <code>RoundRectangle2D</code>.
+     *
      * @return the hashcode for this <code>RoundRectangle2D</code>.
      * @since 1.6
      */
@@ -656,11 +693,12 @@ public abstract class RoundRectangle2D extends RectangularShape {
      * if it is an instance of <code>RoundRectangle2D</code> and if its
      * location, size, and corner arc dimensions are the same as this
      * <code>RoundRectangle2D</code>.
-     * @param obj  an <code>Object</code> to be compared with this
-     *             <code>RoundRectangle2D</code>.
-     * @return  <code>true</code> if <code>obj</code> is an instance
-     *          of <code>RoundRectangle2D</code> and has the same values;
-     *          <code>false</code> otherwise.
+     *
+     * @param obj an <code>Object</code> to be compared with this
+     *            <code>RoundRectangle2D</code>.
+     * @return <code>true</code> if <code>obj</code> is an instance
+     * of <code>RoundRectangle2D</code> and has the same values;
+     * <code>false</code> otherwise.
      * @since 1.6
      */
     public boolean equals(Object obj) {

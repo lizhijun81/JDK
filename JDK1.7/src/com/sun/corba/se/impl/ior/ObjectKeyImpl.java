@@ -25,76 +25,67 @@
 
 package com.sun.corba.se.impl.ior;
 
-import org.omg.CORBA_2_3.portable.OutputStream ;
+import org.omg.CORBA_2_3.portable.OutputStream;
 
-import com.sun.corba.se.spi.protocol.CorbaServerRequestDispatcher ;
+import com.sun.corba.se.spi.protocol.CorbaServerRequestDispatcher;
 
-import com.sun.corba.se.spi.orb.ORB ;
+import com.sun.corba.se.spi.orb.ORB;
 
-import com.sun.corba.se.spi.ior.ObjectId ;
-import com.sun.corba.se.spi.ior.ObjectKey ;
-import com.sun.corba.se.spi.ior.ObjectKeyTemplate ;
+import com.sun.corba.se.spi.ior.ObjectId;
+import com.sun.corba.se.spi.ior.ObjectKey;
+import com.sun.corba.se.spi.ior.ObjectKeyTemplate;
 
-import com.sun.corba.se.impl.encoding.EncapsOutputStream ;
+import com.sun.corba.se.impl.encoding.EncapsOutputStream;
 
 /**
  * @author
  */
-public class ObjectKeyImpl implements ObjectKey
-{
+public class ObjectKeyImpl implements ObjectKey {
     private ObjectKeyTemplate oktemp;
     private ObjectId id;
 
-    public boolean equals( Object obj )
-    {
+    public boolean equals(Object obj) {
         if (obj == null)
-            return false ;
+            return false;
 
         if (!(obj instanceof ObjectKeyImpl))
-            return false ;
+            return false;
 
-        ObjectKeyImpl other = (ObjectKeyImpl)obj ;
+        ObjectKeyImpl other = (ObjectKeyImpl) obj;
 
-        return oktemp.equals( other.oktemp ) &&
-            id.equals( other.id ) ;
+        return oktemp.equals(other.oktemp) &&
+                id.equals(other.id);
     }
 
-    public int hashCode()
-    {
-        return oktemp.hashCode() ^ id.hashCode() ;
+    public int hashCode() {
+        return oktemp.hashCode() ^ id.hashCode();
     }
 
-    public ObjectKeyTemplate getTemplate()
-    {
-        return oktemp ;
+    public ObjectKeyTemplate getTemplate() {
+        return oktemp;
     }
 
-    public ObjectId getId()
-    {
-        return id ;
+    public ObjectId getId() {
+        return id;
     }
 
-    public ObjectKeyImpl( ObjectKeyTemplate oktemp, ObjectId id )
-    {
-        this.oktemp = oktemp ;
-        this.id = id ;
+    public ObjectKeyImpl(ObjectKeyTemplate oktemp, ObjectId id) {
+        this.oktemp = oktemp;
+        this.id = id;
     }
 
-    public void write( OutputStream os )
-    {
-        oktemp.write( id, os ) ;
+    public void write(OutputStream os) {
+        oktemp.write(id, os);
     }
 
-    public byte[] getBytes( org.omg.CORBA.ORB orb )
-    {
+    public byte[] getBytes(org.omg.CORBA.ORB orb) {
         EncapsOutputStream os =
-            sun.corba.OutputStreamFactory.newEncapsOutputStream((ORB)orb);
-        write( os ) ;
-        return os.toByteArray() ;
+                sun.corba.OutputStreamFactory.newEncapsOutputStream((ORB) orb);
+        write(os);
+        return os.toByteArray();
     }
 
-    public CorbaServerRequestDispatcher getServerRequestDispatcher( ORB orb )
-    {
-        return oktemp.getServerRequestDispatcher( orb, id ) ;
+    public CorbaServerRequestDispatcher getServerRequestDispatcher(ORB orb) {
+        return oktemp.getServerRequestDispatcher(orb, id);
     }
 }

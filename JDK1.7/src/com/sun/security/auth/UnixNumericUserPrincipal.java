@@ -42,8 +42,8 @@ import java.security.Principal;
  * @see javax.security.auth.Subject
  */
 public class UnixNumericUserPrincipal implements
-                                        Principal,
-                                        java.io.Serializable {
+        Principal,
+        java.io.Serializable {
     private static final long serialVersionUID = -4329764253802397821L;
 
     /**
@@ -59,16 +59,15 @@ public class UnixNumericUserPrincipal implements
      * <p>
      *
      * @param name the user identification number (UID) for this user.
-     *
-     * @exception NullPointerException if the <code>name</code>
-     *                  is <code>null</code>.
+     * @throws NullPointerException if the <code>name</code>
+     *                              is <code>null</code>.
      */
     public UnixNumericUserPrincipal(String name) {
         if (name == null) {
             java.text.MessageFormat form = new java.text.MessageFormat
-                (sun.security.util.ResourcesMgr.getString
-                        ("invalid.null.input.value",
-                        "sun.security.util.AuthResources"));
+                    (sun.security.util.ResourcesMgr.getString
+                            ("invalid.null.input.value",
+                                    "sun.security.util.AuthResources"));
             Object[] source = {"name"};
             throw new NullPointerException(form.format(source));
         }
@@ -83,7 +82,7 @@ public class UnixNumericUserPrincipal implements
      * <p>
      *
      * @param name the user identification number (UID) for this user
-     *                  represented as a long.
+     *             represented as a long.
      */
     public UnixNumericUserPrincipal(long name) {
         this.name = (new Long(name)).toString();
@@ -96,7 +95,7 @@ public class UnixNumericUserPrincipal implements
      * <p>
      *
      * @return the user identification number (UID) for this
-     *          <code>UnixNumericUserPrincipal</code>
+     * <code>UnixNumericUserPrincipal</code>
      */
     public String getName() {
         return name;
@@ -109,7 +108,7 @@ public class UnixNumericUserPrincipal implements
      * <p>
      *
      * @return the user identification number (UID) for this
-     *          <code>UnixNumericUserPrincipal</code> as a long.
+     * <code>UnixNumericUserPrincipal</code> as a long.
      */
     public long longValue() {
         return ((new Long(name)).longValue());
@@ -122,13 +121,13 @@ public class UnixNumericUserPrincipal implements
      * <p>
      *
      * @return a string representation of this
-     *          <code>UnixNumericUserPrincipal</code>.
+     * <code>UnixNumericUserPrincipal</code>.
      */
     public String toString() {
         java.text.MessageFormat form = new java.text.MessageFormat
                 (sun.security.util.ResourcesMgr.getString
                         ("UnixNumericUserPrincipal.name",
-                        "sun.security.util.AuthResources"));
+                                "sun.security.util.AuthResources"));
         Object[] source = {name};
         return form.format(source);
     }
@@ -145,9 +144,8 @@ public class UnixNumericUserPrincipal implements
      *
      * @param o Object to be compared for equality with this
      *          <code>UnixNumericUserPrincipal</code>.
-     *
      * @return true if the specified Object is equal equal to this
-     *          <code>UnixNumericUserPrincipal</code>.
+     * <code>UnixNumericUserPrincipal</code>.
      */
     public boolean equals(Object o) {
         if (o == null)
@@ -158,7 +156,7 @@ public class UnixNumericUserPrincipal implements
 
         if (!(o instanceof UnixNumericUserPrincipal))
             return false;
-        UnixNumericUserPrincipal that = (UnixNumericUserPrincipal)o;
+        UnixNumericUserPrincipal that = (UnixNumericUserPrincipal) o;
 
         if (this.getName().equals(that.getName()))
             return true;

@@ -47,72 +47,72 @@ public class MonitoredObjectImpl implements MonitoredObject {
 
 
     // Constructor
-    MonitoredObjectImpl( String name, String description ) {
+    MonitoredObjectImpl(String name, String description) {
         this.name = name;
         this.description = description;
     }
 
-    public MonitoredObject getChild( String name ) {
-        synchronized( this ) {
-            return (MonitoredObject) children.get( name );
+    public MonitoredObject getChild(String name) {
+        synchronized (this) {
+            return (MonitoredObject) children.get(name);
         }
     }
 
-    public Collection getChildren( ) {
-        synchronized( this ) {
+    public Collection getChildren() {
+        synchronized (this) {
             return children.values();
         }
     }
 
-    public void addChild( MonitoredObject m ) {
-        if (m != null){
-            synchronized( this ) {
-                children.put( m.getName(), m);
-                m.setParent( this );
+    public void addChild(MonitoredObject m) {
+        if (m != null) {
+            synchronized (this) {
+                children.put(m.getName(), m);
+                m.setParent(this);
             }
         }
     }
 
-    public void removeChild( String name ) {
-        if (name != null){
-            synchronized( this ) {
-                children.remove( name );
+    public void removeChild(String name) {
+        if (name != null) {
+            synchronized (this) {
+                children.remove(name);
             }
         }
     }
 
-    public synchronized MonitoredObject getParent( ) {
-       return parent;
+    public synchronized MonitoredObject getParent() {
+        return parent;
     }
 
-    public synchronized void setParent( MonitoredObject p ) {
+    public synchronized void setParent(MonitoredObject p) {
         parent = p;
     }
 
-    public MonitoredAttribute getAttribute( String name ) {
-        synchronized( this ) {
-            return (MonitoredAttribute) monitoredAttributes.get( name );
+    public MonitoredAttribute getAttribute(String name) {
+        synchronized (this) {
+            return (MonitoredAttribute) monitoredAttributes.get(name);
         }
     }
 
-    public Collection getAttributes( ) {
-        synchronized( this ) {
+    public Collection getAttributes() {
+        synchronized (this) {
             return monitoredAttributes.values();
         }
     }
 
-    public void addAttribute( MonitoredAttribute value ) {
+    public void addAttribute(MonitoredAttribute value) {
         if (value != null) {
-            synchronized( this ) {
-                monitoredAttributes.put( value.getName(), value );
+            synchronized (this) {
+                monitoredAttributes.put(value.getName(), value);
             }
         }
     }
 
-    public void removeAttribute( String name ) {
+    public void removeAttribute(String name) {
         if (name != null) {
-            synchronized( this ) {
-                monitoredAttributes.remove( name );
+            synchronized (this) {
+                monitoredAttributes.remove(name);
             }
         }
     }
@@ -121,26 +121,26 @@ public class MonitoredObjectImpl implements MonitoredObject {
      * calls clearState() on all the registered children MonitoredObjects and
      * MonitoredAttributes.
      */
-    public void clearState( ) {
-        synchronized( this ) {
+    public void clearState() {
+        synchronized (this) {
             Iterator i = monitoredAttributes.values().iterator();
             // First call clearState on all the local attributes
-            while( i.hasNext( ) ) {
-                ((MonitoredAttribute)i.next()).clearState();
+            while (i.hasNext()) {
+                ((MonitoredAttribute) i.next()).clearState();
             }
             i = children.values().iterator();
             // next call clearState on all the children MonitoredObjects
-            while( i.hasNext() ) {
-                ((MonitoredObject)i.next()).clearState();
-           }
+            while (i.hasNext()) {
+                ((MonitoredObject) i.next()).clearState();
+            }
         }
     }
 
-    public String getName( ) {
+    public String getName() {
         return name;
     }
 
-    public String getDescription( ) {
+    public String getDescription() {
         return description;
     }
 }

@@ -30,11 +30,9 @@ import com.sun.org.apache.xerces.internal.xs.XSObjectList;
 /**
  * Store schema model group declaration.
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
- *
  * @version $Id: XSModelGroupImpl.java,v 1.7 2010-11-01 04:39:55 joehw Exp $
+ * @xerces.internal
  */
 public class XSModelGroupImpl implements XSModelGroup {
 
@@ -42,9 +40,9 @@ public class XSModelGroupImpl implements XSModelGroup {
     // REVISIT: can't use same constants as those for particles, because
     // there are place where the constants are used together. For example,
     // to check whether the content is an element or a sequence.
-    public static final short MODELGROUP_CHOICE       = 101;
-    public static final short MODELGROUP_SEQUENCE     = 102;
-    public static final short MODELGROUP_ALL          = 103;
+    public static final short MODELGROUP_CHOICE = 101;
+    public static final short MODELGROUP_SEQUENCE = 102;
+    public static final short MODELGROUP_ALL = 103;
 
     // compositor of the model group
     public short fCompositor;
@@ -67,7 +65,7 @@ public class XSModelGroupImpl implements XSModelGroup {
 
     /**
      * 3.8.6 Effective Total Range (all and sequence) and
-     *       Effective Total Range (choice)
+     * Effective Total Range (choice)
      * The following methods are used to return min/max range for a particle.
      * They are not exactly the same as it's described in the spec, but all the
      * values from the spec are retrievable by these methods.
@@ -146,6 +144,7 @@ public class XSModelGroupImpl implements XSModelGroup {
      * get the string description of this particle
      */
     private String fDescription = null;
+
     public String toString() {
         // REVISIT: Commented code may help to eliminate redundant parentheses (test first before committing)
         if (fDescription == null) {
@@ -164,13 +163,13 @@ public class XSModelGroupImpl implements XSModelGroup {
                 buffer.append(fParticles[i].toString());
             }
             //if (fCompositor == MODELGROUP_ALL || fMinOccurs != 1 || fMaxOccurs != 1)
-                  buffer.append(')');
+            buffer.append(')');
             fDescription = buffer.toString();
         }
         return fDescription;
     }
 
-    public void reset(){
+    public void reset() {
         fCompositor = MODELGROUP_SEQUENCE;
         fParticles = null;
         fParticleCount = 0;

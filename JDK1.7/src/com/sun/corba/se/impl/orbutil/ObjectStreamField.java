@@ -41,11 +41,11 @@ import java.util.Hashtable;
  * expose this class outside of the com.sun.corba.se.impl.io
  * package for security reasons.
  */
+
 /**
  * A description of a field in a serializable class.
  * A array of these is used to declare the persistent fields of
  * a class.
- *
  */
 class ObjectStreamField implements Comparable {
     /**
@@ -97,8 +97,7 @@ class ObjectStreamField implements Comparable {
     /**
      * Create an ObjectStreamField containing a reflected Field.
      */
-    ObjectStreamField(String n, char t, Field f, String ts)
-    {
+    ObjectStreamField(String n, char t, Field f, String ts) {
         name = n;
         type = t;
         field = f;
@@ -125,26 +124,34 @@ class ObjectStreamField implements Comparable {
         if (clazz != null)
             return clazz;
         switch (type) {
-        case 'B': clazz = Byte.TYPE;
-            break;
-        case 'C': clazz = Character.TYPE;
-            break;
-        case 'S': clazz = Short.TYPE;
-            break;
-        case 'I': clazz = Integer.TYPE;
-            break;
-        case 'J': clazz = Long.TYPE;
-            break;
-        case 'F': clazz = Float.TYPE;
-            break;
-        case 'D': clazz = Double.TYPE;
-            break;
-        case 'Z': clazz = Boolean.TYPE;
-            break;
-        case '[':
-        case 'L':
-            clazz = Object.class;
-            break;
+            case 'B':
+                clazz = Byte.TYPE;
+                break;
+            case 'C':
+                clazz = Character.TYPE;
+                break;
+            case 'S':
+                clazz = Short.TYPE;
+                break;
+            case 'I':
+                clazz = Integer.TYPE;
+                break;
+            case 'J':
+                clazz = Long.TYPE;
+                break;
+            case 'F':
+                clazz = Float.TYPE;
+                break;
+            case 'D':
+                clazz = Double.TYPE;
+                break;
+            case 'Z':
+                clazz = Boolean.TYPE;
+                break;
+            case '[':
+            case 'L':
+                clazz = Object.class;
+                break;
         }
 
         return clazz;
@@ -188,7 +195,7 @@ class ObjectStreamField implements Comparable {
      * if equal, the names are compared.
      */
     public int compareTo(Object o) {
-        ObjectStreamField f2 = (ObjectStreamField)o;
+        ObjectStreamField f2 = (ObjectStreamField) o;
         boolean thisprim = (this.typeString == null);
         boolean otherprim = (f2.typeString == null);
 
@@ -212,8 +219,8 @@ class ObjectStreamField implements Comparable {
             return true;
 
         return ObjectStreamClass_1_3_1.compareClassNames(typeString,
-                                                         other.typeString,
-                                                         '/');
+                other.typeString,
+                '/');
     }
 
     /* Returns the signature of the Field.

@@ -28,11 +28,9 @@ import com.sun.org.apache.xerces.internal.xs.XSException;
 /**
  * Containts a list of Object's.
  *
- * @xerces.internal
- *
  * @author Sandy Gao, IBM
- *
  * @version $Id: ShortListImpl.java,v 1.7 2010-11-01 04:40:06 joehw Exp $
+ * @xerces.internal
  */
 public final class ShortListImpl extends AbstractList implements ShortList {
 
@@ -49,8 +47,8 @@ public final class ShortListImpl extends AbstractList implements ShortList {
     /**
      * Construct an XSObjectList implementation
      *
-     * @param array     the data array
-     * @param length    the number of elements
+     * @param array  the data array
+     * @param length the number of elements
      */
     public ShortListImpl(short[] array, int length) {
         fArray = array;
@@ -66,12 +64,13 @@ public final class ShortListImpl extends AbstractList implements ShortList {
     }
 
     /**
-     *  Checks if the <code>unsigned short</code> <code>item</code> is a
+     * Checks if the <code>unsigned short</code> <code>item</code> is a
      * member of this list.
-     * @param item  <code>unsigned short</code> whose presence in this list
-     *   is to be tested.
-     * @return  True if this list contains the <code>unsigned short</code>
-     *   <code>item</code>.
+     *
+     * @param item <code>unsigned short</code> whose presence in this list
+     *             is to be tested.
+     * @return True if this list contains the <code>unsigned short</code>
+     * <code>item</code>.
      */
     public boolean contains(short item) {
         for (int i = 0; i < fLength; i++) {
@@ -93,12 +92,12 @@ public final class ShortListImpl extends AbstractList implements ShortList {
         if (obj == null || !(obj instanceof ShortList)) {
             return false;
         }
-        ShortList rhs = (ShortList)obj;
+        ShortList rhs = (ShortList) obj;
 
         if (fLength != rhs.getLength()) {
             return false;
         }
-        for (int i = 0;i < fLength; ++i) {
+        for (int i = 0; i < fLength; ++i) {
             if (fArray[i] != rhs.item(i)) {
                 return false;
             }

@@ -31,14 +31,14 @@ import org.w3c.dom.DOMException;
  * Entity's children, in exactly the structure which an
  * EntityReference to this name will present within the document's
  * body.
- * <P>
+ * <p>
  * Note that this object models the actual entity, _not_ the entity
  * declaration or the entity reference.
- * <P>
+ * <p>
  * An XML processor may choose to completely expand entities before
  * the structure model is passed to the DOM; in this case, there will
  * be no EntityReferences in the DOM tree.
- * <P>
+ * <p>
  * Quoting the 10/01 DOM Proposal,
  * <BLOCKQUOTE>
  * "The DOM Level 1 does not support editing Entity nodes; if a user
@@ -54,57 +54,76 @@ import org.w3c.dom.DOMException;
  * _any_ answer will involve a non-DOM operation, and this is the
  * simplest solution.
  *
- * @xerces.internal
- *
  * @author Elena Litani, IBM
+ * @xerces.internal
  * @since PR-DOM-Level-1-19980818.
  */
 public class EntityImpl
-    extends ParentNode
-    implements Entity {
+        extends ParentNode
+        implements Entity {
 
     //
     // Constants
     //
 
-    /** Serialization version. */
+    /**
+     * Serialization version.
+     */
     static final long serialVersionUID = -3575760943444303423L;
 
     //
     // Data
     //
 
-    /** Entity name. */
+    /**
+     * Entity name.
+     */
     protected String name;
 
-    /** Public identifier. */
+    /**
+     * Public identifier.
+     */
     protected String publicId;
 
-    /** System identifier. */
+    /**
+     * System identifier.
+     */
     protected String systemId;
 
-    /** Encoding */
+    /**
+     * Encoding
+     */
     protected String encoding;
 
 
-    /** Input Encoding */
+    /**
+     * Input Encoding
+     */
     protected String inputEncoding;
 
-    /** Version */
+    /**
+     * Version
+     */
     protected String version;
 
 
-    /** Notation name. */
+    /**
+     * Notation name.
+     */
     protected String notationName;
 
-    /** base uri*/
+    /**
+     * base uri
+     */
     protected String baseURI;
 
     //
     // Constructors
     //
 
-    /** Factory constructor. */
+    /**
+     * Factory constructor.
+     */
     public EntityImpl(CoreDocumentImpl ownerDoc, String name) {
         super(ownerDoc);
         this.name = name;
@@ -132,34 +151,39 @@ public class EntityImpl
         }
         return name;
     }
+
     /**
      * Sets the node value.
+     *
      * @throws DOMException(NO_MODIFICATION_ALLOWED_ERR)
      */
     public void setNodeValue(String x)
-        throws DOMException {
+            throws DOMException {
         if (ownerDocument.errorChecking && isReadOnly()) {
             String msg = DOMMessageFormatter.formatMessage(DOMMessageFormatter.DOM_DOMAIN, "NO_MODIFICATION_ALLOWED_ERR", null);
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR, msg);
         }
     }
+
     /**
      * The namespace prefix of this node
-     * @exception DOMException
-     *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.
+     *
+     * @throws DOMException <br>NO_MODIFICATION_ALLOWED_ERR: Raised if this node is readonly.
      */
     public void setPrefix(String prefix)
-        throws DOMException
-    {
+            throws DOMException {
         if (ownerDocument.errorChecking && isReadOnly()) {
             throw new DOMException(DOMException.NO_MODIFICATION_ALLOWED_ERR,
-                  DOMMessageFormatter.formatMessage(DOMMessageFormatter.DOM_DOMAIN,
-                    "NO_MODIFICATION_ALLOWED_ERR", null));
+                    DOMMessageFormatter.formatMessage(DOMMessageFormatter.DOM_DOMAIN,
+                            "NO_MODIFICATION_ALLOWED_ERR", null));
         }
     }
-    /** Clone node. */
+
+    /**
+     * Clone node.
+     */
     public Node cloneNode(boolean deep) {
-        EntityImpl newentity = (EntityImpl)super.cloneNode(deep);
+        EntityImpl newentity = (EntityImpl) super.cloneNode(deep);
         newentity.setReadOnly(true, deep);
         return newentity;
     }
@@ -195,17 +219,17 @@ public class EntityImpl
     } // getSystemId():String
 
     /**
-      * DOM Level 3 WD - experimental
-      * the version number of this entity, when it is an external parsed entity.
-      */
+     * DOM Level 3 WD - experimental
+     * the version number of this entity, when it is an external parsed entity.
+     */
     public String getXmlVersion() {
 
-       if (needsSyncData()) {
-           synchronizeData();
-       }
-       return version;
+        if (needsSyncData()) {
+            synchronizeData();
+        }
+        return version;
 
-   } // getVersion():String
+    } // getVersion():String
 
 
     /**
@@ -214,16 +238,13 @@ public class EntityImpl
      */
     public String getXmlEncoding() {
 
-       if (needsSyncData()) {
-           synchronizeData();
-       }
+        if (needsSyncData()) {
+            synchronizeData();
+        }
 
-       return encoding;
+        return encoding;
 
-   } // getVersion():String
-
-
-
+    } // getVersion():String
 
 
     /**
@@ -247,7 +268,8 @@ public class EntityImpl
 
     /**
      * DOM Level 2: The public identifier associated with the entity. If not specified,
-     * this will be null. */
+     * this will be null.
+     */
     public void setPublicId(String id) {
 
         if (needsSyncData()) {
@@ -262,7 +284,6 @@ public class EntityImpl
      * encoding - An attribute specifying, as part of the text declaration,
      * the encoding of this entity, when it is an external parsed entity.
      * This is null otherwise
-     *
      */
     public void setXmlEncoding(String value) {
         if (needsSyncData()) {
@@ -277,9 +298,10 @@ public class EntityImpl
      * of parsing, when it is an external parsed entity. This is
      * <code>null</code> if it an entity from the internal subset or if it
      * is not known..
+     *
      * @since DOM Level 3
      */
-    public String getInputEncoding(){
+    public String getInputEncoding() {
         if (needsSyncData()) {
             synchronizeData();
         }
@@ -289,7 +311,7 @@ public class EntityImpl
     /**
      * NON-DOM, used to set the input encoding.
      */
-    public void setInputEncoding(String inputEncoding){
+    public void setInputEncoding(String inputEncoding) {
         if (needsSyncData()) {
             synchronizeData();
         }
@@ -297,11 +319,11 @@ public class EntityImpl
     }
 
     /**
-      * NON-DOM
-      * version - An attribute specifying, as part of the text declaration,
-      * the version number of this entity, when it is an external parsed entity.
-      * This is null otherwise
-      */
+     * NON-DOM
+     * version - An attribute specifying, as part of the text declaration,
+     * the version number of this entity, when it is an external parsed entity.
+     * This is null otherwise
+     */
     public void setXmlVersion(String value) {
         if (needsSyncData()) {
             synchronizeData();
@@ -337,7 +359,6 @@ public class EntityImpl
     } // setNotationName(String)
 
 
-
     /**
      * Returns the absolute base URI of this node or null if the implementation
      * wasn't able to obtain an absolute URI. Note: If the URI is malformed, a
@@ -351,17 +372,18 @@ public class EntityImpl
         if (needsSyncData()) {
             synchronizeData();
         }
-        return (baseURI!=null)?baseURI:((CoreDocumentImpl)getOwnerDocument()).getBaseURI();
+        return (baseURI != null) ? baseURI : ((CoreDocumentImpl) getOwnerDocument()).getBaseURI();
     }
 
-    /** NON-DOM: set base uri*/
-    public void setBaseURI(String uri){
+    /**
+     * NON-DOM: set base uri
+     */
+    public void setBaseURI(String uri) {
         if (needsSyncData()) {
             synchronizeData();
         }
         baseURI = uri;
     }
-
 
 
 } // class EntityImpl

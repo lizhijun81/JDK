@@ -32,11 +32,9 @@ import com.sun.corba.se.pept.encoding.OutputObject;
 import com.sun.corba.se.pept.transport.Connection;
 import com.sun.corba.se.spi.orb.ORB;
 
-public class BufferManagerWriteGrow extends BufferManagerWrite
-{
-    BufferManagerWriteGrow( ORB orb )
-    {
-        super(orb) ;
+public class BufferManagerWriteGrow extends BufferManagerWrite {
+    BufferManagerWriteGrow(ORB orb) {
+        super(orb);
     }
 
     public boolean sentFragment() {
@@ -51,8 +49,7 @@ public class BufferManagerWriteGrow extends BufferManagerWrite
         return orb.getORBData().getGIOPBufferSize();
     }
 
-    public void overflow (ByteBufferWithInfo bbwi)
-    {
+    public void overflow(ByteBufferWithInfo bbwi) {
         // The code that once lived directly in CDROutputStream.grow()
         // has been moved ByteBufferWithInfo.growBuffer().
 
@@ -63,16 +60,15 @@ public class BufferManagerWriteGrow extends BufferManagerWrite
         bbwi.fragmented = false;
     }
 
-    public void sendMessage ()
-    {
+    public void sendMessage() {
         Connection conn =
-              ((OutputObject)outputObject).getMessageMediator().getConnection();
+                ((OutputObject) outputObject).getMessageMediator().getConnection();
 
         conn.writeLock();
 
         try {
 
-            conn.sendWithoutLock((OutputObject)outputObject);
+            conn.sendWithoutLock((OutputObject) outputObject);
 
             sentFullMessage = true;
 
@@ -84,9 +80,10 @@ public class BufferManagerWriteGrow extends BufferManagerWrite
 
     /**
      * Close the BufferManagerWrite and do any outstanding cleanup.
-     *
+     * <p>
      * No work to do for a BufferManagerWriteGrow.
      */
-    public void close() {}
+    public void close() {
+    }
 
 }

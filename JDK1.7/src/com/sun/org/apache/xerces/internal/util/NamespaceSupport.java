@@ -75,7 +75,6 @@ import com.sun.org.apache.xerces.internal.xni.NamespaceContext;
  * can be used for this purpose.
  *
  * @author Andy Clark, IBM
- *
  */
 public class NamespaceSupport implements NamespaceContext {
 
@@ -94,7 +93,9 @@ public class NamespaceSupport implements NamespaceContext {
      */
     protected String[] fNamespace = new String[16 * 2];
 
-    /** The top of the namespace information array. */
+    /**
+     * The top of the namespace information array.
+     */
     protected int fNamespaceSize;
 
     // NOTE: The constructor depends on the initial context size
@@ -110,7 +111,9 @@ public class NamespaceSupport implements NamespaceContext {
      */
     protected int[] fContext = new int[8];
 
-    /** The current context. */
+    /**
+     * The current context.
+     */
     protected int fCurrentContext;
 
     protected String[] fPrefixes = new String[16];
@@ -119,7 +122,9 @@ public class NamespaceSupport implements NamespaceContext {
     // Constructors
     //
 
-    /** Default constructor. */
+    /**
+     * Default constructor.
+     */
     public NamespaceSupport() {
     } // <init>()
 
@@ -131,8 +136,8 @@ public class NamespaceSupport implements NamespaceContext {
         pushContext();
         // copy declaration in the context
         Enumeration prefixes = context.getAllPrefixes();
-        while (prefixes.hasMoreElements()){
-            String prefix = (String)prefixes.nextElement();
+        while (prefixes.hasMoreElements()) {
+            String prefix = (String) prefixes.nextElement();
             String uri = context.getURI(prefix);
             declarePrefix(prefix, uri);
         }
@@ -280,51 +285,52 @@ public class NamespaceSupport implements NamespaceContext {
         return fNamespace[fContext[fCurrentContext] + index * 2];
     } // getDeclaredPrefixAt(int):String
 
-    public Iterator getPrefixes(){
+    public Iterator getPrefixes() {
         int count = 0;
-        if (fPrefixes.length < (fNamespace.length/2)) {
+        if (fPrefixes.length < (fNamespace.length / 2)) {
             // resize prefix array
             String[] prefixes = new String[fNamespaceSize];
             fPrefixes = prefixes;
         }
         String prefix = null;
         boolean unique = true;
-        for (int i = 2; i < (fNamespaceSize-2); i += 2) {
+        for (int i = 2; i < (fNamespaceSize - 2); i += 2) {
             prefix = fNamespace[i + 2];
-            for (int k=0;k<count;k++){
-                if (fPrefixes[k]==prefix){
+            for (int k = 0; k < count; k++) {
+                if (fPrefixes[k] == prefix) {
                     unique = false;
                     break;
                 }
             }
-            if (unique){
+            if (unique) {
                 fPrefixes[count++] = prefix;
             }
             unique = true;
         }
         return new IteratorPrefixes(fPrefixes, count);
     }//getPrefixes
+
     /**
      * @see com.sun.org.apache.xerces.internal.xni.NamespaceContext#getAllPrefixes()
      */
     public Enumeration getAllPrefixes() {
         int count = 0;
-        if (fPrefixes.length < (fNamespace.length/2)) {
+        if (fPrefixes.length < (fNamespace.length / 2)) {
             // resize prefix array
             String[] prefixes = new String[fNamespaceSize];
             fPrefixes = prefixes;
         }
         String prefix = null;
         boolean unique = true;
-        for (int i = 2; i < (fNamespaceSize-2); i += 2) {
+        for (int i = 2; i < (fNamespaceSize - 2); i += 2) {
             prefix = fNamespace[i + 2];
-            for (int k=0;k<count;k++){
-                if (fPrefixes[k]==prefix){
+            for (int k = 0; k < count; k++) {
+                if (fPrefixes[k] == prefix) {
                     unique = false;
                     break;
                 }
             }
-            if (unique){
+            if (unique) {
                 fPrefixes[count++] = prefix;
             }
             unique = true;
@@ -332,15 +338,15 @@ public class NamespaceSupport implements NamespaceContext {
         return new Prefixes(fPrefixes, count);
     }
 
-    public  Vector getPrefixes(String uri){
+    public Vector getPrefixes(String uri) {
         int count = 0;
         String prefix = null;
         boolean unique = true;
         Vector prefixList = new Vector();
-        for (int i = fNamespaceSize; i >0 ; i -= 2) {
-            if(fNamespace[i-1] == uri){
-                if(!prefixList.contains(fNamespace[i-2]))
-                    prefixList.add(fNamespace[i-2]);
+        for (int i = fNamespaceSize; i > 0; i -= 2) {
+            if (fNamespace[i - 1] == uri) {
+                if (!prefixList.contains(fNamespace[i - 2]))
+                    prefixList.add(fNamespace[i - 2]);
             }
         }
         return prefixList;
@@ -355,7 +361,6 @@ public class NamespaceSupport implements NamespaceContext {
      * the given prefix exists in the context.
      *
      * @param prefix The prefix to look up.
-     *
      * @return true if the given prefix exists in the context
      */
     public boolean containsPrefix(String prefix) {
@@ -376,7 +381,6 @@ public class NamespaceSupport implements NamespaceContext {
      * the given prefix exists in the current context.
      *
      * @param prefix The prefix to look up.
-     *
      * @return true if the given prefix exists in the current context
      */
     public boolean containsPrefixInCurrentContext(String prefix) {
@@ -392,7 +396,7 @@ public class NamespaceSupport implements NamespaceContext {
         return false;
     }
 
-    protected final class IteratorPrefixes implements Iterator  {
+    protected final class IteratorPrefixes implements Iterator {
         private String[] prefixes;
         private int counter = 0;
         private int size = 0;
@@ -400,7 +404,7 @@ public class NamespaceSupport implements NamespaceContext {
         /**
          * Constructor for Prefixes.
          */
-        public IteratorPrefixes(String [] prefixes, int size) {
+        public IteratorPrefixes(String[] prefixes, int size) {
             this.prefixes = prefixes;
             this.size = size;
         }
@@ -416,15 +420,15 @@ public class NamespaceSupport implements NamespaceContext {
          * @see java.util.Enumeration#nextElement()
          */
         public Object next() {
-            if (counter< size){
+            if (counter < size) {
                 return fPrefixes[counter++];
             }
             throw new NoSuchElementException("Illegal access to Namespace prefixes enumeration.");
         }
 
-        public String toString(){
+        public String toString() {
             StringBuffer buf = new StringBuffer();
-            for (int i=0;i<size;i++){
+            for (int i = 0; i < size; i++) {
                 buf.append(prefixes[i]);
                 buf.append(" ");
             }
@@ -432,7 +436,7 @@ public class NamespaceSupport implements NamespaceContext {
             return buf.toString();
         }
 
-        public void remove(){
+        public void remove() {
             throw new UnsupportedOperationException();
         }
     }
@@ -446,7 +450,7 @@ public class NamespaceSupport implements NamespaceContext {
         /**
          * Constructor for Prefixes.
          */
-        public Prefixes(String [] prefixes, int size) {
+        public Prefixes(String[] prefixes, int size) {
             this.prefixes = prefixes;
             this.size = size;
         }
@@ -455,22 +459,22 @@ public class NamespaceSupport implements NamespaceContext {
          * @see java.util.Enumeration#hasMoreElements()
          */
         public boolean hasMoreElements() {
-            return (counter< size);
+            return (counter < size);
         }
 
         /**
          * @see java.util.Enumeration#nextElement()
          */
         public Object nextElement() {
-            if (counter< size){
+            if (counter < size) {
                 return fPrefixes[counter++];
             }
             throw new NoSuchElementException("Illegal access to Namespace prefixes enumeration.");
         }
 
-        public String toString(){
+        public String toString() {
             StringBuffer buf = new StringBuffer();
-            for (int i=0;i<size;i++){
+            for (int i = 0; i < size; i++) {
                 buf.append(prefixes[i]);
                 buf.append(" ");
             }

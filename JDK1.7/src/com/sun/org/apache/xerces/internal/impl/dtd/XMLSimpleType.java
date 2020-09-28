@@ -64,6 +64,7 @@ package com.sun.org.apache.xerces.internal.impl.dtd;
 import com.sun.org.apache.xerces.internal.impl.dv.DatatypeValidator;
 
 /**
+ *
  */
 public class XMLSimpleType {
 
@@ -71,68 +72,108 @@ public class XMLSimpleType {
     // Constants
     //
 
-    /** TYPE_CDATA */
+    /**
+     * TYPE_CDATA
+     */
     public static final short TYPE_CDATA = 0;
 
-    /** TYPE_ENTITY */
+    /**
+     * TYPE_ENTITY
+     */
     public static final short TYPE_ENTITY = 1;
 
-    /** TYPE_ENUMERATION */
+    /**
+     * TYPE_ENUMERATION
+     */
     public static final short TYPE_ENUMERATION = 2;
 
-    /** TYPE_ID */
+    /**
+     * TYPE_ID
+     */
     public static final short TYPE_ID = 3;
 
-    /** TYPE_IDREF */
+    /**
+     * TYPE_IDREF
+     */
     public static final short TYPE_IDREF = 4;
 
-    /** TYPE_NMTOKEN */
+    /**
+     * TYPE_NMTOKEN
+     */
     public static final short TYPE_NMTOKEN = 5;
 
-    /** TYPE_NOTATION */
+    /**
+     * TYPE_NOTATION
+     */
     public static final short TYPE_NOTATION = 6;
 
-    /** TYPE_NAMED */
+    /**
+     * TYPE_NAMED
+     */
     public static final short TYPE_NAMED = 7;
 
-    /** DEFAULT_TYPE_DEFAULT */
+    /**
+     * DEFAULT_TYPE_DEFAULT
+     */
     public static final short DEFAULT_TYPE_DEFAULT = 3;
 
-    /** DEFAULT_TYPE_FIXED */
+    /**
+     * DEFAULT_TYPE_FIXED
+     */
     public static final short DEFAULT_TYPE_FIXED = 1;
 
-    /** DEFAULT_TYPE_IMPLIED */
+    /**
+     * DEFAULT_TYPE_IMPLIED
+     */
     public static final short DEFAULT_TYPE_IMPLIED = 0;
 
-    /** DEFAULT_TYPE_REQUIRED */
+    /**
+     * DEFAULT_TYPE_REQUIRED
+     */
     public static final short DEFAULT_TYPE_REQUIRED = 2;
 
     //
     // Data
     //
 
-    /** type */
+    /**
+     * type
+     */
     public short type;
 
-    /** name */
+    /**
+     * name
+     */
     public String name;
 
-    /** enumeration */
+    /**
+     * enumeration
+     */
     public String[] enumeration;
 
-    /** list */
+    /**
+     * list
+     */
     public boolean list;
 
-    /** defaultType */
+    /**
+     * defaultType
+     */
     public short defaultType;
 
-    /** defaultValue */
+    /**
+     * defaultValue
+     */
     public String defaultValue;
 
-    /** non-normalized defaultValue */
+    /**
+     * non-normalized defaultValue
+     */
     public String nonNormalizedDefaultValue;
 
-    /** datatypeValidator */
+    /**
+     * datatypeValidator
+     */
     public DatatypeValidator datatypeValidator;
 
     //
@@ -156,25 +197,26 @@ public class XMLSimpleType {
                           String defaultValue, String nonNormalizedDefaultValue,
                           DatatypeValidator datatypeValidator) {
 
-        this.type              = type;
-        this.name              = name;
+        this.type = type;
+        this.name = name;
         // REVISIT: Should this be a copy? -Ac
         if (enumeration != null && enumeration.length > 0) {
             this.enumeration = new String[enumeration.length];
             System.arraycopy(enumeration, 0, this.enumeration, 0, this.enumeration.length);
-        }
-        else {
+        } else {
             this.enumeration = null;
         }
-        this.list              = list;
-        this.defaultType       = defaultType;
-        this.defaultValue      = defaultValue;
-        this.nonNormalizedDefaultValue      = nonNormalizedDefaultValue;
+        this.list = list;
+        this.defaultType = defaultType;
+        this.defaultValue = defaultValue;
+        this.nonNormalizedDefaultValue = nonNormalizedDefaultValue;
         this.datatypeValidator = datatypeValidator;
 
     } // setValues(short,String,String[],boolean,short,String,String,DatatypeValidator)
 
-    /** Set values. */
+    /**
+     * Set values.
+     */
     public void setValues(XMLSimpleType simpleType) {
 
         type = simpleType.type;
@@ -183,8 +225,7 @@ public class XMLSimpleType {
         if (simpleType.enumeration != null && simpleType.enumeration.length > 0) {
             enumeration = new String[simpleType.enumeration.length];
             System.arraycopy(simpleType.enumeration, 0, enumeration, 0, enumeration.length);
-        }
-        else {
+        } else {
             enumeration = null;
         }
         list = simpleType.list;
@@ -199,13 +240,13 @@ public class XMLSimpleType {
      * clear
      */
     public void clear() {
-        this.type              = -1;
-        this.name              = null;
-        this.enumeration       = null;
-        this.list              = false;
-        this.defaultType       = -1;
-        this.defaultValue      = null;
-        this.nonNormalizedDefaultValue      = null;
+        this.type = -1;
+        this.name = null;
+        this.enumeration = null;
+        this.list = false;
+        this.defaultType = -1;
+        this.defaultValue = null;
+        this.nonNormalizedDefaultValue = null;
         this.datatypeValidator = null;
     } // clear
 

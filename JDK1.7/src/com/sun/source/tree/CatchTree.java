@@ -27,20 +27,20 @@ package com.sun.source.tree;
 
 /**
  * A tree node for a 'catch' block in a 'try' statement.
- *
+ * <p>
  * For example:
  * <pre>
  *   catch ( <em>parameter</em> )
  *       <em>block</em>
  * </pre>
  *
- * @jls section 14.20
- *
  * @author Peter von der Ah&eacute;
  * @author Jonathan Gibbons
+ * @jls section 14.20
  * @since 1.6
  */
 public interface CatchTree extends Tree {
     VariableTree getParameter();
+
     BlockTree getBlock();
 }

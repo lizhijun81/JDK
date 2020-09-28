@@ -58,15 +58,15 @@ import java.lang.reflect.InvocationTargetException;
  */
 class NewInstance {
     private static final String DEFAULT_PACKAGE = "com.sun.org.apache.xerces.internal";
+
     /**
      * Creates a new instance of the specified class name
-     *
+     * <p>
      * Package private so this code is not exposed at the API level.
      */
-    static Object newInstance (ClassLoader classLoader, String className)
-        throws ClassNotFoundException, IllegalAccessException,
-            InstantiationException
-    {
+    static Object newInstance(ClassLoader classLoader, String className)
+            throws ClassNotFoundException, IllegalAccessException,
+            InstantiationException {
         // make sure we have access to restricted packages
         boolean internal = false;
         if (System.getSecurityManager() != null) {

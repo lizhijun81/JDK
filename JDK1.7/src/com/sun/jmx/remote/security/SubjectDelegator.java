@@ -48,9 +48,9 @@ public class SubjectDelegator {
        authenticatedAccessControlContext does not have permission to
        delegate to that subject, throw SecurityException.  */
     public synchronized AccessControlContext
-        delegatedContext(AccessControlContext authenticatedACC,
-                         Subject delegatedSubject,
-                         boolean removeCallerContext)
+    delegatedContext(AccessControlContext authenticatedACC,
+                     Subject delegatedSubject,
+                     boolean removeCallerContext)
             throws SecurityException {
 
         if (principalsCache == null || accCache == null) {
@@ -71,7 +71,7 @@ public class SubjectDelegator {
         //
         if (delegatedPrincipals == null) {
             delegatedPrincipals =
-                delegatedSubject.getPrincipals().toArray(new Principal[0]);
+                    delegatedSubject.getPrincipals().toArray(new Principal[0]);
             principalsCache.put(delegatedSubject, delegatedPrincipals);
         }
 
@@ -87,11 +87,11 @@ public class SubjectDelegator {
         if (delegatedACC == null) {
             if (removeCallerContext) {
                 delegatedACC =
-                    JMXSubjectDomainCombiner.getDomainCombinerContext(
-                                                              delegatedSubject);
+                        JMXSubjectDomainCombiner.getDomainCombinerContext(
+                                delegatedSubject);
             } else {
                 delegatedACC =
-                    JMXSubjectDomainCombiner.getContext(delegatedSubject);
+                        JMXSubjectDomainCombiner.getContext(delegatedSubject);
             }
             accCache.put(delegatedSubject, delegatedACC);
         }
@@ -102,18 +102,18 @@ public class SubjectDelegator {
         //
         final Principal[] dp = delegatedPrincipals;
         PrivilegedAction<Void> action =
-            new PrivilegedAction<Void>() {
-                public Void run() {
-                    for (int i = 0 ; i < dp.length ; i++) {
-                        final String pname =
-                            dp[i].getClass().getName() + "." + dp[i].getName();
-                        Permission sdp =
-                            new SubjectDelegationPermission(pname);
-                        AccessController.checkPermission(sdp);
+                new PrivilegedAction<Void>() {
+                    public Void run() {
+                        for (int i = 0; i < dp.length; i++) {
+                            final String pname =
+                                    dp[i].getClass().getName() + "." + dp[i].getName();
+                            Permission sdp =
+                                    new SubjectDelegationPermission(pname);
+                            AccessController.checkPermission(sdp);
+                        }
+                        return null;
                     }
-                    return null;
-                }
-            };
+                };
         AccessController.doPrivileged(action, authenticatedACC);
 
         return delegatedACC;
@@ -129,15 +129,15 @@ public class SubjectDelegator {
      * the authenticated principals in the subject. Otherwise, {@code false}.
      */
     public static synchronized boolean
-        checkRemoveCallerContext(Subject subject) {
+    checkRemoveCallerContext(Subject subject) {
         try {
             final Principal[] dp =
-                subject.getPrincipals().toArray(new Principal[0]);
-            for (int i = 0 ; i < dp.length ; i++) {
+                    subject.getPrincipals().toArray(new Principal[0]);
+            for (int i = 0; i < dp.length; i++) {
                 final String pname =
-                    dp[i].getClass().getName() + "." + dp[i].getName();
+                        dp[i].getClass().getName() + "." + dp[i].getName();
                 final Permission sdp =
-                    new SubjectDelegationPermission(pname);
+                        new SubjectDelegationPermission(pname);
                 AccessController.checkPermission(sdp);
             }
         } catch (SecurityException e) {

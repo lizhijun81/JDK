@@ -24,7 +24,6 @@ package com.sun.org.apache.xerces.internal.xni;
  * Location information.
  *
  * @author Andy Clark, IBM
- *
  */
 public interface XMLLocator {
 
@@ -32,25 +31,39 @@ public interface XMLLocator {
     // XMLLocator methods
     //
 
-    /** Returns the public identifier. */
+    /**
+     * Returns the public identifier.
+     */
     public String getPublicId();
 
-    /** Returns the literal system identifier. */
+    /**
+     * Returns the literal system identifier.
+     */
     public String getLiteralSystemId();
 
-    /** Returns the base system identifier. */
+    /**
+     * Returns the base system identifier.
+     */
     public String getBaseSystemId();
 
-    /** Returns the expanded system identifier. */
+    /**
+     * Returns the expanded system identifier.
+     */
     public String getExpandedSystemId();
 
-    /** Returns the line number, or <code>-1</code> if no line number is available. */
+    /**
+     * Returns the line number, or <code>-1</code> if no line number is available.
+     */
     public int getLineNumber();
 
-    /** Returns the column number, or <code>-1</code> if no column number is available. */
+    /**
+     * Returns the column number, or <code>-1</code> if no column number is available.
+     */
     public int getColumnNumber();
 
-    /** Returns the character offset, or <code>-1</code> if no character offset is available. */
+    /**
+     * Returns the character offset, or <code>-1</code> if no character offset is available.
+     */
     public int getCharacterOffset();
 
     /**

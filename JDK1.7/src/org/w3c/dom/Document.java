@@ -98,31 +98,33 @@ public interface Document extends Node {
      * and attached to the element.
      * <br>To create an element with a qualified name and namespace URI, use
      * the <code>createElementNS</code> method.
+     *
      * @param tagName The name of the element type to instantiate. For XML,
-     *   this is case-sensitive, otherwise it depends on the
-     *   case-sensitivity of the markup language in use. In that case, the
-     *   name is mapped to the canonical form of that markup by the DOM
-     *   implementation.
+     *                this is case-sensitive, otherwise it depends on the
+     *                case-sensitivity of the markup language in use. In that case, the
+     *                name is mapped to the canonical form of that markup by the DOM
+     *                implementation.
      * @return A new <code>Element</code> object with the
-     *   <code>nodeName</code> attribute set to <code>tagName</code>, and
-     *   <code>localName</code>, <code>prefix</code>, and
-     *   <code>namespaceURI</code> set to <code>null</code>.
-     * @exception DOMException
-     *   INVALID_CHARACTER_ERR: Raised if the specified name is not an XML
-     *   name according to the XML version in use specified in the
-     *   <code>Document.xmlVersion</code> attribute.
+     * <code>nodeName</code> attribute set to <code>tagName</code>, and
+     * <code>localName</code>, <code>prefix</code>, and
+     * <code>namespaceURI</code> set to <code>null</code>.
+     * @throws DOMException INVALID_CHARACTER_ERR: Raised if the specified name is not an XML
+     *                      name according to the XML version in use specified in the
+     *                      <code>Document.xmlVersion</code> attribute.
      */
     public Element createElement(String tagName)
-                                 throws DOMException;
+            throws DOMException;
 
     /**
      * Creates an empty <code>DocumentFragment</code> object.
+     *
      * @return A new <code>DocumentFragment</code>.
      */
     public DocumentFragment createDocumentFragment();
 
     /**
      * Creates a <code>Text</code> node given the specified string.
+     *
      * @param data The data for the node.
      * @return The new <code>Text</code> object.
      */
@@ -130,6 +132,7 @@ public interface Document extends Node {
 
     /**
      * Creates a <code>Comment</code> node given the specified string.
+     *
      * @param data The data for the node.
      * @return The new <code>Comment</code> object.
      */
@@ -138,35 +141,35 @@ public interface Document extends Node {
     /**
      * Creates a <code>CDATASection</code> node whose value is the specified
      * string.
+     *
      * @param data The data for the <code>CDATASection</code> contents.
      * @return The new <code>CDATASection</code> object.
-     * @exception DOMException
-     *   NOT_SUPPORTED_ERR: Raised if this document is an HTML document.
+     * @throws DOMException NOT_SUPPORTED_ERR: Raised if this document is an HTML document.
      */
     public CDATASection createCDATASection(String data)
-                                           throws DOMException;
+            throws DOMException;
 
     /**
      * Creates a <code>ProcessingInstruction</code> node given the specified
      * name and data strings.
+     *
      * @param target The target part of the processing instruction.Unlike
-     *   <code>Document.createElementNS</code> or
-     *   <code>Document.createAttributeNS</code>, no namespace well-formed
-     *   checking is done on the target name. Applications should invoke
-     *   <code>Document.normalizeDocument()</code> with the parameter "
-     *   namespaces" set to <code>true</code> in order to ensure that the
-     *   target name is namespace well-formed.
-     * @param data The data for the node.
+     *               <code>Document.createElementNS</code> or
+     *               <code>Document.createAttributeNS</code>, no namespace well-formed
+     *               checking is done on the target name. Applications should invoke
+     *               <code>Document.normalizeDocument()</code> with the parameter "
+     *               namespaces" set to <code>true</code> in order to ensure that the
+     *               target name is namespace well-formed.
+     * @param data   The data for the node.
      * @return The new <code>ProcessingInstruction</code> object.
-     * @exception DOMException
-     *   INVALID_CHARACTER_ERR: Raised if the specified target is not an XML
-     *   name according to the XML version in use specified in the
-     *   <code>Document.xmlVersion</code> attribute.
-     *   <br>NOT_SUPPORTED_ERR: Raised if this document is an HTML document.
+     * @throws DOMException INVALID_CHARACTER_ERR: Raised if the specified target is not an XML
+     *                      name according to the XML version in use specified in the
+     *                      <code>Document.xmlVersion</code> attribute.
+     *                      <br>NOT_SUPPORTED_ERR: Raised if this document is an HTML document.
      */
     public ProcessingInstruction createProcessingInstruction(String target,
                                                              String data)
-                                                             throws DOMException;
+            throws DOMException;
 
     /**
      * Creates an <code>Attr</code> of the given name. Note that the
@@ -174,18 +177,18 @@ public interface Document extends Node {
      * using the <code>setAttributeNode</code> method.
      * <br>To create an attribute with a qualified name and namespace URI, use
      * the <code>createAttributeNS</code> method.
+     *
      * @param name The name of the attribute.
      * @return A new <code>Attr</code> object with the <code>nodeName</code>
-     *   attribute set to <code>name</code>, and <code>localName</code>,
-     *   <code>prefix</code>, and <code>namespaceURI</code> set to
-     *   <code>null</code>. The value of the attribute is the empty string.
-     * @exception DOMException
-     *   INVALID_CHARACTER_ERR: Raised if the specified name is not an XML
-     *   name according to the XML version in use specified in the
-     *   <code>Document.xmlVersion</code> attribute.
+     * attribute set to <code>name</code>, and <code>localName</code>,
+     * <code>prefix</code>, and <code>namespaceURI</code> set to
+     * <code>null</code>. The value of the attribute is the empty string.
+     * @throws DOMException INVALID_CHARACTER_ERR: Raised if the specified name is not an XML
+     *                      name according to the XML version in use specified in the
+     *                      <code>Document.xmlVersion</code> attribute.
      */
     public Attr createAttribute(String name)
-                                throws DOMException;
+            throws DOMException;
 
     /**
      * Creates an <code>EntityReference</code> object. In addition, if the
@@ -198,33 +201,34 @@ public interface Document extends Node {
      * <code>namespaceURI</code> is <code>null</code>). The DOM Level 2 and
      * 3 do not support any mechanism to resolve namespace prefixes in this
      * case.
+     *
      * @param name The name of the entity to reference.Unlike
-     *   <code>Document.createElementNS</code> or
-     *   <code>Document.createAttributeNS</code>, no namespace well-formed
-     *   checking is done on the entity name. Applications should invoke
-     *   <code>Document.normalizeDocument()</code> with the parameter "
-     *   namespaces" set to <code>true</code> in order to ensure that the
-     *   entity name is namespace well-formed.
+     *             <code>Document.createElementNS</code> or
+     *             <code>Document.createAttributeNS</code>, no namespace well-formed
+     *             checking is done on the entity name. Applications should invoke
+     *             <code>Document.normalizeDocument()</code> with the parameter "
+     *             namespaces" set to <code>true</code> in order to ensure that the
+     *             entity name is namespace well-formed.
      * @return The new <code>EntityReference</code> object.
-     * @exception DOMException
-     *   INVALID_CHARACTER_ERR: Raised if the specified name is not an XML
-     *   name according to the XML version in use specified in the
-     *   <code>Document.xmlVersion</code> attribute.
-     *   <br>NOT_SUPPORTED_ERR: Raised if this document is an HTML document.
+     * @throws DOMException INVALID_CHARACTER_ERR: Raised if the specified name is not an XML
+     *                      name according to the XML version in use specified in the
+     *                      <code>Document.xmlVersion</code> attribute.
+     *                      <br>NOT_SUPPORTED_ERR: Raised if this document is an HTML document.
      */
     public EntityReference createEntityReference(String name)
-                                                 throws DOMException;
+            throws DOMException;
 
     /**
      * Returns a <code>NodeList</code> of all the <code>Elements</code> in
      * document order with a given tag name and are contained in the
      * document.
-     * @param tagname  The name of the tag to match on. The special value "*"
-     *   matches all tags. For XML, the <code>tagname</code> parameter is
-     *   case-sensitive, otherwise it depends on the case-sensitivity of the
-     *   markup language in use.
+     *
+     * @param tagname The name of the tag to match on. The special value "*"
+     *                matches all tags. For XML, the <code>tagname</code> parameter is
+     *                case-sensitive, otherwise it depends on the case-sensitivity of the
+     *                markup language in use.
      * @return A new <code>NodeList</code> object containing all the matched
-     *   <code>Elements</code>.
+     * <code>Elements</code>.
      */
     public NodeList getElementsByTagName(String tagname);
 
@@ -322,37 +326,38 @@ public interface Document extends Node {
      * that the <code>deep</code> parameter has no effect on these types of
      * nodes since they cannot have any children.</dd>
      * </dl>
+     *
      * @param importedNode The node to import.
-     * @param deep If <code>true</code>, recursively import the subtree under
-     *   the specified node; if <code>false</code>, import only the node
-     *   itself, as explained above. This has no effect on nodes that cannot
-     *   have any children, and on <code>Attr</code>, and
-     *   <code>EntityReference</code> nodes.
+     * @param deep         If <code>true</code>, recursively import the subtree under
+     *                     the specified node; if <code>false</code>, import only the node
+     *                     itself, as explained above. This has no effect on nodes that cannot
+     *                     have any children, and on <code>Attr</code>, and
+     *                     <code>EntityReference</code> nodes.
      * @return The imported node that belongs to this <code>Document</code>.
-     * @exception DOMException
-     *   NOT_SUPPORTED_ERR: Raised if the type of node being imported is not
-     *   supported.
-     *   <br>INVALID_CHARACTER_ERR: Raised if one of the imported names is not
-     *   an XML name according to the XML version in use specified in the
-     *   <code>Document.xmlVersion</code> attribute. This may happen when
-     *   importing an XML 1.1 [<a href='http://www.w3.org/TR/2004/REC-xml11-20040204/'>XML 1.1</a>] element
-     *   into an XML 1.0 document, for instance.
+     * @throws DOMException NOT_SUPPORTED_ERR: Raised if the type of node being imported is not
+     *                      supported.
+     *                      <br>INVALID_CHARACTER_ERR: Raised if one of the imported names is not
+     *                      an XML name according to the XML version in use specified in the
+     *                      <code>Document.xmlVersion</code> attribute. This may happen when
+     *                      importing an XML 1.1 [<a href='http://www.w3.org/TR/2004/REC-xml11-20040204/'>XML 1.1</a>] element
+     *                      into an XML 1.0 document, for instance.
      * @since DOM Level 2
      */
     public Node importNode(Node importedNode,
                            boolean deep)
-                           throws DOMException;
+            throws DOMException;
 
     /**
      * Creates an element of the given qualified name and namespace URI.
      * <br>Per [<a href='http://www.w3.org/TR/1999/REC-xml-names-19990114/'>XML Namespaces</a>]
      * , applications must use the value <code>null</code> as the
      * namespaceURI parameter for methods if they wish to have no namespace.
-     * @param namespaceURI The namespace URI of the element to create.
+     *
+     * @param namespaceURI  The namespace URI of the element to create.
      * @param qualifiedName The qualified name of the element type to
-     *   instantiate.
+     *                      instantiate.
      * @return A new <code>Element</code> object with the following
-     *   attributes:
+     * attributes:
      * <table border='1' cellpadding='3'>
      * <tr>
      * <th>Attribute</th>
@@ -385,27 +390,26 @@ public interface Document extends Node {
      *   <code>qualifiedName</code></td>
      * </tr>
      * </table>
-     * @exception DOMException
-     *   INVALID_CHARACTER_ERR: Raised if the specified
-     *   <code>qualifiedName</code> is not an XML name according to the XML
-     *   version in use specified in the <code>Document.xmlVersion</code>
-     *   attribute.
-     *   <br>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is a
-     *   malformed qualified name, if the <code>qualifiedName</code> has a
-     *   prefix and the <code>namespaceURI</code> is <code>null</code>, or
-     *   if the <code>qualifiedName</code> has a prefix that is "xml" and
-     *   the <code>namespaceURI</code> is different from "<a href='http://www.w3.org/XML/1998/namespace'>
-     *   http://www.w3.org/XML/1998/namespace</a>" [<a href='http://www.w3.org/TR/1999/REC-xml-names-19990114/'>XML Namespaces</a>]
-     *   , or if the <code>qualifiedName</code> or its prefix is "xmlns" and
-     *   the <code>namespaceURI</code> is different from "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>", or if the <code>namespaceURI</code> is "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>" and neither the <code>qualifiedName</code> nor its prefix is "xmlns".
-     *   <br>NOT_SUPPORTED_ERR: Always thrown if the current document does not
-     *   support the <code>"XML"</code> feature, since namespaces were
-     *   defined by XML.
+     * @throws DOMException INVALID_CHARACTER_ERR: Raised if the specified
+     *                      <code>qualifiedName</code> is not an XML name according to the XML
+     *                      version in use specified in the <code>Document.xmlVersion</code>
+     *                      attribute.
+     *                      <br>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is a
+     *                      malformed qualified name, if the <code>qualifiedName</code> has a
+     *                      prefix and the <code>namespaceURI</code> is <code>null</code>, or
+     *                      if the <code>qualifiedName</code> has a prefix that is "xml" and
+     *                      the <code>namespaceURI</code> is different from "<a href='http://www.w3.org/XML/1998/namespace'>
+     *                      http://www.w3.org/XML/1998/namespace</a>" [<a href='http://www.w3.org/TR/1999/REC-xml-names-19990114/'>XML Namespaces</a>]
+     *                      , or if the <code>qualifiedName</code> or its prefix is "xmlns" and
+     *                      the <code>namespaceURI</code> is different from "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>", or if the <code>namespaceURI</code> is "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>" and neither the <code>qualifiedName</code> nor its prefix is "xmlns".
+     *                      <br>NOT_SUPPORTED_ERR: Always thrown if the current document does not
+     *                      support the <code>"XML"</code> feature, since namespaces were
+     *                      defined by XML.
      * @since DOM Level 2
      */
     public Element createElementNS(String namespaceURI,
                                    String qualifiedName)
-                                   throws DOMException;
+            throws DOMException;
 
     /**
      * Creates an attribute of the given qualified name and namespace URI.
@@ -413,9 +417,10 @@ public interface Document extends Node {
      * , applications must use the value <code>null</code> as the
      * <code>namespaceURI</code> parameter for methods if they wish to have
      * no namespace.
-     * @param namespaceURI The namespace URI of the attribute to create.
+     *
+     * @param namespaceURI  The namespace URI of the attribute to create.
      * @param qualifiedName The qualified name of the attribute to
-     *   instantiate.
+     *                      instantiate.
      * @return A new <code>Attr</code> object with the following attributes:
      * <table border='1' cellpadding='3'>
      * <tr>
@@ -455,36 +460,36 @@ public interface Document extends Node {
      *   string</td>
      * </tr>
      * </table>
-     * @exception DOMException
-     *   INVALID_CHARACTER_ERR: Raised if the specified
-     *   <code>qualifiedName</code> is not an XML name according to the XML
-     *   version in use specified in the <code>Document.xmlVersion</code>
-     *   attribute.
-     *   <br>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is a
-     *   malformed qualified name, if the <code>qualifiedName</code> has a
-     *   prefix and the <code>namespaceURI</code> is <code>null</code>, if
-     *   the <code>qualifiedName</code> has a prefix that is "xml" and the
-     *   <code>namespaceURI</code> is different from "<a href='http://www.w3.org/XML/1998/namespace'>
-     *   http://www.w3.org/XML/1998/namespace</a>", if the <code>qualifiedName</code> or its prefix is "xmlns" and the
-     *   <code>namespaceURI</code> is different from "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>", or if the <code>namespaceURI</code> is "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>" and neither the <code>qualifiedName</code> nor its prefix is "xmlns".
-     *   <br>NOT_SUPPORTED_ERR: Always thrown if the current document does not
-     *   support the <code>"XML"</code> feature, since namespaces were
-     *   defined by XML.
+     * @throws DOMException INVALID_CHARACTER_ERR: Raised if the specified
+     *                      <code>qualifiedName</code> is not an XML name according to the XML
+     *                      version in use specified in the <code>Document.xmlVersion</code>
+     *                      attribute.
+     *                      <br>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is a
+     *                      malformed qualified name, if the <code>qualifiedName</code> has a
+     *                      prefix and the <code>namespaceURI</code> is <code>null</code>, if
+     *                      the <code>qualifiedName</code> has a prefix that is "xml" and the
+     *                      <code>namespaceURI</code> is different from "<a href='http://www.w3.org/XML/1998/namespace'>
+     *                      http://www.w3.org/XML/1998/namespace</a>", if the <code>qualifiedName</code> or its prefix is "xmlns" and the
+     *                      <code>namespaceURI</code> is different from "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>", or if the <code>namespaceURI</code> is "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>" and neither the <code>qualifiedName</code> nor its prefix is "xmlns".
+     *                      <br>NOT_SUPPORTED_ERR: Always thrown if the current document does not
+     *                      support the <code>"XML"</code> feature, since namespaces were
+     *                      defined by XML.
      * @since DOM Level 2
      */
     public Attr createAttributeNS(String namespaceURI,
                                   String qualifiedName)
-                                  throws DOMException;
+            throws DOMException;
 
     /**
      * Returns a <code>NodeList</code> of all the <code>Elements</code> with a
      * given local name and namespace URI in document order.
+     *
      * @param namespaceURI The namespace URI of the elements to match on. The
-     *   special value <code>"*"</code> matches all namespaces.
-     * @param localName The local name of the elements to match on. The
-     *   special value "*" matches all local names.
+     *                     special value <code>"*"</code> matches all namespaces.
+     * @param localName    The local name of the elements to match on. The
+     *                     special value "*" matches all local names.
      * @return A new <code>NodeList</code> object containing all the matched
-     *   <code>Elements</code>.
+     * <code>Elements</code>.
      * @since DOM Level 2
      */
     public NodeList getElementsByTagNameNS(String namespaceURI,
@@ -499,6 +504,7 @@ public interface Document extends Node {
      * <code>Attr.isId</code> to determine if an attribute is of type ID.
      * <p ><b>Note:</b> Attributes with the name "ID" or "id" are not of type
      * ID unless so defined.
+     *
      * @param elementId The unique <code>id</code> value for an element.
      * @return The matching element or <code>null</code> if there is none.
      * @since DOM Level 2
@@ -509,6 +515,7 @@ public interface Document extends Node {
      * An attribute specifying the encoding used for this document at the time
      * of the parsing. This is <code>null</code> when it is not known, such
      * as when the <code>Document</code> was created in memory.
+     *
      * @since DOM Level 3
      */
     public String getInputEncoding();
@@ -517,6 +524,7 @@ public interface Document extends Node {
      * An attribute specifying, as part of the <a href='http://www.w3.org/TR/2004/REC-xml-20040204#NT-XMLDecl'>XML declaration</a>, the encoding of this document. This is <code>null</code> when
      * unspecified or when it is not known, such as when the
      * <code>Document</code> was created in memory.
+     *
      * @since DOM Level 3
      */
     public String getXmlEncoding();
@@ -529,9 +537,11 @@ public interface Document extends Node {
      * <code>Document.normalizeDocument()</code> with the "validate"
      * parameter to verify if the value matches the <a href='http://www.w3.org/TR/2004/REC-xml-20040204#sec-rmd'>validity
      * constraint for standalone document declaration</a> as defined in [<a href='http://www.w3.org/TR/2004/REC-xml-20040204'>XML 1.0</a>].
+     *
      * @since DOM Level 3
      */
     public boolean getXmlStandalone();
+
     /**
      * An attribute specifying, as part of the <a href='http://www.w3.org/TR/2004/REC-xml-20040204#NT-XMLDecl'>XML declaration</a>, whether this document is standalone. This is <code>false</code> when
      * unspecified.
@@ -540,16 +550,16 @@ public interface Document extends Node {
      * <code>Document.normalizeDocument()</code> with the "validate"
      * parameter to verify if the value matches the <a href='http://www.w3.org/TR/2004/REC-xml-20040204#sec-rmd'>validity
      * constraint for standalone document declaration</a> as defined in [<a href='http://www.w3.org/TR/2004/REC-xml-20040204'>XML 1.0</a>].
-     * @exception DOMException
-     *    NOT_SUPPORTED_ERR: Raised if this document does not support the
-     *   "XML" feature.
+     *
+     * @throws DOMException NOT_SUPPORTED_ERR: Raised if this document does not support the
+     *                      "XML" feature.
      * @since DOM Level 3
      */
     public void setXmlStandalone(boolean xmlStandalone)
-                                  throws DOMException;
+            throws DOMException;
 
     /**
-     *  An attribute specifying, as part of the <a href='http://www.w3.org/TR/2004/REC-xml-20040204#NT-XMLDecl'>XML declaration</a>, the version number of this document. If there is no declaration and if
+     * An attribute specifying, as part of the <a href='http://www.w3.org/TR/2004/REC-xml-20040204#NT-XMLDecl'>XML declaration</a>, the version number of this document. If there is no declaration and if
      * this document supports the "XML" feature, the value is
      * <code>"1.0"</code>. If this document does not support the "XML"
      * feature, the value is always <code>null</code>. Changing this
@@ -567,14 +577,16 @@ public interface Document extends Node {
      * implementation supports [<a href='http://www.w3.org/TR/2004/REC-xml11-20040204/'>XML 1.1</a>]. In both
      * cases, in order to support XML, an implementation must also support
      * the "XML" feature defined in this specification. <code>Document</code>
-     *  objects supporting a version of the "XMLVersion" feature must not
+     * objects supporting a version of the "XMLVersion" feature must not
      * raise a <code>NOT_SUPPORTED_ERR</code> exception for the same version
      * number when using <code>Document.xmlVersion</code>.
+     *
      * @since DOM Level 3
      */
     public String getXmlVersion();
+
     /**
-     *  An attribute specifying, as part of the <a href='http://www.w3.org/TR/2004/REC-xml-20040204#NT-XMLDecl'>XML declaration</a>, the version number of this document. If there is no declaration and if
+     * An attribute specifying, as part of the <a href='http://www.w3.org/TR/2004/REC-xml-20040204#NT-XMLDecl'>XML declaration</a>, the version number of this document. If there is no declaration and if
      * this document supports the "XML" feature, the value is
      * <code>"1.0"</code>. If this document does not support the "XML"
      * feature, the value is always <code>null</code>. Changing this
@@ -592,17 +604,17 @@ public interface Document extends Node {
      * implementation supports [<a href='http://www.w3.org/TR/2004/REC-xml11-20040204/'>XML 1.1</a>]. In both
      * cases, in order to support XML, an implementation must also support
      * the "XML" feature defined in this specification. <code>Document</code>
-     *  objects supporting a version of the "XMLVersion" feature must not
+     * objects supporting a version of the "XMLVersion" feature must not
      * raise a <code>NOT_SUPPORTED_ERR</code> exception for the same version
      * number when using <code>Document.xmlVersion</code>.
-     * @exception DOMException
-     *    NOT_SUPPORTED_ERR: Raised if the version is set to a value that is
-     *   not supported by this <code>Document</code> or if this document
-     *   does not support the "XML" feature.
+     *
+     * @throws DOMException NOT_SUPPORTED_ERR: Raised if the version is set to a value that is
+     *                      not supported by this <code>Document</code> or if this document
+     *                      does not support the "XML" feature.
      * @since DOM Level 3
      */
     public void setXmlVersion(String xmlVersion)
-                                  throws DOMException;
+            throws DOMException;
 
     /**
      * An attribute specifying whether error checking is enforced or not. When
@@ -612,9 +624,11 @@ public interface Document extends Node {
      * errors while using <code>Document.normalizeDocument()</code>. In case
      * of error, the behavior is undefined. This attribute is
      * <code>true</code> by default.
+     *
      * @since DOM Level 3
      */
     public boolean getStrictErrorChecking();
+
     /**
      * An attribute specifying whether error checking is enforced or not. When
      * set to <code>false</code>, the implementation is free to not test
@@ -623,12 +637,13 @@ public interface Document extends Node {
      * errors while using <code>Document.normalizeDocument()</code>. In case
      * of error, the behavior is undefined. This attribute is
      * <code>true</code> by default.
+     *
      * @since DOM Level 3
      */
     public void setStrictErrorChecking(boolean strictErrorChecking);
 
     /**
-     *  The location of the document or <code>null</code> if undefined or if
+     * The location of the document or <code>null</code> if undefined or if
      * the <code>Document</code> was created using
      * <code>DOMImplementation.createDocument</code>. No lexical checking is
      * performed when setting this attribute; this could result in a
@@ -638,11 +653,13 @@ public interface Document extends Node {
      * "HTML" [<a href='http://www.w3.org/TR/2003/REC-DOM-Level-2-HTML-20030109'>DOM Level 2 HTML</a>]
      * , the href attribute of the HTML BASE element takes precedence over
      * this attribute when computing <code>Node.baseURI</code>.
+     *
      * @since DOM Level 3
      */
     public String getDocumentURI();
+
     /**
-     *  The location of the document or <code>null</code> if undefined or if
+     * The location of the document or <code>null</code> if undefined or if
      * the <code>Document</code> was created using
      * <code>DOMImplementation.createDocument</code>. No lexical checking is
      * performed when setting this attribute; this could result in a
@@ -652,12 +669,13 @@ public interface Document extends Node {
      * "HTML" [<a href='http://www.w3.org/TR/2003/REC-DOM-Level-2-HTML-20030109'>DOM Level 2 HTML</a>]
      * , the href attribute of the HTML BASE element takes precedence over
      * this attribute when computing <code>Node.baseURI</code>.
+     *
      * @since DOM Level 3
      */
     public void setDocumentURI(String documentURI);
 
     /**
-     *  Attempts to adopt a node from another document to this document. If
+     * Attempts to adopt a node from another document to this document. If
      * supported, it changes the <code>ownerDocument</code> of the source
      * node, its children, as well as the attached attribute nodes if there
      * are any. If the source node has a parent it is first removed from the
@@ -714,29 +732,30 @@ public interface Document extends Node {
      * should use the <code>Document.normalizeDocument()</code> method to
      * check if an imported name is not an XML name according to the XML
      * version in use.
+     *
      * @param source The node to move into this document.
      * @return The adopted node, or <code>null</code> if this operation
-     *   fails, such as when the source node comes from a different
-     *   implementation.
-     * @exception DOMException
-     *   NOT_SUPPORTED_ERR: Raised if the source node is of type
-     *   <code>DOCUMENT</code>, <code>DOCUMENT_TYPE</code>.
-     *   <br>NO_MODIFICATION_ALLOWED_ERR: Raised when the source node is
-     *   readonly.
+     * fails, such as when the source node comes from a different
+     * implementation.
+     * @throws DOMException NOT_SUPPORTED_ERR: Raised if the source node is of type
+     *                      <code>DOCUMENT</code>, <code>DOCUMENT_TYPE</code>.
+     *                      <br>NO_MODIFICATION_ALLOWED_ERR: Raised when the source node is
+     *                      readonly.
      * @since DOM Level 3
      */
     public Node adoptNode(Node source)
-                          throws DOMException;
+            throws DOMException;
 
     /**
-     *  The configuration used when <code>Document.normalizeDocument()</code>
+     * The configuration used when <code>Document.normalizeDocument()</code>
      * is invoked.
+     *
      * @since DOM Level 3
      */
     public DOMConfiguration getDomConfig();
 
     /**
-     *  This method acts as if the document was going through a save and load
+     * This method acts as if the document was going through a save and load
      * cycle, putting the document in a "normal" form. As a consequence,
      * this method updates the replacement tree of
      * <code>EntityReference</code> nodes and normalizes <code>Text</code>
@@ -765,6 +784,7 @@ public interface Document extends Node {
      * " parameter. Note this method might also report fatal errors (
      * <code>DOMError.SEVERITY_FATAL_ERROR</code>) if an implementation
      * cannot recover from an error.
+     *
      * @since DOM Level 3
      */
     public void normalizeDocument();
@@ -810,35 +830,35 @@ public interface Document extends Node {
      * <code>DOMAttributeNameChanged</code>} is fired.
      * </li>
      * </ul>
-     * @param n The node to rename.
-     * @param namespaceURI The new namespace URI.
+     *
+     * @param n             The node to rename.
+     * @param namespaceURI  The new namespace URI.
      * @param qualifiedName The new qualified name.
      * @return The renamed node. This is either the specified node or the new
-     *   node that was created to replace the specified node.
-     * @exception DOMException
-     *   NOT_SUPPORTED_ERR: Raised when the type of the specified node is
-     *   neither <code>ELEMENT_NODE</code> nor <code>ATTRIBUTE_NODE</code>,
-     *   or if the implementation does not support the renaming of the
-     *   document element.
-     *   <br>INVALID_CHARACTER_ERR: Raised if the new qualified name is not an
-     *   XML name according to the XML version in use specified in the
-     *   <code>Document.xmlVersion</code> attribute.
-     *   <br>WRONG_DOCUMENT_ERR: Raised when the specified node was created
-     *   from a different document than this document.
-     *   <br>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is a
-     *   malformed qualified name, if the <code>qualifiedName</code> has a
-     *   prefix and the <code>namespaceURI</code> is <code>null</code>, or
-     *   if the <code>qualifiedName</code> has a prefix that is "xml" and
-     *   the <code>namespaceURI</code> is different from "<a href='http://www.w3.org/XML/1998/namespace'>
-     *   http://www.w3.org/XML/1998/namespace</a>" [<a href='http://www.w3.org/TR/1999/REC-xml-names-19990114/'>XML Namespaces</a>]
-     *   . Also raised, when the node being renamed is an attribute, if the
-     *   <code>qualifiedName</code>, or its prefix, is "xmlns" and the
-     *   <code>namespaceURI</code> is different from "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>".
+     * node that was created to replace the specified node.
+     * @throws DOMException NOT_SUPPORTED_ERR: Raised when the type of the specified node is
+     *                      neither <code>ELEMENT_NODE</code> nor <code>ATTRIBUTE_NODE</code>,
+     *                      or if the implementation does not support the renaming of the
+     *                      document element.
+     *                      <br>INVALID_CHARACTER_ERR: Raised if the new qualified name is not an
+     *                      XML name according to the XML version in use specified in the
+     *                      <code>Document.xmlVersion</code> attribute.
+     *                      <br>WRONG_DOCUMENT_ERR: Raised when the specified node was created
+     *                      from a different document than this document.
+     *                      <br>NAMESPACE_ERR: Raised if the <code>qualifiedName</code> is a
+     *                      malformed qualified name, if the <code>qualifiedName</code> has a
+     *                      prefix and the <code>namespaceURI</code> is <code>null</code>, or
+     *                      if the <code>qualifiedName</code> has a prefix that is "xml" and
+     *                      the <code>namespaceURI</code> is different from "<a href='http://www.w3.org/XML/1998/namespace'>
+     *                      http://www.w3.org/XML/1998/namespace</a>" [<a href='http://www.w3.org/TR/1999/REC-xml-names-19990114/'>XML Namespaces</a>]
+     *                      . Also raised, when the node being renamed is an attribute, if the
+     *                      <code>qualifiedName</code>, or its prefix, is "xmlns" and the
+     *                      <code>namespaceURI</code> is different from "<a href='http://www.w3.org/2000/xmlns/'>http://www.w3.org/2000/xmlns/</a>".
      * @since DOM Level 3
      */
     public Node renameNode(Node n,
                            String namespaceURI,
                            String qualifiedName)
-                           throws DOMException;
+            throws DOMException;
 
 }

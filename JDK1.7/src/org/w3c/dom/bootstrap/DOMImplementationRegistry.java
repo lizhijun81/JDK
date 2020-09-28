@@ -44,9 +44,11 @@ package org.w3c.dom.bootstrap;
 
 import java.util.StringTokenizer;
 import java.util.Vector;
+
 import org.w3c.dom.DOMImplementationSource;
 import org.w3c.dom.DOMImplementationList;
 import org.w3c.dom.DOMImplementation;
+
 import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -87,7 +89,7 @@ public final class DOMImplementationRegistry {
      * DOMImplementationSource class names.
      */
     public static final String PROPERTY =
-        "org.w3c.dom.DOMImplementationSourceList";
+            "org.w3c.dom.DOMImplementationSourceList";
 
     /**
      * Default columns per line.
@@ -106,8 +108,10 @@ public final class DOMImplementationRegistry {
             "com.sun.org.apache.xerces.internal.dom.DOMXSImplementationSourceImpl";
     private static final String DEFAULT_PACKAGE =
             "com.sun.org.apache.xerces.internal.dom";
+
     /**
      * Private constructor.
+     *
      * @param srcs Vector List of DOMImplementationSources
      */
     private DOMImplementationRegistry(final Vector srcs) {
@@ -116,8 +120,8 @@ public final class DOMImplementationRegistry {
 
     /**
      * Obtain a new instance of a <code>DOMImplementationRegistry</code>.
-     *
-
+     * <p>
+     * <p>
      * The <code>DOMImplementationRegistry</code> is initialized by the
      * application or the implementation, depending on the context, by
      * first checking the value of the Java system property
@@ -131,22 +135,18 @@ public final class DOMImplementationRegistry {
      * encountered are thrown to the application.
      *
      * @return an initialized instance of DOMImplementationRegistry
-     * @throws ClassNotFoundException
-     *     If any specified class can not be found
-     * @throws InstantiationException
-     *     If any specified class is an interface or abstract class
-     * @throws IllegalAccessException
-     *     If the default constructor of a specified class is not accessible
-     * @throws ClassCastException
-     *     If any specified class does not implement
-     * <code>DOMImplementationSource</code>
+     * @throws ClassNotFoundException If any specified class can not be found
+     * @throws InstantiationException If any specified class is an interface or abstract class
+     * @throws IllegalAccessException If the default constructor of a specified class is not accessible
+     * @throws ClassCastException     If any specified class does not implement
+     *                                <code>DOMImplementationSource</code>
      */
     public static DOMImplementationRegistry newInstance()
-        throws
-        ClassNotFoundException,
-        InstantiationException,
-        IllegalAccessException,
-        ClassCastException {
+            throws
+            ClassNotFoundException,
+            InstantiationException,
+            IllegalAccessException,
+            ClassCastException {
         Vector sources = new Vector();
 
         ClassLoader classLoader = getClassLoader();
@@ -184,7 +184,7 @@ public final class DOMImplementationRegistry {
                     sourceClass = Class.forName(sourceName);
                 }
                 DOMImplementationSource source =
-                    (DOMImplementationSource) sourceClass.newInstance();
+                        (DOMImplementationSource) sourceClass.newInstance();
                 sources.addElement(source);
             }
         }
@@ -195,20 +195,19 @@ public final class DOMImplementationRegistry {
      * Return the first implementation that has the desired
      * features, or <code>null</code> if none is found.
      *
-     * @param features
-     *            A string that specifies which features are required. This is
-     *            a space separated list in which each feature is specified by
-     *            its name optionally followed by a space and a version number.
-     *            This is something like: "XML 1.0 Traversal +Events 2.0"
+     * @param features A string that specifies which features are required. This is
+     *                 a space separated list in which each feature is specified by
+     *                 its name optionally followed by a space and a version number.
+     *                 This is something like: "XML 1.0 Traversal +Events 2.0"
      * @return An implementation that has the desired features,
-     *         or <code>null</code> if none found.
+     * or <code>null</code> if none found.
      */
     public DOMImplementation getDOMImplementation(final String features) {
         int size = sources.size();
         String name = null;
         for (int i = 0; i < size; i++) {
             DOMImplementationSource source =
-                (DOMImplementationSource) sources.elementAt(i);
+                    (DOMImplementationSource) sources.elementAt(i);
             DOMImplementation impl = source.getDOMImplementation(features);
             if (impl != null) {
                 return impl;
@@ -221,11 +220,10 @@ public final class DOMImplementationRegistry {
      * Return a list of implementations that support the
      * desired features.
      *
-     * @param features
-     *            A string that specifies which features are required. This is
-     *            a space separated list in which each feature is specified by
-     *            its name optionally followed by a space and a version number.
-     *            This is something like: "XML 1.0 Traversal +Events 2.0"
+     * @param features A string that specifies which features are required. This is
+     *                 a space separated list in which each feature is specified by
+     *                 its name optionally followed by a space and a version number.
+     *                 This is something like: "XML 1.0 Traversal +Events 2.0"
      * @return A list of DOMImplementations that support the desired features.
      */
     public DOMImplementationList getDOMImplementationList(final String features) {
@@ -233,31 +231,31 @@ public final class DOMImplementationRegistry {
         int size = sources.size();
         for (int i = 0; i < size; i++) {
             DOMImplementationSource source =
-                (DOMImplementationSource) sources.elementAt(i);
+                    (DOMImplementationSource) sources.elementAt(i);
             DOMImplementationList impls =
-                source.getDOMImplementationList(features);
+                    source.getDOMImplementationList(features);
             for (int j = 0; j < impls.getLength(); j++) {
                 DOMImplementation impl = impls.item(j);
                 implementations.addElement(impl);
             }
         }
         return new DOMImplementationList() {
-                public DOMImplementation item(final int index) {
-                    if (index >= 0 && index < implementations.size()) {
-                        try {
-                            return (DOMImplementation)
+            public DOMImplementation item(final int index) {
+                if (index >= 0 && index < implementations.size()) {
+                    try {
+                        return (DOMImplementation)
                                 implementations.elementAt(index);
-                        } catch (ArrayIndexOutOfBoundsException e) {
-                            return null;
-                        }
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        return null;
                     }
-                    return null;
                 }
+                return null;
+            }
 
-                public int getLength() {
-                    return implementations.size();
-                }
-            };
+            public int getLength() {
+                return implementations.size();
+            }
+        };
     }
 
     /**
@@ -275,7 +273,6 @@ public final class DOMImplementationRegistry {
     }
 
     /**
-     *
      * Gets a class loader.
      *
      * @return A class loader, possibly <code>null</code>
@@ -313,12 +310,12 @@ public final class DOMImplementationRegistry {
                 BufferedReader rd;
                 try {
                     rd =
-                        new BufferedReader(new InputStreamReader(is, "UTF-8"),
-                                           DEFAULT_LINE_LENGTH);
+                            new BufferedReader(new InputStreamReader(is, "UTF-8"),
+                                    DEFAULT_LINE_LENGTH);
                 } catch (java.io.UnsupportedEncodingException e) {
                     rd =
-                        new BufferedReader(new InputStreamReader(is),
-                                           DEFAULT_LINE_LENGTH);
+                            new BufferedReader(new InputStreamReader(is),
+                                    DEFAULT_LINE_LENGTH);
                 }
                 String serviceValue = rd.readLine();
                 rd.close();
@@ -358,14 +355,14 @@ public final class DOMImplementationRegistry {
      */
     private static ClassLoader getContextClassLoader() {
         return isJRE11()
-            ? null
-            : (ClassLoader)
-              AccessController.doPrivileged(new PrivilegedAction() {
+                ? null
+                : (ClassLoader)
+                AccessController.doPrivileged(new PrivilegedAction() {
                     public Object run() {
                         ClassLoader classLoader = null;
                         try {
                             classLoader =
-                                Thread.currentThread().getContextClassLoader();
+                                    Thread.currentThread().getContextClassLoader();
                         } catch (SecurityException ex) {
                         }
                         return classLoader;
@@ -383,12 +380,12 @@ public final class DOMImplementationRegistry {
      */
     private static String getSystemProperty(final String name) {
         return isJRE11()
-            ? (String) System.getProperty(name)
-            : (String) AccessController.doPrivileged(new PrivilegedAction() {
-                    public Object run() {
-                        return System.getProperty(name);
-                    }
-                });
+                ? (String) System.getProperty(name)
+                : (String) AccessController.doPrivileged(new PrivilegedAction() {
+            public Object run() {
+                return System.getProperty(name);
+            }
+        });
     }
 
     /**
@@ -397,7 +394,7 @@ public final class DOMImplementationRegistry {
      * access control privileges. For a JRE 1.1, this check is not done.
      *
      * @param classLoader classLoader
-     * @param name the resource
+     * @param name        the resource
      * @return an Inputstream for the resource specified
      */
     private static InputStream getResourceAsStream(final ClassLoader classLoader,
@@ -412,12 +409,12 @@ public final class DOMImplementationRegistry {
             return ris;
         } else {
             return (InputStream)
-                AccessController.doPrivileged(new PrivilegedAction() {
+                    AccessController.doPrivileged(new PrivilegedAction() {
                         public Object run() {
                             InputStream ris;
                             if (classLoader == null) {
                                 ris =
-                                    ClassLoader.getSystemResourceAsStream(name);
+                                        ClassLoader.getSystemResourceAsStream(name);
                             } else {
                                 ris = classLoader.getResourceAsStream(name);
                             }

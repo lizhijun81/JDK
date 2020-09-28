@@ -26,6 +26,7 @@
 package java.io;
 
 import java.lang.reflect.Field;
+
 import sun.reflect.CallerSensitive;
 import sun.reflect.Reflection;
 import sun.reflect.misc.ReflectUtil;
@@ -34,34 +35,45 @@ import sun.reflect.misc.ReflectUtil;
  * A description of a Serializable field from a Serializable class.  An array
  * of ObjectStreamFields is used to declare the Serializable fields of a class.
  *
- * @author      Mike Warres
- * @author      Roger Riggs
+ * @author Mike Warres
+ * @author Roger Riggs
  * @see ObjectStreamClass
  * @since 1.2
  */
 public class ObjectStreamField
-    implements Comparable<Object>
-{
+        implements Comparable<Object> {
 
-    /** field name */
+    /**
+     * field name
+     */
     private final String name;
-    /** canonical JVM signature of field type */
+    /**
+     * canonical JVM signature of field type
+     */
     private final String signature;
-    /** field type (Object.class if unknown non-primitive type) */
+    /**
+     * field type (Object.class if unknown non-primitive type)
+     */
     private final Class<?> type;
-    /** whether or not to (de)serialize field values as unshared */
+    /**
+     * whether or not to (de)serialize field values as unshared
+     */
     private final boolean unshared;
-    /** corresponding reflective field object, if any */
+    /**
+     * corresponding reflective field object, if any
+     */
     private final Field field;
-    /** offset of field value in enclosing field group */
+    /**
+     * offset of field value in enclosing field group
+     */
     private int offset = 0;
 
     /**
      * Create a Serializable field with the specified type.  This field should
      * be documented with a <code>serialField</code> tag.
      *
-     * @param   name the name of the serializable field
-     * @param   type the <code>Class</code> object of the serializable field
+     * @param name the name of the serializable field
+     * @param type the <code>Class</code> object of the serializable field
      */
     public ObjectStreamField(String name, Class<?> type) {
         this(name, type, false);
@@ -77,12 +89,12 @@ public class ObjectStreamField
      * serialized and deserialized as if they had been written and read by
      * calls to writeUnshared and readUnshared.
      *
-     * @param   name field name
-     * @param   type field type
-     * @param   unshared if false, write/read field values in the same manner
-     *          as writeObject/readObject; if true, write/read in the same
-     *          manner as writeUnshared/readUnshared
-     * @since   1.4
+     * @param name     field name
+     * @param type     field type
+     * @param unshared if false, write/read field values in the same manner
+     *                 as writeObject/readObject; if true, write/read in the same
+     *                 manner as writeUnshared/readUnshared
+     * @since 1.4
      */
     public ObjectStreamField(String name, Class<?> type, boolean unshared) {
         if (name == null) {
@@ -109,17 +121,36 @@ public class ObjectStreamField
         field = null;
 
         switch (signature.charAt(0)) {
-            case 'Z': type = Boolean.TYPE; break;
-            case 'B': type = Byte.TYPE; break;
-            case 'C': type = Character.TYPE; break;
-            case 'S': type = Short.TYPE; break;
-            case 'I': type = Integer.TYPE; break;
-            case 'J': type = Long.TYPE; break;
-            case 'F': type = Float.TYPE; break;
-            case 'D': type = Double.TYPE; break;
+            case 'Z':
+                type = Boolean.TYPE;
+                break;
+            case 'B':
+                type = Byte.TYPE;
+                break;
+            case 'C':
+                type = Character.TYPE;
+                break;
+            case 'S':
+                type = Short.TYPE;
+                break;
+            case 'I':
+                type = Integer.TYPE;
+                break;
+            case 'J':
+                type = Long.TYPE;
+                break;
+            case 'F':
+                type = Float.TYPE;
+                break;
+            case 'D':
+                type = Double.TYPE;
+                break;
             case 'L':
-            case '[': type = Object.class; break;
-            default: throw new IllegalArgumentException("illegal signature");
+            case '[':
+                type = Object.class;
+                break;
+            default:
+                throw new IllegalArgumentException("illegal signature");
         }
     }
 
@@ -143,8 +174,8 @@ public class ObjectStreamField
     /**
      * Get the name of this field.
      *
-     * @return  a <code>String</code> representing the name of the serializable
-     *          field
+     * @return a <code>String</code> representing the name of the serializable
+     * field
      */
     public String getName() {
         return name;
@@ -157,8 +188,8 @@ public class ObjectStreamField
      * Otherwise, the <code>Class</code> object for the type of the field is
      * returned.
      *
-     * @return  a <code>Class</code> object representing the type of the
-     *          serializable field
+     * @return a <code>Class</code> object representing the type of the
+     * serializable field
      */
     @CallerSensitive
     public Class<?> getType() {
@@ -186,7 +217,7 @@ public class ObjectStreamField
      * [            array
      * </pre></blockquote>
      *
-     * @return  the typecode of the serializable field
+     * @return the typecode of the serializable field
      */
     // REMIND: deprecate?
     public char getTypeCode() {
@@ -196,7 +227,7 @@ public class ObjectStreamField
     /**
      * Return the JVM type signature.
      *
-     * @return  null if this field has a primitive type.
+     * @return null if this field has a primitive type.
      */
     // REMIND: deprecate?
     public String getTypeString() {
@@ -206,7 +237,7 @@ public class ObjectStreamField
     /**
      * Offset of field within instance data.
      *
-     * @return  the offset of this field
+     * @return the offset of this field
      * @see #setOffset
      */
     // REMIND: deprecate?
@@ -217,7 +248,7 @@ public class ObjectStreamField
     /**
      * Offset within instance data.
      *
-     * @param   offset the offset of the field
+     * @param offset the offset of the field
      * @see #getOffset
      */
     // REMIND: deprecate?
@@ -228,7 +259,7 @@ public class ObjectStreamField
     /**
      * Return true if this field has a primitive type.
      *
-     * @return  true if and only if this field corresponds to a primitive type
+     * @return true if and only if this field corresponds to a primitive type
      */
     // REMIND: deprecate?
     public boolean isPrimitive() {

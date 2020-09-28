@@ -73,10 +73,7 @@ import com.sun.org.apache.xerces.internal.xni.parser.XMLDocumentFilter;
 import com.sun.org.apache.xerces.internal.xni.parser.XMLDocumentSource;
 
 /**
- *
- *
- * @author
- *     Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
+ * @author Kohsuke Kawaguchi (kohsuke.kawaguchi@sun.com)
  */
 public class TeeXMLDocumentFilterImpl implements XMLDocumentFilter {
     /**
@@ -95,7 +92,6 @@ public class TeeXMLDocumentFilterImpl implements XMLDocumentFilter {
      * The source of the event.
      */
     private XMLDocumentSource source;
-
 
 
     public XMLDocumentHandler getSide() {
@@ -122,7 +118,7 @@ public class TeeXMLDocumentFilterImpl implements XMLDocumentFilter {
         next = handler;
     }
 
-//
+    //
 //
 // XMLDocumentHandler implementation
 //
@@ -138,7 +134,7 @@ public class TeeXMLDocumentFilterImpl implements XMLDocumentFilter {
     }
 
     public void doctypeDecl(String rootElement, String publicId, String systemId, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
         side.doctypeDecl(rootElement, publicId, systemId, augs);
         next.doctypeDecl(rootElement, publicId, systemId, augs);
     }
@@ -184,11 +180,11 @@ public class TeeXMLDocumentFilterImpl implements XMLDocumentFilter {
     }
 
     public void startDocument(
-        XMLLocator locator,
-        String encoding,
-        NamespaceContext namespaceContext,
-        Augmentations augs)
-        throws XNIException {
+            XMLLocator locator,
+            String encoding,
+            NamespaceContext namespaceContext,
+            Augmentations augs)
+            throws XNIException {
         side.startDocument(locator, encoding, namespaceContext, augs);
         next.startDocument(locator, encoding, namespaceContext, augs);
     }
@@ -199,7 +195,7 @@ public class TeeXMLDocumentFilterImpl implements XMLDocumentFilter {
     }
 
     public void startGeneralEntity(String name, XMLResourceIdentifier identifier, String encoding, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
         side.startGeneralEntity(name, identifier, encoding, augs);
         next.startGeneralEntity(name, identifier, encoding, augs);
     }

@@ -32,6 +32,7 @@
 package org.omg.CORBA.portable;
 
 import org.omg.CORBA.SystemException;
+
 /**
  * The Indirection exception is a Java specific system exception.
  * It is thrown when the ORB's input stream is called to demarshal
@@ -43,6 +44,7 @@ import org.omg.CORBA.SystemException;
  * the ORB input stream's indirection table does not contain an entry
  * for an object with the stream offset specified by the indirection
  * tag. The stream offset is returned in the exception's offset field.
+ *
  * @see org.omg.CORBA_2_3.portable.InputStream
  * @see org.omg.CORBA_2_3.portable.OutputStream
  */
@@ -61,7 +63,7 @@ public class IndirectionException extends SystemException {
      *
      * @param offset the stream offset where recursion is detected.
      */
-    public IndirectionException(int offset){
+    public IndirectionException(int offset) {
         super("", 0, org.omg.CORBA.CompletionStatus.COMPLETED_MAYBE);
         this.offset = offset;
     }

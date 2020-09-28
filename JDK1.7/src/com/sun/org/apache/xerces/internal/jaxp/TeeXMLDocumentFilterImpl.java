@@ -97,7 +97,7 @@ class TeeXMLDocumentFilterImpl implements XMLDocumentFilter {
     }
 
     public void doctypeDecl(String rootElement, String publicId, String systemId, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
         side.doctypeDecl(rootElement, publicId, systemId, augs);
         next.doctypeDecl(rootElement, publicId, systemId, augs);
     }
@@ -147,7 +147,7 @@ class TeeXMLDocumentFilterImpl implements XMLDocumentFilter {
             String encoding,
             NamespaceContext namespaceContext,
             Augmentations augs)
-        throws XNIException {
+            throws XNIException {
         side.startDocument(locator, encoding, namespaceContext, augs);
         next.startDocument(locator, encoding, namespaceContext, augs);
     }
@@ -158,7 +158,7 @@ class TeeXMLDocumentFilterImpl implements XMLDocumentFilter {
     }
 
     public void startGeneralEntity(String name, XMLResourceIdentifier identifier, String encoding, Augmentations augs)
-        throws XNIException {
+            throws XNIException {
         side.startGeneralEntity(name, identifier, encoding, augs);
         next.startGeneralEntity(name, identifier, encoding, augs);
     }

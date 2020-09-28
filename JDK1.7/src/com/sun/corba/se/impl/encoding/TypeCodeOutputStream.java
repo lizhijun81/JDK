@@ -25,16 +25,16 @@
 
 package com.sun.corba.se.impl.encoding;
 
-import org.omg.CORBA.TypeCode ;
-import org.omg.CORBA.StructMember ;
-import org.omg.CORBA.UnionMember ;
-import org.omg.CORBA.ValueMember ;
-import org.omg.CORBA.TCKind ;
-import org.omg.CORBA.Any ;
-import org.omg.CORBA.Principal ;
-import org.omg.CORBA.CompletionStatus ;
+import org.omg.CORBA.TypeCode;
+import org.omg.CORBA.StructMember;
+import org.omg.CORBA.UnionMember;
+import org.omg.CORBA.ValueMember;
+import org.omg.CORBA.TCKind;
+import org.omg.CORBA.Any;
+import org.omg.CORBA.Principal;
+import org.omg.CORBA.CompletionStatus;
 
-import org.omg.CORBA.TypeCodePackage.BadKind ;
+import org.omg.CORBA.TypeCodePackage.BadKind;
 
 import org.omg.CORBA_2_3.portable.InputStream;
 import org.omg.CORBA_2_3.portable.OutputStream;
@@ -61,8 +61,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 
-public final class TypeCodeOutputStream extends EncapsOutputStream
-{
+public final class TypeCodeOutputStream extends EncapsOutputStream {
     private OutputStream enclosure = null;
     private Map typeMap = null;
     private boolean isEncapsulation = false;
@@ -75,14 +74,13 @@ public final class TypeCodeOutputStream extends EncapsOutputStream
         super(orb, littleEndian);
     }
 
-    public org.omg.CORBA.portable.InputStream create_input_stream()
-    {
+    public org.omg.CORBA.portable.InputStream create_input_stream() {
         //return new TypeCodeInputStream((ORB)orb(), getByteBuffer(), getIndex(), isLittleEndian());
         TypeCodeInputStream tcis
-            = new TypeCodeInputStream((ORB)orb(), getByteBuffer(), getIndex(), isLittleEndian(), getGIOPVersion());
+                = new TypeCodeInputStream((ORB) orb(), getByteBuffer(), getIndex(), isLittleEndian(), getGIOPVersion());
         //if (TypeCodeImpl.debug) {
-            //System.out.println("Created TypeCodeInputStream " + tcis + " with no parent");
-            //tcis.printBuffer();
+        //System.out.println("Created TypeCodeInputStream " + tcis + " with no parent");
+        //tcis.printBuffer();
         //}
         return tcis;
     }
@@ -108,28 +106,28 @@ public final class TypeCodeOutputStream extends EncapsOutputStream
         if (enclosure == null)
             return this;
         if (enclosure instanceof TypeCodeOutputStream)
-            return ((TypeCodeOutputStream)enclosure).getTopLevelStream();
+            return ((TypeCodeOutputStream) enclosure).getTopLevelStream();
         return this;
     }
 
     public int getTopLevelPosition() {
         if (enclosure != null && enclosure instanceof TypeCodeOutputStream) {
-            int pos = ((TypeCodeOutputStream)enclosure).getTopLevelPosition() + getPosition();
+            int pos = ((TypeCodeOutputStream) enclosure).getTopLevelPosition() + getPosition();
             // Add four bytes for the encaps length, not another 4 for the byte order
             // which is included in getPosition().
             if (isEncapsulation) pos += 4;
             //if (TypeCodeImpl.debug) {
-                //System.out.println("TypeCodeOutputStream.getTopLevelPosition using getTopLevelPosition " +
-                    //((TypeCodeOutputStream)enclosure).getTopLevelPosition() +
-                    //" + getPosition() " + getPosition() +
-                    //(isEncapsulation ? " + encaps length 4" : "") +
-                    //" = " + pos);
+            //System.out.println("TypeCodeOutputStream.getTopLevelPosition using getTopLevelPosition " +
+            //((TypeCodeOutputStream)enclosure).getTopLevelPosition() +
+            //" + getPosition() " + getPosition() +
+            //(isEncapsulation ? " + encaps length 4" : "") +
+            //" = " + pos);
             //}
             return pos;
         }
         //if (TypeCodeImpl.debug) {
-            //System.out.println("TypeCodeOutputStream.getTopLevelPosition returning getPosition() = " +
-                               //getPosition() + ", enclosure is " + enclosure);
+        //System.out.println("TypeCodeOutputStream.getTopLevelPosition returning getPosition() = " +
+        //getPosition() + ", enclosure is " + enclosure);
         //}
         return getPosition();
     }
@@ -143,10 +141,10 @@ public final class TypeCodeOutputStream extends EncapsOutputStream
 
     public int getPositionForID(String id) {
         if (typeMap == null)
-            throw wrapper.refTypeIndirType( CompletionStatus.COMPLETED_NO ) ;
+            throw wrapper.refTypeIndirType(CompletionStatus.COMPLETED_NO);
         //if (TypeCodeImpl.debug) System.out.println("Getting position " + ((Integer)typeMap.get(id)).intValue() +
-            //" for id " + id);
-        return ((Integer)typeMap.get(id)).intValue();
+        //" for id " + id);
+        return ((Integer) typeMap.get(id)).intValue();
     }
 
     public void writeRawBuffer(org.omg.CORBA.portable.OutputStream s, int firstLong) {
@@ -161,43 +159,40 @@ public final class TypeCodeOutputStream extends EncapsOutputStream
         // Then write the rest of the byte array.
 
         //if (TypeCodeImpl.debug) {
-            //System.out.println(this + ".writeRawBuffer(" + s + ", " + firstLong + ")");
-            //if (s instanceof CDROutputStream) {
-                //System.out.println("Parent position before writing kind = " + ((CDROutputStream)s).getIndex());
-            //}
+        //System.out.println(this + ".writeRawBuffer(" + s + ", " + firstLong + ")");
+        //if (s instanceof CDROutputStream) {
+        //System.out.println("Parent position before writing kind = " + ((CDROutputStream)s).getIndex());
+        //}
         //}
         s.write_long(firstLong);
         //if (TypeCodeImpl.debug) {
-            //if (s instanceof CDROutputStream) {
-                //System.out.println("Parent position after writing kind = " + ((CDROutputStream)s).getIndex());
-            //}
+        //if (s instanceof CDROutputStream) {
+        //System.out.println("Parent position after writing kind = " + ((CDROutputStream)s).getIndex());
+        //}
         //}
         ByteBuffer byteBuffer = getByteBuffer();
-        if (byteBuffer.hasArray())
-        {
-             s.write_octet_array(byteBuffer.array(), 4, getIndex() - 4);
-        }
-        else
-        {
-             // get bytes from DirectByteBuffer
-             // NOTE: Microbenchmarks are showing it is faster to do
-             //       a loop of ByteBuffer.get(int) than it is to do
-             //       a bulk ByteBuffer.get(byte[], offset, length)
-             byte[] buf = new byte[byteBuffer.limit()];
-             for (int i = 0; i < buf.length; i++)
-                  buf[i] = byteBuffer.get(i);
-             s.write_octet_array(buf, 4, getIndex() - 4);
+        if (byteBuffer.hasArray()) {
+            s.write_octet_array(byteBuffer.array(), 4, getIndex() - 4);
+        } else {
+            // get bytes from DirectByteBuffer
+            // NOTE: Microbenchmarks are showing it is faster to do
+            //       a loop of ByteBuffer.get(int) than it is to do
+            //       a bulk ByteBuffer.get(byte[], offset, length)
+            byte[] buf = new byte[byteBuffer.limit()];
+            for (int i = 0; i < buf.length; i++)
+                buf[i] = byteBuffer.get(i);
+            s.write_octet_array(buf, 4, getIndex() - 4);
         }
         //if (TypeCodeImpl.debug) {
-            //if (s instanceof CDROutputStream) {
-                //System.out.println("Parent position after writing all " + getIndex() + " bytes = " + ((CDROutputStream)s).getIndex());
-            //}
+        //if (s instanceof CDROutputStream) {
+        //System.out.println("Parent position after writing all " + getIndex() + " bytes = " + ((CDROutputStream)s).getIndex());
+        //}
         //}
     }
 
     public TypeCodeOutputStream createEncapsulation(org.omg.CORBA.ORB _orb) {
         TypeCodeOutputStream encap =
-            sun.corba.OutputStreamFactory.newTypeCodeOutputStream((ORB)_orb, isLittleEndian());
+                sun.corba.OutputStreamFactory.newTypeCodeOutputStream((ORB) _orb, isLittleEndian());
         encap.setEnclosingOutputStream(this);
         encap.makeEncapsulation();
         //if (TypeCodeImpl.debug) System.out.println("Created TypeCodeOutputStream " + encap + " with parent " + this);
@@ -211,9 +206,9 @@ public final class TypeCodeOutputStream extends EncapsOutputStream
     }
 
     public static TypeCodeOutputStream wrapOutputStream(OutputStream os) {
-        boolean littleEndian = ((os instanceof CDROutputStream) ? ((CDROutputStream)os).isLittleEndian() : false);
+        boolean littleEndian = ((os instanceof CDROutputStream) ? ((CDROutputStream) os).isLittleEndian() : false);
         TypeCodeOutputStream tos =
-            sun.corba.OutputStreamFactory.newTypeCodeOutputStream((ORB)os.orb(), littleEndian);
+                sun.corba.OutputStreamFactory.newTypeCodeOutputStream((ORB) os.orb(), littleEndian);
         tos.setEnclosingOutputStream(os);
         //if (TypeCodeImpl.debug) System.out.println("Created TypeCodeOutputStream " + tos + " with parent " + os);
         return tos;
@@ -226,14 +221,15 @@ public final class TypeCodeOutputStream extends EncapsOutputStream
     public int getRealIndex(int index) {
         int topPos = getTopLevelPosition();
         //if (TypeCodeImpl.debug) System.out.println("TypeCodeOutputStream.getRealIndex using getTopLevelPosition " +
-            //topPos + " instead of getPosition " + getPosition());
+        //topPos + " instead of getPosition " + getPosition());
         return topPos;
     }
-/*
-    protected void printBuffer() {
-        super.printBuffer();
-    }
-*/
+
+    /*
+        protected void printBuffer() {
+            super.printBuffer();
+        }
+    */
     public byte[] getTypeCodeBuffer() {
         // Returns the buffer trimmed of the trailing zeros and without the
         // known _kind value at the beginning.
@@ -245,7 +241,7 @@ public final class TypeCodeOutputStream extends EncapsOutputStream
         // REVISIT - May want to check if buffer is direct or non-direct
         //           and use array copy if ByteBuffer is non-direct.
         for (int i = 0; i < tcBuffer.length; i++)
-            tcBuffer[i] = theBuffer.get(i+4);
+            tcBuffer[i] = theBuffer.get(i + 4);
         return tcBuffer;
     }
 
@@ -253,8 +249,8 @@ public final class TypeCodeOutputStream extends EncapsOutputStream
         System.out.println("typeMap = {");
         Iterator i = typeMap.keySet().iterator();
         while (i.hasNext()) {
-            String id = (String)i.next();
-            Integer pos = (Integer)typeMap.get(id);
+            String id = (String) i.next();
+            Integer pos = (Integer) typeMap.get(id);
             System.out.println("  key = " + id + ", value = " + pos);
         }
         System.out.println("}");

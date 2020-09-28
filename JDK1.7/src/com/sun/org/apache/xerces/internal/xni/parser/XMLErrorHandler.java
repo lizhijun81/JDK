@@ -27,10 +27,8 @@ import com.sun.org.apache.xerces.internal.xni.XNIException;
  * in error notifications, then it can register an error handler object
  * that implements this interface with the parser configuration.
  *
- * @see XMLParserConfiguration
- *
  * @author Andy Clark, IBM
- *
+ * @see XMLParserConfiguration
  */
 public interface XMLErrorHandler {
 
@@ -50,7 +48,6 @@ public interface XMLErrorHandler {
      * @param key       The warning key. This key can be any string and
      *                  is implementation dependent.
      * @param exception Exception.
-     *
      * @throws XNIException Thrown to signal that the parser should stop
      *                      parsing the document.
      */
@@ -69,7 +66,6 @@ public interface XMLErrorHandler {
      * @param key       The error key. This key can be any string and
      *                  is implementation dependent.
      * @param exception Exception.
-     *
      * @throws XNIException Thrown to signal that the parser should stop
      *                      parsing the document.
      */
@@ -96,7 +92,6 @@ public interface XMLErrorHandler {
      * @param key       The fatal error key. This key can be any string
      *                  and is implementation dependent.
      * @param exception Exception.
-     *
      * @throws XNIException Thrown to signal that the parser should stop
      *                      parsing the document.
      */

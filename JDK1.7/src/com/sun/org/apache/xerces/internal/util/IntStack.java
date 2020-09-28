@@ -22,11 +22,11 @@ package com.sun.org.apache.xerces.internal.util;
 
 /**
  * A simple integer based stack.
- *
+ * <p>
  * moved to com.sun.org.apache.xerces.internal.util by neilg to support the
  * XPathMatcher.
- * @author  Andy Clark, IBM
  *
+ * @author Andy Clark, IBM
  */
 public final class IntStack {
 
@@ -34,50 +34,68 @@ public final class IntStack {
     // Data
     //
 
-    /** Stack depth. */
+    /**
+     * Stack depth.
+     */
     private int fDepth;
 
-    /** Stack data. */
+    /**
+     * Stack data.
+     */
     private int[] fData;
 
     //
     // Public methods
     //
 
-    /** Returns the size of the stack. */
+    /**
+     * Returns the size of the stack.
+     */
     public int size() {
         return fDepth;
     }
 
-    /** Pushes a value onto the stack. */
+    /**
+     * Pushes a value onto the stack.
+     */
     public void push(int value) {
         ensureCapacity(fDepth + 1);
         fData[fDepth++] = value;
     }
 
-    /** Peeks at the top of the stack. */
+    /**
+     * Peeks at the top of the stack.
+     */
     public int peek() {
         return fData[fDepth - 1];
     }
 
-    /** Returns the element at the specified depth in the stack. */
+    /**
+     * Returns the element at the specified depth in the stack.
+     */
     public int elementAt(int depth) {
         return fData[depth];
     }
 
-    /** Pops a value off of the stack. */
+    /**
+     * Pops a value off of the stack.
+     */
     public int pop() {
         return fData[--fDepth];
     }
 
-    /** Clears the stack. */
+    /**
+     * Clears the stack.
+     */
     public void clear() {
         fDepth = 0;
     }
 
     // debugging
 
-    /** Prints the stack. */
+    /**
+     * Prints the stack.
+     */
     public void print() {
         System.out.print('(');
         System.out.print(fDepth);
@@ -101,12 +119,13 @@ public final class IntStack {
     // Private methods
     //
 
-    /** Ensures capacity. */
+    /**
+     * Ensures capacity.
+     */
     private void ensureCapacity(int size) {
         if (fData == null) {
             fData = new int[32];
-        }
-        else if (fData.length <= size) {
+        } else if (fData.length <= size) {
             int[] newdata = new int[fData.length * 2];
             System.arraycopy(fData, 0, newdata, 0, fData.length);
             fData = newdata;

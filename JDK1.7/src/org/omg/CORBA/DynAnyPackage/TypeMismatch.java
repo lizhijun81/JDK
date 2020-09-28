@@ -32,7 +32,7 @@ package org.omg.CORBA.DynAnyPackage;
  * accessed.
  */
 public final class TypeMismatch
-    extends org.omg.CORBA.UserException {
+        extends org.omg.CORBA.UserException {
 
     /**
      * Constructs a <code>TypeMismatch</code> object.
@@ -43,8 +43,9 @@ public final class TypeMismatch
 
     /**
      * Constructs a <code>TypeMismatch</code> object.
-     * @param reason  a <code>String</code> giving more information
-     * regarding the exception.
+     *
+     * @param reason a <code>String</code> giving more information
+     *               regarding the exception.
      */
     public TypeMismatch(String reason) {
         super(reason);

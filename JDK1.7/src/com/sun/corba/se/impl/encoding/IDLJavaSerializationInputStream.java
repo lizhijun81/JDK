@@ -57,14 +57,14 @@ import org.omg.CORBA.portable.IDLEntity;
 /**
  * Implementation class that uses Java serialization for input streams.
  * This assumes a GIOP version 1.2 message format.
- *
+ * <p>
  * This class uses a ByteArrayInputStream as the underlying buffer. The
  * first 16 bytes are directly read out of the underlying buffer. This allows
  * [GIOPHeader (12 bytes) + requestID (4 bytes)] to be read as bytes.
  * Subsequent write operations on this output stream object uses
  * ObjectInputStream class to read into the buffer. This allows unmarshaling
  * complex types and graphs using the ObjectInputStream implementation.
- *
+ * <p>
  * Note, this class assumes a GIOP 1.2 style header. Further, the first
  * 12 bytes, that is, the GIOPHeader is read directly from the received
  * message, before this stream object is called. So, this class effectively
@@ -122,13 +122,13 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
             this.orb = orb;
 
             java.security.AccessController.doPrivileged(
-                new java.security.PrivilegedAction() {
-                    public Object run() {
-                        // needs SerializablePermission("enableSubstitution")
-                        enableResolveObject(true);
-                        return null;
+                    new java.security.PrivilegedAction() {
+                        public Object run() {
+                            // needs SerializablePermission("enableSubstitution")
+                            enableResolveObject(true);
+                            return null;
+                        }
                     }
-                }
             );
         }
 
@@ -164,7 +164,7 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
         this.bufferManager = bufferManager;
         buffer = byteBuffer;
         wrapper =
-            ORBUtilSystemException.get((ORB)orb, CORBALogDomains.RPC_ENCODING);
+                ORBUtilSystemException.get((ORB) orb, CORBALogDomains.RPC_ENCODING);
 
         byte[] buf;
         if (buffer.hasArray()) {
@@ -197,11 +197,11 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
 
     public boolean read_boolean() {
         if (!markOn && !(markedItemQ.isEmpty())) { // dequeue
-            return ((Boolean)markedItemQ.removeFirst()).booleanValue();
+            return ((Boolean) markedItemQ.removeFirst()).booleanValue();
         }
         if (markOn && !(markedItemQ.isEmpty()) &&
                 (peekIndex < peekCount)) { // peek
-            return ((Boolean)markedItemQ.get(peekIndex++)).booleanValue();
+            return ((Boolean) markedItemQ.get(peekIndex++)).booleanValue();
         }
         try {
             boolean value = is.readBoolean();
@@ -216,11 +216,11 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
 
     public char read_char() {
         if (!markOn && !(markedItemQ.isEmpty())) { // dequeue
-            return ((Character)markedItemQ.removeFirst()).charValue();
+            return ((Character) markedItemQ.removeFirst()).charValue();
         }
         if (markOn && !(markedItemQ.isEmpty()) &&
                 (peekIndex < peekCount)) { // peek
-            return ((Character)markedItemQ.get(peekIndex++)).charValue();
+            return ((Character) markedItemQ.get(peekIndex++)).charValue();
         }
         try {
             char value = is.readChar();
@@ -249,12 +249,12 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
         }
 
         if (!markOn && !(markedItemQ.isEmpty())) { // dequeue
-            return ((Byte)markedItemQ.removeFirst()).byteValue();
+            return ((Byte) markedItemQ.removeFirst()).byteValue();
         }
 
         if (markOn && !(markedItemQ.isEmpty()) &&
                 (peekIndex < peekCount)) { // peek
-            return ((Byte)markedItemQ.get(peekIndex++)).byteValue();
+            return ((Byte) markedItemQ.get(peekIndex++)).byteValue();
         }
 
         try {
@@ -271,11 +271,11 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
 
     public short read_short() {
         if (!markOn && !(markedItemQ.isEmpty())) { // dequeue
-            return ((Short)markedItemQ.removeFirst()).shortValue();
+            return ((Short) markedItemQ.removeFirst()).shortValue();
         }
         if (markOn && !(markedItemQ.isEmpty()) &&
                 (peekIndex < peekCount)) { // peek
-            return ((Short)markedItemQ.get(peekIndex++)).shortValue();
+            return ((Short) markedItemQ.get(peekIndex++)).shortValue();
         }
 
         try {
@@ -302,8 +302,8 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
             // Both the writer and reader use the same byte order.
             int b1 = (bis.read() << 24) & 0xFF000000;
             int b2 = (bis.read() << 16) & 0x00FF0000;
-            int b3 = (bis.read() << 8)  & 0x0000FF00;
-            int b4 = (bis.read() << 0)  & 0x000000FF;
+            int b3 = (bis.read() << 8) & 0x0000FF00;
+            int b4 = (bis.read() << 0) & 0x000000FF;
 
             if (bis.getPosition() == directReadLength) {
                 initObjectInputStream();
@@ -317,12 +317,12 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
         }
 
         if (!markOn && !(markedItemQ.isEmpty())) { // dequeue
-            return ((Integer)markedItemQ.removeFirst()).intValue();
+            return ((Integer) markedItemQ.removeFirst()).intValue();
         }
 
         if (markOn && !(markedItemQ.isEmpty()) &&
                 (peekIndex < peekCount)) { // peek
-            return ((Integer)markedItemQ.get(peekIndex++)).intValue();
+            return ((Integer) markedItemQ.get(peekIndex++)).intValue();
         }
 
         try {
@@ -342,11 +342,11 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
 
     public long read_longlong() {
         if (!markOn && !(markedItemQ.isEmpty())) { // dequeue
-            return ((Long)markedItemQ.removeFirst()).longValue();
+            return ((Long) markedItemQ.removeFirst()).longValue();
         }
         if (markOn && !(markedItemQ.isEmpty()) &&
                 (peekIndex < peekCount)) { // peek
-            return ((Long)markedItemQ.get(peekIndex++)).longValue();
+            return ((Long) markedItemQ.get(peekIndex++)).longValue();
         }
 
         try {
@@ -366,11 +366,11 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
 
     public float read_float() {
         if (!markOn && !(markedItemQ.isEmpty())) { // dequeue
-            return ((Float)markedItemQ.removeFirst()).floatValue();
+            return ((Float) markedItemQ.removeFirst()).floatValue();
         }
         if (markOn && !(markedItemQ.isEmpty()) &&
                 (peekIndex < peekCount)) { // peek
-            return ((Float)markedItemQ.get(peekIndex++)).floatValue();
+            return ((Float) markedItemQ.get(peekIndex++)).floatValue();
         }
 
         try {
@@ -386,11 +386,11 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
 
     public double read_double() {
         if (!markOn && !(markedItemQ.isEmpty())) { // dequeue
-            return ((Double)markedItemQ.removeFirst()).doubleValue();
+            return ((Double) markedItemQ.removeFirst()).doubleValue();
         }
         if (markOn && !(markedItemQ.isEmpty()) &&
                 (peekIndex < peekCount)) { // peek
-            return ((Double)markedItemQ.get(peekIndex++)).doubleValue();
+            return ((Double) markedItemQ.get(peekIndex++)).doubleValue();
         }
 
         try {
@@ -411,7 +411,7 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
             return (String) markedItemQ.removeFirst();
         }
         if (markOn && !(markedItemQ.isEmpty()) &&
-            (peekIndex < peekCount)) { // peek
+                (peekIndex < peekCount)) { // peek
             return (String) markedItemQ.get(peekIndex++);
         }
         try {
@@ -446,15 +446,15 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
 
     // Array types.
 
-    public void read_boolean_array(boolean[] value, int offset, int length){
-        for(int i = 0; i < length; i++) {
-            value[i+offset] = read_boolean();
+    public void read_boolean_array(boolean[] value, int offset, int length) {
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_boolean();
         }
     }
 
     public void read_char_array(char[] value, int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_char();
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_char();
         }
     }
 
@@ -463,8 +463,8 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
     }
 
     public void read_octet_array(byte[] value, int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_octet();
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_octet();
         }
         /* // Cannot use this efficient read due to mark/reset support.
         try {
@@ -480,8 +480,8 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
     }
 
     public void read_short_array(short[] value, int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_short();
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_short();
         }
     }
 
@@ -490,8 +490,8 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
     }
 
     public void read_long_array(int[] value, int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_long();
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_long();
         }
     }
 
@@ -500,8 +500,8 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
     }
 
     public void read_longlong_array(long[] value, int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_longlong();
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_longlong();
         }
     }
 
@@ -510,14 +510,14 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
     }
 
     public void read_float_array(float[] value, int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_float();
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_float();
         }
     }
 
     public void read_double_array(double[] value, int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_double();
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_double();
         }
     }
 
@@ -568,7 +568,7 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
         // is absent in GIOP version 1.2 or above.
         int len = read_long();
         byte[] pvalue = new byte[len];
-        read_octet_array(pvalue,0,len);
+        read_octet_array(pvalue, 0, len);
         Principal p = new com.sun.corba.se.impl.corba.PrincipalImpl();
         p.name(pvalue);
         return p;
@@ -594,15 +594,15 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
         boolean more = true;
         while (more) {
             doubleDigit = read_octet();
-            firstDigit = (int)((doubleDigit & 0xf0) >> 4);
-            secondDigit = (int)(doubleDigit & 0x0f);
+            firstDigit = (int) ((doubleDigit & 0xf0) >> 4);
+            secondDigit = (int) (doubleDigit & 0x0f);
             if (wroteFirstDigit || firstDigit != 0) {
                 buffer.append(Character.forDigit(firstDigit, 10));
                 wroteFirstDigit = true;
             }
             if (secondDigit == 12) {
                 // positive number or zero
-                if ( ! wroteFirstDigit) {
+                if (!wroteFirstDigit) {
                     // zero
                     return new StringBuffer("0.0");
                 } else {
@@ -625,34 +625,34 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
     public org.omg.CORBA.Object read_Object(java.lang.Class clz) {
 
         // In any case, we must first read the IOR.
-        IOR ior = IORFactories.makeIOR(parent) ;
+        IOR ior = IORFactories.makeIOR(parent);
         if (ior.isNil()) {
             return null;
         }
 
         PresentationManager.StubFactoryFactory sff =
-            ORB.getStubFactoryFactory();
+                ORB.getStubFactoryFactory();
         String codeBase = ior.getProfile().getCodebase();
         PresentationManager.StubFactory stubFactory = null;
 
         if (clz == null) {
-            RepositoryId rid = RepositoryId.cache.getId(ior.getTypeId() );
+            RepositoryId rid = RepositoryId.cache.getId(ior.getTypeId());
             String className = rid.getClassName();
             boolean isIDLInterface = rid.isIDLType();
 
-            if (className == null || className.equals( "" )) {
+            if (className == null || className.equals("")) {
                 stubFactory = null;
             } else {
                 try {
                     stubFactory = sff.createStubFactory(className,
-                        isIDLInterface, codeBase, (Class) null,
-                        (ClassLoader) null);
+                            isIDLInterface, codeBase, (Class) null,
+                            (ClassLoader) null);
                 } catch (Exception exc) {
                     // Could not create stubFactory, so use null.
                     // XXX stubFactory handling is still too complex:
                     // Can we resolve the stubFactory question once in
                     // a single place?
-                    stubFactory = null ;
+                    stubFactory = null;
                 }
             }
         } else if (StubAdapter.isStubClass(clz)) {
@@ -662,7 +662,7 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
             boolean isIDL = IDLEntity.class.isAssignableFrom(clz);
 
             stubFactory = sff.createStubFactory(
-                 clz.getName(), isIDL, codeBase, clz, clz.getClassLoader());
+                    clz.getName(), isIDL, codeBase, clz, clz.getClassLoader());
         }
 
         return CDRInputStream_1_0.internalIORToObject(ior, stubFactory, orb);
@@ -745,75 +745,75 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
         return read_value();
     }
 
-    public void read_any_array (org.omg.CORBA.AnySeqHolder seq,
-                                int offset, int length) {
+    public void read_any_array(org.omg.CORBA.AnySeqHolder seq,
+                               int offset, int length) {
         read_any_array(seq.value, offset, length);
     }
 
     private final void read_any_array(org.omg.CORBA.Any[] value,
-                                     int offset, int length) {
-        for(int i=0; i < length; i++) {
-            value[i+offset] = read_any();
+                                      int offset, int length) {
+        for (int i = 0; i < length; i++) {
+            value[i + offset] = read_any();
         }
     }
 
-    public void read_boolean_array (org.omg.CORBA.BooleanSeqHolder seq,
-                                    int offset, int length){
+    public void read_boolean_array(org.omg.CORBA.BooleanSeqHolder seq,
+                                   int offset, int length) {
         read_boolean_array(seq.value, offset, length);
     }
 
-    public void read_char_array (org.omg.CORBA.CharSeqHolder seq,
-                                 int offset, int length){
+    public void read_char_array(org.omg.CORBA.CharSeqHolder seq,
+                                int offset, int length) {
         read_char_array(seq.value, offset, length);
     }
 
-    public void read_wchar_array (org.omg.CORBA.WCharSeqHolder seq,
-                                  int offset, int length){
+    public void read_wchar_array(org.omg.CORBA.WCharSeqHolder seq,
+                                 int offset, int length) {
         read_wchar_array(seq.value, offset, length);
     }
 
-    public void read_octet_array (org.omg.CORBA.OctetSeqHolder seq,
-                                  int offset, int length){
+    public void read_octet_array(org.omg.CORBA.OctetSeqHolder seq,
+                                 int offset, int length) {
         read_octet_array(seq.value, offset, length);
     }
 
-    public void read_short_array (org.omg.CORBA.ShortSeqHolder seq,
-                                  int offset, int length){
+    public void read_short_array(org.omg.CORBA.ShortSeqHolder seq,
+                                 int offset, int length) {
         read_short_array(seq.value, offset, length);
     }
 
-    public void read_ushort_array (org.omg.CORBA.UShortSeqHolder seq,
-                                   int offset, int length){
+    public void read_ushort_array(org.omg.CORBA.UShortSeqHolder seq,
+                                  int offset, int length) {
         read_ushort_array(seq.value, offset, length);
     }
 
-    public void read_long_array (org.omg.CORBA.LongSeqHolder seq,
-                                 int offset, int length){
+    public void read_long_array(org.omg.CORBA.LongSeqHolder seq,
+                                int offset, int length) {
         read_long_array(seq.value, offset, length);
     }
 
-    public void read_ulong_array (org.omg.CORBA.ULongSeqHolder seq,
-                                  int offset, int length){
+    public void read_ulong_array(org.omg.CORBA.ULongSeqHolder seq,
+                                 int offset, int length) {
         read_ulong_array(seq.value, offset, length);
     }
 
-    public void read_ulonglong_array (org.omg.CORBA.ULongLongSeqHolder seq,
-                                      int offset, int length){
+    public void read_ulonglong_array(org.omg.CORBA.ULongLongSeqHolder seq,
+                                     int offset, int length) {
         read_ulonglong_array(seq.value, offset, length);
     }
 
-    public void read_longlong_array (org.omg.CORBA.LongLongSeqHolder seq,
-                                     int offset, int length){
+    public void read_longlong_array(org.omg.CORBA.LongLongSeqHolder seq,
+                                    int offset, int length) {
         read_longlong_array(seq.value, offset, length);
     }
 
-    public void read_float_array (org.omg.CORBA.FloatSeqHolder seq,
-                                  int offset, int length){
+    public void read_float_array(org.omg.CORBA.FloatSeqHolder seq,
+                                 int offset, int length) {
         read_float_array(seq.value, offset, length);
     }
 
-    public void read_double_array (org.omg.CORBA.DoubleSeqHolder seq,
-                                   int offset, int length){
+    public void read_double_array(org.omg.CORBA.DoubleSeqHolder seq,
+                                  int offset, int length) {
         read_double_array(seq.value, offset, length);
     }
 
@@ -887,7 +887,7 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
     // Needed by AnyImpl and ServiceContexts
     public CDRInputStreamBase dup() {
 
-        CDRInputStreamBase result = null ;
+        CDRInputStreamBase result = null;
 
         try {
             result = (CDRInputStreamBase) this.getClass().newInstance();
@@ -898,11 +898,11 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
         result.init(this.orb, this.buffer, this.bufSize, false, null);
 
         // Set the buffer position.
-        ((IDLJavaSerializationInputStream)result).skipBytes(getPosition());
+        ((IDLJavaSerializationInputStream) result).skipBytes(getPosition());
 
         // Set mark related data.
-        ((IDLJavaSerializationInputStream)result).
-            setMarkData(markOn, peekIndex, peekCount,
+        ((IDLJavaSerializationInputStream) result).
+                setMarkData(markOn, peekIndex, peekCount,
                         (LinkedList) markedItemQ.clone());
 
         return result;
@@ -931,8 +931,8 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
         // digits isn't really needed here
         StringBuffer buffer = read_fixed_buffer();
         if (digits != buffer.length())
-            throw wrapper.badFixed( new Integer(digits),
-                new Integer(buffer.length()) ) ;
+            throw wrapper.badFixed(new Integer(digits),
+                    new Integer(buffer.length()));
         buffer.insert(digits - scale, '.');
         return new BigDecimal(buffer.toString());
     }
@@ -1044,7 +1044,7 @@ public class IDLJavaSerializationInputStream extends CDRInputStreamBase {
                 int x = 0;
 
                 while (x < 16 && x + i < buf.length) {
-                    if (ORBUtility.isPrintable((char)buf[i + x])) {
+                    if (ORBUtility.isPrintable((char) buf[i + x])) {
                         charBuf[x] = (char) buf[i + x];
                     } else {
                         charBuf[x] = '.';

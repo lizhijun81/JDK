@@ -28,7 +28,6 @@ import com.sun.org.apache.xerces.internal.xni.NamespaceContext;
  * resulting infoset.
  *
  * @author Peter McCracken, IBM
- *
  */
 public class XIncludeNamespaceSupport extends MultipleScopeNamespaceSupport {
 

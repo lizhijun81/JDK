@@ -31,12 +31,11 @@ package com.sun.javadoc;
  * method, constructor and field members. Class members of a class
  * (innerclasses) are represented instead by ClassDoc.
  *
+ * @author Kaiyang Liu (original)
+ * @author Robert Field (rewrite)
  * @see MethodDoc
  * @see FieldDoc
  * @see ClassDoc
- *
- * @author Kaiyang Liu (original)
- * @author Robert Field (rewrite)
  */
 public interface MemberDoc extends ProgramElementDoc {
 

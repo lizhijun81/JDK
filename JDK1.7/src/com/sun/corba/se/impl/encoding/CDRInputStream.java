@@ -50,17 +50,16 @@ import com.sun.corba.se.impl.protocol.giopmsgheaders.Message;
 
 /**
  * This is delegates to the real implementation.
- *
+ * <p>
  * NOTE:
- *
+ * <p>
  * Before using the stream for valuetype unmarshaling, one must call
  * performORBVersionSpecificInit().
  */
 public abstract class CDRInputStream
-    extends org.omg.CORBA_2_3.portable.InputStream
-    implements com.sun.corba.se.impl.encoding.MarshalInputStream,
-               org.omg.CORBA.DataInputStream, org.omg.CORBA.portable.ValueInputStream
-{
+        extends org.omg.CORBA_2_3.portable.InputStream
+        implements com.sun.corba.se.impl.encoding.MarshalInputStream,
+        org.omg.CORBA.DataInputStream, org.omg.CORBA.portable.ValueInputStream {
     protected CorbaMessageMediator messageMediator;
     private CDRInputStreamBase impl;
 
@@ -70,7 +69,7 @@ public abstract class CDRInputStream
 
         public static CDRInputStreamBase newInputStream(
                 ORB orb, GIOPVersion version, byte encodingVersion) {
-            switch(version.intValue()) {
+            switch (version.intValue()) {
                 case GIOPVersion.VERSION_1_0:
                     return new CDRInputStream_1_0();
                 case GIOPVersion.VERSION_1_1:
@@ -78,14 +77,14 @@ public abstract class CDRInputStream
                 case GIOPVersion.VERSION_1_2:
                     if (encodingVersion != Message.CDR_ENC_VERSION) {
                         return
-                          new IDLJavaSerializationInputStream(encodingVersion);
+                                new IDLJavaSerializationInputStream(encodingVersion);
                     }
                     return new CDRInputStream_1_2();
-                    // else fall through and report exception.
+                // else fall through and report exception.
                 default:
-                    ORBUtilSystemException wrapper = ORBUtilSystemException.get( orb,
-                        CORBALogDomains.RPC_ENCODING ) ;
-                    throw wrapper.unsupportedGiopVersion( version ) ;
+                    ORBUtilSystemException wrapper = ORBUtilSystemException.get(orb,
+                            CORBALogDomains.RPC_ENCODING);
+                    throw wrapper.unsupportedGiopVersion(version);
             }
         }
     }
@@ -112,10 +111,9 @@ public abstract class CDRInputStream
                           boolean littleEndian,
                           GIOPVersion version,
                           byte encodingVersion,
-                          BufferManagerRead bufMgr)
-    {
-        impl = InputStreamFactory.newInputStream((ORB)orb, version,
-                                                 encodingVersion);
+                          BufferManagerRead bufMgr) {
+        impl = InputStreamFactory.newInputStream((ORB) orb, version,
+                encodingVersion);
 
         impl.init(orb, byteBuffer, size, littleEndian, bufMgr);
 
@@ -234,6 +232,7 @@ public abstract class CDRInputStream
     public final TypeCode read_TypeCode() {
         return impl.read_TypeCode();
     }
+
     public final Any read_any() {
         return impl.read_any();
     }
@@ -302,63 +301,63 @@ public abstract class CDRInputStream
 
     // org.omg.CORBA.DataInputStream
 
-    public final java.lang.Object read_Abstract () {
+    public final java.lang.Object read_Abstract() {
         return impl.read_Abstract();
     }
 
-    public final java.io.Serializable read_Value () {
+    public final java.io.Serializable read_Value() {
         return impl.read_Value();
     }
 
-    public final void read_any_array (org.omg.CORBA.AnySeqHolder seq, int offset, int length) {
+    public final void read_any_array(org.omg.CORBA.AnySeqHolder seq, int offset, int length) {
         impl.read_any_array(seq, offset, length);
     }
 
-    public final void read_boolean_array (org.omg.CORBA.BooleanSeqHolder seq, int offset, int length) {
+    public final void read_boolean_array(org.omg.CORBA.BooleanSeqHolder seq, int offset, int length) {
         impl.read_boolean_array(seq, offset, length);
     }
 
-    public final void read_char_array (org.omg.CORBA.CharSeqHolder seq, int offset, int length) {
+    public final void read_char_array(org.omg.CORBA.CharSeqHolder seq, int offset, int length) {
         impl.read_char_array(seq, offset, length);
     }
 
-    public final void read_wchar_array (org.omg.CORBA.WCharSeqHolder seq, int offset, int length) {
+    public final void read_wchar_array(org.omg.CORBA.WCharSeqHolder seq, int offset, int length) {
         impl.read_wchar_array(seq, offset, length);
     }
 
-    public final void read_octet_array (org.omg.CORBA.OctetSeqHolder seq, int offset, int length) {
+    public final void read_octet_array(org.omg.CORBA.OctetSeqHolder seq, int offset, int length) {
         impl.read_octet_array(seq, offset, length);
     }
 
-    public final void read_short_array (org.omg.CORBA.ShortSeqHolder seq, int offset, int length) {
+    public final void read_short_array(org.omg.CORBA.ShortSeqHolder seq, int offset, int length) {
         impl.read_short_array(seq, offset, length);
     }
 
-    public final void read_ushort_array (org.omg.CORBA.UShortSeqHolder seq, int offset, int length) {
+    public final void read_ushort_array(org.omg.CORBA.UShortSeqHolder seq, int offset, int length) {
         impl.read_ushort_array(seq, offset, length);
     }
 
-    public final void read_long_array (org.omg.CORBA.LongSeqHolder seq, int offset, int length) {
+    public final void read_long_array(org.omg.CORBA.LongSeqHolder seq, int offset, int length) {
         impl.read_long_array(seq, offset, length);
     }
 
-    public final void read_ulong_array (org.omg.CORBA.ULongSeqHolder seq, int offset, int length) {
+    public final void read_ulong_array(org.omg.CORBA.ULongSeqHolder seq, int offset, int length) {
         impl.read_ulong_array(seq, offset, length);
     }
 
-    public final void read_ulonglong_array (org.omg.CORBA.ULongLongSeqHolder seq, int offset, int length) {
+    public final void read_ulonglong_array(org.omg.CORBA.ULongLongSeqHolder seq, int offset, int length) {
         impl.read_ulonglong_array(seq, offset, length);
     }
 
-    public final void read_longlong_array (org.omg.CORBA.LongLongSeqHolder seq, int offset, int length) {
+    public final void read_longlong_array(org.omg.CORBA.LongLongSeqHolder seq, int offset, int length) {
         impl.read_longlong_array(seq, offset, length);
     }
 
-    public final void read_float_array (org.omg.CORBA.FloatSeqHolder seq, int offset, int length) {
+    public final void read_float_array(org.omg.CORBA.FloatSeqHolder seq, int offset, int length) {
         impl.read_float_array(seq, offset, length);
     }
 
-    public final void read_double_array (org.omg.CORBA.DoubleSeqHolder seq, int offset, int length) {
+    public final void read_double_array(org.omg.CORBA.DoubleSeqHolder seq, int offset, int length) {
         impl.read_double_array(seq, offset, length);
     }
 
@@ -427,7 +426,7 @@ public abstract class CDRInputStream
      * return true if our ByteBuffer is sharing/equal to bb
      */
     protected final boolean isSharing(ByteBuffer bb) {
-        return (getByteBuffer() ==  bb);
+        return (getByteBuffer() == bb);
     }
 
     public final int getBufferLength() {
@@ -469,7 +468,7 @@ public abstract class CDRInputStream
     // performed.
     protected CodeSetConversion.BTCConverter createCharBTCConverter() {
         return CodeSetConversion.impl().getBTCConverter(OSFCodeSetRegistry.ISO_8859_1,
-                                                        impl.isLittleEndian());
+                impl.isLittleEndian());
     }
 
     // Subclasses must decide what to do here.  It's inconvenient to
@@ -501,7 +500,7 @@ public abstract class CDRInputStream
      * and setting it on the stream's ORB instance.  It can be called
      * after reading the service contexts, since that is the only place
      * we can get the ORB version info.
-     *
+     * <p>
      * Trying to unmarshal things requiring repository IDs before calling
      * this will result in NullPtrExceptions.
      */
@@ -522,13 +521,11 @@ public abstract class CDRInputStream
         impl.resetCodeSetConverters();
     }
 
-    public void setMessageMediator(MessageMediator messageMediator)
-    {
+    public void setMessageMediator(MessageMediator messageMediator) {
         this.messageMediator = (CorbaMessageMediator) messageMediator;
     }
 
-    public MessageMediator getMessageMediator()
-    {
+    public MessageMediator getMessageMediator() {
         return messageMediator;
     }
 

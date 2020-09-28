@@ -27,9 +27,8 @@ import com.sun.org.apache.xerces.internal.xni.XMLDTDContentModelHandler;
  * an emitter of DTD content model events.
  *
  * @author Andy Clark, IBM
- *
  */
 public interface XMLDTDContentModelFilter
-    extends XMLDTDContentModelHandler, XMLDTDContentModelSource {
+        extends XMLDTDContentModelHandler, XMLDTDContentModelSource {
 
 } // interface XMLDTDContentModelFilter

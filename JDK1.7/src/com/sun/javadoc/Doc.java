@@ -34,9 +34,9 @@ import java.util.Locale;
  * run of javadoc.  All Doc objects are unique, that is, they
  * are == comparable.
  *
- * @since 1.2
  * @author Robert Field
  * @author Scott Seligman (generics, enums, annotations)
+ * @since 1.2
  */
 public interface Doc extends Comparable<Object> {
 
@@ -50,14 +50,14 @@ public interface Doc extends Comparable<Object> {
      * Return all tags in this Doc item.
      *
      * @return an array of {@link Tag} objects containing all tags on
-     *         this Doc item.
+     * this Doc item.
      */
     Tag[] tags();
 
     /**
      * Return tags of the specified {@linkplain Tag#kind() kind} in
      * this Doc item.
-     *
+     * <p>
      * For example, if 'tagname' has value "@serial", all tags in
      * this Doc item of kind "@serial" will be returned.
      *
@@ -109,7 +109,7 @@ public interface Doc extends Comparable<Object> {
      * If the locale is not English, the sentence end will be
      * determined by
      * {@link BreakIterator#getSentenceInstance(Locale)}.
-
+     *
      * @return an array of {@link Tag}s representing the
      * first sentence of the comment
      */
@@ -132,7 +132,7 @@ public interface Doc extends Comparable<Object> {
     /**
      * Returns the non-qualified name of this Doc item.
      *
-     * @return  the name
+     * @return the name
      */
     String name();
 
@@ -143,11 +143,11 @@ public interface Doc extends Comparable<Object> {
      * <p>
      * This method satisfies the {@link java.lang.Comparable} interface.
      *
-     * @param   obj  the <code>Object</code> to be compared.
-     * @return  a negative integer, zero, or a positive integer as this Object
-     *      is less than, equal to, or greater than the given Object.
-     * @exception ClassCastException the specified Object's type prevents it
-     *        from being compared to this Object.
+     * @param obj the <code>Object</code> to be compared.
+     * @return a negative integer, zero, or a positive integer as this Object
+     * is less than, equal to, or greater than the given Object.
+     * @throws ClassCastException the specified Object's type prevents it
+     *                            from being compared to this Object.
      */
     int compareTo(Object obj);
 

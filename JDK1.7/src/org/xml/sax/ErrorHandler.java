@@ -65,10 +65,10 @@ package org.xml.sax;
  * For example, {@link XMLReader#parse XMLReader.parse()} would throw
  * an IOException for errors accessing entities or the document.</p>
  *
- * @since SAX 1.0
  * @author David Megginson
  * @see org.xml.sax.XMLReader#setErrorHandler
  * @see org.xml.sax.SAXParseException
+ * @since SAX 1.0
  */
 public interface ErrorHandler {
 
@@ -90,12 +90,12 @@ public interface ErrorHandler {
      *
      * @param exception The warning information encapsulated in a
      *                  SAX parse exception.
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
      * @see org.xml.sax.SAXParseException
      */
-    public abstract void warning (SAXParseException exception)
-        throws SAXException;
+    public abstract void warning(SAXParseException exception)
+            throws SAXException;
 
 
     /**
@@ -119,12 +119,12 @@ public interface ErrorHandler {
      *
      * @param exception The error information encapsulated in a
      *                  SAX parse exception.
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
      * @see org.xml.sax.SAXParseException
      */
-    public abstract void error (SAXParseException exception)
-        throws SAXException;
+    public abstract void error(SAXParseException exception)
+            throws SAXException;
 
 
     /**
@@ -151,12 +151,12 @@ public interface ErrorHandler {
      *
      * @param exception The error information encapsulated in a
      *                  SAX parse exception.
-     * @exception org.xml.sax.SAXException Any SAX exception, possibly
-     *            wrapping another exception.
+     * @throws org.xml.sax.SAXException Any SAX exception, possibly
+     *                                  wrapping another exception.
      * @see org.xml.sax.SAXParseException
      */
-    public abstract void fatalError (SAXParseException exception)
-        throws SAXException;
+    public abstract void fatalError(SAXParseException exception)
+            throws SAXException;
 
 }
 

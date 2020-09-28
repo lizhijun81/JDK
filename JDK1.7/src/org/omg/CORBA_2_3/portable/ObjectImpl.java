@@ -38,15 +38,17 @@ import org.omg.CORBA_2_3.portable.Delegate;
  * basic delegation mechanism.  It extends org.omg.CORBA.portable.ObjectImpl
  * and provides new methods defined by CORBA 2.3.
  *
+ * @author OMG
  * @see org.omg.CORBA.portable.ObjectImpl
- * @author  OMG
- * @since   JDK1.2
+ * @since JDK1.2
  */
 
 
 public abstract class ObjectImpl extends org.omg.CORBA.portable.ObjectImpl {
 
-    /** Returns the codebase for this object reference.
+    /**
+     * Returns the codebase for this object reference.
+     *
      * @return the codebase as a space delimited list of url strings or
      * null if none.
      */

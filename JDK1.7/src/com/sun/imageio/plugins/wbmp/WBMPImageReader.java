@@ -47,36 +47,48 @@ import java.util.Iterator;
 import com.sun.imageio.plugins.common.I18N;
 import com.sun.imageio.plugins.common.ReaderUtil;
 
-/** This class is the Java Image IO plugin reader for WBMP images.
- *  It may subsample the image, clip the image,
- *  and shift the decoded image origin if the proper decoding parameter
- *  are set in the provided <code>WBMPImageReadParam</code>.
+/**
+ * This class is the Java Image IO plugin reader for WBMP images.
+ * It may subsample the image, clip the image,
+ * and shift the decoded image origin if the proper decoding parameter
+ * are set in the provided <code>WBMPImageReadParam</code>.
  */
 public class WBMPImageReader extends ImageReader {
-    /** The input stream where reads from */
+    /**
+     * The input stream where reads from
+     */
     private ImageInputStream iis = null;
 
-    /** Indicates whether the header is read. */
+    /**
+     * Indicates whether the header is read.
+     */
     private boolean gotHeader = false;
 
-    /** The original image width. */
+    /**
+     * The original image width.
+     */
     private int width;
 
-    /** The original image height. */
+    /**
+     * The original image height.
+     */
     private int height;
 
     private int wbmpType;
 
     private WBMPMetadata metadata;
 
-    /** Constructs <code>WBMPImageReader</code> from the provided
-     *  <code>ImageReaderSpi</code>.
+    /**
+     * Constructs <code>WBMPImageReader</code> from the provided
+     * <code>ImageReaderSpi</code>.
      */
     public WBMPImageReader(ImageReaderSpi originator) {
         super(originator);
     }
 
-    /** Overrides the method defined in the superclass. */
+    /**
+     * Overrides the method defined in the superclass.
+     */
     public void setInput(Object input,
                          boolean seekForwardOnly,
                          boolean ignoreMetadata) {
@@ -85,7 +97,9 @@ public class WBMPImageReader extends ImageReader {
         gotHeader = false;
     }
 
-    /** Overrides the method defined in the superclass. */
+    /**
+     * Overrides the method defined in the superclass.
+     */
     public int getNumImages(boolean allowSearch) throws IOException {
         if (iis == null) {
             throw new IllegalStateException(I18N.getString("GetNumImages0"));
@@ -134,8 +148,7 @@ public class WBMPImageReader extends ImageReader {
 
         // check for valid wbmp image
         if (fixHeaderField != 0
-            || !isValidWbmpType(wbmpType))
-        {
+                || !isValidWbmpType(wbmpType)) {
             throw new IIOException(I18N.getString("WBMPImageReader2"));
         }
 
@@ -153,12 +166,12 @@ public class WBMPImageReader extends ImageReader {
     }
 
     public Iterator getImageTypes(int imageIndex)
-        throws IOException {
+            throws IOException {
         checkIndex(imageIndex);
         readHeader();
 
         BufferedImage bi =
-            new BufferedImage(1, 1, BufferedImage.TYPE_BYTE_BINARY);
+                new BufferedImage(1, 1, BufferedImage.TYPE_BYTE_BINARY);
         ArrayList list = new ArrayList(1);
         list.add(new ImageTypeSpecifier(bi));
         return list.iterator();
@@ -169,7 +182,7 @@ public class WBMPImageReader extends ImageReader {
     }
 
     public IIOMetadata getImageMetadata(int imageIndex)
-        throws IOException {
+            throws IOException {
         checkIndex(imageIndex);
         if (metadata == null) {
             readHeader();
@@ -182,7 +195,7 @@ public class WBMPImageReader extends ImageReader {
     }
 
     public BufferedImage read(int imageIndex, ImageReadParam param)
-        throws IOException {
+            throws IOException {
 
         if (iis == null) {
             throw new IllegalStateException(I18N.getString("WBMPImageReader1"));
@@ -201,9 +214,9 @@ public class WBMPImageReader extends ImageReader {
         Rectangle destinationRegion = new Rectangle(0, 0, 0, 0);
 
         computeRegions(param, this.width, this.height,
-                       param.getDestination(),
-                       sourceRegion,
-                       destinationRegion);
+                param.getDestination(),
+                sourceRegion,
+                destinationRegion);
 
         int scaleX = param.getSourceXSubsampling();
         int scaleY = param.getSourceYSubsampling();
@@ -215,19 +228,19 @@ public class WBMPImageReader extends ImageReader {
 
         if (bi == null)
             bi = new BufferedImage(destinationRegion.x + destinationRegion.width,
-                              destinationRegion.y + destinationRegion.height,
-                              BufferedImage.TYPE_BYTE_BINARY);
+                    destinationRegion.y + destinationRegion.height,
+                    BufferedImage.TYPE_BYTE_BINARY);
 
         boolean noTransform =
-            destinationRegion.equals(new Rectangle(0, 0, width, height)) &&
-            destinationRegion.equals(new Rectangle(0, 0, bi.getWidth(), bi.getHeight()));
+                destinationRegion.equals(new Rectangle(0, 0, width, height)) &&
+                        destinationRegion.equals(new Rectangle(0, 0, bi.getWidth(), bi.getHeight()));
 
         // Get the image data.
         WritableRaster tile = bi.getWritableTile(0, 0);
 
         // Get the SampleModel.
         MultiPixelPackedSampleModel sm =
-            (MultiPixelPackedSampleModel)bi.getSampleModel();
+                (MultiPixelPackedSampleModel) bi.getSampleModel();
 
         if (noTransform) {
             if (abortRequested()) {
@@ -236,17 +249,17 @@ public class WBMPImageReader extends ImageReader {
             }
 
             // If noTransform is necessary, read the data.
-            iis.read(((DataBufferByte)tile.getDataBuffer()).getData(),
-                     0, height*sm.getScanlineStride());
+            iis.read(((DataBufferByte) tile.getDataBuffer()).getData(),
+                    0, height * sm.getScanlineStride());
             processImageUpdate(bi,
-                               0, 0,
-                               width, height, 1, 1,
-                               new int[]{0});
+                    0, 0,
+                    width, height, 1, 1,
+                    new int[]{0});
             processImageProgress(100.0F);
         } else {
             int len = (this.width + 7) / 8;
             byte[] buf = new byte[len];
-            byte[] data = ((DataBufferByte)tile.getDataBuffer()).getData();
+            byte[] data = ((DataBufferByte) tile.getDataBuffer()).getData();
             int lineStride = sm.getScanlineStride();
             iis.skipBytes(len * sourceRegion.y);
             int skipLength = len * (scaleY - 1);
@@ -258,8 +271,8 @@ public class WBMPImageReader extends ImageReader {
             int[] destPos = new int[destinationRegion.width];
 
             for (int i = destinationRegion.x, x = sourceRegion.x, j = 0;
-                i < destinationRegion.x + destinationRegion.width;
-                    i++, j++, x += scaleX) {
+                 i < destinationRegion.x + destinationRegion.width;
+                 i++, j++, x += scaleX) {
                 srcPos[j] = x >> 3;
                 srcOff[j] = 7 - (x & 7);
                 destPos[j] = i >> 3;
@@ -267,8 +280,8 @@ public class WBMPImageReader extends ImageReader {
             }
 
             for (int j = 0, y = sourceRegion.y,
-                k = destinationRegion.y * lineStride;
-                j < destinationRegion.height; j++, y+=scaleY) {
+                 k = destinationRegion.y * lineStride;
+                 j < destinationRegion.height; j++, y += scaleY) {
 
                 if (abortRequested())
                     break;
@@ -281,11 +294,11 @@ public class WBMPImageReader extends ImageReader {
 
                 k += lineStride;
                 iis.skipBytes(skipLength);
-                        processImageUpdate(bi,
-                                           0, j,
-                                           destinationRegion.width, 1, 1, 1,
-                                           new int[]{0});
-                        processImageProgress(100.0F*j/destinationRegion.height);
+                processImageUpdate(bi,
+                        0, j,
+                        destinationRegion.width, 1, 1, 1,
+                        new int[]{0});
+                processImageProgress(100.0F * j / destinationRegion.height);
             }
         }
 

@@ -26,17 +26,15 @@ import com.sun.org.apache.xerces.internal.impl.dv.ValidationContext;
 /**
  * Represent the schema type "boolean"
  *
- * @xerces.internal
- *
  * @author Neeraj Bajaj, Sun Microsystems, inc.
  * @author Sandy Gao, IBM
- *
+ * @xerces.internal
  */
-public class BooleanDV extends TypeValidator{
+public class BooleanDV extends TypeValidator {
 
     private static final String fValueSpace[] = {"false", "true", "0", "1"};
 
-    public short getAllowedFacets(){
+    public short getAllowedFacets() {
         return (XSSimpleTypeDecl.FACET_PATTERN | XSSimpleTypeDecl.FACET_WHITESPACE);
     }
 

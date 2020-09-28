@@ -33,15 +33,13 @@ package java.nio.file;
  */
 
 public class NotDirectoryException
-    extends FileSystemException
-{
+        extends FileSystemException {
     private static final long serialVersionUID = -9011457427178200199L;
 
     /**
      * Constructs an instance of this class.
      *
-     * @param   file
-     *          a string identifying the file or {@code null} if not known
+     * @param file a string identifying the file or {@code null} if not known
      */
     public NotDirectoryException(String file) {
         super(file);

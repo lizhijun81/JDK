@@ -34,6 +34,7 @@ import javax.swing.table.*;
 
 import static com.sun.java.swing.plaf.windows.TMSchema.*;
 import static com.sun.java.swing.plaf.windows.XPStyle.*;
+
 import sun.swing.table.*;
 import sun.swing.SwingUtilities2;
 
@@ -84,7 +85,7 @@ public class WindowsTableHeaderUI extends BasicTableHeaderUI {
                                                        boolean isSelected, boolean hasFocus,
                                                        int row, int column) {
             super.getTableCellRendererComponent(table, value, isSelected,
-                                                hasFocus, row, column);
+                    hasFocus, row, column);
             this.isSelected = isSelected;
             this.hasFocus = hasFocus;
             this.column = column;
@@ -119,46 +120,46 @@ public class WindowsTableHeaderUI extends BasicTableHeaderUI {
              */
             Icon sortIcon;
             if (WindowsLookAndFeel.isOnVista()
-                && ((sortIcon = getIcon()) instanceof javax.swing.plaf.UIResource
+                    && ((sortIcon = getIcon()) instanceof javax.swing.plaf.UIResource
                     || sortIcon == null)) {
                 contentTop += 1;
                 setIcon(null);
                 sortIcon = null;
                 SortOrder sortOrder =
-                    getColumnSortOrder(table, column);
+                        getColumnSortOrder(table, column);
                 if (sortOrder != null) {
                     switch (sortOrder) {
-                    case ASCENDING:
-                        sortIcon =
-                            UIManager.getIcon("Table.ascendingSortIcon");
-                        break;
-                    case DESCENDING:
-                        sortIcon =
-                            UIManager.getIcon("Table.descendingSortIcon");
-                        break;
+                        case ASCENDING:
+                            sortIcon =
+                                    UIManager.getIcon("Table.ascendingSortIcon");
+                            break;
+                        case DESCENDING:
+                            sortIcon =
+                                    UIManager.getIcon("Table.descendingSortIcon");
+                            break;
                     }
                 }
                 if (sortIcon != null) {
                     contentBottom = sortIcon.getIconHeight();
                     border = new IconBorder(sortIcon, contentTop, contentLeft,
-                                            contentBottom, contentRight);
+                            contentBottom, contentRight);
                 } else {
                     sortIcon =
-                        UIManager.getIcon("Table.ascendingSortIcon");
+                            UIManager.getIcon("Table.ascendingSortIcon");
                     int sortIconHeight =
-                        (sortIcon != null) ? sortIcon.getIconHeight() : 0;
+                            (sortIcon != null) ? sortIcon.getIconHeight() : 0;
                     if (sortIconHeight != 0) {
                         contentBottom = sortIconHeight;
                     }
                     border =
-                        new EmptyBorder(
-                            sortIconHeight + contentTop, contentLeft,
-                            contentBottom, contentRight);
+                            new EmptyBorder(
+                                    sortIconHeight + contentTop, contentLeft,
+                                    contentBottom, contentRight);
                 }
             } else {
                 contentTop += 3;
                 border = new EmptyBorder(contentTop, contentLeft,
-                                         contentBottom, contentRight);
+                        contentBottom, contentRight);
             }
             setBorder(border);
             return this;
@@ -179,29 +180,29 @@ public class WindowsTableHeaderUI extends BasicTableHeaderUI {
             if (WindowsLookAndFeel.isOnVista()) {
                 SortOrder sortOrder = getColumnSortOrder(header.getTable(), column);
                 if (sortOrder != null) {
-                     switch(sortOrder) {
-                     case ASCENDING:
-                         /* falls through */
-                     case DESCENDING:
-                         switch (state) {
-                         case NORMAL:
-                             state = State.SORTEDNORMAL;
-                             break;
-                         case PRESSED:
-                             state = State.SORTEDPRESSED;
-                             break;
-                         case HOT:
-                             state = State.SORTEDHOT;
-                             break;
-                         default:
-                             /* do nothing */
-                         }
-                     default :
-                         /* do nothing */
-                     }
+                    switch (sortOrder) {
+                        case ASCENDING:
+                            /* falls through */
+                        case DESCENDING:
+                            switch (state) {
+                                case NORMAL:
+                                    state = State.SORTEDNORMAL;
+                                    break;
+                                case PRESSED:
+                                    state = State.SORTEDPRESSED;
+                                    break;
+                                case HOT:
+                                    state = State.SORTEDHOT;
+                                    break;
+                                default:
+                                    /* do nothing */
+                            }
+                        default:
+                            /* do nothing */
+                    }
                 }
             }
-            skin.paintSkin(g, 0, 0, size.width-1, size.height-1, state);
+            skin.paintSkin(g, 0, 0, size.width - 1, size.height - 1, state);
             super.paint(g);
         }
     }
@@ -210,14 +211,16 @@ public class WindowsTableHeaderUI extends BasicTableHeaderUI {
      * A border with an Icon at the middle of the top side.
      * Outer insets can be provided for this border.
      */
-    private static class IconBorder implements Border, UIResource{
+    private static class IconBorder implements Border, UIResource {
         private final Icon icon;
         private final int top;
         private final int left;
         private final int bottom;
         private final int right;
+
         /**
          * Creates this border;
+         *
          * @param icon - icon to paint for this border
          * @param top, left, bottom, right - outer insets for this border
          */
@@ -229,17 +232,20 @@ public class WindowsTableHeaderUI extends BasicTableHeaderUI {
             this.bottom = bottom;
             this.right = right;
         }
+
         public Insets getBorderInsets(Component c) {
             return new Insets(icon.getIconHeight() + top, left, bottom, right);
         }
+
         public boolean isBorderOpaque() {
             return false;
         }
+
         public void paintBorder(Component c, Graphics g, int x, int y,
                                 int width, int height) {
             icon.paintIcon(c, g,
-                x + left + (width - left - right - icon.getIconWidth()) / 2,
-                y + top);
+                    x + left + (width - left - right - icon.getIconWidth()) / 2,
+                    y + top);
         }
     }
 }

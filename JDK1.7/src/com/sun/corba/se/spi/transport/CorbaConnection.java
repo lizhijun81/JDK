@@ -39,7 +39,7 @@ import com.sun.corba.se.pept.protocol.MessageMediator;
 import com.sun.corba.se.pept.transport.Connection;
 import com.sun.corba.se.pept.transport.ResponseWaitingRoom;
 
-import com.sun.corba.se.spi.ior.IOR ;
+import com.sun.corba.se.spi.ior.IOR;
 import com.sun.corba.se.spi.ior.iiop.GIOPVersion;
 import com.sun.corba.se.spi.orb.ORB;
 import com.sun.corba.se.spi.protocol.CorbaMessageMediator;
@@ -51,22 +51,21 @@ import com.sun.corba.se.impl.logging.ORBUtilSystemException;
  * @author Harold Carr
  */
 public interface CorbaConnection
-    extends
+        extends
         Connection,
-        com.sun.corba.se.spi.legacy.connection.Connection
-{
+        com.sun.corba.se.spi.legacy.connection.Connection {
     public boolean shouldUseDirectByteBuffers();
 
     public boolean shouldReadGiopHeaderOnly();
 
     public ByteBuffer read(int size, int offset, int length, long max_wait_time)
-        throws IOException;
+            throws IOException;
 
     public ByteBuffer read(ByteBuffer byteBuffer, int offset,
-                          int length, long max_wait_time) throws IOException;
+                           int length, long max_wait_time) throws IOException;
 
     public void write(ByteBuffer byteBuffer)
-        throws IOException;
+            throws IOException;
 
     public void dprint(String msg);
 
@@ -75,8 +74,11 @@ public interface CorbaConnection
     //
 
     public int getNextRequestId();
+
     public ORB getBroker();
+
     public CodeSetComponentInfo.CodeSetContext getCodeSetContext();
+
     public void setCodeSetContext(CodeSetComponentInfo.CodeSetContext csc);
 
     //
@@ -87,11 +89,15 @@ public interface CorbaConnection
     public MessageMediator clientRequestMapGet(int requestId);
 
     public void clientReply_1_1_Put(MessageMediator x);
+
     public MessageMediator clientReply_1_1_Get();
+
     public void clientReply_1_1_Remove();
 
     public void serverRequest_1_1_Put(MessageMediator x);
+
     public MessageMediator serverRequest_1_1_Get();
+
     public void serverRequest_1_1_Remove();
 
     public boolean isPostInitialContexts();
@@ -136,25 +142,27 @@ public interface CorbaConnection
     // End Code Base methods -----------------------------------------
 
     public void sendCloseConnection(GIOPVersion giopVersion)
-        throws IOException;
+            throws IOException;
 
     public void sendMessageError(GIOPVersion giopVersion)
-        throws IOException;
+            throws IOException;
 
     public void sendCancelRequest(GIOPVersion giopVersion, int requestId)
-        throws
+            throws
             IOException;
 
     public void sendCancelRequestWithLock(GIOPVersion giopVersion,
                                           int requestId)
-        throws
+            throws
             IOException;
 
     public ResponseWaitingRoom getResponseWaitingRoom();
 
     public void serverRequestMapPut(int requestId,
                                     CorbaMessageMediator messageMediator);
+
     public CorbaMessageMediator serverRequestMapGet(int requestId);
+
     public void serverRequestMapRemove(int requestId);
 
     // REVISIT: WRONG: should not expose sockets here.
@@ -162,9 +170,11 @@ public interface CorbaConnection
 
     // REVISIT - MessageMediator parameter?
     public void serverRequestProcessingBegins();
+
     public void serverRequestProcessingEnds();
 
-    /** Clean up all connection resources.  Used when shutting down an ORB.
+    /**
+     * Clean up all connection resources.  Used when shutting down an ORB.
      */
     public void closeConnectionResources();
 }

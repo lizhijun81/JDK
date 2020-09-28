@@ -41,11 +41,9 @@ import org.w3c.dom.ls.LSInput;
 /**
  * <p>An implementation of XSLoader which wraps XMLSchemaLoader.</p>
  *
- * @xerces.internal
- *
  * @author Michael Glavassevich, IBM
- *
  * @version $Id: XSLoaderImpl.java,v 1.7 2010-11-01 04:39:55 joehw Exp $
+ * @xerces.internal
  */
 public final class XSLoaderImpl implements XSLoader, DOMConfiguration {
 
@@ -55,7 +53,9 @@ public final class XSLoaderImpl implements XSLoader, DOMConfiguration {
      */
     private final XSGrammarPool fGrammarPool = new XSGrammarMerger();
 
-    /** Schema loader. **/
+    /**
+     * Schema loader.
+     **/
     private final XMLSchemaLoader fSchemaLoader = new XMLSchemaLoader();
 
     /**
@@ -66,7 +66,7 @@ public final class XSLoaderImpl implements XSLoader, DOMConfiguration {
     }
 
     /**
-     *  The configuration of a document. It maintains a table of recognized
+     * The configuration of a document. It maintains a table of recognized
      * parameters. Using the configuration, it is possible to change the
      * behavior of the load methods. The configuration may support the
      * setting of and the retrieval of the following non-boolean parameters
@@ -97,6 +97,7 @@ public final class XSLoaderImpl implements XSLoader, DOMConfiguration {
      * Parses the content of XML Schema documents specified as the list of URI
      * references. If the URI contains a fragment identifier, the behavior
      * is not defined by this specification.
+     *
      * @param uriList The list of URI locations.
      * @return An XSModel representing the schema documents.
      */
@@ -108,18 +109,18 @@ public final class XSLoaderImpl implements XSLoader, DOMConfiguration {
                 fSchemaLoader.loadGrammar(new XMLInputSource(null, uriList.item(i), null));
             }
             return fGrammarPool.toXSModel();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             fSchemaLoader.reportDOMFatalError(e);
             return null;
         }
     }
 
     /**
-     *  Parses the content of XML Schema documents specified as a list of
+     * Parses the content of XML Schema documents specified as a list of
      * <code>LSInput</code>s.
-     * @param is  The list of <code>LSInput</code>s from which the XML
-     *   Schema documents are to be read.
+     *
+     * @param is The list of <code>LSInput</code>s from which the XML
+     *           Schema documents are to be read.
      * @return An XSModel representing the schema documents.
      */
     public XSModel loadInputList(LSInputList is) {
@@ -130,8 +131,7 @@ public final class XSLoaderImpl implements XSLoader, DOMConfiguration {
                 fSchemaLoader.loadGrammar(fSchemaLoader.dom2xmlInputSource(is.item(i)));
             }
             return fGrammarPool.toXSModel();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             fSchemaLoader.reportDOMFatalError(e);
             return null;
         }
@@ -141,6 +141,7 @@ public final class XSLoaderImpl implements XSLoader, DOMConfiguration {
      * Parse an XML Schema document from a location identified by a URI
      * reference. If the URI contains a fragment identifier, the behavior is
      * not defined by this specification.
+     *
      * @param uri The location of the XML Schema document to be read.
      * @return An XSModel representing this schema.
      */
@@ -148,26 +149,25 @@ public final class XSLoaderImpl implements XSLoader, DOMConfiguration {
         try {
             fGrammarPool.clear();
             return ((XSGrammar) fSchemaLoader.loadGrammar(new XMLInputSource(null, uri, null))).toXSModel();
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             fSchemaLoader.reportDOMFatalError(e);
             return null;
         }
     }
 
     /**
-     *  Parse an XML Schema document from a resource identified by a
+     * Parse an XML Schema document from a resource identified by a
      * <code>LSInput</code> .
-     * @param is  The <code>LSInput</code> from which the source
-     *   document is to be read.
+     *
+     * @param is The <code>LSInput</code> from which the source
+     *           document is to be read.
      * @return An XSModel representing this schema.
      */
     public XSModel load(LSInput is) {
         try {
             fGrammarPool.clear();
             return ((XSGrammar) fSchemaLoader.loadGrammar(fSchemaLoader.dom2xmlInputSource(is))).toXSModel();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             fSchemaLoader.reportDOMFatalError(e);
             return null;
         }
@@ -208,23 +208,23 @@ public final class XSLoaderImpl implements XSLoader, DOMConfiguration {
      */
     private static final class XSGrammarMerger extends XSGrammarPool {
 
-        public XSGrammarMerger () {}
+        public XSGrammarMerger() {
+        }
 
         public void putGrammar(Grammar grammar) {
             SchemaGrammar cachedGrammar =
-                toSchemaGrammar(super.getGrammar(grammar.getGrammarDescription()));
+                    toSchemaGrammar(super.getGrammar(grammar.getGrammarDescription()));
             if (cachedGrammar != null) {
                 SchemaGrammar newGrammar = toSchemaGrammar(grammar);
                 if (newGrammar != null) {
                     mergeSchemaGrammars(cachedGrammar, newGrammar);
                 }
-            }
-            else {
+            } else {
                 super.putGrammar(grammar);
             }
         }
 
-        private SchemaGrammar toSchemaGrammar (Grammar grammar) {
+        private SchemaGrammar toSchemaGrammar(Grammar grammar) {
             return (grammar instanceof SchemaGrammar) ? (SchemaGrammar) grammar : null;
         }
 
@@ -315,7 +315,7 @@ public final class XSLoaderImpl implements XSLoader, DOMConfiguration {
             return null;
         }
 
-        public Grammar [] retrieveInitialGrammarSet (String grammarType) {
+        public Grammar[] retrieveInitialGrammarSet(String grammarType) {
             return new Grammar[0];
         }
     }

@@ -28,8 +28,8 @@ package com.sun.javadoc;
 /**
  * Represents a method or constructor of a java class.
  *
- * @since 1.2
  * @author Robert Field
+ * @since 1.2
  */
 public interface ExecutableMemberDoc extends MemberDoc {
 
@@ -44,7 +44,7 @@ public interface ExecutableMemberDoc extends MemberDoc {
      * instead.</i>
      *
      * @return an array of ClassDoc[] representing the exceptions
-     *         thrown by this method.
+     * thrown by this method.
      * @see #thrownExceptionTypes
      */
     ClassDoc[] thrownExceptions();
@@ -53,8 +53,8 @@ public interface ExecutableMemberDoc extends MemberDoc {
      * Return exceptions this method or constructor throws.
      *
      * @return an array representing the exceptions thrown by this method.
-     *         Each array element is either a <code>ClassDoc</code> or a
-     *         <code>TypeVariable</code>.
+     * Each array element is either a <code>ClassDoc</code> or a
+     * <code>TypeVariable</code>.
      * @since 1.5
      */
     Type[] thrownExceptionTypes();
@@ -80,10 +80,9 @@ public interface ExecutableMemberDoc extends MemberDoc {
     /**
      * Get argument information.
      *
-     * @see Parameter
-     *
      * @return an array of Parameter, one element per argument
      * in the order the arguments are present.
+     * @see Parameter
      */
     Parameter[] parameters();
 
@@ -115,17 +114,17 @@ public interface ExecutableMemberDoc extends MemberDoc {
 
     /**
      * Get the signature. It is the parameter list, type is qualified.
-     *      For instance, for a method <code>mymethod(String x, int y)</code>,
-     *      it will return <code>(java.lang.String,int)</code>.
+     * For instance, for a method <code>mymethod(String x, int y)</code>,
+     * it will return <code>(java.lang.String,int)</code>.
      */
     String signature();
 
     /**
      * get flat signature.  all types are not qualified.
-     *      return a String, which is the flat signiture of this member.
-     *      It is the parameter list, type is not qualified.
-     *      For instance, for a method <code>mymethod(String x, int y)</code>,
-     *      it will return <code>(String, int)</code>.
+     * return a String, which is the flat signiture of this member.
+     * It is the parameter list, type is not qualified.
+     * For instance, for a method <code>mymethod(String x, int y)</code>,
+     * it will return <code>(String, int)</code>.
      */
     String flatSignature();
 

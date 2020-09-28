@@ -28,9 +28,9 @@ package java.awt;
 /**
  * Capabilities and properties of buffers.
  *
+ * @author Michael Martak
  * @see java.awt.image.BufferStrategy#getCapabilities()
  * @see GraphicsConfiguration#getBufferCapabilities
- * @author Michael Martak
  * @since 1.4
  */
 public class BufferCapabilities implements Cloneable {
@@ -41,20 +41,21 @@ public class BufferCapabilities implements Cloneable {
 
     /**
      * Creates a new object for specifying buffering capabilities
-     * @param frontCaps the capabilities of the front buffer; cannot be
-     * <code>null</code>
-     * @param backCaps the capabilities of the back and intermediate buffers;
-     * cannot be <code>null</code>
+     *
+     * @param frontCaps    the capabilities of the front buffer; cannot be
+     *                     <code>null</code>
+     * @param backCaps     the capabilities of the back and intermediate buffers;
+     *                     cannot be <code>null</code>
      * @param flipContents the contents of the back buffer after page-flipping,
-     * <code>null</code> if page flipping is not used (implies blitting)
-     * @exception IllegalArgumentException if frontCaps or backCaps are
-     * <code>null</code>
+     *                     <code>null</code> if page flipping is not used (implies blitting)
+     * @throws IllegalArgumentException if frontCaps or backCaps are
+     *                                  <code>null</code>
      */
     public BufferCapabilities(ImageCapabilities frontCaps,
-        ImageCapabilities backCaps, FlipContents flipContents) {
+                              ImageCapabilities backCaps, FlipContents flipContents) {
         if (frontCaps == null || backCaps == null) {
             throw new IllegalArgumentException(
-                "Image capabilities specified cannot be null");
+                    "Image capabilities specified cannot be null");
         }
         this.frontCaps = frontCaps;
         this.backCaps = backCaps;
@@ -142,9 +143,11 @@ public class BufferCapabilities implements Cloneable {
     }
 
     // Inner class FlipContents
+
     /**
      * A type-safe enumeration of the possible back buffer contents after
      * page-flipping
+     *
      * @since 1.4
      */
     public static final class FlipContents extends AttributeValue {
@@ -155,11 +158,12 @@ public class BufferCapabilities implements Cloneable {
         private static int I_COPIED = 3;
 
         private static final String NAMES[] =
-            { "undefined", "background", "prior", "copied" };
+                {"undefined", "background", "prior", "copied"};
 
         /**
          * When flip contents are <code>UNDEFINED</code>, the
          * contents of the back buffer are undefined after flipping.
+         *
          * @see #isPageFlipping
          * @see #getFlipContents
          * @see #BACKGROUND
@@ -167,12 +171,13 @@ public class BufferCapabilities implements Cloneable {
          * @see #COPIED
          */
         public static final FlipContents UNDEFINED =
-            new FlipContents(I_UNDEFINED);
+                new FlipContents(I_UNDEFINED);
 
         /**
          * When flip contents are <code>BACKGROUND</code>, the
          * contents of the back buffer are cleared with the background color after
          * flipping.
+         *
          * @see #isPageFlipping
          * @see #getFlipContents
          * @see #UNDEFINED
@@ -180,12 +185,13 @@ public class BufferCapabilities implements Cloneable {
          * @see #COPIED
          */
         public static final FlipContents BACKGROUND =
-            new FlipContents(I_BACKGROUND);
+                new FlipContents(I_BACKGROUND);
 
         /**
          * When flip contents are <code>PRIOR</code>, the
          * contents of the back buffer are the prior contents of the front buffer
          * (a true page flip).
+         *
          * @see #isPageFlipping
          * @see #getFlipContents
          * @see #UNDEFINED
@@ -193,12 +199,13 @@ public class BufferCapabilities implements Cloneable {
          * @see #COPIED
          */
         public static final FlipContents PRIOR =
-            new FlipContents(I_PRIOR);
+                new FlipContents(I_PRIOR);
 
         /**
          * When flip contents are <code>COPIED</code>, the
          * contents of the back buffer are copied to the front buffer when
          * flipping.
+         *
          * @see #isPageFlipping
          * @see #getFlipContents
          * @see #UNDEFINED
@@ -206,7 +213,7 @@ public class BufferCapabilities implements Cloneable {
          * @see #PRIOR
          */
         public static final FlipContents COPIED =
-            new FlipContents(I_COPIED);
+                new FlipContents(I_COPIED);
 
         private FlipContents(int type) {
             super(type, NAMES);

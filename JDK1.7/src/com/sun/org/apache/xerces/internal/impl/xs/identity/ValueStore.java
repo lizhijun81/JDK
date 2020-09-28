@@ -37,10 +37,8 @@ import com.sun.org.apache.xerces.internal.xs.ShortList;
  * for performing the necessary checks required by each type of identity
  * constraint.
  *
- * @xerces.internal
- *
  * @author Andy Clark, IBM
- *
+ * @xerces.internal
  */
 public interface ValueStore {
 
@@ -51,9 +49,9 @@ public interface ValueStore {
     /**
      * Adds the specified value to the value store.
      *
-     * @param field The field associated to the value. This reference
-     *              is used to ensure that each field only adds a value
-     *              once within a selection scope.
+     * @param field       The field associated to the value. This reference
+     *                    is used to ensure that each field only adds a value
+     *                    once within a selection scope.
      * @param actualValue The value to add.
      */
     public void addValue(Field field, Object actualValue, short valueType, ShortList itemValueType);
@@ -61,8 +59,9 @@ public interface ValueStore {
     /**
      * Since the valueStore will have access to an error reporter, this
      * allows it to be called appropriately.
+     *
      * @param key  the key of the localized error message
-     * @param args  the list of arguments for substitution.
+     * @param args the list of arguments for substitution.
      */
     public void reportError(String key, Object[] args);
 

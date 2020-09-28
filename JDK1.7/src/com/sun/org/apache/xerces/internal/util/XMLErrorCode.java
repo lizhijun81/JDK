@@ -25,7 +25,6 @@ package com.sun.org.apache.xerces.internal.util;
  * a domain and a message key.</p>
  *
  * @author Naela Nissar, IBM
- *
  */
 final class XMLErrorCode {
 
@@ -33,17 +32,21 @@ final class XMLErrorCode {
     // Data
     //
 
-    /** error domain **/
+    /**
+     * error domain
+     **/
     private String fDomain;
 
-    /** message key **/
+    /**
+     * message key
+     **/
     private String fKey;
 
     /**
      * <p>Constructs an XMLErrorCode with the given domain and key.</p>
      *
      * @param domain The error domain.
-     * @param key The key of the error message.
+     * @param key    The key of the error message.
      */
     public XMLErrorCode(String domain, String key) {
         fDomain = domain;
@@ -54,7 +57,7 @@ final class XMLErrorCode {
      * <p>Convenience method to set the values of an XMLErrorCode.</p>
      *
      * @param domain The error domain.
-     * @param key The key of the error message.
+     * @param key    The key of the error message.
      */
     public void setValues(String domain, String key) {
         fDomain = domain;

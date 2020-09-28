@@ -63,18 +63,17 @@ import org.xml.sax.Locator;
  *         // for future use.
  *   Locator startloc = new LocatorImpl(locator);
  * }
- *</pre>
+ * </pre>
  *
  * <p>Normally, parser writers will not use this class, since it
  * is more efficient to provide location information only when
  * requested, rather than constantly updating a Locator object.</p>
  *
- * @since SAX 1.0
  * @author David Megginson
  * @see org.xml.sax.Locator Locator
+ * @since SAX 1.0
  */
-public class LocatorImpl implements Locator
-{
+public class LocatorImpl implements Locator {
 
 
     /**
@@ -83,8 +82,7 @@ public class LocatorImpl implements Locator
      * <p>This will not normally be useful, since the main purpose
      * of this class is to make a snapshot of an existing Locator.</p>
      */
-    public LocatorImpl ()
-    {
+    public LocatorImpl() {
     }
 
 
@@ -98,14 +96,12 @@ public class LocatorImpl implements Locator
      *
      * @param locator The locator to copy.
      */
-    public LocatorImpl (Locator locator)
-    {
+    public LocatorImpl(Locator locator) {
         setPublicId(locator.getPublicId());
         setSystemId(locator.getSystemId());
         setLineNumber(locator.getLineNumber());
         setColumnNumber(locator.getColumnNumber());
     }
-
 
 
     ////////////////////////////////////////////////////////////////////
@@ -117,12 +113,11 @@ public class LocatorImpl implements Locator
      * Return the saved public identifier.
      *
      * @return The public identifier as a string, or null if none
-     *         is available.
+     * is available.
      * @see org.xml.sax.Locator#getPublicId
      * @see #setPublicId
      */
-    public String getPublicId ()
-    {
+    public String getPublicId() {
         return publicId;
     }
 
@@ -131,12 +126,11 @@ public class LocatorImpl implements Locator
      * Return the saved system identifier.
      *
      * @return The system identifier as a string, or null if none
-     *         is available.
+     * is available.
      * @see org.xml.sax.Locator#getSystemId
      * @see #setSystemId
      */
-    public String getSystemId ()
-    {
+    public String getSystemId() {
         return systemId;
     }
 
@@ -148,8 +142,7 @@ public class LocatorImpl implements Locator
      * @see org.xml.sax.Locator#getLineNumber
      * @see #setLineNumber
      */
-    public int getLineNumber ()
-    {
+    public int getLineNumber() {
         return lineNumber;
     }
 
@@ -161,11 +154,9 @@ public class LocatorImpl implements Locator
      * @see org.xml.sax.Locator#getColumnNumber
      * @see #setColumnNumber
      */
-    public int getColumnNumber ()
-    {
+    public int getColumnNumber() {
         return columnNumber;
     }
-
 
 
     ////////////////////////////////////////////////////////////////////
@@ -177,11 +168,10 @@ public class LocatorImpl implements Locator
      * Set the public identifier for this locator.
      *
      * @param publicId The new public identifier, or null
-     *        if none is available.
+     *                 if none is available.
      * @see #getPublicId
      */
-    public void setPublicId (String publicId)
-    {
+    public void setPublicId(String publicId) {
         this.publicId = publicId;
     }
 
@@ -190,11 +180,10 @@ public class LocatorImpl implements Locator
      * Set the system identifier for this locator.
      *
      * @param systemId The new system identifier, or null
-     *        if none is available.
+     *                 if none is available.
      * @see #getSystemId
      */
-    public void setSystemId (String systemId)
-    {
+    public void setSystemId(String systemId) {
         this.systemId = systemId;
     }
 
@@ -205,8 +194,7 @@ public class LocatorImpl implements Locator
      * @param lineNumber The line number, or -1 if none is available.
      * @see #getLineNumber
      */
-    public void setLineNumber (int lineNumber)
-    {
+    public void setLineNumber(int lineNumber) {
         this.lineNumber = lineNumber;
     }
 
@@ -217,11 +205,9 @@ public class LocatorImpl implements Locator
      * @param columnNumber The column number, or -1 if none is available.
      * @see #getColumnNumber
      */
-    public void setColumnNumber (int columnNumber)
-    {
+    public void setColumnNumber(int columnNumber) {
         this.columnNumber = columnNumber;
     }
-
 
 
     ////////////////////////////////////////////////////////////////////
