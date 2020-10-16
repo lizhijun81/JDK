@@ -39,6 +39,11 @@ import java.util.concurrent.locks.*;
 import sun.misc.Unsafe;
 
 /**
+ *
+ * 线程安全的ArrayList，允许多线程操作 add、set等操作；通过 生成底层数组的副本来实现；
+ *
+ * 在迭代期间 数组不能被修改，保证不抛出 ConcurrentModificationException；
+ *
  * A thread-safe variant of {@link java.util.ArrayList} in which all mutative
  * operations (<tt>add</tt>, <tt>set</tt>, and so on) are implemented by
  * making a fresh copy of the underlying array.
@@ -168,8 +173,7 @@ public class CopyOnWriteArrayList<E>
      * @param fence one past last index to search
      * @return index of element, or -1 if absent
      */
-    private static int indexOf(Object o, Object[] elements,
-                               int index, int fence) {
+    private static int indexOf(Object o, Object[] elements, int index, int fence) {
         if (o == null) {
             for (int i = index; i < fence; i++)
                 if (elements[i] == null)
@@ -473,14 +477,13 @@ public class CopyOnWriteArrayList<E>
             Object[] elements = getArray();
             int len = elements.length;
             E oldValue = get(elements, index);
-            int numMoved = len - index - 1;
-            if (numMoved == 0)
+            int numMoved = len - index - 1;// 开始移动的位置
+            if (numMoved == 0)  // 删除数组最后位置的元素，则直接拷贝前n-1个数组即可
                 setArray(Arrays.copyOf(elements, len - 1));
             else {
                 Object[] newElements = new Object[len - 1];
-                System.arraycopy(elements, 0, newElements, 0, index);
-                System.arraycopy(elements, index + 1, newElements, index,
-                                 numMoved);
+                System.arraycopy(elements, 0, newElements, 0, index); // 先拷贝前 index-1的数据
+                System.arraycopy(elements, index + 1, newElements, index, numMoved); // 在拷贝index+1之后的数据
                 setArray(newElements);
             }
             return oldValue;

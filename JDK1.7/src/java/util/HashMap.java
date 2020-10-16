@@ -600,8 +600,8 @@ public class HashMap<K,V>
                     // string类型的Key，使用stringHash32重新计算hash值，减少hash冲突
                     e.hash = null == e.key ? 0 : hash(e.key);
                 }
-                int i = indexFor(e.hash, newCapacity);
-                e.next = newTable[i];
+                int i = indexFor(e.hash, newCapacity);// 重新计算索引
+                e.next = newTable[i];// 头插法，把值移动到新数组的链表中
                 newTable[i] = e;
                 e = next;
             }

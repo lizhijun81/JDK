@@ -565,14 +565,21 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      */
     final Node<K,V> getNode(int hash, Object key) {
         Node<K,V>[] tab; Node<K,V> first, e; int n; K k;
+
         if ((tab = table) != null && (n = tab.length) > 0 &&
             (first = tab[(n - 1) & hash]) != null) {
+
+            // 第一个节点命中直接返回
             if (first.hash == hash && // always check first node
                 ((k = first.key) == key || (key != null && key.equals(k))))
                 return first;
+
             if ((e = first.next) != null) {
+                // 红黑树中查询节点
                 if (first instanceof TreeNode)
                     return ((TreeNode<K,V>)first).getTreeNode(hash, key);
+
+                // 遍历链表查询节点
                 do {
                     if (e.hash == hash &&
                         ((k = e.key) == key || (key != null && key.equals(k))))
@@ -633,25 +640,25 @@ public class HashMap<K,V> extends AbstractMap<K,V>
             if (p.hash == hash &&
                 ((k = p.key) == key || (key != null && key.equals(k))))
                 e = p;
-            else if (p instanceof TreeNode)
+            else if (p instanceof TreeNode)  // 头结点为红黑树，直接把当前key插入到红黑树中
                 e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
             else {
-                for (int binCount = 0; ; ++binCount) {
+                for (int binCount = 0; ; ++binCount) {// 遍历当前链表
                     if ((e = p.next) == null) {
-                        p.next = newNode(hash, key, value, null);
-                        if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st
-                            treeifyBin(tab, hash);
+                        p.next = newNode(hash, key, value, null);// 将节点插入到链表末尾
+                        if (binCount >= TREEIFY_THRESHOLD - 1) // -1 for 1st  // 触发 转换为红黑树的阀值
+                            treeifyBin(tab, hash);// 将 链表转换成为 红黑树
                         break;
                     }
                     if (e.hash == hash &&
-                        ((k = e.key) == key || (key != null && key.equals(k))))
+                        ((k = e.key) == key || (key != null && key.equals(k))))  // 判断当前key是否存在链表中
                         break;
                     p = e;
                 }
             }
             if (e != null) { // existing mapping for key
                 V oldValue = e.value;
-                if (!onlyIfAbsent || oldValue == null)
+                if (!onlyIfAbsent || oldValue == null)  // onlyIfAbsent = false，才会替换旧值
                     e.value = value;
                 afterNodeAccess(e);
                 return oldValue;
@@ -659,8 +666,8 @@ public class HashMap<K,V> extends AbstractMap<K,V>
         }
         ++modCount;
         if (++size > threshold)
-            resize();
-        afterNodeInsertion(evict);
+            resize(); // rehash过程
+        afterNodeInsertion(evict); // 触发插入节点的回调
         return null;
     }
 
@@ -683,8 +690,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                 threshold = Integer.MAX_VALUE;
                 return oldTab;
             }
-            else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY &&
-                     oldCap >= DEFAULT_INITIAL_CAPACITY)
+            else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY && oldCap >= DEFAULT_INITIAL_CAPACITY)
                 newThr = oldThr << 1; // double threshold
         }
         else if (oldThr > 0) // initial capacity was placed in threshold
@@ -695,8 +701,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
         }
         if (newThr == 0) {
             float ft = (float)newCap * loadFactor;
-            newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
-                      (int)ft : Integer.MAX_VALUE);
+            newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ? (int)ft : Integer.MAX_VALUE);
         }
         threshold = newThr;
         @SuppressWarnings({"rawtypes","unchecked"})
@@ -750,14 +755,19 @@ public class HashMap<K,V> extends AbstractMap<K,V>
     /**
      * Replaces all linked nodes in bin at index for given hash unless
      * table is too small, in which case resizes instead.
+     *
+     * h->p1  t->p1
+     * p2->p1,  p1->p2,  t->p2
      */
     final void treeifyBin(Node<K,V>[] tab, int hash) {
         int n, index; Node<K,V> e;
+        // 当链表数组的长度不超过 MIN_TREEIFY_CAPACITY=64 时，则进行rehash；而不是直接把链表转换成为红黑树
         if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY)
             resize();
         else if ((e = tab[index = (n - 1) & hash]) != null) {
             TreeNode<K,V> hd = null, tl = null;
             do {
+                // 构造成双链表
                 TreeNode<K,V> p = replacementTreeNode(e, null);
                 if (tl == null)
                     hd = p;
@@ -767,6 +777,8 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                 }
                 tl = p;
             } while ((e = e.next) != null);
+
+            // 将双链表转换成为红黑树
             if ((tab[index] = hd) != null)
                 hd.treeify(tab);
         }
@@ -795,8 +807,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      */
     public V remove(Object key) {
         Node<K,V> e;
-        return (e = removeNode(hash(key), key, null, false, true)) == null ?
-            null : e.value;
+        return (e = removeNode(hash(key), key, null, false, true)) == null ? null : e.value;
     }
 
     /**
@@ -809,23 +820,24 @@ public class HashMap<K,V> extends AbstractMap<K,V>
      * @param movable if false do not move other nodes while removing
      * @return the node, or null if none
      */
-    final Node<K,V> removeNode(int hash, Object key, Object value,
-                               boolean matchValue, boolean movable) {
+    final Node<K,V> removeNode(int hash, Object key, Object value, boolean matchValue, boolean movable) {
         Node<K,V>[] tab; Node<K,V> p; int n, index;
         if ((tab = table) != null && (n = tab.length) > 0 &&
+            // 链表数组的头结点
             (p = tab[index = (n - 1) & hash]) != null) {
+            // 查找节点
+            // 1.判断头结点是否为指定的节点
             Node<K,V> node = null, e; K k; V v;
-            if (p.hash == hash &&
-                ((k = p.key) == key || (key != null && key.equals(k))))
+            if (p.hash == hash && ((k = p.key) == key || (key != null && key.equals(k))))
                 node = p;
             else if ((e = p.next) != null) {
+                // 2.从红黑树中查询指定的节点
                 if (p instanceof TreeNode)
                     node = ((TreeNode<K,V>)p).getTreeNode(hash, key);
                 else {
+                    // 遍历链表查询指定的节点
                     do {
-                        if (e.hash == hash &&
-                            ((k = e.key) == key ||
-                             (key != null && key.equals(k)))) {
+                        if (e.hash == hash && ((k = e.key) == key || (key != null && key.equals(k)))) {
                             node = e;
                             break;
                         }
@@ -833,16 +845,19 @@ public class HashMap<K,V> extends AbstractMap<K,V>
                     } while ((e = e.next) != null);
                 }
             }
-            if (node != null && (!matchValue || (v = node.value) == value ||
-                                 (value != null && value.equals(v)))) {
+
+            // node 为 查找到的节点；查找到的节点的value和指定节点的value相等才允许删除指定的节点
+            if (node != null && (!matchValue || (v = node.value) == value || (value != null && value.equals(v)))) {
+                // 删除红黑树中的节点
                 if (node instanceof TreeNode)
                     ((TreeNode<K,V>)node).removeTreeNode(this, tab, movable);
-                else if (node == p)
+                else if (node == p) // 链表的头结点就是指定删除的节点
                     tab[index] = node.next;
-                else
+                else  // 链表中删除指定的节点
                     p.next = node.next;
                 ++modCount;
                 --size;
+                // 删除节点的回调
                 afterNodeRemoval(node);
                 return node;
             }
@@ -875,6 +890,7 @@ public class HashMap<K,V> extends AbstractMap<K,V>
     public boolean containsValue(Object value) {
         Node<K,V>[] tab; V v;
         if ((tab = table) != null && size > 0) {
+            // 遍历整个map查找指定的value
             for (int i = 0; i < tab.length; ++i) {
                 for (Node<K,V> e = tab[i]; e != null; e = e.next) {
                     if ((v = e.value) == value ||

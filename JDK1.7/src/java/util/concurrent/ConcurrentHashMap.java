@@ -293,8 +293,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
             try {
                 UNSAFE = sun.misc.Unsafe.getUnsafe();
                 Class k = HashEntry.class;
-                nextOffset = UNSAFE.objectFieldOffset
-                    (k.getDeclaredField("next"));
+                nextOffset = UNSAFE.objectFieldOffset(k.getDeclaredField("next"));
             } catch (Exception e) {
                 throw new Error(e);
             }
@@ -441,12 +440,13 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
             try {
                 HashEntry<K,V>[] tab = table;
                 int index = (tab.length - 1) & hash;
+
+                // 判断当前key是否已经存在
                 HashEntry<K,V> first = entryAt(tab, index);
                 for (HashEntry<K,V> e = first;;) {
                     if (e != null) {
                         K k;
-                        if ((k = e.key) == key ||
-                            (e.hash == hash && key.equals(k))) {
+                        if ((k = e.key) == key || (e.hash == hash && key.equals(k))) {
                             oldValue = e.value;
                             if (!onlyIfAbsent) {
                                 e.value = value;
@@ -455,8 +455,7 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
                             break;
                         }
                         e = e.next;
-                    }
-                    else {
+                    } else {
                         if (node != null)
                             node.setNext(first);
                         else
@@ -504,30 +503,34 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
             int oldCapacity = oldTable.length;
             int newCapacity = oldCapacity << 1;
             threshold = (int)(newCapacity * loadFactor);
-            HashEntry<K,V>[] newTable =
-                (HashEntry<K,V>[]) new HashEntry[newCapacity];
+            HashEntry<K,V>[] newTable = (HashEntry<K,V>[]) new HashEntry[newCapacity];
             int sizeMask = newCapacity - 1;
             for (int i = 0; i < oldCapacity ; i++) {
                 HashEntry<K,V> e = oldTable[i];
                 if (e != null) {
                     HashEntry<K,V> next = e.next;
                     int idx = e.hash & sizeMask;
+
+                    // 单节点直接放到新表中
                     if (next == null)   //  Single node on list
                         newTable[idx] = e;
                     else { // Reuse consecutive sequence at same slot
+
+                        // 复用 连续的单链表； 找到最后一段连续的节点
                         HashEntry<K,V> lastRun = e;
                         int lastIdx = idx;
-                        for (HashEntry<K,V> last = next;
-                             last != null;
-                             last = last.next) {
+                        for (HashEntry<K,V> last = next; last != null; last = last.next) {
                             int k = last.hash & sizeMask;
                             if (k != lastIdx) {
                                 lastIdx = k;
                                 lastRun = last;
                             }
                         }
+
+                        // 将连续的单链表中的节点保存整个保存到新表中
                         newTable[lastIdx] = lastRun;
                         // Clone remaining nodes
+                        // 将单链表中剩余的节点依次保存到新表中
                         for (HashEntry<K,V> p = e; p != lastRun; p = p.next) {
                             V v = p.value;
                             int h = p.hash;
@@ -733,6 +736,8 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
     }
 
     /**
+     * 创建给定索引处的segment
+     *
      * Returns the segment for the given index, creating it and
      * recording in segment table (via CAS) if not already present.
      *
@@ -744,17 +749,21 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
         final Segment<K,V>[] ss = this.segments;
         long u = (k << SSHIFT) + SBASE; // raw offset
         Segment<K,V> seg;
+        // 1.判断给定索引处的槽位是否存在
         if ((seg = (Segment<K,V>)UNSAFE.getObjectVolatile(ss, u)) == null) {
             Segment<K,V> proto = ss[0]; // use segment 0 as prototype
             int cap = proto.table.length;
             float lf = proto.loadFactor;
             int threshold = (int)(cap * lf);
+            // 2.使用第一个槽位初始化索引处的槽位
             HashEntry<K,V>[] tab = (HashEntry<K,V>[])new HashEntry[cap];
-            if ((seg = (Segment<K,V>)UNSAFE.getObjectVolatile(ss, u))
-                == null) { // recheck
+            // 3.类似于双检索，再次判断给定索引处的槽位是否存在
+            if ((seg = (Segment<K,V>)UNSAFE.getObjectVolatile(ss, u)) == null) { // recheck
+                // 4.创建槽位
                 Segment<K,V> s = new Segment<K,V>(lf, threshold, tab);
-                while ((seg = (Segment<K,V>)UNSAFE.getObjectVolatile(ss, u))
-                       == null) {
+                // 5.采用CAS的方式，将创建的槽位设置到索引处;
+                // 6.并发的情况下，如果将其他线程设置了槽位则直接返回
+                while ((seg = (Segment<K,V>)UNSAFE.getObjectVolatile(ss, u)) == null) {
                     if (UNSAFE.compareAndSwapObject(ss, u, null, seg = s))
                         break;
                 }
@@ -817,11 +826,11 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
             ++sshift;
             ssize <<= 1;
         }
-        this.segmentShift = 32 - sshift;
-        this.segmentMask = ssize - 1;// 掩码
+        this.segmentShift = 32 - sshift;// 32-4=28=0001 1100
+        this.segmentMask = ssize - 1;// 掩码 16-1=15=0000 1111
         if (initialCapacity > MAXIMUM_CAPACITY)
             initialCapacity = MAXIMUM_CAPACITY;
-        int c = initialCapacity / ssize;// 槽 中
+        int c = initialCapacity / ssize;// 槽位中 HashEntry 数组的大小，最小的长度是2
         if (c * ssize < initialCapacity)
             ++c;
         int cap = MIN_SEGMENT_TABLE_CAPACITY;
@@ -978,6 +987,8 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
     }
 
     /**
+     * 获取key的value；整个过程没有使用到槽的lock
+     *
      * Returns the value to which the specified key is mapped,
      * or {@code null} if this map contains no mapping for the key.
      *
@@ -992,9 +1003,13 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
         Segment<K,V> s; // manually integrate access methods to reduce overhead
         HashEntry<K,V>[] tab;
         int h = hash(key);
+
+        // hash值的高segmentShift位 决定槽的索引; 计算槽的偏移量
         long u = (((h >>> segmentShift) & segmentMask) << SSHIFT) + SBASE;
+        // 槽位为空则直接返回 或者 槽中的table为空则直接返回
         if ((s = (Segment<K,V>)UNSAFE.getObjectVolatile(segments, u)) != null &&
             (tab = s.table) != null) {
+            // 计算key在槽位中table数组首个元素的索引处偏移量，遍历单链表判断key是否存在单链表中
             for (HashEntry<K,V> e = (HashEntry<K,V>) UNSAFE.getObjectVolatile
                      (tab, ((long)(((tab.length - 1) & h)) << TSHIFT) + TBASE);
                  e != null; e = e.next) {
@@ -1128,10 +1143,15 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
         Segment<K,V> s;
         if (value == null)
             throw new NullPointerException();
+        // 1.获取key的hash值
         int hash = hash(key);
+        // 2.hash >>> segmentShift  移位码;
+        // 3.hash的高位segmentShift计算key所在的槽位
         int j = (hash >>> segmentShift) & segmentMask;
-        if ((s = (Segment<K,V>)UNSAFE.getObject          // nonvolatile; recheck
-             (segments, (j << SSHIFT) + SBASE)) == null) //  in ensureSegment
+        // 4.判断key对应的槽位是否为空;  (j << SSHIFT) + SBASE)) 是槽位在segments中的偏移量
+        // 5.为空则进行初始化
+        if ((s = (Segment<K,V>)   // nonvolatile; recheck
+                UNSAFE.getObject(segments, (j << SSHIFT) + SBASE)) == null) //  in ensureSegment
             s = ensureSegment(j);
         return s.put(key, hash, value, false);
     }
@@ -1601,10 +1621,10 @@ public class ConcurrentHashMap<K, V> extends AbstractMap<K, V>
             UNSAFE = sun.misc.Unsafe.getUnsafe();
             Class tc = HashEntry[].class;
             Class sc = Segment[].class;
-            TBASE = UNSAFE.arrayBaseOffset(tc);
-            SBASE = UNSAFE.arrayBaseOffset(sc);
-            ts = UNSAFE.arrayIndexScale(tc);
-            ss = UNSAFE.arrayIndexScale(sc);
+            TBASE = UNSAFE.arrayBaseOffset(tc);// HashEntry 数组第一个元素的偏移量
+            SBASE = UNSAFE.arrayBaseOffset(sc);// Segment 数组第一个元素的偏移量
+            ts = UNSAFE.arrayIndexScale(tc);// HashEntry 数组中每个元素占用的大小
+            ss = UNSAFE.arrayIndexScale(sc);// Segment 数组中每个元素占用的大小
             HASHSEED_OFFSET = UNSAFE.objectFieldOffset(
                 ConcurrentHashMap.class.getDeclaredField("hashSeed"));
             SEGSHIFT_OFFSET = UNSAFE.objectFieldOffset(
